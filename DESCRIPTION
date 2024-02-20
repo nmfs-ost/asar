@@ -1,0 +1,16 @@
+Package: ASAR
+Title: Builds Regional Stock Assessment Report
+Version: 0.0.0.9000
+Authors@R: 
+    person("Samantha", "Schiano", , "samantha.schiano@noaa.gov", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Build a full or update stock assessment report for any stock 
+             assessment model. Parameterization allows the user to call a 
+             template based on their regional science center, species, area, ect.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+    dplyr,
+    here
