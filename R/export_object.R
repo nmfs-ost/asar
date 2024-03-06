@@ -6,12 +6,9 @@
 #' @param object table, plot, or other object in the environment to export for
 #'                reference outside of the report document
 #' @param file_format pdf, docx, xlsx, csv, rdata; default is docx
-#'
 #' @return Objects put through this function will be put into the folder "exported"
 #'         for better organization; DO NOT PUSH THESE TO THE REPO
-#'
 #' @author Samantha Schiano
-#'
 #' @export
 #'
 #' @examples
