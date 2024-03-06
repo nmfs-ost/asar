@@ -29,6 +29,9 @@ convert_output <- function(
     ...){
 
   if(model=="ss" & multi.file==TRUE){
+    # Fxn adapted from r4ss::SS_output
+
+
 
   } else if (model=='ss' & multi.file==FALSE){
     stop("Output for stock synthesis is composed of multiple files. Recheck and add files to 'output.file' parameter then change 'multi.file' to TRUE.")
@@ -38,11 +41,17 @@ convert_output <- function(
     if(length(output.file)>1 & multi.file==FALSE){
       stop("Number of files > 2 and no multi-file indicated. Change 'multi.file' to TRUE or double check you have the the right output file.")
     } else {
-
+      dat <- dget(output.file)
     }
   }
 
   if(model=='asap'){
+
+    # This is how Bai read the ASAP output
+    # asap_output conversion written by Bai Li
+    asap_output <- dget(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep=""), "asap3.rdat"))
+    setwd(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep="")))
+    asap_std <- readRep("asap3", suffix = ".std")
 
   }
 
