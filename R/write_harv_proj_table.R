@@ -1,7 +1,18 @@
-# Write harvest projection table according to AFSC/NPFMC guidelines
-
-# Function to autopopulate the table using converted results
-
+#' Write a harvest projection table
+#'
+#' @param results_last projection results from last assessment
+#' @param results_lastp1 projection results + 1 year from last assessment
+#' @param results_curr current projections
+#' @param results_currp1 current projections - 1 yr?
+#' @param tier tier categorization for target spp
+#' @param overfishing_last YES or NO overfishing last assessment
+#' @param overfishing_curr YES or NO currently overfishing?
+#'
+#' @return Write harvest projection table according to AFSC/NPFMC guidelines;
+#'         Function to autopopulate the table using converted results
+#' @export
+#'
+#' @examples
 write_harv_proj_table <- function(
     results_last = NULL,
     results_lastp1 = NULL,
@@ -26,7 +37,7 @@ write_harv_proj_table <- function(
     dplyr::select(M)
 
   proj_res <- list(results_last, results_lastp1, results_curr, results_currp1) |>
-    purrr::map(dplyr::select(M)) |>
+    purrr::map(dplyr::select(M))
 
 
   # Write table contents
@@ -40,7 +51,7 @@ write_harv_proj_table <- function(
   proj_tab <- data.frame(quantity, proj_last, proj_lastp1, proj_curr, proj_currp1) |>
     rbind(status, overfishing) |>
     flextable::flextable() |>
-    flextable::delete_part(part = "header") %>%
+    flextable::delete_part(part = "header") |>
     flextable::add_header(
       quantity = "",
       proj_last = "current year",
