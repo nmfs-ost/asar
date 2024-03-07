@@ -19,7 +19,7 @@ convert_output(
 \item{outdir}{output directory folder}
 
 \item{model}{assessment model used in evaluation;
-"ss", "bam", "asap", "fims", "amak", "ms-java", "wham", "mas"}
+"ss", "bam", "asap", "fims", "amak", "ms-java", "wham", "mas", "aspm"}
 
 \item{file.format}{csv, txt, ss, rdata, dat, multi}
 
@@ -36,4 +36,7 @@ Format stock assessment output files. Function is unfinished
 \examples{
 convert_output(output.file = "CumReport.sso", outdir = "~", model = 'ss', file.format = 'multi', multi.file = FALSE)
 
+}
+\author{
+Samantha Schiano
 }

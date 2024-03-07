@@ -29,3 +29,6 @@ test_obj <- data.frame(source, data, years)
 export_object(object = test_obj, file_format = "csv")
 
 }
+\author{
+Samantha Schiano
+}
