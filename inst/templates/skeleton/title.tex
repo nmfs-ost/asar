@@ -1,0 +1,22 @@
+$if(title)$
+\title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
+$endif$
+
+$if(subtitle)$
+\subtitle{$subtitle$}
+$endif$
+
+$for(by-author)$
+  \author{$by-author.name.literal$}
+  $if(by-author.affiliations)$
+    $for(by-author.affiliations)$
+      \affil{%
+        $if(by-author.affiliations.name)$
+          $by-author.affiliations.name$
+        $endif$
+      }
+    $endfor$
+  $endif$
+$endfor$
+
+\date{$date$}
