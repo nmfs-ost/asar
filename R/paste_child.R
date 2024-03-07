@@ -12,10 +12,11 @@ paste_child <- function(x){
     sec_num <- x[i]
     secdir <- here::here('inst', 'templates', 'update')
     child_loop <- paste0(
-      "```{r}", "\n",
+      "```{r, results='asis'}", "\n",
       "#| eval: true", "\n",
       "#| echo: false", "\n",
-      "a <- knitr::knit_child(here::here('inst', 'templates', 'skeleton', ", "'", sec_num, "')", ", quiet = TRUE)", "\n",
+      "#| warning: false", "\n",
+      "a <- knitr::knit_child(", "'", sec_num, "'", ", quiet = TRUE)", "\n",
       "cat(a, sep = '\\n')", "\n",
       "```"
       )
