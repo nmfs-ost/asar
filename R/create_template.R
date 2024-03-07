@@ -90,7 +90,7 @@ create_template <- function(
 
   if(new_template==TRUE){
   # Pull skeleton for sections
-  current_folder <- here('inst','templates','skeleton')
+  current_folder <- here::here('inst','templates','skeleton')
   new_folder <- subdir
   files_to_copy <- list.files(current_folder)
   file.copy(file.path(current_folder, files_to_copy), new_folder)
@@ -138,9 +138,9 @@ create_template <- function(
 
   # Parameters to add authorship to YAML
   # Read authorship file
-  authors <- read.delim(here::here('inst', 'resources', 'authorship.txt'), header=TRUE, sep=" ") |>
+  authors <- readr::read.delim(here::here('inst', 'resources', 'authorship.txt'), header=TRUE, sep=" ") |>
     dplyr::filter(region==office)
-  affil <- read.csv(here::here('inst', 'resources', 'affiliation_info.csv'))
+  affil <- qtl2::read.csv(here::here('inst', 'resources', 'affiliation_info.csv'))
   author_list <- list()
 
   if(include_affiliation==TRUE){
@@ -317,7 +317,7 @@ create_template <- function(
                             sections)
 
   # Save template as .qmd to render
-  capture.output(cat(report_template), file = here::here("inst", "templates", office, region, species, year, report_name))
+  utils::capture.output(cat(report_template), file = here::here("inst", "templates", office, region, species, year, report_name))
   } else {
     # Copy old template and rename for new year
     # Create copy of previous assessment
@@ -326,6 +326,6 @@ create_template <- function(
 
     # Open previous skeleton
     skeleton <- list.files(subdir, pattern = "skeleton.qmd")
-    file.edit(subdir, pattern = skeleton)
+    utils::file.edit(subdir, pattern = skeleton)
   }
 }
