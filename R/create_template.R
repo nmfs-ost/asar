@@ -190,31 +190,33 @@ create_template <- function(
                  )
 
   # Format
-  if(format=="pdf" & include_affiliation==TRUE){
+  if(include_affiliation==TRUE){
 
     # yaml <- paste0(yaml, "format: ", format, "\n")
 
-    yaml <- paste(yaml, "format: ", "\n",
-                  "  " , format, ": ", "\n",
-                  "  ", "  ", "keep-tex: ", "true ", "\n",
-                  "  " , "  ", "template-partials: ", "\n",
-                  "  ", "  ", "  ", " - title.tex ", "\n",
-                  "  ", "  ", "include-in-header: ", "\n",
-                  "  ", "  ", "  ", "text: | ", "\n",
-                  "  ", "  ", "  ", "  ", "\\usepackage[noblocks]{authblk}", "\n",
-                  "  ", "  ", "  ", "  ", "\\renewcommand*{\\Authsep}{, }", "\n",
-                  "  ", "  ", "  ", "  ", "\\renewcommand*{\\Authand}{, }", "\n",
-                  "  ", "  ", "  ", "  ", "\\renewcommand*{\\Authands}{, }", "\n",
-                  "  ", "  ", "  ", "  ", "\\renewcommand\\Affilfont{\\small}", "\n",
+    yaml <- paste(yaml, "format: \n",
+                  "  " , format, ": \n",
+                  "  ", "  ", "keep-tex: ", "true \n",
+                  "  " , "  ", "template-partials: \n",
+                  "  ", "  ", "  ", " - title.tex \n",
+                  "  ", "  ", "  ", " - sadraft.tex \n",
+                  "  ", "  ", "include-in-header: \n",
+                  "  ", "  ", "  ", "text: | \n",
+                  "  ", "  ", "  ", "  ", "\\usepackage[noblocks]{authblk} \n",
+                  "  ", "  ", "  ", "  ", "\\renewcommand*{\\Authsep}{, } \n",
+                  "  ", "  ", "  ", "  ", "\\renewcommand*{\\Authand}{, } \n",
+                  "  ", "  ", "  ", "  ", "\\renewcommand*{\\Authands}{, } \n",
+                  "  ", "  ", "  ", "  ", "\\renewcommand\\Affilfont{\\small} \n",
                   sep = "")
 
-  } else if(format=="pdf" & include_affiliation==FALSE){
+  } else if(include_affiliation==FALSE){
 
-    yaml <- paste0(yaml, "format: ", format, "\n")
-
-  } else if(format=="html" | format=="docx"){
-
-    yaml <- paste0(yaml, "format: ", format, "\n")
+    yaml <- paste0(yaml, "format: \n",
+                   "  ", format, ": \n",
+                   "  ", "  ", "template-partials: \n",
+                   "  ", "  ", "  ", "- sadraft.tex \n",
+                   "  ", "  ", "keep-tex: true \n"
+                   )
 
   }
 
@@ -243,7 +245,10 @@ create_template <- function(
   #   } else if(office=="NEFSC"){
   #
   #   } else if(office=="NWFSC"){
-  #
+  #     template <- paste0(
+  #       "output: ",
+  #       "  ", "sa"
+  #     )
   #   } else if(office=="PIFSC"){
   #
   #   } else if(office=="SEFSC"){
