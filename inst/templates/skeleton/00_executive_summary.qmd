@@ -1,0 +1,25 @@
+## Executive Summary
+
+### Stock ID and Distribution
+
+
+```{r, results='asis'}
+#| label: proj_tbl
+#| eval: true
+#| warning: false
+#| echo: false
+if(params$office=="NEFSC"){
+  a <- knitr::knit_child("00a_proj_table.qmd", quiet = TRUE)
+  cat(a, sep='\n')
+}
+```
+
+
+```{r, results='asis'}
+#| label: ref_pt_tbl
+#| eval: true
+#| warning: false
+#| echo: false
+a <- knitr::knit_child("00b_refpt_table.qmd", quiet = TRUE)
+cat(a, sep='\n')
+```

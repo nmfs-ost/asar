@@ -1,0 +1,10 @@
+### Reference Points
+
+```{r}
+#| echo: false
+#| warning: false
+Ref <- c("Bmsy", "Fmsy", "F40")
+Value <- c(40000, 0.2, 0.25)
+data.frame(Ref, Value) |>
+  flextable::flextable()
+```
