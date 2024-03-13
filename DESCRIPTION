@@ -3,7 +3,7 @@ Title: Builds Regional Stock Assessment Report
 Version: 0.0.0.9000
 Authors@R: 
     person("Samantha", "Schiano", , "samantha.schiano@noaa.gov", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           comment = c(ORCID = "0009-0003-3744-6428"))
 Description: Build a full or update stock assessment report for any stock 
              assessment model. Parameterization allows the user to call a 
              template based on their regional science center, species, area, ect.
