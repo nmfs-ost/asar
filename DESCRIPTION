@@ -1,5 +1,5 @@
 Package: ASAR
-Title: Builds Regional Stock Assessment Report
+Title: Build NOAA Stock Assessment Report
 Version: 0.0.0.9000
 Authors@R: 
     person("Samantha", "Schiano", , "samantha.schiano@noaa.gov", role = c("aut", "cre"),
