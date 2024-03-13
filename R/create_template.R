@@ -72,20 +72,20 @@ create_template <- function(
   office <- match.arg(office, several.ok = FALSE)
   type <- match.arg(type, several.ok = FALSE)
 
-  subdir <- here::here('inst', 'templates', office, region, species, year)
+  subdir <- here::here('inst', 'templates', 'archive', office, region, species, year)
   # Always creating new directory for each assessment since they will each change
   # Allow NOAA to keep a record of each assessment file
   # These will need to be cataloged into a cloud system somehow
-  if(!dir.exists(here::here('inst','templates', office, region))){
-    dir.create(here::here('inst','templates', office, region))
+  if(!dir.exists(here::here('inst','templates', 'archive', office, region))){
+    dir.create(here::here('inst','templates', 'archive', office, region))
   }
 
-  if(!dir.exists(here::here('inst','templates', office, region, species))){
-    dir.create(here::here('inst','templates', office, region, species))
+  if(!dir.exists(here::here('inst','templates', 'archive', office, region, species))){
+    dir.create(here::here('inst','templates', 'archive', office, region, species))
   }
   # Create new folder for current year
-  if(!dir.exists(here::here('inst','templates', office, region, species, year))){
-    dir.create(here::here('inst','templates', office, region, species, year))
+  if(!dir.exists(here::here('inst','templates', 'archive', office, region, species, year))){
+    dir.create(here::here('inst','templates', 'archive', office, region, species, year))
     }
 
   if(new_template==TRUE){
@@ -317,12 +317,12 @@ create_template <- function(
                             sections)
 
   # Save template as .qmd to render
-  utils::capture.output(cat(report_template), file = here::here("inst", "templates", office, region, species, year, report_name))
+  utils::capture.output(cat(report_template), file = here::here("inst", "templates", 'archive', office, region, species, year, report_name))
   } else {
     # Copy old template and rename for new year
     # Create copy of previous assessment
-    olddir <- here::here("templates", office, region, species, prev_year)
-    file.copy(here::here("templates", office, region, species, prev_year, (list.files(olddir))), subdir, recursive = TRUE)
+    olddir <- here::here("templates", 'archive', office, region, species, prev_year)
+    file.copy(here::here("templates", 'archive', office, region, species, prev_year, (list.files(olddir))), subdir, recursive = TRUE)
 
     # Open previous skeleton
     skeleton <- list.files(subdir, pattern = "skeleton.qmd")
