@@ -7,10 +7,12 @@
 #' @param add_option TRUE/FALSE add additional chunk options? default is FALSE
 #' @param chunk_op list of chunk options to add; example: c("output: true", "error: false)
 #'
-#' @return
+#' @return Write an additional R chunk into the template using this function.
+#'         The code can be written as usual, just remember to put it entirely
+#'         in quotes for the function to render it properly
 #' @export
 #'
-#' @examples
+#' @examples chunkr("plot(cars$speed, cars$distance)")
 chunkr <- function(
     x,
     echo = "false",
@@ -21,12 +23,12 @@ chunkr <- function(
   chunk <- paste0(
     "```{r} \n",
     # Add output options
-    "|# echo: ", echo, " \n",
-    "|# warning: ", warnings, " \n",
-    "|# eval: ", eval, " \n")
+    "#| echo: ", echo, " \n",
+    "#| warning: ", warnings, " \n",
+    "#| eval: ", eval, " \n")
     if(add_option==TRUE){
       for (i in 1:length(chunk_op)) {
-        chunk <- paste0(chunk, "|# ", chunk_op[i], " \n")
+        chunk <- paste0(chunk, "#| ", chunk_op[i], " \n")
       }
     }
     chunk <- paste0(chunk, x, "\n", "``` \n")
