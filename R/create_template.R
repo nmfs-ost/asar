@@ -283,6 +283,25 @@ create_template <- function(
       # Add introduction
       paste_child("02_introduction.qmd"),
       "{{< pagebreak >}}",
+      paste_child("03_data.qmd"),
+      "{{< pagebreak >}}",
+      paste_child("04_model.qmd"),
+      "{{< pagebreak >}}",
+      paste_child("05_results.qmd"),
+      "{{< pagebreak >}}",
+      paste_child("06_discussion.qmd"),
+      "{{< pagebreak >}}",
+      paste_child("07_acknowledgements.qmd"),
+      "{{< pagebreak >}}",
+      paste_child("08_references.qmd"),
+      "{{< pagebreak >}}",
+      paste_child("09_tables.qmd"),
+      "{{< pagebreak >}}",
+      paste_child("10_figures.qmd"),
+      "{{< pagebreak >}}",
+      paste_child("11_appendix.qmd"),
+      "{{< pagebreak >}}",
+
       sep = "\n"
     )
   } else {
