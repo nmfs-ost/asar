@@ -24,6 +24,7 @@
 #' @param new_section File name of the new section
 #' @param section_location Location where the section should be added relative to the base skeleton document
 #' @param type Type of stock assessment report - terminology will vary by region (content already configured by region)
+#' @param prev_year Year that previous assessment report was conducted in - for pulling previous assessment template
 #'
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
@@ -57,7 +58,8 @@ create_template <- function(
     secdir = NULL,
     new_section = NULL,
     section_location = NULL,
-    type = c("OA","UP","RT","FULL","MT")
+    type = c("OA","UP","RT","FULL","MT"),
+    prev_year = NULL
     ){
 
   setwd(dir = tempdir)
@@ -120,8 +122,15 @@ create_template <- function(
   # Create a report template file to render for the region and species
   # Create YAML header for document
   # Write title based on report type and region
-
-  title <- write_title()
+  if(alt_title==FALSE){
+    title <- write_title(office = office, species = species, region = region)
+  } else if (alt_title==TRUE){
+    if(!exists(title)){
+      stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
+    } else {
+      title <- paste(title)
+    }
+  }
 
   # Pull authors and affiliations from national db
   # Parameters to add authorship to YAML
@@ -221,11 +230,16 @@ create_template <- function(
 
   }
 
+  # Parameters
+  # office, region, and species are default parameters
+  yaml <- paste0(yaml, "params:", "\n",
+                 "  ", " ", "office: ", "'", office, "'", "\n",
+                 "  ", " ", "species: ", "'", species, "'", "\n")
+  if(!is.null(region)){
+    yaml <- paste0(yaml, "  ", " ", "region: ", "'", region, "'", "\n")
+  }
   if(parameters==TRUE){
     if(!is.null(param_names) & !is.null(param_values)){
-      # Parameters
-      yaml <- paste0(yaml, "params:", "\n")
-
       add_params <- NULL
       for (i in 1:length(param_names)) {
         toad <- paste("  ", " ", param_names[i], ": ", "'",param_values[i], "'", "\n", sep="")
@@ -286,15 +300,15 @@ create_template <- function(
     # Copy old template and rename for new year
     # Create copy of previous assessment
     if(!is.null(region)){
-      olddir <- here::here("templates", 'archive', office, species, region, prev_year)
-      file.copy(here::here("templates", 'archive', office, species, region, prev_year, (list.files(olddir))), subdir, recursive = TRUE)
+      olddir <- here::here('inst', 'templates', 'archive', office, species, region, prev_year)
+      invisible(file.copy(file.path(here::here('inst', 'templates', 'archive', office, species, region, prev_year), list.files(olddir)), subdir, recursive = FALSE))
     } else {
-      olddir <- here::here("templates", 'archive', office, species, prev_year)
-      file.copy(here::here("templates", 'archive', office, species, prev_year, (list.files(olddir))), subdir, recursive = TRUE)
+      olddir <- here::here('inst', 'templates', 'archive', office, species, prev_year)
+      invisible(file.copy(file.path(here::here('inst', 'templates', 'archive', office, species, prev_year), list.files(olddir)), subdir, recursive = FALSE))
     }
 
     # Open previous skeleton
     skeleton <- list.files(subdir, pattern = "skeleton.qmd")
-    utils::file.edit(subdir, pattern = skeleton)
+    file.show(file.path(paste0(subdir,"/",report_name))) # this opens the new file, but also restarts the session
   }
 }
