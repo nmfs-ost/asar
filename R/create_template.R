@@ -4,7 +4,7 @@
 #' @param tempdir directory for the templates/
 #' @param format file type for the render (i.e. pdf, docx, html)
 #' @param office regional fisheries science center producing the report (AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC)
-#' @param region Abbreviated region in which the species is evaluated if applicable; i.e. GOM, SA, BSAI, GOA. Note: if this is not specificed for your science center then do not use this variable. The specific location for the species should be added as a parameter in param_names and param_values
+#' @param region Full name of region in which the species is evaluated if applicable; Note: if this is not specified for your center or for the species, do not use this variable.
 #' @param complex Is this a species complex? "YES" or "NO"
 #' @param species full common name for target species, split naming by a space and capitalize first letter(s)
 #' @param year year the assessment is being conducted, default is current year report is being rendered
@@ -67,14 +67,26 @@ create_template <- function(
   }
 
   # Name report
-  report_name <- paste0(type, "_", region, "_", gsub(" ", "_", species), "_skeleton.qmd")
+  report_name <- paste0(type,
+                        "_")
+  if(!is.null(region)){
+    report_name <- paste0(report_name,
+                          gsub("(\\b[A-Z])[^A-Z]+", "\\1", region))
+  }
+  report_name <- paste0(report_name, "_",
+                        gsub(" ", "_", species),
+                        "_skeleton.qmd")
 
   # Select parameter from list
   format <- match.arg(format, several.ok = FALSE)
   office <- match.arg(office, several.ok = FALSE)
   type <- match.arg(type, several.ok = FALSE)
 
-  subdir <- here::here('inst', 'templates', 'archive', office, species, region, year)
+  if(!is.null(region)){
+    subdir <- here::here('inst', 'templates', 'archive', office, species, region, year)
+  } else {
+    subdir <- here::here('inst', 'templates', 'archive', office, species, year)
+  }
   # Always creating new directory for each assessment since they will each change
   # Allow NOAA to keep a record of each assessment file
   # These will need to be cataloged into a cloud system somehow
@@ -82,13 +94,20 @@ create_template <- function(
     dir.create(here::here('inst','templates', 'archive', office, species))
   }
 
-  if(!dir.exists(here::here('inst','templates', 'archive', office, species, region))){
-    dir.create(here::here('inst','templates', 'archive', office, species, region))
-  }
-  # Create new folder for current year
-  if(!dir.exists(here::here('inst','templates', 'archive', office, species, region, year))){
-    dir.create(here::here('inst','templates', 'archive', office, species, region, year))
+  if(!is.null(region)){
+    if(!dir.exists(here::here('inst','templates', 'archive', office, species, region))){
+      dir.create(here::here('inst','templates', 'archive', office, species, region))
     }
+    # Create new folder for current year
+    if(!dir.exists(here::here('inst','templates', 'archive', office, species, region, year))){
+      dir.create(here::here('inst','templates', 'archive', office, species, region, year))
+    }
+  } else {
+    # Create new folder for current year
+    if(!dir.exists(here::here('inst','templates', 'archive', office, species, year))){
+      dir.create(here::here('inst','templates', 'archive', office, species, year))
+    }
+  }
 
   if(new_template==TRUE){
   # Pull skeleton for sections
@@ -96,40 +115,15 @@ create_template <- function(
   new_folder <- subdir
   files_to_copy <- list.files(current_folder)
   file.copy(file.path(current_folder, files_to_copy), new_folder)
+
   # Part I
   # Create a report template file to render for the region and species
+  # Create YAML header for document
+  # Write title based on report type and region
 
-  # Create .yml for document
+  title <- write_title()
 
-  # Create title dependent on regional language
-  if(office=="AFSC"){
-    if(complex=="no"){
-      title = paste0("Assessment of the ", species, " Stock in the ", region)
-    } else {
-      title = paste0("Assessment of the ", species, " Stock Complex in the ", region)
-    }
-  } else if(office=="NEFSC"){
-    if(type=="RT"){
-      title = paste0("Report of the ", species, " ", year, " Research Track Assessment ", "Working Group")
-    } else {
-      title = paste0("Management Track Assessment of ", species, " ", year)
-    }
-
-  } else if(office=="NWFSC"){
-
-  } else if(office=="PIFSC"){
-
-  } else if(office=="SEFSC"){
-
-  } else if(office=="SWFSC"){
-
-  } else {
-    print("office (FSC) is not defined. Please define which office you are associated with.")
-  }
-
-  # Will only run if adding a new author to the resources
-  # This needs a better call and fix for assessment reports
-
+  # Pull authors and affiliations from national db
   # Parameters to add authorship to YAML
   # Read authorship file
   authors <- read.csv(here::here('inst', 'resources', 'authorship.csv')) |>
@@ -137,7 +131,9 @@ create_template <- function(
                                           TRUE ~ paste(first, mi, last, sep = " "))) |>
     dplyr::select(name, office) |>
     dplyr::filter(name %in% author)
-  affil <- read.csv(here::here('inst', 'resources', 'affiliation_info.csv'))
+  if(include_affiliation==TRUE){
+    affil <- read.csv(here::here('inst', 'resources', 'affiliation_info.csv'))
+  }
   author_list <- list()
 
   if(include_affiliation==TRUE & simple_affiliation==FALSE){
@@ -285,12 +281,17 @@ create_template <- function(
                             sections)
 
   # Save template as .qmd to render
-  utils::capture.output(cat(report_template), file = here::here("inst", "templates", 'archive', office, species, region, year, report_name), append = FALSE)
+  utils::capture.output(cat(report_template), file = paste0(subdir, "/", report_name), append = FALSE)
   } else {
     # Copy old template and rename for new year
     # Create copy of previous assessment
-    olddir <- here::here("templates", 'archive', office, species, region, prev_year)
-    file.copy(here::here("templates", 'archive', office, species, region, prev_year, (list.files(olddir))), subdir, recursive = TRUE)
+    if(!is.null(region)){
+      olddir <- here::here("templates", 'archive', office, species, region, prev_year)
+      file.copy(here::here("templates", 'archive', office, species, region, prev_year, (list.files(olddir))), subdir, recursive = TRUE)
+    } else {
+      olddir <- here::here("templates", 'archive', office, species, prev_year)
+      file.copy(here::here("templates", 'archive', office, species, prev_year, (list.files(olddir))), subdir, recursive = TRUE)
+    }
 
     # Open previous skeleton
     skeleton <- list.files(subdir, pattern = "skeleton.qmd")
