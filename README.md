@@ -31,7 +31,7 @@ library(ASAR)
 outdat = "exampledata.Rdata"
 mod = "wham"
 
-data <- convert_output(output.file = outdat, model = mod)
+data <- ASAR::convert_output(output.file = outdat, model = mod)
 
 ASAR::create_template(
     new_template = TRUE,
@@ -40,11 +40,12 @@ ASAR::create_template(
     region = "GB",
     species = "Bluefish",
     year = 2024,
+    author = c("Kelli Johnson", "Ben Williams", "Dan Hennen"),
+    include_affiliation = TRUE,
     parameters = TRUE,
     param_names = c("office", "region","species"),
     param_values = c("NEFSC", "Georges Bank", "Bluefish"),
     type = "RT"
-    model = mod
 )
 ```
 ## Tips
