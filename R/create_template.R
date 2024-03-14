@@ -72,20 +72,20 @@ create_template <- function(
   office <- match.arg(office, several.ok = FALSE)
   type <- match.arg(type, several.ok = FALSE)
 
-  subdir <- here::here('inst', 'templates', 'archive', office, region, species, year)
+  subdir <- here::here('inst', 'templates', 'archive', office, species, region, year)
   # Always creating new directory for each assessment since they will each change
   # Allow NOAA to keep a record of each assessment file
   # These will need to be cataloged into a cloud system somehow
-  if(!dir.exists(here::here('inst','templates', 'archive', office, region))){
-    dir.create(here::here('inst','templates', 'archive', office, region))
+  if(!dir.exists(here::here('inst','templates', 'archive', office, species))){
+    dir.create(here::here('inst','templates', 'archive', office, species))
   }
 
-  if(!dir.exists(here::here('inst','templates', 'archive', office, region, species))){
-    dir.create(here::here('inst','templates', 'archive', office, region, species))
+  if(!dir.exists(here::here('inst','templates', 'archive', office, species, region))){
+    dir.create(here::here('inst','templates', 'archive', office, species, region))
   }
   # Create new folder for current year
-  if(!dir.exists(here::here('inst','templates', 'archive', office, region, species, year))){
-    dir.create(here::here('inst','templates', 'archive', office, region, species, year))
+  if(!dir.exists(here::here('inst','templates', 'archive', office, species, region, year))){
+    dir.create(here::here('inst','templates', 'archive', office, species, region, year))
     }
 
   if(new_template==TRUE){
