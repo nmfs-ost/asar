@@ -8,13 +8,14 @@
 #' @param complex Is this a species complex? "YES" or "NO"
 #' @param species full common name for target species, split naming by a space and capitalize first letter(s)
 #' @param year year the assessment is being conducted, default is current year report is being rendered
-#' @param new_author TRUE/FALSE; default is FALSE - pulls from list of authors in repo
-#' @param author_name "First Last" name of author being added to the report
-#' @param author_office Abbreviation of the science center of the author being added
+#' @param author List of authors to include in the assessment
 #' @param include_affiliation TRUE/FALSE; does the analyst want to include affiliations of the authors in the document?
+#' @param simple_affiliation If including affiliation, adding just office name rather than full address; TRUE/FALSE, default is TRUE
+#' @param alt_title TRUE/FALSE create an alternative title than the default
+#' @param title Name of new title if default is not appropriate; Example, "Management Track Assessments Spring 2024"
 #' @param parameters TRUE/FALSE; default TRUE - for parameterization of the script
-#' @param param_names List of parameter names that will be called in the document; example: c("office", "region", "spp")
-#' @param param_values List of values associated with the order of parameter names; example: c("SEFSC", "Gulf of Mexico", "Red Snapper")
+#' @param param_names List of parameter names that will be called in the document; parameters automatically included are office, region, and species listed in function parameters
+#' @param param_values List of values associated with the order of parameter names; parameters automatically included are office, region, and species listed in function parameters
 #' @param resdir Directory where the model results file(s) are located
 #' @param model_results Name of the model results file
 #' @param model Type of assessment model that was used to assess the stock (i.e. "BAM", "SS", "AMAK", "ASAP", ect)
@@ -41,10 +42,11 @@ create_template <- function(
     complex = "NO",
     species = NULL,
     year = NULL,
-    new_author = FALSE,
-    author_name = NULL,
-    author_office = NULL,
+    author = NULL,
     include_affiliation = FALSE,
+    simple_affiliation = TRUE,
+    alt_title = FALSE,
+    title = NULL,
     parameters = TRUE,
     param_names = NULL,
     param_values = NULL,
@@ -128,27 +130,22 @@ create_template <- function(
   # Will only run if adding a new author to the resources
   # This needs a better call and fix for assessment reports
 
-  if(new_author==TRUE){
-    # author_first <- sapply(strsplit(author_name," "), `[`, 1)
-    # author_last <- sapply(strsplit(author_name," "), `[`, 2)
-    # office <- author_office
-    new_author <- paste(author_name, author_office)
-    write(new_author, file = here::here("inst", "resources", "authorship.txt"), append = TRUE)
-  }
-
   # Parameters to add authorship to YAML
   # Read authorship file
-  authors <- readr::read.delim(here::here('inst', 'resources', 'authorship.txt'), header=TRUE, sep=" ") |>
-    dplyr::filter(region==office)
-  affil <- qtl2::read.csv(here::here('inst', 'resources', 'affiliation_info.csv'))
+  authors <- read.csv(here::here('inst', 'resources', 'authorship.csv')) |>
+    dplyr::mutate(name = dplyr::case_when(is.na(mi) ~ paste(first, last, sep = " "),
+                                          TRUE ~ paste(first, mi, last, sep = " "))) |>
+    dplyr::select(name, office) |>
+    dplyr::filter(name %in% author)
+  affil <- read.csv(here::here('inst', 'resources', 'affiliation_info.csv'))
   author_list <- list()
 
-  if(include_affiliation==TRUE){
-    for(i in 1:nrow(authors)){
+  if(include_affiliation==TRUE & simple_affiliation==FALSE){
+    for(i in 1:length(authors)){
       auth <- authors[i,]
       aff <- affil |>
         dplyr::filter(affiliation==auth$office)
-      paste0("  ", "- name: ", "'", auth$first, " ", auth$last, "'", "\n",
+      paste0("  ", "- name: ", "'", auth$name, "'", "\n",
              "  ", "  ", "affiliations:", "\n",
              "  ", "  ", "  ", "- name: ", "'", "NOAA Fisheries ", aff$name, "'", "\n",
              "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'","\n",
@@ -158,10 +155,19 @@ create_template <- function(
              # sep = " "
       ) -> author_list[[i]]
     }
+  } else if(include_affiliation==TRUE & simple_affiliation==TRUE){
+    for(i in 1:length(authors)){
+      auth <- authors[i,]
+      aff <- affil |>
+        dplyr::filter(affiliation==auth$office)
+      paste0("  ", "- name: ", "'", auth$name, "'", "\n",
+             "  ", "  ", "affiliations: ", "'", aff$name, "'", "\n"
+      ) -> author_list[[i]]
+    }
   } else {
     for(i in 1:nrow(authors)){
       auth <- authors[i,]
-      paste0("  ", "- ", "'", auth$first, " ", auth$last, "'", "\n") -> author_list[[i]]
+      paste0("  ", "- ", "'", auth$name, "'", "\n") -> author_list[[i]]
     }
   }
 
@@ -192,14 +198,11 @@ create_template <- function(
   # Format
   if(include_affiliation==TRUE){
 
-    # yaml <- paste0(yaml, "format: ", format, "\n")
-
     yaml <- paste(yaml, "format: \n",
                   "  " , format, ": \n",
                   "  ", "  ", "keep-tex: ", "true \n",
                   "  " , "  ", "template-partials: \n",
                   "  ", "  ", "  ", " - title.tex \n",
-                  "  ", "  ", "  ", " - sadraft.tex \n",
                   "  ", "  ", "include-in-header: \n",
                   "  ", "  ", "  ", "text: | \n",
                   "  ", "  ", "  ", "  ", "\\usepackage[noblocks]{authblk} \n",
@@ -245,25 +248,30 @@ create_template <- function(
   # yaml_save <- capture.output(cat(yaml))
   # cat(yaml, file = here('template','yaml_header.qmd'))
 
+  # Add chunk to load in assessment data
+  ass_output <- chunkr(
+    "convert_output(x)"
+  )
+
   # Create report template
 
   if(type=="OA" | type=="UP" | type=="MT"){
     sections <- paste(
       # Add executive summary
-      paste_child("00_executive_summary.qmd"),
+      paste_child("01_executive_summary.qmd"), "\n",
       "{{< pagebreak >}}",
       # Add introduction
-      paste_child("01_introduction.qmd"),
+      paste_child("02_introduction.qmd"), "\n",
       "{{< pagebreak >}}",
       sep = "\n"
       )
   } else if (type=="RT" | type=="FULL"){
     sections <- paste(
       # Add executive summary
-      paste_child("00_executive_summary.qmd"),
+      paste_child("01_executive_summary.qmd"),
       "{{< pagebreak >}}",
       # Add introduction
-      paste_child("01_introduction.qmd"),
+      paste_child("02_introduction.qmd"),
       "{{< pagebreak >}}",
       sep = "\n"
     )
@@ -272,17 +280,17 @@ create_template <- function(
   }
 
   # Combine template sections
-  report_template <- paste0(yaml,
-                            "\n",
+  report_template <- paste0(yaml, "\n",
+                            ass_output, "\n",
                             sections)
 
   # Save template as .qmd to render
-  utils::capture.output(cat(report_template), file = here::here("inst", "templates", 'archive', office, region, species, year, report_name))
+  utils::capture.output(cat(report_template), file = here::here("inst", "templates", 'archive', office, species, region, year, report_name), append = FALSE)
   } else {
     # Copy old template and rename for new year
     # Create copy of previous assessment
-    olddir <- here::here("templates", 'archive', office, region, species, prev_year)
-    file.copy(here::here("templates", 'archive', office, region, species, prev_year, (list.files(olddir))), subdir, recursive = TRUE)
+    olddir <- here::here("templates", 'archive', office, species, region, prev_year)
+    file.copy(here::here("templates", 'archive', office, species, region, prev_year, (list.files(olddir))), subdir, recursive = TRUE)
 
     # Open previous skeleton
     skeleton <- list.files(subdir, pattern = "skeleton.qmd")
