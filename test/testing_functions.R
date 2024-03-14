@@ -4,6 +4,9 @@
 # In development
 # Last edited: 03/14/24
 
+### PLEASE DO NOT PUSH ANY TEMPLATES THAT YOU MAKE TESTING OUT THIS FUNCTION###
+# More guidance for saving scripts will be provided in the future
+
 # test generating new template
 create_template(
     new_template = TRUE,
