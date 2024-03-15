@@ -1,9 +1,22 @@
 affiliation,office,name,address,city,state,postal-code
 OST-MD,OST,Office of Science and Technology,1315 East-West Highway,Silver Spring,MD,20910
-NEFSC,NEFSC,Northeast Fisheries Science Center,,,,
-SEFSC,SEFSC,Southeast Fisheries Science Center,75 Virginia Beach Dr.,Miami,FL,33149
-NWFSC-OR,NWFSC,Northwest Fisheries Science Center,2032 SE OSU Dr. Bldg. 955,Newport,OR,97365-2097
-NWFSC-WA,NWFSC,Northwest Fisheries Science Center,2725 Montlake Blvd. East,Seattle,WA,98112-2097
-SWFSC,SWFSC,Southwest Fisheries Science Center,8901 La Jolla Shores Drive,La Jolla,CA,92037
-AFSC,AFSC,Alaska Fisheries Science Center,,,,
-PIFSC,PIFSC,Pacific Islands Fisheries Science Center,1845 Wasp Blvd.,Honolulu,HI,96818
+NEFSC,NEFSC,Northeast Fisheries Science Center,166 Water Street,Woods Hole,MA,2543
+NEFSC-WHMA,NEFSC,Northeast Fisheries Science Center,166 Water Street,Woods Hole,MA,2543
+NEFSC-NRI,NEFSC,Northeast Fisheries Science Center,28 Tarzwell Drive,Narragansett,RI,2882
+NEFSC-MCT,NEFSC,Northeast Fisheries Science Center,212 Rogers Avenue,Milford,CT,6460
+SEFSC,SEFSC,Southeast Fisheries Science Center,75 Virginia Beach Drive,Miami,FL,33149
+SEFSC-MFL,SEFSC,Southeast Fisheries Science Center,75 Virginia Beach Drive,Miami,FL,33149
+SEFSC-BNC,SEFSC,Southeast Fisheries Science Center,101 Pivers Island Road,Beaufort,NC,28516
+SEFSC-PCFL,SEFSC,Southeast Fisheries Science Center,3500 Delwood Beach Road,Panama City,FL,32408
+SEFSC-GTX,SEFSC,Southeast Fisheries Science Center,4700 Avenue U,Galveston,TX,77551
+SEFSC-PMS,SEFSC,Southeast Fisheries Science Center,3209 Frederic Street,Pascagoula,MS,39567
+SEFSC-LLA,SEFSC,Southeast Fisheries Science Center,646 Cajundome Boulevard,Lafayette,LA,70506
+NWFSC,NWFSC,Northwest Fisheries Science Center,2725 Montlake Boulevard East,Seattle,WA,98112-2097
+NWFSC-NOR,NWFSC,Northwest Fisheries Science Center,2032 SE OSU Drive Building 955,Newport,OR,97365-2097
+NWFSC-SWA,NWFSC,Northwest Fisheries Science Center,2725 Montlake Boulevard East,Seattle,WA,98112-2097
+SWFSC-LJCA,SWFSC,Southwest Fisheries Science Center,8901 La Jolla Shores Drive,La Jolla,CA,92037
+AFSC-NOR,AFSC,Alaska Fisheries Science Center,2032 SE OSU Drive Building 955,Newport,OR,97365-2097
+AFSC-SWA,AFSC,Alaska Fisheries Science Center,2725 Montlake Boulevard East,Seattle,WA,98112-2097
+AFSC-JAK,AFSC,Alaska Fisheries Science Center,17109 Point Lena Loop Road,Juneau,AK,99801
+AFSC,AFSC,Alaska Fisheries Science Center,17109 Point Lena Loop Road,Juneau,AK,99801
+PIFSC,PIFSC,Pacific Islands Fisheries Science Center,1845 Wasp Boulevard,Honolulu,HI,96818
