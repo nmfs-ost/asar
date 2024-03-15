@@ -5,7 +5,10 @@
 #' @param region Region where the stock is being assessed if applicable.
 #'               Please be explicit in the name and follow the preferred convention
 #'               for the management organization.
-#' @param year year conducting the assessment report
+#' @param year Year conducting the assessment report
+#' @param complex TRUE/FALSE is this a species complex?
+#' @param type Stock assessment type; usually inherited from the template
+#' @param spp_latin Latin name for the target species
 #'
 #' @return Terminology for writing a title for a stock assessment across the U.S.
 #'         Function is implemented within create_template.R and inherits its parameters.
@@ -17,7 +20,9 @@ write_title <- function(
     species = NULL,
     region = NULL,
     year = NULL,
-    complex = NULL
+    complex = NULL,
+    type = NULL,
+    spp_latin = NULL
 ){
   if(is.null(year)){
     year = format(Sys.Date(), "%Y")
@@ -41,9 +46,9 @@ write_title <- function(
       season = "Winter"
     }
     if(type=="RT"){
-      title = paste0("Report of the ", species, " ", season, " ", year, " Research Track Assessment ", "Working Group")
+      title = paste0("Research Track Assessment for ", species, " (", spp_latin, ") ", season, " ", year)
     } else {
-      title = paste0("Management Track Assessment of ", species, " ", season, " ", year)
+      title = paste0("Management Track Assessment of ", species, " (", spp_latin, ") ", season, " ", year)
     }
 
   } else if(office=="NWFSC"){
@@ -56,12 +61,12 @@ write_title <- function(
 
   } else if(office=="PIFSC"){
     if(is.null(region)){
-      title = paste0("Stock Assessment for ", species, " along the main Hawaiian Islands in ", year)
+      title = paste0("Stock Assessment for ", species, " (", spp_latin, ") along the main Hawaiian Islands in ", year)
     } else {
-      title = paste0("Stock Assessment for ", species, " on ", region, " in ", year)
+      title = paste0("Stock Assessment for ", species, " (", spp_latin, ") on ", region, " in ", year)
     }
   } else if(office=="SEFSC"){
-    title = paste0("SEDAR XX Assessment Report for ", species, " in the ", region, " in ", year)
+    title = paste0("SEDAR XX Assessment Report for ", species, " (", spp_latin, ") in the ", region, " in ", year)
 
   } else if(office=="SWFSC"){
     if(is.null(region)){
@@ -73,6 +78,14 @@ write_title <- function(
   } else {
     print("office (FSC) is not defined. Please define which office you are associated with.")
   }
+
+  # Cohesive title for any stock assessment
+    # if(type %in% c('OA', 'UP')){
+    #    title = paste0("Stock Assessment Update for the ", species, " Stock in the ", region, " ", year)
+    # } else {
+    #   title = paste0("Stock Assessment Report for the ", species, " Stock in the ", region, " ", year)
+    # }
+
   return(title)
 }
 

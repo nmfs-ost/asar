@@ -6,8 +6,6 @@
 #' @param outdir output directory folder
 #' @param model assessment model used in evaluation;
 #'              "ss", "bam", "asap", "fims", "amak", "ms-java", "wham", "mas", "aspm"
-#' @param file.format csv, txt, ss, rdata, dat, multi
-#' @param multi.file TRUE or FALSE; default FALSE
 #'
 #' @author Samantha Schiano
 #'
@@ -24,25 +22,15 @@ convert_output <- function(
     output.file = NULL,
     outdir = NULL,
     model = NULL,
-    file.format = NULL,
-    multi.file = FALSE,
     ...){
 
-  if(model=="ss" & multi.file==TRUE){
+  if(model=="ss"){
     # Fxn adapted from r4ss::SS_output
 
-
-
-  } else if (model=='ss' & multi.file==FALSE){
-    stop("Output for stock synthesis is composed of multiple files. Recheck and add files to 'output.file' parameter then change 'multi.file' to TRUE.")
   }
 
   if(model=='bam'){
-    if(length(output.file)>1 & multi.file==FALSE){
-      stop("Number of files > 2 and no multi-file indicated. Change 'multi.file' to TRUE or double check you have the the right output file.")
-    } else {
       dat <- dget(output.file)
-    }
   }
 
   if(model=='asap'){

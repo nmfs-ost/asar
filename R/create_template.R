@@ -1,14 +1,15 @@
 #' Create Stock Assessment Report Template
 #'
 #' @param new_template TRUE/FALSE; default is false otherwise if true, will pull the last saved stock assessment report skeleton
-#' @param tempdir directory for the templates/
-#' @param format file type for the render (i.e. pdf, docx, html)
-#' @param office regional fisheries science center producing the report (AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC)
+#' @param tempdir Directory for the templates/
+#' @param format File type for the render (i.e. pdf, docx, html)
+#' @param office Regional fisheries science center producing the report (AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC)
 #' @param region Full name of region in which the species is evaluated if applicable; Note: if this is not specified for your center or for the species, do not use this variable.
 #' @param complex Is this a species complex? "YES" or "NO"
-#' @param species full common name for target species, split naming by a space and capitalize first letter(s)
-#' @param year year the assessment is being conducted, default is current year report is being rendered
-#' @param author List of authors to include in the assessment
+#' @param species Full common name for target species, split naming by a space and capitalize first letter(s)
+#' @param spp_latin Latin name for the target species of this assessment
+#' @param year Year the assessment is being conducted, default is current year report is being rendered
+#' @param author List of authors to include in the assessment; keep authorship order
 #' @param include_affiliation TRUE/FALSE; does the analyst want to include affiliations of the authors in the document?
 #' @param simple_affiliation If including affiliation, adding just office name rather than full address; TRUE/FALSE, default is TRUE
 #' @param alt_title TRUE/FALSE create an alternative title than the default
@@ -123,7 +124,7 @@ create_template <- function(
   # Create YAML header for document
   # Write title based on report type and region
   if(alt_title==FALSE){
-    title <- write_title(office = office, species = species, region = region)
+    title <- write_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type)
   } else if (alt_title==TRUE){
     if(!exists(title)){
       stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
@@ -136,7 +137,9 @@ create_template <- function(
   # Parameters to add authorship to YAML
   # Read authorship file
   authors <- read.csv(here::here('inst', 'resources', 'authorship.csv')) |>
-    dplyr::mutate(name = dplyr::case_when(is.na(mi) ~ paste(first, last, sep = " "),
+    dplyr::mutate(mi = dplyr::case_when(mi=="" ~ NA,
+                                        TRUE ~ mi),
+                  name = dplyr::case_when(is.na(mi) ~ paste0(first," ", last),
                                           TRUE ~ paste(first, mi, last, sep = " "))) |>
     dplyr::select(name, office) |>
     dplyr::filter(name %in% author)
@@ -146,7 +149,7 @@ create_template <- function(
   author_list <- list()
 
   if(include_affiliation==TRUE & simple_affiliation==FALSE){
-    for(i in 1:length(authors)){
+    for(i in 1:nrow(authors)){
       auth <- authors[i,]
       aff <- affil |>
         dplyr::filter(affiliation==auth$office)
@@ -161,7 +164,7 @@ create_template <- function(
       ) -> author_list[[i]]
     }
   } else if(include_affiliation==TRUE & simple_affiliation==TRUE){
-    for(i in 1:length(authors)){
+    for(i in 1:nrow(authors)){
       auth <- authors[i,]
       aff <- affil |>
         dplyr::filter(affiliation==auth$office)
@@ -234,7 +237,9 @@ create_template <- function(
   # office, region, and species are default parameters
   yaml <- paste0(yaml, "params:", "\n",
                  "  ", " ", "office: ", "'", office, "'", "\n",
-                 "  ", " ", "species: ", "'", species, "'", "\n")
+                 "  ", " ", "species: ", "'", species, "'", "\n",
+                 "  ", " ", "spp_latin: ", "'", spp_latin, "'", "\n"
+                 )
   if(!is.null(region)){
     yaml <- paste0(yaml, "  ", " ", "region: ", "'", region, "'", "\n")
   }
@@ -263,6 +268,12 @@ create_template <- function(
     "convert_output(x)"
   )
 
+  # Add page for citation of assessment report
+  citation <- generate_citation(authors = author,
+                                title = title,
+                                year = year,
+                                office = office)
+
   # Create report template
 
   if(type=="OA" | type=="UP" | type=="MT"){
@@ -278,18 +289,18 @@ create_template <- function(
   } else if (type=="RT" | type=="FULL"){
     sections <- paste(
       # Add executive summary
-      paste_child("01_executive_summary.qmd"),
+      paste_child("01_executive_summary.qmd", label = "executive_summary"),
       "{{< pagebreak >}}",
       # Add introduction
-      paste_child("02_introduction.qmd"),
+      paste_child("02_introduction.qmd", label = "introduction"),
       "{{< pagebreak >}}",
-      paste_child("03_data.qmd"),
+      paste_child("03_data.qmd", label = "data"),
       "{{< pagebreak >}}",
-      paste_child("04_model.qmd"),
+      paste_child("04_model.qmd", label = "model"),
       "{{< pagebreak >}}",
-      paste_child("05_results.qmd"),
+      paste_child("05_results.qmd", label = "results"),
       "{{< pagebreak >}}",
-      paste_child("06_discussion.qmd"),
+      paste_child("06_discussion.qmd", label = "discussion"),
       "{{< pagebreak >}}",
       paste_child("07_acknowledgements.qmd"),
       "{{< pagebreak >}}",
@@ -310,6 +321,8 @@ create_template <- function(
 
   # Combine template sections
   report_template <- paste0(yaml, "\n",
+                            ass_output, "\n",
+                            citation, "\n",
                             ass_output, "\n",
                             sections)
 
