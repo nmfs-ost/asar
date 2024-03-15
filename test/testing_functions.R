@@ -7,6 +7,12 @@
 ### PLEASE DO NOT PUSH ANY TEMPLATES THAT YOU MAKE TESTING OUT THIS FUNCTION###
 # More guidance for saving scripts will be provided in the future
 
+# Functions
+source(here::here('R', 'create_template.R'))
+source(here::here('R', 'write_title.R'))
+source(here::here('R', 'paste_child.R'))
+source(here::here('R', 'chunkr.R'))
+
 # test generating new template
 create_template(
     new_template = TRUE,
@@ -30,8 +36,7 @@ create_template(
 # region = "GB"
 # species = "Bluefish"
 # year = 2024
-# new_author = FALSE
-# include_affiliation = FALSE
+# author = c("Kelli Johnson", "Ben Williams", "Dan Hennen")
 # parameters = TRUE
 # param_names = c("office","region","species")
 # param_values = c("NEFSC","Georges Bank", "Bluefish")
