@@ -40,11 +40,11 @@ ASAR::create_template(
     region = "GB",
     species = "Bluefish",
     year = 2024,
-    author = c("Kelli Johnson", "Ben Williams", "Dan Hennen"),
+    author = c("John Snow", "Danny Phantom", "Patrick Star"),
     include_affiliation = TRUE,
     parameters = TRUE,
-    param_names = c("office", "region","species"),
-    param_values = c("NEFSC", "Georges Bank", "Bluefish"),
+    param_names = c("fleet1", "fleet2","species"),
+    param_values = c("Recreational", "Commercial", "Bluefish"),
     type = "RT"
 )
 ```
