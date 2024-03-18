@@ -21,7 +21,7 @@ create_template(
     region = "GB",
     species = "Bluefish",
     year = 2024,
-    author = c("Kelli Johnson", "Ben Williams", "Dan Hennen"),
+    author = c("John Snow", "Danny Phantom", "Patrick Star"),
     include_affiliation = TRUE,
     parameters = TRUE,
     param_names = c("fleet1", "fleet2", "model"),
@@ -36,7 +36,7 @@ create_template(
 # region = "GB"
 # species = "Bluefish"
 # year = 2024
-# author = c("Kelli Johnson", "Ben Williams", "Dan Hennen")
+# author = c("John Snow", "Danny Phantom", "Patrick Star")
 # parameters = TRUE
 # param_names = c("office","region","species")
 # param_values = c("NEFSC","Georges Bank", "Bluefish")
@@ -68,7 +68,7 @@ create_template(
   region = "Gulf of Mexico",
   species = "Red Snapper",
   year = 2021,
-  author = c("Lisa Ailloud", "Kyle Shertzer", "Katie Siegfried"),
+  author = c("John Snow", "Danny Phantom", "Patrick Star"),
   include_affiliation = TRUE,
   parameters = FALSE,
   type = "RT"
@@ -91,3 +91,17 @@ create_template(new_template = FALSE,
 # region = "Gulf of Mexico"
 # species = "Red Snapper"
 # type = "RT"
+
+title1 <- write_title(
+  office = "NEFSC",
+  species = "Red Snapper",
+  spp_latin = "Lutjanus campechanus",
+  region = "Gulf of Mexico",
+  type = "RT")
+
+cat(generate_citation(
+  title = title1,
+  author = c("John Snow", "Danny Phantom", "Patrick Star"),
+  year = 2021,
+  office = "NEFSC"
+))
