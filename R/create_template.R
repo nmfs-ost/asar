@@ -4,7 +4,8 @@
 #' @param tempdir Directory for the templates/
 #' @param format File type for the render (i.e. pdf, docx, html)
 #' @param office Regional fisheries science center producing the report (AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC)
-#' @param region Full name of region in which the species is evaluated if applicable; Note: if this is not specified for your center or for the species, do not use this variable.
+#' @param region Full name of region in which the species is evaluated if applicable; Note: if this is not specified for your center or for
+#'        the species, do not use this variable.
 #' @param complex Is this a species complex? "YES" or "NO"
 #' @param species Full common name for target species, split naming by a space and capitalize first letter(s)
 #' @param spp_latin Latin name for the target species of this assessment
@@ -15,8 +16,10 @@
 #' @param alt_title TRUE/FALSE create an alternative title than the default
 #' @param title Name of new title if default is not appropriate; Example, "Management Track Assessments Spring 2024"
 #' @param parameters TRUE/FALSE; default TRUE - for parameterization of the script
-#' @param param_names List of parameter names that will be called in the document; parameters automatically included are office, region, and species listed in function parameters
-#' @param param_values List of values associated with the order of parameter names; parameters automatically included are office, region, and species listed in function parameters
+#' @param param_names List of parameter names that will be called in the document; parameters automatically included are office, region,
+#'        and species listed in function parameters
+#' @param param_values List of values associated with the order of parameter names; parameters automatically included are office, region,
+#'        and species listed in function parameters
 #' @param resdir Directory where the model results file(s) are located
 #' @param model_results Name of the model results file
 #' @param model Type of assessment model that was used to assess the stock (i.e. "BAM", "SS", "AMAK", "ASAP", ect)
@@ -26,6 +29,10 @@
 #' @param section_location Location where the section should be added relative to the base skeleton document
 #' @param type Type of stock assessment report - terminology will vary by region (content already configured by region)
 #' @param prev_year Year that previous assessment report was conducted in - for pulling previous assessment template
+#' @param custom TRUE/FALSE Build custom sectioning for the template rather than the default for stock assessments in your region
+#' @param custom_sections List of the sections you want to include in the custom template. Note: this only includes sections within
+#'        'templates' > 'skeleton'. The section name can be used such as 'abstract' rather than the entire name '00_abstract.qmd'.
+#'        If a new section is to be added, please also use parameters 'new_section', 'secdir', 'new_section', and 'section_location'
 #'
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
@@ -43,6 +50,7 @@ create_template <- function(
     region = NULL,
     complex = "NO",
     species = NULL,
+    spp_latin = NULL,
     year = NULL,
     author = NULL,
     include_affiliation = FALSE,
@@ -60,7 +68,9 @@ create_template <- function(
     new_section = NULL,
     section_location = NULL,
     type = c("OA","UP","RT","FULL","MT"),
-    prev_year = NULL
+    prev_year = NULL,
+    custom = FALSE,
+    custom_sections = NULL
     ){
 
   setwd(dir = tempdir)
@@ -124,7 +134,7 @@ create_template <- function(
   # Create YAML header for document
   # Write title based on report type and region
   if(alt_title==FALSE){
-    title <- write_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type)
+    title <- ASAR::write_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type)
   } else if (alt_title==TRUE){
     if(!exists(title)){
       stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
@@ -260,6 +270,7 @@ create_template <- function(
   # Close yaml
   yaml <- paste0(yaml, "---")
 
+  print("__________Built YAML Header______________")
   # yaml_save <- capture.output(cat(yaml))
   # cat(yaml, file = here('template','yaml_header.qmd'))
 
@@ -268,66 +279,118 @@ create_template <- function(
     "convert_output(x)"
   )
 
+  # print("_______Standardized output data________")
+
   # Add page for citation of assessment report
-  citation <- generate_citation(authors = author,
+  citation <- ASAR::generate_citation(author = author,
                                 title = title,
                                 year = year,
                                 office = office)
 
+  print("_______Generate Report Citaiton________")
+
   # Create report template
 
-  if(type=="OA" | type=="UP" | type=="MT"){
-    sections <- paste(
-      # Add executive summary
-      paste_child("01_executive_summary.qmd"), "\n",
-      "{{< pagebreak >}}",
-      # Add introduction
-      paste_child("02_introduction.qmd"), "\n",
-      "{{< pagebreak >}}",
-      sep = "\n"
-      )
-  } else if (type=="RT" | type=="FULL"){
-    sections <- paste(
-      # Add executive summary
-      paste_child("01_executive_summary.qmd", label = "executive_summary"),
-      "{{< pagebreak >}}",
-      # Add introduction
-      paste_child("02_introduction.qmd", label = "introduction"),
-      "{{< pagebreak >}}",
-      paste_child("03_data.qmd", label = "data"),
-      "{{< pagebreak >}}",
-      paste_child("04_model.qmd", label = "model"),
-      "{{< pagebreak >}}",
-      paste_child("05_results.qmd", label = "results"),
-      "{{< pagebreak >}}",
-      paste_child("06_discussion.qmd", label = "discussion"),
-      "{{< pagebreak >}}",
-      paste_child("07_acknowledgements.qmd"),
-      "{{< pagebreak >}}",
-      paste_child("08_references.qmd"),
-      "{{< pagebreak >}}",
-      paste_child("09_tables.qmd"),
-      "{{< pagebreak >}}",
-      paste_child("10_figures.qmd"),
-      "{{< pagebreak >}}",
-      paste_child("11_appendix.qmd"),
-      "{{< pagebreak >}}",
+  if(custom==FALSE){
+    if(type=="OA" | type=="UP" | type=="MT"){
+      sections <- paste(
+        # Add executive summary
+        ASAR::paste_child("01_executive_summary.qmd"), "\n",
+        "{{< pagebreak >}}",
+        # Add introduction
+        ASAR::paste_child("02_introduction.qmd"), "\n",
+        "{{< pagebreak >}}",
+        sep = "\n"
+        )
+    } else if (type=="RT" | type=="FULL"){
+      sections <- paste(
+        # Add executive summary
+        ASAR::paste_child("01_executive_summary.qmd", label = "executive_summary"),
+        "{{< pagebreak >}}",
+        # Add introduction
+        ASAR::paste_child("02_introduction.qmd", label = "introduction"),
+        "{{< pagebreak >}}",
+        ASAR::paste_child("03_data.qmd", label = "data"),
+        "{{< pagebreak >}}",
+        ASAR::paste_child("04_model.qmd", label = "model"),
+        "{{< pagebreak >}}",
+        ASAR::paste_child("05_results.qmd", label = "results"),
+        "{{< pagebreak >}}",
+        ASAR::paste_child("06_discussion.qmd", label = "discussion"),
+        "{{< pagebreak >}}",
+        ASAR::paste_child("07_acknowledgements.qmd"),
+        "{{< pagebreak >}}",
+        ASAR::paste_child("08_references.qmd"),
+        "{{< pagebreak >}}",
+        ASAR::paste_child("09_tables.qmd"),
+        "{{< pagebreak >}}",
+        ASAR::paste_child("10_figures.qmd"),
+        "{{< pagebreak >}}",
+        ASAR::paste_child("11_appendix.qmd"),
+        "{{< pagebreak >}}",
 
-      sep = "\n"
-    )
+        sep = "\n"
+      )
+    } else {
+      print("Type of assessment report is not defined")
+    }
   } else {
-    print("Type of assessment report is not defined")
+    # Option for building custom template
+    # Create custom template from existing skeleton sections
+    if(add_section==FALSE){
+      section_list <- list()
+      for(i in 1:length(custom_sections)){
+        grep(
+          x = list.files(here::here('inst', 'templates', 'skeleton')),
+          pattern = custom_sections[i],
+          value = TRUE) -> section_list[i]
+      }
+      sections <- paste_child(section_list,
+                              label = custom_sections)
+    } else {
+      # Create custom template using existing sections and new sections from analyst
+      # Add sections from package options
+      if(is.null(customs_sections)){stop("Custom sectioning not defined.")}
+      section_list <- list()
+      if(custom==TRUE){
+        for(i in 1:length(custom_sections)){
+          grep(
+            x = list.files(here::here('inst', 'templates', 'skeleton')),
+            pattern = custom_sections[i],
+            value = TRUE) -> section_list[i]
+        }
+      }
+        # Add new sections
+      if(is.null(new_section) | is.null(section_location)){stop("New sections and locations not defined.")}
+
+        for (i in 1:length(new_section)) {
+          add_sec_new[i] <- paste0(secdir, "/", new_section[i])
+        }
+
+      append(section_list, add_sec_new)
+
+        sections <- paste_child(section_list,
+                                label = x)
+    }
   }
 
   # Combine template sections
-  report_template <- paste0(yaml, "\n",
+  report_template <- paste(yaml, "\n",
                             ass_output, "\n",
+                            "{{< pagebreak >}}", "\n",
                             citation, "\n",
-                            ass_output, "\n",
-                            sections)
+                            "{{< pagebreak >}}", "\n",
+                            sections,
+                            sep = "\n")
+
+  print("___Created desired report template______")
 
   # Save template as .qmd to render
   utils::capture.output(cat(report_template), file = paste0(subdir, "/", report_name), append = FALSE)
+
+  print(cat(paste0("Saved report template in directory: ", subdir, "\n",
+        "Please edit sections within the report template in order to produce a completed stock assessment report.")))
+
   } else {
     # Copy old template and rename for new year
     # Create copy of previous assessment
