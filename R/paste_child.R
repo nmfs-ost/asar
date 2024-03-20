@@ -14,6 +14,7 @@ paste_child <- function(x,
     sec_num <- x[i]
     secdir <- here::here('inst', 'templates', 'update')
     child_loop <- paste0(
+      "\n",
       "```{r, results='asis'}", "\n",
       "#| label: ", label, "\n",
       "#| eval: true", "\n",
@@ -21,9 +22,9 @@ paste_child <- function(x,
       "#| warning: false", "\n",
       "a <- knitr::knit_child(", "'", sec_num, "'", ", quiet = TRUE)", "\n",
       "cat(a, sep = '\\n')", "\n",
-      "```"
+      "```", "\n"
       )
-    child <- paste(child, child_loop, sep = "")
+    child <- paste(child, child_loop, sep = "'{{< pagebreak >}}' \n")
   }
   return(child)
 }
