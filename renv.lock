@@ -335,6 +335,22 @@
       ],
       "Hash": "fc0f4226379e451057d55419fd31761e"
     },
+    "forstringr": {
+      "Package": "forstringr",
+      "Version": "1.0.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "dplyr",
+        "glue",
+        "rlang",
+        "stats",
+        "stringr",
+        "tidyselect"
+      ],
+      "Hash": "1f32a11dcc7b1f778d81217f0a46c13f"
+    },
     "fs": {
       "Package": "fs",
       "Version": "1.6.3",
