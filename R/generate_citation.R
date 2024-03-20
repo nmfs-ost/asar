@@ -9,10 +9,11 @@ generate_citation <- function(
     off_title <- "NOAA Fisheries Science Center"
   }
 
+  office1 <- office
   office_loc <- read.csv(here::here('inst', 'resources', 'affiliation_info.csv')) |>
-    dplyr::filter(affiliation==office)
+    dplyr::filter(affiliation==office1)
   # Check
-  if(nrow(office_loc)>1){stop("There is more than one office being selected in this funciton. Please review.")}
+  if(nrow(office_loc)>1){stop("There is more than one office being selected in this function. Please review 'generate_ciation.R'.")}
 
   loc_city <- office_loc$city
   loc_state <- office_loc$state
@@ -29,9 +30,9 @@ generate_citation <- function(
     for(i in 2:length(author)){
       auth_extract <- unlist(strsplit(author[i], split = " "))
       auth_extract2 <- paste0(
-        ifelse(length(auth_extract)==3, auth_extract[3], auth_extract[2]), ", ",
         substring(auth_extract[1], 1, 1), ".",
-        ifelse(length(auth_extract)==3, auth_extract[2], "")
+        ifelse(length(auth_extract)==3, auth_extract[2], ""), " ",
+        ifelse(length(auth_extract)==3, auth_extract[3], auth_extract[2])
         )
       author_list <- paste0(author_list, ", ", auth_extract2)
     }
@@ -46,8 +47,8 @@ generate_citation <- function(
 
   # Create citation string
   if(office!="SEFSC"){
-  cit <- paste0("\n",
-                "Please cite this publication as \n",
+  cit <- paste0("Please cite this publication as \n",
+                "\n",
                 author_list, ". ", year, ". ",
                 title, ". ", off_title, ", ",
                 loc_city, ", ", loc_state, ". "
@@ -55,6 +56,7 @@ generate_citation <- function(
   } else {
     cit <- paste0("\n",
                   "Please cite this publication as \n",
+                  "\n",
                   "SEDAR. ", year, ". ", title,
                   "SEDAR, North Charleston SC. XXpp. ",
                   "available online at: http://sedarweb.org/"
