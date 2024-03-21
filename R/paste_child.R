@@ -10,13 +10,13 @@
 paste_child <- function(x,
                         label = NULL){
   child <- c()
-  for(i in length(x)){
+  for(i in 1:length(x)){
     sec_num <- x[i]
-    secdir <- here::here('inst', 'templates', 'update')
     child_loop <- paste0(
       "\n",
       "```{r, results='asis'}", "\n",
-      "#| label: ", label, "\n",
+      "#| label: ", "'",
+      ifelse(is.null(label), NA, label[i]), "'", "\n",
       "#| eval: true", "\n",
       "#| echo: false", "\n",
       "#| warning: false", "\n",
@@ -24,7 +24,7 @@ paste_child <- function(x,
       "cat(a, sep = '\\n')", "\n",
       "```", "\n"
       )
-    child <- paste(child, child_loop, sep = "'{{< pagebreak >}}' \n")
+    child <- paste(child, child_loop, sep = "\n {{< pagebreak >}} \n")
   }
   return(child)
 }
