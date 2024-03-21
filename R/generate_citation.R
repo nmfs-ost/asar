@@ -47,14 +47,17 @@ generate_citation <- function(
 
   # Create citation string
   if(office!="SEFSC"){
-  cit <- paste0("Please cite this publication as \n",
+  cit <- paste0("'{{< pagebreak >}}' \n",
+                "\n",
+                "Please cite this publication as \n",
                 "\n",
                 author_list, ". ", year, ". ",
                 title, ". ", off_title, ", ",
                 loc_city, ", ", loc_state, ". "
                 )
   } else {
-    cit <- paste0("\n",
+    cit <- paste0("'{{< pagebreak >}}' \n",
+                  "\n",
                   "Please cite this publication as \n",
                   "\n",
                   "SEDAR. ", year, ". ", title,
