@@ -4,7 +4,7 @@
 \alias{export_object}
 \title{Export report object}
 \usage{
-export_object(object = NULL, file_format = "docx", ...)
+export_object(object = NULL, file_format = "docx")
 }
 \arguments{
 \item{object}{table, plot, or other object in the environment to export for

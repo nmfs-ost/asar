@@ -12,11 +12,13 @@ create_template(
   region = NULL,
   complex = "NO",
   species = NULL,
+  spp_latin = NULL,
   year = NULL,
-  new_author = FALSE,
-  author_name = NULL,
-  author_office = NULL,
+  author = NULL,
   include_affiliation = FALSE,
+  simple_affiliation = TRUE,
+  alt_title = FALSE,
+  title = NULL,
   parameters = TRUE,
   param_names = NULL,
   param_values = NULL,
@@ -27,39 +29,49 @@ create_template(
   secdir = NULL,
   new_section = NULL,
   section_location = NULL,
-  type = c("OA", "UP", "RT", "FULL", "MT")
+  type = c("OA", "UP", "RT", "FULL", "MT"),
+  prev_year = NULL,
+  custom = FALSE,
+  custom_sections = NULL
 )
 }
 \arguments{
 \item{new_template}{TRUE/FALSE; default is false otherwise if true, will pull the last saved stock assessment report skeleton}
 
-\item{tempdir}{directory for the templates/}
+\item{tempdir}{Directory for the templates/}
 
-\item{format}{file type for the render (i.e. pdf, docx, html)}
+\item{format}{File type for the render (i.e. pdf, docx, html)}
 
-\item{office}{regional fisheries science center producing the report (AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC)}
+\item{office}{Regional fisheries science center producing the report (AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC)}
 
-\item{region}{Abbreviated region in which the species is evaluated if applicable; i.e. GOM, SA, BSAI, GOA. Note: if this is not specificed for your science center then do not use this variable. The specific location for the species should be added as a parameter in param_names and param_values}
+\item{region}{Full name of region in which the species is evaluated if applicable; Note: if this is not specified for your center or for
+the species, do not use this variable.}
 
 \item{complex}{Is this a species complex? "YES" or "NO"}
 
-\item{species}{full common name for target species, split naming by a space and capitalize first letter(s)}
+\item{species}{Full common name for target species, split naming by a space and capitalize first letter(s)}
 
-\item{year}{year the assessment is being conducted, default is current year report is being rendered}
+\item{spp_latin}{Latin name for the target species of this assessment}
 
-\item{new_author}{TRUE/FALSE; default is FALSE - pulls from list of authors in repo}
+\item{year}{Year the assessment is being conducted, default is current year report is being rendered}
 
-\item{author_name}{"First Last" name of author being added to the report}
-
-\item{author_office}{Abbreviation of the science center of the author being added}
+\item{author}{List of authors to include in the assessment; keep authorship order}
 
 \item{include_affiliation}{TRUE/FALSE; does the analyst want to include affiliations of the authors in the document?}
 
+\item{simple_affiliation}{If including affiliation, adding just office name rather than full address; TRUE/FALSE, default is TRUE}
+
+\item{alt_title}{TRUE/FALSE create an alternative title than the default}
+
+\item{title}{Name of new title if default is not appropriate; Example, "Management Track Assessments Spring 2024"}
+
 \item{parameters}{TRUE/FALSE; default TRUE - for parameterization of the script}
 
-\item{param_names}{List of parameter names that will be called in the document; example: c("office", "region", "spp")}
+\item{param_names}{List of parameter names that will be called in the document; parameters automatically included are office, region,
+and species listed in function parameters}
 
-\item{param_values}{List of values associated with the order of parameter names; example: c("SEFSC", "Gulf of Mexico", "Red Snapper")}
+\item{param_values}{List of values associated with the order of parameter names; parameters automatically included are office, region,
+and species listed in function parameters}
 
 \item{resdir}{Directory where the model results file(s) are located}
 
@@ -76,6 +88,14 @@ create_template(
 \item{section_location}{Location where the section should be added relative to the base skeleton document}
 
 \item{type}{Type of stock assessment report - terminology will vary by region (content already configured by region)}
+
+\item{prev_year}{Year that previous assessment report was conducted in - for pulling previous assessment template}
+
+\item{custom}{TRUE/FALSE Build custom sectioning for the template rather than the default for stock assessments in your region}
+
+\item{custom_sections}{List of the sections you want to include in the custom template. Note: this only includes sections within
+'templates' > 'skeleton'. The section name can be used such as 'abstract' rather than the entire name '00_abstract.qmd'.
+If a new section is to be added, please also use parameters 'new_section', 'secdir', 'new_section', and 'section_location'}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.

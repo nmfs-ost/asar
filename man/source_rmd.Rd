@@ -4,7 +4,7 @@
 \alias{source_rmd}
 \title{Render markdown document within file}
 \usage{
-source_rmd(file, ...)
+source_rmd(file)
 }
 \arguments{
 \item{file}{Rmd or qmd file to be rendered}

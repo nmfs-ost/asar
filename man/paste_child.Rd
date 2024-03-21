@@ -4,10 +4,12 @@
 \alias{paste_child}
 \title{Write R Chunk to Add Child Document}
 \usage{
-paste_child(x)
+paste_child(x, label = NULL)
 }
 \arguments{
 \item{x}{section .qmd file to add into the template, options for sections are in the 'skeleton' folder; only select XX_section.qmd files and not a, b, c... subiles}
+
+\item{label}{description for the child document being added (short - one/two words max)}
 }
 \value{
 Formatting R chunk for child document to add section into the template/skeleton
