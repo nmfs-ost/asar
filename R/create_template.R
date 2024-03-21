@@ -134,7 +134,7 @@ create_template <- function(
   # Create YAML header for document
   # Write title based on report type and region
   if(alt_title==FALSE){
-    title <- ASAR::write_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type)
+    title <- write_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type)
   } else if (alt_title==TRUE){
     if(!exists(title)){
       stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
@@ -146,7 +146,7 @@ create_template <- function(
   # Pull authors and affiliations from national db
   # Parameters to add authorship to YAML
   # Read authorship file
-  authors <- read.csv(here::here('inst', 'resources', 'authorship.csv')) |>
+  authors <- utils::read.csv(here::here('inst', 'resources', 'authorship.csv')) |>
     dplyr::mutate(mi = dplyr::case_when(mi=="" ~ NA,
                                         TRUE ~ mi),
                   name = dplyr::case_when(is.na(mi) ~ paste0(first," ", last),
@@ -282,7 +282,7 @@ create_template <- function(
   # print("_______Standardized output data________")
 
   # Add page for citation of assessment report
-  citation <- ASAR::generate_citation(author = author,
+  citation <- generate_citation(author = author,
                                 title = title,
                                 year = year,
                                 office = office)
@@ -295,38 +295,38 @@ create_template <- function(
     if(type=="OA" | type=="UP" | type=="MT"){
       sections <- paste(
         # Add executive summary
-        ASAR::paste_child("01_executive_summary.qmd"), "\n",
+        paste_child("01_executive_summary.qmd"), "\n",
         "{{< pagebreak >}}",
         # Add introduction
-        ASAR::paste_child("02_introduction.qmd"), "\n",
+        paste_child("02_introduction.qmd"), "\n",
         "{{< pagebreak >}}",
         sep = "\n"
         )
     } else if (type=="RT" | type=="FULL"){
       sections <- paste(
         # Add executive summary
-        ASAR::paste_child("01_executive_summary.qmd", label = "executive_summary"),
+        paste_child("01_executive_summary.qmd", label = "executive_summary"),
         "{{< pagebreak >}}",
         # Add introduction
-        ASAR::paste_child("02_introduction.qmd", label = "introduction"),
+        paste_child("02_introduction.qmd", label = "introduction"),
         "{{< pagebreak >}}",
-        ASAR::paste_child("03_data.qmd", label = "data"),
+        paste_child("03_data.qmd", label = "data"),
         "{{< pagebreak >}}",
-        ASAR::paste_child("04_model.qmd", label = "model"),
+        paste_child("04_model.qmd", label = "model"),
         "{{< pagebreak >}}",
-        ASAR::paste_child("05_results.qmd", label = "results"),
+        paste_child("05_results.qmd", label = "results"),
         "{{< pagebreak >}}",
-        ASAR::paste_child("06_discussion.qmd", label = "discussion"),
+        paste_child("06_discussion.qmd", label = "discussion"),
         "{{< pagebreak >}}",
-        ASAR::paste_child("07_acknowledgements.qmd"),
+        paste_child("07_acknowledgements.qmd"),
         "{{< pagebreak >}}",
-        ASAR::paste_child("08_references.qmd"),
+        paste_child("08_references.qmd"),
         "{{< pagebreak >}}",
-        ASAR::paste_child("09_tables.qmd"),
+        paste_child("09_tables.qmd"),
         "{{< pagebreak >}}",
-        ASAR::paste_child("10_figures.qmd"),
+        paste_child("10_figures.qmd"),
         "{{< pagebreak >}}",
-        ASAR::paste_child("11_appendix.qmd"),
+        paste_child("11_appendix.qmd"),
         "{{< pagebreak >}}",
 
         sep = "\n"
@@ -370,7 +370,7 @@ create_template <- function(
       append(section_list, add_sec_new)
 
         sections <- paste_child(section_list,
-                                label = x)
+                                label = section_list)
     }
   }
 
