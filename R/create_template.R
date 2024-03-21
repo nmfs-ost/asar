@@ -293,44 +293,39 @@ create_template <- function(
 
   if(custom==FALSE){
     if(type=="OA" | type=="UP" | type=="MT"){
-      sections <- paste(
-        # Add executive summary
-        paste_child("01_executive_summary.qmd"), "\n",
-        "{{< pagebreak >}}",
-        # Add introduction
-        paste_child("02_introduction.qmd"), "\n",
-        "{{< pagebreak >}}",
-        sep = "\n"
+      sections <- paste_child(
+        c("01_executive_summary.qmd",
+          "02_introduction.qmd"),
+        label = c("executive_summary",
+                  "introduction")
         )
     } else if (type=="RT" | type=="FULL"){
-      sections <- paste(
-        # Add executive summary
-        paste_child("01_executive_summary.qmd", label = "executive_summary"),
-        "{{< pagebreak >}}",
-        # Add introduction
-        paste_child("02_introduction.qmd", label = "introduction"),
-        "{{< pagebreak >}}",
-        paste_child("03_data.qmd", label = "data"),
-        "{{< pagebreak >}}",
-        paste_child("04_model.qmd", label = "model"),
-        "{{< pagebreak >}}",
-        paste_child("05_results.qmd", label = "results"),
-        "{{< pagebreak >}}",
-        paste_child("06_discussion.qmd", label = "discussion"),
-        "{{< pagebreak >}}",
-        paste_child("07_acknowledgements.qmd"),
-        "{{< pagebreak >}}",
-        paste_child("08_references.qmd"),
-        "{{< pagebreak >}}",
-        paste_child("09_tables.qmd"),
-        "{{< pagebreak >}}",
-        paste_child("10_figures.qmd"),
-        "{{< pagebreak >}}",
-        paste_child("11_appendix.qmd"),
-        "{{< pagebreak >}}",
-
-        sep = "\n"
-      )
+      sections <- paste_child(c(
+          "01_executive_summary.qmd",
+          "02_introduction.qmd",
+          "03_data.qmd",
+          "04_model.qmd",
+          "05_results.qmd",
+          "06_discussion.qmd",
+          "07_acknowledgements.qmd",
+          "08_references.qmd",
+          "09_tables.qmd",
+          "10_figures.qmd",
+          "11_appendix.qmd"
+        ),
+        label = c("executive_summary",
+                  "introduction",
+                  "data",
+                  "model",
+                  "results",
+                  "discussion",
+                  "acknowlesgements",
+                  "references",
+                  "tables",
+                  "figures",
+                  "appendix"
+                  )
+        )
     } else {
       print("Type of assessment report is not defined")
     }
@@ -375,13 +370,11 @@ create_template <- function(
   }
 
   # Combine template sections
-  report_template <- paste(yaml, "\n",
-                            ass_output, "\n",
-                            "{{< pagebreak >}}", "\n",
-                            citation, "\n",
-                            "{{< pagebreak >}}", "\n",
-                            sections,
-                            sep = "\n")
+  report_template <- paste(yaml,
+                           ass_output,
+                           citation,
+                           sections,
+                           sep = "\n")
 
   print("___Created desired report template______")
 
@@ -389,7 +382,7 @@ create_template <- function(
   utils::capture.output(cat(report_template), file = paste0(subdir, "/", report_name), append = FALSE)
 
   print(cat(paste0("Saved report template in directory: ", subdir, "\n",
-        "Please edit sections within the report template in order to produce a completed stock assessment report.")))
+        "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report.")))
 
   } else {
     # Copy old template and rename for new year
