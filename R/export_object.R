@@ -23,8 +23,7 @@
 
 export_object <- function(
     object = NULL,
-    file_format = "docx",
-    ...){
+    file_format = "docx"){
 
   if(file_format=="pdf"){
 

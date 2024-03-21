@@ -21,8 +21,7 @@
 convert_output <- function(
     output.file = NULL,
     outdir = NULL,
-    model = NULL,
-    ...){
+    model = NULL){
 
   if(model=="ss"){
     # Fxn adapted from r4ss::SS_output
