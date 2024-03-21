@@ -2,10 +2,9 @@
 
 export(add_section)
 export(chunkr)
+export(convert_output)
 export(create_template)
 export(export_object)
 export(paste_child)
-export(read_TOR)
-export(source_rmd)
 export(write_harv_proj_table)
 export(write_title)
