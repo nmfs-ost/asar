@@ -12,8 +12,12 @@ paste_child(x, label = NULL)
 \item{label}{description for the child document being added (short - one/two words max)}
 }
 \value{
-Formatting R chunk for child document to add section into the template/skeleton
+Formatting R chunk for child document to add section into the template/skeleton.
+Utilize the cat() function to implement into readable text.
 }
 \description{
 Write R Chunk to Add Child Document
+}
+\examples{
+paste_child("test_quarto.qmd", label = "test_doc")
 }

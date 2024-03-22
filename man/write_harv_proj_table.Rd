@@ -5,10 +5,10 @@
 \title{Write a harvest projection table}
 \usage{
 write_harv_proj_table(
-  results_last = NULL,
-  results_lastp1 = NULL,
-  results_curr = NULL,
-  results_currp1 = NULL,
+  results_last = 9999,
+  results_lastp1 = 9999,
+  results_curr = 9999,
+  results_currp1 = 9999,
   tier = NULL,
   overfishing_last = "NO",
   overfishing_curr = "NO"
@@ -35,4 +35,7 @@ Function to autopopulate the table using converted results
 }
 \description{
 Write a harvest projection table
+}
+\examples{
+write_harv_proj_table(tier = 3)
 }
