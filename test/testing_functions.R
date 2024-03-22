@@ -2,7 +2,7 @@
 
 # Example script that allows the user to try out creating stock assessment report templates
 # In development
-# Last edited: 03/20/24
+# Last edited: 03//24
 
 ### PLEASE DO NOT PUSH ANY TEMPLATES THAT YOU MAKE TESTING OUT THIS FUNCTION###
 # More guidance for saving scripts will be provided in the future
@@ -38,3 +38,14 @@ cat(
 )
 
 x=c("00_abstract.qmd", "01_executive_summary.qmd", "11_appendix.qmd")
+
+write_harv_proj_table(results_last = NA,
+                      results_lastp1 = NA,
+                      results_curr = NA,
+                      results_currp1 = NA,
+                      tier = 3,
+                      overfishing_last = "NO",
+                      overfishing_curr = "NO")
+
+create_styles_css(species = "Atlantic Bluefish",
+                  savedir = "C:/Users/samantha.schiano/Documents/GitHub-Repos/ASAR/inst/templates/archive/NEFSC/Atlantic Bluefish/GB/2024")

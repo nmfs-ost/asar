@@ -13,13 +13,19 @@ source(here::here('R', 'chunkr.R'))
 source(here::here('R', 'generate_citation.R'))
 
 # Basic parameters
-# new_template = FALSE
-# prev_year = 2021
-# year = 2024
-# office = "SEFSC"
-# region = "Gulf of Mexico"
-# species = "Red Snapper"
-# type = "RT"
+new_template = TRUE
+format = "pdf"
+office = "NEFSC"
+region = "GB"
+species = "Bluefish"
+spp_latin = "bluishfihesi"
+year = 2024
+author = c("John Snow", "Danny Phantom", "Patrick Star")
+include_affiliation = TRUE
+parameters = TRUE
+param_names = c("fleet1", "fleet2", "model")
+param_values = c("Commercial", "Recreational", "Woods Hole Assessment Model")
+type = "RT"
 
 ################################################################################
 
@@ -30,8 +36,8 @@ create_template(
   format = "pdf",
   office = "NEFSC",
   region = "GB",
-  species = "Bluefish",
-  spp_latin = "bluishfihesi",
+  species = "Atlantic Bluefish",
+  spp_latin = "Pomatomus saltatrix",
   year = 2024,
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
   include_affiliation = TRUE,
