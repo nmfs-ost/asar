@@ -19,7 +19,8 @@
 #'         as a child document.
 #' @export
 #'
-#' @examples
+#' @examples add_section(title = "Ecosystem Considerations", location = "after-discussion")
+
 add_section <- function(
     title = NULL,
     location = NULL,

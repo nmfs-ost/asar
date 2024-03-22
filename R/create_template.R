@@ -41,7 +41,13 @@
 #'         each of the child documents should be edited separately.
 #' @export
 #'
-#' @examples
+#' @examples create_template(new_template = TRUE, format = "pdf",
+#' office = "NEFSC", region = "GB", species = "Bluefish",spp_latin = "bluishfihesi",
+#' year = 2024, author = c("John Snow", "Danny Phantom", "Patrick Star"),
+#' include_affiliation = TRUE, parameters = TRUE, param_names = c("fleet1", "fleet2", "model"),
+#' param_values = c("Commercial", "Recreational", "Woods Hole Assessment Model"),
+#' type = "RT")
+
 create_template <- function(
     new_template = TRUE,
     tempdir = here::here(),
@@ -213,21 +219,18 @@ create_template <- function(
                  "date: today", "\n"
                  )
 
-  # Format
+  # Formating
+
   if(include_affiliation==TRUE){
 
     yaml <- paste(yaml, "format: \n",
                   "  " , format, ": \n",
                   "  ", "  ", "keep-tex: ", "true \n",
                   "  " , "  ", "template-partials: \n",
+                  "  ", "  ", "  ", " - graphics.tex \n",
                   "  ", "  ", "  ", " - title.tex \n",
                   "  ", "  ", "include-in-header: \n",
-                  "  ", "  ", "  ", "text: | \n",
-                  "  ", "  ", "  ", "  ", "\\usepackage[noblocks]{authblk} \n",
-                  "  ", "  ", "  ", "  ", "\\renewcommand*{\\Authsep}{, } \n",
-                  "  ", "  ", "  ", "  ", "\\renewcommand*{\\Authand}{, } \n",
-                  "  ", "  ", "  ", "  ", "\\renewcommand*{\\Authands}{, } \n",
-                  "  ", "  ", "  ", "  ", "\\renewcommand\\Affilfont{\\small} \n",
+                  "  ", "  ", "  ", " - in-header.tex \n",
                   sep = "")
 
   } else if(include_affiliation==FALSE){
@@ -236,8 +239,6 @@ create_template <- function(
                    "  ", format, ": \n",
                    "  ", "  ", "template-partials: \n",
                    "  ", "  ", "  ", "- sadraft.tex \n",
-                   # This will need edits
-                   report_format(...),
                    "  ", "  ", "keep-tex: true \n"
                    )
 
@@ -267,6 +268,12 @@ create_template <- function(
     yaml <- paste0(yaml, add_params)
   }
 
+  # Add style guide
+  create_styles_css(species = species, savedir = subdir)
+
+  yaml <- paste0(yaml,
+                 "css: styles.css", "\n")
+
   # Close yaml
   yaml <- paste0(yaml, "---")
 
@@ -276,7 +283,8 @@ create_template <- function(
 
   # Add chunk to load in assessment data
   ass_output <- chunkr(
-    "convert_output(x)"
+    "convert_output(x)",
+    eval = "false" # set false for testing this function in the template for now
   )
 
   # print("_______Standardized output data________")

@@ -12,33 +12,41 @@
 #'         Function to autopopulate the table using converted results
 #' @export
 #'
-#' @examples
+#' @examples write_harv_proj_table(tier = 3)
+
 write_harv_proj_table <- function(
-    results_last = NULL,
-    results_lastp1 = NULL,
-    results_curr = NULL,
-    results_currp1 = NULL,
+    results_last = 9999,
+    results_lastp1 = 9999,
+    results_curr = 9999,
+    results_currp1 = 9999,
     tier = NULL,
     overfishing_last = "NO",
     overfishing_curr = "NO"
     ){
 
   # Pull current projection results
-  proj_last <- results_last |>
-    dplyr::select(M)
+  # Need to update function to pull these results after converter is finished
+    # proj_last <- results_last |>
+    #   dplyr::select(M)
+    #
+    # proj_lastp1 <- results_lastp1 |>
+    #   dplyr::select(M)
+    #
+    # proj_curr <- results_lastp1 |>
+    #   dplyr::select(M)
+    #
+    # proj_currp1 <- results_lastp1 |>
+    #   dplyr::select(M)
+    #
+    # proj_res <- list(results_last, results_lastp1, results_curr, results_currp1) |>
+    #   purrr::map(dplyr::select(M))
 
-  proj_lastp1 <- results_lastp1 |>
-    dplyr::select(M)
-
-  proj_curr <- results_lastp1 |>
-    dplyr::select(M)
-
-  proj_currp1 <- results_lastp1 |>
-    dplyr::select(M)
-
-  proj_res <- list(results_last, results_lastp1, results_curr, results_currp1) |>
-    purrr::map(dplyr::select(M))
-
+  # Temporary fill
+  proj_last <- 9999
+  proj_lastp1 <- 9999
+  proj_curr <- 9999
+  proj_currp1 <- 9999
+  proj_res <- 9999
 
   # Write table contents
   quantity <- c("M (natural mortality rate", "Tier", "Biomass (t)", "F OFL", "maxF ABC", "F ABC","OFL (t)",
@@ -67,7 +75,8 @@ write_harv_proj_table <- function(
       proj_currp1 = "As estimated or recommended this year for:"
     ) |>
     flextable::merge_h(part = "header") |>
-    flextable::vline(j = c(1,3,6)) |>
+    flextable::vline(j = c(1,3), part = "body") |>
+    flextable::vline(j = c(1), part = "header") |>
     flextable::hline(part = "header") |>
     flextable::align(part = "header", align = "center")
 

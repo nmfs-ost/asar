@@ -1,3 +1,18 @@
+#' Generate Citation for Stock Assessment Report
+#'
+#' @param author author list- inherited from template function is using
+#' @param title title of the report - inherited from template function if using
+#' @param year year of the report for citation purposes
+#' @param office NOAA line office that the report is being processed out of
+#'
+#' @return Generate a citation for use in publications and other references for
+#'         the stock assessment report generated in the ASAR package.
+#' @export
+#'
+#' @examples generate_citation(title = "SA Report for Jellyfish",
+#' author = c("John Snow", "Danny Phantom", "Patrick Star"),
+#' year = 2024, office = "NEFSC")
+#'
 generate_citation <- function(
     author = NULL,
     title = NULL,
@@ -47,7 +62,7 @@ generate_citation <- function(
 
   # Create citation string
   if(office!="SEFSC"){
-  cit <- paste0("'{{< pagebreak >}}' \n",
+  cit <- paste0("{{< pagebreak >}} \n",
                 "\n",
                 "Please cite this publication as \n",
                 "\n",
