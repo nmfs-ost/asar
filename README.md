@@ -16,11 +16,7 @@ Feel free to report any issues with the package to the [GitHub Issue Page](https
 
 ## Installation
 
-You can install the development version of ASAR like so:
-
-``` r
-remotes::intall_github("Schiano-NOAA/ASAR")
-```
+Directions for usage and installation will be updated soon.
 
 ## Example
 
