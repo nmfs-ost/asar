@@ -100,37 +100,24 @@ create_template <- function(
   office <- match.arg(office, several.ok = FALSE)
   type <- match.arg(type, several.ok = FALSE)
 
-  if(!is.null(region)){
-    subdir <- here::here('inst', 'templates', 'archive', office, species, region, year)
-    subdir <- system.file('inst', 'templates', 'archive', office, species, region, year, package = 'ASAR')
-  } else {
-    subdir <- here::here('inst', 'templates', 'archive', office, species, year)
-  }
   # Always creating new directory for each assessment since they will each change
   # Allow NOAA to keep a record of each assessment file
   # These will need to be cataloged into a cloud system somehow
-  if(!dir.exists(here::here('inst','templates', 'archive', office, species))){
-    dir.create(here::here('inst','templates', 'archive', office, species))
+  if(!is.null(region)){
+    dir.create(paste0("~/stock_assessment_templates", "/", office,"/", species, "/", region, "/", year), recursive = TRUE)
+  } else {
+    dir.create(paste0("~/stock_assessment_templates", "/", office,"/", species, "/", year), recursive = TRUE)
   }
 
   if(!is.null(region)){
-    if(!dir.exists(here::here('inst','templates', 'archive', office, species, region))){
-      dir.create(here::here('inst','templates', 'archive', office, species, region))
-    }
-    # Create new folder for current year
-    if(!dir.exists(here::here('inst','templates', 'archive', office, species, region, year))){
-      dir.create(here::here('inst','templates', 'archive', office, species, region, year))
-    }
+    subdir <- paste0("~/stock_assessment_templates", "/", office,"/", species, "/", region, "/", year)
   } else {
-    # Create new folder for current year
-    if(!dir.exists(here::here('inst','templates', 'archive', office, species, year))){
-      dir.create(here::here('inst','templates', 'archive', office, species, year))
-    }
+    subdir <- paste0("~/stock_assessment_templates", "/", office,"/", species, "/", year)
   }
 
   if(new_template==TRUE){
   # Pull skeleton for sections
-  current_folder <- here::here('inst','templates','skeleton')
+  current_folder <- system.file('inst','templates','skeleton', package = 'ASAR', mustWork = TRUE)
   new_folder <- subdir
   files_to_copy <- list.files(current_folder)
   file.copy(file.path(current_folder, files_to_copy), new_folder)
@@ -152,7 +139,7 @@ create_template <- function(
   # Pull authors and affiliations from national db
   # Parameters to add authorship to YAML
   # Read authorship file
-  authors <- utils::read.csv(system.file('./inst/resources/authorship.csv', package = 'ASAR', mustWork = TRUE)) |>
+  authors <- utils::read.csv(system.file('resources', 'authorship.csv', package = 'ASAR', mustWork = TRUE)) |>
     dplyr::mutate(mi = dplyr::case_when(mi=="" ~ NA,
                                         TRUE ~ mi),
                   name = dplyr::case_when(is.na(mi) ~ paste0(first," ", last),
@@ -160,11 +147,11 @@ create_template <- function(
     dplyr::select(name, office) |>
     dplyr::filter(name %in% author)
   if(include_affiliation==TRUE){
-    affil <- read.csv(here::here('inst', 'resources', 'affiliation_info.csv'))
+    affil <- read.csv(system.file('resources', "affiliation_info.csv", package = 'ASAR', mustWork = TRUE))
   }
   author_list <- list()
 
-  if(include_affiliation==TRUE & simple_affiliation==FALSE){
+  if(include_affiliation==TRUE & simple_affiliation==TRUE){
     for(i in 1:nrow(authors)){
       auth <- authors[i,]
       aff <- affil |>
@@ -344,7 +331,7 @@ create_template <- function(
       section_list <- list()
       for(i in 1:length(custom_sections)){
         grep(
-          x = list.files(here::here('inst', 'templates', 'skeleton')),
+          x = list.files(system.file('templates', 'skeleton')),
           pattern = custom_sections[i],
           value = TRUE) -> section_list[i]
       }
@@ -358,7 +345,7 @@ create_template <- function(
       if(custom==TRUE){
         for(i in 1:length(custom_sections)){
           grep(
-            x = list.files(here::here('inst', 'templates', 'skeleton')),
+            x = list.files(system.file('templates', 'skeleton')),
             pattern = custom_sections[i],
             value = TRUE) -> section_list[i]
         }
