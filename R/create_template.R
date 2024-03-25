@@ -79,7 +79,6 @@ create_template <- function(
     custom_sections = NULL
     ){
 
-  setwd(dir = tempdir)
   # If analyst forgets to add year, default will be the current year report is being produced
   if(is.null(year)){
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"),"%Y")
@@ -103,6 +102,7 @@ create_template <- function(
 
   if(!is.null(region)){
     subdir <- here::here('inst', 'templates', 'archive', office, species, region, year)
+    subdir <- system.file('inst', 'templates', 'archive', office, species, region, year, package = 'ASAR')
   } else {
     subdir <- here::here('inst', 'templates', 'archive', office, species, year)
   }
@@ -269,7 +269,7 @@ create_template <- function(
   }
 
   # Add style guide
-  create_styles_css(species = species, savedir = subdir)
+  create_style_css(species = species, savedir = subdir)
 
   yaml <- paste0(yaml,
                  "css: styles.css", "\n")

@@ -11,6 +11,7 @@ source(here::here('R', 'write_title.R'))
 source(here::here('R', 'paste_child.R'))
 source(here::here('R', 'chunkr.R'))
 source(here::here('R', 'generate_citation.R'))
+source(here::here('R', 'create_style_css.R'))
 
 # Basic parameters
 new_template = TRUE
