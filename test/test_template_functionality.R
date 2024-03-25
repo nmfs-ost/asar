@@ -44,7 +44,9 @@ create_template(
   parameters = TRUE,
   param_names = c("fleet1", "fleet2", "model"),
   param_values = c("Commercial", "Recreational", "Woods Hole Assessment Model"),
-  type = "RT"
+  type = "RT",
+  model_results = "report.sso",
+  model = "SS"
 )
 
 ################################################################################
