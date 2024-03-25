@@ -11,6 +11,7 @@ source(here::here('R', 'write_title.R'))
 source(here::here('R', 'paste_child.R'))
 source(here::here('R', 'chunkr.R'))
 source(here::here('R', 'generate_citation.R'))
+source(here::here('R', 'create_style_css.R'))
 
 # Basic parameters
 new_template = TRUE
@@ -44,7 +45,9 @@ create_template(
   parameters = TRUE,
   param_names = c("fleet1", "fleet2", "model"),
   param_values = c("Commercial", "Recreational", "Woods Hole Assessment Model"),
-  type = "RT"
+  type = "RT",
+  model_results = "report.sso",
+  model = "SS"
 )
 
 ################################################################################
