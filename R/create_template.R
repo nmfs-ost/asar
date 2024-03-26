@@ -256,7 +256,7 @@ create_template <- function(
   }
 
   # Add style guide
-  # create_style_css(species = species, savedir = subdir)
+  # ASAR:create_style_css(species = species, savedir = subdir)
 
   # yaml <- paste0(yaml,
   #                "css: styles.css", "\n")
