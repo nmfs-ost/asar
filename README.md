@@ -20,9 +20,9 @@ To install `ASAR` as a template repository:
 
   (1) Navigate to the main page of the [repository](https://github.com/Schiano-NOAA/ASAR)
   
-  (2) Above the file list, click *Use this template*.
+  (2) Above the file list, click **Use this template**.
   
-  (3) Select *Create a new repository*.
+  (3) Select **Create a new repository**.
   
  ![](https://docs.github.com/assets/cb-77734/mw-1440/images/help/repository/use-this-template-button.webp) 
  
@@ -61,11 +61,10 @@ create_template(
   include_affiliation = TRUE,
   parameters = FALSE,
   type = "RT",
-  model_results = "results.SSO",
-  model = "SS"
+  model_results = "results.Rdata",
+  model = "WHAM"
 )
 ```
-Note: This is only an example. The parameters in the example do not convey accurate stock assessment information.
 
 ### Option B
 
@@ -84,10 +83,12 @@ ASAR::create_template(
   include_affiliation = TRUE,
   parameters = FALSE,
   type = "RT",
-  model_results = "results.SSO",
-  model = "SS"
+  model_results = "results.Rdata",
+  model = "WHAM"
 )
 ```
+
+Note: This is only an example. The parameters in the example do not convey accurate stock assessment information.
 
 ## Tips
 
