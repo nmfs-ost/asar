@@ -117,7 +117,7 @@ create_template <- function(
 
   if(new_template==TRUE){
   # Pull skeleton for sections
-  current_folder <- system.file('inst','templates','skeleton', package = 'ASAR', mustWork = TRUE)
+  current_folder <- file.path(find.package('ASAR'), 'templates', 'skeleton')
   new_folder <- subdir
   files_to_copy <- list.files(current_folder)
   file.copy(file.path(current_folder, files_to_copy), new_folder)
