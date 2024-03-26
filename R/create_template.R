@@ -126,14 +126,14 @@ create_template <- function(
   # Create a report template file to render for the region and species
   # Create YAML header for document
   # Write title based on report type and region
-  if(alt_title==TRUE){
+  if(alt_title==FALSE){
+    title <- write_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type)
+  } else if (alt_title==TRUE){
     if(!exists(title)){
       stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
     } else {
       title <- paste(title)
     }
-  } else {
-    title <- write_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type)
   }
 
   # Pull authors and affiliations from national db
