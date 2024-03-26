@@ -127,7 +127,7 @@ create_template <- function(
   # Create YAML header for document
   # Write title based on report type and region
   if(alt_title==FALSE){
-    title <- write_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type)
+    title <- ASAR::write_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type)
   } else if (alt_title==TRUE){
     if(!exists(title)){
       stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
@@ -256,10 +256,10 @@ create_template <- function(
   }
 
   # Add style guide
-  create_style_css(species = species, savedir = subdir)
+  # create_style_css(species = species, savedir = subdir)
 
-  yaml <- paste0(yaml,
-                 "css: styles.css", "\n")
+  # yaml <- paste0(yaml,
+  #                "css: styles.css", "\n")
 
   # Close yaml
   yaml <- paste0(yaml, "---")
@@ -269,7 +269,7 @@ create_template <- function(
   # cat(yaml, file = here('template','yaml_header.qmd'))
 
   # Add chunk to load in assessment data
-  ass_output <- chunkr(
+  ass_output <- ASAR::chunkr(
     "convert_output( output.file=", model_results, ", model=", model, ")",
     eval = "false" # set false for testing this function in the template for now
   )
@@ -277,7 +277,7 @@ create_template <- function(
   # print("_______Standardized output data________")
 
   # Add page for citation of assessment report
-  citation <- generate_citation(author = author,
+  citation <- ASAR::generate_citation(author = author,
                                 title = title,
                                 year = year,
                                 office = office)
@@ -288,14 +288,14 @@ create_template <- function(
 
   if(custom==FALSE){
     if(type=="OA" | type=="UP" | type=="MT"){
-      sections <- paste_child(
+      sections <- ASAR::paste_child(
         c("01_executive_summary.qmd",
           "02_introduction.qmd"),
         label = c("executive_summary",
                   "introduction")
         )
     } else if (type=="RT" | type=="FULL"){
-      sections <- paste_child(c(
+      sections <- ASAR::paste_child(c(
           "01_executive_summary.qmd",
           "02_introduction.qmd",
           "03_data.qmd",
@@ -340,7 +340,7 @@ create_template <- function(
     } else {
       # Create custom template using existing sections and new sections from analyst
       # Add sections from package options
-      if(is.null(customs_sections)){stop("Custom sectioning not defined.")}
+      if(is.null(customs_sections)) stop("Custom sectioning not defined.")
       section_list <- list()
       if(custom==TRUE){
         for(i in 1:length(custom_sections)){
@@ -351,7 +351,7 @@ create_template <- function(
         }
       }
         # Add new sections
-      if(is.null(new_section) | is.null(section_location)){stop("New sections and locations not defined.")}
+      if(is.null(new_section) | is.null(section_location)) stop("New sections and locations not defined.")
 
         for (i in 1:length(new_section)) {
           add_sec_new[i] <- paste0(secdir, "/", new_section[i])
@@ -359,7 +359,7 @@ create_template <- function(
 
       append(section_list, add_sec_new)
 
-        sections <- paste_child(section_list,
+        sections <- ASAR::paste_child(section_list,
                                 label = section_list)
     }
   }

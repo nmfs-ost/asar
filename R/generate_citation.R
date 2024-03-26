@@ -25,7 +25,7 @@ generate_citation <- function(
   }
 
   office1 <- office
-  office_loc <- utils::read.csv(system.file("templates", "skeleton", "affiliation_info.csv", package = "ASAR", mustWork = TRUE)) |>
+  office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "ASAR", mustWork = TRUE)) |>
     dplyr::filter(affiliation==office1)
   # Check
   if(nrow(office_loc)>1){stop("There is more than one office being selected in this function. Please review 'generate_ciation.R'.")}
