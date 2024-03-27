@@ -16,6 +16,12 @@ The goal of ASAR is to automate stock assessment reports for NOAA science center
 
 ## Installation
 
+First please check to make sure `tinytex` package is installed on your machnie. If not please install using the following lines:
+
+```r
+install.packages("tinytex")
+```
+
 To install `ASAR` as a template repository:
 
   (1) Navigate to the main page of the [repository](https://github.com/Schiano-NOAA/ASAR)
