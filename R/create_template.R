@@ -270,7 +270,7 @@ create_template <- function(
 
   # Add chunk to load in assessment data
   ass_output <- ASAR::chunkr(
-    "convert_output( output.file=", model_results, ", model=", model, ")",
+    paste0("convert_output(output.file=", model_results, ", model=", model, ")"),
     eval = "false" # set false for testing this function in the template for now
   )
 
