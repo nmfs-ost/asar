@@ -35,6 +35,8 @@ To install `ASAR` as a template repository:
 To install `ASAR` as a package:
 
 ```r
+install.packages("remotes")
+
 remotes::install_github("Schiano-NOAA/ASAR@draft-template")
 ```
 
