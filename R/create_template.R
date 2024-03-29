@@ -105,37 +105,21 @@ create_template <- function(
   office <- match.arg(office, several.ok = FALSE)
   type <- match.arg(type, several.ok = FALSE)
 
-  if (!is.null(region)) {
-    subdir <- here::here("inst", "templates", "archive", office, species, region, year)
-    subdir <- system.file("inst", "templates", "archive", office, species, region, year, package = "ASAR")
+  if(!is.null(region)){
+    dir.create(paste0("~/stock_assessment_templates", "/", office,"/", species, "/", region, "/", year), recursive = TRUE)
   } else {
-    subdir <- here::here("inst", "templates", "archive", office, species, year)
-  }
-  # Always creating new directory for each assessment since they will each change
-  # Allow NOAA to keep a record of each assessment file
-  # These will need to be cataloged into a cloud system somehow
-  if (!dir.exists(here::here("inst", "templates", "archive", office, species))) {
-    dir.create(here::here("inst", "templates", "archive", office, species))
+    dir.create(paste0("~/stock_assessment_templates", "/", office,"/", species, "/", year), recursive = TRUE)
   }
 
-  if (!is.null(region)) {
-    if (!dir.exists(here::here("inst", "templates", "archive", office, species, region))) {
-      dir.create(here::here("inst", "templates", "archive", office, species, region))
-    }
-    # Create new folder for current year
-    if (!dir.exists(here::here("inst", "templates", "archive", office, species, region, year))) {
-      dir.create(here::here("inst", "templates", "archive", office, species, region, year))
-    }
+  if(!is.null(region)){
+    subdir <- paste0("~/stock_assessment_templates", "/", office,"/", species, "/", region, "/", year)
   } else {
-    # Create new folder for current year
-    if (!dir.exists(here::here("inst", "templates", "archive", office, species, year))) {
-      dir.create(here::here("inst", "templates", "archive", office, species, year))
-    }
+    subdir <- paste0("~/stock_assessment_templates", "/", office,"/", species, "/", year)
   }
 
   if (new_template == TRUE) {
     # Pull skeleton for sections
-    current_folder <- here::here("inst", "templates", "skeleton")
+    current_folder <- file.path(find.package('ASAR'), 'templates', 'skeleton')
     new_folder <- subdir
     files_to_copy <- list.files(current_folder)
     file.copy(file.path(current_folder, files_to_copy), new_folder)
@@ -157,21 +141,15 @@ create_template <- function(
     # Pull authors and affiliations from national db
     # Parameters to add authorship to YAML
     # Read authorship file
-    authors <- utils::read.csv(here::here("inst", "resources", "authorship.csv")) |>
-      dplyr::mutate(
-        mi = dplyr::case_when(
-          mi == "" ~ NA,
-          TRUE ~ mi
-        ),
-        name = dplyr::case_when(
-          is.na(mi) ~ paste0(first, " ", last),
-          TRUE ~ paste(first, mi, last, sep = " ")
-        )
-      ) |>
+    authors <- utils::read.csv(system.file('resources', 'authorship.csv', package = 'ASAR', mustWork = TRUE)) |>
+      dplyr::mutate(mi = dplyr::case_when(mi=="" ~ NA,
+                                          TRUE ~ mi),
+                    name = dplyr::case_when(is.na(mi) ~ paste0(first," ", last),
+                                            TRUE ~ paste(first, mi, last, sep = " "))) |>
       dplyr::select(name, office) |>
       dplyr::filter(name %in% author)
     if (include_affiliation == TRUE) {
-      affil <- read.csv(here::here("inst", "resources", "affiliation_info.csv"))
+      affil <- read.csv(system.file('resources', "affiliation_info.csv", package = 'ASAR', mustWork = TRUE))
     }
     author_list <- list()
 
@@ -283,12 +261,12 @@ create_template <- function(
     }
 
     # Add style guide
-    create_style_css(species = species, savedir = subdir)
+    # create_style_css(species = species, savedir = subdir)
 
-    yaml <- paste0(
-      yaml,
-      "css: styles.css", "\n"
-    )
+    # yaml <- paste0(
+    #   yaml,
+    #   "css: styles.css", "\n"
+    # )
 
     # Close yaml
     yaml <- paste0(yaml, "---")
@@ -299,7 +277,7 @@ create_template <- function(
 
     # Add chunk to load in assessment data
     ass_output <- chunkr(
-      "convert_output( output.file=", model_results, ", model=", model, ")",
+      paste0("convert_output(output.file=", model_results, ", model=", model, ")"),
       eval = "false" # set false for testing this function in the template for now
     )
 
@@ -368,7 +346,7 @@ create_template <- function(
         section_list <- list()
         for (i in 1:length(custom_sections)) {
           grep(
-            x = list.files(here::here("inst", "templates", "skeleton")),
+            x = list.files(system.file('templates', 'skeleton')),
             pattern = custom_sections[i],
             value = TRUE
           ) -> section_list[i]
@@ -386,16 +364,14 @@ create_template <- function(
         if (custom == TRUE) {
           for (i in 1:length(custom_sections)) {
             grep(
-              x = list.files(here::here("inst", "templates", "skeleton")),
+              x = list.files(system.file('templates', 'skeleton')),
               pattern = custom_sections[i],
               value = TRUE
             ) -> section_list[i]
           }
         }
         # Add new sections
-        if (is.null(new_section) | is.null(section_location)) {
-          stop("New sections and locations not defined.")
-        }
+        if (is.null(new_section) | is.null(section_location)) stop("New sections and locations not defined.")
 
         for (i in 1:length(new_section)) {
           add_sec_new[i] <- paste0(secdir, "/", new_section[i])
