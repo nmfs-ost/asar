@@ -1,6 +1,6 @@
 #' Write R Chunk to Add Child Document
 #'
-#' @param x section .qmd file to add into the template, options for sections are in the 'skeleton' folder; only select XX_section.qmd files and not a, b, c... subiles
+#' @param x section .qmd file to add into the template, options for sections are in the 'skeleton' folder; only select XX_section.qmd files and not a, b, c... subfiles
 #' @param label description for the child document being added (short - one/two words max)
 #'
 #' @return Formatting R chunk for child document to add section into the template/skeleton.
