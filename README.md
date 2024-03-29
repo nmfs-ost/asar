@@ -4,11 +4,9 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-This package is currently in development. There are two proposed methods to use this tool and build a stock assessment report. 
+This package is currently in development.
 
-  1) main: Use this repository as a template and use `create_template.R` to generate a template and create a skeleton from `inst/templates/skeleton` folder dependent on the analyst's region.
-  
-  2) draft-template: Use this repository as one would a package. Download using the directions below and fill in `create_template.R` function with the desired parameters (follow example below) to create a template quarto document to be rendered to create a stock assessment report.
+Use this repository as one would a package. Download using the directions below and fill in `create_template.R` function with the desired parameters (follow example below) to create a template quarto document to be rendered to create a stock assessment report.
   
 Please refer to examples below on how to utilize both options.
 
@@ -16,65 +14,23 @@ The goal of ASAR is to automate stock assessment reports for NOAA science center
 
 ## Installation
 
-First please check to make sure `tinytex` package is installed on your machnie. If not please install using the following lines:
+First please check to make sure `tinytex` package is installed on your machine. If not please install using the following lines:
 
 ```r
 install.packages("tinytex")
+library(tinytex)
+
 ```
-
-To install `ASAR` as a template repository:
-
-  (1) Navigate to the main page of the [repository](https://github.com/Schiano-NOAA/ASAR)
-  
-  (2) Above the file list, click **Use this template**.
-  
-  (3) Select **Create a new repository**.
-  
- ![](https://docs.github.com/assets/cb-77734/mw-1440/images/help/repository/use-this-template-button.webp) 
- 
-To install `ASAR` as a package:
+Then install the package:
 
 ```r
-remotes::install_github("Schiano-NOAA/ASAR@draft-template")
+install.packages("remotes")
+remotes::install_github("Schiano-NOAA/ASAR")
 ```
-
-Here we are installing the branch which is designed as a package.
 
 ## Example
 
 The following is a basic example to render a stock assessment report for a particular region in the U.S.:
-
-### Option A
-
-Downloaded as a template repo:
-
-``` r
-source(here::here('R', 'create_template.R'))
-source(here::here('R', 'write_title.R'))
-source(here::here('R', 'paste_child.R'))
-source(here::here('R', 'chunkr.R'))
-source(here::here('R', 'generate_citation.R'))
-
-create_template(
-  new_template = TRUE,
-  format = "pdf",
-  office = "SEFSC",
-  region = "Gulf of Mexico",
-  species = "Red Snapper",
-  spp_latin = "Lutjanus campechanus",
-  year = 2021,
-  author = c("John Snow", "Danny Phantom", "Patrick Star"),
-  include_affiliation = TRUE,
-  parameters = FALSE,
-  type = "RT",
-  model_results = "results.Rdata",
-  model = "WHAM"
-)
-```
-
-### Option B
-
-Download as a package:
 
 ```r
 ASAR::create_template(
