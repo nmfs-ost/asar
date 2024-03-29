@@ -7,7 +7,7 @@
 paste_child(x, label = NULL)
 }
 \arguments{
-\item{x}{section .qmd file to add into the template, options for sections are in the 'skeleton' folder; only select XX_section.qmd files and not a, b, c... subiles}
+\item{x}{section .qmd file to add into the template, options for sections are in the 'skeleton' folder; only select XX_section.qmd files and not a, b, c... subfiles}
 
 \item{label}{description for the child document being added (short - one/two words max)}
 }
