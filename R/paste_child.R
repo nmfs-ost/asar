@@ -8,11 +8,10 @@
 #' @export
 #'
 #' @examples paste_child("test_quarto.qmd", label = "test_doc")
-
 paste_child <- function(x,
-                        label = NULL){
+                        label = NULL) {
   child <- c()
-  for(i in 1:length(x)){
+  for (i in 1:length(x)) {
     sec_num <- x[i]
     child_loop <- paste0(
       "\n",
@@ -25,7 +24,7 @@ paste_child <- function(x,
       "a <- knitr::knit_child(", "'", sec_num, "'", ", quiet = TRUE)", "\n",
       "cat(a, sep = '\\n')", "\n",
       "```", "\n"
-      )
+    )
     child <- paste(child, child_loop, sep = "\n {{< pagebreak >}} \n")
   }
   return(child)

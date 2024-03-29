@@ -22,70 +22,65 @@ write_title <- function(
     year = NULL,
     complex = NULL,
     type = NULL,
-    spp_latin = NULL
-){
-  if(is.null(year)){
-    year = format(Sys.Date(), "%Y")
+    spp_latin = NULL) {
+  if (is.null(year)) {
+    year <- format(Sys.Date(), "%Y")
   }
 
   # Create title dependent on regional language
-  if(office=="AFSC"){
-    if(is.null(complex)){
-      title = paste0("Assessment of the ", species, " Stock in the ", region)
+  if (office == "AFSC") {
+    if (is.null(complex)) {
+      title <- paste0("Assessment of the ", species, " Stock in the ", region)
     } else {
-      title = paste0("Assessment of the ", species, " Stock Complex in the ", region)
+      title <- paste0("Assessment of the ", species, " Stock Complex in the ", region)
     }
-  } else if(office=="NEFSC"){
-    if(as.numeric(format(Sys.Date(), "%m")) %in% c(3,4,5)){
-      season = "Spring"
-    } else if(as.numeric(format(Sys.Date(), "%m")) %in% c(6,7,8)){
-      season = "Summer"
-    } else if(as.numeric(format(Sys.Date(), "%m")) %in% c(9,10,11)){
-      season = "Fall"
-    } else if(as.numeric(format(Sys.Date(), "%m")) %in% c(12,1,2)){
-      season = "Winter"
+  } else if (office == "NEFSC") {
+    if (as.numeric(format(Sys.Date(), "%m")) %in% c(3, 4, 5)) {
+      season <- "Spring"
+    } else if (as.numeric(format(Sys.Date(), "%m")) %in% c(6, 7, 8)) {
+      season <- "Summer"
+    } else if (as.numeric(format(Sys.Date(), "%m")) %in% c(9, 10, 11)) {
+      season <- "Fall"
+    } else if (as.numeric(format(Sys.Date(), "%m")) %in% c(12, 1, 2)) {
+      season <- "Winter"
     }
-    if(type=="RT"){
-      title = paste0("Research Track Assessment for ", species, " (", spp_latin, ") ", season, " ", year)
+    if (type == "RT") {
+      title <- paste0("Research Track Assessment for ", species, " (", spp_latin, ") ", season, " ", year)
     } else {
-      title = paste0("Management Track Assessment of ", species, " (", spp_latin, ") ", season, " ", year)
+      title <- paste0("Management Track Assessment of ", species, " (", spp_latin, ") ", season, " ", year)
     }
-
-  } else if(office=="NWFSC"){
-    if(is.null(region)){
-      title = paste0("Status of the ", species, " stock along the U.S. West Coast in ", year)
-    } else {
-      # region in NW should be specified as a state
-      title = paste0("Status of the ", species, " stock in U.S. waters off the coast of ", region, " in ", year)
-    }
-
-  } else if(office=="PIFSC"){
-    if(is.null(region)){
-      title = paste0("Stock Assessment for ", species, " (", spp_latin, ") along the main Hawaiian Islands in ", year)
-    } else {
-      title = paste0("Stock Assessment for ", species, " (", spp_latin, ") on ", region, " in ", year)
-    }
-  } else if(office=="SEFSC"){
-    title = paste0("SEDAR XX Assessment Report for ", species, " (", spp_latin, ") in the ", region, " in ", year)
-
-  } else if(office=="SWFSC"){
-    if(is.null(region)){
-      title = paste0("Status of the ", species, " stock along the U.S. West Coast in ", year)
+  } else if (office == "NWFSC") {
+    if (is.null(region)) {
+      title <- paste0("Status of the ", species, " stock along the U.S. West Coast in ", year)
     } else {
       # region in NW should be specified as a state
-      title = paste0("Status of the ", species, " stock in U.S. waters off the coast of ", region, " in ", year)
+      title <- paste0("Status of the ", species, " stock in U.S. waters off the coast of ", region, " in ", year)
+    }
+  } else if (office == "PIFSC") {
+    if (is.null(region)) {
+      title <- paste0("Stock Assessment for ", species, " (", spp_latin, ") along the main Hawaiian Islands in ", year)
+    } else {
+      title <- paste0("Stock Assessment for ", species, " (", spp_latin, ") on ", region, " in ", year)
+    }
+  } else if (office == "SEFSC") {
+    title <- paste0("SEDAR XX Assessment Report for ", species, " (", spp_latin, ") in the ", region, " in ", year)
+  } else if (office == "SWFSC") {
+    if (is.null(region)) {
+      title <- paste0("Status of the ", species, " stock along the U.S. West Coast in ", year)
+    } else {
+      # region in NW should be specified as a state
+      title <- paste0("Status of the ", species, " stock in U.S. waters off the coast of ", region, " in ", year)
     }
   } else {
     print("office (FSC) is not defined. Please define which office you are associated with.")
   }
 
   # Cohesive title for any stock assessment
-    # if(type %in% c('OA', 'UP')){
-    #    title = paste0("Stock Assessment Update for the ", species, " Stock in the ", region, " ", year)
-    # } else {
-    #   title = paste0("Stock Assessment Report for the ", species, " Stock in the ", region, " ", year)
-    # }
+  # if(type %in% c('OA', 'UP')){
+  #    title = paste0("Stock Assessment Update for the ", species, " Stock in the ", region, " ", year)
+  # } else {
+  #   title = paste0("Stock Assessment Report for the ", species, " Stock in the ", region, " ", year)
+  # }
 
   return(title)
 }
-
