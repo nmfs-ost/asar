@@ -127,7 +127,7 @@ create_template <- function(
   # Create YAML header for document
   # Write title based on report type and region
   if(alt_title==FALSE){
-    title <- ASAR::write_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type)
+    title <- write_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type)
   } else if (alt_title==TRUE){
     if(!exists(title)){
       stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
@@ -269,7 +269,7 @@ create_template <- function(
   # cat(yaml, file = here('template','yaml_header.qmd'))
 
   # Add chunk to load in assessment data
-  ass_output <- ASAR::chunkr(
+  ass_output <- chunkr(
     paste0("convert_output(output.file=", model_results, ", model=", model, ")"),
     eval = "false" # set false for testing this function in the template for now
   )
@@ -277,7 +277,7 @@ create_template <- function(
   # print("_______Standardized output data________")
 
   # Add page for citation of assessment report
-  citation <- ASAR::generate_citation(author = author,
+  citation <- generate_citation(author = author,
                                 title = title,
                                 year = year,
                                 office = office)
@@ -288,14 +288,14 @@ create_template <- function(
 
   if(custom==FALSE){
     if(type=="OA" | type=="UP" | type=="MT"){
-      sections <- ASAR::paste_child(
+      sections <- paste_child(
         c("01_executive_summary.qmd",
           "02_introduction.qmd"),
         label = c("executive_summary",
                   "introduction")
         )
     } else if (type=="RT" | type=="FULL"){
-      sections <- ASAR::paste_child(c(
+      sections <- paste_child(c(
           "01_executive_summary.qmd",
           "02_introduction.qmd",
           "03_data.qmd",
@@ -359,7 +359,7 @@ create_template <- function(
 
       append(section_list, add_sec_new)
 
-        sections <- ASAR::paste_child(section_list,
+        sections <- paste_child(section_list,
                                 label = section_list)
     }
   }
