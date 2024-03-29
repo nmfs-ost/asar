@@ -3,8 +3,8 @@
 ```{r}
 #| echo: false
 #| warning: false
-a <- seq(1,10,1)
-b <- seq(2,20,2)
-data.frame(a,b) |>
+a <- seq(1, 10, 1)
+b <- seq(2, 20, 2)
+data.frame(a, b) |>
   flextable::flextable()
 ```

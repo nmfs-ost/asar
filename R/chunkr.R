@@ -19,18 +19,19 @@ chunkr <- function(
     warnings = "false",
     eval = "true",
     add_option = FALSE,
-    chunk_op = NULL){
+    chunk_op = NULL) {
   chunk <- paste0(
     "```{r} \n",
     # Add output options
     "#| echo: ", echo, " \n",
     "#| warning: ", warnings, " \n",
-    "#| eval: ", eval, " \n")
-    if(add_option==TRUE){
-      for (i in 1:length(chunk_op)) {
-        chunk <- paste0(chunk, "#| ", chunk_op[i], " \n")
-      }
+    "#| eval: ", eval, " \n"
+  )
+  if (add_option == TRUE) {
+    for (i in 1:length(chunk_op)) {
+      chunk <- paste0(chunk, "#| ", chunk_op[i], " \n")
     }
-    chunk <- paste0(chunk, x, "\n", "``` \n")
-    return(chunk)
+  }
+  chunk <- paste0(chunk, x, "\n", "``` \n")
+  return(chunk)
 }

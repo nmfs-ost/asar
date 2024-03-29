@@ -13,7 +13,6 @@
 #' @export
 #'
 #' @examples write_harv_proj_table(tier = 3)
-
 write_harv_proj_table <- function(
     results_last = 9999,
     results_lastp1 = 9999,
@@ -21,25 +20,23 @@ write_harv_proj_table <- function(
     results_currp1 = 9999,
     tier = NULL,
     overfishing_last = "NO",
-    overfishing_curr = "NO"
-    ){
-
+    overfishing_curr = "NO") {
   # Pull current projection results
   # Need to update function to pull these results after converter is finished
-    # proj_last <- results_last |>
-    #   dplyr::select(M)
-    #
-    # proj_lastp1 <- results_lastp1 |>
-    #   dplyr::select(M)
-    #
-    # proj_curr <- results_lastp1 |>
-    #   dplyr::select(M)
-    #
-    # proj_currp1 <- results_lastp1 |>
-    #   dplyr::select(M)
-    #
-    # proj_res <- list(results_last, results_lastp1, results_curr, results_currp1) |>
-    #   purrr::map(dplyr::select(M))
+  # proj_last <- results_last |>
+  #   dplyr::select(M)
+  #
+  # proj_lastp1 <- results_lastp1 |>
+  #   dplyr::select(M)
+  #
+  # proj_curr <- results_lastp1 |>
+  #   dplyr::select(M)
+  #
+  # proj_currp1 <- results_lastp1 |>
+  #   dplyr::select(M)
+  #
+  # proj_res <- list(results_last, results_lastp1, results_curr, results_currp1) |>
+  #   purrr::map(dplyr::select(M))
 
   # Temporary fill
   proj_last <- 9999
@@ -49,10 +46,14 @@ write_harv_proj_table <- function(
   proj_res <- 9999
 
   # Write table contents
-  quantity <- c("M (natural mortality rate", "Tier", "Biomass (t)", "F OFL", "maxF ABC", "F ABC","OFL (t)",
-                "maxABC (t)", "ABC (t)")
-  status <- c("Status", "As determined last year for: current year - 2", "As determined last year for: current year - 1",
-              "As determined this year for: current year - 1", "As determined this year for: current year")
+  quantity <- c(
+    "M (natural mortality rate", "Tier", "Biomass (t)", "F OFL", "maxF ABC", "F ABC", "OFL (t)",
+    "maxABC (t)", "ABC (t)"
+  )
+  status <- c(
+    "Status", "As determined last year for: current year - 2", "As determined last year for: current year - 1",
+    "As determined this year for: current year - 1", "As determined this year for: current year"
+  )
   overfishing <- c("Overfishing", overfishing_last, NA, overfishing_curr, NA)
 
   # Build table
@@ -75,11 +76,10 @@ write_harv_proj_table <- function(
       proj_currp1 = "As estimated or recommended this year for:"
     ) |>
     flextable::merge_h(part = "header") |>
-    flextable::vline(j = c(1,3), part = "body") |>
+    flextable::vline(j = c(1, 3), part = "body") |>
     flextable::vline(j = c(1), part = "header") |>
     flextable::hline(part = "header") |>
     flextable::align(part = "header", align = "center")
 
   return(proj_tab)
-
 }
