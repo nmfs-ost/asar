@@ -23,8 +23,10 @@ the stock assessment report generated in the ASAR package.
 Generate Citation for Stock Assessment Report
 }
 \examples{
-generate_citation(title = "SA Report for Jellyfish",
-author = c("John Snow", "Danny Phantom", "Patrick Star"),
-year = 2024, office = "NEFSC")
+generate_citation(
+  title = "SA Report for Jellyfish",
+  author = c("John Snow", "Danny Phantom", "Patrick Star"),
+  year = 2024, office = "NEFSC"
+)
 
 }

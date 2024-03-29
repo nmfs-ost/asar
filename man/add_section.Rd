@@ -31,3 +31,6 @@ as a child document.
 \description{
 Add New Section to Template
 }
+\examples{
+add_section(title = "Ecosystem Considerations", location = "after-discussion")
+}

@@ -20,28 +20,25 @@
 #' @export
 #'
 #' @examples add_section(title = "Ecosystem Considerations", location = "after-discussion")
-
 add_section <- function(
     title = NULL,
     location = NULL,
-    multi = FALSE
-){
+    multi = FALSE) {
   # Location options
-    # before-section
-    # after-section
-    # in-section (will always apend to the end of the section)
+  # before-section
+  # after-section
+  # in-section (will always apend to the end of the section)
   section_name <- forstringr::str_extract_part(location, "-", before = FALSE)
 
-  if(grepl("before-", location)){
+  if (grepl("before-", location)) {
 
   }
 
-  if(grepl("in-", location)){
+  if (grepl("in-", location)) {
 
   }
 
-  if(grepl("after-", location)){
+  if (grepl("after-", location)) {
 
   }
-
 }

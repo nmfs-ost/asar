@@ -14,32 +14,27 @@
 #'         adapt results among regional assessments.
 #'
 #' @examples
-#' convert_output(output.file = "CumReport.sso", outdir = "~", model = 'ss', file.format = 'multi', multi.file = FALSE)
+#' convert_output(output.file = "CumReport.sso", outdir = "~", model = "ss", file.format = "multi", multi.file = FALSE)
 #'
 #' @export
 #'
 convert_output <- function(
     output.file = NULL,
     outdir = NULL,
-    model = NULL){
-
-  if(model=="ss"){
+    model = NULL) {
+  if (model == "ss") {
     # Fxn adapted from r4ss::SS_output
-
   }
 
-  if(model=='bam'){
-      dat <- dget(output.file)
+  if (model == "bam") {
+    dat <- dget(output.file)
   }
 
-  if(model=='asap'){
-
+  if (model == "asap") {
     # This is how Bai read the ASAP output
     # asap_output conversion written by Bai Li
-    asap_output <- dget(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep=""), "asap3.rdat"))
-    setwd(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep="")))
+    asap_output <- dget(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = ""), "asap3.rdat"))
+    setwd(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = "")))
     asap_std <- readRep("asap3", suffix = ".std")
-
   }
-
 }

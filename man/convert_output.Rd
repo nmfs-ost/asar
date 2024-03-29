@@ -23,7 +23,7 @@ adapt results among regional assessments.
 Format stock assessment output files. Function is unfinished
 }
 \examples{
-convert_output(output.file = "CumReport.sso", outdir = "~", model = 'ss', file.format = 'multi', multi.file = FALSE)
+convert_output(output.file = "CumReport.sso", outdir = "~", model = "ss", file.format = "multi", multi.file = FALSE)
 
 }
 \author{
