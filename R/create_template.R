@@ -105,21 +105,21 @@ create_template <- function(
   office <- match.arg(office, several.ok = FALSE)
   type <- match.arg(type, several.ok = FALSE)
 
-  if(!is.null(region)){
-    dir.create(paste0("~/stock_assessment_templates", "/", office,"/", species, "/", region, "/", year), recursive = TRUE)
+  if (!is.null(region)) {
+    dir.create(paste0("~/stock_assessment_templates", "/", office, "/", species, "/", region, "/", year), recursive = TRUE)
   } else {
-    dir.create(paste0("~/stock_assessment_templates", "/", office,"/", species, "/", year), recursive = TRUE)
+    dir.create(paste0("~/stock_assessment_templates", "/", office, "/", species, "/", year), recursive = TRUE)
   }
 
-  if(!is.null(region)){
-    subdir <- paste0("~/stock_assessment_templates", "/", office,"/", species, "/", region, "/", year)
+  if (!is.null(region)) {
+    subdir <- paste0("~/stock_assessment_templates", "/", office, "/", species, "/", region, "/", year)
   } else {
-    subdir <- paste0("~/stock_assessment_templates", "/", office,"/", species, "/", year)
+    subdir <- paste0("~/stock_assessment_templates", "/", office, "/", species, "/", year)
   }
 
   if (new_template == TRUE) {
     # Pull skeleton for sections
-    current_folder <- file.path(find.package('ASAR'), 'templates', 'skeleton')
+    current_folder <- file.path(find.package("ASAR"), "templates", "skeleton")
     new_folder <- subdir
     files_to_copy <- list.files(current_folder)
     file.copy(file.path(current_folder, files_to_copy), new_folder)
@@ -141,15 +141,21 @@ create_template <- function(
     # Pull authors and affiliations from national db
     # Parameters to add authorship to YAML
     # Read authorship file
-    authors <- utils::read.csv(system.file('resources', 'authorship.csv', package = 'ASAR', mustWork = TRUE)) |>
-      dplyr::mutate(mi = dplyr::case_when(mi=="" ~ NA,
-                                          TRUE ~ mi),
-                    name = dplyr::case_when(is.na(mi) ~ paste0(first," ", last),
-                                            TRUE ~ paste(first, mi, last, sep = " "))) |>
+    authors <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
+      dplyr::mutate(
+        mi = dplyr::case_when(
+          mi == "" ~ NA,
+          TRUE ~ mi
+        ),
+        name = dplyr::case_when(
+          is.na(mi) ~ paste0(first, " ", last),
+          TRUE ~ paste(first, mi, last, sep = " ")
+        )
+      ) |>
       dplyr::select(name, office) |>
       dplyr::filter(name %in% author)
     if (include_affiliation == TRUE) {
-      affil <- utils::read.csv(system.file('resources', "affiliation_info.csv", package = 'ASAR', mustWork = TRUE))
+      affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "ASAR", mustWork = TRUE))
     }
     author_list <- list()
 
@@ -346,7 +352,7 @@ create_template <- function(
         section_list <- list()
         for (i in 1:length(custom_sections)) {
           grep(
-            x = list.files(system.file('templates', 'skeleton')),
+            x = list.files(system.file("templates", "skeleton")),
             pattern = custom_sections[i],
             value = TRUE
           ) -> section_list[i]
@@ -364,7 +370,7 @@ create_template <- function(
         if (custom == TRUE) {
           for (i in 1:length(custom_sections)) {
             grep(
-              x = list.files(system.file('templates', 'skeleton')),
+              x = list.files(system.file("templates", "skeleton")),
               pattern = custom_sections[i],
               value = TRUE
             ) -> section_list[i]

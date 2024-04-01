@@ -31,8 +31,8 @@ convert_output <- function(
   if (model == "asap") {
     # This is how Bai read the ASAP output
     # asap_output conversion written by Bai Li
-      # asap_output <- dget(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = ""), "asap3.rdat"))
-      # setwd(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = "")))
-      # asap_std <- readRep("asap3", suffix = ".std")
+    # asap_output <- dget(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = ""), "asap3.rdat"))
+    # setwd(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = "")))
+    # asap_std <- readRep("asap3", suffix = ".std")
   }
 }
