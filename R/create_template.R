@@ -357,7 +357,7 @@ create_template <- function(
       } else {
         # Create custom template using existing sections and new sections from analyst
         # Add sections from package options
-        if (is.null(customs_sections)) {
+        if (is.null(custom_sections)) {
           stop("Custom sectioning not defined.")
         }
         section_list <- list()
