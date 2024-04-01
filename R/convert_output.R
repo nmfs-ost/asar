@@ -13,8 +13,6 @@
 #'         for application in building a stock assessment reports and to easily
 #'         adapt results among regional assessments.
 #'
-#' @examples
-#' convert_output(output.file = "CumReport.sso", outdir = "~", model = "ss", file.format = "multi", multi.file = FALSE)
 #'
 #' @export
 #'
@@ -33,8 +31,8 @@ convert_output <- function(
   if (model == "asap") {
     # This is how Bai read the ASAP output
     # asap_output conversion written by Bai Li
-    asap_output <- dget(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = ""), "asap3.rdat"))
-    setwd(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = "")))
-    asap_std <- readRep("asap3", suffix = ".std")
+      # asap_output <- dget(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = ""), "asap3.rdat"))
+      # setwd(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = "")))
+      # asap_std <- readRep("asap3", suffix = ".std")
   }
 }

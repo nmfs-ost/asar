@@ -14,7 +14,8 @@
 #'         Function is implemented within create_template.R and inherits its parameters.
 #' @export
 #'
-#' @examples write_title()
+#' @examples write_title(office="SEFSC", species="Red Snapper", region="South Atlantic",
+#' year=2024, type="RT", spp_latin="Lutjanus campechanus")
 write_title <- function(
     office = NULL,
     species = NULL,

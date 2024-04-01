@@ -149,7 +149,7 @@ create_template <- function(
       dplyr::select(name, office) |>
       dplyr::filter(name %in% author)
     if (include_affiliation == TRUE) {
-      affil <- read.csv(system.file('resources', "affiliation_info.csv", package = 'ASAR', mustWork = TRUE))
+      affil <- utils::read.csv(system.file('resources', "affiliation_info.csv", package = 'ASAR', mustWork = TRUE))
     }
     author_list <- list()
 

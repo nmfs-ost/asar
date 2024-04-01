@@ -22,10 +22,6 @@ adapt results among regional assessments.
 \description{
 Format stock assessment output files. Function is unfinished
 }
-\examples{
-convert_output(output.file = "CumReport.sso", outdir = "~", model = "ss", file.format = "multi", multi.file = FALSE)
-
-}
 \author{
 Samantha Schiano
 }
