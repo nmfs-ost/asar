@@ -1,7 +1,7 @@
 #' Create Stock Assessment Report Template
 #'
 #' @param new_template TRUE/FALSE; default is false otherwise if true, will pull the last saved stock assessment report skeleton
-#' @param tempdir Directory for the templates/
+#' @param tempdir Directory for the templates
 #' @param format File type for the render (i.e. pdf, docx, html)
 #' @param office Regional fisheries science center producing the report (AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC)
 #' @param region Full name of region in which the species is evaluated if applicable; Note: if this is not specified for your center or for
@@ -84,10 +84,12 @@ create_template <- function(
   }
 
   # Name report
-  report_name <- paste0(
-    type,
-    "_"
-  )
+  if(!is.null(type)){
+    report_name <- paste0(
+      type,
+      "_"
+    )
+  }
   if (!is.null(region)) {
     report_name <- paste0(
       report_name,
@@ -118,10 +120,21 @@ create_template <- function(
 
   if (new_template == TRUE) {
     # Pull skeleton for sections
-    current_folder <- file.path(find.package("ASAR"), "templates", "skeleton")
+    current_folder <- system.file("templates", "skeleton", package = "ASAR")
     new_folder <- subdir
     files_to_copy <- list.files(current_folder)
-    file.copy(file.path(current_folder, files_to_copy), new_folder)
+
+    # Check if there are already files in the folder
+    if(length(files_to_copy)>0){
+      warning("There are files in this location.")
+      question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
+
+      if(regexpr(question1, 'y', ignore.case = TRUE) == 1){
+        file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
+      } else if (regexpr(question1, 'n', ignore.case = TRUE) == 1){
+        print(paste0("Blank files for template sections were not copied into your directory.", ))
+      }
+    }
 
     # Part I
     # Create a report template file to render for the region and species
@@ -153,11 +166,12 @@ create_template <- function(
       ) |>
       dplyr::select(name, office) |>
       dplyr::filter(name %in% author)
+
     if (include_affiliation == TRUE) {
       affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "ASAR", mustWork = TRUE))
     }
-    author_list <- list()
 
+    author_list <- list()
     if (include_affiliation == TRUE & simple_affiliation == FALSE) {
       for (i in 1:nrow(authors)) {
         auth <- authors[i, ]
@@ -293,6 +307,7 @@ create_template <- function(
       paste0("convert_output(output.file = ", "'", model_results, "'",
              ", model = ", "'", model, "'",
              ", outdir = ", "'", resdir, "'", ")"),
+      label = "model_output",
       eval = "false" # set false for testing this function in the template for now
     )
 
@@ -376,19 +391,19 @@ create_template <- function(
       # Option for building custom template
       # Create custom template from existing skeleton sections
       if (add_section == FALSE) {
+        sec_sel <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2", custom_sections)))
         section_list <- list()
         for (i in 1:length(custom_sections)) {
-          sec_sel <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2", custom_sections[i])))
           sec_file <- grep(
             x = list.files(system.file("templates", "skeleton", package = "ASAR")),
-            pattern = sec_sel,
+            pattern = sec_sel[i],
             value = TRUE
           )
           if(identical(sec_file, character(0))) stop("One or more section name(s) does not exist. Please check the spelling or if you are tring to add a section that is not in the default template, please use parameter 'custom_sections' and refer to documentation. To check which sections are in the base template please run list.files(system.file('templates'', 'skeleton', package = 'ASAR')) in your console")
           sec_file -> section_list[i]
         }
         sections <- paste_child(section_list,
-          label = custom_sections
+          label = sec_sel
         )
       } else {
         # Create custom template using existing sections and new sections from analyst
@@ -396,11 +411,12 @@ create_template <- function(
         if (is.null(custom_sections)) {
           stop("Custom sectioning not defined.")
         }
+        custom_sections <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2", custom_sections)))
         section_list <- list()
         if (custom == TRUE) {
           for (i in 1:length(custom_sections)) {
             grep(
-              x = list.files(system.file("templates", "skeleton")),
+              x = list.files(system.file("templates", "skeleton", package = "ASAR")),
               pattern = custom_sections[i],
               value = TRUE
             ) -> section_list[i]
@@ -429,15 +445,15 @@ create_template <- function(
       sep = "\n"
     )
 
-    print("___Created desired report template______")
+    print("___Created report template______")
 
     # Save template as .qmd to render
     utils::capture.output(cat(report_template), file = paste0(subdir, "/", report_name), append = FALSE)
 
-    print(cat(paste0(
+    print(paste0(
       "Saved report template in directory: ", subdir, "\n",
       "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
-    )))
+    ))
   } else {
     # Copy old template and rename for new year
     # Create copy of previous assessment
