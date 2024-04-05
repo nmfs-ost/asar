@@ -338,7 +338,7 @@ create_template <- function(
             "appendix"
           )
         )
-      } else if (type == "RT" | type == "FULL" | type = NULL) {
+      } else if (type == "RT" | type == "FULL" | is.null(type)) {
         sections <- paste_child(
           c(
             "01_executive_summary.qmd",
