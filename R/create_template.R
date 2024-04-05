@@ -113,7 +113,9 @@ create_template <- function(
   }
 
   if (!is.null(region)) {
-    if(dir.exists(subdir)==FALSE) dir.create(subdir, recursive = TRUE)
+    if(dir.exists(subdir)==FALSE){
+      dir.create(subdir, recursive = TRUE)
+    }
   }
 
   if (new_template == TRUE) {
