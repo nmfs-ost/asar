@@ -290,7 +290,9 @@ create_template <- function(
 
     # Add chunk to load in assessment data
     ass_output <- chunkr(
-      paste0("convert_output(output.file=", model_results, ", model=", model, ")"),
+      paste0("convert_output(output.file = ", "'", model_results, "'",
+             ", model = ", "'", model, "'",
+             ", outdir = ", "'", resdir, "'", ")"),
       eval = "false" # set false for testing this function in the template for now
     )
 
@@ -376,11 +378,14 @@ create_template <- function(
       if (add_section == FALSE) {
         section_list <- list()
         for (i in 1:length(custom_sections)) {
-          grep(
-            x = list.files(system.file("templates", "skeleton")),
-            pattern = custom_sections[i],
+          sec_sel <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2", custom_sections[i])))
+          sec_file <- grep(
+            x = list.files(system.file("templates", "skeleton", package = "ASAR")),
+            pattern = sec_sel,
             value = TRUE
-          ) -> section_list[i]
+          )
+          if(identical(sec_file, character(0))) stop("One or more section name(s) does not exist. Please check the spelling or if you are tring to add a section that is not in the default template, please use parameter 'custom_sections' and refer to documentation. To check which sections are in the base template please run list.files(system.file('templates'', 'skeleton', package = 'ASAR')) in your console")
+          sec_file -> section_list[i]
         }
         sections <- paste_child(section_list,
           label = custom_sections
