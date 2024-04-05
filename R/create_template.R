@@ -74,7 +74,7 @@ create_template <- function(
     secdir = NULL,
     new_section = NULL,
     section_location = NULL,
-    type = c("OA", "UP", "RT", "FULL", "MT"),
+    type = NULL,
     prev_year = NULL,
     custom = FALSE,
     custom_sections = NULL) {
@@ -103,7 +103,6 @@ create_template <- function(
   # Select parameter from list
   format <- match.arg(format, several.ok = FALSE)
   office <- match.arg(office, several.ok = FALSE)
-  type <- match.arg(type, several.ok = FALSE)
 
   if (!is.null(region)) {
     dir.create(paste0("~/stock_assessment_templates", "/", office, "/", species, "/", region, "/", year), recursive = TRUE)
@@ -232,14 +231,22 @@ create_template <- function(
         sep = ""
       )
     } else if (include_affiliation == FALSE) {
-      yaml <- paste0(
-        yaml, "format: \n",
+      yaml <- paste0(yaml, "format: \n",
         "  ", format, ": \n",
         "  ", "  ", "template-partials: \n",
         "  ", "  ", "  ", "- title.tex \n",
         "  ", "  ", "keep-tex: true \n"
       )
     }
+
+    # Add lua filters for compliance
+    # PLACEHOLDER: Uncomment once .lua text is built
+
+    # yaml <- paste0(yaml,
+    #                # "contributes:", "\n",
+    #                "filters:", "\n",
+    #                "  ", "  ", "- acronyms.lua", "\n",
+    #                "  ", "  ", "- accessibility.lua", "\n")
 
     # Parameters
     # office, region, and species are default parameters
@@ -306,14 +313,32 @@ create_template <- function(
         sections <- paste_child(
           c(
             "01_executive_summary.qmd",
-            "02_introduction.qmd"
+            "02_introduction.qmd",
+            "03_data.qmd",
+            "04_model.qmd",
+            "05_results.qmd",
+            "06_discussion.qmd",
+            "07_acknowledgements.qmd",
+            "08_references.qmd",
+            "09_tables.qmd",
+            "10_figures.qmd",
+            "11_appendix.qmd"
           ),
           label = c(
             "executive_summary",
-            "introduction"
+            "introduction",
+            "data",
+            "model",
+            "results",
+            "discussion",
+            "acknowlesgements",
+            "references",
+            "tables",
+            "figures",
+            "appendix"
           )
         )
-      } else if (type == "RT" | type == "FULL") {
+      } else if (type == "RT" | type == "FULL" | type = NULL) {
         sections <- paste_child(
           c(
             "01_executive_summary.qmd",
