@@ -225,7 +225,7 @@ create_template <- function(
         "  ", format, ": \n",
         "  ", "  ", "keep-tex: ", "true \n",
         "  ", "  ", "template-partials: \n",
-        "  ", "  ", "  ", " - graphics.tex \n",
+        # "  ", "  ", "  ", " - graphics.tex \n",
         "  ", "  ", "  ", " - title.tex \n",
         "  ", "  ", "include-in-header: \n",
         "  ", "  ", "  ", " - in-header.tex \n",
@@ -236,7 +236,7 @@ create_template <- function(
         yaml, "format: \n",
         "  ", format, ": \n",
         "  ", "  ", "template-partials: \n",
-        "  ", "  ", "  ", "- sadraft.tex \n",
+        "  ", "  ", "  ", "- title.tex \n",
         "  ", "  ", "keep-tex: true \n"
       )
     }
