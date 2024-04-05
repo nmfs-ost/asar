@@ -107,15 +107,14 @@ create_template <- function(
   office <- match.arg(office, several.ok = FALSE)
 
   if (!is.null(region)) {
-    dir.create(paste0("~/stock_assessment_templates", "/", office, "/", species, "/", region, "/", year), recursive = TRUE)
-  } else {
-    dir.create(paste0("~/stock_assessment_templates", "/", office, "/", species, "/", year), recursive = TRUE)
-  }
-
-  if (!is.null(region)) {
     subdir <- paste0("~/stock_assessment_templates", "/", office, "/", species, "/", region, "/", year)
   } else {
     subdir <- paste0("~/stock_assessment_templates", "/", office, "/", species, "/", year)
+  }
+
+  if (!is.null(region)) {
+    if(!dir.exists(subdir))
+    dir.create(subdir, recursive = TRUE)
   }
 
   if (new_template == TRUE) {
