@@ -18,11 +18,13 @@ chunkr <- function(
     echo = "false",
     warnings = "false",
     eval = "true",
+    label = NULL,
     add_option = FALSE,
     chunk_op = NULL) {
   chunk <- paste0(
     "```{r} \n",
     # Add output options
+    if(!is.null(label)) "#| label: ", "'", label, "'", "\n",
     "#| echo: ", echo, " \n",
     "#| warning: ", warnings, " \n",
     "#| eval: ", eval, " \n"
