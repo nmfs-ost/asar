@@ -29,7 +29,7 @@ create_template(
   secdir = NULL,
   new_section = NULL,
   section_location = NULL,
-  type = c("OA", "UP", "RT", "FULL", "MT"),
+  type = NULL,
   prev_year = NULL,
   custom = FALSE,
   custom_sections = NULL
@@ -38,7 +38,7 @@ create_template(
 \arguments{
 \item{new_template}{TRUE/FALSE; default is false otherwise if true, will pull the last saved stock assessment report skeleton}
 
-\item{tempdir}{Directory for the templates/}
+\item{tempdir}{Directory for the templates}
 
 \item{format}{File type for the render (i.e. pdf, docx, html)}
 

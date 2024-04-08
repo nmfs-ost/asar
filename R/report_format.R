@@ -8,23 +8,23 @@
 #' @examples report_format(office = "NEFSC")
 report_format <- function(
     office = NULL) {
-    # Add report formatting based on region
-    if (office == "AFSC") {
+  # Add report formatting based on region
+  if (office == "AFSC") {
 
-    } else if (office == "NEFSC") {
+  } else if (office == "NEFSC") {
 
-    } else if (office == "NWFSC") {
-      template <- paste0(
-        "output: ",
-        "  ", "sa"
-      )
-    } else if (office == "PIFSC") {
+  } else if (office == "NWFSC") {
+    template <- paste0(
+      "output: ",
+      "  ", "sa"
+    )
+  } else if (office == "PIFSC") {
 
-    } else if (office == "SEFSC") {
+  } else if (office == "SEFSC") {
 
-    } else if (office == "SWFSC") {
+  } else if (office == "SWFSC") {
 
-    } else {
-      print("office (FSC) is not defined. Please define which office you are associated with.")
-    }
+  } else {
+    print("office (FSC) is not defined. Please define which office you are associated with.")
+  }
 }

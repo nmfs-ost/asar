@@ -9,6 +9,7 @@ chunkr(
   echo = "false",
   warnings = "false",
   eval = "true",
+  label = NULL,
   add_option = FALSE,
   chunk_op = NULL
 )
