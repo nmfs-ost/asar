@@ -393,7 +393,7 @@ create_template <- function(
       if (add_section == FALSE) {
         sec_sel <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2", custom_sections)))
         section_list <- list()
-        for (i in 1:length(custom_sections)) {
+        for (i in 1:length(sec_sel)) {
           sec_file <- grep(
             x = list.files(system.file("templates", "skeleton", package = "ASAR")),
             pattern = sec_sel[i],
