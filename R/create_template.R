@@ -391,37 +391,52 @@ create_template <- function(
       # Option for building custom template
       # Create custom template from existing skeleton sections
       if (add_section == FALSE) {
-        sec_sel <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2", custom_sections)))
-        section_list <- list()
-        for (i in 1:length(sec_sel)) {
-          sec_file <- grep(
-            x = list.files(system.file("templates", "skeleton", package = "ASAR")),
-            pattern = sec_sel[i],
-            value = TRUE
-          )
-          if(identical(sec_file, character(0))) stop("One or more section name(s) does not exist. Please check the spelling or if you are tring to add a section that is not in the default template, please use parameter 'custom_sections' and refer to documentation. To check which sections are in the base template please run list.files(system.file('templates'', 'skeleton', package = 'ASAR')) in your console")
-          sec_file -> section_list[i]
-        }
+        section_list <- add_base_section(custom_sections)
         sections <- paste_child(section_list,
           label = sec_sel
         )
       } else {
         # Create custom template using existing sections and new sections from analyst
         # Add sections from package options
-        if (is.null(custom_sections)) {
-          stop("Custom sectioning not defined.")
-        }
-        custom_sections <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2", custom_sections)))
-        section_list <- list()
-        if (custom == TRUE) {
-          for (i in 1:length(custom_sections)) {
-            grep(
-              x = list.files(system.file("templates", "skeleton", package = "ASAR")),
-              pattern = custom_sections[i],
-              value = TRUE
-            ) -> section_list[i]
+        if (!is.null(custom_sections)) {
+          # Add base sections
+          sections <- paste_child(
+            c(
+              "01_executive_summary.qmd",
+              "02_introduction.qmd",
+              "03_data.qmd",
+              "04_model.qmd",
+              "05_results.qmd",
+              "06_discussion.qmd",
+              "07_acknowledgements.qmd",
+              "08_references.qmd",
+              "09_tables.qmd",
+              "10_figures.qmd",
+              "11_appendix.qmd"
+            ),
+            label = c(
+              "executive_summary",
+              "introduction",
+              "data",
+              "model",
+              "results",
+              "discussion",
+              "acknowlesgements",
+              "references",
+              "tables",
+              "figures",
+              "appendix"
+            )
+          )
+          # Add new sections
+          for(i in new_section){
+
           }
-        }
+        } else {
+          section_list <- add_base_section(custom_sections)
+          sections <- paste_child(section_list,
+                                  label = sec_sel
+          )
         # Add new sections
         if (is.null(new_section) | is.null(section_location)) stop("New sections and locations not defined.")
 
