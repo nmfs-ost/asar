@@ -4,7 +4,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-This package is currently in development.
+This package is currently in development. The current working version is asking if you want to overwrite files. If you have never ran this before then there are no files to overwrite and the message is inacurrately being thrown. Please select 'y' and disregard. This will be fixed soon.
 
 Use this repository as one would a package. Download using the directions below and fill in `create_template.R` function with the desired parameters (follow example below) to create a template quarto document to be rendered to create a stock assessment report.
   
