@@ -455,23 +455,24 @@ create_template <- function(
       }
     }
 
-    # Combine template sections
-    report_template <- paste(yaml,
-      ass_output,
-      citation,
-      sections,
-      sep = "\n"
-    )
+      # Combine template sections
+      report_template <- paste(yaml,
+        ass_output,
+        citation,
+        sections,
+        sep = "\n"
+      )
 
-    print("___Created report template______")
+      print("___Created report template______")
 
-    # Save template as .qmd to render
-    utils::capture.output(cat(report_template), file = paste0(subdir, "/", report_name), append = FALSE)
+      # Save template as .qmd to render
+      utils::capture.output(cat(report_template), file = paste0(subdir, "/", report_name), append = FALSE)
 
-    print(paste0(
-      "Saved report template in directory: ", subdir, "\n",
-      "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
-    ))
+      print(paste0(
+        "Saved report template in directory: ", subdir, "\n",
+        "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
+      ))
+    }
   } else {
     # Copy old template and rename for new year
     # Create copy of previous assessment
