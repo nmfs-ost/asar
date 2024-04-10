@@ -24,7 +24,7 @@ chunkr <- function(
   chunk <- paste0(
     "```{r} \n",
     # Add output options
-    if(!is.null(label)) "#| label: ", "'", label, "'", "\n",
+    if (!is.null(label)) "#| label: ", "'", label, "'", "\n",
     "#| echo: ", echo, " \n",
     "#| warning: ", warnings, " \n",
     "#| eval: ", eval, " \n"

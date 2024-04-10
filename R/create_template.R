@@ -84,7 +84,7 @@ create_template <- function(
   }
 
   # Name report
-  if(!is.null(type)){
+  if (!is.null(type)) {
     report_name <- paste0(
       type,
       "_"
@@ -113,7 +113,7 @@ create_template <- function(
   }
 
   if (!is.null(region)) {
-    if(dir.exists(subdir)==FALSE){
+    if (dir.exists(subdir) == FALSE) {
       dir.create(subdir, recursive = TRUE)
     }
   }
@@ -125,13 +125,13 @@ create_template <- function(
     files_to_copy <- list.files(current_folder)
 
     # Check if there are already files in the folder
-    if(length(files_to_copy)>0){
+    if (length(files_to_copy) > 0) {
       warning("There are files in this location.")
       question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
 
-      if(regexpr(question1, 'y', ignore.case = TRUE) == 1){
+      if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
-      } else if (regexpr(question1, 'n', ignore.case = TRUE) == 1){
+      } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
         print(paste0("Blank files for template sections were not copied into your directory.", ))
       }
     }
@@ -245,7 +245,8 @@ create_template <- function(
         sep = ""
       )
     } else if (include_affiliation == FALSE) {
-      yaml <- paste0(yaml, "format: \n",
+      yaml <- paste0(
+        yaml, "format: \n",
         "  ", format, ": \n",
         "  ", "  ", "template-partials: \n",
         "  ", "  ", "  ", "- title.tex \n",
@@ -304,9 +305,11 @@ create_template <- function(
 
     # Add chunk to load in assessment data
     ass_output <- chunkr(
-      paste0("convert_output(output.file = ", "'", model_results, "'",
-             ", model = ", "'", model, "'",
-             ", outdir = ", "'", resdir, "'", ")"),
+      paste0(
+        "convert_output(output.file = ", "'", model_results, "'",
+        ", model = ", "'", model, "'",
+        ", outdir = ", "'", resdir, "'", ")"
+      ),
       label = "model_output",
       eval = "false" # set false for testing this function in the template for now
     )
