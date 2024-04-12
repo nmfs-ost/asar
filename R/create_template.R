@@ -125,15 +125,19 @@ create_template <- function(
     files_to_copy <- list.files(current_folder)
 
     # Check if there are already files in the folder
-    if (length(files_to_copy) > 0) {
+    if (length(list.files(subdir)) > 0) {
       warning("There are files in this location.")
       question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
 
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-        file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
+        file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE) |> suppressWarnings()
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-        print(paste0("Blank files for template sections were not copied into your directory.", ))
+        print(paste0("Blank files for template sections were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder." ))
       }
+    } else if (length(list.files(subdir)) == 0){
+      file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
+    } else {
+      stop("None of the arugments match statement commands. Needs developer fix.")
     }
 
     # Part I
@@ -329,7 +333,7 @@ create_template <- function(
     # Create report template
 
     if (custom == FALSE) {
-      if (type == "OA" | type == "UP" | type == "MT") {
+      # if (type == "OA" | type == "UP" | type == "MT") {
         sections <- paste_child(
           c(
             "01_executive_summary.qmd",
@@ -358,38 +362,38 @@ create_template <- function(
             "appendix"
           )
         )
-      } else if (type == "RT" | type == "FULL" | is.null(type)) {
-        sections <- paste_child(
-          c(
-            "01_executive_summary.qmd",
-            "02_introduction.qmd",
-            "03_data.qmd",
-            "04_model.qmd",
-            "05_results.qmd",
-            "06_discussion.qmd",
-            "07_acknowledgements.qmd",
-            "08_references.qmd",
-            "09_tables.qmd",
-            "10_figures.qmd",
-            "11_appendix.qmd"
-          ),
-          label = c(
-            "executive_summary",
-            "introduction",
-            "data",
-            "model",
-            "results",
-            "discussion",
-            "acknowlesgements",
-            "references",
-            "tables",
-            "figures",
-            "appendix"
-          )
-        )
-      } else {
-        print("Type of assessment report is not defined")
-      }
+      # } else if (type == "RT" | type == "FULL" | is.null(type)) {
+        # sections <- paste_child(
+        #   c(
+        #     "01_executive_summary.qmd",
+        #     "02_introduction.qmd",
+        #     "03_data.qmd",
+        #     "04_model.qmd",
+        #     "05_results.qmd",
+        #     "06_discussion.qmd",
+        #     "07_acknowledgements.qmd",
+        #     "08_references.qmd",
+        #     "09_tables.qmd",
+        #     "10_figures.qmd",
+        #     "11_appendix.qmd"
+        #   ),
+        #   label = c(
+        #     "executive_summary",
+        #     "introduction",
+        #     "data",
+        #     "model",
+        #     "results",
+        #     "discussion",
+        #     "acknowlesgements",
+        #     "references",
+        #     "tables",
+        #     "figures",
+        #     "appendix"
+        #   )
+        # )
+      # } else {
+      #   print("Type of assessment report is not defined")
+      # }
     } else {
       # Option for building custom template
       # Create custom template from existing skeleton sections
@@ -452,6 +456,7 @@ create_template <- function(
         sections <- paste_child(section_list,
           label = section_list
         )
+        }
       }
     }
 
@@ -472,7 +477,7 @@ create_template <- function(
         "Saved report template in directory: ", subdir, "\n",
         "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
       ))
-    }
+
   } else {
     # Copy old template and rename for new year
     # Create copy of previous assessment
