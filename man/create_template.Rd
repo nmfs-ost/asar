@@ -25,9 +25,7 @@ create_template(
   resdir = NULL,
   model_results = NULL,
   model = NULL,
-  add_section = FALSE,
-  secdir = NULL,
-  new_section = NULL,
+  add_section = NULL,
   section_location = NULL,
   type = NULL,
   prev_year = NULL,
@@ -79,11 +77,7 @@ and species listed in function parameters}
 
 \item{model}{Type of assessment model that was used to assess the stock (i.e. "BAM", "SS", "AMAK", "ASAP", ect)}
 
-\item{add_section}{TRUE/FALSE; is there an additional section that the analyst wants to add to the skeleton? Default is false}
-
-\item{secdir}{Directory where the .qmd file is located (new file made by the analyst)}
-
-\item{new_section}{File name of the new section}
+\item{add_section}{File name of the new section}
 
 \item{section_location}{Location where the section should be added relative to the base skeleton document}
 
@@ -95,7 +89,7 @@ and species listed in function parameters}
 
 \item{custom_sections}{List of the sections you want to include in the custom template. Note: this only includes sections within
 'templates' > 'skeleton'. The section name can be used such as 'abstract' rather than the entire name '00_abstract.qmd'.
-If a new section is to be added, please also use parameters 'new_section', 'secdir', 'new_section', and 'section_location'}
+If a new section is to be added, please also use parameters 'ass_section', and 'section_location'}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.

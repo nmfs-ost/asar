@@ -23,16 +23,14 @@
 #' @param resdir Directory where the model results file(s) are located
 #' @param model_results Name of the model results file
 #' @param model Type of assessment model that was used to assess the stock (i.e. "BAM", "SS", "AMAK", "ASAP", ect)
-#' @param add_section TRUE/FALSE; is there an additional section that the analyst wants to add to the skeleton? Default is false
-#' @param secdir Directory where the .qmd file is located (new file made by the analyst)
-#' @param new_section File name of the new section
+#' @param add_section File name of the new section
 #' @param section_location Location where the section should be added relative to the base skeleton document
 #' @param type Type of stock assessment report - terminology will vary by region (content already configured by region)
 #' @param prev_year Year that previous assessment report was conducted in - for pulling previous assessment template
 #' @param custom TRUE/FALSE Build custom sectioning for the template rather than the default for stock assessments in your region
 #' @param custom_sections List of the sections you want to include in the custom template. Note: this only includes sections within
 #'        'templates' > 'skeleton'. The section name can be used such as 'abstract' rather than the entire name '00_abstract.qmd'.
-#'        If a new section is to be added, please also use parameters 'new_section', 'secdir', 'new_section', and 'section_location'
+#'        If a new section is to be added, please also use parameters 'ass_section', and 'section_location'
 #'
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
@@ -70,9 +68,7 @@ create_template <- function(
     resdir = NULL,
     model_results = NULL,
     model = NULL,
-    add_section = FALSE,
-    secdir = NULL,
-    new_section = NULL,
+    add_section = NULL,
     section_location = NULL,
     type = NULL,
     prev_year = NULL,
@@ -145,7 +141,7 @@ create_template <- function(
     # Create YAML header for document
     # Write title based on report type and region
     if (alt_title == FALSE) {
-      title <- write_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type)
+      title <- write_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type, year = year)
     } else if (alt_title == TRUE) {
       if (!exists(title)) {
         stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
@@ -333,7 +329,6 @@ create_template <- function(
     # Create report template
 
     if (custom == FALSE) {
-      # if (type == "OA" | type == "UP" | type == "MT") {
         sections <- paste_child(
           c(
             "01_executive_summary.qmd",
@@ -362,42 +357,10 @@ create_template <- function(
             "appendix"
           )
         )
-      # } else if (type == "RT" | type == "FULL" | is.null(type)) {
-        # sections <- paste_child(
-        #   c(
-        #     "01_executive_summary.qmd",
-        #     "02_introduction.qmd",
-        #     "03_data.qmd",
-        #     "04_model.qmd",
-        #     "05_results.qmd",
-        #     "06_discussion.qmd",
-        #     "07_acknowledgements.qmd",
-        #     "08_references.qmd",
-        #     "09_tables.qmd",
-        #     "10_figures.qmd",
-        #     "11_appendix.qmd"
-        #   ),
-        #   label = c(
-        #     "executive_summary",
-        #     "introduction",
-        #     "data",
-        #     "model",
-        #     "results",
-        #     "discussion",
-        #     "acknowlesgements",
-        #     "references",
-        #     "tables",
-        #     "figures",
-        #     "appendix"
-        #   )
-        # )
-      # } else {
-      #   print("Type of assessment report is not defined")
-      # }
     } else {
       # Option for building custom template
       # Create custom template from existing skeleton sections
-      if (add_section == FALSE) {
+      if (is.null(add_section)) {
         section_list <- add_base_section(custom_sections)
         sections <- paste_child(section_list,
           label = custom_sections
@@ -405,57 +368,86 @@ create_template <- function(
       } else {
         # Create custom template using existing sections and new sections from analyst
         # Add sections from package options
-        if (!is.null(custom_sections)) {
-          # Add base sections
-          sections <- paste_child(
-            c(
-              "01_executive_summary.qmd",
-              "02_introduction.qmd",
-              "03_data.qmd",
-              "04_model.qmd",
-              "05_results.qmd",
-              "06_discussion.qmd",
-              "07_acknowledgements.qmd",
-              "08_references.qmd",
-              "09_tables.qmd",
-              "10_figures.qmd",
-              "11_appendix.qmd"
-            ),
-            label = c(
-              "executive_summary",
-              "introduction",
-              "data",
-              "model",
-              "results",
-              "discussion",
-              "acknowlesgements",
-              "references",
-              "tables",
-              "figures",
-              "appendix"
+        if (is.null(custom_sections)) {
+          sec_list <- list("01_executive_summary.qmd",
+                           "02_introduction.qmd",
+                           "03_data.qmd",
+                           "04_model.qmd",
+                           "05_results.qmd",
+                           "06_discussion.qmd",
+                           "07_acknowledgements.qmd",
+                           "08_references.qmd",
+                           "09_tables.qmd",
+                           "10_figures.qmd",
+                           "11_appendix.qmd")
+          # Create new sections as .qmd in folder
+          for(i in 1:length(add_section)){
+            section_i_name <- paste0(add_section[i], ".qmd")
+            local_section <- forstringr::str_extract_part(section_location[i], "-", before = FALSE)
+            locality <- forstringr::str_extract_part(section_location[i], "-", before = TRUE)
+            section_i <- paste0("## ", stringr::str_to_title(sub("_", " ", add_section[i])), "\n",
+                                "\n",
+                                "[Insert text here]", "\n",
+                                "\n",
+                                chunkr("# Insert code", label = "example_chunk"), "\n"
             )
-          )
-          # Add new sections
-          for(i in new_section){
+            utils::capture.output(cat(section_i), file = paste0(subdir, "/", section_i_name), append = FALSE)
 
+            if(locality=="before"){
+              sec_list <- append(sec_list, section_i_name, after = (which(grepl(local_section, sec_list))-1))
+            } else if (locality=="after"){
+              sec_list <- append(sec_list, section_i_name, after = which(grepl(local_section, sec_list)))
+            } else if (locality=="in"){
+              stop("No available option for adding a new section 'in' another quarto document.")
+            } else {
+              stop("Invalid selection for placement of section. Please name the follow the format 'placement-section_name' for adding a new section.")
+            }
           }
-        } else {
-          section_list <- add_base_section(custom_sections)
-          sections <- paste_child(section_list,
-                                  label = custom_sections
+          # Create sections object to add into template
+          sections <- paste_child(
+            sec_list,
+            label = gsub(".qmd", "", unlist(sec_list))
           )
-        # Add new sections
-        if (is.null(new_section) | is.null(section_location)) stop("New sections and locations not defined.")
 
-        for (i in 1:length(new_section)) {
-          add_sec_new[i] <- paste0(secdir, "/", new_section[i])
-        }
+        } else {
+            # Add selected sections from base
+            sec_list <- add_base_section(custom_sections)
+            # Create new sections as .qmd in folder
+            for(i in 1:length(add_section)){
+              section_i_name <- paste0(add_section[i], ".qmd")
+              local_section <- forstringr::str_extract_part(section_location[i], "-", before = FALSE)
+              locality <- forstringr::str_extract_part(section_location[i], "-", before = TRUE)
+              section_i <- paste0("## ", stringr::str_to_title(sub("_", " ", add_section[i])), "\n",
+                                  "\n",
+                                  "[Insert text here]", "\n",
+                                  "\n",
+                                  chunkr("# Insert code", label = "example_chunk"), "\n"
+              )
+              utils::capture.output(cat(section_i), file = paste0(subdir, "/", section_i_name), append = FALSE)
 
-        append(section_list, add_sec_new)
-
-        sections <- paste_child(section_list,
-          label = section_list
-        )
+              if(locality=="before"){
+                if(which(grepl(local_section, sec_list))==FALSE){
+                  stop("The selected location was not added as a section to the template.")
+                } else {
+                  sec_list <- append(sec_list, section_i_name, before = which(grepl(local_section, sec_list)))
+                }
+              } else if (locality=="after"){
+                if(which(grepl(local_section, sec_list))==FALSE){
+                  stop("The selected relative location was not added as a section to the template.")
+                } else {
+                  sec_list <- append(sec_list, section_i_name, after = which(grepl(local_section, sec_list)))
+                }
+              } else if (locality=="in"){
+                stop("No available option for adding a new section 'in' another quarto document.")
+              } else {
+                stop("Invalid selection for placement of section. Please name the follow the format 'placement-section_name' for adding a new section.")
+              }
+            }
+          # Create sections object to add into template
+          sections <- paste_child(
+            sec_list,
+            label = gsub(".qmd", "", unlist(sec_list))
+          )
         }
       }
     }
@@ -478,6 +470,9 @@ create_template <- function(
         "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
       ))
 
+      # Open file for analyst
+      file.show(file.path(paste0(subdir, "/", report_name))) # this opens the new file, but also restarts the session
+
   } else {
     # Copy old template and rename for new year
     # Create copy of previous assessment
@@ -492,7 +487,7 @@ create_template <- function(
     # Edit skeleton to update year and results file
     skeleton <- list.files(subdir, pattern = "skeleton.qmd")
     # Open previous skeleton
-    file.show(file.path(paste0(subdir, "/", report_name))) # this opens the new file, but also restarts the session
+    file.show(file.path(paste0(subdir, "/", report_name)))
 
     svDialogs::dlg_message("Reminder: there are changes to be made when calling an old report. Please change the year in the citation and the location and name of the results file in the first chunk of the report.",
                            type = "ok")
