@@ -112,11 +112,11 @@ create_template <- function(
     subdir <- paste0("~/stock_assessment_templates", "/", office, "/", species, "/", year)
   }
 
-  if (!is.null(region)) {
+  # if (!is.null(region)) {
     if (dir.exists(subdir) == FALSE) {
       dir.create(subdir, recursive = TRUE)
     }
-  }
+  # }
 
   if (new_template == TRUE) {
     # Pull skeleton for sections
@@ -482,15 +482,20 @@ create_template <- function(
     # Copy old template and rename for new year
     # Create copy of previous assessment
     if (!is.null(region)) {
-      olddir <- here::here("inst", "templates", "archive", office, species, region, prev_year)
-      invisible(file.copy(file.path(here::here("inst", "templates", "archive", office, species, region, prev_year), list.files(olddir)), subdir, recursive = FALSE))
+      olddir <- paste0("~/stock_assessment_templates", "/", office, "/", species, "/", region, "/", prev_year)
+      invisible(file.copy(file.path(olddir, list.files(olddir)), subdir, recursive = FALSE))
     } else {
-      olddir <- here::here("inst", "templates", "archive", office, species, prev_year)
-      invisible(file.copy(file.path(here::here("inst", "templates", "archive", office, species, prev_year), list.files(olddir)), subdir, recursive = FALSE))
+      olddir <- paste0("~/stock_assessment_templates", "/", office, "/", species, "/", prev_year)
+      invisible(file.copy(file.path(olddir, list.files(olddir)), subdir, recursive = FALSE))
     }
 
-    # Open previous skeleton
+    # Edit skeleton to update year and results file
     skeleton <- list.files(subdir, pattern = "skeleton.qmd")
+    # Open previous skeleton
     file.show(file.path(paste0(subdir, "/", report_name))) # this opens the new file, but also restarts the session
+
+    svDialogs::dlg_message("Reminder: there are changes to be made when calling an old report. Please change the year in the citation and the location and name of the results file in the first chunk of the report.",
+                           type = "ok")
+
   }
 }
