@@ -23,6 +23,8 @@ chunkr(
 
 \item{eval}{Evaluate the chunk? default is true}
 
+\item{label}{What to name the chunk in the 'label:' section of the r code chunk; should be in snakecase}
+
 \item{add_option}{TRUE/FALSE add additional chunk options? default is FALSE}
 
 \item{chunk_op}{list of chunk options to add; example: c("output: true", "error: false)}
