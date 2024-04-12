@@ -400,7 +400,7 @@ create_template <- function(
       if (add_section == FALSE) {
         section_list <- add_base_section(custom_sections)
         sections <- paste_child(section_list,
-          label = sec_sel
+          label = custom_sections
         )
       } else {
         # Create custom template using existing sections and new sections from analyst
@@ -442,7 +442,7 @@ create_template <- function(
         } else {
           section_list <- add_base_section(custom_sections)
           sections <- paste_child(section_list,
-                                  label = sec_sel
+                                  label = custom_sections
           )
         # Add new sections
         if (is.null(new_section) | is.null(section_location)) stop("New sections and locations not defined.")

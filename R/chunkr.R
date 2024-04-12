@@ -1,6 +1,7 @@
 #' Write R chunk to template
 #'
 #' @param x content within the R chunk to be written contained inside quotation marks
+#' @param label What to name the chunk in the 'label:' section of the r code chunk; should be in snakecase
 #' @param echo repeat code into the document; default is false
 #' @param warnings Report warnings into console during render? Default is false
 #' @param eval Evaluate the chunk? default is true
