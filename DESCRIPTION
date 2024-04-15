@@ -16,6 +16,7 @@ Imports:
     here,
     officer,
     openxlsx,
+    stringr,
     svDialogs,
     utils
 Suggests: 

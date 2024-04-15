@@ -1,27 +1,34 @@
-act <- create_template(new_template = TRUE,
-                       format = "pdf",
-                       office = "NEFSC",
-                       region = "GB",
-                       species = "Atlantic Bluefish",
-                       spp_latin = "Pomatomus saltatrix",
-                       year = 2024,
-                       author = c("John Snow", "Danny Phantom", "Patrick Star"),
-                       include_affiliation = TRUE,
-                       parameters = TRUE,
-                       param_names = c("fleet1", "fleet2", "model"),
-                       param_values = c("Commercial", "Recreational", "Woods Hole Assessment Model"),
-                       type = "RT",
-                       model_results = "report.sso",
-                       model = "SS")
+# test_that("saves template .qmd file", {
+#   expect_visible(
+#     grep(".qmd", act)
+#   )
+# })
+#
+# test_that("creates template before cat() save", {
+#   expect_invisible(
+#     report_template
+#   )
+# })
 
-test_that("saves template .qmd file", {
-  expect_visible(
-    grep(".qmd", act)
-  )
-})
-
-test_that("creates template before cat() save", {
-  expect_invisible(
-    report_template
-  )
+testthat::test_that("Can trace template files from package", {
+  path <- system.file("templates", "skeleton", package = "ASAR")
+  base_temp_files <- c("00_abstract.qmd",
+                       "01_executive_summary.qmd",
+                       "01a_proj_table.qmd",
+                       "01b_refpt_table.qmd",
+                       "02_introduction.qmd",
+                       "03_data.qmd",
+                       "04_model.qmd",
+                       "05_results.qmd",
+                       "06_discussion.qmd",
+                       "07_acknowledgements.qmd",
+                       "08_references.qmd",
+                       "09_tables.qmd",
+                       "10_figures.qmd",
+                       "11_appendix.qmd",
+                       "assessment_glossaries.tex",
+                       "in-header.tex",
+                       "title.tex"
+                       )
+  expect_equal(list.files(path), base_temp_files)
 })

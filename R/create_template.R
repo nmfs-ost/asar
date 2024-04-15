@@ -40,13 +40,13 @@
 #' @export
 #'
 #' @examples create_template(
-#'   new_template = TRUE, format = "pdf",
-#'   office = "NEFSC", region = "GB", species = "Bluefish", spp_latin = "bluishfihesi",
-#'   year = 2024, author = c("John Snow", "Danny Phantom", "Patrick Star"),
-#'   include_affiliation = TRUE, parameters = TRUE, param_names = c("fleet1", "fleet2", "model"),
+#'   new_template = TRUE, format = "pdf", office = "NEFSC", region = "GB",
+#'   species = "Atlantic Bluefish", spp_latin = "Pomatomus saltatrix", year = 2024,
+#'   author = c("John Snow", "Danny Phantom", "Patrick Star"), include_affiliation = TRUE,
+#'   parameters = TRUE, param_names = c("fleet1", "fleet2", "model"),
 #'   param_values = c("Commercial", "Recreational", "Woods Hole Assessment Model"),
-#'   type = "RT"
-#' )
+#'   type = "RT", model_results = "results.Rdata", model = "WHAM")
+#'
 create_template <- function(
     new_template = TRUE,
     tempdir = here::here(),
@@ -429,7 +429,7 @@ create_template <- function(
                 if(which(grepl(local_section, sec_list))==FALSE){
                   stop("The selected location was not added as a section to the template.")
                 } else {
-                  sec_list <- append(sec_list, section_i_name, before = which(grepl(local_section, sec_list)))
+                  sec_list <- append(sec_list, section_i_name, after = (which(grepl(local_section, sec_list))-1))
                 }
               } else if (locality=="after"){
                 if(which(grepl(local_section, sec_list))==FALSE){
