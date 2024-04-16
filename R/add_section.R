@@ -21,9 +21,11 @@
 #'         as a child document.
 #' @export
 #'
-#' @examples add_section(sec_names = "Ecosystem Considerations", location = "after-discussion",
-#' other_sections = c("introduction.qmd", "model.qmd", "results.qmd", "discussion.qmd"),
-#' subdir = tempdir())
+#' @examples add_section(
+#'   sec_names = "Ecosystem Considerations", location = "after-discussion",
+#'   other_sections = c("introduction.qmd", "model.qmd", "results.qmd", "discussion.qmd"),
+#'   subdir = tempdir()
+#' )
 add_section <- function(
     sec_names = NULL,
     location = NULL,
@@ -33,29 +35,30 @@ add_section <- function(
   # before-section
   # after-section
   # in-section (will always append to the end of the section)
-  for(i in 1:length(sec_names)){
+  for (i in 1:length(sec_names)) {
     section_i_name <- paste0(sec_names[i], ".qmd")
     local_section <- forstringr::str_extract_part(location[i], "-", before = FALSE)
 
-    if(any("TRUE" %in% grepl("-", location))){
+    if (any("TRUE" %in% grepl("-", location))) {
       locality <- forstringr::str_extract_part(location[i], "-", before = TRUE)
-    } else if(any("TRUE" %in% grepl(" ", location))){
+    } else if (any("TRUE" %in% grepl(" ", location))) {
       locality <- forstringr::str_extract_part(location[i], " ", before = TRUE)
     }
 
-    section_i <- paste0("## ", stringr::str_to_title(sub("_", " ", sec_names[i])), "\n",
-                        "\n",
-                        "[Insert text here]", "\n",
-                        "\n",
-                        chunkr("# Insert code", label = "example_chunk"), "\n"
+    section_i <- paste0(
+      "## ", stringr::str_to_title(sub("_", " ", sec_names[i])), "\n",
+      "\n",
+      "[Insert text here]", "\n",
+      "\n",
+      chunkr("# Insert code", label = "example_chunk"), "\n"
     )
     utils::capture.output(cat(section_i), file = paste0(subdir, "/", section_i_name), append = FALSE)
 
-    if(locality=="before"){
-      other_sections <- append(other_sections, section_i_name, after = (which(grepl(local_section, other_sections))-1))
-    } else if (locality=="after"){
+    if (locality == "before") {
+      other_sections <- append(other_sections, section_i_name, after = (which(grepl(local_section, other_sections)) - 1))
+    } else if (locality == "after") {
       other_sections <- append(other_sections, section_i_name, after = which(grepl(local_section, other_sections)))
-    } else if (locality=="in"){
+    } else if (locality == "in") {
       stop("No available option for adding a new section 'in' another quarto document.", call. = FALSE)
     } else {
       stop("Invalid selection for placement of section. Please name the follow the format 'placement-section_name' for adding a new section.")

@@ -4,7 +4,8 @@ test_that("multiplication works", {
     office = "AFSC",
     species = "Alaskan Pollock",
     region = "Gulf of Alaska",
-    year = 2024)
+    year = 2024
+  )
   expect_equal(title_ex, "Assessment of the Alaskan Pollock Stock in the Gulf of Alaska")
 })
 
@@ -16,7 +17,8 @@ test_that("multiplication works", {
     region = "Georges Bank",
     year = 2024,
     type = "MT",
-    spp_latin = 'Pomatomus saltatrix')
+    spp_latin = "Pomatomus saltatrix"
+  )
   if (as.numeric(format(Sys.Date(), "%m")) %in% c(3, 4, 5)) {
     season <- "Spring"
   } else if (as.numeric(format(Sys.Date(), "%m")) %in% c(6, 7, 8)) {
@@ -26,7 +28,7 @@ test_that("multiplication works", {
   } else if (as.numeric(format(Sys.Date(), "%m")) %in% c(12, 1, 2)) {
     season <- "Winter"
   }
-  exp_title <- paste0("Management Track Assessment of Atlantic Bluefish (Pomatomus saltatrix) ", season," 2024")
+  exp_title <- paste0("Management Track Assessment of Atlantic Bluefish (Pomatomus saltatrix) ", season, " 2024")
   expect_equal(title_ex, exp_title)
 })
 
@@ -36,7 +38,8 @@ test_that("multiplication works", {
     office = "NWFSC",
     species = "Sablefish",
     region = "Washington",
-    year = 2024)
+    year = 2024
+  )
   expect_equal(title_ex, "Status of the Sablefish stock in U.S. waters off the coast of Washington in 2024")
 })
 
@@ -46,7 +49,8 @@ test_that("multiplication works", {
     office = "PIFSC",
     species = "Big7",
     spp_latin = "Latin name",
-    year = 2024)
+    year = 2024
+  )
   expect_equal(title_ex, "Stock Assessment for Big7 (Latin name) along the main Hawaiian Islands in 2024")
 })
 
@@ -57,7 +61,8 @@ test_that("multiplication works", {
     species = "Red Snapper",
     spp_latin = "Lutjanus campechanus",
     region = "South Atlantic",
-    year = 2024)
+    year = 2024
+  )
   expect_equal(title_ex, "SEDAR XX Assessment Report for Red Snapper (Lutjanus campechanus) in the South Atlantic in 2024")
 })
 
@@ -67,6 +72,7 @@ test_that("multiplication works", {
     office = "SWFSC",
     species = "Sardine",
     region = "California",
-    year = 2024)
+    year = 2024
+  )
   expect_equal(title_ex, "Status of the Sardine stock in U.S. waters off the coast of California in 2024")
 })

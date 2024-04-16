@@ -5,10 +5,12 @@ test_that("Adding new sections works.", {
     "results.qmd",
     "discussion.qmd"
   )
-  sections <- add_section(sec_names = c("abstract","ecosystem_considerations", "alt_models"),
-                          location = c("before-introduction", "after-discussion","after-model"),
-                          other_sections = sec_list,
-                          subdir = tempdir())
+  sections <- add_section(
+    sec_names = c("abstract", "ecosystem_considerations", "alt_models"),
+    location = c("before-introduction", "after-discussion", "after-model"),
+    other_sections = sec_list,
+    subdir = tempdir()
+  )
   exp_list <- c(
     "abstract.qmd",
     "introduction.qmd",
