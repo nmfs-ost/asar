@@ -75,7 +75,7 @@ write_title <- function(
       title <- paste0("Status of the ", species, " stock in U.S. waters off the coast of ", region, " in ", year)
     }
   } else {
-    print("office (FSC) is not defined. Please define which office you are associated with.")
+    warning("office (FSC) is not defined. Please define which office you are associated with.")
   }
 
   # Cohesive title for any stock assessment
