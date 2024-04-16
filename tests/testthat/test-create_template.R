@@ -1,15 +1,3 @@
-# test_that("saves template .qmd file", {
-#   expect_visible(
-#     grep(".qmd", act)
-#   )
-# })
-#
-# test_that("creates template before cat() save", {
-#   expect_invisible(
-#     report_template
-#   )
-# })
-
 testthat::test_that("Can trace template files from package", {
   path <- system.file("templates", "skeleton", package = "ASAR")
   base_temp_files <- c("00_abstract.qmd",
@@ -32,3 +20,4 @@ testthat::test_that("Can trace template files from package", {
                        )
   expect_equal(list.files(path), base_temp_files)
 })
+
