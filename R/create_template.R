@@ -368,8 +368,9 @@ create_template <- function(
       } else {
         # Create custom template using existing sections and new sections from analyst
         # Add sections from package options
+
         if (is.null(custom_sections)) {
-          sec_list <- list("01_executive_summary.qmd",
+          sec_list1 <- list("01_executive_summary.qmd",
                            "02_introduction.qmd",
                            "03_data.qmd",
                            "04_model.qmd",
@@ -380,73 +381,28 @@ create_template <- function(
                            "09_tables.qmd",
                            "10_figures.qmd",
                            "11_appendix.qmd")
-          # Create new sections as .qmd in folder
-          for(i in 1:length(add_section)){
-            section_i_name <- paste0(add_section[i], ".qmd")
-            local_section <- forstringr::str_extract_part(section_location[i], "-", before = FALSE)
-            locality <- forstringr::str_extract_part(section_location[i], "-", before = TRUE)
-            section_i <- paste0("## ", stringr::str_to_title(sub("_", " ", add_section[i])), "\n",
-                                "\n",
-                                "[Insert text here]", "\n",
-                                "\n",
-                                chunkr("# Insert code", label = "example_chunk"), "\n"
-            )
-            utils::capture.output(cat(section_i), file = paste0(subdir, "/", section_i_name), append = FALSE)
-
-            if(locality=="before"){
-              sec_list <- append(sec_list, section_i_name, after = (which(grepl(local_section, sec_list))-1))
-            } else if (locality=="after"){
-              sec_list <- append(sec_list, section_i_name, after = which(grepl(local_section, sec_list)))
-            } else if (locality=="in"){
-              stop("No available option for adding a new section 'in' another quarto document.")
-            } else {
-              stop("Invalid selection for placement of section. Please name the follow the format 'placement-section_name' for adding a new section.")
-            }
-          }
+          sec_list2 <- add_section(sec_names = add_section,
+                                   location = section_location,
+                                   other_sections = sec_list1,
+                                   subdir = subdir)
           # Create sections object to add into template
           sections <- paste_child(
-            sec_list,
-            label = gsub(".qmd", "", unlist(sec_list))
+            sec_list2,
+            label = gsub(".qmd", "", unlist(sec_list2))
           )
 
         } else {
             # Add selected sections from base
-            sec_list <- add_base_section(custom_sections)
+            sec_list1 <- add_base_section(custom_sections)
             # Create new sections as .qmd in folder
-            for(i in 1:length(add_section)){
-              section_i_name <- paste0(add_section[i], ".qmd")
-              local_section <- forstringr::str_extract_part(section_location[i], "-", before = FALSE)
-              locality <- forstringr::str_extract_part(section_location[i], "-", before = TRUE)
-              section_i <- paste0("## ", stringr::str_to_title(sub("_", " ", add_section[i])), "\n",
-                                  "\n",
-                                  "[Insert text here]", "\n",
-                                  "\n",
-                                  chunkr("# Insert code", label = "example_chunk"), "\n"
-              )
-              utils::capture.output(cat(section_i), file = paste0(subdir, "/", section_i_name), append = FALSE)
-
-              if(locality=="before"){
-                if(which(grepl(local_section, sec_list))==FALSE){
-                  stop("The selected location was not added as a section to the template.")
-                } else {
-                  sec_list <- append(sec_list, section_i_name, after = (which(grepl(local_section, sec_list))-1))
-                }
-              } else if (locality=="after"){
-                if(which(grepl(local_section, sec_list))==FALSE){
-                  stop("The selected relative location was not added as a section to the template.")
-                } else {
-                  sec_list <- append(sec_list, section_i_name, after = which(grepl(local_section, sec_list)))
-                }
-              } else if (locality=="in"){
-                stop("No available option for adding a new section 'in' another quarto document.")
-              } else {
-                stop("Invalid selection for placement of section. Please name the follow the format 'placement-section_name' for adding a new section.")
-              }
-            }
+            sec_list2 <- add_section(sec_names = add_section,
+                                     location = section_location,
+                                     other_sections = sec_list1,
+                                     subdir = subdir)
           # Create sections object to add into template
           sections <- paste_child(
-            sec_list,
-            label = gsub(".qmd", "", unlist(sec_list))
+            sec_list2,
+            label = gsub(".qmd", "", unlist(sec_list2))
           )
         }
       }
