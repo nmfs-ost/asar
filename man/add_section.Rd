@@ -40,7 +40,9 @@ as a child document.
 Add New Section to Template
 }
 \examples{
-add_section(sec_names = "Ecosystem Considerations", location = "after-discussion",
-other_sections = c("introduction.qmd", "model.qmd", "results.qmd", "discussion.qmd"),
-subdir = tempdir())
+add_section(
+  sec_names = "Ecosystem Considerations", location = "after-discussion",
+  other_sections = c("introduction.qmd", "model.qmd", "results.qmd", "discussion.qmd"),
+  subdir = tempdir()
+)
 }

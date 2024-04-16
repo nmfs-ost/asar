@@ -45,7 +45,8 @@
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"), include_affiliation = TRUE,
 #'   parameters = TRUE, param_names = c("fleet1", "fleet2", "model"),
 #'   param_values = c("Commercial", "Recreational", "Woods Hole Assessment Model"),
-#'   type = "RT", model_results = "results.Rdata", model = "WHAM")
+#'   type = "RT", model_results = "results.Rdata", model = "WHAM"
+#' )
 #'
 create_template <- function(
     new_template = TRUE,
@@ -109,9 +110,9 @@ create_template <- function(
   }
 
   # if (!is.null(region)) {
-    if (dir.exists(subdir) == FALSE) {
-      dir.create(subdir, recursive = TRUE)
-    }
+  if (dir.exists(subdir) == FALSE) {
+    dir.create(subdir, recursive = TRUE)
+  }
   # }
 
   if (new_template == TRUE) {
@@ -128,9 +129,9 @@ create_template <- function(
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE) |> suppressWarnings()
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-        print(paste0("Blank files for template sections were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder." ))
+        print(paste0("Blank files for template sections were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder."))
       }
-    } else if (length(list.files(subdir)) == 0){
+    } else if (length(list.files(subdir)) == 0) {
       file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
     } else {
       stop("None of the arugments match statement commands. Needs developer fix.")
@@ -329,34 +330,34 @@ create_template <- function(
     # Create report template
 
     if (custom == FALSE) {
-        sections <- paste_child(
-          c(
-            "01_executive_summary.qmd",
-            "02_introduction.qmd",
-            "03_data.qmd",
-            "04_model.qmd",
-            "05_results.qmd",
-            "06_discussion.qmd",
-            "07_acknowledgements.qmd",
-            "08_references.qmd",
-            "09_tables.qmd",
-            "10_figures.qmd",
-            "11_appendix.qmd"
-          ),
-          label = c(
-            "executive_summary",
-            "introduction",
-            "data",
-            "model",
-            "results",
-            "discussion",
-            "acknowlesgements",
-            "references",
-            "tables",
-            "figures",
-            "appendix"
-          )
+      sections <- paste_child(
+        c(
+          "01_executive_summary.qmd",
+          "02_introduction.qmd",
+          "03_data.qmd",
+          "04_model.qmd",
+          "05_results.qmd",
+          "06_discussion.qmd",
+          "07_acknowledgements.qmd",
+          "08_references.qmd",
+          "09_tables.qmd",
+          "10_figures.qmd",
+          "11_appendix.qmd"
+        ),
+        label = c(
+          "executive_summary",
+          "introduction",
+          "data",
+          "model",
+          "results",
+          "discussion",
+          "acknowlesgements",
+          "references",
+          "tables",
+          "figures",
+          "appendix"
         )
+      )
     } else {
       # Option for building custom template
       # Create custom template from existing skeleton sections
@@ -370,35 +371,40 @@ create_template <- function(
         # Add sections from package options
 
         if (is.null(custom_sections)) {
-          sec_list1 <- list("01_executive_summary.qmd",
-                           "02_introduction.qmd",
-                           "03_data.qmd",
-                           "04_model.qmd",
-                           "05_results.qmd",
-                           "06_discussion.qmd",
-                           "07_acknowledgements.qmd",
-                           "08_references.qmd",
-                           "09_tables.qmd",
-                           "10_figures.qmd",
-                           "11_appendix.qmd")
-          sec_list2 <- add_section(sec_names = add_section,
-                                   location = section_location,
-                                   other_sections = sec_list1,
-                                   subdir = subdir)
+          sec_list1 <- list(
+            "01_executive_summary.qmd",
+            "02_introduction.qmd",
+            "03_data.qmd",
+            "04_model.qmd",
+            "05_results.qmd",
+            "06_discussion.qmd",
+            "07_acknowledgements.qmd",
+            "08_references.qmd",
+            "09_tables.qmd",
+            "10_figures.qmd",
+            "11_appendix.qmd"
+          )
+          sec_list2 <- add_section(
+            sec_names = add_section,
+            location = section_location,
+            other_sections = sec_list1,
+            subdir = subdir
+          )
           # Create sections object to add into template
           sections <- paste_child(
             sec_list2,
             label = gsub(".qmd", "", unlist(sec_list2))
           )
-
         } else {
-            # Add selected sections from base
-            sec_list1 <- add_base_section(custom_sections)
-            # Create new sections as .qmd in folder
-            sec_list2 <- add_section(sec_names = add_section,
-                                     location = section_location,
-                                     other_sections = sec_list1,
-                                     subdir = subdir)
+          # Add selected sections from base
+          sec_list1 <- add_base_section(custom_sections)
+          # Create new sections as .qmd in folder
+          sec_list2 <- add_section(
+            sec_names = add_section,
+            location = section_location,
+            other_sections = sec_list1,
+            subdir = subdir
+          )
           # Create sections object to add into template
           sections <- paste_child(
             sec_list2,
@@ -408,27 +414,26 @@ create_template <- function(
       }
     }
 
-      # Combine template sections
-      report_template <- paste(yaml,
-        ass_output,
-        citation,
-        sections,
-        sep = "\n"
-      )
+    # Combine template sections
+    report_template <- paste(yaml,
+      ass_output,
+      citation,
+      sections,
+      sep = "\n"
+    )
 
-      print("___Created report template______")
+    print("___Created report template______")
 
-      # Save template as .qmd to render
-      utils::capture.output(cat(report_template), file = paste0(subdir, "/", report_name), append = FALSE)
+    # Save template as .qmd to render
+    utils::capture.output(cat(report_template), file = paste0(subdir, "/", report_name), append = FALSE)
 
-      print(paste0(
-        "Saved report template in directory: ", subdir, "\n",
-        "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
-      ))
+    print(paste0(
+      "Saved report template in directory: ", subdir, "\n",
+      "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
+    ))
 
-      # Open file for analyst
-      file.show(file.path(paste0(subdir, "/", report_name))) # this opens the new file, but also restarts the session
-
+    # Open file for analyst
+    file.show(file.path(paste0(subdir, "/", report_name))) # this opens the new file, but also restarts the session
   } else {
     # Copy old template and rename for new year
     # Create copy of previous assessment
@@ -446,7 +451,7 @@ create_template <- function(
     file.show(file.path(paste0(subdir, "/", report_name)))
 
     svDialogs::dlg_message("Reminder: there are changes to be made when calling an old report. Please change the year in the citation and the location and name of the results file in the first chunk of the report.",
-                           type = "ok")
-
+      type = "ok"
+    )
   }
 }
