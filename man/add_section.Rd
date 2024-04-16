@@ -4,10 +4,15 @@
 \alias{add_section}
 \title{Add New Section to Template}
 \usage{
-add_section(title = NULL, location = NULL, multi = FALSE)
+add_section(
+  sec_names = NULL,
+  location = NULL,
+  other_sections = NULL,
+  subdir = NULL
+)
 }
 \arguments{
-\item{title}{title of the subsection. Please keep this short as the template
+\item{sec_names}{section_names of the subsection. Please keep this short as the template
 will be created as a quarto document into your skeleton and saved
 later for reference. More than one section can be added. Please
 make a list if this is desired.}
@@ -20,7 +25,10 @@ add more than one section. Add the location as a list
 corresponding to the order of section names listed in the
 'title' parameter}
 
-\item{multi}{TRUE/FALSE, more than one section is being added}
+\item{other_sections}{List of other sections that the added sections will be combined with (if not NULL)}
+
+\item{subdir}{directory where the new sections will be saved - in the create_template
+fxn this defaults to the location where the template is saved}
 }
 \value{
 Add an additional section to the report template if it is not already
@@ -32,5 +40,7 @@ as a child document.
 Add New Section to Template
 }
 \examples{
-add_section(title = "Ecosystem Considerations", location = "after-discussion")
+add_section(sec_names = "Ecosystem Considerations", location = "after-discussion",
+other_sections = c("introduction.qmd", "model.qmd", "results.qmd", "discussion.qmd"),
+subdir = tempdir())
 }
