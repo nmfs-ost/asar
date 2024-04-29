@@ -1,4 +1,4 @@
-#' Create Stock Assessment Report Template
+#' Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'ASAR'))' in the console.
 #'
 #' @param new_template TRUE/FALSE; default is false otherwise if true, will pull the last saved stock assessment report skeleton
 #' @param tempdir Directory for the templates
@@ -307,7 +307,7 @@ create_template <- function(
     # Add chunk to load in assessment data
     ass_output <- chunkr(
       paste0(
-        "convert_output(output.file = ", "'", model_results, "'",
+        "convert_output(output.file = ", "c('", paste(model_results, collapse="', '"), "')",
         ", model = ", "'", model, "'",
         ", outdir = ", "'", resdir, "'", ")"
       ),
@@ -366,7 +366,7 @@ create_template <- function(
         sections <- paste_child(section_list,
           label = custom_sections
         )
-      } else {
+      } else { # custom = TRUE
         # Create custom template using existing sections and new sections from analyst
         # Add sections from package options
 
@@ -395,7 +395,7 @@ create_template <- function(
             sec_list2,
             label = gsub(".qmd", "", unlist(sec_list2))
           )
-        } else {
+        } else { # custom_sections explicit
           # Add selected sections from base
           sec_list1 <- add_base_section(custom_sections)
           # Create new sections as .qmd in folder
