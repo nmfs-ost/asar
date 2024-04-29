@@ -21,3 +21,4 @@ testthat::test_that("Can trace template files from package", {
   )
   expect_equal(list.files(path), base_temp_files)
 })
+
