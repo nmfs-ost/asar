@@ -26,14 +26,15 @@ generate_citation <- function(
 
   # Pull affiliation of first author
   if(length(unlist(strsplit(author[1], " ")))==3){
-  primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
-    dplyr::filter(last == unlist(strsplit(author[1], " "))[3])
+    primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
+      dplyr::filter(last == unlist(strsplit(author[1], " "))[3])
   } else {
     primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
       dplyr::filter(last == unlist(strsplit(author[1], " "))[2])
   }
 
-  if(nrow(primauth_loc>1)){
+  # Check and fix if there is more than one author with the same last name
+  if(nrow(primauth_loc)>1){
     primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
       dplyr::filter(last == unlist(strsplit(author[1], " "))[1])
   }
