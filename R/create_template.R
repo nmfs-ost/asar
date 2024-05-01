@@ -232,11 +232,12 @@ create_template <- function(
       "date: today", "\n"
     )
 
-    # Formating
+    # Formatting
 
     if (include_affiliation == TRUE) {
       yaml <- paste(yaml, "format: \n",
         "  ", format, ": \n",
+        "  ", "  ", "toc: ", "true \n",
         "  ", "  ", "keep-tex: ", "true \n",
         "  ", "  ", "template-partials: \n",
         # "  ", "  ", "  ", " - graphics.tex \n",
@@ -249,6 +250,7 @@ create_template <- function(
       yaml <- paste0(
         yaml, "format: \n",
         "  ", format, ": \n",
+        "  ", "  ", "toc: ", "true \n",
         "  ", "  ", "template-partials: \n",
         "  ", "  ", "  ", "- title.tex \n",
         "  ", "  ", "keep-tex: true \n"
