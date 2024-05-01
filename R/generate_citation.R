@@ -24,9 +24,22 @@ generate_citation <- function(
     off_title <- "NOAA Fisheries Science Center"
   }
 
-  office1 <- office
+  # Pull affiliation of first author
+  if(length(unlist(strsplit(author[1], " ")))==3){
+  primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
+    dplyr::filter(last == unlist(strsplit(author[1], " "))[3])
+  } else {
+    primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
+      dplyr::filter(last == unlist(strsplit(author[1], " "))[2])
+  }
+
+  if(nrow(primauth_loc>1)){
+    primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
+      dplyr::filter(last == unlist(strsplit(author[1], " "))[1])
+  }
+
   office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "ASAR", mustWork = TRUE)) |>
-    dplyr::filter(affiliation == office1)
+    dplyr::filter(affiliation == primauth_loc$office)
 
   # Check
   if (nrow(office_loc) > 1) {
