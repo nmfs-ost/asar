@@ -1,4 +1,4 @@
-testthat::test_that("Can trace template files from package", {
+test_that("Can trace template files from package", {
   path <- system.file("templates", "skeleton", package = "ASAR")
   base_temp_files <- c(
     "00_abstract.qmd",
@@ -22,3 +22,13 @@ testthat::test_that("Can trace template files from package", {
   expect_equal(list.files(path), base_temp_files)
 })
 
+# Test it creates the current full template before cat() and save
+# This will need to be update
+
+test_that("Create accurrate skeleton script."{
+  test_skeleton <- create_template(
+
+  )
+
+  verify_skeleton <- ""
+})
