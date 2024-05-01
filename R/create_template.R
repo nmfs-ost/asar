@@ -23,7 +23,7 @@
 #' @param resdir Directory where the model results file(s) are located
 #' @param model_results Name of the model results file
 #' @param model Type of assessment model that was used to assess the stock (i.e. "BAM", "SS", "AMAK", "ASAP", ect)
-#' @param add_section File name of the new section
+#' @param new_section File name of the new section
 #' @param section_location Location where the section should be added relative to the base skeleton document
 #' @param type Type of stock assessment report - terminology will vary by region (content already configured by region)
 #' @param prev_year Year that previous assessment report was conducted in - for pulling previous assessment template
@@ -69,7 +69,7 @@ create_template <- function(
     resdir = NULL,
     model_results = NULL,
     model = NULL,
-    add_section = NULL,
+    new_section = NULL,
     section_location = NULL,
     type = NULL,
     prev_year = NULL,
@@ -363,7 +363,7 @@ create_template <- function(
     } else {
       # Option for building custom template
       # Create custom template from existing skeleton sections
-      if (is.null(add_section)) {
+      if (is.null(new_section)) {
         section_list <- add_base_section(custom_sections)
         sections <- paste_child(section_list,
           label = custom_sections
@@ -387,7 +387,7 @@ create_template <- function(
             "11_appendix.qmd"
           )
           sec_list2 <- add_section(
-            sec_names = add_section,
+            sec_names = new_section,
             location = section_location,
             other_sections = sec_list1,
             subdir = subdir
@@ -402,7 +402,7 @@ create_template <- function(
           sec_list1 <- add_base_section(custom_sections)
           # Create new sections as .qmd in folder
           sec_list2 <- add_section(
-            sec_names = add_section,
+            sec_names = new_section,
             location = section_location,
             other_sections = sec_list1,
             subdir = subdir
