@@ -1,0 +1,25 @@
+---
+title: "Regional Workflows"
+---
+
+## Regional Workflows
+
+NOAA Fisheries consists of six regional fishery science centers:
+
+Alaska Fisheries Science Center
+
+Northeast Fisheries Science Center
+
+Northwest Fisheries Science Center
+
+Pacific Islands Fisheries Science Center
+
+Southeast Fisheries Science Center
+
+Southwest Fisheries Science Center
+
+Each office conducts fisheries stock assessments for species in their region and thus different process for evaluating stock status and reporting. Each region's process has been summarized in a NOAA technical memo (link when published)[].
+
+## Regional Stock Assessment Workflows
+
+[Insert copy of tech memo?]

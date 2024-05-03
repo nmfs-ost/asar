@@ -1,0 +1,57 @@
+project:
+  type: website
+
+website:
+  page-navigation: true
+  title: "ASAR"
+  site-url: "https://schiano-noaa.github.io/ASAR"
+  repo-url: "https://github.com/Schiano-NOAA/ASAR"
+  repo-actions: [edit, source, issue]
+  favicon: website/favicon.ico
+
+  page-footer:
+    right: "This page is built with [Quarto](https://quarto.org/)."
+    left: "&copy; CC-1.0"
+
+  sidebar:
+    background: "#D9E3E4"
+    logo: "https://raw.githubusercontent.com/nmfs-opensci/assets/main/logo/nmfs-opensci-logo3.png"
+    favicon: website/favicon.ico
+    pinned: true
+    align: center
+    tools:
+      - icon: globe
+        href: https://schiano-noaa.github.io/ASAR
+        text: "Automated Stock Assessment Reporting"
+      - icon: github
+        href: https://github.com/Schiano-NOAA/ASAR
+        text: "ASAR"
+
+    style: "docked"
+    search: true
+    collapse-level: 1
+    contents:
+      - href: website/index.qmd
+        text: Home
+      - href: website/content/add-content.qmd
+        text: Manual
+      - href: website/content/regional_workflows.qmd
+        text: Regional Workflows
+      - href: website/content/acknowledgements.qmd
+        text: Acknowledgements
+
+format:
+  html:
+    theme:
+      light: [cosmo, theme.scss]
+      dark: [cosmo, theme-dark.scss]
+    code-copy: true
+    code-overflow: wrap
+    toc: true
+
+
+filters:
+  - website/include-files.lua
+  - website/quarto
+
+
