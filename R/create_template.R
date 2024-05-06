@@ -309,7 +309,7 @@ create_template <- function(
     # Add chunk to load in assessment data
     ass_output <- chunkr(
       paste0(
-        "convert_output(output.file = ", "c('", paste(model_results, collapse="', '"), "')",
+        "convert_output(output.file = ", "c('", paste(model_results, collapse = "', '"), "')",
         ", model = ", "'", model, "'",
         ", outdir = ", "'", resdir, "'", ")"
       ),
