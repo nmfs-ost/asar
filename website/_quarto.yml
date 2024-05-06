@@ -31,13 +31,13 @@ website:
     search: true
     collapse-level: 1
     contents:
-      - href: website/index.qmd
+      - href: index.qmd
         text: Home
-      - href: website/content/manual.qmd
+      - href: content/manual.qmd
         text: Manual
-      - href: website/content/regional_workflows.qmd
+      - href: content/regional_workflows.qmd
         text: Regional Workflows
-      - href: website/content/acknowledgements.qmd
+      - href: content/acknowledgements.qmd
         text: Acknowledgements
 
 format:
@@ -51,6 +51,6 @@ format:
 
 
 filters:
-  - website/include-files.lua
-  - website/quarto
+  - include-files.lua
+  - quarto
 

@@ -1,0 +1,92 @@
+[
+  {
+    "objectID": "content/acknowledgements.html",
+    "href": "content/acknowledgements.html",
+    "title": "Acknowledgments",
+    "section": "",
+    "text": "This page and GitHub Action was based on the tutorial by Openscapes quarto-website-tutorial by Julia Lowndes and Stefanie Butland.",
+    "crumbs": [
+      "Acknowledgements"
+    ]
+  },
+  {
+    "objectID": "content/regional_workflows.html",
+    "href": "content/regional_workflows.html",
+    "title": "Regional Workflows",
+    "section": "",
+    "text": "NOAA Fisheries consists of six regional fishery science centers:\nAlaska Fisheries Science Center\nNortheast Fisheries Science Center\nNorthwest Fisheries Science Center\nPacific Islands Fisheries Science Center\nSoutheast Fisheries Science Center\nSouthwest Fisheries Science Center\nEach office conducts fisheries stock assessments for species in their region and thus different process for evaluating stock status and reporting. Each region’s process has been summarized in a NOAA technical memo (link when published)[].",
+    "crumbs": [
+      "Regional Workflows"
+    ]
+  },
+  {
+    "objectID": "content/regional_workflows.html#regional-workflows",
+    "href": "content/regional_workflows.html#regional-workflows",
+    "title": "Regional Workflows",
+    "section": "",
+    "text": "NOAA Fisheries consists of six regional fishery science centers:\nAlaska Fisheries Science Center\nNortheast Fisheries Science Center\nNorthwest Fisheries Science Center\nPacific Islands Fisheries Science Center\nSoutheast Fisheries Science Center\nSouthwest Fisheries Science Center\nEach office conducts fisheries stock assessments for species in their region and thus different process for evaluating stock status and reporting. Each region’s process has been summarized in a NOAA technical memo (link when published)[].",
+    "crumbs": [
+      "Regional Workflows"
+    ]
+  },
+  {
+    "objectID": "content/regional_workflows.html#regional-stock-assessment-workflows",
+    "href": "content/regional_workflows.html#regional-stock-assessment-workflows",
+    "title": "Regional Workflows",
+    "section": "Regional Stock Assessment Workflows",
+    "text": "Regional Stock Assessment Workflows\n[Insert copy of tech memo?]",
+    "crumbs": [
+      "Regional Workflows"
+    ]
+  },
+  {
+    "objectID": "content/manual.html#workflow",
+    "href": "content/manual.html#workflow",
+    "title": "Tool Manual",
+    "section": "Workflow",
+    "text": "Workflow\nHere will be the location for the workflow and navigation of using this R package.",
+    "crumbs": [
+      "Manual"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "NOAA Automated Stock Assessment Reporting (ASAR)",
+    "section": "",
+    "text": "Test change to page.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#getting-started",
+    "href": "index.html#getting-started",
+    "title": "NOAA Automated Stock Assessment Reporting (ASAR)",
+    "section": "",
+    "text": "Test change to page.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#the-workflow",
+    "href": "index.html#the-workflow",
+    "title": "NOAA Automated Stock Assessment Reporting (ASAR)",
+    "section": "The Workflow",
+    "text": "The Workflow",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#additional-features",
+    "href": "index.html#additional-features",
+    "title": "NOAA Automated Stock Assessment Reporting (ASAR)",
+    "section": "Additional Features",
+    "text": "Additional Features\nAdding test documentation for deploying pages.",
+    "crumbs": [
+      "Home"
+    ]
+  }
+]
