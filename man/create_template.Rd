@@ -25,7 +25,7 @@ create_template(
   resdir = NULL,
   model_results = NULL,
   model = NULL,
-  add_section = NULL,
+  new_section = NULL,
   section_location = NULL,
   type = NULL,
   prev_year = NULL,
@@ -77,7 +77,7 @@ and species listed in function parameters}
 
 \item{model}{Type of assessment model that was used to assess the stock (i.e. "BAM", "SS", "AMAK", "ASAP", ect)}
 
-\item{add_section}{File name of the new section}
+\item{new_section}{File name of the new section}
 
 \item{section_location}{Location where the section should be added relative to the base skeleton document}
 

@@ -1,5 +1,5 @@
 # AFSC Tier Table
-afsc_tier_table <- function(){
+afsc_tier_table <- function() {
   level <- c(
     "Level 1: Normal",
     "Level 2: Substantially Increased Concerns",
@@ -32,11 +32,13 @@ afsc_tier_table <- function(){
   )
   tier_df <- data.frame(level, ass_considerations, popdy_considerations, eco_considerations, fish_performance)
   flextable::flextable(tier_df) |>
-    flextable::set_header_labels(level = "",
-                                 ass_considerations = "Assessment-related considerations",
-                                 popdy_considerations = "Population dynamics considerations",
-                                 eco_considerations = "Environmental/ecosystems considerations",
-                                 fish_performance = "Fishery Performance") |>
+    flextable::set_header_labels(
+      level = "",
+      ass_considerations = "Assessment-related considerations",
+      popdy_considerations = "Population dynamics considerations",
+      eco_considerations = "Environmental/ecosystems considerations",
+      fish_performance = "Fishery Performance"
+    ) |>
     flextable::italic(part = "header") |>
     flextable::bold(part = "header") |>
     flextable::hline(i = c(1, 2, 3))
