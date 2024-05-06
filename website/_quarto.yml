@@ -15,17 +15,17 @@ website:
 
   sidebar:
     background: "#D9E3E4"
-    logo: "https://raw.githubusercontent.com/nmfs-opensci/assets/main/logo/nmfs-opensci-logo3.png"
+    logo: content/images/"NOAA_FISHERIES_logoH.png"
     favicon: website/favicon.ico
     pinned: true
     align: center
     tools:
       - icon: globe
-        href: https://nmfs-opensci.github.io
-        text: "NMFS Open Science"
+        href: schiano-noaa.github.io/ASAR/
+        text: "Stock Assessment Report Templates"
       - icon: github
-        href: https://github.com/nmfs-opensci
-        text: "NMFS OpenSci"
+        href: https://github.com/Schiano-NOAA/ASAR
+        text: "ASAR"
 
     style: "docked"
     search: true
