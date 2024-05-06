@@ -21,11 +21,11 @@ website:
     align: center
     tools:
       - icon: globe
-        href: https://schiano-noaa.github.io/ASAR
-        text: "Automated Stock Assessment Reporting"
+        href: https://nmfs-opensci.github.io
+        text: "NMFS Open Science"
       - icon: github
-        href: https://github.com/Schiano-NOAA/ASAR
-        text: "ASAR"
+        href: https://github.com/nmfs-opensci
+        text: "NMFS OpenSci"
 
     style: "docked"
     search: true
@@ -33,7 +33,7 @@ website:
     contents:
       - href: website/index.qmd
         text: Home
-      - href: website/content/add-content.qmd
+      - href: website/content/manual.qmd
         text: Manual
       - href: website/content/regional_workflows.qmd
         text: Regional Workflows
@@ -53,5 +53,4 @@ format:
 filters:
   - website/include-files.lua
   - website/quarto
-
 
