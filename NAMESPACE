@@ -2,6 +2,7 @@
 
 export(add_base_section)
 export(add_section)
+export(add_theme)
 export(chunkr)
 export(convert_output)
 export(create_template)
