@@ -28,4 +28,5 @@ add_theme <- function(x){
     theme_obj <- x |>
       kableExtra::kable_classic()
   }
+  return(theme_obj)
 }
