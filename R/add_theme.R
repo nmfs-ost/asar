@@ -9,23 +9,24 @@
 #'
 #' @examples add_theme(ggplot2::ggplot(data = cars,aes(x=speed,y=dist))+ggplot2::geom_point())
 add_theme <- function(x){
-  if(class(x) %in% c("gg", "ggplot")){
+  # this is bad coding practice, but what I have for now
+  if (class(x)[1] == "gg" | class(x)[2] == "ggplot"){
     theme_obj <- x +
       theme_classic()
       # theme()
   }
 
-  if(class(x)=="flextable"){
+  if (class(x) == "flextable"){
     theme_obj <- x
 
   }
 
   # gt object
-  if(class(x)=="gt_tbl"){
+  if (class(x) == "gt_tbl"){
     theme_obj <- x
   }
 
-  if(class(x)[1] %in% c("kableExtra", "knitr_kable")){
+  if (class(x)[1] == "kableExtra" | class(x)[2] == "knitr_kable"){
     theme_obj <- x
   }
   return(theme_obj)
