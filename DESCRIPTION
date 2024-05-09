@@ -9,6 +9,7 @@ Description: Build a full or update stock assessment report for any stock
     based on their regional science center, species, area, ect.
 License: MIT + file LICENSE
 Imports: 
+    cli,
     dplyr,
     flextable,
     forstringr,
@@ -18,6 +19,7 @@ Imports:
     openxlsx,
     stringr,
     svDialogs,
+    trackdown,
     utils
 Suggests: 
     testthat (>= 3.0.0)
