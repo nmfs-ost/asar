@@ -8,11 +8,11 @@ test_that("Adding new sections works.", {
   )
   exp_list <- list(
     "abstract.qmd",
-    "02_introduction.qmd",
-    "04_model.qmd",
+    "introduction.qmd",
+    "model.qmd",
     "alt_models.qmd",
-    "05_results.qmd",
-    "06_discussion.qmd",
+    "results.qmd",
+    "discussion.qmd",
     "ecosystem_considerations.qmd"
   )
   expect_equal(sections, exp_list)
@@ -27,9 +27,9 @@ test_that("Adding new sections works.", {
     subdir = tempdir()
   )
   exp_list <- list(
-    "02_introduction.qmd", "03_data.qmd", "04_model.qmd", "Harvest_Control_Rules.qmd",
+    "introduction.qmd", "data.qmd", "model.qmd", "Harvest_Control_Rules.qmd",
     "Regional_Management_Considerations.qmd", "Research_and_Data_Needs.qmd",
-    "07_acknowledgements.qmd", "09_tables.qmd", "10_figures.qmd", "11_appendix.qmd", "08_references.qmd"
+    "acknowledgements.qmd", "tables.qmd", "figures.qmd", "appendix.qmd", "references.qmd"
   )
   expect_equal(sections, exp_list)
 })

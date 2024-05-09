@@ -1,7 +1,11 @@
 # test_that("formatting applied to ggplot", {
-#   test_fig <- ggplot2::ggplot(data = cars, aes(x = speed, y = dist)) +
+#   test_fig <- ggplot2::ggplot(data = cars, ggplot2::aes(x = speed, y = dist)) +
 #     ggplot2::geom_point()+
 #     ggplot2::theme_classic()
+#   test_fxn <- add_theme(
+#                 ggplot2::ggplot(data = cars, ggplot2::aes(x = speed, y = dist)) +
+#                 ggplot2::geom_point()
+#               )
 #
 #   expect_equal(2 * 2, 4)
 # })
