@@ -7,7 +7,7 @@
 #' ggplot (ggplot2), base r plot, flextable (flextable), gt tables (gt), and kable tables (kableExtra).
 #' @export
 #'
-#' @examples add_theme(ggplot2::ggplot(data = cars,aes(x=speed,y=dist))+geom_point())
+#' @examples add_theme(ggplot2::ggplot(data = cars,aes(x=speed,y=dist))+ggplot2::geom_point())
 add_theme <- function(x){
   if(class(x) %in% c("gg", "ggplot")){
     theme_obj <- x +
