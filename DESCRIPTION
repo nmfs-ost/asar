@@ -13,6 +13,7 @@ Imports:
     dplyr,
     flextable,
     forstringr,
+    ggplot2,
     gridExtra,
     here,
     officer,
