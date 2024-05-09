@@ -37,6 +37,8 @@ website:
         text: Manual
       - href: content/regional_workflows.qmd
         text: Regional Workflows
+      - href: content/markdown_notation.qmd
+        text: Markdown
       - href: content/acknowledgements.qmd
         text: Acknowledgements
 
