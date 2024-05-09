@@ -334,17 +334,17 @@ create_template <- function(
     if (custom == FALSE) {
       sections <- paste_child(
         c(
-          "01_executive_summary.qmd",
-          "02_introduction.qmd",
-          "03_data.qmd",
-          "04_model.qmd",
-          "05_results.qmd",
-          "06_discussion.qmd",
-          "07_acknowledgements.qmd",
-          "08_references.qmd",
-          "09_tables.qmd",
-          "10_figures.qmd",
-          "11_appendix.qmd"
+          "executive_summary.qmd",
+          "introduction.qmd",
+          "data.qmd",
+          "model.qmd",
+          "results.qmd",
+          "discussion.qmd",
+          "acknowledgements.qmd",
+          "references.qmd",
+          "tables.qmd",
+          "figures.qmd",
+          "appendix.qmd"
         ),
         label = c(
           "executive_summary",
@@ -374,17 +374,17 @@ create_template <- function(
 
         if (is.null(custom_sections)) {
           sec_list1 <- list(
-            "01_executive_summary.qmd",
-            "02_introduction.qmd",
-            "03_data.qmd",
-            "04_model.qmd",
-            "05_results.qmd",
-            "06_discussion.qmd",
-            "07_acknowledgements.qmd",
-            "08_references.qmd",
-            "09_tables.qmd",
-            "10_figures.qmd",
-            "11_appendix.qmd"
+            "executive_summary.qmd",
+            "introduction.qmd",
+            "data.qmd",
+            "model.qmd",
+            "results.qmd",
+            "discussion.qmd",
+            "acknowledgements.qmd",
+            "references.qmd",
+            "tables.qmd",
+            "figures.qmd",
+            "appendix.qmd"
           )
           sec_list2 <- add_section(
             sec_names = new_section,
