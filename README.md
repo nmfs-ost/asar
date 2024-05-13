@@ -6,9 +6,8 @@
 
 This package is currently in development.
 
-Use this repository as one would a package. Download using the directions below and fill in `create_template.R` function with the desired parameters (follow example below) to create a template quarto document to be rendered to create a stock assessment report.
-  
-Please refer to examples below on how to utilize both options.
+Download using the directions below and fill in `create_template.R` function with the desired parameters (follow example below) to create a template quarto document to be rendered to create a stock assessment report.
+
 
 The goal of ASAR is to automate stock assessment reports for NOAA science centers so they are reproducible and cohesive across the nation. This project intends to create a streamlined workflow that allows the analyst to create a customized report tailored to their needs and requirements by the SSC, council, or other regional management organizations. 
 
@@ -45,8 +44,8 @@ ASAR::create_template(
   include_affiliation = TRUE,
   parameters = FALSE,
   type = "RT",
-  model_results = "results.Rdata",
-  model = "WHAM"
+  model_results = "results.SS",
+  model = "SS"
 )
 ```
 
