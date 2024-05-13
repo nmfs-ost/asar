@@ -435,7 +435,22 @@ create_template <- function(
     ))
 
     # Open file for analyst
-    file.show(file.path(paste0(subdir, "/", report_name))) # this opens the new file, but also restarts the session
+    file.show(file.path(paste0(subdir, "/", report_name)))
+
+    res <- svDialogs::dlg_message("Do you want to upload your template to google drive?", # If you select no, you can still upload them later using `upload_files()` function in the ASAR package.,
+                           type = "yesno"
+    )$res
+
+    if(res == "yes"){
+      # Proceed to upload quarto files to google drive
+      upload_files(office = office,
+                   region = region,
+                   species = species,
+                   open = FALSE)
+    } else if (res == "no"){
+      cat("Template not uploaded to google drive. If you want to upload them later, use `upload_files(...)` function.")
+    }
+
   } else {
     # Copy old template and rename for new year
     # Create copy of previous assessment
