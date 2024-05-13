@@ -1,10 +1,10 @@
-update_text <- function(
+update_files <- function(
     office = NULL,
     region = NULL,
     species = NULL,
     year = NULL,
     force = FALSE) {
-  # Kind of wrapper function for trackdown::download_file so all sections in assessment document are updated
+  # Kind of wrapper function for trackdown::update_file so all sections in assessment document are updated
 
   # Files in skeleton
   if (!is.null(region)) {
@@ -16,7 +16,7 @@ update_text <- function(
   all_sections <- list.files(subdir, pattern = ".qmd")
   sections <- all_sections[!grepl("skeleton.qmd", all_sections)]
 
-  # Downloading version of google doc content onto local drive
+  # Change google files with current local file
   # Will overwrite current content - add warning box
 
   # Check if want to proceed bc this overwrites the local file(s)
