@@ -434,9 +434,6 @@ create_template <- function(
       "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
     ))
 
-    # Open file for analyst
-    file.show(file.path(paste0(subdir, "/", report_name)))
-
     res <- svDialogs::dlg_message("Do you want to upload your template to google drive?", # If you select no, you can still upload them later using `upload_files()` function in the ASAR package.,
                            type = "yesno"
     )$res
@@ -450,6 +447,9 @@ create_template <- function(
     } else if (res == "no"){
       cat("Template not uploaded to google drive. If you want to upload them later, use `upload_files(...)` function.")
     }
+
+    # Open file for analyst
+    file.show(file.path(paste0(subdir, "/", report_name)))
 
   } else {
     # Copy old template and rename for new year
