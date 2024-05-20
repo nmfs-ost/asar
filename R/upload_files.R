@@ -19,6 +19,7 @@
 #'
 #' @param office NOAA line office analyst is associated with
 #' @param region Region/state stock is associated with if applicable.
+#' @param species Target species for assessment
 #' @param shared_drive character. The name of a Google Drive shared drive
 #'   (optional).
 #' @param hide_code logical value indicating whether to remove code from the

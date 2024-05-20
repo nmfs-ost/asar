@@ -300,7 +300,8 @@ get_instructions <- function(file_info, hide_code){
     "Once the review is over accept all changes: Tools -> Review suggested edits -> Accept all.",
     "You must not modify or remove these lines, we will do it for you ;)",
     placeholder2,
-    "#----End Instructions----#")
+    "#----End Instructions----#",
+    "\n")
 
   return(instructions)
 }
