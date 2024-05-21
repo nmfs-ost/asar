@@ -53,7 +53,7 @@ download_files <- function(office = NULL,
   if(interactive() && isFALSE(force)){
     response <- utils::menu(
       c("Yes", "No"),
-      title = paste("Downloading the file from Google Drive will overwrite local file.",
+      title = paste("Downloading files from Google Drive will overwrite local file.",
                     "Do you want to proceed?"))
 
     if (response == 2L) {
