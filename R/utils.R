@@ -290,7 +290,8 @@ get_instructions <- function(file_info, hide_code){
                          "TRUE" = 'Please do not remove placeholders of type "[[chunk-<name>]]" or "[[document-header]]"',
                          "FALSE" = NULL)
   placeholder2 <- c(sprintf("FILE-NAME: %s",file_info$file_name),
-                    sprintf("HIDE-CODE: %s", hide_code))
+                    sprintf("HIDE-CODE: %s", hide_code),
+                    sprintf("DATE-UPLOAD: %s", Sys.Date()))
 
   instructions <- c(
     "#----Trackdown Instructions----#",
@@ -306,6 +307,177 @@ get_instructions <- function(file_info, hide_code){
   return(instructions)
 }
 
+#----    remove_google_comments    ----
+
+#' Remove Google Comments
+#'
+#' Remove Google comments from the downloaded file. Comments are all listed at
+#' the bottom of the file. They are of type "[a]my comment" and the tag is also
+#' present in the text. Tags have character indexes.
+#'
+#' @param document document character vector with the lines of the document
+#'
+#' @return document document character vector with the lines of the document
+#' @noRd
+#'
+#' @examples
+#' document <- readLines("tests/testthat/test_files/examples/Comments-restore.Rmd")
+#' remove_google_comments(document)
+#'
+
+remove_google_comments <- function(document){
+
+  # Identify comments
+  line_comments <- grep("^\\[[a-z]+\\]", x = document, perl = TRUE)
+
+  # If the last line is not a comment return
+  if(!(length(document)) %in% line_comments){
+    start_process("No Google comments found")
+    return(document)
+  }
+
+
+  # Real comments are all at the bottom of the file. Identify them according to
+  # index difference, is the last sequence of 1
+  seq_comments <- rle(diff(line_comments))
+  # Identify number of comments
+  if(tail(seq_comments$values,1) == 1L){
+    n_comments <- tail(seq_comments$lengths,1) + 1 # correct number of elements
+  } else {
+    n_comments <- 1 # only one comment
+  }
+
+  # Get correct comments sequence
+  line_comments <- tail(line_comments, n_comments)
+
+  # Save which comment have issues
+  issue_comment <- data.frame(index = vector("character"),
+                              line = vector("numeric"))
+
+  for(i in line_comments){
+    # Extract comment index from comment line
+    comment_index <- gsub("^\\[([a-z]+)\\].*", replacement = "\\1", document[i], perl = TRUE)
+    pattern <- paste0("\\[",comment_index,"\\]")
+
+    # Find comment in the text
+    line_with_comment <- grep(pattern, document[-i], perl = TRUE)
+    text_comment <- document[line_with_comment[1]]
+
+    # Check there is only one pattern occurency in the text
+    n_patterns <- length(regmatches(text_comment, gregexpr(pattern, text_comment))[[1]])
+
+    if(length(line_with_comment) == 1L && n_patterns == 1L){
+      document[line_with_comment[1]] <- gsub(pattern, replacement = "", text_comment)
+    } else{
+      issue_comment <- rbind(issue_comment, data.frame(index = comment_index,
+                                                       line = i))
+    }
+  }
+
+  if(nrow(issue_comment)>0){
+    start_process(paste("Issue in identifying Google comment(s):",
+                        paste0("[", issue_comment$index, "]", collapse = " ")))
+  }
+
+  # Remove comment from the bottom of the file
+  lines_to_remove <- setdiff(line_comments, issue_comment$line)
+  if(length(lines_to_remove)>0){
+    document <- document[-lines_to_remove]
+  }
+
+  return(document)
+}
+
+#----    eval_instructions    ----
+
+#' Evaluate Docuemnt Instructions
+#'
+#' Given the document (vector with the text lines) retrieve instructions indexes
+#' and the FILE-NAME and HIDE-CODE options
+#'
+#' @param document character vector with the lines of the document
+#'
+#' @return a list with:
+#' - instruction_start - integer inidicating the instructions initial line
+#' - instruction_end - integer inidicating the instructions end line
+#' - file_name - character indicating the file name
+#' - hide_code - logical indicating whether code was removed
+#'
+#' @noRd
+#'
+#' @examples
+#'
+#' document <- readLines("tests/testthat/test_files/examples/example-1-restore.Rmd", warn = FALSE)
+#' eval_instructions(document)
+#'
+#' # no instructions delimiters
+#' eval_instructions(document[-1])
+#'
+#' # no file_name
+#' eval_instructions(document[-6])
+#'
+#' # no hide_code
+#' eval_instructions(document[-7])
+#'
+
+eval_instructions <- function(document, file_name = NULL){
+
+  # get instruction lines
+  instruction_start <- which(grepl("#----Trackdown Instructions----#", document))
+  instruction_end <- which(grepl("#----End Instructions----#", document))
+
+  # test retrieve instructions
+  my_test <- length(c(instruction_start, instruction_end))
+  if (my_test!= 2L){
+    warning("Failed retrieving instructions delimiters. ",
+            "Intructions delimiters at the beginning shuld not be removed.", call. = FALSE)
+    instruction <- document # search options in the whole document
+    instruction_start <- NULL
+    instruction_end <- NULL
+  } else {
+    instruction <- document[instruction_start:instruction_end]
+  }
+
+
+  # get file-name, hide-code, and date-upload options lines
+  line_file_name <- which(grepl("^FILE-NAME:", instruction))
+  line_hide_code <- which(grepl("^HIDE-CODE: ", instruction))
+  line_date_upload <- which(grepl("^DATE-UPLOAD: ", instructions))
+
+  # test retrieve FILE-NAME
+  if (length(line_file_name)!= 1L){
+    warning("Failed retrieving FILE-NAME, current file name is used instead.", call. = FALSE)
+    old_file_name <- file_name
+  } else {
+    old_file_name <- gsub("^FILE-NAME:\\s*(.*)\\s*","\\1", instruction[line_file_name])
+  }
+
+  # test retrieve HIDE-CODE
+  if (length(line_hide_code)!= 1L){
+    warning("Failed retrieving HIDE-CODE. Considering presence of code tags instead.", call. = FALSE)
+    hide_code <- any(grepl("^\\[\\[(document-header|chunk-.*)\\]\\]", document))
+  } else {
+    hide_code <- as.logical(gsub("^HIDE-CODE:\\s*(.*)\\s*","\\1", instruction[line_hide_code]))
+  }
+
+  # test retrieve DATE-UPDATE
+  if (length(line_date_upload)!= 1L){
+    warning("Failed retrieving DATE-UPLOAD. Considering presence of code tags instead.", call. = FALSE)
+    date_upload <- any(grepl("^\\[\\[(document-header|chunk-.*)\\]\\]", document))
+  } else {
+    date_upload <- as.logical(gsub("^DATE-UPLOAD:\\s*(.*)\\s*","\\1", instruction[line_date_upload]))
+  }
+
+  res <- list(start = instruction_start,
+              end = instruction_end,
+              file_name = old_file_name,
+              hide_code = hide_code,
+              date_upload = date_upload)
+
+  return(res)
+}
+
+
 #----    Messages Utils    ----
 
 # start_process
@@ -317,3 +489,5 @@ start_process <- function(message){
 finish_process <- function(message){
   cli::cat_bullet(bullet = "tick", bullet_col = "green", message)
 }
+
+
