@@ -44,7 +44,7 @@ download_files <- function(office = NULL,
 
   #----    get autho token    ----
   if(!googledrive::drive_has_token()){
-    googledrive::drive_auth(token = trackdown_token())
+    googledrive::drive_auth()
   }
 
   #---- check user ----

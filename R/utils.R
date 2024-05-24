@@ -477,6 +477,42 @@ eval_instructions <- function(document, file_name = NULL){
   return(res)
 }
 
+#----    check_supported_documents    ----
+
+#' Check Supported Documents
+#'
+#' Only .Rmd, .Qmd, and .Rnw files are supported
+#'
+#' @param file_info list with file info returned from get_file_info() function
+#'
+#' @return NULL
+#' @noRd
+#'
+#' @examples
+#' file_info <- get_file_info("my-report.txt")
+#' check_supported_documents(file_info)
+#'
+
+check_supported_documents <- function(file_info){
+  if(!(file_info$extension %in% c("rmd", "rnw", "qmd"))) # check supported files
+    stop(paste(file_info$file_name, "not supported file type (only .Rmd, .Qmd, or .Rnw)"),
+         call. = FALSE)
+}
+
+#----    get_os    ----
+
+#' Get the current operating system
+#'
+#' @return the current os as string
+#' @noRd
+#'
+#' @examples
+#' os <- get_os()
+#'
+
+get_os <- function(){
+  return(.Platform$OS.type)
+}
 
 #----    Messages Utils    ----
 
@@ -490,4 +526,12 @@ finish_process <- function(message){
   cli::cat_bullet(bullet = "tick", bullet_col = "green", message)
 }
 
+# emph_file
+emph_file <- function(file){
+  cli::col_blue(basename(file))
+}
 
+# main_process
+main_process <- function(message){
+  cat(cli::cat_rule(message), "\n")
+}
