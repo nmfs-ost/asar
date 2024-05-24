@@ -3,6 +3,7 @@
 #' @param office NOAA line office analyst is associated with
 #' @param region Region/state stock is associated with if applicable.
 #' @param species Target species for assessment
+#' @param year year assessment is being conducted
 #' @param rm_gcomments Remove comments from Google Doc
 #' @param force
 #'
@@ -19,6 +20,7 @@
 download_files <- function(office = NULL,
                            region = NULL,
                            species = NULL,
+                           year = NULL,
                           # shared_drive = NULL,
                           rm_gcomments = FALSE,
                           force = FALSE) {
@@ -38,7 +40,7 @@ download_files <- function(office = NULL,
   if(!is.logical(force)) stop("force argument has to be logical",
                               call. = FALSE)
   #---- start process ----
-  main_process(paste("Downloading", emph_file(file), "with online changes..."))
+  main_process(paste("Downloading files with online changes..."))
 
   # gpath <- sanitize_path(gpath) # remove possible final "/"
 
@@ -63,8 +65,8 @@ download_files <- function(office = NULL,
   }
 
   for (i in 1:length(sections)) {
-    file = sections[i]
-    gfile = gsub(".qmd","", sections[i])
+    file = sections[4]
+    gfile = gsub(".qmd","", sections[4])
     if(!is.null(region)){
       gpath = paste("National Stock Assessment Report Archive", office, region, species, year, sep = "/")
     } else {
@@ -74,8 +76,9 @@ download_files <- function(office = NULL,
     document <- evaluate_file(file = file,
                               gfile = gfile,
                               gpath = gpath,
-                              shared_drive = shared_drive,
-                              test = "single")
+                              # shared_drive = shared_drive,
+                              test = "single"
+                              )
 
     check_supported_documents(document$file_info)
 
