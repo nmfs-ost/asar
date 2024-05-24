@@ -514,6 +514,48 @@ get_os <- function(){
   return(.Platform$OS.type)
 }
 
+#----    sanitize_document    ----
+
+#' Sanitize Rmd file downloaded from GoogleDrive
+#'
+#' Adds a final EOL and removes double linebreaks added when downloading file
+#' from GoogleDrive.
+#'
+#' @inheritParams upload_rmd
+#' @return Sanitized file from Google Drive.
+#' @noRd
+#'
+sanitize_document <- function(file) {
+  file <- c(file, "")
+  res <- gsub(pattern = "\n\n", replacement = "\n",
+              paste(file, collapse = "\n"))
+  return(res)
+}
+
+#----    check_identity    ----
+
+#' Check file identity
+#'
+#' Compares the contents of a local Rmd file with a file from GoogleDrive
+#'
+#' @inheritParams upload_rmd
+#' @return `TRUE` if files are identical, `FALSE` otherwise.
+#' @noRd
+#'
+check_identity <- function(temp_file, local_file){
+
+  if (file.exists(local_file)){
+    md5_file <- unname(tools::md5sum(local_file))
+    md5_temp_file <- unname(tools::md5sum(temp_file))
+    res <- md5_file == md5_temp_file
+  } else {
+    res <- FALSE
+  }
+
+  return(res)
+}
+
+
 #----    Messages Utils    ----
 
 # start_process
