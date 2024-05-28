@@ -442,7 +442,7 @@ eval_instructions <- function(document, file_name = NULL){
   # get file-name, hide-code, and date-upload options lines
   line_file_name <- which(grepl("^FILE-NAME:", instruction))
   line_hide_code <- which(grepl("^HIDE-CODE: ", instruction))
-  line_date_upload <- which(grepl("^DATE-UPLOAD: ", instructions))
+  line_date_upload <- which(grepl("^DATE-UPLOAD: ", instruction))
 
   # test retrieve FILE-NAME
   if (length(line_file_name)!= 1L){

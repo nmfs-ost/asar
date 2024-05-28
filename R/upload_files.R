@@ -20,6 +20,7 @@
 #' @param office NOAA line office analyst is associated with
 #' @param region Region/state stock is associated with if applicable.
 #' @param species Target species for assessment
+#' @param year Year for the stock assessment the analyst wants to call the files for. Typically this will be the current year
 #' @param shared_drive character. The name of a Google Drive shared drive
 #'   (optional).
 #' @param hide_code logical value indicating whether to remove code from the
@@ -75,6 +76,7 @@ upload_files <- function(
   office = NULL,
   region = NULL,
   species = NULL,
+  year = NULL,
   shared_drive = NULL,
   hide_code = FALSE,
   path_output = NULL,
@@ -98,7 +100,7 @@ upload_files <- function(
 
   cat(cli::cat_rule(paste("Uploading files to", cli::col_magenta("Google Drive"))), "\n")
 
-  gpath <- gsub("/$", "", gpath) # remove possible final "/"
+  # gpath <- gsub("/$", "", gpath) # remove possible final "/"
 
   #---- check arguments ----
   # if(!is.logical(force)) stop("force argument has to be logical",
@@ -106,13 +108,13 @@ upload_files <- function(
 
   #----    get autho token    ----
   if(!googledrive::drive_has_token()){
-    googledrive::drive_auth(token = trackdown_token())
+    googledrive::drive_auth()
   }
 
   # Upload all files in folder
   for (i in 1:length(sections)) {
-    file = sections[i]
-    gfile = gsub(".qmd","", sections[i])
+    file = sections[4]
+    gfile = gsub(".qmd","", sections[4])
     if(!is.null(region)){
       gpath = paste("National Stock Assessment Report Archive", office, region, species, year, sep = "/")
     } else {
