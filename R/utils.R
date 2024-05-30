@@ -135,8 +135,6 @@ get_file_info <- function(file){
 #' @param hide_code logical value indicating whether to remove code from the
 #'   text document (chunks and header). Placeholders of  type `"[[chunk-<name>]]"`
 #'   are displayed instead.
-#' @param update logical value indicating whether to update or upload the
-#'   document.
 #' @param rich_text (experimental) logical value (default is `TRUE`)
 #'   indicating whether to upload to Google Docs a rich document (i.e.,
 #'   important text that should not be changed is highlighted).
@@ -157,8 +155,8 @@ get_file_info <- function(file){
 #'
 upload_document <- function(file, file_info,
                             gfile, gpath, dribble_document,
-                            hide_code, rich_text = TRUE, rich_text_par = NULL,
-                            update = FALSE){
+                            hide_code, rich_text = TRUE, rich_text_par = NULL
+                            ){
   #---- temp file ----
   # create .temp-file to upload
   temp_file <- file.path(file_info$path,
@@ -192,18 +190,21 @@ upload_document <- function(file, file_info,
   cat(document_oneline, file = temp_file)
 
 
-  if(isTRUE(update)){
-    start_process("Updating document with local changes to Google Drive...")
+  # Removed Trackdown function for updating googledrive files from local
+    # Functionality move to update_files() fxn
 
-    # Update document
-    res <- googledrive::drive_update(
-      media = temp_file,
-      file = dribble_document$file)
-
-    finish_process(paste("Document updated at",
-                         cli::col_blue(paste(gpath, gfile, sep = "/"))))
-  } else {
-    start_process("Uploading document to Google Drive...")
+  # if(isTRUE(update)){
+  #   start_process("Updating document with local changes to Google Drive...")
+  #
+  #   # Update document
+  #   res <- googledrive::drive_update(
+  #     media = temp_file,
+  #     file = dribble_document$file)
+  #
+  #   finish_process(paste("Document updated at",
+  #                        cli::col_blue(paste(gpath, gfile, sep = "/"))))
+  # } else {
+    # start_process("Uploading document to Google Drive...")
 
     # Upload document
     res <- googledrive::drive_upload(
@@ -214,7 +215,7 @@ upload_document <- function(file, file_info,
 
     finish_process(paste("Document uploaded at",
                          cli::col_blue(paste(gpath, gfile, sep = "/"))))
-  }
+  # }
 
   #----    rich_text    ----
 
@@ -463,9 +464,9 @@ eval_instructions <- function(document, file_name = NULL){
   # test retrieve DATE-UPDATE
   if (length(line_date_upload)!= 1L){
     warning("Failed retrieving DATE-UPLOAD. Considering presence of code tags instead.", call. = FALSE)
-    date_upload <- any(grepl("^\\[\\[(document-header|chunk-.*)\\]\\]", document))
+    date_upload <- "1990-01-01"
   } else {
-    date_upload <- as.logical(gsub("^DATE-UPLOAD:\\s*(.*)\\s*","\\1", instruction[line_date_upload]))
+    date_upload <- gsub("^DATE-UPLOAD: ", "", instruction[line_date_upload])
   }
 
   res <- list(start = instruction_start,
