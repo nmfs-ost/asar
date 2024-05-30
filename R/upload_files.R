@@ -96,6 +96,10 @@ upload_files <- function(
 
   # Section skeletons/files - .qmd only
   all_sections <- list.files(subdir, pattern = ".qmd")
+  # Check if there are any files in the directory
+  if (length(all_sections)<1){
+    stop(paste("No files exist in the directory:", cli::col_magenta(subdir)))
+  }
   sections <- all_sections[!grepl("skeleton.qmd", all_sections)]
 
   cat(cli::cat_rule(paste("Uploading files to", cli::col_magenta("Google Drive"))), "\n")
@@ -111,10 +115,12 @@ upload_files <- function(
     googledrive::drive_auth()
   }
 
+  start_process("Uploading documents to Google Drive...")
+
   # Upload all files in folder
   for (i in 1:length(sections)) {
-    file = sections[4]
-    gfile = gsub(".qmd","", sections[4])
+    file = paste(subdir, sections[i], sep = "/")
+    gfile = gsub(".qmd","", sections[i])
     if(!is.null(region)){
       gpath = paste("National Stock Assessment Report Archive", office, region, species, year, sep = "/")
     } else {
@@ -147,8 +153,7 @@ upload_files <- function(
       dribble_document = document$dribble_info,
       hide_code = hide_code,
       rich_text = rich_text,
-      rich_text_par = rich_text_par,
-      update = FALSE)
+      rich_text_par = rich_text_par)
 
     #---- upload output ----
     if (!is.null(path_output)) {
@@ -163,6 +168,7 @@ upload_files <- function(
 
       res[2, ] <- dribble_output
       res <- googledrive::as_dribble(res)
+      return(invisible(res))
     }
 
     #---- end ----
@@ -171,7 +177,6 @@ upload_files <- function(
     # if (open) {
     #   utils::browseURL(res[["drive_resource"]][[1]][["webViewLink"]])
     # }
-
-    return(invisible(res))
   }
+  cat(cli::cat_rule(paste("Process completed!")), "\n")
 }
