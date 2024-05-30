@@ -8,6 +8,7 @@
 #' @param temp_file character indicating the path to the downloaded file
 #' @param file_name character indicating the current file name
 #' @param path character indicating the folder of the original file
+#' @param gpath character indicating the google drive folder for the file that is being restored
 #' @param rm_gcomments (experimental) logical value indicating whether or not to
 #'   remove Google comments
 #'
@@ -15,7 +16,7 @@
 #' @noRd
 #'
 
-restore_file <- function(temp_file, file_name, path, rm_gcomments = FALSE){
+restore_file <- function(temp_file, file_name, path, gpath, rm_gcomments = FALSE){
 
   # read document lines
   document <- readLines(temp_file, warn = FALSE)
@@ -28,24 +29,40 @@ restore_file <- function(temp_file, file_name, path, rm_gcomments = FALSE){
   # eval instructions
   instructions <- eval_instructions(document = document, file_name = file_name)
 
-  # remove instructions if indexes are available
-  if(!is.null(instructions$start) & !is.null(instructions$end)){
-    document <- document[-c(instructions$start:instructions$end)]
+  # extract upload date
+  upload_date <- instructions$date_upload
+
+  # find date last edited
+  gpath_dribble <- get_path_dribble(gpath)$id
+  modified_dates_all <- googledrive::drive_ls(gpath_dribble) |>
+    dplyr::mutate(modified = purrr::map_chr(drive_resource, "modifiedTime")) |>
+    dplyr::filter(name == gsub(".qmd", "", file_name))
+  modified_date <- gsubfn::strapplyc(modified_dates_all$modified, "\\d+-\\d+-\\d+", simplify = TRUE)
+
+  # if date uploaded and date edited are equal - return warning and do not proceed? - otherwise continue?
+  if (isTRUE(upload_date==modified_date)){
+    res <- "no_updates"
+    return(res)
+  } else {
+    # remove instructions if indexes are available
+    if(!is.null(instructions$start) & !is.null(instructions$end)){
+      document <- document[-c(instructions$start:instructions$end)]
+    }
+
+    # restore code
+    if(isTRUE(instructions$hide_code)){
+      document <- restore_code(document = document,
+                               file_name = instructions$file_name,
+                               path = path)
+    }
+
+    # sanitize document
+    document <- sanitize_document(document)
+
+    cat(document, file = temp_file)
+
+    return(invisible(document))
   }
-
-  # restore code
-  if(isTRUE(instructions$hide_code)){
-    document <- restore_code(document = document,
-                             file_name = instructions$file_name,
-                             path = path)
-  }
-
-  # sanitize document
-  document <- sanitize_document(document)
-
-  cat(document, file = temp_file)
-
-  return(invisible(document))
 }
 
 #----    restore_code    ----
