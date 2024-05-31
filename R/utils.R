@@ -171,12 +171,12 @@ upload_document <- function(file, file_info,
 
 
   #---- hide code ----
-  # if(isTRUE(hide_code)){
-  #   start_process("Removing code...")
-  #   document <- hide_code(document = document,
-  #                         file_info = file_info)
-  #   finish_process(paste("Code removed from", emph_file(file_info$file_name)))
-  # }
+  if(isTRUE(hide_code)){
+    start_process("Removing code...")
+    document <- hide_code(document = document,
+                          file_info = file_info)
+    finish_process(paste("Code removed from", emph_file(file_info$file_name)))
+  }
 
 
   #---- upload document ----
