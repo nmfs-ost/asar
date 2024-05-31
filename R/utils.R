@@ -556,6 +556,37 @@ check_identity <- function(temp_file, local_file){
   return(res)
 }
 
+#----    load_code    ----
+
+#' Load Code from .trackdown Folder
+#'
+#' Try to load header_info or chunck_info from .trackdown Folder. Meaningful
+#' error message is returned if case of error or warning
+#'
+#' @param file_name character indicating the name of the file
+#' @param path character indicating the path where the folder ".trackdown" is located
+#' @param type character indicating the required code, header or chunk
+#'
+#' @return a dataframe with the loaded code info
+#'
+#' @noRd
+#'
+
+load_code <- function(file_name, path, type = c("header", "chunk")){
+
+  type <- match.arg(type)
+
+  data_path <- file.path(path, paste0(file_name, "-", type, "_info.rds"))
+
+  tryCatch({data <- readRDS(file = data_path)},
+           error = function(e) stop("Failed restoring code, ",
+                                    data_path," is not available.", call. = FALSE),
+           warning = function(w) stop("Failed restoring code, ",
+                                      data_path," is not available.", call. = FALSE)
+  )
+
+  return(data)
+}
 
 #----    Messages Utils    ----
 
