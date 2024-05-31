@@ -29,32 +29,36 @@ restore_file <- function(temp_file, file_name, path, gpath, rm_gcomments = FALSE
   # eval instructions
   instructions <- eval_instructions(document = document, file_name = file_name)
 
-  # extract upload date
-  upload_date <- instructions$date_upload
+  # # extract upload date
+  # upload_date <- instructions$date_upload
+  #
+  # # find date last edited
+  # gpath_dribble <- get_path_dribble(gpath)$id
+  # modified_dates_all <- googledrive::drive_ls(gpath_dribble) |>
+  #   dplyr::mutate(modified = purrr::map_chr(drive_resource, "modifiedTime")) |>
+  #   dplyr::filter(name == gsub(".qmd", "", file_name))
+  # modified_date <- gsubfn::strapplyc(modified_dates_all$modified, "\\d+-\\d+-\\d+", simplify = TRUE)
+  #
+  # # if date uploaded and date edited are equal - return warning and do not proceed? - otherwise continue?
+  # if (isTRUE(upload_date==modified_date)){
+  #   res <- "no_updates"
+  #   return(res)
+  # } else {
+  #   # remove instructions if indexes are available
+  #   if(!is.null(instructions$start) & !is.null(instructions$end)){
+  #     document <- document[-c(instructions$start:instructions$end)]
+  #   }
 
-  # find date last edited
-  gpath_dribble <- get_path_dribble(gpath)$id
-  modified_dates_all <- googledrive::drive_ls(gpath_dribble) |>
-    dplyr::mutate(modified = purrr::map_chr(drive_resource, "modifiedTime")) |>
-    dplyr::filter(name == gsub(".qmd", "", file_name))
-  modified_date <- gsubfn::strapplyc(modified_dates_all$modified, "\\d+-\\d+-\\d+", simplify = TRUE)
+  if(!is.null(instructions$start) & !is.null(instructions$end)){
+    document <- document[-c(instructions$start:instructions$end)]
+  }
 
-  # if date uploaded and date edited are equal - return warning and do not proceed? - otherwise continue?
-  if (isTRUE(upload_date==modified_date)){
-    res <- "no_updates"
-    return(res)
-  } else {
-    # remove instructions if indexes are available
-    if(!is.null(instructions$start) & !is.null(instructions$end)){
-      document <- document[-c(instructions$start:instructions$end)]
-    }
-
-    # restore code
-    if(isTRUE(instructions$hide_code)){
-      document <- restore_code(document = document,
-                               file_name = instructions$file_name,
-                               path = path)
-    }
+  # restore code
+  if(isTRUE(instructions$hide_code)){
+    document <- restore_code(document = document,
+                             file_name = instructions$file_name,
+                             path = path)
+  }
 
     # sanitize document
     document <- sanitize_document(document)
@@ -62,7 +66,7 @@ restore_file <- function(temp_file, file_name, path, gpath, rm_gcomments = FALSE
     cat(document, file = temp_file)
 
     return(invisible(document))
-  }
+  # }
 }
 
 #----    restore_code    ----
@@ -94,7 +98,7 @@ restore_file <- function(temp_file, file_name, path, gpath, rm_gcomments = FALSE
 restore_code <- function(document, file_name, path){
 
   # Check .trackdown folder is available
-  if(!dir.exists(file.path(path,".trackdown")))
+  if(!dir.exists(file.path(path, ".trackdown")))
     stop(paste0("Failed restoring code. Folder .trackdown is not available in ", path), call. = FALSE)
 
   # load code info
