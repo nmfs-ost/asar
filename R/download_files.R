@@ -32,6 +32,10 @@ download_files <- function(office = NULL,
   }
   # Section skeletons/files - .qmd only
   all_sections <- list.files(subdir, pattern = ".qmd")
+  # add check
+  if (length(all_sections)<1){
+    stop(paste("No files exist in the directory:", cli::col_magenta(subdir)))
+  }
   sections <- all_sections[!grepl("skeleton.qmd", all_sections)]
 
   #---- check arguments ----
@@ -107,8 +111,15 @@ download_files <- function(office = NULL,
     restore_file(temp_file = temp_file,
                  file_name = document$file_info$file_name,
                  path = document$file_info$path,
+                 gpath = gpath,
                  rm_gcomments = rm_gcomments)
 
+    +# if (restore_response=="") {
+    #   cli::cli_alert_danger(paste("The google drive file", cli::col_blue(gfile), "has not been changed since upload."))
+    #   next
+    # } else {
+    #   restore_response
+    # }
 
     #---- compare and replace ----
 
