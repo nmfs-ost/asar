@@ -46,5 +46,6 @@ Organization for utility functions for google drive connections as developed by 
 
 `upload_output` ()
 
+`hide_code` (`utils_chunk.R`)
 
 
