@@ -50,3 +50,10 @@ Organization for utility functions for google drive connections as developed by 
 
 `digest_chunk_header` (`utils.R`)
 
+`parse_chunk_header` (`utils.R`)
+
+`transform_params` (`utils.R`)
+
+`parse_label_rmd` ('utils.R')
+
+`parse_label_rnw` (`utils.R`)
