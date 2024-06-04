@@ -45,7 +45,7 @@
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"), include_affiliation = TRUE,
 #'   parameters = TRUE, param_names = c("fleet1", "fleet2", "model"),
 #'   param_values = c("Commercial", "Recreational", "Woods Hole Assessment Model"),
-#'   type = "RT", model_results = "results.Rdata", model = "WHAM"
+#'   type = "SAR", model_results = "results.Rdata", model = "WHAM"
 #' )
 #'
 create_template <- function(

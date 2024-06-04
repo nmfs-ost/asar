@@ -27,7 +27,7 @@ create_template(
   model = NULL,
   new_section = NULL,
   section_location = NULL,
-  type = NULL,
+  type = "SAR",
   prev_year = NULL,
   custom = FALSE,
   custom_sections = NULL
@@ -81,7 +81,7 @@ and species listed in function parameters}
 
 \item{section_location}{Location where the section should be added relative to the base skeleton document}
 
-\item{type}{Type of stock assessment report - terminology will vary by region (content already configured by region)}
+\item{type}{Type of report to build - default is SAR}
 
 \item{prev_year}{Year that previous assessment report was conducted in - for pulling previous assessment template}
 
@@ -108,7 +108,7 @@ create_template(
   author = c("John Snow", "Danny Phantom", "Patrick Star"), include_affiliation = TRUE,
   parameters = TRUE, param_names = c("fleet1", "fleet2", "model"),
   param_values = c("Commercial", "Recreational", "Woods Hole Assessment Model"),
-  type = "RT", model_results = "results.Rdata", model = "WHAM"
+  type = "SAR", model_results = "results.Rdata", model = "WHAM"
 )
 
 }
