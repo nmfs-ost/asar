@@ -25,7 +25,7 @@
 #' @param model Type of assessment model that was used to assess the stock (i.e. "BAM", "SS", "AMAK", "ASAP", ect)
 #' @param new_section File name of the new section
 #' @param section_location Location where the section should be added relative to the base skeleton document
-#' @param type Type of stock assessment report - terminology will vary by region (content already configured by region)
+#' @param type Type of report to build - default is SAR
 #' @param prev_year Year that previous assessment report was conducted in - for pulling previous assessment template
 #' @param custom TRUE/FALSE Build custom sectioning for the template rather than the default for stock assessments in your region
 #' @param custom_sections List of the sections you want to include in the custom template. Note: this only includes sections within
@@ -71,7 +71,7 @@ create_template <- function(
     model = NULL,
     new_section = NULL,
     section_location = NULL,
-    type = NULL,
+    type = "SAR",
     prev_year = NULL,
     custom = FALSE,
     custom_sections = NULL) {

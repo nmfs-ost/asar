@@ -16,7 +16,7 @@
 #'
 #' @examples write_title(
 #'   office = "SEFSC", species = "Red Snapper", region = "South Atlantic",
-#'   year = 2024, type = "RT", spp_latin = "Lutjanus campechanus"
+#'   year = 2024, type = "SAR", spp_latin = "Lutjanus campechanus"
 #' )
 write_title <- function(
     office = NULL,
@@ -47,9 +47,7 @@ write_title <- function(
     } else if (as.numeric(format(Sys.Date(), "%m")) %in% c(12, 1, 2)) {
       season <- "Winter"
     }
-    if (type == "RT") {
-      title <- paste0("Research Track Assessment for ", species, " (", spp_latin, ") ", season, " ", year)
-    } else {
+    if (type == "SAR") {
       title <- paste0("Management Track Assessment of ", species, " (", spp_latin, ") ", season, " ", year)
     }
   } else if (office == "NWFSC") {
