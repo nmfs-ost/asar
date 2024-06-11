@@ -18,5 +18,5 @@ add_base_section <- function(x) {
     if (identical(sec_file, character(0))) stop("One or more section name(s) does not exist. Please check the spelling or if you are tring to add a section that is not in the default template, please use parameter 'custom_sections' and refer to documentation. To check which sections are in the base template please run list.files(system.file('templates', 'skeleton', package = 'ASAR')) in your console")
     sec_file -> section_list[i]
   }
-  return(section_list)
+  section_list
 }

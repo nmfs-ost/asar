@@ -81,5 +81,5 @@ write_harv_proj_table <- function(
     flextable::hline(part = "header") |>
     flextable::align(part = "header", align = "center")
 
-  return(proj_tab)
+  proj_tab
 }

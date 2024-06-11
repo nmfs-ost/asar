@@ -27,5 +27,5 @@ paste_child <- function(x,
     )
     child <- paste(child, child_loop, sep = "\n {{< pagebreak >}} \n")
   }
-  return(child)
+  child
 }

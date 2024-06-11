@@ -71,5 +71,5 @@ add_section <- function(
       stop("Invalid selection for placement of section. Please name the follow the format 'placement-section_name' for adding a new section.")
     }
   }
-  return(other_sections)
+  other_sections
 }

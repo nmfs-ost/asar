@@ -101,5 +101,5 @@ generate_citation <- function(
   }
 
   # Add citation as .qmd to add into template
-  return(cit)
+  cit
 }

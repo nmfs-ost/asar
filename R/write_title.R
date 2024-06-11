@@ -47,8 +47,10 @@ write_title <- function(
     } else if (as.numeric(format(Sys.Date(), "%m")) %in% c(12, 1, 2)) {
       season <- "Winter"
     }
-    if (type == "SAR") {
+    if (type == "SAR" | is.null(type)) {
       title <- paste0("Management Track Assessment of ", species, " (", spp_latin, ") ", season, " ", year)
+    } else if (type == "SAR") {
+      title <- paste0()
     }
   } else if (office == "NWFSC") {
     if (is.null(region)) {
@@ -83,5 +85,5 @@ write_title <- function(
   #   title = paste0("Stock Assessment Report for the ", species, " Stock in the ", region, " ", year)
   # }
 
-  return(title)
+  title
 }

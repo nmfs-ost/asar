@@ -30,5 +30,5 @@ add_theme <- function(x){
   if (as.character(class(x)[1]) == "kableExtra" | as.character(class(x)[2]) == "knitr_kable"){
     theme_obj <- x
   }
-  return(theme_obj)
+  theme_obj
 }

@@ -35,6 +35,5 @@ chunkr <- function(
       chunk <- paste0(chunk, "#| ", chunk_op[i], " \n")
     }
   }
-  chunk <- paste0(chunk, x, "\n", "``` \n")
-  return(chunk)
+  paste0(chunk, x, "\n", "``` \n")
 }
