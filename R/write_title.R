@@ -48,9 +48,13 @@ write_title <- function(
       season <- "Winter"
     }
     if (type == "SAR" | is.null(type)) {
+      if (is.null(region)){
+        title <- paste0("Stock Assessment for ", region, " ", species, " (", spp_latin, ") in ", season, " ", year)
+      } else {
+        title <- paste0("Stock Assessment for ", species, " (", spp_latin, ") in ", season, " ", year)
+      }
+    } else if (type == "MT") {
       title <- paste0("Management Track Assessment of ", species, " (", spp_latin, ") ", season, " ", year)
-    } else if (type == "SAR") {
-      title <- paste0()
     }
   } else if (office == "NWFSC") {
     if (is.null(region)) {

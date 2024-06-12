@@ -431,7 +431,7 @@ create_template <- function(
     ##### NEFSC MT Template####
     ########|###############################################################
 
-    } else if (type = "NEMT") {
+    } else if (type == "NEMT") {
       # Pull skeleton for sections
       current_folder <- system.file("templates", "NEMT", package = "ASAR")
       new_folder <- subdir
