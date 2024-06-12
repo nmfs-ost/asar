@@ -10,7 +10,7 @@
 #' @return NULL
 #' @noRd
 #'
-#' @examples
+#' @examples NULL
 write_yaml <- function(){
 
 }
