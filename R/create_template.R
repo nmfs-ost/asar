@@ -139,176 +139,15 @@ create_template <- function(
       }
 
       # Part I
-      # Create a report template file to render for the region and species
-      # Create YAML header for document
-      # Write title based on report type and region
-      if (alt_title == FALSE) {
-        title <- write_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type, year = year)
-      } else if (alt_title == TRUE) {
-        if (!exists(title)) {
-          stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
-        } else {
-          title <- paste(title)
-        }
-      }
-
-      # Pull authors and affiliations from national db
-      # Parameters to add authorship to YAML
-      # Read authorship file
-      authors <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
-        dplyr::mutate(
-          mi = dplyr::case_when(
-            mi == "" ~ NA,
-            TRUE ~ mi
-          ),
-          name = dplyr::case_when(
-            is.na(mi) ~ paste0(first, " ", last),
-            TRUE ~ paste(first, mi, last, sep = " ")
-          )
-        ) |>
-        dplyr::select(name, office) |>
-        dplyr::filter(name %in% author)
-
-      if (include_affiliation == TRUE) {
-        affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "ASAR", mustWork = TRUE))
-      }
-
-      author_list <- list()
-      if (include_affiliation == TRUE & simple_affiliation == FALSE) {
-        for (i in 1:nrow(authors)) {
-          auth <- authors[i, ]
-          aff <- affil |>
-            dplyr::filter(affiliation == auth$office)
-          paste0(
-            "  ", "- name: ", "'", auth$name, "'", "\n",
-            "  ", "  ", "affiliations:", "\n",
-            "  ", "  ", "  ", "- name: ", "'", "NOAA Fisheries ", aff$name, "'", "\n",
-            "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'", "\n",
-            "  ", "  ", "  ", "  ", "city: ", "'", aff$city, "'", "\n",
-            "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
-            "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n"
-            # sep = " "
-          ) -> author_list[[i]]
-        }
-      } else if (include_affiliation == TRUE & simple_affiliation == TRUE) {
-        for (i in 1:nrow(authors)) {
-          auth <- authors[i, ]
-          aff <- affil |>
-            dplyr::filter(affiliation == auth$office)
-          paste0(
-            "  ", "- name: ", "'", auth$name, "'", "\n",
-            "  ", "  ", "affiliations: ", "'", aff$name, "'", "\n"
-          ) -> author_list[[i]]
-        }
-      } else {
-        for (i in 1:nrow(authors)) {
-          auth <- authors[i, ]
-          paste0("  ", "- ", "'", auth$name, "'", "\n") -> author_list[[i]]
-        }
-      }
-
-      # Creating YAML
-      yaml <- paste0(
-        # start YAML notation
-        "---", "\n",
-
-        # Tile
-        "title: ", "'", title, "'", "\n",
-
-        # Author
-        "author:", "\n"
-      )
-      # Add authors
-      add_authors <- NULL
-      for (i in 1:length(author_list)) {
-        toad <- paste(author_list[[i]], sep = ",")
-        add_authors <- paste0(add_authors, toad) # -> add_authors
-      }
-      yaml <- paste0(yaml, add_authors)
-
-      # Add other parts
-      yaml <- paste0(
-        yaml,
-        # Date
-        "date: today", "\n"
-      )
-
-      # Formatting
-
-      if (include_affiliation == TRUE) {
-        yaml <- paste(yaml, "format: \n",
-          "  ", format, ": \n",
-          "  ", "  ", "toc: ", "true \n",
-          "  ", "  ", "keep-tex: ", "true \n",
-          "  ", "  ", "template-partials: \n",
-          # "  ", "  ", "  ", " - graphics.tex \n",
-          "  ", "  ", "  ", " - title.tex \n",
-          "  ", "  ", "include-in-header: \n",
-          "  ", "  ", "  ", " - in-header.tex \n",
-          sep = ""
-        )
-      } else if (include_affiliation == FALSE) {
-        yaml <- paste0(
-          yaml, "format: \n",
-          "  ", format, ": \n",
-          "  ", "  ", "toc: ", "true \n",
-          "  ", "  ", "template-partials: \n",
-          "  ", "  ", "  ", "- title.tex \n",
-          "  ", "  ", "keep-tex: true \n"
-        )
-      }
-
-      # Add lua filters for compliance
-      # PLACEHOLDER: Uncomment once .lua text is built
-
-      # yaml <- paste0(yaml,
-      #                # "contributes:", "\n",
-      #                "filters:", "\n",
-      #                "  ", "  ", "- acronyms.lua", "\n",
-      #                "  ", "  ", "- accessibility.lua", "\n")
-
-      # Parameters
-      # office, region, and species are default parameters
-      yaml <- paste0(
-        yaml, "params:", "\n",
-        "  ", " ", "office: ", "'", office, "'", "\n",
-        "  ", " ", "species: ", "'", species, "'", "\n",
-        "  ", " ", "spp_latin: ", "'", spp_latin, "'", "\n"
-      )
-      if (!is.null(region)) {
-        yaml <- paste0(yaml, "  ", " ", "region: ", "'", region, "'", "\n")
-      }
-      if (parameters == TRUE) {
-        if (!is.null(param_names) & !is.null(param_values)) {
-          add_params <- NULL
-          for (i in 1:length(param_names)) {
-            toad <- paste("  ", " ", param_names[i], ": ", "'", param_values[i], "'", "\n", sep = "")
-            add_params <- paste0(add_params, toad)
-          }
-        } else {
-          print("Please define parameter names (param_names) and values (param_values).")
-        }
-
-        yaml <- paste0(yaml, add_params)
-      }
-
-      # Add style guide
-      # create_style_css(species = species, savedir = subdir)
-
-      # yaml <- paste0(
-      #   yaml,
-      #   "css: styles.css", "\n"
-      # )
-
-      # Close yaml
-      yaml <- paste0(yaml, "---")
+      # Build the YAML Header
+      yaml <- write_yaml()
 
       print("__________Built YAML Header______________")
       # yaml_save <- capture.output(cat(yaml))
       # cat(yaml, file = here('template','yaml_header.qmd'))
 
       # Add chunk to load in assessment data
-      ass_output <- chunkr(
+      ass_output <- add_chunk(
         paste0(
           "convert_output(output.file = ", "c('", paste(model_results, collapse = "', '"), "')",
           ", model = ", "'", model, "'",
@@ -321,19 +160,19 @@ create_template <- function(
       # print("_______Standardized output data________")
 
       # Add page for citation of assessment report
-      citation <- generate_citation(
+      citation <- create_citation(
         author = author,
         title = title,
         year = year,
         office = office
       )
 
-      print("_______Generate Report Citaiton________")
+      print("_______Add Report Citation________")
 
       # Create report template
 
       if (custom == FALSE) {
-        sections <- paste_child(
+        sections <- add_child(
           c(
             "executive_summary.qmd",
             "introduction.qmd",
@@ -366,7 +205,7 @@ create_template <- function(
         # Create custom template from existing skeleton sections
         if (is.null(new_section)) {
           section_list <- add_base_section(custom_sections)
-          sections <- paste_child(section_list,
+          sections <- add_child(section_list,
             label = custom_sections
           )
         } else { # custom = TRUE
@@ -394,7 +233,7 @@ create_template <- function(
               subdir = subdir
             )
             # Create sections object to add into template
-            sections <- paste_child(
+            sections <- add_child(
               sec_list2,
               label = gsub(".qmd", "", unlist(sec_list2))
             )
@@ -409,7 +248,7 @@ create_template <- function(
               subdir = subdir
             )
             # Create sections object to add into template
-            sections <- paste_child(
+            sections <- add_child(
               sec_list2,
               label = gsub(".qmd", "", unlist(sec_list2))
             )
@@ -456,174 +295,14 @@ create_template <- function(
       # Part I
       # Create a report template file to render for the region and species
       # Create YAML header for document
-      # Write title based on report type and region
-      if (alt_title == FALSE) {
-        title <- write_title(office = "NEFSC", species = species, spp_latin = spp_latin, region = region, type = type, year = year)
-      } else if (alt_title == TRUE) {
-        if (!exists(title)) {
-          stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
-        } else {
-          title <- paste(title)
-        }
-      }
-
-      # Pull authors and affiliations from national db
-      # Parameters to add authorship to YAML
-      # Read authorship file
-      authors <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
-        dplyr::mutate(
-          mi = dplyr::case_when(
-            mi == "" ~ NA,
-            TRUE ~ mi
-          ),
-          name = dplyr::case_when(
-            is.na(mi) ~ paste0(first, " ", last),
-            TRUE ~ paste(first, mi, last, sep = " ")
-          )
-        ) |>
-        dplyr::select(name, office) |>
-        dplyr::filter(name %in% author)
-
-      if (include_affiliation == TRUE) {
-        affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "ASAR", mustWork = TRUE))
-      }
-
-      author_list <- list()
-      if (include_affiliation == TRUE & simple_affiliation == FALSE) {
-        for (i in 1:nrow(authors)) {
-          auth <- authors[i, ]
-          aff <- affil |>
-            dplyr::filter(affiliation == auth$office)
-          paste0(
-            "  ", "- name: ", "'", auth$name, "'", "\n",
-            "  ", "  ", "affiliations:", "\n",
-            "  ", "  ", "  ", "- name: ", "'", "NOAA Fisheries ", aff$name, "'", "\n",
-            "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'", "\n",
-            "  ", "  ", "  ", "  ", "city: ", "'", aff$city, "'", "\n",
-            "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
-            "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n"
-            # sep = " "
-          ) -> author_list[[i]]
-        }
-      } else if (include_affiliation == TRUE & simple_affiliation == TRUE) {
-        for (i in 1:nrow(authors)) {
-          auth <- authors[i, ]
-          aff <- affil |>
-            dplyr::filter(affiliation == auth$office)
-          paste0(
-            "  ", "- name: ", "'", auth$name, "'", "\n",
-            "  ", "  ", "affiliations: ", "'", aff$name, "'", "\n"
-          ) -> author_list[[i]]
-        }
-      } else {
-        for (i in 1:nrow(authors)) {
-          auth <- authors[i, ]
-          paste0("  ", "- ", "'", auth$name, "'", "\n") -> author_list[[i]]
-        }
-      }
-
-      # Creating YAML
-      yaml <- paste0(
-        # start YAML notation
-        "---", "\n",
-
-        # Tile
-        "title: ", "'", title, "'", "\n",
-
-        # Author
-        "author:", "\n"
-      )
-      # Add authors
-      add_authors <- NULL
-      for (i in 1:length(author_list)) {
-        toad <- paste(author_list[[i]], sep = ",")
-        add_authors <- paste0(add_authors, toad) # -> add_authors
-      }
-      yaml <- paste0(yaml, add_authors)
-
-      # Add other parts
-      yaml <- paste0(
-        yaml,
-        # Date
-        "date: today", "\n"
-      )
-
-      # Formatting
-
-      if (include_affiliation == TRUE) {
-        yaml <- paste(yaml, "format: \n",
-                      "  ", format, ": \n",
-                      "  ", "  ", "toc: ", "true \n",
-                      "  ", "  ", "keep-tex: ", "true \n",
-                      "  ", "  ", "template-partials: \n",
-                      # "  ", "  ", "  ", " - graphics.tex \n",
-                      "  ", "  ", "  ", " - title.tex \n",
-                      "  ", "  ", "include-in-header: \n",
-                      "  ", "  ", "  ", " - in-header.tex \n",
-                      sep = ""
-        )
-      } else if (include_affiliation == FALSE) {
-        yaml <- paste0(
-          yaml, "format: \n",
-          "  ", format, ": \n",
-          "  ", "  ", "toc: ", "true \n",
-          "  ", "  ", "template-partials: \n",
-          "  ", "  ", "  ", "- title.tex \n",
-          "  ", "  ", "keep-tex: true \n"
-        )
-      }
-
-      # Add lua filters for compliance
-      # PLACEHOLDER: Uncomment once .lua text is built
-
-      # yaml <- paste0(yaml,
-      #                # "contributes:", "\n",
-      #                "filters:", "\n",
-      #                "  ", "  ", "- acronyms.lua", "\n",
-      #                "  ", "  ", "- accessibility.lua", "\n")
-
-      # Parameters
-      # office, region, and species are default parameters
-      yaml <- paste0(
-        yaml, "params:", "\n",
-        "  ", " ", "office: ", "'", office, "'", "\n",
-        "  ", " ", "species: ", "'", species, "'", "\n",
-        "  ", " ", "spp_latin: ", "'", spp_latin, "'", "\n"
-      )
-      if (!is.null(region)) {
-        yaml <- paste0(yaml, "  ", " ", "region: ", "'", region, "'", "\n")
-      }
-      if (parameters == TRUE) {
-        if (!is.null(param_names) & !is.null(param_values)) {
-          add_params <- NULL
-          for (i in 1:length(param_names)) {
-            toad <- paste("  ", " ", param_names[i], ": ", "'", param_values[i], "'", "\n", sep = "")
-            add_params <- paste0(add_params, toad)
-          }
-        } else {
-          print("Please define parameter names (param_names) and values (param_values).")
-        }
-
-        yaml <- paste0(yaml, add_params)
-      }
-
-      # Add style guide
-      # create_style_css(species = species, savedir = subdir)
-
-      # yaml <- paste0(
-      #   yaml,
-      #   "css: styles.css", "\n"
-      # )
-
-      # Close yaml
-      yaml <- paste0(yaml, "---")
+      yaml <- write_yaml(office = "NEFSC")
 
       print("__________Built YAML Header______________")
       # yaml_save <- capture.output(cat(yaml))
       # cat(yaml, file = here('template','yaml_header.qmd'))
 
       # Add chunk to load in assessment data
-      ass_output <- chunkr(
+      ass_output <- add_chunk(
         paste0(
           "convert_output(output.file = ", "c('", paste(model_results, collapse = "', '"), "')",
           ", model = ", "'", model, "'",
@@ -636,19 +315,19 @@ create_template <- function(
       # print("_______Standardized output data________")
 
       # Add page for citation of assessment report
-      citation <- generate_citation(
+      citation <- create_citation(
         author = author,
         title = title,
         year = year,
         office = office
       )
 
-      print("_______Generate Report Citaiton________")
+      print("_______Add Report Citation________")
 
       # Create report template
 
       if (custom == FALSE) {
-        sections <- paste_child(
+        sections <- add_child(
           c(
             "executive_summary.qmd",
             "introduction.qmd",
@@ -681,7 +360,7 @@ create_template <- function(
         # Create custom template from existing skeleton sections
         if (is.null(new_section)) {
           section_list <- add_base_section(custom_sections)
-          sections <- paste_child(section_list,
+          sections <- add_child(section_list,
                                   label = custom_sections
           )
         } else { # custom = TRUE
@@ -709,7 +388,7 @@ create_template <- function(
               subdir = subdir
             )
             # Create sections object to add into template
-            sections <- paste_child(
+            sections <- add_child(
               sec_list2,
               label = gsub(".qmd", "", unlist(sec_list2))
             )
@@ -724,7 +403,7 @@ create_template <- function(
               subdir = subdir
             )
             # Create sections object to add into template
-            sections <- paste_child(
+            sections <- add_child(
               sec_list2,
               label = gsub(".qmd", "", unlist(sec_list2))
             )
