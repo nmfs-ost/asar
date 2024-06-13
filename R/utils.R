@@ -2,19 +2,6 @@
 ####    Utilities    ####
 #########################
 
-#---- Write YAML ----
-
-#' Write YAML for output including various other dependent functions.
-#' This is intended to be concatenated and put into a quarto file.
-#'
-#' @return NULL
-#' @noRd
-#'
-#' @examples NULL
-write_yaml <- function(){
-
-}
-
 #---- add_base_section ----
 
 #' Add selected sections to outline
