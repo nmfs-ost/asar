@@ -221,14 +221,10 @@ write_yaml <- function(office = NULL,
 #' @param type Stock assessment type; usually inherited from the template
 #' @param spp_latin Latin name for the target species
 #'
-#' @return Terminology for writing a title for a stock assessment across the U.S.
-#'         Function is implemented within create_template.R and inherits its parameters.
+#' @return NULL
 #' @noRd
-#' @export
 #'
-#' @examples write_title(
-#'   office = "SEFSC", species = "Red Snapper", region = "South Atlantic",
-#'   year = 2024, type = "SAR", spp_latin = "Lutjanus campechanus"
+#' @examples NULL
 #' )
 write_title <- function(
     office = NULL,
