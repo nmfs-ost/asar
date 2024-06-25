@@ -142,7 +142,7 @@ create_template <- function(
     # Create YAML header for document
     # Write title based on report type and region
     if (alt_title == FALSE) {
-      title <- write_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type, year = year)
+      title <- create_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type, year = year)
     } else if (alt_title == TRUE) {
       if (!exists(title)) {
         stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
@@ -307,7 +307,7 @@ create_template <- function(
     # cat(yaml, file = here('template','yaml_header.qmd'))
 
     # Add chunk to load in assessment data
-    ass_output <- chunkr(
+    ass_output <- add_chunk(
       paste0(
         "convert_output(output.file = ", "c('", paste(model_results, collapse = "', '"), "')",
         ", model = ", "'", model, "'",
@@ -320,7 +320,7 @@ create_template <- function(
     # print("_______Standardized output data________")
 
     # Add page for citation of assessment report
-    citation <- generate_citation(
+    citation <- create_citation(
       author = author,
       title = title,
       year = year,
@@ -332,7 +332,7 @@ create_template <- function(
     # Create report template
 
     if (custom == FALSE) {
-      sections <- paste_child(
+      sections <- add_child(
         c(
           "executive_summary.qmd",
           "introduction.qmd",
@@ -365,7 +365,7 @@ create_template <- function(
       # Create custom template from existing skeleton sections
       if (is.null(new_section)) {
         section_list <- add_base_section(custom_sections)
-        sections <- paste_child(section_list,
+        sections <- add_child(section_list,
           label = custom_sections
         )
       } else { # custom = TRUE
@@ -393,7 +393,7 @@ create_template <- function(
             subdir = subdir
           )
           # Create sections object to add into template
-          sections <- paste_child(
+          sections <- add_child(
             sec_list2,
             label = gsub(".qmd", "", unlist(sec_list2))
           )
@@ -408,7 +408,7 @@ create_template <- function(
             subdir = subdir
           )
           # Create sections object to add into template
-          sections <- paste_child(
+          sections <- add_child(
             sec_list2,
             label = gsub(".qmd", "", unlist(sec_list2))
           )
