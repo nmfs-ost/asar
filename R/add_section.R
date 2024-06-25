@@ -53,7 +53,7 @@ add_section <- function(
       "\n",
       "[Insert text here]", "\n",
       "\n",
-      chunkr("# Insert code", label = "example_chunk"), "\n"
+      add_chunk("# Insert code", label = "example_chunk"), "\n"
     )
     utils::capture.output(cat(section_i), file = paste0(subdir, "/", section_i_name), append = FALSE)
 

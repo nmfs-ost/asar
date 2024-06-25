@@ -18,7 +18,7 @@ test_that("Adding new sections works.", {
   expect_equal(sections, exp_list)
 })
 
-test_that("Adding new sections works.", {
+test_that("Adding new sections does not work.", {
   sec_list <- add_base_section(c("introduction", "data", "model", "acknowledgements", "tables", "figures", "appendix", "references"))
   sections <- add_section(
     sec_names = c("Harvest Control Rules", "Regional Management Considerations", "Research and Data Needs"),

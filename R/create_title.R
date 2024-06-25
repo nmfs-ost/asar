@@ -11,14 +11,15 @@
 #' @param complex TRUE/FALSE is this a species complex?
 #' @param type Stock assessment type; usually inherited from the template
 #' @param spp_latin Latin name for the target species
-#' @param alt_title alternative title that is custom rather than the default per region
 #'
 #' @return NULL
-#' @noRd
+#' @export
 #'
-#' @examples NULL
+#' @examples create_title(
+#'   office = "SEFSC", species = "Red Snapper", region = "South Atlantic",
+#'   year = 2024, type = "SAR", spp_latin = "Lutjanus campechanus"
 #' )
-write_title <- function(
+create_title <- function(
     office = NULL,
     species = NULL,
     region = NULL,
@@ -30,10 +31,6 @@ write_title <- function(
     year <- format(Sys.Date(), "%Y")
   }
 
-  # Add alternate title if specified
-  if(!is.null(alt_title)){
-    title <- alt_title
-  } else {
   # Create title dependent on regional language
     if (office == "AFSC") {
       if (is.null(complex)) {
@@ -52,12 +49,6 @@ write_title <- function(
         season <- "Winter"
       }
       if (type == "SAR" | is.null(type)) {
-        if (is.null(region)){
-          title <- paste0("Stock Assessment for ", region, " ", species, " (", spp_latin, ") in ", season, " ", year)
-        } else {
-          title <- paste0("Stock Assessment for ", species, " (", spp_latin, ") in ", season, " ", year)
-        }
-      } else if (type == "MT") {
         title <- paste0("Management Track Assessment of ", species, " (", spp_latin, ") ", season, " ", year)
       }
     } else if (office == "NWFSC") {
@@ -85,7 +76,6 @@ write_title <- function(
     } else {
       warning("office (FSC) is not defined. Please define which office you are associated with.")
     }
-  }
 
   # Cohesive title for any stock assessment
   # if(type %in% c('OA', 'UP')){

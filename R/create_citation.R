@@ -9,13 +9,13 @@
 #'         the stock assessment report generated in the ASAR package.
 #' @export
 #'
-#' @examples generate_citation(
+#' @examples create_citation(
 #'   title = "SA Report for Jellyfish",
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
 #'   year = 2024, office = "NEFSC"
 #' )
 #'
-generate_citation <- function(
+create_citation <- function(
     author = NULL,
     title = NULL,
     year = NULL,
