@@ -269,30 +269,31 @@ create_template <- function(
 
       # Parameters
       # office, region, and species are default parameters
-      yaml <- paste0(
-        yaml, "params:", "\n",
-        "  ", " ", "office: ", "'", office, "'", "\n",
-        "  ", " ", "species: ", "'", species, "'", "\n",
-        "  ", " ", "spp_latin: ", "'", spp_latin, "'", "\n"
-      )
-      if (!is.null(region)) {
-        yaml <- paste0(yaml, "  ", " ", "region: ", "'", region, "'", "\n")
-      }
       if (parameters == TRUE) {
-        if (!is.null(param_names) & !is.null(param_values)) {
-          add_params <- NULL
-          for (i in 1:length(param_names)) {
-            toad <- paste("  ", " ", param_names[i], ": ", "'", param_values[i], "'", "\n", sep = "")
-            add_params <- paste0(add_params, toad)
-          }
-        } else if (length(list.files(subdir)) == 0) {
-          file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
-        } else {
-          print("Please define parameter names (param_names) and values (param_values).")
+        yaml <- paste0(
+          yaml, "params:", "\n",
+          "  ", " ", "office: ", "'", office, "'", "\n",
+          "  ", " ", "species: ", "'", species, "'", "\n",
+          "  ", " ", "spp_latin: ", "'", spp_latin, "'", "\n"
+        )
+        if (!is.null(region)) {
+          yaml <- paste0(yaml, "  ", " ", "region: ", "'", region, "'", "\n")
         }
-
-        yaml <- paste0(yaml, add_params)
-      }
+        # Add more parameters if indicated
+        if (!is.null(param_names) & !is.null(param_values)) {
+          # check there are the same number of names and values
+          if(length(param_names)!=length(param_values)){
+            print("Please define ALL parameter names (param_names) and values (param_values).")
+          } else {
+            add_params <- NULL
+            for (i in 1:length(param_names)) {
+              toad <- paste("  ", " ", param_names[i], ": ", "'", param_values[i], "'", "\n", sep = "")
+              add_params <- paste0(add_params, toad)
+            } # close loop
+          } # close check
+          yaml <- paste0(yaml, add_params)
+        } # close if adding add'l params
+      } # close if params to be included in template
 
       # Add style guide
       # create_style_css(species = species, savedir = subdir)
@@ -415,9 +416,9 @@ create_template <- function(
               sec_list2,
               label = gsub(".qmd", "", unlist(sec_list2))
             )
-          }
-        }
-      }
+          } # close if statement for very specific sectioning
+        } # close if statement for extra custom
+      } # close if statement for custom
 
       # Combine template sections
       report_template <- paste(yaml,
@@ -587,7 +588,7 @@ create_template <- function(
     # Save template as .qmd to render
     utils::capture.output(cat(report_template), file = paste0(subdir, "/", report_name), append = FALSE)
     # Print message
-    print(paste0(
+    cat(paste0(
       "Saved report template in directory: ", subdir, "\n",
       "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
     ))
