@@ -18,5 +18,6 @@ ggplot (ggplot2), base r plot, flextable (flextable), gt tables (gt), and kable 
 Add NOAA formatting to figure or table
 }
 \examples{
-add_theme(ggplot2::ggplot(data = cars, ggplot2::aes(x = speed, y = dist)) + ggplot2::geom_point())
+add_theme(ggplot2::ggplot(data = cars, ggplot2::aes(x = speed, y = dist)) +
+  ggplot2::geom_point())
 }
