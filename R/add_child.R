@@ -9,7 +9,7 @@
 #'
 #' @examples add_child("test_quarto.qmd", label = "test_doc")
 add_child <- function(x,
-                        label = NULL) {
+                      label = NULL) {
   child <- c()
   for (i in 1:length(x)) {
     sec_num <- x[i]
