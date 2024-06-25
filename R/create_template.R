@@ -282,7 +282,7 @@ create_template <- function(
         # Add more parameters if indicated
         if (!is.null(param_names) & !is.null(param_values)) {
           # check there are the same number of names and values
-          if(length(param_names)!=length(param_values)){
+          if (length(param_names) != length(param_values)) {
             print("Please define ALL parameter names (param_names) and values (param_values).")
           } else {
             add_params <- NULL
