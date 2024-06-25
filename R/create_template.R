@@ -140,7 +140,17 @@ create_template <- function(
 
       # Part I
       # Build the YAML Header
-      yaml <- write_yaml()
+      yaml <- write_yaml(office = office,
+                         species = species,
+                         region = region,
+                         year = year,
+                         complex = complex,
+                         type = type,
+                         spp_latin = spp_latin,
+                         alt_title = alt_title,
+                         parameters = parameters,
+                         param_names = param_names,
+                         param_values = param_values)
 
       print("__________Built YAML Header______________")
       # yaml_save <- capture.output(cat(yaml))
