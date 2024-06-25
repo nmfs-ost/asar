@@ -1,9 +1,15 @@
+#########################
+####    Utilities    ####
+#########################
+
+#---- add_base_section ----
+
 #' Add selected sections to outline
 #'
 #' @param x inherited 'custom_sections' parameter from create_template
 #'
 #' @return Call and copy the sections in the package templates to create an outline for a stock assessment
-#' @export
+#' @noRd
 #'
 #' @examples add_base_section(c("abstract", "model", "results"))
 add_base_section <- function(x) {
