@@ -116,26 +116,27 @@ create_template <- function(
   # }
 
   if (new_template == TRUE) {
-    # Pull skeleton for sections
-    current_folder <- system.file("templates", "skeleton", package = "ASAR")
-    new_folder <- subdir
-    files_to_copy <- list.files(current_folder)
+    if (is.null(type) | type == "SAR"){
+      # Pull skeleton for sections
+      current_folder <- system.file("templates", "skeleton", package = "ASAR")
+      new_folder <- subdir
+      files_to_copy <- list.files(current_folder)
 
-    # Check if there are already files in the folder
-    if (length(list.files(subdir)) > 0) {
-      warning("There are files in this location.")
-      question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
+      # Check if there are already files in the folder
+      if (length(list.files(subdir)) > 0) {
+        warning("There are files in this location.")
+        question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
 
-      if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-        file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE) |> suppressWarnings()
-      } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-        print(paste0("Blank files for template sections were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder."))
+        if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+          file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE) |> suppressWarnings()
+        } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+          print(paste0("Blank files for template sections were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder."))
+        }
+      } else if (length(list.files(subdir)) == 0) {
+        file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
+      } else {
+        stop("None of the arugments match statement commands. Needs developer fix.")
       }
-    } else if (length(list.files(subdir)) == 0) {
-      file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
-    } else {
-      stop("None of the arugments match statement commands. Needs developer fix.")
-    }
 
     # Part I
     # Create a report template file to render for the region and species
@@ -284,6 +285,8 @@ create_template <- function(
           toad <- paste("  ", " ", param_names[i], ": ", "'", param_values[i], "'", "\n", sep = "")
           add_params <- paste0(add_params, toad)
         }
+      } else if (length(list.files(subdir)) == 0) {
+        file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
       } else {
         print("Please define parameter names (param_names) and values (param_values).")
       }
@@ -302,9 +305,9 @@ create_template <- function(
     # Close yaml
     yaml <- paste0(yaml, "---")
 
-    print("__________Built YAML Header______________")
-    # yaml_save <- capture.output(cat(yaml))
-    # cat(yaml, file = here('template','yaml_header.qmd'))
+      print("__________Built YAML Header______________")
+      # yaml_save <- capture.output(cat(yaml))
+      # cat(yaml, file = here('template','yaml_header.qmd'))
 
     # Add chunk to load in assessment data
     ass_output <- add_chunk(
@@ -317,7 +320,7 @@ create_template <- function(
       eval = "false" # set false for testing this function in the template for now
     )
 
-    # print("_______Standardized output data________")
+      # print("_______Standardized output data________")
 
     # Add page for citation of assessment report
     citation <- create_citation(
@@ -327,9 +330,9 @@ create_template <- function(
       office = office
     )
 
-    print("_______Generate Report Citaiton________")
+      print("_______Add Report Citation________")
 
-    # Create report template
+      # Create report template
 
     if (custom == FALSE) {
       sections <- add_child(
@@ -346,19 +349,8 @@ create_template <- function(
           "figures.qmd",
           "appendix.qmd"
         ),
-        label = c(
-          "executive_summary",
-          "introduction",
-          "data",
-          "model",
-          "results",
-          "discussion",
-          "acknowlesgements",
-          "references",
-          "tables",
-          "figures",
-          "appendix"
-        )
+        label = "model_output",
+        eval = "false" # set false for testing this function in the template for now
       )
     } else {
       # Option for building custom template
@@ -372,6 +364,276 @@ create_template <- function(
         # Create custom template using existing sections and new sections from analyst
         # Add sections from package options
 
+      # print("_______Standardized output data________")
+
+      # Add page for citation of assessment report
+      citation <- create_citation(
+        author = author,
+        title = title,
+        year = year,
+        office = office
+      )
+
+      print("_______Add Report Citation________")
+
+      # Create report template
+
+      if (custom == FALSE) {
+        sections <- add_child(
+          c(
+            "executive_summary.qmd",
+            "introduction.qmd",
+            "data.qmd",
+            "model.qmd",
+            "results.qmd",
+            "discussion.qmd",
+            "acknowledgements.qmd",
+            "references.qmd",
+            "tables.qmd",
+            "figures.qmd",
+            "appendix.qmd"
+          ),
+          label = c(
+            "executive_summary",
+            "introduction",
+            "data",
+            "model",
+            "results",
+            "discussion",
+            "acknowlesgements",
+            "references",
+            "tables",
+            "figures",
+            "appendix"
+          )
+          sec_list2 <- add_section(
+            sec_names = new_section,
+            location = section_location,
+            other_sections = sec_list1,
+            subdir = subdir
+          )
+          # Create sections object to add into template
+          sections <- add_child(
+            sec_list2,
+            label = gsub(".qmd", "", unlist(sec_list2))
+          )
+        } else { # custom_sections explicit
+          # Add selected sections from base
+          sec_list1 <- add_base_section(custom_sections)
+          # Create new sections as .qmd in folder
+          sec_list2 <- add_section(
+            sec_names = new_section,
+            location = section_location,
+            other_sections = sec_list1,
+            subdir = subdir
+          )
+          # Create sections object to add into template
+          sections <- add_child(
+            sec_list2,
+            label = gsub(".qmd", "", unlist(sec_list2))
+          )
+        } else { # custom = TRUE
+          # Create custom template using existing sections and new sections from analyst
+          # Add sections from package options
+
+          if (is.null(custom_sections)) {
+            sec_list1 <- list(
+              "executive_summary.qmd",
+              "introduction.qmd",
+              "data.qmd",
+              "model.qmd",
+              "results.qmd",
+              "discussion.qmd",
+              "acknowledgements.qmd",
+              "references.qmd",
+              "tables.qmd",
+              "figures.qmd",
+              "appendix.qmd"
+            )
+            sec_list2 <- add_section(
+              sec_names = new_section,
+              location = section_location,
+              other_sections = sec_list1,
+              subdir = subdir
+            )
+            # Create sections object to add into template
+            sections <- add_child(
+              sec_list2,
+              label = gsub(".qmd", "", unlist(sec_list2))
+            )
+          } else { # custom_sections explicit
+            # Add selected sections from base
+            sec_list1 <- add_base_section(custom_sections)
+            # Create new sections as .qmd in folder
+            sec_list2 <- add_section(
+              sec_names = new_section,
+              location = section_location,
+              other_sections = sec_list1,
+              subdir = subdir
+            )
+            # Create sections object to add into template
+            sections <- add_child(
+              sec_list2,
+              label = gsub(".qmd", "", unlist(sec_list2))
+            )
+          }
+        }
+      }
+
+      # Combine template sections
+      report_template <- paste(yaml,
+        ass_output,
+        citation,
+        sections,
+        sep = "\n"
+      )
+
+      print("___Created report template______")
+
+    ########|###############################################################
+    ##### NEFSC MT Template####
+    ########|###############################################################
+
+    } else if (type == "NEMT") {
+      # Pull skeleton for sections
+      current_folder <- system.file("templates", "NEMT", package = "ASAR")
+      new_folder <- subdir
+      files_to_copy <- list.files(current_folder)
+
+      # Check if there are already files in the folder
+      if (length(list.files(subdir)) > 0) {
+        warning("There are files in this location.")
+        question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
+
+        if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+          file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE) |> suppressWarnings()
+        } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+          print(paste0("Blank files for template sections were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder."))
+        }
+      } else if (length(list.files(subdir)) == 0) {
+        file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
+      } else {
+        stop("None of the arugments match statement commands. Needs developer fix.")
+      }
+
+      # Part I
+      # Create a report template file to render for the region and species
+      # Create YAML header for document
+      yaml <- write_yaml(office = "NEFSC")
+
+      print("__________Built YAML Header______________")
+      # yaml_save <- capture.output(cat(yaml))
+      # cat(yaml, file = here('template','yaml_header.qmd'))
+
+      # Add chunk to load in assessment data
+      ass_output <- add_chunk(
+        paste0(
+          "convert_output(output.file = ", "c('", paste(model_results, collapse = "', '"), "')",
+          ", model = ", "'", model, "'",
+          ", outdir = ", "'", resdir, "'", ")"
+        ),
+        label = "model_output",
+        eval = "false" # set false for testing this function in the template for now
+      )
+
+      # print("_______Standardized output data________")
+
+      # Add page for citation of assessment report
+      citation <- create_citation(
+        author = author,
+        title = title,
+        year = year,
+        office = office
+      )
+
+      print("_______Add Report Citation________")
+
+      # Create report template
+
+      if (custom == FALSE) {
+        sections <- add_child(
+          c(
+            "executive_summary.qmd",
+            "introduction.qmd",
+            "data.qmd",
+            "model.qmd",
+            "results.qmd",
+            "discussion.qmd",
+            "acknowledgements.qmd",
+            "references.qmd",
+            "tables.qmd",
+            "figures.qmd",
+            "appendix.qmd"
+          ),
+          label = c(
+            "executive_summary",
+            "introduction",
+            "data",
+            "model",
+            "results",
+            "discussion",
+            "acknowlesgements",
+            "references",
+            "tables",
+            "figures",
+            "appendix"
+          )
+        )
+      } else {
+        # Option for building custom template
+        # Create custom template from existing skeleton sections
+        if (is.null(new_section)) {
+          section_list <- add_base_section(custom_sections)
+          sections <- add_child(section_list,
+                                  label = custom_sections
+          )
+        } else { # custom = TRUE
+          # Create custom template using existing sections and new sections from analyst
+          # Add sections from package options
+
+          if (is.null(custom_sections)) {
+            sec_list1 <- list(
+              "executive_summary.qmd",
+              "introduction.qmd",
+              "data.qmd",
+              "model.qmd",
+              "results.qmd",
+              "discussion.qmd",
+              "acknowledgements.qmd",
+              "references.qmd",
+              "tables.qmd",
+              "figures.qmd",
+              "appendix.qmd"
+            )
+            sec_list2 <- add_section(
+              sec_names = new_section,
+              location = section_location,
+              other_sections = sec_list1,
+              subdir = subdir
+            )
+            # Create sections object to add into template
+            sections <- add_child(
+              sec_list2,
+              label = gsub(".qmd", "", unlist(sec_list2))
+            )
+          } else { # custom_sections explicit
+            # Add selected sections from base
+            sec_list1 <- add_base_section(custom_sections)
+            # Create new sections as .qmd in folder
+            sec_list2 <- add_section(
+              sec_names = new_section,
+              location = section_location,
+              other_sections = sec_list1,
+              subdir = subdir
+            )
+            # Create sections object to add into template
+            sections <- add_child(
+              sec_list2,
+              label = gsub(".qmd", "", unlist(sec_list2))
+            )
+          }
+        }
+      }
         if (is.null(custom_sections)) {
           sec_list1 <- list(
             "executive_summary.qmd",
@@ -416,26 +678,27 @@ create_template <- function(
       }
     }
 
-    # Combine template sections
-    report_template <- paste(yaml,
-      ass_output,
-      citation,
-      sections,
-      sep = "\n"
-    )
+      # Combine template sections
+      report_template <- paste(yaml,
+                               ass_output,
+                               citation,
+                               sections,
+                               sep = "\n"
+      )
 
-    print("___Created report template______")
+      print("___Created report template______")
+    }
 
     # Save template as .qmd to render
     utils::capture.output(cat(report_template), file = paste0(subdir, "/", report_name), append = FALSE)
-
+    # Print message
     print(paste0(
       "Saved report template in directory: ", subdir, "\n",
       "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
     ))
-
     # Open file for analyst
     file.show(file.path(paste0(subdir, "/", report_name))) # this opens the new file, but also restarts the session
+
   } else {
     # Copy old template and rename for new year
     # Create copy of previous assessment
