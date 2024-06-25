@@ -1,5 +1,5 @@
 test_that("citaiton generated properly for SWFSC", {
-  fxn_test <- generate_citation(
+  fxn_test <- create_citation(
     author = c(
       "Peter T. Kuriyama",
       "Caitlin Allen Akselrud",

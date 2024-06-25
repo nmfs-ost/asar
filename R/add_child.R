@@ -7,8 +7,8 @@
 #'         Utilize the cat() function to implement into readable text.
 #' @export
 #'
-#' @examples paste_child("test_quarto.qmd", label = "test_doc")
-paste_child <- function(x,
+#' @examples add_child("test_quarto.qmd", label = "test_doc")
+add_child <- function(x,
                         label = NULL) {
   child <- c()
   for (i in 1:length(x)) {

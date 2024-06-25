@@ -13,8 +13,8 @@
 #'         in quotes for the function to render it properly
 #' @export
 #'
-#' @examples chunkr("plot(cars$speed, cars$distance)")
-chunkr <- function(
+#' @examples add_chunk("plot(cars$speed, cars$distance)")
+add_chunk <- function(
     x,
     echo = "false",
     warnings = "false",
