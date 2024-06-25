@@ -30,8 +30,6 @@ for the management organization.}
 \item{type}{Stock assessment type; usually inherited from the template}
 
 \item{spp_latin}{Latin name for the target species}
-
-\item{alt_title}{alternative title that is custom rather than the default per region}
 }
 \description{
 Write Stock Assessment Title

@@ -11,7 +11,6 @@
 #' @param complex TRUE/FALSE is this a species complex?
 #' @param type Stock assessment type; usually inherited from the template
 #' @param spp_latin Latin name for the target species
-#' @param alt_title alternative title that is custom rather than the default per region
 #'
 #' @return NULL
 #' @export
