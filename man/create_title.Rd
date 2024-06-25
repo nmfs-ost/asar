@@ -30,10 +30,8 @@ for the management organization.}
 \item{type}{Stock assessment type; usually inherited from the template}
 
 \item{spp_latin}{Latin name for the target species}
-}
-\value{
-Terminology for writing a title for a stock assessment across the U.S.
-Function is implemented within create_template.R and inherits its parameters.
+
+\item{alt_title}{alternative title that is custom rather than the default per region}
 }
 \description{
 Write Stock Assessment Title

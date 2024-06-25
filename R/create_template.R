@@ -148,7 +148,7 @@ create_template <- function(
       if (!exists(title)) {
         stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
       } else {
-        title <- paste(title)
+        title <- paste(alt_title)
       }
     }
 
@@ -334,50 +334,6 @@ create_template <- function(
 
       # Create report template
 
-    if (custom == FALSE) {
-      sections <- add_child(
-        c(
-          "executive_summary.qmd",
-          "introduction.qmd",
-          "data.qmd",
-          "model.qmd",
-          "results.qmd",
-          "discussion.qmd",
-          "acknowledgements.qmd",
-          "references.qmd",
-          "tables.qmd",
-          "figures.qmd",
-          "appendix.qmd"
-        ),
-        label = "model_output",
-        eval = "false" # set false for testing this function in the template for now
-      )
-    } else {
-      # Option for building custom template
-      # Create custom template from existing skeleton sections
-      if (is.null(new_section)) {
-        section_list <- add_base_section(custom_sections)
-        sections <- add_child(section_list,
-          label = custom_sections
-        )
-      } else { # custom = TRUE
-        # Create custom template using existing sections and new sections from analyst
-        # Add sections from package options
-
-      # print("_______Standardized output data________")
-
-      # Add page for citation of assessment report
-      citation <- create_citation(
-        author = author,
-        title = title,
-        year = year,
-        office = office
-      )
-
-      print("_______Add Report Citation________")
-
-      # Create report template
-
       if (custom == FALSE) {
         sections <- add_child(
           c(
@@ -406,31 +362,14 @@ create_template <- function(
             "figures",
             "appendix"
           )
-          sec_list2 <- add_section(
-            sec_names = new_section,
-            location = section_location,
-            other_sections = sec_list1,
-            subdir = subdir
-          )
-          # Create sections object to add into template
-          sections <- add_child(
-            sec_list2,
-            label = gsub(".qmd", "", unlist(sec_list2))
-          )
-        } else { # custom_sections explicit
-          # Add selected sections from base
-          sec_list1 <- add_base_section(custom_sections)
-          # Create new sections as .qmd in folder
-          sec_list2 <- add_section(
-            sec_names = new_section,
-            location = section_location,
-            other_sections = sec_list1,
-            subdir = subdir
-          )
-          # Create sections object to add into template
-          sections <- add_child(
-            sec_list2,
-            label = gsub(".qmd", "", unlist(sec_list2))
+        )
+      } else {
+        # Option for building custom template
+        # Create custom template from existing skeleton sections
+        if (is.null(new_section)) {
+          section_list <- add_base_section(custom_sections)
+          sections <- add_child(section_list,
+                                label = custom_sections
           )
         } else { # custom = TRUE
           # Create custom template using existing sections and new sections from analyst
@@ -519,7 +458,7 @@ create_template <- function(
       # Part I
       # Create a report template file to render for the region and species
       # Create YAML header for document
-      yaml <- write_yaml(office = "NEFSC")
+      # yaml <- write_yaml(office = "NEFSC")
 
       print("__________Built YAML Header______________")
       # yaml_save <- capture.output(cat(yaml))
@@ -634,52 +573,9 @@ create_template <- function(
           }
         }
       }
-        if (is.null(custom_sections)) {
-          sec_list1 <- list(
-            "executive_summary.qmd",
-            "introduction.qmd",
-            "data.qmd",
-            "model.qmd",
-            "results.qmd",
-            "discussion.qmd",
-            "acknowledgements.qmd",
-            "references.qmd",
-            "tables.qmd",
-            "figures.qmd",
-            "appendix.qmd"
-          )
-          sec_list2 <- add_section(
-            sec_names = new_section,
-            location = section_location,
-            other_sections = sec_list1,
-            subdir = subdir
-          )
-          # Create sections object to add into template
-          sections <- add_child(
-            sec_list2,
-            label = gsub(".qmd", "", unlist(sec_list2))
-          )
-        } else { # custom_sections explicit
-          # Add selected sections from base
-          sec_list1 <- add_base_section(custom_sections)
-          # Create new sections as .qmd in folder
-          sec_list2 <- add_section(
-            sec_names = new_section,
-            location = section_location,
-            other_sections = sec_list1,
-            subdir = subdir
-          )
-          # Create sections object to add into template
-          sections <- add_child(
-            sec_list2,
-            label = gsub(".qmd", "", unlist(sec_list2))
-          )
-        }
-      }
-    }
 
       # Combine template sections
-      report_template <- paste(yaml,
+      report_template <- paste(# yaml,
                                ass_output,
                                citation,
                                sections,
