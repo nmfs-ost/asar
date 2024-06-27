@@ -43,7 +43,6 @@ ASAR::create_template(
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
   include_affiliation = TRUE,
   parameters = FALSE,
-  type = "RT",
   model_results = "results.SS",
   model = "SS"
 )
