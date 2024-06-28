@@ -31,38 +31,42 @@ convert_output <- function(
   if (model == "bam") {
     dat <- dget(output.file)
     # dat_list <- list()
+
     # Extract data from list to make useable
     # Loop over all items to output each object/transform
     for (p in 1:length(dat)) {
+      out <- dat[p]
       # is the object class double or list?
-      if (is.double(dat[p])) {
+      if (is.double(out)) {
         # is the object a vector or matrix?
-        if (is.vector(dat[p])) {
-          df <- data.frame(t(sapply(dat[p], c))) |>
-            tidyr::pivot_longer(cols = everything(), names_to = paste(names(dat[p])), values_to = "value")
-        } else if (is.matrix(dat[[p]])) {
-          df <- as.matrix(dat[[p]])
+        if (is.vector(out)) {
+          df <- data.frame(t(sapply(out, c))) |>
+            tidyr::pivot_longer(cols = everything(), names_to = paste(names(out)), values_to = "value")
+        } else if (is.matrix(out)) {
+          df <- as.matrix(out)
         } # close if statement for checking if double obj is vector or matrix
         print(assign(names(dat[p]), df)) # print df from double class obj
 
-      } else if (is.list(dat[p])) {
-        for (i in 1:length(dat[p])){
+      } else if (is.list(out)) {
+        for (i in 1:length(out)){
           # if the object is a vector treat as such
-          if (is.vector(dat[p][[i]])){
-            df <- data.frame(matrix(unlist(dat[p][[i]]), nrow=length(dat[p][[i]]), byrow=TRUE),stringsAsFactors=FALSE) |>
-              dplyr::mutate(parm.cons = names(dat[p][[i]]))
+          if (is.vector(out[[i]])){
+            df <- data.frame(matrix(unlist(out[[i]]), nrow=length(out[[i]]), byrow=TRUE),stringsAsFactors=FALSE) |>
+              dplyr::mutate(parm.cons = names(out[[i]]))
             # must add more proper call names - value of x will vary based on df
-            colnames(df) <- c(names(dat[p][i]), "x")
+            colnames(df) <- c(names(out[i]), "x")
 
             # if the object is a matrix treat as such
-          } else if (is.matrix(dat[p][[i]])){
+          } else if (is.matrix(out[[i]])){
             # Turn the object into a matrix  - will need to be handled later when transforming the data
-            df <- as.matrix(dat[[p]][[i]])
+            df <- as.matrix(out[[i]])
           }
-          print(assign(names(dat[[p]][i]), df))
+          print(assign(names(dat[p][i]), df))
         } # close loop for list objects after pulled
       } # close if statement for checking if objects from dat is double or list
-      # dat_list[paste(names(dat[p]))] <- df
+
+
+
     } # close loop over objects listed in dat file
 
     #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
