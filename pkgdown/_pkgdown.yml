@@ -1,0 +1,7 @@
+url: schiano-noaa.github.io/ASAR/
+
+home:
+  title: Automated Stock Assessment Reporting
+
+template:
+  bootstrap: 5
