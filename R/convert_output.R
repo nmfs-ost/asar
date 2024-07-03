@@ -29,6 +29,10 @@ convert_output <- function(
   }
 
   if (model == "bam") {
+
+    #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    # Step 1: Extract values from BAM output
+    #@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     dat <- dget(output.file)
     # dat_list <- list()
 
