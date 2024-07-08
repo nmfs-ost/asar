@@ -25,7 +25,24 @@ convert_output <- function(
 
   # Convert SS3 output Report.sso file
   if (model == "ss") {
+    # Step 1 identify and extract breaks in output
+    # Function to extract rows where values are present for identifies labels
+    # extract example param
+    next_blank_row <- function(output, label){
+      # Locate the row containing the specified value from the df
+      value_row <- which(apply(output, 1, function(row) any(row == label)))[2]
 
+      # If the parameter value is not found, return NA
+      if(length(value_row) == 0){
+        return(NA)
+      }
+
+      # Search for the next blank row after the value
+      next_blank <- which(apply(reportfile, 1, function(row) all(is.na(row) | row == "" | row == "-" | row == "#")) & (seq_len(nrow(reportfile)) > value_row))[1]
+      # **Add additional situation where there is no blank but a "-" or some other marker spacing values**
+
+      return(c(value_row, next_blank))
+    }
   }
 
   if (model == "bam") {
