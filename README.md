@@ -52,6 +52,8 @@ Note: This is only an example. The parameters in the example do not convey accur
 
 ## Tips
 
+If there you receive an error creating your template due to authorship. Please submit requests to be added to the national archive for assessment scientists using [this issue](https://github.com/nmfs-ost/asar/issues/19). The developers will add you to the list as soon as possible. In the meantime, you can use the argument `create_template(add_author = "First Last")` to add yourself to the template. 
+
 ## User Community
 
 This package is intended for use by stock assessment analysts across NOAA Fisheries, but the modularized process and workflow can be used in other applications such as developing other reports for managing organizations or for rendering stock assessment reports in other regions of the world.
