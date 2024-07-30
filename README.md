@@ -4,7 +4,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-This package is currently in development.
+This package is currently in development. For users interested in testing, please see [Testing](#testing-section) section below. In its current form, this package builds a very simple template, but there are limited features including NOAA Fisheries formatting and included tables and figures.
 
 Download using the directions below and fill in `create_template.R` function with the desired parameters (follow example below) to create a template quarto document to be rendered to create a stock assessment report.
 
@@ -35,20 +35,56 @@ The following is a basic example to render a stock assessment report for a parti
 ASAR::create_template(
   new_template = TRUE,
   format = "pdf",
-  office = "SEFSC",
-  region = "Gulf of Mexico",
-  species = "Red Snapper",
-  spp_latin = "Lutjanus campechanus",
+  office = "SWFSC",
+  species = "Pacific sardine",
+  spp_latin = "Sardinops sagax",
   year = 2024,
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
   include_affiliation = TRUE,
   parameters = FALSE,
-  model_results = "results.SS",
+  model_results = "Report.SSO",
   model = "SS"
 )
 ```
 
 Note: This is only an example. The parameters in the example do not convey accurate stock assessment information.
+
+## Testing
+
+We encourage users to test `asar` throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. Once the user successfully executes `create_template()`, the template quarto file will open:
+
+![](https://github.com/nmfs-ost/asar/tree/main/inst/resources/example_pop-up.PNG)
+
+All other associated files will be created in a folder called `stock_assessment_template` within the user's documents folder. From there, a file system following the user's associated science center > species name > region (if applicable) > year. The user will have to navigate to this folder to find additional files.
+
+![](https://github.com/nmfs-ost/asar/tree/main/inst/resources/example_file_system.PNG)
+
+This is a modularized template, there is no need to make any edits to the skeleton file. To write the report, user should navigate and open each supporting section quarto document labelled:
+
+:::: {layout-ncol="2"}
+::: {}
+
+-   Executive Summary
+-   Introduction
+-   Data
+-   Modeling Approach
+-   Results
+-   Projections
+
+:::
+
+::: {}
+
+-   Discussion
+-   Acknowledgements
+-   References
+-   Tables
+-   Figures 
+
+:::
+::::
+
+Please leave an issue for any bugs or suggestions to improve the package during testing on the [Issues Page](https://github.com/Schiano-NOAA/ASAR/issues). Please remember that this package is currently in develope and we do not project to release version 1.0 until December 2024. Thank you for helping us improve this package!
 
 ## Tips
 
