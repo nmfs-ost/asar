@@ -4,7 +4,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-This package is currently in development. For users interested in testing, please see [Testing](#testing-section) section below. In its current form, this package builds a very simple template, but there are limited features including NOAA Fisheries formatting and included tables and figures.
+This package is currently in development. For users interested in testing, please see [Testing](#-testing-section) section below. In its current form, this package builds a very simple template, but there are limited features including NOAA Fisheries formatting and included tables and figures.
 
 Download using the directions below and fill in `create_template.R` function with the desired parameters (follow example below) to create a template quarto document to be rendered to create a stock assessment report.
 
