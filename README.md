@@ -53,11 +53,11 @@ Note: This is only an example. The parameters in the example do not convey accur
 
 We encourage users to test `asar` throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. Once the user successfully executes `create_template()`, the template quarto file will open:
 
-![](https://github.com/nmfs-ost/asar/tree/main/inst/resources/example_pop-up.PNG)
+![alt text](https://github.com/nmfs-ost/asar/tree/main/inst/resources/example_pop-up.PNG)
 
 All other associated files will be created in a folder called `stock_assessment_template` within the user's documents folder. From there, a file system following the user's associated science center > species name > region (if applicable) > year. The user will have to navigate to this folder to find additional files.
 
-![](https://github.com/nmfs-ost/asar/tree/main/inst/resources/example_file_system.PNG)
+![alt text](https://github.com/nmfs-ost/asar/tree/main/inst/resources/example_file_system.PNG)
 
 This is a modularized template, there is no need to make any edits to the skeleton file. To write the report, user should navigate and open each supporting section quarto document labelled:
 
