@@ -1,0 +1,47 @@
+## Model
+
+### Current Approach
+
+<!---
+This is a potential automated subsection which will dynamically changed according to the assessment model used to perform the analysis. 
+
+Please provide a short, general overview of platform including refernce to the model's paper or online refence.
+--->
+
+### Configuration
+
+<!---
+- Time blocks
+- Spatial structure and considerations
+- Growth differnces/morphs
+- Parameters to estimate and parameters to fix
+- Bayesian priors (for which parameters, distributions assumed, and starting values and bounds)
+- Catchability
+- Selectivity
+- Retention
+- Likelihood (penalty, reweighting, ect.)
+--->
+
+### Sensitivity Analyses
+
+<!---
+Descriptions of which sensitivity analysis to be performed. (i.e. which parameters or data input streams changed in different setups of the model and why)
+--->
+
+### Management Benchmarks
+
+<!---
+Description decisions on management metrics/benchmarks.
+--->
+
+### Diagnostics
+
+<!---
+Description of which diagnostics will be used.
+--->
+
+### Projection Scenarios
+
+<!---
+Description of which projection scenarios will be run and how the projections will be set up.
+--->
