@@ -50,7 +50,7 @@
 </h1></div>
 <!-- badges: start -->
 <!-- badges: end -->
-<p>This package is currently in development.</p>
+<p>This package is currently in development. For users interested in testing, please see <a href="#testing-section">Testing</a> section below. In its current form, this package builds a very simple template, but there are limited features including NOAA Fisheries formatting and included tables and figures.</p>
 <p>Download using the directions below and fill in <code>create_template.R</code> function with the desired parameters (follow example below) to create a template quarto document to be rendered to create a stock assessment report.</p>
 <p>The goal of ASAR is to automate stock assessment reports for NOAA science centers so they are reproducible and cohesive across the nation. This project intends to create a streamlined workflow that allows the analyst to create a customized report tailored to their needs and requirements by the SSC, council, or other regional management organizations.</p>
 <div class="section level2">
@@ -73,18 +73,48 @@
 <code class="sourceCode R"><span><span class="fu">ASAR</span><span class="fu">::</span><span class="fu"><a href="reference/create_template.html">create_template</a></span><span class="op">(</span></span>
 <span>  new_template <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  format <span class="op">=</span> <span class="st">"pdf"</span>,</span>
-<span>  office <span class="op">=</span> <span class="st">"SEFSC"</span>,</span>
-<span>  region <span class="op">=</span> <span class="st">"Gulf of Mexico"</span>,</span>
-<span>  species <span class="op">=</span> <span class="st">"Red Snapper"</span>,</span>
-<span>  spp_latin <span class="op">=</span> <span class="st">"Lutjanus campechanus"</span>,</span>
+<span>  office <span class="op">=</span> <span class="st">"SWFSC"</span>,</span>
+<span>  species <span class="op">=</span> <span class="st">"Pacific sardine"</span>,</span>
+<span>  spp_latin <span class="op">=</span> <span class="st">"Sardinops sagax"</span>,</span>
 <span>  year <span class="op">=</span> <span class="fl">2024</span>,</span>
 <span>  author <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"John Snow"</span>, <span class="st">"Danny Phantom"</span>, <span class="st">"Patrick Star"</span><span class="op">)</span>,</span>
 <span>  include_affiliation <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  parameters <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  model_results <span class="op">=</span> <span class="st">"results.SS"</span>,</span>
+<span>  model_results <span class="op">=</span> <span class="st">"Report.SSO"</span>,</span>
 <span>  model <span class="op">=</span> <span class="st">"SS"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Note: This is only an example. The parameters in the example do not convey accurate stock assessment information.</p>
+</div>
+<div class="section level2">
+<h2 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a>
+</h2>
+<p>We encourage users to test <code>asar</code> throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. Once the user successfully executes <code><a href="reference/create_template.html">create_template()</a></code>, the template quarto file will open:</p>
+<p><img src="https://github.com/nmfs-ost/asar/tree/main/inst/resources/example_pop-up.PNG"></p>
+<p>All other associated files will be created in a folder called <code>stock_assessment_template</code> within the user’s documents folder. From there, a file system following the user’s associated science center &gt; species name &gt; region (if applicable) &gt; year. The user will have to navigate to this folder to find additional files.</p>
+<p><img src="https://github.com/nmfs-ost/asar/tree/main/inst/resources/example_file_system.PNG"></p>
+<p>This is a modularized template, there is no need to make any edits to the skeleton file. To write the report, user should navigate and open each supporting section quarto document labelled:</p>
+<div layout-ncol="2">
+<div>
+<ul>
+<li>Executive Summary</li>
+<li>Introduction</li>
+<li>Data</li>
+<li>Modeling Approach</li>
+<li>Results</li>
+<li>Projections</li>
+</ul>
+</div>
+<div>
+<ul>
+<li>Discussion</li>
+<li>Acknowledgements</li>
+<li>References</li>
+<li>Tables</li>
+<li>Figures</li>
+</ul>
+</div>
+</div>
+<p>Please leave an issue for any bugs or suggestions to improve the package during testing on the <a href="https://github.com/Schiano-NOAA/ASAR/issues" class="external-link">Issues Page</a>. Please remember that this package is currently in develope and we do not project to release version 1.0 until December 2024. Thank you for helping us improve this package!</p>
 </div>
 <div class="section level2">
 <h2 id="tips">Tips<a class="anchor" aria-label="anchor" href="#tips"></a>
