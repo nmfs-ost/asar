@@ -51,7 +51,7 @@ convert_output <- function(
       return(nummax)
     }
     # Read as table
-    dat <- read.table(
+    dat <- utils::read.table(
       file = output.file,
       col.names = 1:get_ncol(output.file),
       fill = TRUE,
@@ -165,7 +165,7 @@ convert_output <- function(
         # is the object a vector or matrix?
         if (is.vector(out)) {
           df <- data.frame(t(sapply(out, c))) |>
-            tidyr::pivot_longer(cols = everything(), names_to = paste(names(out)), values_to = "value")
+            tidyr::pivot_longer(cols = tidyr::everything(), names_to = paste(names(out)), values_to = "value")
         } else if (is.matrix(out)) {
           df <- as.matrix(out)
         } # close if statement for checking if double obj is vector or matrix
