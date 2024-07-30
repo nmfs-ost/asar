@@ -2,22 +2,25 @@
 #'
 #' Format stock assessment output files. Function is unfinished
 #'
-#' @param output.file name of the file(s) containing assessment model output
+#' @param output.file name of the file containing assessment model output. This is the Report.sso file for SS3, the rdat file for BAM, the...
+#' @param input.file name of the input file for running the assessment model
 #' @param outdir output directory folder
 #' @param model assessment model used in evaluation;
-#'              "ss", "bam", "asap", "fims", "amak", "ms-java", "wham", "mas", "aspm"
+#'              "ss3", "bam", "asap", "fims", "amak", "ms-java", "wham", "mas", "asap"
 #'
 #' @author Samantha Schiano
 #'
 #' @return A reformatted and standardized version of assessment model results
 #'         for application in building a stock assessment reports and to easily
-#'         adapt results among regional assessments.
+#'         adapt results among regional assessments. The resulting object is
+#'         simply a transformed and machine readable version of a model output file.
 #'
 #'
 #' @export
 #'
 convert_output <- function(
     output.file = NULL,
+    input.file = NULL,
     outdir = NULL,
     model = NULL) {
   # Blank dataframe and set up to mold output into
@@ -37,7 +40,7 @@ convert_output <- function(
                         )
 
   # Convert SS3 output Report.sso file
-  if (model == "ss") {
+  if (model == "ss3") {
     # read SS report file
     # Associated function to extract columns for table - from r4ss
     get_ncol <- function(file, skip = 0) {
@@ -53,7 +56,7 @@ convert_output <- function(
       col.names = 1:get_ncol(output.file),
       fill = TRUE,
       quote = "",
-      colClasses = "character", # reads all data as characters
+      # colClasses = "character", # reads all data as characters
       nrows = -1,
       comment.char = "",
       blank.lines.skip = FALSE
@@ -66,7 +69,7 @@ convert_output <- function(
       value_row <- which(apply(dat, 1, function(row) any(row == label)))[2]
 
       # If the parameter value is not found, return NA
-      if(length(value_row) == 0){
+      if(is.na(value_row)){
         message("Label not found in data frame.")
         return(NA)
       }
@@ -85,9 +88,63 @@ convert_output <- function(
     }
 
     # Estimated and focal parameters to put into reformatted output df - naming conventions from SS3
-    param.names <-c()
+    # Is this all of the possible headers?
+    param_names <-c("LIKELIHOOD",
+                    "Input_Variance_Adjustment",
+                    "PARAMETERS",
+                    "DERIVED_QUANTITIES",
+                    "MGparm_By_Year_after_adjustments",
+                    "selparm(Size)_By_Year_after_adjustments",
+                    "selparm(Age)_By_Year_after_adjustments",
+                    "RECRUITMENT_DIST",
+                    "MORPH_INDEXING",
+                    "SIZEFREQ_TRANSLATION",
+                    "MOVEMENT",
+                    "EXPLOITATION",
+                    "TIME_SERIES",
+                    "SPR_series",
+                    "Kobe_Plot",
+                    "SPAWN_RECRUIT",
+                    "Spawning_Biomass_Report_1",
+                    "NUMBERS_AT_AGE_Annual_1",
+                    "Z_AT_AGE_Annual_1",
+                    "INDEX_1",
+                    "INDEX_2",
+                    "INDEX_3",
+                    "DISCARD_SPECIFICATION",
+                    "DISCARD_OUTPUT",
+                    "DISCARD_MORT",
+                    "MEAN_BODY_WT",
+                    "FIT_LEN_COMPS",
+                    "FIT_SIZE_COMPS",
+                    "FIT_AGE_COMPS",
+                    "OVERALL_COMPS",
+                    "LEN_SELEX",
+                    "RETENTION",
+                    "KEEPERS",
+                    "DEADFISH",
+                    "AGE_SELEX",
+                    "ENVIRONMENTAL_DATA",
+                    "TAG_Recapture",
+                    "NUMBERS_AT_AGE",
+                    "NUMBERS_AT_LENGTH",
+                    "CATCH_AT_AGE",
+                    "BIOLOGY",
+                    "SPR/YPR_PROFILE",
+                    "Dynamic_Bzero"
+                    )
     # Loop for all identified parameters to extract for plotting and use
-    for(i in 1:length(param.names)){
+    # Create list of parameters that were not found in the output file
+    miss_parms <- list()
+    for (i in 1:length(param_names)) {
+      parm_sel <- param_names[1]
+      extract <- SS3_extract_df(dat, parm_sel)
+      if (is.na(extract)) {
+        miss_parms <- c(miss_parms, parm_sel)
+        next
+      } else {
+
+      }
 
     } # close loop
   } # close SS if statement
