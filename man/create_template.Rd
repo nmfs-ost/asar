@@ -75,7 +75,7 @@ and species listed in function parameters}
 
 \item{model_results}{Name of the model results file}
 
-\item{model}{Type of assessment model that was used to assess the stock (i.e. "BAM", "SS", "AMAK", "ASAP", ect)}
+\item{model}{Type of assessment model that was used to assess the stock (i.e. "BAM", "SS3", "AMAK", "ASAP", ect)}
 
 \item{new_section}{File name of the new section}
 

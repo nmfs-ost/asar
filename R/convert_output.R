@@ -41,7 +41,7 @@ convert_output <- function(
 
   # Convert SS3 output Report.sso file
   if (model == "ss3") {
-    # read SS report file
+    # read SS3 report file
     # Associated function to extract columns for table - from r4ss
     get_ncol <- function(file, skip = 0) {
       nummax <- max(utils::count.fields(file,
@@ -147,7 +147,7 @@ convert_output <- function(
       }
 
     } # close loop
-  } # close SS if statement
+  } # close SS3 if statement
 
   if (model == "bam") {
     # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
