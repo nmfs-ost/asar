@@ -59,7 +59,7 @@ All other associated files will be created in a folder called `stock_assessment_
 
 ![alt text](inst/resources/example_file_system.PNG)
 
-This is a modularized template, there is no need to make any edits to the skeleton file. To write the report, user should navigate and open each supporting section quarto document labelled:
+This is a modularized template, there is no need to make any edits to the skeleton file. To write the report, user should navigate and open each supporting section quarto document labeled:
 
 -   Executive Summary
 -   Introduction
@@ -68,12 +68,12 @@ This is a modularized template, there is no need to make any edits to the skelet
 -   Results
 -   Projections
 -   Discussion
--   Acknowledgements
+-   Acknowledgments
 -   References
 -   Tables
 -   Figures 
 
-Please leave an issue for any bugs or suggestions to improve the package during testing on the [Issues Page](https://github.com/Schiano-NOAA/ASAR/issues). Please remember that this package is currently in develope and we do not project to release version 1.0 until December 2024. Thank you for helping us improve this package!
+Please leave an issue for any bugs or suggestions to improve the package during testing on the [Issues Page](https://github.com/Schiano-NOAA/ASAR/issues). Please remember that this package is currently in development and we do not project to release version 1.0 until December 2024. Thank you for helping us improve this package!
 
 ## Tips
 

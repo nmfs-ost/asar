@@ -3,7 +3,6 @@ AMAK
 BAM
 NEFSC
 NOAA
-NPFMC
 NWFSC
 PIFSC
 REPO
@@ -13,8 +12,6 @@ SSC
 SWFSC
 YAML
 amak
-aspm
-autopopulate
 bam
 csv
 docx
@@ -27,11 +24,11 @@ is’
 kable
 kableExtra
 modularized
-overfishing
 qmd
+rdat
 rdata
 snakecase
-spp
 ss
+sso
 subfiles
 xlsx
