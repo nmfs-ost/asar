@@ -16,5 +16,5 @@ Call and copy the sections in the package templates to create an outline for a s
 Add selected sections to outline
 }
 \examples{
-add_base_section(c("abstract", "model", "results"))
+add_base_section(c("executive summary", "modeling approach", "results"))
 }

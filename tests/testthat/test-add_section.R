@@ -27,7 +27,7 @@ test_that("Adding new sections does not work.", {
     subdir = tempdir()
   )
   exp_list <- list(
-    "introduction.qmd", "data.qmd", "modeling approach.qmd", "Harvest_Control_Rules.qmd",
+    "introduction.qmd", "data.qmd", "modeling_approach.qmd", "Harvest_Control_Rules.qmd",
     "Regional_Management_Considerations.qmd", "Research_and_Data_Needs.qmd",
     "acknowledgments.qmd", "tables.qmd", "figures.qmd", "appendix.qmd", "references.qmd"
   )

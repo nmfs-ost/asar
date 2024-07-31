@@ -14,11 +14,13 @@ Imports:
     ggplot2,
     gridExtra,
     here,
+    naniar,
     officer,
     openxlsx,
     satf,
     stringr,
     svDialogs,
+    tidyr,
     utils
 Remotes:
     nmfs-ost/satf
