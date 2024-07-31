@@ -55,7 +55,7 @@ We encourage users to test `asar` throughout its development. Please use the abo
 
 ![alt text](inst/resources/example_pop-up.PNG)
 
-All other associated files will be created in a folder called `stock_assessment_template` within the user's documents folder. From there, a file system following the user's associated science center > species name > region (if applicable) > year. The user will have to navigate to this folder to find additional files.
+All other associated files will be created in a folder called `stock_assessment_reports` within the user's documents folder. From there, a file system following the user's associated science center > species name > region (if applicable) > year. The user will have to navigate to this folder to find additional files.
 
 ![alt text](inst/resources/example_file_system.PNG)
 
