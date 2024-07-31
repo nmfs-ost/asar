@@ -1,7 +1,6 @@
 test_that("Can trace template files from package", {
   path <- system.file("templates", "skeleton", package = "ASAR")
   base_temp_files <- c(
-    "abstract.qmd",
     "acknowledgements.qmd",
     "appendix.qmd",
     "assessment_glossaries.tex",
@@ -11,10 +10,9 @@ test_that("Can trace template files from package", {
     "figures.qmd",
     "in-header.tex",
     "introduction.qmd",
-    "model.qmd",
-    "proj_table.qmd",
+    "modeling_approach.qmd",
+    "projections.qmd",
     "references.qmd",
-    "refpt_table.qmd",
     "results.qmd",
     "tables.qmd",
     "title.tex"

@@ -1,5 +1,5 @@
 test_that("Adding new sections works.", {
-  sec_list <- add_base_section(c("introduction", "model", "results", "discussion"))
+  sec_list <- add_base_section(c("introduction", "modeling approach", "results", "discussion"))
   sections <- add_section(
     sec_names = c("abstract", "ecosystem_considerations", "alt_models"),
     location = c("before-introduction", "after-discussion", "after-model"),
@@ -9,7 +9,7 @@ test_that("Adding new sections works.", {
   exp_list <- list(
     "abstract.qmd",
     "introduction.qmd",
-    "model.qmd",
+    "modeling_approach.qmd",
     "alt_models.qmd",
     "results.qmd",
     "discussion.qmd",
@@ -19,7 +19,7 @@ test_that("Adding new sections works.", {
 })
 
 test_that("Adding new sections does not work.", {
-  sec_list <- add_base_section(c("introduction", "data", "model", "acknowledgements", "tables", "figures", "appendix", "references"))
+  sec_list <- add_base_section(c("introduction", "data", "modeling approach", "acknowledgements", "tables", "figures", "appendix", "references"))
   sections <- add_section(
     sec_names = c("Harvest Control Rules", "Regional Management Considerations", "Research and Data Needs"),
     location = c("after-model", "after-model", "after-model"),
@@ -27,7 +27,7 @@ test_that("Adding new sections does not work.", {
     subdir = tempdir()
   )
   exp_list <- list(
-    "introduction.qmd", "data.qmd", "model.qmd", "Harvest_Control_Rules.qmd",
+    "introduction.qmd", "data.qmd", "modeling approach.qmd", "Harvest_Control_Rules.qmd",
     "Regional_Management_Considerations.qmd", "Research_and_Data_Needs.qmd",
     "acknowledgements.qmd", "tables.qmd", "figures.qmd", "appendix.qmd", "references.qmd"
   )
