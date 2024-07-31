@@ -4,20 +4,28 @@
 \alias{convert_output}
 \title{Convert Output}
 \usage{
-convert_output(output.file = NULL, outdir = NULL, model = NULL)
+convert_output(
+  output.file = NULL,
+  input.file = NULL,
+  outdir = NULL,
+  model = NULL
+)
 }
 \arguments{
-\item{output.file}{name of the file(s) containing assessment model output}
+\item{output.file}{name of the file containing assessment model output. This is the Report.sso file for SS3, the rdat file for BAM, the...}
+
+\item{input.file}{name of the input file for running the assessment model}
 
 \item{outdir}{output directory folder}
 
 \item{model}{assessment model used in evaluation;
-"ss", "bam", "asap", "fims", "amak", "ms-java", "wham", "mas", "aspm"}
+"ss3", "bam", "asap", "fims", "amak", "ms-java", "wham", "mas", "asap"}
 }
 \value{
 A reformatted and standardized version of assessment model results
 for application in building a stock assessment reports and to easily
-adapt results among regional assessments.
+adapt results among regional assessments. The resulting object is
+simply a transformed and machine readable version of a model output file.
 }
 \description{
 Format stock assessment output files. Function is unfinished
