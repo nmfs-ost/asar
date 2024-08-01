@@ -74,6 +74,7 @@ create_title <- function(
       title <- paste0("Status of the ", species, " stock in U.S. waters off the coast of ", region, " in ", year)
     }
   } else {
+    title <- "Stock Assessment Report Template"
     warning("office (FSC) is not defined. Please define which office you are associated with.")
   }
 

@@ -121,12 +121,18 @@ create_template <- function(
   }
 
   # Select parameter from list
-  format <- match.arg(format, several.ok = FALSE)
-  if(!is.null(office)){
+  if(length(format)>1){
+    format = "pdf"
+  } else {
+    format <- match.arg(format, several.ok = FALSE)
+  }
+  if(!is.null(office) & length(office)==1){
     office <- match.arg(office, several.ok = FALSE)
+  } else if (length(office)>1) {
+    office = ""
   }
 
-  if(is.null(office)){
+  if(is.null(office) | office == ""){
     subdir <- paste0("~/stock_assessment_reports/report")
   } else if (!is.null(region)) {
     subdir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", region, "/", year)
@@ -171,12 +177,12 @@ create_template <- function(
                              model = model,
                              subdir = subdir)
         } else {
-          figures_doc <- paste0("### Figures \n")
+          figures_doc <- paste0("## Figures \n")
           utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "figures.qmd"), append = FALSE)
           warning("Results file or model name not defined.")
         }
       } else {
-        figures_doc <- paste0("### Figures \n")
+        figures_doc <- paste0("## Figures \n")
         utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "figures.qmd"), append = FALSE)
       }
 
@@ -299,7 +305,7 @@ create_template <- function(
         if(nrow(authors)>0){
           for (i in 1:nrow(authors)) {
             auth <- authors[i, ]
-            paste0("  ", "- ", "'", auth$name, "'", "\n") -> author_list[[i]]
+            paste0("  ", "- name:", "'", auth$name, "'", "\n") -> author_list[[i]]
           }
         } else {
           paste0("  ", "- name: 'FIRST LAST' \n") -> author_list[[i]]

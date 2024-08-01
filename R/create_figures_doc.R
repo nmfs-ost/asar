@@ -26,7 +26,7 @@ create_figures_doc <- function(resdir = NULL,
         paste0(
           "satf::plot_recruitment(dat = '", resdir, "/", model_results,"', model = '", model, "')"
         ),
-        label = "indices"
+        label = "recruitment"
       )
     )
 
