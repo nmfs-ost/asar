@@ -1,7 +1,6 @@
 #' Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'ASAR'))' in the console.
 #'
 #' @param new_template TRUE/FALSE; default is false otherwise if true, will pull the last saved stock assessment report skeleton
-#' @param tempdir Directory for the templates
 #' @param format File type for the render (i.e. pdf, docx, html)
 #' @param office Regional fisheries science center producing the report (AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC)
 #' @param region Full name of region in which the species is evaluated if applicable; Note: if this is not specified for your center or for
@@ -11,6 +10,8 @@
 #' @param spp_latin Latin name for the target species of this assessment
 #' @param year Year the assessment is being conducted, default is current year report is being rendered
 #' @param author List of authors to include in the assessment; keep authorship order
+#' @param add_author temporarily add an author that is not currently in the database. Follow the format of "First MI Last".
+#'        Please leave a comment on the github issues page to be added.
 #' @param include_affiliation TRUE/FALSE; does the analyst want to include affiliations of the authors in the document?
 #' @param simple_affiliation If including affiliation, adding just office name rather than full address; TRUE/FALSE, default is TRUE
 #' @param alt_title TRUE/FALSE create an alternative title than the default
@@ -22,7 +23,7 @@
 #'        and species listed in function parameters
 #' @param resdir Directory where the model results file(s) are located
 #' @param model_results Name of the model results file
-#' @param model Type of assessment model that was used to assess the stock (i.e. "BAM", "SS", "AMAK", "ASAP", ect)
+#' @param model Type of assessment model that was used to assess the stock (i.e. "BAM", "SS3", "AMAK", "ASAP", ect)
 #' @param new_section File name of the new section
 #' @param section_location Location where the section should be added relative to the base skeleton document
 #' @param type Type of report to build - default is SAR
@@ -30,7 +31,9 @@
 #' @param custom TRUE/FALSE Build custom sectioning for the template rather than the default for stock assessments in your region
 #' @param custom_sections List of the sections you want to include in the custom template. Note: this only includes sections within
 #'        'templates' > 'skeleton'. The section name can be used such as 'abstract' rather than the entire name '00_abstract.qmd'.
-#'        If a new section is to be added, please also use parameters 'ass_section', and 'section_location'
+#'        If a new section is to be added, please also use parameters 'new_section', and 'section_location'
+#' @param include_figures Determine if figures are included into the report
+#' @param include_tables Indicate if tables are included into the report
 #'
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
@@ -50,7 +53,6 @@
 #'
 create_template <- function(
     new_template = TRUE,
-    tempdir = here::here(),
     format = c("pdf", "docx", "html", NULL),
     office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
     region = NULL,
@@ -58,7 +60,8 @@ create_template <- function(
     species = NULL,
     spp_latin = NULL,
     year = NULL,
-    author = NULL,
+    author = "",
+    add_author = NULL,
     include_affiliation = FALSE,
     simple_affiliation = TRUE,
     alt_title = FALSE,
@@ -74,7 +77,9 @@ create_template <- function(
     type = "SAR",
     prev_year = NULL,
     custom = FALSE,
-    custom_sections = NULL) {
+    custom_sections = NULL,
+    include_figures = TRUE,
+    include_tables = TRUE,) {
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -82,6 +87,11 @@ create_template <- function(
 
   # Name report
   if (!is.null(type)) {
+    report_name <- paste0(
+      type,
+      "_"
+    )
+  } else {
     report_name <- paste0(
       type,
       "_"
@@ -104,9 +114,9 @@ create_template <- function(
   office <- match.arg(office, several.ok = FALSE)
 
   if (!is.null(region)) {
-    subdir <- paste0("~/stock_assessment_templates", "/", office, "/", species, "/", region, "/", year)
+    subdir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", region, "/", year)
   } else {
-    subdir <- paste0("~/stock_assessment_templates", "/", office, "/", species, "/", year)
+    subdir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", year)
   }
 
   # if (!is.null(region)) {
@@ -121,6 +131,27 @@ create_template <- function(
       current_folder <- system.file("templates", "skeleton", package = "ASAR")
       new_folder <- subdir
       files_to_copy <- list.files(current_folder)
+
+      # Create tables qmd
+      if(include_tables){
+        create_tables_doc(resdir = resdir,
+                          model_results = model_results,
+                          model = model,
+                          subdir = subdir)
+      } else {
+        tables_doc <- paste0("### Tables \n")
+        utils::capture.output(cat(tables_doc), file = paste0(subdir, "/", "tables.qmd"), append = FALSE)
+      }
+      # Create figures qmd
+      if(include_figures){
+        create_figures_doc(resdir = resdir,
+                           model_results = model_results,
+                           model = model,
+                           subdir = subdir)
+      } else {
+        figures_doc <- paste0("### Figures \n")
+        utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "figures.qmd"), append = FALSE)
+      }
 
       # Check if there are already files in the folder
       if (length(list.files(subdir)) > 0) {
@@ -172,6 +203,9 @@ create_template <- function(
       if (include_affiliation == TRUE) {
         affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "ASAR", mustWork = TRUE))
       }
+      if(!is.null(add_author)){
+        authors <- rbind(authors, data.frame(name = add_author, office = rep(NA, length(add_author))))
+      }
 
       author_list <- list()
       if (include_affiliation == TRUE & simple_affiliation == FALSE) {
@@ -179,26 +213,40 @@ create_template <- function(
           auth <- authors[i, ]
           aff <- affil |>
             dplyr::filter(affiliation == auth$office)
-          paste0(
-            "  ", "- name: ", "'", auth$name, "'", "\n",
-            "  ", "  ", "affiliations:", "\n",
-            "  ", "  ", "  ", "- name: ", "'", "NOAA Fisheries ", aff$name, "'", "\n",
-            "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'", "\n",
-            "  ", "  ", "  ", "  ", "city: ", "'", aff$city, "'", "\n",
-            "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
-            "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n"
-            # sep = " "
-          ) -> author_list[[i]]
+          if(is.na(auth$office)){
+            paste0(
+              "  ", "- name: ", "'", auth$name, "'", "\n",
+              "  ", "  ", "affiliations: ", "NO AFFILIATION", "\n"
+            ) -> author_list[[i]]
+          } else {
+            paste0(
+              "  ", "- name: ", "'", auth$name, "'", "\n",
+              "  ", "  ", "affiliations:", "\n",
+              "  ", "  ", "  ", "- name: ", "'", "NOAA Fisheries ", aff$name, "'", "\n",
+              "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'", "\n",
+              "  ", "  ", "  ", "  ", "city: ", "'", aff$city, "'", "\n",
+              "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
+              "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n"
+              # sep = " "
+            ) -> author_list[[i]]
+          }
         }
       } else if (include_affiliation == TRUE & simple_affiliation == TRUE) {
         for (i in 1:nrow(authors)) {
           auth <- authors[i, ]
           aff <- affil |>
             dplyr::filter(affiliation == auth$office)
-          paste0(
+          if(is.na(auth$office)){
+            paste0(
             "  ", "- name: ", "'", auth$name, "'", "\n",
             "  ", "  ", "affiliations: ", "'", aff$name, "'", "\n"
-          ) -> author_list[[i]]
+            ) -> author_list[[i]]
+          } else {
+            paste0(
+              "  ", "- name: ", "'", auth$name, "'", "\n",
+              "  ", "  ", "affiliations: ", "'NO AFFILIATION'", "\n"
+            ) -> author_list[[i]]
+          }
         }
       } else {
         for (i in 1:nrow(authors)) {
@@ -341,10 +389,11 @@ create_template <- function(
             "executive_summary.qmd",
             "introduction.qmd",
             "data.qmd",
-            "model.qmd",
+            "modeling_approach.qmd",
             "results.qmd",
+            "projections.qmd",
             "discussion.qmd",
-            "acknowledgements.qmd",
+            "acknowledgments.qmd",
             "references.qmd",
             "tables.qmd",
             "figures.qmd",
@@ -354,8 +403,9 @@ create_template <- function(
             "executive_summary",
             "introduction",
             "data",
-            "model",
+            "modeling_approach",
             "results",
+            "projections",
             "discussion",
             "acknowlesgements",
             "references",
@@ -381,10 +431,11 @@ create_template <- function(
               "executive_summary.qmd",
               "introduction.qmd",
               "data.qmd",
-              "model.qmd",
+              "modeling_approach.qmd",
               "results.qmd",
+              "projections.qmd",
               "discussion.qmd",
-              "acknowledgements.qmd",
+              "acknowledgments.qmd",
               "references.qmd",
               "tables.qmd",
               "figures.qmd",
@@ -495,10 +546,11 @@ create_template <- function(
             "executive_summary.qmd",
             "introduction.qmd",
             "data.qmd",
-            "model.qmd",
+            "modeling_approach.qmd",
             "results.qmd",
+            "projections.qmd",
             "discussion.qmd",
-            "acknowledgements.qmd",
+            "acknowledgments.qmd",
             "references.qmd",
             "tables.qmd",
             "figures.qmd",
@@ -508,8 +560,9 @@ create_template <- function(
             "executive_summary",
             "introduction",
             "data",
-            "model",
+            "modeling_approach",
             "results",
+            "projections",
             "discussion",
             "acknowlesgements",
             "references",
@@ -535,10 +588,11 @@ create_template <- function(
               "executive_summary.qmd",
               "introduction.qmd",
               "data.qmd",
-              "model.qmd",
+              "modeling_approach.qmd",
               "results.qmd",
+              "projections.qmd",
               "discussion.qmd",
-              "acknowledgements.qmd",
+              "acknowledgments.qmd",
               "references.qmd",
               "tables.qmd",
               "figures.qmd",
@@ -598,10 +652,10 @@ create_template <- function(
     # Copy old template and rename for new year
     # Create copy of previous assessment
     if (!is.null(region)) {
-      olddir <- paste0("~/stock_assessment_templates", "/", office, "/", species, "/", region, "/", prev_year)
+      olddir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", region, "/", prev_year)
       invisible(file.copy(file.path(olddir, list.files(olddir)), subdir, recursive = FALSE))
     } else {
-      olddir <- paste0("~/stock_assessment_templates", "/", office, "/", species, "/", prev_year)
+      olddir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", prev_year)
       invisible(file.copy(file.path(olddir, list.files(olddir)), subdir, recursive = FALSE))
     }
 
