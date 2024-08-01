@@ -24,7 +24,48 @@ create_citation <- function(
     off_title <- "NOAA Fisheries Science Center"
   }
 
-  if(author != ""){
+  if(length(author)==1){
+    if(author == ""){
+      no_author = TRUE
+      message("Authorship is not defined.")
+    } else {
+      no_author = FALSE
+      # Pull affiliation of first author
+      if (length(unlist(strsplit(author[1], " "))) == 3) {
+        primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
+          dplyr::filter(last == unlist(strsplit(author[1], " "))[3])
+      } else {
+        primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
+          dplyr::filter(last == unlist(strsplit(author[1], " "))[2])
+      }
+
+      # Check and fix if there is more than one author with the same last name
+      if (nrow(primauth_loc) > 1) {
+        primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
+          dplyr::filter(last == unlist(strsplit(author[1], " "))[1])
+      }
+
+      office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "ASAR", mustWork = TRUE)) |>
+        dplyr::filter(affiliation == primauth_loc$office)
+
+      # Check
+      if (nrow(office_loc) > 1) {
+        stop("There is more than one office being selected in this function. Please review 'generate_ciation.R'.")
+      }
+
+      loc_city <- office_loc$city
+      loc_state <- office_loc$state
+
+      # Author naming convention formatting
+        author_spl <- unlist(strsplit(author, split = " "))
+        author_list <- paste0(
+          ifelse(length(author_spl) == 3, author_spl[3], author_spl[2]), ", ",
+          substring(author_spl[[1]][1], 1, 1), ".",
+          ifelse(length(author_spl) == 3, author_spl[2], "")
+        )
+      }
+  } else { # close if only one author
+    no_author = FALSE
     # Pull affiliation of first author
     if (length(unlist(strsplit(author[1], " "))) == 3) {
       primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
@@ -52,7 +93,6 @@ create_citation <- function(
     loc_state <- office_loc$state
 
     # Author naming convention formatting
-    if (length(author) > 1) {
       author1 <- unlist(strsplit(author[1], split = " "))
       author1 <- paste0(
         ifelse(length(author1) == 3, author1[3], author1[2]), ", ",
@@ -68,19 +108,11 @@ create_citation <- function(
           ifelse(length(auth_extract) == 3, auth_extract[3], auth_extract[2])
         )
         author_list <- paste0(author_list, ", ", auth_extract2)
-      }
-    } else {
-      author_spl <- unlist(strsplit(author, split = " "))
-      author_list <- paste0(
-        ifelse(length(author_spl) == 3, author_spl[3], author_spl[2]), ", ",
-        substring(author_spl[[1]][1], 1, 1), ".",
-        ifelse(length(author_spl) == 3, author_spl[2], "")
-      )
-    }
+      } # close for loop
   }
 
   # Create citation string
-  if(author == ""){
+  if(no_author){
     cit <- paste0(
       "{{< pagebreak >}} \n",
       "\n",
