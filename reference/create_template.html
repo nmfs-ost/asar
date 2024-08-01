@@ -39,7 +39,6 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_template</span><span class="op">(</span></span>
 <span>  new_template <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  tempdir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  format <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pdf"</span>, <span class="st">"docx"</span>, <span class="st">"html"</span>, <span class="cn">NULL</span><span class="op">)</span>,</span>
 <span>  office <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AFSC"</span>, <span class="st">"PIFSC"</span>, <span class="st">"NEFSC"</span>, <span class="st">"NWFSC"</span>, <span class="st">"SEFSC"</span>, <span class="st">"SWFSC"</span><span class="op">)</span>,</span>
 <span>  region <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -47,7 +46,8 @@
 <span>  species <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  spp_latin <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  year <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  author <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  author <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  add_author <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  include_affiliation <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  simple_affiliation <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  alt_title <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -63,7 +63,9 @@
 <span>  type <span class="op">=</span> <span class="st">"SAR"</span>,</span>
 <span>  prev_year <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  custom <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  custom_sections <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  custom_sections <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  include_figures <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  include_tables <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -73,10 +75,6 @@
 
 <dl><dt id="arg-new-template">new_template<a class="anchor" aria-label="anchor" href="#arg-new-template"></a></dt>
 <dd><p>TRUE/FALSE; default is false otherwise if true, will pull the last saved stock assessment report skeleton</p></dd>
-
-
-<dt id="arg-tempdir">tempdir<a class="anchor" aria-label="anchor" href="#arg-tempdir"></a></dt>
-<dd><p>Directory for the templates</p></dd>
 
 
 <dt id="arg-format">format<a class="anchor" aria-label="anchor" href="#arg-format"></a></dt>
@@ -110,6 +108,11 @@ the species, do not use this variable.</p></dd>
 
 <dt id="arg-author">author<a class="anchor" aria-label="anchor" href="#arg-author"></a></dt>
 <dd><p>List of authors to include in the assessment; keep authorship order</p></dd>
+
+
+<dt id="arg-add-author">add_author<a class="anchor" aria-label="anchor" href="#arg-add-author"></a></dt>
+<dd><p>temporarily add an author that is not currently in the database. Follow the format of "First MI Last".
+Please leave a comment on the github issues page to be added.</p></dd>
 
 
 <dt id="arg-include-affiliation">include_affiliation<a class="anchor" aria-label="anchor" href="#arg-include-affiliation"></a></dt>
@@ -177,7 +180,15 @@ and species listed in function parameters</p></dd>
 <dt id="arg-custom-sections">custom_sections<a class="anchor" aria-label="anchor" href="#arg-custom-sections"></a></dt>
 <dd><p>List of the sections you want to include in the custom template. Note: this only includes sections within
 'templates' &gt; 'skeleton'. The section name can be used such as 'abstract' rather than the entire name '00_abstract.qmd'.
-If a new section is to be added, please also use parameters 'ass_section', and 'section_location'</p></dd>
+If a new section is to be added, please also use parameters 'new_section', and 'section_location'</p></dd>
+
+
+<dt id="arg-include-figures">include_figures<a class="anchor" aria-label="anchor" href="#arg-include-figures"></a></dt>
+<dd><p>Determine if figures are included into the report</p></dd>
+
+
+<dt id="arg-include-tables">include_tables<a class="anchor" aria-label="anchor" href="#arg-include-tables"></a></dt>
+<dd><p>Indicate if tables are included into the report</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -199,10 +210,12 @@ each of the child documents should be edited separately.</p>
 <span class="r-in"><span>  param_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Commercial"</span>, <span class="st">"Recreational"</span>, <span class="st">"Woods Hole Assessment Model"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  type <span class="op">=</span> <span class="st">"SAR"</span>, model_results <span class="op">=</span> <span class="st">"results.Rdata"</span>, model <span class="op">=</span> <span class="st">"WHAM"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>There are files in this location.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "__________Built YAML Header______________"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "_______Add Report Citation________"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "___Created report template______"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Saved report template in directory: ~/stock_assessment_templates/NEFSC/Atlantic Bluefish/GB/2024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Saved report template in directory: ~/stock_assessment_reports/NEFSC/Atlantic Bluefish/GB/2024</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> To proceeed, please edit sections within the report template in order to produce a completed stock assessment report.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
