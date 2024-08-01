@@ -153,6 +153,22 @@ create_template <- function(
       new_folder <- subdir
       files_to_copy <- list.files(current_folder)
 
+      # Check if there are already files in the folder
+      if (length(list.files(subdir)) > 0) {
+        warning("There are files in this location.")
+        question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
+
+        if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+          file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE) |> suppressWarnings()
+        } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+          print(paste0("Blank files for template sections were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder."))
+        }
+      } else if (length(list.files(subdir)) == 0) {
+        file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
+      } else {
+        stop("None of the arugments match statement commands. Needs developer fix.")
+      }
+
       # Create tables qmd
       if(include_tables){
         if(!is.null(resdir) | !is.null(model_results) | !is.null(model)){
@@ -161,12 +177,14 @@ create_template <- function(
                             model = model,
                             subdir = subdir)
         } else {
-          tables_doc <- paste0("### Tables \n")
+          tables_doc <- paste0("### Tables \n \n",
+                               "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables.")
           utils::capture.output(cat(tables_doc), file = paste0(subdir, "/", "tables.qmd"), append = FALSE)
           warning("Results file or model name not defined.")
         }
       } else {
-        tables_doc <- paste0("### Tables \n")
+        tables_doc <- paste0("### Tables \n \n",
+                             "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures")
         utils::capture.output(cat(tables_doc), file = paste0(subdir, "/", "tables.qmd"), append = FALSE)
       }
       # Create figures qmd
@@ -184,22 +202,6 @@ create_template <- function(
       } else {
         figures_doc <- paste0("## Figures \n")
         utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "figures.qmd"), append = FALSE)
-      }
-
-      # Check if there are already files in the folder
-      if (length(list.files(subdir)) > 0) {
-        warning("There are files in this location.")
-        question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
-
-        if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-          file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE) |> suppressWarnings()
-        } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-          print(paste0("Blank files for template sections were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder."))
-        }
-      } else if (length(list.files(subdir)) == 0) {
-        file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
-      } else {
-        stop("None of the arugments match statement commands. Needs developer fix.")
       }
 
       # Part I
@@ -277,7 +279,7 @@ create_template <- function(
             # sep = " "
           ) -> author_list[[1]]
         }
-      } else if (include_affiliation == TRUE & simple_affiliation == TRUE) {
+      } else if (include_affiliation & simple_affiliation) {
         if(nrow(authors)>0){
           for (i in 1:nrow(authors)) {
             auth <- authors[i, ]
@@ -308,7 +310,7 @@ create_template <- function(
             paste0("  ", "- name:", "'", auth$name, "'", "\n") -> author_list[[i]]
           }
         } else {
-          paste0("  ", "- name: 'FIRST LAST' \n") -> author_list[[i]]
+          paste0("  ", "- name: 'FIRST LAST' \n") -> author_list[[1]]
         }
       }
 
@@ -340,7 +342,7 @@ create_template <- function(
 
       # Formatting
 
-      if (include_affiliation == TRUE) {
+      if (include_affiliation) {
         yaml <- paste(yaml, "format: \n",
           "  ", format, ": \n",
           "  ", "  ", "toc: ", "true \n",
@@ -352,7 +354,7 @@ create_template <- function(
           "  ", "  ", "  ", " - in-header.tex \n",
           sep = ""
         )
-      } else if (include_affiliation == FALSE) {
+      } else {
         yaml <- paste0(
           yaml, "format: \n",
           "  ", format, ": \n",
@@ -374,7 +376,7 @@ create_template <- function(
 
       # Parameters
       # office, region, and species are default parameters
-      if (parameters == TRUE) {
+      if (parameters) {
         yaml <- paste0(
           yaml, "params:", "\n",
           "  ", " ", "office: ", "'", office, "'", "\n",

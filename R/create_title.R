@@ -75,7 +75,7 @@ create_title <- function(
     }
   } else {
     title <- "Stock Assessment Report Template"
-    warning("office (FSC) is not defined. Please define which office you are associated with.")
+    # warning("office (FSC) is not defined. Please define which office you are associated with.")
   }
 
   # Cohesive title for any stock assessment
