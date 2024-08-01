@@ -30,15 +30,17 @@ create_figures_doc <- function(resdir = NULL,
       )
     )
 
-    # figures_doc <- paste0(figures_doc, "\n",
-    #   # SB figure
-    #   add_chunk(
-    #     paste0(
-    #       "satf::plot_spawning_biomass(dat = '", resdir, "/", model_results,"', model = '", model, "', ref_line = 'target')"
-    #     ),
-    #     label = "spawn_bio"
-    #   )
-    # )
+    figures_doc <- paste0(figures_doc, "\n",
+      # SB figure
+      add_chunk(
+        paste0(
+          "satf::plot_spawning_biomass(dat = '", resdir, "/", model_results,
+          "', model = '", model,
+          "', ref_line = 'target', endyr = ", year, ")"
+        ),
+        label = "spawn_bio"
+      )
+    )
   } else {
     # add option for only adding specified tables
   }
