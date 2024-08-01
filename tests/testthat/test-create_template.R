@@ -7,14 +7,14 @@ test_that("Can trace template files from package", {
     "data.qmd",
     "discussion.qmd",
     "executive_summary.qmd",
-    "figures.qmd",
+    # "figures.qmd",
     "in-header.tex",
     "introduction.qmd",
     "modeling_approach.qmd",
     "projections.qmd",
     "references.qmd",
     "results.qmd",
-    "tables.qmd",
+    # "tables.qmd",
     "title.tex"
   )
   expect_equal(list.files(path), base_temp_files)

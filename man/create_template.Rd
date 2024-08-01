@@ -6,7 +6,6 @@
 \usage{
 create_template(
   new_template = TRUE,
-  tempdir = here::here(),
   format = c("pdf", "docx", "html", NULL),
   office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
   region = NULL,
@@ -14,7 +13,8 @@ create_template(
   species = NULL,
   spp_latin = NULL,
   year = NULL,
-  author = NULL,
+  author = "",
+  add_author = NULL,
   include_affiliation = FALSE,
   simple_affiliation = TRUE,
   alt_title = FALSE,
@@ -30,13 +30,13 @@ create_template(
   type = "SAR",
   prev_year = NULL,
   custom = FALSE,
-  custom_sections = NULL
+  custom_sections = NULL,
+  include_figures = TRUE,
+  include_tables = TRUE
 )
 }
 \arguments{
 \item{new_template}{TRUE/FALSE; default is false otherwise if true, will pull the last saved stock assessment report skeleton}
-
-\item{tempdir}{Directory for the templates}
 
 \item{format}{File type for the render (i.e. pdf, docx, html)}
 
@@ -54,6 +54,9 @@ the species, do not use this variable.}
 \item{year}{Year the assessment is being conducted, default is current year report is being rendered}
 
 \item{author}{List of authors to include in the assessment; keep authorship order}
+
+\item{add_author}{temporarily add an author that is not currently in the database. Follow the format of "First MI Last".
+Please leave a comment on the github issues page to be added.}
 
 \item{include_affiliation}{TRUE/FALSE; does the analyst want to include affiliations of the authors in the document?}
 
@@ -89,7 +92,11 @@ and species listed in function parameters}
 
 \item{custom_sections}{List of the sections you want to include in the custom template. Note: this only includes sections within
 'templates' > 'skeleton'. The section name can be used such as 'abstract' rather than the entire name '00_abstract.qmd'.
-If a new section is to be added, please also use parameters 'ass_section', and 'section_location'}
+If a new section is to be added, please also use parameters 'new_section', and 'section_location'}
+
+\item{include_figures}{Determine if figures are included into the report}
+
+\item{include_tables}{Indicate if tables are included into the report}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.

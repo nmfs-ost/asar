@@ -79,7 +79,7 @@ create_template <- function(
     custom = FALSE,
     custom_sections = NULL,
     include_figures = TRUE,
-    include_tables = TRUE,) {
+    include_tables = TRUE) {
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -93,27 +93,42 @@ create_template <- function(
     )
   } else {
     report_name <- paste0(
-      type,
-      "_"
+      "type_"
     )
   }
+  # Add region to name
   if (!is.null(region)) {
     report_name <- paste0(
       report_name,
       gsub("(\\b[A-Z])[^A-Z]+", "\\1", region)
     )
+  } else {
+    report_name <- paste0(
+      report_name,"region"
+    )
   }
-  report_name <- paste0(
-    report_name, "_",
-    gsub(" ", "_", species),
-    "_skeleton.qmd"
-  )
+  # Add species to name
+  if(!is.null(species)){
+    report_name <- paste0(
+      report_name, "_",
+      gsub(" ", "_", species),
+      "_skeleton.qmd"
+    )
+  } else {
+    report_name <- paste0(
+      report_name, "_species_skeleton.qmd"
+    )
+  }
 
   # Select parameter from list
   format <- match.arg(format, several.ok = FALSE)
-  office <- match.arg(office, several.ok = FALSE)
+  if(!is.null(office)){
+    office <- match.arg(office, several.ok = FALSE)
+  }
 
-  if (!is.null(region)) {
+  if(is.null(office)){
+    subdir <- paste0("~/stock_assessment_reports/report")
+  } else if (!is.null(region)) {
     subdir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", region, "/", year)
   } else {
     subdir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", year)
@@ -134,20 +149,32 @@ create_template <- function(
 
       # Create tables qmd
       if(include_tables){
-        create_tables_doc(resdir = resdir,
-                          model_results = model_results,
-                          model = model,
-                          subdir = subdir)
+        if(!is.null(resdir) | !is.null(model_results) | !is.null(model)){
+          create_tables_doc(resdir = resdir,
+                            model_results = model_results,
+                            model = model,
+                            subdir = subdir)
+        } else {
+          tables_doc <- paste0("### Tables \n")
+          utils::capture.output(cat(tables_doc), file = paste0(subdir, "/", "tables.qmd"), append = FALSE)
+          warning("Results file or model name not defined.")
+        }
       } else {
         tables_doc <- paste0("### Tables \n")
         utils::capture.output(cat(tables_doc), file = paste0(subdir, "/", "tables.qmd"), append = FALSE)
       }
       # Create figures qmd
       if(include_figures){
-        create_figures_doc(resdir = resdir,
-                           model_results = model_results,
-                           model = model,
-                           subdir = subdir)
+        if(!is.null(resdir) | !is.null(model_results) | !is.null(model)){
+          create_figures_doc(resdir = resdir,
+                             model_results = model_results,
+                             model = model,
+                             subdir = subdir)
+        } else {
+          figures_doc <- paste0("### Figures \n")
+          utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "figures.qmd"), append = FALSE)
+          warning("Results file or model name not defined.")
+        }
       } else {
         figures_doc <- paste0("### Figures \n")
         utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "figures.qmd"), append = FALSE)
@@ -209,49 +236,73 @@ create_template <- function(
 
       author_list <- list()
       if (include_affiliation == TRUE & simple_affiliation == FALSE) {
-        for (i in 1:nrow(authors)) {
-          auth <- authors[i, ]
-          aff <- affil |>
-            dplyr::filter(affiliation == auth$office)
-          if(is.na(auth$office)){
-            paste0(
-              "  ", "- name: ", "'", auth$name, "'", "\n",
-              "  ", "  ", "affiliations: ", "NO AFFILIATION", "\n"
-            ) -> author_list[[i]]
-          } else {
-            paste0(
-              "  ", "- name: ", "'", auth$name, "'", "\n",
-              "  ", "  ", "affiliations:", "\n",
-              "  ", "  ", "  ", "- name: ", "'", "NOAA Fisheries ", aff$name, "'", "\n",
-              "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'", "\n",
-              "  ", "  ", "  ", "  ", "city: ", "'", aff$city, "'", "\n",
-              "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
-              "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n"
-              # sep = " "
-            ) -> author_list[[i]]
+        if(nrow(authors)>0){
+          for (i in 1:nrow(authors)) {
+            auth <- authors[1, ]
+            aff <- affil |>
+              dplyr::filter(affiliation == auth$office)
+            if(is.na(auth$office)){
+              paste0(
+                "  ", "- name: ", "'", auth$name, "'", "\n",
+                "  ", "  ", "affiliations: ", "NO AFFILIATION", "\n"
+              ) -> author_list[[i]]
+            } else {
+              paste0(
+                "  ", "- name: ", "'", auth$name, "'", "\n",
+                "  ", "  ", "affiliations:", "\n",
+                "  ", "  ", "  ", "- name: ", "'", "NOAA Fisheries ", aff$name, "'", "\n",
+                "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'", "\n",
+                "  ", "  ", "  ", "  ", "city: ", "'", aff$city, "'", "\n",
+                "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
+                "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n"
+                # sep = " "
+              ) -> author_list[[i]]
+            }
           }
+        } else {
+          paste0(
+            "  ", "- name: ", "'FIRST LAST'", "\n",
+            "  ", "  ", "affiliations: \n",
+            "  ", "  ", "  ", "- name: 'NOAA Fisheries' \n",
+            "  ", "  ", "  ", "  ", "address: 'ADDRESS' \n",
+            "  ", "  ", "  ", "  ", "city: 'CITY' \n",
+            "  ", "  ", "  ", "  ", "state: 'STATE' \n",
+            "  ", "  ", "  ", "  ", "postal-code: 'POSTAL CODE' \n"
+            # sep = " "
+          ) -> author_list[[1]]
         }
       } else if (include_affiliation == TRUE & simple_affiliation == TRUE) {
-        for (i in 1:nrow(authors)) {
-          auth <- authors[i, ]
-          aff <- affil |>
-            dplyr::filter(affiliation == auth$office)
-          if(is.na(auth$office)){
-            paste0(
-            "  ", "- name: ", "'", auth$name, "'", "\n",
-            "  ", "  ", "affiliations: ", "'", aff$name, "'", "\n"
-            ) -> author_list[[i]]
-          } else {
-            paste0(
+        if(nrow(authors)>0){
+          for (i in 1:nrow(authors)) {
+            auth <- authors[i, ]
+            aff <- affil |>
+              dplyr::filter(affiliation == auth$office)
+            if(is.na(auth$office)){
+              paste0(
               "  ", "- name: ", "'", auth$name, "'", "\n",
-              "  ", "  ", "affiliations: ", "'NO AFFILIATION'", "\n"
-            ) -> author_list[[i]]
+              "  ", "  ", "affiliations: ", "'", aff$name, "'", "\n"
+              ) -> author_list[[i]]
+            } else {
+              paste0(
+                "  ", "- name: ", "'", auth$name, "'", "\n",
+                "  ", "  ", "affiliations: ", "'NO AFFILIATION'", "\n"
+              ) -> author_list[[i]]
+            }
           }
+        } else {
+          paste0(
+            "  ", "- name: ", "'FIRST LAST'", "\n",
+            "  ", "  ", "affiliations: ", "NO AFFILIATION", "\n"
+          ) -> author_list[[1]]
         }
       } else {
-        for (i in 1:nrow(authors)) {
-          auth <- authors[i, ]
-          paste0("  ", "- ", "'", auth$name, "'", "\n") -> author_list[[i]]
+        if(nrow(authors)>0){
+          for (i in 1:nrow(authors)) {
+            auth <- authors[i, ]
+            paste0("  ", "- ", "'", auth$name, "'", "\n") -> author_list[[i]]
+          }
+        } else {
+          paste0("  ", "- name: 'FIRST LAST' \n") -> author_list[[i]]
         }
       }
 

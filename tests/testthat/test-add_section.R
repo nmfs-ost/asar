@@ -19,7 +19,7 @@ test_that("Adding new sections works.", {
 })
 
 test_that("Adding new sections does not work.", {
-  sec_list <- add_base_section(c("introduction", "data", "modeling approach", "acknowledgments", "tables", "figures", "appendix", "references"))
+  sec_list <- add_base_section(c("introduction", "data", "modeling approach", "acknowledgments", "appendix", "references"))
   sections <- add_section(
     sec_names = c("Harvest Control Rules", "Regional Management Considerations", "Research and Data Needs"),
     location = c("after-model", "after-model", "after-model"),
@@ -29,7 +29,7 @@ test_that("Adding new sections does not work.", {
   exp_list <- list(
     "introduction.qmd", "data.qmd", "modeling_approach.qmd", "Harvest_Control_Rules.qmd",
     "Regional_Management_Considerations.qmd", "Research_and_Data_Needs.qmd",
-    "acknowledgments.qmd", "tables.qmd", "figures.qmd", "appendix.qmd", "references.qmd"
+    "acknowledgments.qmd", "appendix.qmd", "references.qmd"
   )
   expect_equal(sections, exp_list)
 })
