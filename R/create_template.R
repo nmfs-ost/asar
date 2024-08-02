@@ -307,10 +307,10 @@ create_template <- function(
         if(nrow(authors)>0){
           for (i in 1:nrow(authors)) {
             auth <- authors[i, ]
-            paste0("  ", "- name:", "'", auth$name, "'", "\n") -> author_list[[i]]
+            paste0("  ", "- ", "'", auth$name, "'", "\n") -> author_list[[i]]
           }
         } else {
-          paste0("  ", "- name: 'FIRST LAST' \n") -> author_list[[1]]
+          paste0("  ", "- 'FIRST LAST' \n") -> author_list[[1]]
         }
       }
 
@@ -342,19 +342,31 @@ create_template <- function(
 
       # Formatting
 
-      if (include_affiliation) {
-        yaml <- paste(yaml, "format: \n",
-          "  ", format, ": \n",
-          "  ", "  ", "toc: ", "true \n",
-          "  ", "  ", "keep-tex: ", "true \n",
-          "  ", "  ", "template-partials: \n",
-          # "  ", "  ", "  ", " - graphics.tex \n",
-          "  ", "  ", "  ", " - title.tex \n",
-          "  ", "  ", "include-in-header: \n",
-          "  ", "  ", "  ", " - in-header.tex \n",
-          sep = ""
-        )
-      } else {
+      if(format == "pdf" | format == "html"){
+
+        if (include_affiliation) {
+          yaml <- paste(yaml, "format: \n",
+            "  ", format, ": \n",
+            "  ", "  ", "toc: ", "true \n",
+            "  ", "  ", "keep-tex: ", "true \n",
+            "  ", "  ", "template-partials: \n",
+            # "  ", "  ", "  ", " - graphics.tex \n",
+            "  ", "  ", "  ", " - title.tex \n",
+            "  ", "  ", "include-in-header: \n",
+            "  ", "  ", "  ", " - in-header.tex \n",
+            sep = ""
+          )
+        } else {
+          yaml <- paste0(
+            yaml, "format: \n",
+            "  ", format, ": \n",
+            "  ", "  ", "toc: ", "true \n",
+            "  ", "  ", "template-partials: \n",
+            "  ", "  ", "  ", "- title.tex \n",
+            "  ", "  ", "keep-tex: true \n"
+          )
+        }
+      } else if (format == "docx") {
         yaml <- paste0(
           yaml, "format: \n",
           "  ", format, ": \n",
@@ -363,6 +375,8 @@ create_template <- function(
           "  ", "  ", "  ", "- title.tex \n",
           "  ", "  ", "keep-tex: true \n"
         )
+      } else {
+        stop("Invalid render format.")
       }
 
       # Add lua filters for compliance

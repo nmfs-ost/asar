@@ -8,6 +8,7 @@ create_figures_doc(
   resdir = NULL,
   model_results = NULL,
   model = c("SS3", "BAM", "ASAP", "AMAK", "WHAM"),
+  year = NULL,
   subdir = NULL,
   include_all = TRUE
 )
@@ -18,6 +19,8 @@ create_figures_doc(
 \item{model_results}{name of the results file of assessment output}
 
 \item{model}{stock assessment model}
+
+\item{year}{end year for the assessment}
 
 \item{subdir}{subdirectory where the assessment report template is being stored}
 

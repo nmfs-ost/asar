@@ -20,7 +20,7 @@ create_tables_doc <- function(resdir = NULL,
   if(include_all){
     # Create tables quarto doc - maybe should add this as separate fxn - same with figs
     tables_doc <- paste0(
-      "### Tables \n \n",
+      "## Tables \n \n",
       # Indices table
       add_chunk(
         paste0(
