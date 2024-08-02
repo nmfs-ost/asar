@@ -17,29 +17,29 @@ create_figures_doc <- function(resdir = NULL,
                                year = NULL,
                                subdir = NULL,
                                include_all = TRUE) {
+
   model <- match.arg(model, several.ok = FALSE)
 
   if(include_all){
     # Create tables quarto doc - maybe should add this as separate fxn - same with figs
-    figures_doc <- paste0(
-      "### Figures \n \n",
-      # Recruitment ts figure
-      add_chunk(
-        paste0(
-          "satf::plot_recruitment(dat = '", resdir, "/", model_results,"', model = '", model, "')"
-        ),
-        label = "recruitment"
-      )
-    )
-
-    figures_doc <- paste0(figures_doc, "\n")
-      # SB figure
+    figures_doc <- paste0("## Figures \n \n")
+    # Recruitment ts figure
+    figures_doc <- paste0(figures_doc,
+                          add_chunk(
+                            paste0("satf::plot_recruitment(dat = '", resdir, "/", model_results,"', model = '", model, "')"),
+                            label = "recruitment"
+                            ),
+                          "\n"
+                          )
+    # SB figure
     plot_code <- paste0(
       "satf::plot_spawning_biomass(dat = '", resdir, "/", model_results,
       "', model = '", model,
       "', ref_line = 'target', endyr = ", year, ")"
     )
-    figures_doc <- paste0(add_chunk(plot_code, label = "spawn_bio"))
+    figures_doc <- paste0(figures_doc,
+                          add_chunk(plot_code, label = "spawn_bio"),
+                          "\n")
   } else {
     # add option for only adding specified tables
   }
