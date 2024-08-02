@@ -3,6 +3,7 @@
 #' @param resdir directory where the results file is located
 #' @param model_results name of the results file of assessment output
 #' @param model stock assessment model
+#' @param year end year for assessment
 #' @param subdir subdirectory where the assessment report template is being stored
 #' @param include_all include all default tables for a stock assessment report
 #'
@@ -13,6 +14,7 @@
 create_tables_doc <- function(resdir = NULL,
                               model_results = NULL,
                               model = c("SS3","BAM","ASAP","AMAK","WHAM"),
+                              year = NULL,
                               subdir = NULL,
                               include_all = TRUE) {
   model <- match.arg(model, several.ok = FALSE)

@@ -175,7 +175,8 @@ create_template <- function(
           create_tables_doc(resdir = resdir,
                             model_results = model_results,
                             model = model,
-                            subdir = subdir)
+                            subdir = subdir,
+                            year = year)
         } else {
           tables_doc <- paste0("### Tables \n \n",
                                "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables.")
@@ -193,7 +194,8 @@ create_template <- function(
           create_figures_doc(resdir = resdir,
                              model_results = model_results,
                              model = model,
-                             subdir = subdir)
+                             subdir = subdir,
+                             year = year)
         } else {
           figures_doc <- paste0("## Figures \n")
           utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "figures.qmd"), append = FALSE)

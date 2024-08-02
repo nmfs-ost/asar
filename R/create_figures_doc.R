@@ -3,7 +3,7 @@
 #' @param resdir directory where the results file is located
 #' @param model_results name of the results file of assessment output
 #' @param model stock assessment model
-#' @param year end year for the assessment
+#' @param year end year for assessment to include in plotting
 #' @param subdir subdirectory where the assessment report template is being stored
 #' @param include_all include all default figures for a stock assessment report
 #'
