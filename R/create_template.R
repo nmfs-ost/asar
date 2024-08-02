@@ -343,11 +343,42 @@ create_template <- function(
 
       # Formatting
 
-     yaml <- paste0(yaml,
-                    format_quarto(format = format,
-                                  include_affiliation = include_affiliation),
-                    "\n"
-                    )
+      if(format == "pdf" | format == "html"){
+
+        if (include_affiliation) {
+          yaml <- paste(yaml, "format: \n",
+                        "  ", format, ": \n",
+                        "  ", "  ", "toc: ", "true \n",
+                        "  ", "  ", "keep-tex: ", "true \n",
+                        "  ", "  ", "template-partials: \n",
+                        # "  ", "  ", "  ", " - graphics.tex \n",
+                        "  ", "  ", "  ", " - title.tex \n",
+                        "  ", "  ", "include-in-header: \n",
+                        "  ", "  ", "  ", " - in-header.tex \n",
+                        sep = ""
+          )
+        } else {
+          yaml <- paste0(
+            yaml, "format: \n",
+            "  ", format, ": \n",
+            "  ", "  ", "toc: ", "true \n",
+            "  ", "  ", "template-partials: \n",
+            "  ", "  ", "  ", "- title.tex \n",
+            "  ", "  ", "keep-tex: true \n"
+          )
+        }
+      } else if (format == "docx") {
+        yaml <- paste0(
+          yaml, "format: \n",
+          "  ", format, ": \n",
+          "  ", "  ", "toc: ", "true \n",
+          "  ", "  ", "template-partials: \n",
+          "  ", "  ", "  ", "- title.tex \n",
+          "  ", "  ", "keep-tex: true \n"
+        )
+      } else {
+        stop("Invalid render format.")
+      }
 
       # Add lua filters for compliance
       # PLACEHOLDER: Uncomment once .lua text is built
