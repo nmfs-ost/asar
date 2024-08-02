@@ -37,6 +37,7 @@ create_citation <- function(
       } else {
         primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
           dplyr::filter(last == unlist(strsplit(author[1], " "))[2])
+        if(nrow(primauth_loc)==0) stop("Author is not found in the database, Please use add_author instead.")
       }
 
       # Check and fix if there is more than one author with the same last name
