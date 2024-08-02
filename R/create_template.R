@@ -146,7 +146,7 @@ create_template <- function(
   }
   # }
 
-  if (new_template == TRUE) {
+  if (new_template) {
     if (is.null(type) | type == "SAR") {
       # Pull skeleton for sections
       current_folder <- system.file("templates", "skeleton", package = "ASAR")
@@ -175,8 +175,7 @@ create_template <- function(
           create_tables_doc(resdir = resdir,
                             model_results = model_results,
                             model = model,
-                            subdir = subdir,
-                            year = year)
+                            subdir = subdir)
         } else {
           tables_doc <- paste0("### Tables \n \n",
                                "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables.")
@@ -237,7 +236,7 @@ create_template <- function(
         dplyr::select(name, office) |>
         dplyr::filter(name %in% author)
 
-      if (include_affiliation == TRUE) {
+      if (include_affiliation) {
         affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "ASAR", mustWork = TRUE))
       }
       if(!is.null(add_author)){
