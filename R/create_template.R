@@ -722,6 +722,8 @@ create_template <- function(
     ))
     # Open file for analyst
     file.show(file.path(paste0(subdir, "/", report_name))) # this opens the new file, but also restarts the session
+    # Open the file so path to other docs is clear
+    utils::browseURL(subdir)
   } else {
     # Copy old template and rename for new year
     # Create copy of previous assessment
