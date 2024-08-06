@@ -2,10 +2,11 @@
 #'
 #' @param format format for rendering (pdf, html, or docx)
 #'
-#' @return
+#' @return This function returns part of a quarto YAML header that helps with
+#' formatting the document during rendering.
 #' @export
 #'
-#' @examples
+#' @examples format_quarto(format = "pdf")
 format_quarto <- function(format){
   if(format == "pdf" | format == "html"){
     paste0(

@@ -1,3 +1,12 @@
+#' Create a title page latex document
+#'
+#' @param office primary science center writing the document
+#' @param subdir directory where files are going to be held
+#'
+#' @return Create a _titlepage.tex document that contains formatting options for
+#'  a cover page. The only thing that changes currently is the primary author's
+#'  fishery science center.
+#' @export
 create_titletex_doc <- function(office = "",
                                 subdir){
   if(office == "NEFSC"){
