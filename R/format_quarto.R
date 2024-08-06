@@ -16,7 +16,7 @@ format_quarto <- function(format = NULL){
       "  ", "  ", "number-sections: true", "\n",
       "  ", "  ", "template-partials:", "\n",
       "  ", "  ", "  ", "- 'support_files/before-body.tex'", "\n",
-      "  ", "  ", "  ", "- 'support_files/titlepage.tex'", "\n",
+      "  ", "  ", "  ", "- 'support_files/_titlepage.tex'", "\n",
       "  ", "  ", "include-in-header:", "\n",
       "  ", "  ", "  ", "- 'support_files/in-header.tex'", "\n",
       "  ", "  ", "toc: true", "\n",

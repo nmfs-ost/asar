@@ -179,6 +179,8 @@ create_template <- function(
           create_inheader_tex(species = species, year = year, subdir = supdir)
           # Copy species image from package
           file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
+          # Copy us doc logo
+          file.copy(system.file("resources", "us_doc_logo.png", package = "ASAR"), supdir, overwrite = FALSE) |> suppressWarnings()
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
           print(paste0("Blank files for template sections were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder."))
         }
@@ -193,6 +195,8 @@ create_template <- function(
         create_inheader_tex(species = species, year = year, subdir = supdir)
         # Copy species image from package
         file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
+        # Copy us doc logo
+        file.copy(system.file("resources", "us_doc_logo.png", package = "ASAR"), supdir, overwrite = FALSE) |> suppressWarnings()
       } else {
         stop("None of the arugments match statement commands. Needs developer fix.")
       }
@@ -388,7 +392,7 @@ create_template <- function(
         yaml <- paste0(
           yaml,
           # image as pulled in from above
-          "cover: ", gsub(" ", "_", species), ".png", "\n"
+          "cover: support_files/", gsub(" ", "_", species), ".png", "\n"
         )
       }
 
