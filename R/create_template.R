@@ -42,14 +42,7 @@
 #'         each of the child documents should be edited separately.
 #' @export
 #'
-#' @examples create_template(
-#'   new_template = TRUE, format = "pdf", office = "NEFSC", region = "GB",
-#'   species = "Atlantic Bluefish", spp_latin = "Pomatomus saltatrix", year = 2024,
-#'   author = c("John Snow", "Danny Phantom", "Patrick Star"), include_affiliation = TRUE,
-#'   parameters = TRUE, param_names = c("fleet1", "fleet2", "model"),
-#'   param_values = c("Commercial", "Recreational", "Woods Hole Assessment Model"),
-#'   type = "SAR", model_results = "results.Rdata", model = "WHAM"
-#' )
+#' @examples create_template()
 #'
 create_template <- function(
     new_template = TRUE,
@@ -152,6 +145,9 @@ create_template <- function(
       current_folder <- system.file("templates", "skeleton", package = "ASAR")
       new_folder <- subdir
       files_to_copy <- list.files(current_folder)
+      before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "ASAR")
+      header_file <- system.file("resources", "formatting_files", "in-header.tex", package = "ASAR")
+      format_files <- list(before_body_file, header_file)
 
       # Check if there are already files in the folder
       if (length(list.files(subdir)) > 0) {
@@ -160,11 +156,15 @@ create_template <- function(
 
         if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
           file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE) |> suppressWarnings()
+          file.copy(format_files, new_folder, overwrite = FALSE) |> suppressWarnings()
+          create_titletex_doc(office = office, subdir = subdir)
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
           print(paste0("Blank files for template sections were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder."))
         }
       } else if (length(list.files(subdir)) == 0) {
         file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
+        file.copy(file.path(current_folder, format_files), new_folder, overwrite = FALSE) |> suppressWarnings()
+        create_titletex_doc(office = office, subdir = subdir)
       } else {
         stop("None of the arugments match statement commands. Needs developer fix.")
       }
