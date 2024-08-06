@@ -145,8 +145,8 @@ create_template <- function(
       new_folder <- subdir
       files_to_copy <- list.files(current_folder)
       before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "ASAR")
-      header_file <- system.file("resources", "formatting_files", "in-header.tex", package = "ASAR")
-      format_files <- list(before_body_file, header_file)
+      # header_file <- system.file("resources", "formatting_files", "in-header.tex", package = "ASAR")
+      # format_files <- list(before_body_file, header_file)
 
       # Check if there are already files in the folder
       if (length(list.files(subdir)) > 0) {
@@ -154,16 +154,26 @@ create_template <- function(
         question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
 
         if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+          # copy quarto files
           file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = TRUE) |> suppressWarnings()
-          file.copy(format_files, new_folder, overwrite = FALSE) |> suppressWarnings()
-          create_titletex_doc(office = office, subdir = subdir)
+          # copy before-body tex
+          file.copy(before_body_file, new_folder, overwrite = TRUE) |> suppressWarnings()
+          # customize titlepage tex
+          create_titlepage_tex(office = office, subdir = subdir)
+          # customize in-header tex
+          create_inheader_tex(species = species, year = year, subdir = subdir)
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
           print(paste0("Blank files for template sections were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder."))
         }
       } else if (length(list.files(subdir)) == 0) {
+        # copy quarto files
         file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
-        file.copy(file.path(current_folder, format_files), new_folder, overwrite = FALSE) |> suppressWarnings()
-        create_titletex_doc(office = office, subdir = subdir)
+        # copy before-body tex
+        file.copy(before_body_file, new_folder, overwrite = FALSE) |> suppressWarnings()
+        # customize titlepage tex
+        create_titlepage_tex(office = office, subdir = subdir)
+        # customize in-header tex
+        create_inheader_tex(species = species, year = year, subdir = subdir)
       } else {
         stop("None of the arugments match statement commands. Needs developer fix.")
       }
