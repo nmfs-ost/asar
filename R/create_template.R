@@ -247,7 +247,7 @@ create_template <- function(
       if (include_affiliation == TRUE & simple_affiliation == FALSE) {
         if(nrow(authors)>0){
           for (i in 1:nrow(authors)) {
-            auth <- authors[1, ]
+            auth <- authors[i, ]
             aff <- affil |>
               dplyr::filter(affiliation == auth$office)
             if(is.na(auth$office)){
