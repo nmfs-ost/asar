@@ -1,5 +1,12 @@
-\usepackage[noblocks]{authblk}
-\renewcommand*{\Authsep}{, }
-\renewcommand*{\Authand}{, }
-\renewcommand*{\Authands}{, }
-\renewcommand\Affilfont{\small}
+\usepackage{hyphenat}
+\usepackage{graphicx}
+% and their extensions so you won't have to specify these with
+ % every instance of \includegraphics
+\DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\usepackage{wallpaper} % for the background image on title page
+\usepackage{geometry}
+\usepackage{babel}
+\babelprovide[import,main]{czech}
+\usepackage{scrlayer-scrpage}
+\rohead{Header text}
+\lofoot{Footer text}
