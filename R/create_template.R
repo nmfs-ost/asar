@@ -34,6 +34,8 @@
 #'        If a new section is to be added, please also use parameters 'new_section', and 'section_location'
 #' @param include_figures Determine if figures are included into the report
 #' @param include_tables Indicate if tables are included into the report
+#' @param add_image add outside image of species to the template
+#' @param spp_image full directory and species image name to direct the program where to find and extract the image
 #'
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
@@ -71,7 +73,9 @@ create_template <- function(
     custom = FALSE,
     custom_sections = NULL,
     include_figures = TRUE,
-    include_tables = TRUE) {
+    include_tables = TRUE,
+    add_image = FALSE,
+    spp_image = NULL) {
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -132,9 +136,13 @@ create_template <- function(
     subdir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", year)
   }
 
+  # Supporting files folder
+  supdir <- paste(subdir, "/support_files", sep = "")
+
   # if (!is.null(region)) {
   if (dir.exists(subdir) == FALSE) {
     dir.create(subdir, recursive = TRUE)
+    dir.create(supdir, recursive = FALSE)
   }
   # }
 
@@ -147,6 +155,11 @@ create_template <- function(
       before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "ASAR")
       # header_file <- system.file("resources", "formatting_files", "in-header.tex", package = "ASAR")
       # format_files <- list(before_body_file, header_file)
+      if(add_image){
+        spp_image = spp_image
+      } else {
+        spp_image <- system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "ASAR")
+      }
 
       # Check if there are already files in the folder
       if (length(list.files(subdir)) > 0) {
@@ -157,11 +170,13 @@ create_template <- function(
           # copy quarto files
           file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = TRUE) |> suppressWarnings()
           # copy before-body tex
-          file.copy(before_body_file, new_folder, overwrite = TRUE) |> suppressWarnings()
+          file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
           # customize titlepage tex
-          create_titlepage_tex(office = office, subdir = subdir)
+          create_titlepage_tex(office = office, subdir = supdir)
           # customize in-header tex
-          create_inheader_tex(species = species, year = year, subdir = subdir)
+          create_inheader_tex(species = species, year = year, subdir = supdir)
+          # Copy species image from package
+          file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
           print(paste0("Blank files for template sections were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder."))
         }
@@ -169,11 +184,13 @@ create_template <- function(
         # copy quarto files
         file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
         # copy before-body tex
-        file.copy(before_body_file, new_folder, overwrite = FALSE) |> suppressWarnings()
+        file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
         # customize titlepage tex
-        create_titlepage_tex(office = office, subdir = subdir)
+        create_titlepage_tex(office = office, subdir = supdir)
         # customize in-header tex
-        create_inheader_tex(species = species, year = year, subdir = subdir)
+        create_inheader_tex(species = species, year = year, subdir = supdir)
+        # Copy species image from package
+        file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
       } else {
         stop("None of the arugments match statement commands. Needs developer fix.")
       }
@@ -350,8 +367,30 @@ create_template <- function(
         "date: today", "\n"
       )
 
-      # Formatting
+      # Add species image on title page
+      if(add_image){
+        # extract image name
+         new_img <- sapply(strsplit(spp_image, "/"), tail, 1)
+          yaml <- paste0(
+            yaml,
+            # image as pulled in from above
+            "cover: ", new_img, "\n"
+          )
+      } else if (spp_image==""){
+        yaml <- paste0(
+          yaml,
+          # image as pulled in from above
+          "cover: ", spp_image, "\n"
+        )
+      } else {
+        yaml <- paste0(
+          yaml,
+          # image as pulled in from above
+          "cover: ", gsub(" ", "_", species), ".png", "\n"
+        )
+      }
 
+      # Formatting
       yaml <- paste0(yaml,
                      format_quarto(format = format))
 
