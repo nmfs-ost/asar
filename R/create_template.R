@@ -42,8 +42,6 @@
 #'         each of the child documents should be edited separately.
 #' @export
 #'
-#' @examples create_template()
-#'
 create_template <- function(
     new_template = TRUE,
     format = c("pdf", "docx", "html", NULL),
@@ -344,8 +342,7 @@ create_template <- function(
       # Formatting
 
       yaml <- paste0(yaml,
-                     format_quarto(format = format,
-                                   include_affiliation = include_affiliation))
+                     format_quarto(format = format))
 
       # Add lua filters for compliance
       # PLACEHOLDER: Uncomment once .lua text is built
