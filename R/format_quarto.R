@@ -15,7 +15,7 @@ format_quarto <- function(format = NULL){
       "  ", "  ", "documentclass: scrartcl", "\n",
       "  ", "  ", "number-sections: true", "\n",
       "  ", "  ", "template-partials:", "\n",
-      "  ", "  ", "  ", "- 'support_files/before-body.tex'",
+      "  ", "  ", "  ", "- 'support_files/before-body.tex'", "\n",
       "  ", "  ", "  ", "- 'support_files/titlepage.tex'", "\n",
       "  ", "  ", "include-in-header:", "\n",
       "  ", "  ", "  ", "- 'support_files/in-header.tex'", "\n",
