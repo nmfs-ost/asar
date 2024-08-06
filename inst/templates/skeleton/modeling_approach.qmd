@@ -1,11 +1,11 @@
-## Model
+## Modeling Approach
 
 ### Current Approach
 
 <!---
 This is a potential automated subsection which will dynamically changed according to the assessment model used to perform the analysis. 
 
-Please provide a short, general overview of platform including refernce to the model's paper or online refence.
+Please provide a short, general overview of platform including reference to the model's paper or online reference.
 --->
 
 ### Configuration
