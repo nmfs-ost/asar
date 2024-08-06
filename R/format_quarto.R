@@ -33,8 +33,8 @@ format_quarto <- function(format = NULL){
       "format: \n",
       "  ", format, ": \n",
       "  ", "  ", "toc: ", "true \n",
-      "  ", "  ", "template-partials: \n",
-      "  ", "  ", "  ", "- title.tex \n",
+      # "  ", "  ", "template-partials: \n",
+      # "  ", "  ", "  ", "- title.tex \n",
       "  ", "  ", "keep-tex: true \n"
     )
   } else {
