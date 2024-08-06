@@ -345,8 +345,7 @@ create_template <- function(
 
       yaml <- paste0(yaml,
                      format_quarto(format = format,
-                                   include_affiliation = include_affiliation),
-                     "\n")
+                                   include_affiliation = include_affiliation))
 
       # Add lua filters for compliance
       # PLACEHOLDER: Uncomment once .lua text is built

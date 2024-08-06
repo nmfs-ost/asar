@@ -109,13 +109,6 @@ each of the child documents should be edited separately.
 Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'ASAR'))' in the console.
 }
 \examples{
-create_template(
-  new_template = TRUE, format = "pdf", office = "NEFSC", region = "GB",
-  species = "Atlantic Bluefish", spp_latin = "Pomatomus saltatrix", year = 2024,
-  author = c("John Snow", "Danny Phantom", "Patrick Star"), include_affiliation = TRUE,
-  parameters = TRUE, param_names = c("fleet1", "fleet2", "model"),
-  param_values = c("Commercial", "Recreational", "Woods Hole Assessment Model"),
-  type = "SAR", model_results = "results.Rdata", model = "WHAM"
-)
+create_template()
 
 }

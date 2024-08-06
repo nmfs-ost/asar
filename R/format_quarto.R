@@ -1,7 +1,14 @@
-format_quarto <- function(format,
-                          include_affiliation){
+#' Add Formatting Arguments for YAML Header
+#'
+#' @param format format for rendering (pdf, html, or docx)
+#'
+#' @return
+#' @export
+#'
+#' @examples
+format_quarto <- function(format){
   if(format == "pdf" | format == "html"){
-    paste0(yaml,
+    paste0(
       "format: ", "\n",
       "  ", format, ": \n",
       "  ", "  ", "documentclass: scrartcl", "\n",
@@ -21,8 +28,8 @@ format_quarto <- function(format,
       "  ", "  ", "  ", "- left=1in", "\n"
     )
   } else if (format == "docx") {
-    yaml <- paste0(
-      yaml, "format: \n",
+    paste0(
+      "format: \n",
       "  ", format, ": \n",
       "  ", "  ", "toc: ", "true \n",
       "  ", "  ", "template-partials: \n",

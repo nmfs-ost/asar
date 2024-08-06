@@ -10,13 +10,13 @@ Description: Build a full or update stock assessment report for any stock
 License: MIT + file LICENSE
 Imports: 
     dplyr,
+    flextable,
     forstringr,
     ggplot2,
     gridExtra,
     naniar,
     officer,
     openxlsx,
-    satf,
     stringr,
     svDialogs,
     tidyr,
