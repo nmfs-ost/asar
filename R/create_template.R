@@ -155,7 +155,7 @@ create_template <- function(
         question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
 
         if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-          file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE) |> suppressWarnings()
+          file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = TRUE) |> suppressWarnings()
           file.copy(format_files, new_folder, overwrite = FALSE) |> suppressWarnings()
           create_titletex_doc(office = office, subdir = subdir)
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {

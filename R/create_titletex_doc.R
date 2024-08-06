@@ -15,7 +15,7 @@ create_titletex_doc <- function(office = "",
   }
   # Read basic latex file
   lines <- readLines(
-    system.file("resources", "formatting_files", "_titleapage.tex", package = "ASAR")
+    system.file("resources", "formatting_files", "_titlepage.tex", package = "ASAR")
   )
   if(office != "") {
     to_add <- paste(center, "\\newline", sep = "") # unlist(rlang::dots_list(...))
