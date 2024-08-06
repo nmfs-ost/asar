@@ -370,7 +370,7 @@ create_template <- function(
       # Add species image on title page
       if(add_image){
         # extract image name
-         new_img <- sapply(strsplit(spp_image, "/"), tail, 1)
+         new_img <- sapply(strsplit(spp_image, "/"), utils::tail, 1)
           yaml <- paste0(
             yaml,
             # image as pulled in from above

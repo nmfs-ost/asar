@@ -32,7 +32,9 @@ create_template(
   custom = FALSE,
   custom_sections = NULL,
   include_figures = TRUE,
-  include_tables = TRUE
+  include_tables = TRUE,
+  add_image = FALSE,
+  spp_image = NULL
 )
 }
 \arguments{
@@ -97,6 +99,10 @@ If a new section is to be added, please also use parameters 'new_section', and '
 \item{include_figures}{Determine if figures are included into the report}
 
 \item{include_tables}{Indicate if tables are included into the report}
+
+\item{add_image}{add outside image of species to the template}
+
+\item{spp_image}{full directory and species image name to direct the program where to find and extract the image}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
