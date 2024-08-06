@@ -1,7 +1,7 @@
 format_quarto <- function(format,
                           include_affiliation){
   if(format == "pdf" | format == "html"){
-    pasteo(yaml,
+    paste0(yaml,
       "format: ", "\n",
       "  ", format, ": \n",
       "  ", "  ", "documentclass: scrartcl", "\n",
