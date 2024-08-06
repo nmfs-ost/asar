@@ -108,3 +108,7 @@ each of the child documents should be edited separately.
 \description{
 Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'ASAR'))' in the console.
 }
+\examples{
+create_template()
+
+}

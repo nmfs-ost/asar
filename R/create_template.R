@@ -41,6 +41,7 @@
 #'         General sections are called as child documents in this skeleton and
 #'         each of the child documents should be edited separately.
 #' @export
+#' @examples create_template()
 #'
 create_template <- function(
     new_template = TRUE,
