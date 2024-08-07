@@ -55,20 +55,26 @@ create_inheader_tex <- function(species = "", year = NULL, subdir){
     system.file("resources", "formatting_files", "in-header.tex", package = "ASAR")
   )
   if (species == "") {
-    to_add <- paste( # "\\lehead{", species," assessment ", year,"}","\n",
-      "\n",
-      "\\rofoot{\\headmark}", "\n",
-      "\\automark[section]{section}",
-      "\n",
+    to_add <- paste(
+      "\\usepackage[headsepline=0.005pt:,footsepline=0.005pt:,plainfootsepline,automark]{scrlayer-scrpage}", "\n",
+      "\\clearpairofpagestyles", "\n",
+      "\\ohead[]{\\headmark} \\cofoot[\\pagemark]{\\pagemark}", "\n",
+      # "\\lohead{", species," assessment ", year,"}","\n",
+      "\\ModifyLayer[addvoffset=-.6ex]{scrheadings.foot.above.line}", "\n",
+      "\\ModifyLayer[addvoffset=-.6ex]{plain.scrheadings.foot.above.line}", "\n",
+      "\\setkomafont{pageheadfoot}{\\small}", "\n",
       sep = "")
     lines <- append(lines, to_add)
   } else {
-    to_add <- paste("\n",
-                    "\\lehead{", species," assessment ", year,"}","\n",
-                    "\\rofoot{\\headmark}", "\n",
-                    "\\automark[section]{section}",
-                    "\n",
-                    sep = "")
+    to_add <- paste(
+      "\\usepackage[headsepline=0.005pt:,footsepline=0.005pt:,plainfootsepline,automark]{scrlayer-scrpage}", "\n",
+      "\\clearpairofpagestyles", "\n",
+      "\\ohead[]{\\headmark} \\cofoot[\\pagemark]{\\pagemark}", "\n",
+      "\\lohead{", species," assessment ", year,"}","\n",
+      "\\ModifyLayer[addvoffset=-.6ex]{scrheadings.foot.above.line}", "\n",
+      "\\ModifyLayer[addvoffset=-.6ex]{plain.scrheadings.foot.above.line}", "\n",
+      "\\setkomafont{pageheadfoot}{\\small}", "\n",
+      sep = "")
     lines <- append(lines, to_add)
   }
   write(lines, file = paste(subdir, "/in-header.tex", sep = ""))
