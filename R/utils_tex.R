@@ -56,14 +56,18 @@ create_inheader_tex <- function(species = "", year = NULL, subdir){
   )
   if (species == "") {
     to_add <- paste( # "\\lehead{", species," assessment ", year,"}","\n",
+      "\n",
       "\\rofoot{\\headmark}", "\n",
       "\\automark[section]{section}",
+      "\n",
       sep = "")
     lines <- append(lines, to_add)
   } else {
-    to_add <- paste("\\lehead{", species," assessment ", year,"}","\n",
+    to_add <- paste("\n",
+                    "\\lehead{", species," assessment ", year,"}","\n",
                     "\\rofoot{\\headmark}", "\n",
                     "\\automark[section]{section}",
+                    "\n",
                     sep = "")
     lines <- append(lines, to_add)
   }
