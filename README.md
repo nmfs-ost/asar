@@ -1,5 +1,5 @@
 
-# ASAR (Automated Stock Assessment Reporting)
+# asar (Automated Stock Assessment Reporting)
 
 <!-- badges: start -->
 <!-- badges: end -->
