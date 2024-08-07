@@ -47,21 +47,21 @@ create_titlepage_tex <- function(office = "",
 #' @return Create an in-header latex document that dynamically changes based on
 #' the species and year along with other factors.
 #' @export
-create_inheader_tex <- function(species = NULL, year = NULL, subdir){
+create_inheader_tex <- function(species = "", year = NULL, subdir){
   if (is.null(year)){
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
   }
   lines <- readLines(
     system.file("resources", "formatting_files", "in-header.tex", package = "ASAR")
   )
-  if (is.null(species)) {
-    to_add <- paste("\\lehead{", species," assessment ", year,"}","\n",
-                    "\\rofoot{\\headmark}", "\n",
-                    "\\automark[section]{section}",
-                    sep = "")
+  if (species == "") {
+    to_add <- paste( # "\\lehead{", species," assessment ", year,"}","\n",
+      "\\rofoot{\\headmark}", "\n",
+      "\\automark[section]{section}",
+      sep = "")
     lines <- append(lines, to_add)
   } else {
-    to_add <- paste( # "\\lehead{", species," assessment ", year,"}","\n",
+    to_add <- paste("\\lehead{", species," assessment ", year,"}","\n",
                     "\\rofoot{\\headmark}", "\n",
                     "\\automark[section]{section}",
                     sep = "")
