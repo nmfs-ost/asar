@@ -164,7 +164,7 @@ create_template <- function(
       }
 
       # Check if there are already files in the folder
-      if (length(list.files(subdir)) < 1) {
+      if (length(list.files(subdir)) < 2) {
         # copy quarto files
         file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
         # copy before-body tex
