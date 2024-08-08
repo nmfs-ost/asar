@@ -35,15 +35,16 @@ The following is a basic example to render a stock assessment report for a parti
 ASAR::create_template(
   new_template = TRUE,
   format = "pdf",
-  office = "SWFSC",
-  species = "Pacific sardine",
-  spp_latin = "Sardinops sagax",
-  year = 2024,
+  office = "NWFSC",
+  species = "Dover sole",
+  spp_latin = "Pomatomus saltatrix",
+  year = 2010,
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
   include_affiliation = TRUE,
   parameters = FALSE,
-  model_results = "Report.SSO",
-  model = "SS"
+  resdir = "C:/Users/samantha.schiano/Documents/Stock Assessment Workflow/Dover Sole Example Files",
+  model_results = "Report.sso",
+  model = "SS3"
 )
 ```
 
