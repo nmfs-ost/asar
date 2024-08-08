@@ -33,9 +33,10 @@ format_quarto <- function(format = NULL){
       "format: \n",
       "  ", format, ": \n",
       "  ", "  ", "toc: ", "true \n",
-      # "  ", "  ", "template-partials: \n",
-      # "  ", "  ", "  ", "- title.tex \n",
-      "  ", "  ", "keep-tex: true \n"
+      "  ", "  ", "toc-depth: 2", "\n",
+      "  ", "  ", "reference-doc: template.docx", "\n",
+      "  ", "  ", "always_allow_html: true", "\n",
+      "  ", "  ", "keep-tex: true", "\n"
     )
   } else {
     stop("Invalid render format.")
