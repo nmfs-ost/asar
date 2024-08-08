@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="index.html">asar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,11 +33,13 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="articles/index.html">Articles</a></li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/nmfs-ost/asar/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -91,11 +93,11 @@
 </h2>
 <p>We encourage users to test <code>asar</code> throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. <strong>Currently, <code>asar</code> is only setup to render to a pdf.</strong> Once the user successfully executes <code><a href="reference/create_template.html">create_template()</a></code>, the template quarto file will open:</p>
 <div class="float">
-<img src="inst/resources/example_pop-up.PNG" alt="alt text"><div class="figcaption">alt text</div>
+<img src="reference/figures/example_pop-up.PNG" alt="alt text"><div class="figcaption">alt text</div>
 </div>
 <p>All other associated files will be created in a folder called <code>stock_assessment_reports</code> within the user’s documents folder. From there, a file system following the user’s associated science center &gt; species name &gt; region (if applicable) &gt; year. The user will have to navigate to this folder to find additional files.</p>
 <div class="float">
-<img src="inst/resources/example_file_system.PNG" alt="alt text"><div class="figcaption">alt text</div>
+<img src="reference/figures/example_file_system.PNG" alt="alt text"><div class="figcaption">alt text</div>
 </div>
 <p>This is a modularized template, there is no need to make any edits to the skeleton file. To write the report, user should navigate and open each supporting section quarto document labeled:</p>
 <ul>
@@ -130,7 +132,14 @@
 <p>This repository is a scientific product and is not official communication of the National Oceanic and Atmospheric Administration, or the United States Department of Commerce. All NOAA GitHub project code is provided on an ‘as is’ basis and the user assumes responsibility for its use. Any claims against the Department of Commerce or Department of Commerce bureaus stemming from the use of this GitHub project will be governed by all applicable Federal laws. Any reference to specific commercial products, processes, or services by service mark, trademark, manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation, or favoring by the Department of Commerce. The Department of Commerce seal and logo, or the seal and logo of a DOC bureau, shall not be used in any manner to imply endorsement of any commercial product or activity by DOC or the United States Government.</p>
 </div>
 </div>
-  </main><aside class="col-md-3"><div class="license">
+  </main><aside class="col-md-3"><div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/nmfs-ost/asar/" class="external-link">Browse source code</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
