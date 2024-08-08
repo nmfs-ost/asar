@@ -7,6 +7,7 @@ Authors@R:
 Description: Build a full or update stock assessment report for any stock
     assessment model. Parameterization allows the user to call a template
     based on their regional science center, species, area, ect.
+URL: https://github.com/nmfs-ost/asar
 License: MIT + file LICENSE
 Imports: 
     dplyr,
@@ -22,6 +23,8 @@ Imports:
     tidyr,
     utils
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Remotes:
     nmfs-ost/satf
@@ -29,3 +32,4 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+VignetteBuilder: knitr

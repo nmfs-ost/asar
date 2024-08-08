@@ -1,7 +1,20 @@
 url: nmfs-ost.github.io/asar/
 
+template:
+  bootstrap: 5
+
+development:
+  mode: auto
+
 home:
   title: Automated Stock Assessment Reporting
 
-template:
-  bootstrap: 5
+reference:
+
+articles:
+- title: Manual
+  contents:
+    - manual
+    - regional_workflows
+    - markdown_notation
+
