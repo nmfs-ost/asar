@@ -23,7 +23,7 @@ Interpretation of the spawner-recruit curve estimation, challenges or issues, an
 - Other metrics (if applicable) - discards, environmental data, ect.
 --->
 
-### Model Diagnositcs
+### Model Diagnostics
 
 <!---
 Where applicable:
