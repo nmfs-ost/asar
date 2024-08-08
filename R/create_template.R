@@ -316,7 +316,7 @@ create_template <- function(
             auth <- authors[i, ]
             aff <- affil |>
               dplyr::filter(affiliation == auth$office)
-            if(is.na(auth$office)){
+            if(!is.na(auth$office)){
               paste0(
               "  ", "- name: ", "'", auth$name, "'", "\n",
               "  ", "  ", "affiliations: ", "'", aff$name, "'", "\n"
@@ -375,6 +375,7 @@ create_template <- function(
       if(add_image){
         # extract image name
          new_img <- sapply(strsplit(spp_image, "/"), utils::tail, 1)
+
           yaml <- paste0(
             yaml,
             # image as pulled in from above
