@@ -26,10 +26,8 @@ add_theme <- function(x) {
   } else if (class(x)[1] == "gt_tbl") {
     theme_obj <- x
     # gt object
-
   } else if (class(x)[1] == "kableExtra" | as.character(class(x)[2]) == "knitr_kable") {
     theme_obj <- x
-
   } else if (class(x)[1] == "gg" | class(x)[2] == "ggplot") { #  - removed bc wouldn't work with only 1 entry in the class for other object classes
     theme_obj <- x +
       ggplot2::theme(

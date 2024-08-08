@@ -21,10 +21,10 @@ Imports:
     svDialogs,
     tidyr,
     utils
-Remotes:
-    nmfs-ost/satf
 Suggests: 
     testthat (>= 3.0.0)
+Remotes:
+    nmfs-ost/satf
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
