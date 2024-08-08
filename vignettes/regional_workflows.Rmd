@@ -14,10 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(ASAR)
-```
-
 ## Regional Workflows
 
 NOAA Fisheries consists of six regional fishery science centers:

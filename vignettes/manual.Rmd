@@ -14,10 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(ASAR)
-```
-
 ## Navigation
 
 The overarching function to create or pull a stock assessment report template is `create_template()`. This is the first function the analyst will call to develop a stock assessment report. This step comes after running the stock assessment model and performing necessary diagnostics.

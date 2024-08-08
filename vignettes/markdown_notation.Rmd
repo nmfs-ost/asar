@@ -16,10 +16,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(ASAR)
-```
-
 ```{r}
 #| eval: false
 #| warning: false
@@ -46,7 +42,7 @@ params$region
 
 The above example shows how one would incorporate the *region* parameter into a sentence in a markdown or quarto file. In google docs, this notation formatted to green and the font roboto mono. 
 
-If we definited the parameter of region as NWFSC, the result would render as `r params$region`
+If we define the parameter of region as NWFSC, the result would render as `r params$region`
 
 Other ways to incorporate markdown notation include:
 
