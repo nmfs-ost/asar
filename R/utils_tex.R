@@ -12,25 +12,25 @@
 #'  fishery science center.
 #' @export
 create_titlepage_tex <- function(office = "",
-                                subdir){
-  if(office == "NEFSC"){
-    center = "Northeast Fisheries Science Center"
-  } else if (office == "NWFSC"){
-    center = "Northwest Fisheries Science Center"
-  } else if (office == "SEFSC"){
-    center = "Southeast Fisheries Science Center"
-  } else if (office == "SWFSC"){
-    center = "Southwest Fisheries Science Center"
-  } else if (office == "AFSC"){
-    center = "Alaska Fisheries Science Center"
-  } else if (office == "PIFSC"){
-    center = "Pacific Islands Fisheries Science Center"
+                                 subdir) {
+  if (office == "NEFSC") {
+    center <- "Northeast Fisheries Science Center"
+  } else if (office == "NWFSC") {
+    center <- "Northwest Fisheries Science Center"
+  } else if (office == "SEFSC") {
+    center <- "Southeast Fisheries Science Center"
+  } else if (office == "SWFSC") {
+    center <- "Southwest Fisheries Science Center"
+  } else if (office == "AFSC") {
+    center <- "Alaska Fisheries Science Center"
+  } else if (office == "PIFSC") {
+    center <- "Pacific Islands Fisheries Science Center"
   }
   # Read basic latex file
   lines <- readLines(
     system.file("resources", "formatting_files", "_titlepage.tex", package = "asar")
   )
-  if(office != "") {
+  if (office != "") {
     to_add <- paste(center, "\\newline", sep = "") # unlist(rlang::dots_list(...))
     lines <- append(lines, to_add, after = 110)
   }
@@ -47,8 +47,8 @@ create_titlepage_tex <- function(office = "",
 #' @return Create an in-header latex document that dynamically changes based on
 #' the species and year along with other factors.
 #' @export
-create_inheader_tex <- function(species = NULL, year = NULL, subdir){
-  if (is.null(year)){
+create_inheader_tex <- function(species = NULL, year = NULL, subdir) {
+  if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
   }
   lines <- readLines(
@@ -63,18 +63,20 @@ create_inheader_tex <- function(species = NULL, year = NULL, subdir){
       "\\ModifyLayer[addvoffset=-.6ex]{scrheadings.foot.above.line}", "\n",
       "\\ModifyLayer[addvoffset=-.6ex]{plain.scrheadings.foot.above.line}", "\n",
       "\\setkomafont{pageheadfoot}{\\small}", "\n",
-      sep = "")
+      sep = ""
+    )
     lines <- append(lines, to_add)
   } else {
     to_add <- paste(
       "\\usepackage[headsepline=0.005pt:,footsepline=0.005pt:,plainfootsepline,automark]{scrlayer-scrpage}", "\n",
       "\\clearpairofpagestyles", "\n",
       "\\ohead[]{\\headmark} \\cofoot[\\pagemark]{\\pagemark}", "\n",
-      "\\lohead{", species," assessment ", year,"}","\n",
+      "\\lohead{", species, " assessment ", year, "}", "\n",
       "\\ModifyLayer[addvoffset=-.6ex]{scrheadings.foot.above.line}", "\n",
       "\\ModifyLayer[addvoffset=-.6ex]{plain.scrheadings.foot.above.line}", "\n",
       "\\setkomafont{pageheadfoot}{\\small}", "\n",
-      sep = "")
+      sep = ""
+    )
     lines <- append(lines, to_add)
   }
   write(lines, file = paste(subdir, "/in-header.tex", sep = ""))

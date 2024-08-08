@@ -100,11 +100,11 @@ create_template <- function(
     )
   } else {
     report_name <- paste0(
-      report_name,"region"
+      report_name, "region"
     )
   }
   # Add species to name
-  if(!is.null(species)){
+  if (!is.null(species)) {
     report_name <- paste0(
       report_name, "_",
       gsub(" ", "_", species),
@@ -117,18 +117,18 @@ create_template <- function(
   }
 
   # Select parameter from list
-  if(length(format)>1){
-    format = "pdf"
+  if (length(format) > 1) {
+    format <- "pdf"
   } else {
     format <- match.arg(format, several.ok = FALSE)
   }
-  if(!is.null(office) & length(office)==1){
+  if (!is.null(office) & length(office) == 1) {
     office <- match.arg(office, several.ok = FALSE)
-  } else if (length(office)>1) {
-    office = ""
+  } else if (length(office) > 1) {
+    office <- ""
   }
 
-  if(is.null(office) | office == ""){
+  if (is.null(office) | office == "") {
     subdir <- paste0("~/stock_assessment_reports/report")
   } else if (!is.null(region)) {
     subdir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", region, "/", year)
@@ -157,8 +157,8 @@ create_template <- function(
       before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "asar")
       # header_file <- system.file("resources", "formatting_files", "in-header.tex", package = "asar")
       # format_files <- list(before_body_file, header_file)
-      if(add_image){
-        spp_image = spp_image
+      if (add_image) {
+        spp_image <- spp_image
       } else {
         spp_image <- system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar")
       }
@@ -200,31 +200,39 @@ create_template <- function(
       }
 
       # Create tables qmd
-      if(include_tables){
-        if(!is.null(resdir) | !is.null(model_results) | !is.null(model)){
-          create_tables_doc(resdir = resdir,
-                            model_results = model_results,
-                            model = model,
-                            subdir = subdir)
+      if (include_tables) {
+        if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
+          create_tables_doc(
+            resdir = resdir,
+            model_results = model_results,
+            model = model,
+            subdir = subdir
+          )
         } else {
-          tables_doc <- paste0("### Tables \n \n",
-                               "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables.")
+          tables_doc <- paste0(
+            "### Tables \n \n",
+            "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
+          )
           utils::capture.output(cat(tables_doc), file = paste0(subdir, "/", "tables.qmd"), append = FALSE)
           warning("Results file or model name not defined.")
         }
       } else {
-        tables_doc <- paste0("### Tables \n \n",
-                             "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures")
+        tables_doc <- paste0(
+          "### Tables \n \n",
+          "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures"
+        )
         utils::capture.output(cat(tables_doc), file = paste0(subdir, "/", "tables.qmd"), append = FALSE)
       }
       # Create figures qmd
-      if(include_figures){
-        if(!is.null(resdir) | !is.null(model_results) | !is.null(model)){
-          create_figures_doc(resdir = resdir,
-                             model_results = model_results,
-                             model = model,
-                             subdir = subdir,
-                             year = year)
+      if (include_figures) {
+        if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
+          create_figures_doc(
+            resdir = resdir,
+            model_results = model_results,
+            model = model,
+            subdir = subdir,
+            year = year
+          )
         } else {
           figures_doc <- paste0("## Figures \n")
           utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "figures.qmd"), append = FALSE)
@@ -269,18 +277,18 @@ create_template <- function(
       if (include_affiliation) {
         affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
       }
-      if(!is.null(add_author)){
+      if (!is.null(add_author)) {
         authors <- rbind(authors, data.frame(name = add_author, office = rep(NA, length(add_author))))
       }
 
       author_list <- list()
       if (include_affiliation == TRUE & simple_affiliation == FALSE) {
-        if(nrow(authors)>0){
+        if (nrow(authors) > 0) {
           for (i in 1:nrow(authors)) {
             auth <- authors[i, ]
             aff <- affil |>
               dplyr::filter(affiliation == auth$office)
-            if(is.na(auth$office)){
+            if (is.na(auth$office)) {
               paste0(
                 "  ", "- name: ", "'", auth$name, "'", "\n",
                 "  ", "  ", "affiliations: ", "NO AFFILIATION", "\n"
@@ -311,15 +319,15 @@ create_template <- function(
           ) -> author_list[[1]]
         }
       } else if (include_affiliation & simple_affiliation) {
-        if(nrow(authors)>0){
+        if (nrow(authors) > 0) {
           for (i in 1:nrow(authors)) {
             auth <- authors[i, ]
             aff <- affil |>
               dplyr::filter(affiliation == auth$office)
-            if(!is.na(auth$office)){
+            if (!is.na(auth$office)) {
               paste0(
-              "  ", "- name: ", "'", auth$name, "'", "\n",
-              "  ", "  ", "affiliations: ", "'", aff$name, "'", "\n"
+                "  ", "- name: ", "'", auth$name, "'", "\n",
+                "  ", "  ", "affiliations: ", "'", aff$name, "'", "\n"
               ) -> author_list[[i]]
             } else {
               paste0(
@@ -335,7 +343,7 @@ create_template <- function(
           ) -> author_list[[1]]
         }
       } else {
-        if(nrow(authors)>0){
+        if (nrow(authors) > 0) {
           for (i in 1:nrow(authors)) {
             auth <- authors[i, ]
             paste0("  ", "- ", "'", auth$name, "'", "\n") -> author_list[[i]]
@@ -372,16 +380,16 @@ create_template <- function(
       )
 
       # Add species image on title page
-      if(add_image){
+      if (add_image) {
         # extract image name
-         new_img <- sapply(strsplit(spp_image, "/"), utils::tail, 1)
+        new_img <- sapply(strsplit(spp_image, "/"), utils::tail, 1)
 
-          yaml <- paste0(
-            yaml,
-            # image as pulled in from above
-            "cover: ", new_img, "\n"
-          )
-      } else if (spp_image==""){
+        yaml <- paste0(
+          yaml,
+          # image as pulled in from above
+          "cover: ", new_img, "\n"
+        )
+      } else if (spp_image == "") {
         yaml <- paste0(
           yaml,
           # image as pulled in from above
@@ -396,8 +404,10 @@ create_template <- function(
       }
 
       # Formatting
-      yaml <- paste0(yaml,
-                     format_quarto(format = format))
+      yaml <- paste0(
+        yaml,
+        format_quarto(format = format)
+      )
 
       # Add lua filters for compliance
       # PLACEHOLDER: Uncomment once .lua text is built

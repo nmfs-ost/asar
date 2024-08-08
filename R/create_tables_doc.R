@@ -12,19 +12,19 @@
 #'
 create_tables_doc <- function(resdir = NULL,
                               model_results = NULL,
-                              model = c("SS3","BAM","ASAP","AMAK","WHAM"),
+                              model = c("SS3", "BAM", "ASAP", "AMAK", "WHAM"),
                               subdir = NULL,
                               include_all = TRUE) {
   model <- match.arg(model, several.ok = FALSE)
 
-  if(include_all){
+  if (include_all) {
     # Create tables quarto doc - maybe should add this as separate fxn - same with figs
     tables_doc <- paste0(
       "## Tables \n \n",
       # Indices table
       add_chunk(
         paste0(
-          "satf::table_indices(dat = '", resdir, "/", model_results,"', model = '", model, "')"
+          "satf::table_indices(dat = '", resdir, "/", model_results, "', model = '", model, "')"
         ),
         label = "indices"
       )
