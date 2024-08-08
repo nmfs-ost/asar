@@ -51,7 +51,7 @@ Note: This is only an example. The parameters in the example do not convey accur
 
 ## Testing
 
-We encourage users to test `asar` throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. Once the user successfully executes `create_template()`, the template quarto file will open:
+We encourage users to test `asar` throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. **Currently, `asar` is only setup to render to a pdf.** Once the user successfully executes `create_template()`, the template quarto file will open:
 
 ![alt text](inst/resources/example_pop-up.PNG)
 
