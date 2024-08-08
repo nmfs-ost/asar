@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_template.R
 \name{create_template}
 \alias{create_template}
-\title{Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'ASAR'))' in the console.}
+\title{Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'asar'))' in the console.}
 \usage{
 create_template(
   new_template = TRUE,
@@ -112,7 +112,7 @@ General sections are called as child documents in this skeleton and
 each of the child documents should be edited separately.
 }
 \description{
-Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'ASAR'))' in the console.
+Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'asar'))' in the console.
 }
 \examples{
 create_template()

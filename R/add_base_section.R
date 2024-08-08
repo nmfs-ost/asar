@@ -11,7 +11,7 @@ add_base_section <- function(x) {
   section_list <- list()
   for (i in 1:length(sec_sel)) {
     sec_file <- grep(
-      x = list.files(system.file("templates", "skeleton", package = "ASAR")),
+      x = list.files(system.file("templates", "skeleton", package = "asar")),
       pattern = sec_sel[i],
       value = TRUE
     )

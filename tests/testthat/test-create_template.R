@@ -1,5 +1,5 @@
 test_that("Can trace template files from package", {
-  path <- system.file("templates", "skeleton", package = "ASAR")
+  path <- system.file("templates", "skeleton", package = "asar")
   base_temp_files <- c(
     "acknowledgments.qmd",
     "appendix.qmd",

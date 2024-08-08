@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(ASAR)
+library(asar)
 
-test_check("ASAR")
+test_check("asar")

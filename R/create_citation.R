@@ -6,7 +6,7 @@
 #' @param office NOAA line office that the report is being processed out of
 #'
 #' @return Generate a citation for use in publications and other references for
-#'         the stock assessment report generated in the ASAR package.
+#'         the stock assessment report generated in the asar package.
 #' @export
 #'
 #' @examples create_citation(
@@ -32,21 +32,21 @@ create_citation <- function(
       no_author = FALSE
       # Pull affiliation of first author
       if (length(unlist(strsplit(author[1], " "))) == 3) {
-        primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
+        primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
           dplyr::filter(last == unlist(strsplit(author[1], " "))[3])
       } else {
-        primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
+        primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
           dplyr::filter(last == unlist(strsplit(author[1], " "))[2])
         if(nrow(primauth_loc)==0) stop("Author is not found in the database, Please use add_author instead.")
       }
 
       # Check and fix if there is more than one author with the same last name
       if (nrow(primauth_loc) > 1) {
-        primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
+        primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
           dplyr::filter(last == unlist(strsplit(author[1], " "))[1])
       }
 
-      office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "ASAR", mustWork = TRUE)) |>
+      office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>
         dplyr::filter(affiliation == primauth_loc$office)
 
       # Check
@@ -69,20 +69,20 @@ create_citation <- function(
     no_author = FALSE
     # Pull affiliation of first author
     if (length(unlist(strsplit(author[1], " "))) == 3) {
-      primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
+      primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
         dplyr::filter(last == unlist(strsplit(author[1], " "))[3])
     } else {
-      primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
+      primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
         dplyr::filter(last == unlist(strsplit(author[1], " "))[2])
     }
 
     # Check and fix if there is more than one author with the same last name
     if (nrow(primauth_loc) > 1) {
-      primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
+      primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
         dplyr::filter(last == unlist(strsplit(author[1], " "))[1])
     }
 
-    office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "ASAR", mustWork = TRUE)) |>
+    office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>
       dplyr::filter(affiliation == primauth_loc$office)
 
     # Check
