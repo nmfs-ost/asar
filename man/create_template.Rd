@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_template.R
 \name{create_template}
 \alias{create_template}
-\title{Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'ASAR'))' in the console.}
+\title{Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'asar'))' in the console.}
 \usage{
 create_template(
   new_template = TRUE,
@@ -32,7 +32,9 @@ create_template(
   custom = FALSE,
   custom_sections = NULL,
   include_figures = TRUE,
-  include_tables = TRUE
+  include_tables = TRUE,
+  add_image = FALSE,
+  spp_image = NULL
 )
 }
 \arguments{
@@ -97,6 +99,10 @@ If a new section is to be added, please also use parameters 'new_section', and '
 \item{include_figures}{Determine if figures are included into the report}
 
 \item{include_tables}{Indicate if tables are included into the report}
+
+\item{add_image}{add outside image of species to the template}
+
+\item{spp_image}{full directory and species image name to direct the program where to find and extract the image}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
@@ -106,16 +112,9 @@ General sections are called as child documents in this skeleton and
 each of the child documents should be edited separately.
 }
 \description{
-Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'ASAR'))' in the console.
+Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'asar'))' in the console.
 }
 \examples{
-create_template(
-  new_template = TRUE, format = "pdf", office = "NEFSC", region = "GB",
-  species = "Atlantic Bluefish", spp_latin = "Pomatomus saltatrix", year = 2024,
-  author = c("John Snow", "Danny Phantom", "Patrick Star"), include_affiliation = TRUE,
-  parameters = TRUE, param_names = c("fleet1", "fleet2", "model"),
-  param_values = c("Commercial", "Recreational", "Woods Hole Assessment Model"),
-  type = "SAR", model_results = "results.Rdata", model = "WHAM"
-)
+create_template()
 
 }

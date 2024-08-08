@@ -1,4 +1,4 @@
-#' Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'ASAR'))' in the console.
+#' Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'asar'))' in the console.
 #'
 #' @param new_template TRUE/FALSE; default is false otherwise if true, will pull the last saved stock assessment report skeleton
 #' @param format File type for the render (i.e. pdf, docx, html)
@@ -34,6 +34,8 @@
 #'        If a new section is to be added, please also use parameters 'new_section', and 'section_location'
 #' @param include_figures Determine if figures are included into the report
 #' @param include_tables Indicate if tables are included into the report
+#' @param add_image add outside image of species to the template
+#' @param spp_image full directory and species image name to direct the program where to find and extract the image
 #'
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
@@ -41,15 +43,7 @@
 #'         General sections are called as child documents in this skeleton and
 #'         each of the child documents should be edited separately.
 #' @export
-#'
-#' @examples create_template(
-#'   new_template = TRUE, format = "pdf", office = "NEFSC", region = "GB",
-#'   species = "Atlantic Bluefish", spp_latin = "Pomatomus saltatrix", year = 2024,
-#'   author = c("John Snow", "Danny Phantom", "Patrick Star"), include_affiliation = TRUE,
-#'   parameters = TRUE, param_names = c("fleet1", "fleet2", "model"),
-#'   param_values = c("Commercial", "Recreational", "Woods Hole Assessment Model"),
-#'   type = "SAR", model_results = "results.Rdata", model = "WHAM"
-#' )
+#' @examples create_template()
 #'
 create_template <- function(
     new_template = TRUE,
@@ -79,7 +73,9 @@ create_template <- function(
     custom = FALSE,
     custom_sections = NULL,
     include_figures = TRUE,
-    include_tables = TRUE) {
+    include_tables = TRUE,
+    add_image = FALSE,
+    spp_image = NULL) {
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -140,33 +136,67 @@ create_template <- function(
     subdir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", year)
   }
 
+  # Supporting files folder
+  supdir <- paste(subdir, "/support_files", sep = "")
+
   # if (!is.null(region)) {
   if (dir.exists(subdir) == FALSE) {
     dir.create(subdir, recursive = TRUE)
+  }
+  if (dir.exists(supdir) == FALSE) {
+    dir.create(supdir, recursive = FALSE)
   }
   # }
 
   if (new_template) {
     if (is.null(type) | type == "SAR") {
       # Pull skeleton for sections
-      current_folder <- system.file("templates", "skeleton", package = "ASAR")
+      current_folder <- system.file("templates", "skeleton", package = "asar")
       new_folder <- subdir
       files_to_copy <- list.files(current_folder)
+      before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "asar")
+      # header_file <- system.file("resources", "formatting_files", "in-header.tex", package = "asar")
+      # format_files <- list(before_body_file, header_file)
+      if(add_image){
+        spp_image = spp_image
+      } else {
+        spp_image <- system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar")
+      }
 
       # Check if there are already files in the folder
-      if (length(list.files(subdir)) > 0) {
+      if (length(list.files(subdir)) < 2) {
+        # copy quarto files
+        file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
+        # copy before-body tex
+        file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
+        # customize titlepage tex
+        create_titlepage_tex(office = office, subdir = supdir)
+        # customize in-header tex
+        create_inheader_tex(species = species, year = year, subdir = supdir)
+        # Copy species image from package
+        file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
+        # Copy us doc logo
+        file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+      } else {
         warning("There are files in this location.")
         question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
 
         if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-          file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE) |> suppressWarnings()
+          # copy quarto files
+          file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = TRUE) |> suppressWarnings()
+          # copy before-body tex
+          file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
+          # customize titlepage tex
+          create_titlepage_tex(office = office, subdir = supdir)
+          # customize in-header tex
+          create_inheader_tex(species = species, year = year, subdir = supdir)
+          # Copy species image from package
+          file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
+          # Copy us doc logo
+          file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-          print(paste0("Blank files for template sections were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder."))
+          print(paste0("Report template files were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder."))
         }
-      } else if (length(list.files(subdir)) == 0) {
-        file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
-      } else {
-        stop("None of the arugments match statement commands. Needs developer fix.")
       }
 
       # Create tables qmd
@@ -222,7 +252,7 @@ create_template <- function(
       # Pull authors and affiliations from national db
       # Parameters to add authorship to YAML
       # Read authorship file
-      authors <- utils::read.csv(system.file("resources", "authorship.csv", package = "ASAR", mustWork = TRUE)) |>
+      authors <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
         dplyr::mutate(
           mi = dplyr::case_when(
             mi == "" ~ NA,
@@ -237,7 +267,7 @@ create_template <- function(
         dplyr::filter(name %in% author)
 
       if (include_affiliation) {
-        affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "ASAR", mustWork = TRUE))
+        affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
       }
       if(!is.null(add_author)){
         authors <- rbind(authors, data.frame(name = add_author, office = rep(NA, length(add_author))))
@@ -341,44 +371,33 @@ create_template <- function(
         "date: today", "\n"
       )
 
-      # Formatting
+      # Add species image on title page
+      if(add_image){
+        # extract image name
+         new_img <- sapply(strsplit(spp_image, "/"), utils::tail, 1)
 
-      if(format == "pdf" | format == "html"){
-
-        if (include_affiliation) {
-          yaml <- paste(yaml, "format: \n",
-                        "  ", format, ": \n",
-                        "  ", "  ", "toc: ", "true \n",
-                        "  ", "  ", "keep-tex: ", "true \n",
-                        "  ", "  ", "template-partials: \n",
-                        # "  ", "  ", "  ", " - graphics.tex \n",
-                        "  ", "  ", "  ", " - title.tex \n",
-                        "  ", "  ", "include-in-header: \n",
-                        "  ", "  ", "  ", " - in-header.tex \n",
-                        sep = ""
-          )
-        } else {
           yaml <- paste0(
-            yaml, "format: \n",
-            "  ", format, ": \n",
-            "  ", "  ", "toc: ", "true \n",
-            "  ", "  ", "template-partials: \n",
-            "  ", "  ", "  ", "- title.tex \n",
-            "  ", "  ", "keep-tex: true \n"
+            yaml,
+            # image as pulled in from above
+            "cover: ", new_img, "\n"
           )
-        }
-      } else if (format == "docx") {
+      } else if (spp_image==""){
         yaml <- paste0(
-          yaml, "format: \n",
-          "  ", format, ": \n",
-          "  ", "  ", "toc: ", "true \n",
-          "  ", "  ", "template-partials: \n",
-          "  ", "  ", "  ", "- title.tex \n",
-          "  ", "  ", "keep-tex: true \n"
+          yaml,
+          # image as pulled in from above
+          "cover: ", spp_image, "\n"
         )
       } else {
-        stop("Invalid render format.")
+        yaml <- paste0(
+          yaml,
+          # image as pulled in from above
+          "cover: support_files/", gsub(" ", "_", species), ".png", "\n"
+        )
       }
+
+      # Formatting
+      yaml <- paste0(yaml,
+                     format_quarto(format = format))
 
       # Add lua filters for compliance
       # PLACEHOLDER: Uncomment once .lua text is built
@@ -560,7 +579,7 @@ create_template <- function(
       ######## |###############################################################
     } else if (type == "NEMT") {
       # Pull skeleton for sections
-      current_folder <- system.file("templates", "NEMT", package = "ASAR")
+      current_folder <- system.file("templates", "NEMT", package = "asar")
       new_folder <- subdir
       files_to_copy <- list.files(current_folder)
 

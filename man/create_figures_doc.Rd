@@ -20,7 +20,7 @@ create_figures_doc(
 
 \item{model}{stock assessment model}
 
-\item{year}{end year for the assessment}
+\item{year}{end year for assessment to include in plotting}
 
 \item{subdir}{subdirectory where the assessment report template is being stored}
 

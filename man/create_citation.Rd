@@ -17,7 +17,7 @@ create_citation(author = NULL, title = NULL, year = NULL, office = NULL)
 }
 \value{
 Generate a citation for use in publications and other references for
-the stock assessment report generated in the ASAR package.
+the stock assessment report generated in the asar package.
 }
 \description{
 Generate Citation for Stock Assessment Report
