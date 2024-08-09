@@ -76,7 +76,9 @@ convert_output <- function(
       }
       # Search for the next blank row after the value
       next_blank <- which(apply(dat, 1, function(row) all(is.na(row) | row == "" | row == "-" | row == "#")) & (seq_len(nrow(dat)) > value_row))[1]
-
+      if(is.na(next_blank)){
+        next_blank <- nrow(dat)
+      }
       # Combine the rows surrounding the selected metric from the output table
       rows <- c(value_row, next_blank)
 
@@ -135,16 +137,79 @@ convert_output <- function(
       "SPR/YPR_PROFILE",
       "Dynamic_Bzero"
     )
+    # SS3 Groupings
+    std_set <- c(2,6,7,13,21,23,24,27,29,31,32,33,38,39,40,45,46,55)
+    std2_set <- c(4,8) # can I make it so it falls into above set?
+    cha_set <- 53
+    rand_set <- c(9,10,22,28,30)
+    unkn_set <- c(3,25,34,48,51,52)
+    info_set <- c(1,5,26,35,39)
+    aa.al_set <- c(11,12,14,16,17,18,19,20,36,37,47,49)
+    nn_set <- c(41,42,43,44,50,54,56)
+
+    groups <- list(std_set=std_set, std2_set=std2_set, cha_set=cha_set, rand_set=rand_set, unkn_set=unkn_set, info_set=info_set, aa.al_set=aa.al_set, nn_set=nn_set)
+
+    for(i in 1:length(groups)){
+      sub1 <- groups[[i]]
+      x <- gsub("_set", "", names(groups[i]))
+      # assign(x, c())
+      vec <- c()
+      for (j in 1:length(sub1)) {
+        sub2 <- param_names[sub1[[j]]]
+        vec <- c(vec, sub2)
+      }
+      assign(x, vec)
+    }
     # Loop for all identified parameters to extract for plotting and use
     # Create list of parameters that were not found in the output file
     miss_parms <- list()
     for (i in 1:length(param_names)) {
-      parm_sel <- param_names[1]
+      parm_sel <- param_names[i]
       extract <- SS3_extract_df(dat, parm_sel)
       if (is.na(extract)) {
         miss_parms <- c(miss_parms, parm_sel)
         next
       } else {
+        if(parm_sel %in% std){
+          # remove first row - naming
+          df1 <- extract[-1,]
+          # Find first row without NAs = headers
+          df2 <- df1[complete.cases(df1), ]
+          # identify first row
+          row <- df2[1,]
+          # make row the header names for first df
+          colnames(df1) <- row
+          # find row number that matches 'row'
+          rownum <- prodlim::row.match(row, df1)
+          # Subset data frame
+          df3 <- df1[-c(1:rownum),]
+          # Reformat data frame
+          # add conditional statement if there is time, fleet, area, season, fleet, or sex as a header
+          # if()
+          if(colnames(df3) %in% c("Yr", "yr", "year")){
+            df3 <- df3 |>
+              dplyr::rename(year = Yr)
+          }
+          df4 <- tidyr::pivot_longer(df3, !year, names_to = "label", values_to = "estimate")
+        } else if (parm_sel %in% std2) {
+
+        } else if (parm_sel %in% cha) {
+
+        } else if (parm_sel %in% rand) {
+
+        } else if (parm_sel %in% unkn) {
+
+        } else if (parm_sel %in% info) {
+
+        } else if (parm_sel %in% aa.al) {
+
+        } else if (parm_sel %in% nn) {
+
+        } else {
+
+        }
+
+
 
       }
     } # close loop
