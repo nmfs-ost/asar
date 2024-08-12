@@ -92,53 +92,68 @@ convert_output <- function(
 
     # Estimated and focal parameters to put into reformatted output df - naming conventions from SS3
     # Is this all of the possible headers?
+    # Can this be automated so any changes will adapt this list?
     param_names <- c(
-      "LIKELIHOOD",
-      "Input_Variance_Adjustment",
-      "PARAMETERS",
+      "DEFINITIONS",
       "DERIVED_QUANTITIES",
+      "ENVIRONMENTAL_DATA",
+      "Input_Variance_Adjustment",
+      "LIKELIHOOD",
       "MGparm_By_Year_after_adjustments",
-      "selparm(Size)_By_Year_after_adjustments",
-      "selparm(Age)_By_Year_after_adjustments",
-      "RECRUITMENT_DIST",
       "MORPH_INDEXING",
-      "SIZEFREQ_TRANSLATION",
-      "MOVEMENT",
+      "OVERALL_COMPS",
+      "PARAMETERS",
+      "Parm_devs_detail",
+      "BIOMASS_AT_AGE",
+      "BIOMASS_AT_LENGTH",
+      "CATCH",
+      "DISCARD_AT_AGE",
       "EXPLOITATION",
-      "TIME_SERIES",
-      "SPR_series",
-      "Kobe_Plot",
+      "CATCH_AT_AGE",
+      "F_AT_AGE",
+      "MEAN_SIZE_TIMESERIES",
+      "NUMBERS_AT_AGE",
+      "NUMBERS_AT_LENGTH",
       "SPAWN_RECRUIT",
-      "Spawning_Biomass_Report_1",
-      "NUMBERS_AT_AGE_Annual_1",
-      "Z_AT_AGE_Annual_1",
+      "SPAWN_RECR_CURVE",
+      "SPR_SERIES",
+      "TIME_SERIES",
+      "COMPOSITION_DATABASE",
+      "DISCARD_SPECIFICATION",
+      "DISCARD_OUTPUT",
       "INDEX_1",
       "INDEX_2",
       "INDEX_3",
-      "DISCARD_SPECIFICATION",
-      "DISCARD_OUTPUT",
-      "DISCARD_MORT",
-      "MEAN_BODY_WT",
       "FIT_LEN_COMPS",
-      "FIT_SIZE_COMPS",
       "FIT_AGE_COMPS",
-      "OVERALL_COMPS",
-      "LEN_SELEX",
-      "RETENTION",
-      "KEEPERS",
-      "DEADFISH",
-      "AGE_SELEX",
-      "ENVIRONMENTAL_DATA",
+      "FIT_SIZE_COMPS",
+      "MEAN_BODY_WT_OUTPUT",
       "TAG_Recapture",
-      "NUMBERS_AT_AGE",
-      "NUMBERS_AT_LENGTH",
-      "CATCH_AT_AGE",
+      "AGE_SELEX",
+      "LEN_SELEX",
+      "selparm(Size)_By_Year_after_adjustments",
+      "selparm(Age)_By_Year_after_adjustments",
+      "SELEX_database",
+      "AGE_AGE_KEY",
+      "AGE_LENGTH_KEY",
+      "AGE_SPECIFIC_K",
       "BIOLOGY",
-      "SPR/YPR_PROFILE",
-      "Dynamic_Bzero"
+      "Biology_at_age_in_endyr",
+      "Growth_Parameters",
+      "MEAN_BODY_WT(Begin)",
+      "MOVEMENT",
+      "Natural_Mortality",
+      "RECRUITMENT_DIST",
+      "Seas_Effects",
+      "SIZEFREQ_TRANSLATION",
+      "Dynamic_Bzero",
+      "GLOBAL_MSY",
+      "Kobe_Plot",
+      "SPR/YPR_Profile"
     )
-    # SS3 Groupings
-    std_set <- c(2,6,7,13,21,23,24,27,29,31,32,33,38,39,40,45,46,55)
+    # SS3 Groupings - manually done
+    # Notes on the side indicate those removed since the information is not needed
+    std_set <- c(2,6,13,21,23,24,27,29,31,32,33,38,39,40,45,46,55) # Removing - 7
     std2_set <- c(4,8) # can I make it so it falls into above set?
     cha_set <- 53
     rand_set <- c(9,10,22,28,30)
@@ -162,9 +177,11 @@ convert_output <- function(
     }
     # Loop for all identified parameters to extract for plotting and use
     # Create list of parameters that were not found in the output file
+    std_set <- c(2,6,13,21,23,24,27,29,31,32,33,38,39,40,45,46,55)
+    out.list <- list()
     miss_parms <- list()
     for (i in 1:length(param_names)) {
-      parm_sel <- param_names[i]
+      parm_sel <- param_names[24]
       extract <- SS3_extract_df(dat, parm_sel)
       if (is.na(extract)) {
         miss_parms <- c(miss_parms, parm_sel)
@@ -184,33 +201,58 @@ convert_output <- function(
           # Subset data frame
           df3 <- df1[-c(1:rownum),]
           # Reformat data frame
-          # add conditional statement if there is time, fleet, area, season, fleet, or sex as a header
-          # if()
-          if(colnames(df3) %in% c("Yr", "yr", "year")){
+          factors <- c("Year", "Fleet", "Fleet_Name", "Age", "Sex", "Area", "Seas", "Time", "Era", "SubSeas", "Platoon","Growth_Pattern")
+          errors <- c("StdDev","sd","se","SE","cv","CV")
+          if (any(colnames(df3) %in% c("Yr", "yr", "year"))) {
             df3 <- df3 |>
-              dplyr::rename(year = Yr)
+              dplyr::rename(Year = Yr)
           }
-          df4 <- tidyr::pivot_longer(df3, !year, names_to = "label", values_to = "estimate")
+          if (any(colnames(df3) %in% c("Label", "Estimate"))){
+            df4 <- df3 |>
+              dplyr::mutate(
+                Year = stringr::str_extract(Label, "[0-9]+$"),
+                Label = stringr::str_remove(Label, "_[0-9]+$")
+              )
+          } else if (any(colnames(df3) %in% c(factors, errors))) {
+            df4 <- tidyr::pivot_longer(df3, !intersect(c(factors, errors), colnames(df3)), names_to = "Label", values_to = "Estimate") # change col select to include all in argument if applicable
+          } else {
+            warning("Data frame not compatible.")
+          }
+          if(any(colnames(df4) %in% c("Value"))) df4 <- dplyr::rename(df4, Estimate = Value)
+          # need to add conditional for setup of the data param_SX:X_GP:#
+          if(any(grepl("_SX:[0-9]_GP:[0-9]", df4$Label))){
+            df42 <- df4 |>
+              dplyr::mutate(Label = dplyr::case_when(grepl("_SX:[0-9]_GP:[0-9]", Label) ~ stringr::str_extract(Label, ),
+                                                     grepl("_GP:[0-9]", Label) ~ stringr::str_extract(Label, ),
+                                                     grepl("_GP:[0-9]", Label) ~ stringr::str_extract(Label, ),
+                                                     TRUE ~ Label),
+                            Fleet = NA,
+                            Growth_Pattern = NA,
+                            Sex = NA
+                            )
+          }
+          df_fin <- df4 |>
+            dplyr::select(Label, Estimate, Year, tidyselect::matches(c(factors, errors))) |>
+            dplyr::mutate(module_name = parm_sel)
+          # out.list[[4]] <- df_fin
         } else if (parm_sel %in% std2) {
-
+          next
         } else if (parm_sel %in% cha) {
-
+          next
         } else if (parm_sel %in% rand) {
-
+          next
         } else if (parm_sel %in% unkn) {
-
+          next
         } else if (parm_sel %in% info) {
-
+          next
         } else if (parm_sel %in% aa.al) {
-
+          next
         } else if (parm_sel %in% nn) {
-
+          next
         } else {
-
+          next
         }
-
-
-
+        out.list[[i]] <- df_fin
       }
     } # close loop
   } # close SS3 if statement
