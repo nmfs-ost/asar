@@ -91,90 +91,121 @@ convert_output <- function(
     }
 
     # Estimated and focal parameters to put into reformatted output df - naming conventions from SS3
-    # Is this all of the possible headers?
-    # Can this be automated so any changes will adapt this list?
-    param_names <- c(
-      "DEFINITIONS",
-      "DERIVED_QUANTITIES",
-      "ENVIRONMENTAL_DATA",
-      "Input_Variance_Adjustment",
-      "LIKELIHOOD",
-      "MGparm_By_Year_after_adjustments",
-      "MORPH_INDEXING",
-      "OVERALL_COMPS",
-      "PARAMETERS",
-      "Parm_devs_detail",
-      "BIOMASS_AT_AGE",
-      "BIOMASS_AT_LENGTH",
-      "CATCH",
-      "DISCARD_AT_AGE",
-      "EXPLOITATION",
-      "CATCH_AT_AGE",
-      "F_AT_AGE",
-      "MEAN_SIZE_TIMESERIES",
-      "NUMBERS_AT_AGE",
-      "NUMBERS_AT_LENGTH",
-      "SPAWN_RECRUIT",
-      "SPAWN_RECR_CURVE",
-      "SPR_SERIES",
-      "TIME_SERIES",
-      "COMPOSITION_DATABASE",
-      "DISCARD_SPECIFICATION",
-      "DISCARD_OUTPUT",
-      "INDEX_1",
-      "INDEX_2",
-      "INDEX_3",
-      "FIT_LEN_COMPS",
-      "FIT_AGE_COMPS",
-      "FIT_SIZE_COMPS",
-      "MEAN_BODY_WT_OUTPUT",
-      "TAG_Recapture",
-      "AGE_SELEX",
-      "LEN_SELEX",
-      "selparm(Size)_By_Year_after_adjustments",
-      "selparm(Age)_By_Year_after_adjustments",
-      "SELEX_database",
-      "AGE_AGE_KEY",
-      "AGE_LENGTH_KEY",
-      "AGE_SPECIFIC_K",
-      "BIOLOGY",
-      "Biology_at_age_in_endyr",
-      "Growth_Parameters",
-      "MEAN_BODY_WT(Begin)",
-      "MOVEMENT",
-      "Natural_Mortality",
-      "RECRUITMENT_DIST",
-      "Seas_Effects",
-      "SIZEFREQ_TRANSLATION",
-      "Dynamic_Bzero",
-      "GLOBAL_MSY",
-      "Kobe_Plot",
-      "SPR/YPR_Profile"
-    )
+    # Future changes will include a direct pull of these parameters from the output file instead of a manual list
+    # Below the parameters are grouped and narrowed down into priority to reach deadline.
+    # Other parameters will be developed into the future
+    # param_names <- c(
+    #   "DEFINITIONS",
+    #   "DERIVED_QUANTITIES",
+    #   "ENVIRONMENTAL_DATA",
+    #   "Input_Variance_Adjustment",
+    #   "LIKELIHOOD",
+    #   "MGparm_By_Year_after_adjustments",
+    #   "MORPH_INDEXING",
+    #   "OVERALL_COMPS",
+    #   "PARAMETERS",
+    #   "Parm_devs_detail",
+    #   "BIOMASS_AT_AGE",
+    #   "BIOMASS_AT_LENGTH",
+    #   "CATCH",
+    #   "DISCARD_AT_AGE",
+    #   "EXPLOITATION",
+    #   "CATCH_AT_AGE",
+    #   "F_AT_AGE",
+    #   "MEAN_SIZE_TIMESERIES",
+    #   "NUMBERS_AT_AGE",
+    #   "NUMBERS_AT_LENGTH",
+    #   "SPAWN_RECRUIT",
+    #   "SPAWN_RECR_CURVE",
+    #   "SPR_SERIES",
+    #   "TIME_SERIES",
+    #   "COMPOSITION_DATABASE",
+    #   "DISCARD_SPECIFICATION",
+    #   "DISCARD_OUTPUT",
+    #   "INDEX_1",
+    #   "INDEX_2",
+    #   "INDEX_3",
+    #   "FIT_LEN_COMPS",
+    #   "FIT_AGE_COMPS",
+    #   "FIT_SIZE_COMPS",
+    #   "MEAN_BODY_WT_OUTPUT",
+    #   "TAG_Recapture",
+    #   "AGE_SELEX",
+    #   "LEN_SELEX",
+    #   "selparm(Size)_By_Year_after_adjustments",
+    #   "selparm(Age)_By_Year_after_adjustments",
+    #   "SELEX_database",
+    #   "AGE_AGE_KEY",
+    #   "AGE_LENGTH_KEY",
+    #   "AGE_SPECIFIC_K",
+    #   "BIOLOGY",
+    #   "Biology_at_age_in_endyr",
+    #   "Growth_Parameters",
+    #   "MEAN_BODY_WT(Begin)",
+    #   "MOVEMENT",
+    #   "Natural_Mortality",
+    #   "RECRUITMENT_DIST",
+    #   "Seas_Effects",
+    #   "SIZEFREQ_TRANSLATION",
+    #   "Dynamic_Bzero",
+    #   "GLOBAL_MSY",
+    #   "Kobe_Plot",
+    #   "SPR/YPR_Profile"
+    # )
     # SS3 Groupings - manually done
     # Notes on the side indicate those removed since the information is not needed
-    std_set <- c(2,6,13,21,23,24,27,29,31,32,33,38,39,40,45,46,55) # Removing - 7
-    std2_set <- c(4,8) # can I make it so it falls into above set?
-    cha_set <- 53
-    rand_set <- c(9,10,22,28,30)
-    unkn_set <- c(3,25,34,48,51,52)
-    info_set <- c(1,5,26,35,39)
-    aa.al_set <- c(11,12,14,16,17,18,19,20,36,37,47,49)
-    nn_set <- c(41,42,43,44,50,54,56)
+    # std_set <- c(2,6,13,21,23,24,27,29,31,32,33,38,40,45,46,55) # Removing - 7
+    # std2_set <- c(4,8) # can I make it so it falls into above set?
+    # cha_set <- 53
+    # rand_set <- c(9,10,22,28,30,39)
+    # unkn_set <- c(3,25,34,48,51,52)
+    # info_set <- c(1,5,15,26,35)
+    # aa.al_set <- c(11,12,14,16,17,18,19,20,36,37,47,49)
+    # nn_set <- c(41,42,43,44,50,54,56)
 
-    groups <- list(std_set=std_set, std2_set=std2_set, cha_set=cha_set, rand_set=rand_set, unkn_set=unkn_set, info_set=info_set, aa.al_set=aa.al_set, nn_set=nn_set)
+    # groups <- list(std_set=std_set, std2_set=std2_set, cha_set=cha_set, rand_set=rand_set, unkn_set=unkn_set, info_set=info_set, aa.al_set=aa.al_set, nn_set=nn_set)
 
-    for(i in 1:length(groups)){
-      sub1 <- groups[[i]]
-      x <- gsub("_set", "", names(groups[i]))
-      # assign(x, c())
-      vec <- c()
-      for (j in 1:length(sub1)) {
-        sub2 <- param_names[sub1[[j]]]
-        vec <- c(vec, sub2)
-      }
-      assign(x, vec)
-    }
+    # for(i in 1:length(groups)){
+    #   sub1 <- groups[[i]]
+    #   x <- gsub("_set", "", names(groups[i]))
+    #   # assign(x, c())
+    #   vec <- c()
+    #   for (j in 1:length(sub1)) {
+    #     sub2 <- param_names[sub1[[j]]]
+    #     vec <- c(vec, sub2)
+    #   }
+    #   assign(x, vec)
+    # }
+    # First release will converted output for SS3 will only include the below parameters
+    std <- c("DERIVED_QUANTITES",
+             "MGparm_By_Year_after_adjustments",
+             "CATCH",
+             "SPAWN_RECRUIT",
+             "SPR_SERIES",
+             "TIME_SERIES",
+             "DISCARD_OUTPUT",
+             "INDEX_2",
+
+             "Kobe_Plot")
+    std2 <- c("OVERALL_COMPS")
+    cha <- c("Dynamic_Bzero")
+    rand <- NA
+    unkn <- c("MEAN_BODY_WT_OUTPUT")
+    info <- c("LIKELIHOOD")
+    aa.al <- c("BIOMASS_AT_AGE",
+               "BIOMASS_AT_LENGTH",
+               "DISCARD_AT_AGE",
+               "CATCH_AT_AGE",
+               "F_AT_AGE",
+               "MEAN_SIZE_TIMESERIES",
+               "NUMBERS_AT_AGE",
+               "NUMBERS_AT_LENGTH",
+               "AGE_SELEX",
+               "LEN_SELEX")
+    nn <- NA
+
+    param_names <- c(std, std2, cha, rand, unkn, info, aa.al, nn)
+
     # Loop for all identified parameters to extract for plotting and use
     # Create list of parameters that were not found in the output file
     std_set <- c(2,6,13,21,23,24,27,29,31,32,33,38,39,40,45,46,55)
