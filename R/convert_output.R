@@ -38,9 +38,9 @@ convert_output <- function(
     Uncertainty_label = character(),
     Likelihood = numeric(),
     Gradient = numeric(),
-    Estimated = character() # TRUE/FALSE
+    Estimated = character(), # TRUE/FALSE
+    module_name = character()
   )
-  out_new <- out_new[-1,]
 
   # Convert SS3 output Report.sso file
   if (model == "ss3") {
@@ -210,12 +210,11 @@ convert_output <- function(
     # std: 2, 6, 13, 21, 23, 24, 27, 29, 55
     factors <- c("Year", "Fleet", "Fleet_Name", "Age", "Sex", "Area", "Seas", "Time", "Era", "SubSeas", "Platoon","Growth_Pattern", "GP")
     errors <- c("StdDev","sd","se","SE","cv","CV")
-    out.list <- list()
     miss_parms <- list()
     for (i in 1:length(param_names)) {
-      parm_sel <- param_names[6]
+      parm_sel <- param_names[2]
       extract <- SS3_extract_df(dat, parm_sel)
-      if (is.na(extract)) {
+      if (!is.data.frame(extract)) {
         miss_parms <- c(miss_parms, parm_sel)
         next
       } else {
@@ -237,25 +236,40 @@ convert_output <- function(
             df3 <- df3 |>
               dplyr::rename(Year = Yr)
           }
-          if (any(colnames(df3) %in% c("Label", "Estimate"))){
-            df4 <- df3 |>
+          if (any(grepl("_[0-9]+$",df3$Label))){
+            df3 <- df3 |>
               dplyr::mutate(
                 Year = stringr::str_extract(Label, "[0-9]+$"),
                 Label = stringr::str_remove(Label, "_[0-9]+$")
-              )
+              ) |>
+              dplyr::select() # need to remove the multiple error one
           } else if (any(colnames(df3) %in% c(factors, errors))) {
-            df42 <- df3 |>
-              dplyr::select(!tidyselect::matches(errors)) |>
-              tidyr::pivot_longer(!c(intersect(c(factors, errors), colnames(df3))), names_to = "Label", values_to = "Estimate") |> # , colnames(dplyr::select(df3, tidyselect::matches(errors)))
+            # Keeping check here if case arises that there is a similar situation to the error
+            # aka there are multiple columns containing the string and they are not selected properly
+            # if (any(factors %in% colnames(df3))) {
+            #   fac_names <- names(df3)[grepl(paste(factors, collapse = "|"), names(df3))]
+            # }
+            if (any(errors %in% colnames(df3))) {
+              err_names <- names(df3)[grepl(paste(errors, collapse = "|"), names(df3)) & !names(df3) %in% errors]
+              err_rm <- err_names[c(grep("_", err_names), )]
+              df3 <- df3 |>
+                dplyr::select(-any_of(err_rm))
+            }
+            df4 <- df3 |>
+              tidyr::pivot_longer(!any_of(c(factors, errors)), names_to = "Label", values_to = "Estimate") |> # , colnames(dplyr::select(df3, tidyselect::matches(errors)))
               dplyr::mutate(Area = dplyr::case_when(grepl("_[0-9]_", Label) ~ stringr::str_extract(Label, "(?<=_)[0-9]+"),
                                                     TRUE ~ NA),
                             Sex = dplyr::case_when(grepl("_Fem_", Label) ~ "Female",
                                                    grepl("_Mal_", Label) ~ "Male",
+                                                   grepl("_SX:1$", Label) ~ "Female",
+                                                   grepl("_SX:2$", Label) ~ "Male",
                                                    TRUE ~ NA),
-                            Growth_Pattern = dplyr::case_when(grepl("_GP_1$", Label) ~ stringr::str_extract(Label, "(?<=_)[0-9]$"),
+                            Growth_Pattern = dplyr::case_when(grepl("_GP_[0-9]$", Label) ~ stringr::str_extract(Label, "(?<=_)[0-9]$"),
                                                               TRUE ~ NA),
-                            Label = dplyr::case_when(grepl(".*?(_\\d|_GP|_Fem|_Mal)", Label) ~ stringr::str_extract(Label, ".*?(_\\d|_GP|_Fem|_Mal)"),
-                                              TRUE ~ stringr::str_extract(Label, "^.*?(?=_\\d|_GP|_Fem|_Mal|$)"))
+                            Fleet = dplyr::case_when(grepl("):_[0-9]$", Label) ~ stringr::str_extract(Label, "(?<=_)[0-9]$"),
+                                                     grepl("):_[0-9][0-9]+$", Label) ~ stringr::str_extract(Label, "(?<=_)[0-9][0-9]$"),
+                                                     TRUE ~ NA),
+                            Label = stringr::str_extract(Label, "^.*?(?=_\\d|_GP|_Fem|_Mal|_SX|:|$)")
                             )
           } else {
             warning("Data frame not compatible.")
@@ -273,40 +287,48 @@ convert_output <- function(
                             Sex = NA
                             )
           }
-          if(any(grepl("Fem_GP_", unique(df4$Label))))
+
           df5 <- df4 |>
             dplyr::select(Label, Estimate, Year, tidyselect::matches(c(paste("^", factors, "$", sep = ""), paste("^",errors,"$", sep = "")))) |>
             dplyr::mutate(module_name = parm_sel)
 
           if(any(colnames(df5) %in% errors)){
             df5 <- df5 |>
-              dplyr::mutate(Uncertainty_label = colnames(dplyr::select(df4,tidyselect::matches(paste("^",errors,"$",sep=""))))) |>
-              dplyr::rename(Uncertainty = tidyselect::matches(errors))
+              dplyr::mutate(Uncertainty_label = tolower(colnames(dplyr::select(df4,tidyselect::matches(paste("^",errors,"$",sep="")))))) |>
+              dplyr::rename(Uncertainty = intersect(colnames(df5), errors))
           } else {
             df5 <- df5 |>
               dplyr::mutate(Uncertainty_label = NA,
                             Uncertainty = NA)
           }
-          param_df <- df5
+          # param_df <- df5
+          out_new <- dplyr::bind_rows(out_new, df5)
         } else if (parm_sel %in% std2) {
+          miss_parms <- c(miss_parms, parm_sel)
           next
         } else if (parm_sel %in% cha) {
+          miss_parms <- c(miss_parms, parm_sel)
           next
         } else if (parm_sel %in% rand) {
+          miss_parms <- c(miss_parms, parm_sel)
           next
         } else if (parm_sel %in% unkn) {
+          miss_parms <- c(miss_parms, parm_sel)
           next
         } else if (parm_sel %in% info) {
+          miss_parms <- c(miss_parms, parm_sel)
           next
         } else if (parm_sel %in% aa.al) {
+          miss_parms <- c(miss_parms, parm_sel)
           next
         } else if (parm_sel %in% nn) {
+          miss_parms <- c(miss_parms, parm_sel)
           next
         } else {
+          miss_parms <- c(miss_parms, parm_sel)
           next
         }
-        out_new <- dplyr::bind_rows(out_new, param_df)
-      }
+      } # close if param is in output file
     } # close loop
   } # close SS3 if statement
 
