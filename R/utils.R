@@ -26,3 +26,6 @@ add_base_section <- function(x) {
   }
   section_list
 }
+
+# create notin operator
+`%notin%` <- Negate(`%in%`)

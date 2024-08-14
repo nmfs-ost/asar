@@ -25,20 +25,22 @@ convert_output <- function(
     model = NULL) {
   # Blank dataframe and set up to mold output into
   out_new <- data.frame(
-    label = NA,
-    time = NA,
-    fleet = NA,
-    area = NA,
-    season = NA,
-    age = NA,
-    sex = NA,
-    intial = NA,
-    estimate = NA,
-    uncertainty = NA,
-    likelihood = NA,
-    gradient = NA,
-    estimated = NA # TRUE/FALSE
+    Label = character(),
+    Time = character(),
+    Fleet = character(),
+    Area = character(),
+    Season = character(),
+    Age = character(),
+    Sex = character(),
+    Intial = numeric(),
+    Estimate = numeric(),
+    Uncertainty = numeric(),
+    Uncertainty_label = character(),
+    Likelihood = numeric(),
+    Gradient = numeric(),
+    Estimated = character() # TRUE/FALSE
   )
+  out_new <- out_new[-1,]
 
   # Convert SS3 output Report.sso file
   if (model == "ss3") {
@@ -94,64 +96,64 @@ convert_output <- function(
     # Future changes will include a direct pull of these parameters from the output file instead of a manual list
     # Below the parameters are grouped and narrowed down into priority to reach deadline.
     # Other parameters will be developed into the future
-    # param_names <- c(
-    #   "DEFINITIONS",
-    #   "DERIVED_QUANTITIES",
-    #   "ENVIRONMENTAL_DATA",
-    #   "Input_Variance_Adjustment",
-    #   "LIKELIHOOD",
-    #   "MGparm_By_Year_after_adjustments",
-    #   "MORPH_INDEXING",
-    #   "OVERALL_COMPS",
-    #   "PARAMETERS",
-    #   "Parm_devs_detail",
-    #   "BIOMASS_AT_AGE",
-    #   "BIOMASS_AT_LENGTH",
-    #   "CATCH",
-    #   "DISCARD_AT_AGE",
-    #   "EXPLOITATION",
-    #   "CATCH_AT_AGE",
-    #   "F_AT_AGE",
-    #   "MEAN_SIZE_TIMESERIES",
-    #   "NUMBERS_AT_AGE",
-    #   "NUMBERS_AT_LENGTH",
-    #   "SPAWN_RECRUIT",
-    #   "SPAWN_RECR_CURVE",
-    #   "SPR_SERIES",
-    #   "TIME_SERIES",
-    #   "COMPOSITION_DATABASE",
-    #   "DISCARD_SPECIFICATION",
-    #   "DISCARD_OUTPUT",
-    #   "INDEX_1",
-    #   "INDEX_2",
-    #   "INDEX_3",
-    #   "FIT_LEN_COMPS",
-    #   "FIT_AGE_COMPS",
-    #   "FIT_SIZE_COMPS",
-    #   "MEAN_BODY_WT_OUTPUT",
-    #   "TAG_Recapture",
-    #   "AGE_SELEX",
-    #   "LEN_SELEX",
-    #   "selparm(Size)_By_Year_after_adjustments",
-    #   "selparm(Age)_By_Year_after_adjustments",
-    #   "SELEX_database",
-    #   "AGE_AGE_KEY",
-    #   "AGE_LENGTH_KEY",
-    #   "AGE_SPECIFIC_K",
-    #   "BIOLOGY",
-    #   "Biology_at_age_in_endyr",
-    #   "Growth_Parameters",
-    #   "MEAN_BODY_WT(Begin)",
-    #   "MOVEMENT",
-    #   "Natural_Mortality",
-    #   "RECRUITMENT_DIST",
-    #   "Seas_Effects",
-    #   "SIZEFREQ_TRANSLATION",
-    #   "Dynamic_Bzero",
-    #   "GLOBAL_MSY",
-    #   "Kobe_Plot",
-    #   "SPR/YPR_Profile"
-    # )
+    param_names <- c(
+      "DEFINITIONS",
+      "DERIVED_QUANTITIES",
+      "ENVIRONMENTAL_DATA",
+      "Input_Variance_Adjustment",
+      "LIKELIHOOD",
+      "MGparm_By_Year_after_adjustments",
+      "MORPH_INDEXING",
+      "OVERALL_COMPS",
+      "PARAMETERS",
+      "Parm_devs_detail",
+      "BIOMASS_AT_AGE",
+      "BIOMASS_AT_LENGTH",
+      "CATCH",
+      "DISCARD_AT_AGE",
+      "EXPLOITATION",
+      "CATCH_AT_AGE",
+      "F_AT_AGE",
+      "MEAN_SIZE_TIMESERIES",
+      "NUMBERS_AT_AGE",
+      "NUMBERS_AT_LENGTH",
+      "SPAWN_RECRUIT",
+      "SPAWN_RECR_CURVE",
+      "SPR_SERIES",
+      "TIME_SERIES",
+      "COMPOSITION_DATABASE",
+      "DISCARD_SPECIFICATION",
+      "DISCARD_OUTPUT",
+      "INDEX_1",
+      "INDEX_2",
+      "INDEX_3",
+      "FIT_LEN_COMPS",
+      "FIT_AGE_COMPS",
+      "FIT_SIZE_COMPS",
+      "MEAN_BODY_WT_OUTPUT",
+      "TAG_Recapture",
+      "AGE_SELEX",
+      "LEN_SELEX",
+      "selparm(Size)_By_Year_after_adjustments",
+      "selparm(Age)_By_Year_after_adjustments",
+      "SELEX_database",
+      "AGE_AGE_KEY",
+      "AGE_LENGTH_KEY",
+      "AGE_SPECIFIC_K",
+      "BIOLOGY",
+      "Biology_at_age_in_endyr",
+      "Growth_Parameters",
+      "MEAN_BODY_WT(Begin)",
+      "MOVEMENT",
+      "Natural_Mortality",
+      "RECRUITMENT_DIST",
+      "Seas_Effects",
+      "SIZEFREQ_TRANSLATION",
+      "Dynamic_Bzero",
+      "GLOBAL_MSY",
+      "Kobe_Plot",
+      "SPR/YPR_Profile"
+    )
     # SS3 Groupings - manually done
     # Notes on the side indicate those removed since the information is not needed
     # std_set <- c(2,6,13,21,23,24,27,29,31,32,33,38,40,45,46,55) # Removing - 7
@@ -177,7 +179,7 @@ convert_output <- function(
     #   assign(x, vec)
     # }
     # First release will converted output for SS3 will only include the below parameters
-    std <- c("DERIVED_QUANTITES",
+    std <- c("DERIVED_QUANTITIES",
              "MGparm_By_Year_after_adjustments",
              "CATCH",
              "SPAWN_RECRUIT",
@@ -185,7 +187,6 @@ convert_output <- function(
              "TIME_SERIES",
              "DISCARD_OUTPUT",
              "INDEX_2",
-
              "Kobe_Plot")
     std2 <- c("OVERALL_COMPS")
     cha <- c("Dynamic_Bzero")
@@ -204,15 +205,15 @@ convert_output <- function(
                "LEN_SELEX")
     nn <- NA
 
-    param_names <- c(std, std2, cha, rand, unkn, info, aa.al, nn)
-
     # Loop for all identified parameters to extract for plotting and use
     # Create list of parameters that were not found in the output file
-    std_set <- c(2,6,13,21,23,24,27,29,31,32,33,38,39,40,45,46,55)
+    # std: 2, 6, 13, 21, 23, 24, 27, 29, 55
+    factors <- c("Year", "Fleet", "Fleet_Name", "Age", "Sex", "Area", "Seas", "Time", "Era", "SubSeas", "Platoon","Growth_Pattern", "GP")
+    errors <- c("StdDev","sd","se","SE","cv","CV")
     out.list <- list()
     miss_parms <- list()
     for (i in 1:length(param_names)) {
-      parm_sel <- param_names[24]
+      parm_sel <- param_names[6]
       extract <- SS3_extract_df(dat, parm_sel)
       if (is.na(extract)) {
         miss_parms <- c(miss_parms, parm_sel)
@@ -232,8 +233,6 @@ convert_output <- function(
           # Subset data frame
           df3 <- df1[-c(1:rownum),]
           # Reformat data frame
-          factors <- c("Year", "Fleet", "Fleet_Name", "Age", "Sex", "Area", "Seas", "Time", "Era", "SubSeas", "Platoon","Growth_Pattern")
-          errors <- c("StdDev","sd","se","SE","cv","CV")
           if (any(colnames(df3) %in% c("Yr", "yr", "year"))) {
             df3 <- df3 |>
               dplyr::rename(Year = Yr)
@@ -245,14 +244,26 @@ convert_output <- function(
                 Label = stringr::str_remove(Label, "_[0-9]+$")
               )
           } else if (any(colnames(df3) %in% c(factors, errors))) {
-            df4 <- tidyr::pivot_longer(df3, !intersect(c(factors, errors), colnames(df3)), names_to = "Label", values_to = "Estimate") # change col select to include all in argument if applicable
+            df42 <- df3 |>
+              dplyr::select(!tidyselect::matches(errors)) |>
+              tidyr::pivot_longer(!c(intersect(c(factors, errors), colnames(df3))), names_to = "Label", values_to = "Estimate") |> # , colnames(dplyr::select(df3, tidyselect::matches(errors)))
+              dplyr::mutate(Area = dplyr::case_when(grepl("_[0-9]_", Label) ~ stringr::str_extract(Label, "(?<=_)[0-9]+"),
+                                                    TRUE ~ NA),
+                            Sex = dplyr::case_when(grepl("_Fem_", Label) ~ "Female",
+                                                   grepl("_Mal_", Label) ~ "Male",
+                                                   TRUE ~ NA),
+                            Growth_Pattern = dplyr::case_when(grepl("_GP_1$", Label) ~ stringr::str_extract(Label, "(?<=_)[0-9]$"),
+                                                              TRUE ~ NA),
+                            Label = dplyr::case_when(grepl(".*?(_\\d|_GP|_Fem|_Mal)", Label) ~ stringr::str_extract(Label, ".*?(_\\d|_GP|_Fem|_Mal)"),
+                                              TRUE ~ stringr::str_extract(Label, "^.*?(?=_\\d|_GP|_Fem|_Mal|$)"))
+                            )
           } else {
             warning("Data frame not compatible.")
           }
           if(any(colnames(df4) %in% c("Value"))) df4 <- dplyr::rename(df4, Estimate = Value)
           # need to add conditional for setup of the data param_SX:X_GP:#
-          if(any(grepl("_SX:[0-9]_GP:[0-9]", df4$Label))){
-            df42 <- df4 |>
+          if(any(grepl("_SX:[0-9]_GP:[0-9]", unique(df4$Label)))){
+            df4 <- df4 |>
               dplyr::mutate(Label = dplyr::case_when(grepl("_SX:[0-9]_GP:[0-9]", Label) ~ stringr::str_extract(Label, ),
                                                      grepl("_GP:[0-9]", Label) ~ stringr::str_extract(Label, ),
                                                      grepl("_GP:[0-9]", Label) ~ stringr::str_extract(Label, ),
@@ -262,10 +273,21 @@ convert_output <- function(
                             Sex = NA
                             )
           }
-          df_fin <- df4 |>
-            dplyr::select(Label, Estimate, Year, tidyselect::matches(c(factors, errors))) |>
+          if(any(grepl("Fem_GP_", unique(df4$Label))))
+          df5 <- df4 |>
+            dplyr::select(Label, Estimate, Year, tidyselect::matches(c(paste("^", factors, "$", sep = ""), paste("^",errors,"$", sep = "")))) |>
             dplyr::mutate(module_name = parm_sel)
-          # out.list[[4]] <- df_fin
+
+          if(any(colnames(df5) %in% errors)){
+            df5 <- df5 |>
+              dplyr::mutate(Uncertainty_label = colnames(dplyr::select(df4,tidyselect::matches(paste("^",errors,"$",sep=""))))) |>
+              dplyr::rename(Uncertainty = tidyselect::matches(errors))
+          } else {
+            df5 <- df5 |>
+              dplyr::mutate(Uncertainty_label = NA,
+                            Uncertainty = NA)
+          }
+          param_df <- df5
         } else if (parm_sel %in% std2) {
           next
         } else if (parm_sel %in% cha) {
@@ -283,7 +305,7 @@ convert_output <- function(
         } else {
           next
         }
-        out.list[[i]] <- df_fin
+        out_new <- dplyr::bind_rows(out_new, param_df)
       }
     } # close loop
   } # close SS3 if statement
