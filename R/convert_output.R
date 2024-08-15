@@ -236,25 +236,26 @@ convert_output <- function(
             df3 <- df3 |>
               dplyr::rename(Year = Yr)
           }
-          if (any(grepl("_[0-9]+$",df3$Label))){
-            df3 <- df3 |>
-              dplyr::mutate(
-                Year = stringr::str_extract(Label, "[0-9]+$"),
-                Label = stringr::str_remove(Label, "_[0-9]+$")
-              ) |>
-              dplyr::select() # need to remove the multiple error one
+          if("Label" %in% colnames(df3)){
+            if (any(grepl("_[0-9]+$",df3$Label))){
+              df4 <- df3 |>
+                dplyr::mutate(
+                  Year = stringr::str_extract(Label, "[0-9]+$"),
+                  Label = stringr::str_remove(Label, "_[0-9]+$"),
+                  # Add factors consistent with other else
+                  Area = NA,
+                  Sex = NA,
+                  Growth_Pattern = NA,
+                  Fleet = NA
+                ) # need to remove the multiple error one
+            }
           } else if (any(colnames(df3) %in% c(factors, errors))) {
             # Keeping check here if case arises that there is a similar situation to the error
             # aka there are multiple columns containing the string and they are not selected properly
             # if (any(factors %in% colnames(df3))) {
             #   fac_names <- names(df3)[grepl(paste(factors, collapse = "|"), names(df3))]
             # }
-            if (any(errors %in% colnames(df3))) {
-              err_names <- names(df3)[grepl(paste(errors, collapse = "|"), names(df3)) & !names(df3) %in% errors]
-              err_rm <- err_names[c(grep("_", err_names), )]
-              df3 <- df3 |>
-                dplyr::select(-any_of(err_rm))
-            }
+
             df4 <- df3 |>
               tidyr::pivot_longer(!any_of(c(factors, errors)), names_to = "Label", values_to = "Estimate") |> # , colnames(dplyr::select(df3, tidyselect::matches(errors)))
               dplyr::mutate(Area = dplyr::case_when(grepl("_[0-9]_", Label) ~ stringr::str_extract(Label, "(?<=_)[0-9]+"),
@@ -287,6 +288,37 @@ convert_output <- function(
                             Sex = NA
                             )
           }
+          # Check if error values are in the labels column and extract out
+          if (any(sapply(errors, function(x) grepl(x, unique(df4$Label))))) {
+            err_names <- unique(df4$Label)[grepl(paste(errors, collapse = "|"), unique(df4$Label)) & !unique(df4$Label) %in% errors]
+            df4 <- df4 |>
+              tidyr::pivot_wider(
+                names_from = Label,
+                values_from = Estimate,
+                id_cols = c(intersect(colnames(df4), factors)),
+                values_fill = NA
+              ) |>
+              tidyr::pivot_longer(
+                cols = -c(intersect(colnames(df4), factors), err_names),
+                names_to = "Label",
+                values_to = "Estimate"
+              ) |>
+              dplyr::select(Label, Estimate, any_of(c(factors, errors, err_names)))
+            if(length(err_names) > 1) {
+              df4 <- df4 |>
+                dplyr::select(-c(err_names[2:length(err_names)]))
+              find_error_value <- function(column_names, to_match_vector){
+                vals <- sapply(column_names, function(col_name) {
+                  match <- sapply(to_match_vector, function(err) if (grepl(err, col_name)) err else NA)
+                  na.omit(match)[1]
+                  })
+                # only unique values and those that intersect with values vector
+                intersect(unique(vals), to_match_vector)
+              }
+              err_name <- find_error_value(names(df4), errors)
+              colnames(df4)[grepl(paste(errors, collapse = "|"), colnames(df4))] <- err_name
+            }
+          }
 
           df5 <- df4 |>
             dplyr::select(Label, Estimate, Year, tidyselect::matches(c(paste("^", factors, "$", sep = ""), paste("^",errors,"$", sep = "")))) |>
@@ -302,7 +334,14 @@ convert_output <- function(
                             Uncertainty = NA)
           }
           # param_df <- df5
-          out_new <- dplyr::bind_rows(out_new, df5)
+          if (ncol(out_new) < ncol(df5)){
+            warning(paste0("Transformed data frame for ", parm_sel, " has more columns than default."))
+          } else if (ncol(out_new) > ncol(df5)){
+            warning(paste0("Transformed data frame for ", parm_sel, " has less columns than default."))
+          }
+          out_new <- dplyr::bind_rows(out_new, purrr::map2_df(df5, purrr::map(out_new, class), ~{class(.x) <- .y;.x}))
+          out_new <- out_new |>
+            dplyr::bind_rows(purrr::map2_df(df5, purrr::map(out_new, class), ~{class(.x) <- .y;.x}))
         } else if (parm_sel %in% std2) {
           miss_parms <- c(miss_parms, parm_sel)
           next
