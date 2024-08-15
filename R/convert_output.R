@@ -25,21 +25,21 @@ convert_output <- function(
     model = NULL) {
   # Blank dataframe and set up to mold output into
   out_new <- data.frame(
-    Label = character(),
-    Time = character(),
-    Fleet = character(),
-    Area = character(),
-    Season = character(),
-    Age = character(),
-    Sex = character(),
-    Intial = numeric(),
-    Estimate = numeric(),
-    Uncertainty = numeric(),
-    Uncertainty_label = character(),
-    Likelihood = numeric(),
-    Gradient = numeric(),
-    Estimated = character(), # TRUE/FALSE
-    module_name = character()
+    Label = NA,
+    Time = NA,
+    Fleet = NA,
+    Area = NA,
+    Season = NA,
+    Age = NA,
+    Sex = NA,
+    Intial = NA,
+    Estimate = NA,
+    Uncertainty = NA,
+    Uncertainty_label = NA,
+    Likelihood = NA,
+    Gradient = NA,
+    Estimated = NA, # TRUE/FALSE
+    module_name = NA
   )
 
   # Convert SS3 output Report.sso file
