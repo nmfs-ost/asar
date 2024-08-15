@@ -44,7 +44,7 @@ convert_output <- function(
   out_new <- out_new[-1,]
 
   # Convert SS3 output Report.sso file
-  if (model == "ss3") {
+  if (model %in% c("ss3", "SS3")) {
     # read SS3 report file
     # Associated function to extract columns for table - from r4ss
     get_ncol <- function(file, skip = 0) {
@@ -184,14 +184,13 @@ convert_output <- function(
              "MGparm_By_Year_after_adjustments",
              "CATCH",
              "SPAWN_RECRUIT",
-             "SPR_SERIES",
              "TIME_SERIES",
              "DISCARD_OUTPUT",
              "INDEX_2",
              "Kobe_Plot")
     std2 <- c("OVERALL_COMPS")
     cha <- c("Dynamic_Bzero")
-    rand <- NA
+    rand <- c("SPR_SERIES")
     unkn <- c("MEAN_BODY_WT_OUTPUT")
     info <- c("LIKELIHOOD")
     aa.al <- c("BIOMASS_AT_AGE",
@@ -208,12 +207,19 @@ convert_output <- function(
 
     # Loop for all identified parameters to extract for plotting and use
     # Create list of parameters that were not found in the output file
-    # std: 2, 6, 13, 21, 23, 24, 27, 29, 55
-    factors <- c("Year", "Fleet", "Fleet_Name", "Age", "Sex", "Area", "Seas", "Time", "Era", "SubSeas", "Platoon","Growth_Pattern", "GP")
+    # std: 2, 6, 13, 21, 24, 27, 29, 55
+    factors <- c("Year", "Fleet", "Fleet_Name", "Age", "Sex", "Area", "Seas", "Time", "Era", "Subseas", "SubSeas", "Platoon","Growth_Pattern", "GP")
     errors <- c("StdDev","sd","se","SE","cv","CV")
-    miss_parms <- list()
+    miss_parms <- c()
+    # add progress bar for each SS3 variable
+    # pb = txtProgressBar(min = 0, max = length(param_names), initial = 0)
+    # Start loop over variables
     for (i in 1:length(param_names)) {
-      parm_sel <- param_names[2]
+      # Indication for progress bar
+      svMisc::progress(i,)
+      # setTxtProgressBar(pb,i)
+      # Start processing data frame
+      parm_sel <- param_names[i]
       extract <- SS3_extract_df(dat, parm_sel)
       if (!is.data.frame(extract)) {
         miss_parms <- c(miss_parms, parm_sel)
@@ -292,42 +298,48 @@ convert_output <- function(
           # Check if error values are in the labels column and extract out
           if (any(sapply(errors, function(x) grepl(x, unique(df4$Label))))) {
             err_names <- unique(df4$Label)[grepl(paste(errors, collapse = "|"), unique(df4$Label)) & !unique(df4$Label) %in% errors]
-            df4 <- df4 |>
-              tidyr::pivot_wider(
-                names_from = Label,
-                values_from = Estimate,
-                id_cols = c(intersect(colnames(df4), factors)),
-                values_fill = NA
-              ) |>
-              tidyr::pivot_longer(
-                cols = -c(intersect(colnames(df4), factors), err_names),
-                names_to = "Label",
-                values_to = "Estimate"
-              ) |>
-              dplyr::select(Label, Estimate, any_of(c(factors, errors, err_names)))
-            if(length(err_names) > 1) {
+            if(any(grepl("sel", err_names))){
+              df4 <- df4
+            } else if (length(intersect(errors, colnames(df4))) == 1) {
+              df4 <- df4[-grep(paste(errors, "_", collapse = "|", sep = ""), df4$Label),]
+            } else {
               df4 <- df4 |>
-                dplyr::select(-c(err_names[2:length(err_names)]))
-              find_error_value <- function(column_names, to_match_vector){
-                vals <- sapply(column_names, function(col_name) {
-                  match <- sapply(to_match_vector, function(err) if (grepl(err, col_name)) err else NA)
-                  na.omit(match)[1]
-                  })
-                # only unique values and those that intersect with values vector
-                intersect(unique(vals), to_match_vector)
+                tidyr::pivot_wider(
+                  names_from = Label,
+                  values_from = Estimate,
+                  id_cols = c(intersect(colnames(df4), factors)),
+                  values_fill = NA
+                ) |>
+                tidyr::pivot_longer(
+                  cols = -c(intersect(colnames(df4), factors), err_names),
+                  names_to = "Label",
+                  values_to = "Estimate"
+                ) |>
+                dplyr::select(any_of(c("Label", "Estimate", factors, errors, err_names)))
+              if(length(err_names) > 1) {
+                df4 <- df4 |>
+                  dplyr::select(-c(err_names[2:length(err_names)]))
+                find_error_value <- function(column_names, to_match_vector){
+                  vals <- sapply(column_names, function(col_name) {
+                    match <- sapply(to_match_vector, function(err) if (grepl(err, col_name)) err else NA)
+                    na.omit(match)[1]
+                    })
+                  # only unique values and those that intersect with values vector
+                  intersect(unique(vals), to_match_vector)
+                }
+                err_name <- find_error_value(names(df4), errors)
+                colnames(df4)[grepl(paste(errors, collapse = "|"), colnames(df4))] <- err_name
               }
-              err_name <- find_error_value(names(df4), errors)
-              colnames(df4)[grepl(paste(errors, collapse = "|"), colnames(df4))] <- err_name
             }
           }
 
           df5 <- df4 |>
-            dplyr::select(Label, Estimate, Year, tidyselect::matches(c(paste("^", factors, "$", sep = ""), paste("^",errors,"$", sep = "")))) |>
+            dplyr::select(Label, Estimate, Year, any_of(c(paste("^", factors, "$", sep = ""), paste("^",errors,"$", sep = "")))) |>
             dplyr::mutate(module_name = parm_sel)
 
           if(any(colnames(df5) %in% errors)){
             df5 <- df5 |>
-              dplyr::mutate(Uncertainty_label = tolower(colnames(dplyr::select(df4,tidyselect::matches(paste("^",errors,"$",sep="")))))) |>
+              dplyr::mutate(Uncertainty_label = tolower(colnames(dplyr::select(df4, any_of(paste("^",errors,"$",sep="")))))) |>
               dplyr::rename(Uncertainty = intersect(colnames(df5), errors))
           } else {
             df5 <- df5 |>
@@ -367,6 +379,10 @@ convert_output <- function(
           next
         }
       } # close if param is in output file
+      # Close progress bar for iteration
+      # close(pb)
+    Sys.sleep(0.01)
+    if(i == max(length(param_names))) cat("Done! \n")
     } # close loop
   } # close SS3 if statement
 
@@ -423,4 +439,5 @@ convert_output <- function(
     # setwd(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = "")))
     # asap_std <- readRep("asap3", suffix = ".std")
   } # close asap if statement
+  out_new
 } # close function
