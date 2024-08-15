@@ -41,6 +41,7 @@ convert_output <- function(
     Estimated = NA, # TRUE/FALSE
     module_name = NA
   )
+  out_new <- out_new[-1,]
 
   # Convert SS3 output Report.sso file
   if (model == "ss3") {
@@ -339,9 +340,7 @@ convert_output <- function(
           } else if (ncol(out_new) > ncol(df5)){
             warning(paste0("Transformed data frame for ", parm_sel, " has less columns than default."))
           }
-          out_new <- dplyr::bind_rows(out_new, purrr::map2_df(df5, purrr::map(out_new, class), ~{class(.x) <- .y;.x}))
-          out_new <- out_new |>
-            dplyr::bind_rows(purrr::map2_df(df5, purrr::map(out_new, class), ~{class(.x) <- .y;.x}))
+          out_new <- rbind(out_new, df5)
         } else if (parm_sel %in% std2) {
           miss_parms <- c(miss_parms, parm_sel)
           next
