@@ -219,8 +219,8 @@ convert_output <- function(
       svMisc::progress(i,)
       # setTxtProgressBar(pb,i)
       # Start processing data frame
-      parm_sel <- param_names[i]
-      extract <- SS3_extract_df(dat, parm_sel)
+      parm_sel <- param_names[4]
+      extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
       if (!is.data.frame(extract)) {
         miss_parms <- c(miss_parms, parm_sel)
         next
@@ -334,7 +334,7 @@ convert_output <- function(
           }
 
           df5 <- df4 |>
-            dplyr::select(Label, Estimate, Year, any_of(c(paste("^", factors, "$", sep = ""), paste("^",errors,"$", sep = "")))) |>
+            dplyr::select(any_of(c("Label", "Estimate", "Year", factors, errors))) |>
             dplyr::mutate(module_name = parm_sel)
 
           if(any(colnames(df5) %in% errors)){
@@ -347,15 +347,20 @@ convert_output <- function(
                             Uncertainty = NA)
           }
           # param_df <- df5
-          if (ncol(out_new) < ncol(df5)){
-            warning(paste0("Transformed data frame for ", parm_sel, " has more columns than default."))
-          } else if (ncol(out_new) > ncol(df5)){
-            warning(paste0("Transformed data frame for ", parm_sel, " has less columns than default."))
-          }
+          # if (ncol(out_new) < ncol(df5)){
+          #   warning(paste0("Transformed data frame for ", parm_sel, " has more columns than default."))
+          # } else if (ncol(out_new) > ncol(df5)){
+          #   warning(paste0("Transformed data frame for ", parm_sel, " has less columns than default."))
+          # }
           out_new <- rbind(out_new, df5)
         } else if (parm_sel %in% std2) {
-          miss_parms <- c(miss_parms, parm_sel)
-          next
+          # 4, 8
+          # remove first row - naming
+          df1 <- extract[-1,]
+          # Find first row without NAs = headers
+          df2 <- df1[complete.cases(df1), ]
+          # rotate data
+
         } else if (parm_sel %in% cha) {
           miss_parms <- c(miss_parms, parm_sel)
           next
