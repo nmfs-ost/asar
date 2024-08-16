@@ -25,20 +25,21 @@ convert_output <- function(
     model = NULL) {
   # Blank dataframe and set up to mold output into
   out_new <- data.frame(
-    Label = NA,
-    Time = NA,
-    Fleet = NA,
-    Area = NA,
-    Season = NA,
-    Age = NA,
-    Sex = NA,
-    Intial = NA,
-    Estimate = NA,
-    Uncertainty = NA,
-    Uncertainty_label = NA,
-    Likelihood = NA,
-    Gradient = NA,
-    Estimated = NA, # TRUE/FALSE
+    label = NA,
+    time = NA,
+    year = NA,
+    fleet = NA,
+    area = NA,
+    season = NA,
+    age = NA,
+    sex = NA,
+    intial = NA,
+    estimate = NA,
+    uncertainty = NA,
+    uncertainty_label = NA,
+    likelihood = NA,
+    gradient = NA,
+    estimated = NA, # TRUE/FALSE
     module_name = NA
   )
   out_new <- out_new[-1,]
@@ -208,7 +209,7 @@ convert_output <- function(
     # Loop for all identified parameters to extract for plotting and use
     # Create list of parameters that were not found in the output file
     # std: 2, 6, 13, 21, 24, 27, 29, 55
-    factors <- c("Year", "Fleet", "Fleet_Name", "Age", "Sex", "Area", "Seas", "Time", "Era", "Subseas", "SubSeas", "Platoon","Growth_Pattern", "GP")
+    factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "time", "era", "subseas", "platoon","growth_pattern", "gp")
     errors <- c("StdDev","sd","se","SE","cv","CV")
     miss_parms <- c()
     # add progress bar for each SS3 variable
@@ -219,7 +220,7 @@ convert_output <- function(
       svMisc::progress(i,)
       # setTxtProgressBar(pb,i)
       # Start processing data frame
-      parm_sel <- param_names[8]
+      parm_sel <- param_names[i]
       extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
       if (!is.data.frame(extract)) {
         miss_parms <- c(miss_parms, parm_sel)
@@ -238,22 +239,23 @@ convert_output <- function(
           rownum <- prodlim::row.match(row, df1)
           # Subset data frame
           df3 <- df1[-c(1:rownum),]
+          colnames(df3) <- tolower(row)
           # Reformat data frame
           if (any(colnames(df3) %in% c("Yr", "yr", "year"))) {
             df3 <- df3 |>
-              dplyr::rename(Year = Yr)
+              dplyr::rename(year = yr)
           }
-          if("Label" %in% colnames(df3)){
-            if (any(grepl("_[0-9]+$",df3$Label))){
+          if("label" %in% colnames(df3)){
+            if (any(grepl("_[0-9]+$",df3$label))){
               df4 <- df3 |>
                 dplyr::mutate(
-                  Year = stringr::str_extract(Label, "[0-9]+$"),
-                  Label = stringr::str_remove(Label, "_[0-9]+$"),
+                  year = stringr::str_extract(label, "[0-9]+$"),
+                  label = stringr::str_remove(label, "_[0-9]+$"),
                   # Add factors consistent with other else
-                  Area = NA,
-                  Sex = NA,
-                  Growth_Pattern = NA,
-                  Fleet = NA
+                  area = NA,
+                  sex = NA,
+                  growth_pattern = NA,
+                  fleet = NA
                 ) # need to remove the multiple error one
             }
           } else if (any(colnames(df3) %in% c(factors, errors))) {
@@ -264,58 +266,58 @@ convert_output <- function(
             # }
 
             df4 <- df3 |>
-              tidyr::pivot_longer(!tidyselect::any_of(c(factors, errors)), names_to = "Label", values_to = "Estimate") |> # , colnames(dplyr::select(df3, tidyselect::matches(errors)))
-              dplyr::mutate(Area = dplyr::case_when(grepl("_[0-9]_", Label) ~ stringr::str_extract(Label, "(?<=_)[0-9]+"),
+              tidyr::pivot_longer(!tidyselect::any_of(c(factors, errors)), names_to = "label", values_to = "estimate") |> # , colnames(dplyr::select(df3, tidyselect::matches(errors)))
+              dplyr::mutate(area = dplyr::case_when(grepl("_[0-9]_", label) ~ stringr::str_extract(label, "(?<=_)[0-9]+"),
                                                     TRUE ~ NA),
-                            Sex = dplyr::case_when(grepl("_Fem_", Label) ~ "Female",
-                                                   grepl("_Mal_", Label) ~ "Male",
-                                                   grepl("_SX:1$", Label) ~ "Female",
-                                                   grepl("_SX:2$", Label) ~ "Male",
+                            sex = dplyr::case_when(grepl("_Fem_", label) ~ "female",
+                                                   grepl("_Mal_", label) ~ "male",
+                                                   grepl("_SX:1$", label) ~ "female",
+                                                   grepl("_SX:2$", label) ~ "male",
                                                    TRUE ~ NA),
-                            Growth_Pattern = dplyr::case_when(grepl("_GP_[0-9]$", Label) ~ stringr::str_extract(Label, "(?<=_)[0-9]$"),
+                            growth_Pattern = dplyr::case_when(grepl("_GP_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
                                                               TRUE ~ NA),
-                            Fleet = dplyr::case_when(grepl("):_[0-9]$", Label) ~ stringr::str_extract(Label, "(?<=_)[0-9]$"),
-                                                     grepl("):_[0-9][0-9]+$", Label) ~ stringr::str_extract(Label, "(?<=_)[0-9][0-9]$"),
+                            fleet = dplyr::case_when(grepl("):_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
+                                                     grepl("):_[0-9][0-9]+$", label) ~ stringr::str_extract(label, "(?<=_)[0-9][0-9]$"),
                                                      TRUE ~ NA),
-                            Label = stringr::str_extract(Label, "^.*?(?=_\\d|_GP|_Fem|_Mal|_SX|:|$)")
+                            label = stringr::str_extract(label, "^.*?(?=_\\d|_GP|_Fem|_Mal|_SX|:|$)")
                             )
           } else {
             warning("Data frame not compatible.")
           }
-          if(any(colnames(df4) %in% c("Value"))) df4 <- dplyr::rename(df4, Estimate = Value)
+          if(any(colnames(df4) %in% c("value"))) df4 <- dplyr::rename(df4, estimate = value)
           # need to add conditional for setup of the data param_SX:X_GP:#
-          if(any(grepl("_SX:[0-9]_GP:[0-9]", unique(df4$Label)))){
+          if(any(grepl("_SX:[0-9]_GP:[0-9]", unique(df4$label)))){
             df4 <- df4 |>
-              dplyr::mutate(Label = dplyr::case_when(grepl("_SX:[0-9]_GP:[0-9]", Label) ~ stringr::str_extract(Label, ),
-                                                     grepl("_GP:[0-9]", Label) ~ stringr::str_extract(Label, ),
-                                                     grepl("_GP:[0-9]", Label) ~ stringr::str_extract(Label, ),
-                                                     TRUE ~ Label),
-                            Fleet = NA,
-                            Growth_Pattern = NA,
-                            Sex = NA
+              dplyr::mutate(label = dplyr::case_when(grepl("_SX:[0-9]_GP:[0-9]", label) ~ stringr::str_extract(label, ),
+                                                     grepl("_GP:[0-9]", label) ~ stringr::str_extract(label, ),
+                                                     grepl("_GP:[0-9]", label) ~ stringr::str_extract(label, ),
+                                                     TRUE ~ abel),
+                            fleet = NA,
+                            growth_pattern = NA,
+                            sex = NA
                             )
           }
           # Check if error values are in the labels column and extract out
-          if (any(sapply(errors, function(x) grepl(x, unique(df4$Label))))) {
-            err_names <- unique(df4$Label)[grepl(paste(errors, collapse = "|"), unique(df4$Label)) & !unique(df4$Label) %in% errors]
+          if (any(sapply(errors, function(x) grepl(x, unique(df4$label))))) {
+            err_names <- unique(df4$label)[grepl(paste(errors, collapse = "|"), unique(df4$label)) & !unique(df4$label) %in% errors]
             if(any(grepl("sel", err_names))){
               df4 <- df4
             } else if (length(intersect(errors, colnames(df4))) == 1) {
-              df4 <- df4[-grep(paste(errors, "_", collapse = "|", sep = ""), df4$Label),]
+              df4 <- df4[-grep(paste(errors, "_", collapse = "|", sep = ""), df4$label),]
             } else {
               df4 <- df4 |>
                 tidyr::pivot_wider(
-                  names_from = Label,
-                  values_from = Estimate,
+                  names_from = label,
+                  values_from = estimate,
                   id_cols = c(intersect(colnames(df4), factors)),
                   values_fill = NA
                 ) |>
                 tidyr::pivot_longer(
                   cols = -c(intersect(colnames(df4), factors), err_names),
-                  names_to = "Label",
-                  values_to = "Estimate"
+                  names_to = "label",
+                  values_to = "estimate"
                 ) |>
-                dplyr::select(tidyselect::any_of(c("Label", "Estimate", factors, errors, err_names)))
+                dplyr::select(tidyselect::any_of(c("label", "estimate", factors, errors, err_names)))
               if(length(err_names) > 1) {
                 df4 <- df4 |>
                   dplyr::select(-c(err_names[2:length(err_names)]))
@@ -334,17 +336,17 @@ convert_output <- function(
           }
 
           df5 <- df4 |>
-            dplyr::select(tidyselect::any_of(c("Label", "Estimate", "Year", factors, errors))) |>
+            dplyr::select(tidyselect::any_of(c("label", "estimate", "year", factors, errors))) |>
             dplyr::mutate(module_name = parm_sel)
 
           if(any(colnames(df5) %in% errors)){
             df5 <- df5 |>
-              dplyr::mutate(Uncertainty_label = tolower(colnames(dplyr::select(df4, tidyselect::any_of(paste("^",errors,"$",sep="")))))) |>
-              dplyr::rename(Uncertainty = intersect(colnames(df5), errors))
+              dplyr::mutate(uncertainty_label = tolower(colnames(dplyr::select(df4, tidyselect::any_of(paste("^",errors,"$",sep="")))))) |>
+              dplyr::rename(lncertainty = intersect(colnames(df5), errors))
           } else {
             df5 <- df5 |>
-              dplyr::mutate(Uncertainty_label = NA,
-                            Uncertainty = NA)
+              dplyr::mutate(uncertainty_label = NA,
+                            uncertainty = NA)
           }
           # param_df <- df5
           # if (ncol(out_new) < ncol(df5)){
@@ -352,6 +354,7 @@ convert_output <- function(
           # } else if (ncol(out_new) > ncol(df5)){
           #   warning(paste0("Transformed data frame for ", parm_sel, " has less columns than default."))
           # }
+          df5[setdiff(tolower(names(out_new)), tolower(names(df5)))] <- NA
           out_new <- rbind(out_new, df5)
         } else if (parm_sel %in% std2) {
           # 4, 8
@@ -365,16 +368,39 @@ convert_output <- function(
           # make row the header names for first df
           colnames(df1) <- row
           # find row number that matches 'row'
-          rownum <- prodlim::row.match(row, df1)
+          # rownum <- prodlim::row.match(row, df1)
           # Subset data frame
-          df3 <- df1[-c(1:rownum),]
-
-          df4 <- df3 |>
-            pivot_longer(
-              cols = -c(tidyselect::any_of(factors, errors)),
-              names_from = m
+          df1 <- df1[-1,]
+          # Defining columns for the grouping
+          if(any(grepl("len_bins", colnames(df1)))){
+            std2_id <- "len_bins"
+          } else {
+            std2_id <- "fleet"
+          }
+          # pivot data
+          df3 <- df1[-max(nrow(df1)),] |>
+            tidyr::pivot_longer(
+              cols = -intersect(c(factors, errors, "len_bins"), colnames(df1)),
+              names_to = "label",
+              values_to = "estimate"
+            ) |>
+            tidyr::pivot_wider(
+              names_from = tidyselect::all_of(std2_id),
+              values_from = estimate
             )
-
+          # if(!std2_id %in% factors){
+            colnames(df3) <- stringr::str_replace(colnames(df3), "Label", std2_id )
+          # }
+          df4 <- df3 |>
+            tidyr::pivot_longer(
+              cols = -intersect(c(factors, errors, "len_bins"), colnames(df1)),
+              names_to = "Label",
+              values_to = "Estimate"
+            ) |>
+            dplyr::mutate(module_name = parm_sel)
+          # Add to new dataframe
+          df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
+          out_new <- rbind(out_new, df4)
         } else if (parm_sel %in% cha) {
           miss_parms <- c(miss_parms, parm_sel)
           next
