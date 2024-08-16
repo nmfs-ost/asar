@@ -219,7 +219,7 @@ convert_output <- function(
       svMisc::progress(i,)
       # setTxtProgressBar(pb,i)
       # Start processing data frame
-      parm_sel <- param_names[4]
+      parm_sel <- param_names[8]
       extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
       if (!is.data.frame(extract)) {
         miss_parms <- c(miss_parms, parm_sel)
@@ -264,7 +264,7 @@ convert_output <- function(
             # }
 
             df4 <- df3 |>
-              tidyr::pivot_longer(!any_of(c(factors, errors)), names_to = "Label", values_to = "Estimate") |> # , colnames(dplyr::select(df3, tidyselect::matches(errors)))
+              tidyr::pivot_longer(!tidyselect::any_of(c(factors, errors)), names_to = "Label", values_to = "Estimate") |> # , colnames(dplyr::select(df3, tidyselect::matches(errors)))
               dplyr::mutate(Area = dplyr::case_when(grepl("_[0-9]_", Label) ~ stringr::str_extract(Label, "(?<=_)[0-9]+"),
                                                     TRUE ~ NA),
                             Sex = dplyr::case_when(grepl("_Fem_", Label) ~ "Female",
@@ -315,7 +315,7 @@ convert_output <- function(
                   names_to = "Label",
                   values_to = "Estimate"
                 ) |>
-                dplyr::select(any_of(c("Label", "Estimate", factors, errors, err_names)))
+                dplyr::select(tidyselect::any_of(c("Label", "Estimate", factors, errors, err_names)))
               if(length(err_names) > 1) {
                 df4 <- df4 |>
                   dplyr::select(-c(err_names[2:length(err_names)]))
@@ -334,12 +334,12 @@ convert_output <- function(
           }
 
           df5 <- df4 |>
-            dplyr::select(any_of(c("Label", "Estimate", "Year", factors, errors))) |>
+            dplyr::select(tidyselect::any_of(c("Label", "Estimate", "Year", factors, errors))) |>
             dplyr::mutate(module_name = parm_sel)
 
           if(any(colnames(df5) %in% errors)){
             df5 <- df5 |>
-              dplyr::mutate(Uncertainty_label = tolower(colnames(dplyr::select(df4, any_of(paste("^",errors,"$",sep="")))))) |>
+              dplyr::mutate(Uncertainty_label = tolower(colnames(dplyr::select(df4, tidyselect::any_of(paste("^",errors,"$",sep="")))))) |>
               dplyr::rename(Uncertainty = intersect(colnames(df5), errors))
           } else {
             df5 <- df5 |>
@@ -360,6 +360,20 @@ convert_output <- function(
           # Find first row without NAs = headers
           df2 <- df1[complete.cases(df1), ]
           # rotate data
+          # identify first row
+          row <- df2[1,]
+          # make row the header names for first df
+          colnames(df1) <- row
+          # find row number that matches 'row'
+          rownum <- prodlim::row.match(row, df1)
+          # Subset data frame
+          df3 <- df1[-c(1:rownum),]
+
+          df4 <- df3 |>
+            pivot_longer(
+              cols = -c(tidyselect::any_of(factors, errors)),
+              names_from = m
+            )
 
         } else if (parm_sel %in% cha) {
           miss_parms <- c(miss_parms, parm_sel)
