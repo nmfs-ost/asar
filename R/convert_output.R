@@ -364,7 +364,7 @@ convert_output <- function(
           df2 <- df1[complete.cases(df1), ]
           # rotate data
           # identify first row
-          row <- df2[1,]
+          row <- tolower(df2[1,])
           # make row the header names for first df
           colnames(df1) <- row
           # find row number that matches 'row'
@@ -389,13 +389,19 @@ convert_output <- function(
               values_from = estimate
             )
           # if(!std2_id %in% factors){
-            colnames(df3) <- stringr::str_replace(colnames(df3), "Label", std2_id )
+            colnames(df3) <- stringr::str_replace(colnames(df3), "label", std2_id)
           # }
+          if(any(duplicated(tolower(names(df3))))){
+            repd_name <- names(which(table(tolower(names(df3))) > 1))
+            df3 <- df3 |>
+              dplyr::select(-tidyselect::all_of(repd_name))
+            colnames(df3) <- tolower(names(df3))
+          }
           df4 <- df3 |>
             tidyr::pivot_longer(
               cols = -intersect(c(factors, errors, "len_bins"), colnames(df1)),
-              names_to = "Label",
-              values_to = "Estimate"
+              names_to = "label",
+              values_to = "estimate"
             ) |>
             dplyr::mutate(module_name = parm_sel)
           # Add to new dataframe
