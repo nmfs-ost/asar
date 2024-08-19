@@ -31,6 +31,7 @@ convert_output <- function(
     fleet = NA,
     area = NA,
     season = NA,
+    subseason = NA,
     age = NA,
     sex = NA,
     growth_pattern = NA,
@@ -222,7 +223,7 @@ convert_output <- function(
       svMisc::progress(i,)
       # setTxtProgressBar(pb,i)
       # Start processing data frame
-      parm_sel <- param_names[55]
+      parm_sel <- param_names[i]
       extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
       if (!is.data.frame(extract)) {
         miss_parms <- c(miss_parms, parm_sel)
@@ -381,7 +382,8 @@ convert_output <- function(
           df5[setdiff(tolower(names(out_new)), tolower(names(df5)))] <- NA
           if (ncol(out_new) < ncol(df5)){
             diff <- setdiff(names(df5), names(out_new))
-            warning(paste(parm_sel, "has more columns than the output data frame. The column(s)", paste(diff, sep = ", "),"are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.", sep = " "))
+            warning("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
+            # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
             df5 <- dplyr::select(df5, -c(diff))
             out_new <- rbind(out_new, df5)
           } else {
@@ -443,7 +445,8 @@ convert_output <- function(
           # Add to new dataframe
           if (ncol(out_new) < ncol(df4)){
             diff <- setdiff(names(out_new), names(df4))
-            warning(paste(parm_sel, "has more columns than the output data frame. The column(s)", paste(diff, sep = ", "),"are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.", sep = " "))
+            warning("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
+            # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
             next
           } else {
             df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
@@ -462,8 +465,93 @@ convert_output <- function(
           miss_parms <- c(miss_parms, parm_sel)
           next
         } else if (parm_sel %in% aa.al) {
-          miss_parms <- c(miss_parms, parm_sel)
-          next
+          # remove first row - naming
+          df1 <- extract[-1,]
+          # Find first row without NAs = headers
+          df2 <- df1[complete.cases(df1), ]
+          # identify first row
+          row <- df2[1,]
+          if(any(row %in% "XX")){
+            loc_xx <- grep("XX", row)
+            row <- row[row!="XX"]
+            df1 <- df1[ ,-loc_xx]
+          }
+          # make row the header names for first df
+          colnames(df1) <- row
+          # find row number that matches 'row'
+          rownum <- prodlim::row.match(row, df1)
+          # Subset data frame
+          df3 <- df1[-c(1:rownum),]
+          colnames(df3) <- tolower(row)
+
+          # aa.al names
+          naming <- c("biomass", "discard", "catch", "f", "mean_size", "numbers","sel","mean_body_wt","natural_mortality")
+          if(stringr::str_detect(tolower(parm_sel), paste(naming, collapse = "|"))){
+            label = stringr::str_extract(tolower(parm_sel), paste(naming, collapse = "|"))
+            if(length(label) > 1) warning("Length of label is > 1.")
+            if(label == "f"){
+              label = "F"
+            }
+          }
+          if(grepl("age", tolower(parm_sel))){
+            fac <- "age"
+          } else if (any(grepl("length|len", tolower(parm_sel)))) {
+            fac <- "len_bins"
+          } else if (any(grepl("size", tolower(parm_sel)))) {
+            fac <- "age"
+          } else {
+            fac <- "age"
+          }
+          # Reformat dataframe
+          if (any(colnames(df3) %in% c("Yr", "yr", "year"))) {
+            df3 <- df3 |>
+              dplyr::rename(year = yr)
+          }
+          if(any(colnames(df3) %in% c("seas"))){
+            df3 <- df3 |>
+              dplyr::rename(season = seas)
+          }
+          if(any(colnames(df3) %in% c("subseas"))){
+            df3 <- df3 |>
+              dplyr::rename(subseason = subseas)
+          }
+          if("label" %in% colnames(df3)){
+            df3 <- dplyr::select(df3, -"label")
+          }
+          # Pivot table long
+          other_factors <- c("bio_pattern", "birthseas", "settlement", "morph", "beg/mid", "type", "label", "factor")
+          df4 <- df3 |>
+            tidyr::pivot_longer(
+              cols = -intersect(c(factors, errors, other_factors), colnames(df3)),
+              names_to = fac[1],
+              values_to = "estimate"
+            ) |>
+            dplyr::mutate(label = label[1],
+                          module_name = parm_sel[1])
+          if(any(grepl("morph", colnames(df4)))){
+            df4 <- df4 |>
+              dplyr::rename(growth_pattern = morph)
+          }
+          if("label" %in% colnames(df4) & "factor" %in% colnames(df4)){
+            df4 <- df4 |>
+              dplyr::select(-label) |>
+              dplyr::mutate(label = dplyr::case_when(grepl("sel", factor) ~ "sel",
+                                                     TRUE ~ factor)) |>
+              dplyr::select(-factor)
+
+          }
+          # Bind to new df
+          df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
+          if (ncol(out_new) < ncol(df4)){
+            diff <- setdiff(names(df4), names(out_new))
+            warning("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
+            # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
+            df4 <- dplyr::select(df4, -tidyselect::all_of(diff))
+            out_new <- rbind(out_new, df4)
+          } else {
+            # df5[setdiff(tolower(names(out_new)), tolower(names(df5)))] <- NA
+            out_new <- rbind(out_new, df4)
+          }
         } else if (parm_sel %in% nn) {
           miss_parms <- c(miss_parms, parm_sel)
           next
@@ -477,6 +565,9 @@ convert_output <- function(
     Sys.sleep(0.01)
     if(i == max(length(param_names))) cat("Done! \n")
     } # close loop
+    if(length(miss_parms)>0){
+      message("Some parameters were not found or included in the output file. The inital release of this converter only inlcudes to most necessary parameters and values. The following parameters were not added into the new output file: ", paste(miss_parms, collapse = ", "), ".")
+    }
   } # close SS3 if statement
 
   if (model == "bam") {
