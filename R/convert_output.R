@@ -47,6 +47,18 @@ convert_output <- function(
   )
   out_new <- out_new[-1,]
 
+  # pull together path
+  if(!is.null(outdir)){
+    output.file = paste(outdir, "/", output.file, sep = "")
+  } else {
+    output.file = output.file
+  }
+
+  # Check if can locate output file
+  if(!file.exists(output.file)){
+    stop("output file path is invalid.")
+  }
+
   # Convert SS3 output Report.sso file
   if (model %in% c("ss3", "SS3")) {
     # read SS3 report file
