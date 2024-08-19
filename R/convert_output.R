@@ -33,6 +33,8 @@ convert_output <- function(
     season = NA,
     age = NA,
     sex = NA,
+    growth_pattern = NA,
+    len_bins = NA,
     intial = NA,
     estimate = NA,
     uncertainty = NA,
@@ -209,7 +211,7 @@ convert_output <- function(
     # Loop for all identified parameters to extract for plotting and use
     # Create list of parameters that were not found in the output file
     # std: 2, 6, 13, 21, 24, 27, 29, 55
-    factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "time", "era", "subseas", "platoon","growth_pattern", "gp")
+    factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "platoon","growth_pattern", "gp")
     errors <- c("StdDev","sd","se","SE","cv","CV")
     miss_parms <- c()
     # add progress bar for each SS3 variable
@@ -220,7 +222,7 @@ convert_output <- function(
       svMisc::progress(i,)
       # setTxtProgressBar(pb,i)
       # Start processing data frame
-      parm_sel <- param_names[i]
+      parm_sel <- param_names[55]
       extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
       if (!is.data.frame(extract)) {
         miss_parms <- c(miss_parms, parm_sel)
@@ -266,20 +268,23 @@ convert_output <- function(
             # }
 
             df4 <- df3 |>
-              tidyr::pivot_longer(!tidyselect::any_of(c(factors, errors)), names_to = "label", values_to = "estimate") |> # , colnames(dplyr::select(df3, tidyselect::matches(errors)))
+              tidyr::pivot_longer(
+                !tidyselect::any_of(c(factors, errors)),
+                names_to = "label",
+                values_to = "estimate") |> # , colnames(dplyr::select(df3, tidyselect::matches(errors)))
               dplyr::mutate(area = dplyr::case_when(grepl("_[0-9]_", label) ~ stringr::str_extract(label, "(?<=_)[0-9]+"),
                                                     TRUE ~ NA),
-                            sex = dplyr::case_when(grepl("_Fem_", label) ~ "female",
-                                                   grepl("_Mal_", label) ~ "male",
-                                                   grepl("_SX:1$", label) ~ "female",
-                                                   grepl("_SX:2$", label) ~ "male",
+                            sex = dplyr::case_when(grepl("_fem_", label) ~ "female",
+                                                   grepl("_mal_", label) ~ "male",
+                                                   grepl("_sx:1$", label) ~ "female",
+                                                   grepl("_sx:2$", label) ~ "male",
                                                    TRUE ~ NA),
-                            growth_Pattern = dplyr::case_when(grepl("_GP_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
+                            growth_Pattern = dplyr::case_when(grepl("_gp_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
                                                               TRUE ~ NA),
                             fleet = dplyr::case_when(grepl("):_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
                                                      grepl("):_[0-9][0-9]+$", label) ~ stringr::str_extract(label, "(?<=_)[0-9][0-9]$"),
                                                      TRUE ~ NA),
-                            label = stringr::str_extract(label, "^.*?(?=_\\d|_GP|_Fem|_Mal|_SX|:|$)")
+                            label = stringr::str_extract(label, "^.*?(?=_\\d|_gp|_fem|_mal|_sx|:|$)")
                             )
           } else {
             warning("Data frame not compatible.")
@@ -319,8 +324,13 @@ convert_output <- function(
                 ) |>
                 dplyr::select(tidyselect::any_of(c("label", "estimate", factors, errors, err_names)))
               if(length(err_names) > 1) {
+                if(any(grepl(paste(err_names, collapse = "|"), colnames(df4)))){
                 df4 <- df4 |>
-                  dplyr::select(-c(err_names[2:length(err_names)]))
+                  dplyr::select(-tidyselect::all_of(c(err_names[2:length(err_names)])))
+                } else {
+                  df4 <- df4 |>
+                    dplyr::filter(!(label %in% err_names[2:length(err_names)]))
+                }
                 find_error_value <- function(column_names, to_match_vector){
                   vals <- sapply(column_names, function(col_name) {
                     match <- sapply(to_match_vector, function(err) if (grepl(err, col_name)) err else NA)
@@ -329,8 +339,16 @@ convert_output <- function(
                   # only unique values and those that intersect with values vector
                   intersect(unique(vals), to_match_vector)
                 }
-                err_name <- find_error_value(names(df4), errors)
-                colnames(df4)[grepl(paste(errors, collapse = "|"), colnames(df4))] <- err_name
+                if(any(grepl(paste(err_names, collapse = "|"), colnames(df4)))){
+                  err_name <- find_error_value(names(df4), errors)
+                  if(length(err_name)>1){
+                    err_name <- stringr::str_extract(err_names[1], paste(errors, collapse = "|"))
+                  }
+                  colnames(df4)[grepl(err_name, colnames(df4))] <- err_name
+                } else {
+                  err_name <- find_error_value(unique(df4$label), errors)
+                  colnames(df4)[grepl(paste(errors, collapse = "|"), colnames(df4))] <- err_name
+                }
               }
             }
           }
@@ -341,12 +359,14 @@ convert_output <- function(
 
           if(any(colnames(df5) %in% errors)){
             df5 <- df5 |>
-              dplyr::mutate(uncertainty_label = tolower(colnames(dplyr::select(df4, tidyselect::any_of(paste("^",errors,"$",sep="")))))) |>
-              dplyr::rename(lncertainty = intersect(colnames(df5), errors))
+              dplyr::mutate(uncertainty_label = intersect(names(df5), errors)) |>
+              dplyr::rename(uncertainty = intersect(colnames(df5), errors))
+            colnames(df5) <- tolower(names(df5))
           } else {
             df5 <- df5 |>
               dplyr::mutate(uncertainty_label = NA,
                             uncertainty = NA)
+            colnames(df5) <- tolower(names(df5))
           }
           # param_df <- df5
           # if (ncol(out_new) < ncol(df5)){
@@ -354,8 +374,20 @@ convert_output <- function(
           # } else if (ncol(out_new) > ncol(df5)){
           #   warning(paste0("Transformed data frame for ", parm_sel, " has less columns than default."))
           # }
+          if("seas" %in% colnames(df5)){
+            df5 <- df5 |>
+              dplyr::rename(season = seas)
+          }
           df5[setdiff(tolower(names(out_new)), tolower(names(df5)))] <- NA
-          out_new <- rbind(out_new, df5)
+          if (ncol(out_new) < ncol(df5)){
+            diff <- setdiff(names(df5), names(out_new))
+            warning(paste(parm_sel, "has more columns than the output data frame. The column(s)", paste(diff, sep = ", "),"are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.", sep = " "))
+            df5 <- dplyr::select(df5, -c(diff))
+            out_new <- rbind(out_new, df5)
+          } else {
+            # df5[setdiff(tolower(names(out_new)), tolower(names(df5)))] <- NA
+            out_new <- rbind(out_new, df5)
+          }
         } else if (parm_sel %in% std2) {
           # 4, 8
           # remove first row - naming
@@ -404,9 +436,19 @@ convert_output <- function(
               values_to = "estimate"
             ) |>
             dplyr::mutate(module_name = parm_sel)
+          if("seas" %in% colnames(df4)){
+            df4 <- df4 |>
+              dplyr::rename(season = seas)
+          }
           # Add to new dataframe
-          df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
-          out_new <- rbind(out_new, df4)
+          if (ncol(out_new) < ncol(df4)){
+            diff <- setdiff(names(out_new), names(df4))
+            warning(paste(parm_sel, "has more columns than the output data frame. The column(s)", paste(diff, sep = ", "),"are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.", sep = " "))
+            next
+          } else {
+            df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
+            out_new <- rbind(out_new, df4)
+          }
         } else if (parm_sel %in% cha) {
           miss_parms <- c(miss_parms, parm_sel)
           next
