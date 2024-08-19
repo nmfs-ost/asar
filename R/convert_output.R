@@ -382,7 +382,7 @@ convert_output <- function(
           df5[setdiff(tolower(names(out_new)), tolower(names(df5)))] <- NA
           if (ncol(out_new) < ncol(df5)){
             diff <- setdiff(names(df5), names(out_new))
-            warning("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
+            message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
             # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
             df5 <- dplyr::select(df5, -c(diff))
             out_new <- rbind(out_new, df5)
@@ -445,7 +445,7 @@ convert_output <- function(
           # Add to new dataframe
           if (ncol(out_new) < ncol(df4)){
             diff <- setdiff(names(out_new), names(df4))
-            warning("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
+            message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
             # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
             next
           } else {
@@ -544,7 +544,7 @@ convert_output <- function(
           df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
           if (ncol(out_new) < ncol(df4)){
             diff <- setdiff(names(df4), names(out_new))
-            warning("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
+            message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
             # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
             df4 <- dplyr::select(df4, -tidyselect::all_of(diff))
             out_new <- rbind(out_new, df4)
@@ -566,7 +566,7 @@ convert_output <- function(
     if(i == max(length(param_names))) cat("Done! \n")
     } # close loop
     if(length(miss_parms)>0){
-      message("Some parameters were not found or included in the output file. The inital release of this converter only inlcudes to most necessary parameters and values. The following parameters were not added into the new output file: ", paste(miss_parms, collapse = ", "), ".")
+      message("Some parameters were not found or included in the output file. The inital release of this converter only inlcudes to most necessary parameters and values. The following parameters were not added into the new output file: ", paste(miss_parms, collapse = ", \n"), ".")
     }
   } # close SS3 if statement
 
