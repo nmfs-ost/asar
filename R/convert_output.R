@@ -566,7 +566,7 @@ convert_output <- function(
     if(i == max(length(param_names))) cat("Done! \n")
     } # close loop
     if(length(miss_parms)>0){
-      message("Some parameters were not found or included in the output file. The inital release of this converter only inlcudes to most necessary parameters and values. The following parameters were not added into the new output file: ", paste(miss_parms, collapse = ", \n"), ".")
+      message("Some parameters were not found or included in the output file. The inital release of this converter only inlcudes to most necessary parameters and values. The following parameters were not added into the new output file: \n", paste(miss_parms, collapse = "\n"))
     }
   } # close SS3 if statement
 
