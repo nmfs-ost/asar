@@ -177,7 +177,7 @@ convert_output <- function(
     # std2_set <- c(4,8) # can I make it so it falls into above set?
     # cha_set <- 53
     # rand_set <- c(9,10,22,28,30,39)
-    # unkn_set <- c(3,25,34,48,51,52)
+    # unkn_set <- c(3,25,34,48,51,52) # needs to be found and recategorized
     # info_set <- c(1,5,15,26,35)
     # aa.al_set <- c(11,12,14,16,17,18,19,20,36,37,47,49)
     # nn_set <- c(41,42,43,44,50,54,56)
@@ -212,8 +212,9 @@ convert_output <- function(
              "Kobe_Plot")
     std2 <- c("OVERALL_COMPS")
     cha <- c("Dynamic_Bzero")
-    rand <- c("SPR_SERIES")
-    unkn <- c("MEAN_BODY_WT_OUTPUT")
+    rand <- c("SPR_SERIES",
+              "selparm(Size)_By_Year_after_adjustments",
+              "selparm(Age)_By_Year_after_adjustments")
     info <- c("LIKELIHOOD")
     aa.al <- c("BIOMASS_AT_AGE",
                "BIOMASS_AT_LENGTH",
@@ -492,9 +493,6 @@ convert_output <- function(
           df2[setdiff(tolower(names(out_new)), tolower(names(df2)))] <- NA
           out_list[[parm_sel]] <- df2
         } else if (parm_sel %in% rand) {
-          miss_parms <- c(miss_parms, parm_sel)
-          next
-        } else if (parm_sel %in% unkn) {
           miss_parms <- c(miss_parms, parm_sel)
           next
         } else if (parm_sel %in% info) {

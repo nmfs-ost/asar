@@ -27,5 +27,13 @@ add_base_section <- function(x) {
   section_list
 }
 
+#---- get_ncol ----
+# Helper for SS3 output converter
+
+
+#---- SS3_extract_df ----
+#Helper for SS3 output converter
+
+
 # create notin operator
 `%notin%` <- Negate(`%in%`)
