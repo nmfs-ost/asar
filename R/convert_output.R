@@ -203,6 +203,12 @@ convert_output <- function(
              "TIME_SERIES",
              "DISCARD_OUTPUT",
              "INDEX_2",
+             "FIT_LEN_COMPS",
+             "FIT_AGE_COMPS",
+             "FIT_SIZE_COMPS",
+             "SELEX_database",
+             "Biology_at_age_in_endyr",
+             "Growth_Parameters",
              "Kobe_Plot")
     std2 <- c("OVERALL_COMPS")
     cha <- c("Dynamic_Bzero")
@@ -224,7 +230,7 @@ convert_output <- function(
     # Loop for all identified parameters to extract for plotting and use
     # Create list of parameters that were not found in the output file
     # std: 2, 6, 13, 21, 24, 27, 29, 55
-    # c(2,6,13,21,23,24,27,29,31,32,33,38,40,45,46,55)
+    # c(2,6,13,21,24,27,29,31,32,33,38,40,45,46,55) # 23,
     factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "platoon","growth_pattern", "gp")
     errors <- c("StdDev","sd","se","SE","cv","CV")
     miss_parms <- c()
@@ -463,6 +469,7 @@ convert_output <- function(
             diff <- setdiff(names(out_new), names(df4))
             message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
             # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
+            df4 <- dplyr::select(df4, -tidyselect::all_of(diff))
             out_list[[parm_sel]] <- df4
           } else {
             df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
@@ -470,8 +477,20 @@ convert_output <- function(
             out_list[[parm_sel]] <- df4
           }
         } else if (parm_sel %in% cha) {
-          miss_parms <- c(miss_parms, parm_sel)
-          next
+          # Only one keyword characterized as this
+          area_row <- which(apply(extract, 1, function(row) any(row == "Area:")))
+          area_val <- extract[area_row, 3]
+          gp_row <- which(apply(extract, 1, function(row) any(row == "GP:")))
+          gp_val <- extract[gp_row, 3]
+          df1 <- extract[-c(1:4),]
+          colnames(df1) <- c("year","era","estimate")
+          df2 <- df1 |>
+            dplyr::mutate(label = parm_sel,
+                          area = area_val$X3,
+                          growth_pattern = gp_val$X3,
+                          module_name = parm_sel)
+          df2[setdiff(tolower(names(out_new)), tolower(names(df2)))] <- NA
+          out_list[[parm_sel]] <- df2
         } else if (parm_sel %in% rand) {
           miss_parms <- c(miss_parms, parm_sel)
           next
