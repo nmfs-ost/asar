@@ -228,6 +228,7 @@ convert_output <- function(
     factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "platoon","growth_pattern", "gp")
     errors <- c("StdDev","sd","se","SE","cv","CV")
     miss_parms <- c()
+    out_list <- list()
     # add progress bar for each SS3 variable
     # pb = txtProgressBar(min = 0, max = length(param_names), initial = 0)
     # Start loop over variables
@@ -398,10 +399,12 @@ convert_output <- function(
             message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
             # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
             df5 <- dplyr::select(df5, -c(diff))
-            out_new <- rbind(out_new, df5)
+            # out_new <- rbind(out_new, df5)
+            out_list[[parm_sel]] <- df5
           } else {
             # df5[setdiff(tolower(names(out_new)), tolower(names(df5)))] <- NA
-            out_new <- rbind(out_new, df5)
+            # out_new <- rbind(out_new, df5)
+            out_list[[parm_sel]] <- df5
           }
         } else if (parm_sel %in% std2) {
           # 4, 8
@@ -460,10 +463,11 @@ convert_output <- function(
             diff <- setdiff(names(out_new), names(df4))
             message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
             # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
-            next
+            out_list[[parm_sel]] <- df4
           } else {
             df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
-            out_new <- rbind(out_new, df4)
+            # out_new <- rbind(out_new, df4)
+            out_list[[parm_sel]] <- df4
           }
         } else if (parm_sel %in% cha) {
           miss_parms <- c(miss_parms, parm_sel)
@@ -560,10 +564,12 @@ convert_output <- function(
             message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
             # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
             df4 <- dplyr::select(df4, -tidyselect::all_of(diff))
-            out_new <- rbind(out_new, df4)
+            # out_new <- rbind(out_new, df4)
+            out_list[[parm_sel]] <- df4
           } else {
             # df5[setdiff(tolower(names(out_new)), tolower(names(df5)))] <- NA
-            out_new <- rbind(out_new, df4)
+            # out_new <- rbind(out_new, df4)
+            out_list[[parm_sel]] <- df4
           }
         } else if (parm_sel %in% nn) {
           miss_parms <- c(miss_parms, parm_sel)
@@ -581,6 +587,7 @@ convert_output <- function(
     if(length(miss_parms)>0){
       message("Some parameters were not found or included in the output file. The inital release of this converter only inlcudes to most necessary parameters and values. The following parameters were not added into the new output file: \n", paste(miss_parms, collapse = "\n"))
     }
+    out_new <- Reduce(rbind, out_list)
   } # close SS3 if statement
 
   if (model == "bam") {
