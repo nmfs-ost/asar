@@ -224,6 +224,7 @@ convert_output <- function(
     # Loop for all identified parameters to extract for plotting and use
     # Create list of parameters that were not found in the output file
     # std: 2, 6, 13, 21, 24, 27, 29, 55
+    # c(2,6,13,21,23,24,27,29,31,32,33,38,40,45,46,55)
     factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "platoon","growth_pattern", "gp")
     errors <- c("StdDev","sd","se","SE","cv","CV")
     miss_parms <- c()
@@ -304,17 +305,17 @@ convert_output <- function(
           }
           if(any(colnames(df4) %in% c("value"))) df4 <- dplyr::rename(df4, estimate = value)
           # need to add conditional for setup of the data param_SX:X_GP:#
-          if(any(grepl("_SX:[0-9]_GP:[0-9]", unique(df4$label)))){
-            df4 <- df4 |>
-              dplyr::mutate(label = dplyr::case_when(grepl("_SX:[0-9]_GP:[0-9]", label) ~ stringr::str_extract(label, ),
-                                                     grepl("_GP:[0-9]", label) ~ stringr::str_extract(label, ),
-                                                     grepl("_GP:[0-9]", label) ~ stringr::str_extract(label, ),
-                                                     TRUE ~ abel),
-                            fleet = NA,
-                            growth_pattern = NA,
-                            sex = NA
-                            )
-          }
+          # if(any(grepl("_SX:[0-9]_GP:[0-9]", unique(df4$label)))){
+          #   df4 <- df4 |>
+          #     dplyr::mutate(label = dplyr::case_when(grepl("_SX:[0-9]_GP:[0-9]", label) ~ stringr::str_extract(label, ),
+          #                                            grepl("_GP:[0-9]", label) ~ stringr::str_extract(label, ),
+          #                                            grepl("_GP:[0-9]", label) ~ stringr::str_extract(label, ),
+          #                                            TRUE ~ label),
+          #                   fleet = NA,
+          #                   growth_pattern = NA,
+          #                   sex = NA
+          #                   )
+          # }
           # Check if error values are in the labels column and extract out
           if (any(sapply(errors, function(x) grepl(x, unique(df4$label))))) {
             err_names <- unique(df4$label)[grepl(paste(errors, collapse = "|"), unique(df4$label)) & !unique(df4$label) %in% errors]
