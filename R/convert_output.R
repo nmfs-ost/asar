@@ -43,7 +43,21 @@ convert_output <- function(
     likelihood = NA,
     gradient = NA,
     estimated = NA, # TRUE/FALSE
-    module_name = NA
+    module_name = NA,
+    # Additional factors from SS3
+    bio_pattern = NA,
+    birthseas = NA,
+    settlement = NA,
+    morph = NA,
+    # beg/mid = NA, # need to identify df where this is applicable
+    type = NA,
+    factor = NA,
+    platoon = NA,
+    month = NA,
+    sexes = NA,
+    part = NA,
+    bin = NA,
+    kind = NA
   )
   out_new <- out_new[-1,]
 
@@ -114,13 +128,13 @@ convert_output <- function(
     # Below the parameters are grouped and narrowed down into priority to reach deadline.
     # Other parameters will be developed into the future
     param_names <- c(
-      "DEFINITIONS",
+      # "DEFINITIONS",
       "DERIVED_QUANTITIES",
       "ENVIRONMENTAL_DATA",
-      "Input_Variance_Adjustment",
+      # "Input_Variance_Adjustment",
       "LIKELIHOOD",
       "MGparm_By_Year_after_adjustments",
-      "MORPH_INDEXING",
+      # "MORPH_INDEXING",
       "OVERALL_COMPS",
       "PARAMETERS",
       "Parm_devs_detail",
@@ -128,7 +142,7 @@ convert_output <- function(
       "BIOMASS_AT_LENGTH",
       "CATCH",
       "DISCARD_AT_AGE",
-      "EXPLOITATION",
+      # "EXPLOITATION",
       "CATCH_AT_AGE",
       "F_AT_AGE",
       "MEAN_SIZE_TIMESERIES",
@@ -138,8 +152,8 @@ convert_output <- function(
       "SPAWN_RECR_CURVE",
       # "SPR_SERIES",
       "TIME_SERIES",
-      "COMPOSITION_DATABASE",
-      "DISCARD_SPECIFICATION",
+      # "COMPOSITION_DATABASE",
+      # "DISCARD_SPECIFICATION",
       "DISCARD_OUTPUT",
       "INDEX_1",
       "INDEX_2",
@@ -148,26 +162,26 @@ convert_output <- function(
       "FIT_AGE_COMPS",
       "FIT_SIZE_COMPS",
       "MEAN_BODY_WT_OUTPUT",
-      "TAG_Recapture",
+      # "TAG_Recapture",
       "AGE_SELEX",
       "LEN_SELEX",
       "selparm(Size)_By_Year_after_adjustments",
       "selparm(Age)_By_Year_after_adjustments",
       "SELEX_database",
-      "AGE_AGE_KEY",
-      "AGE_LENGTH_KEY",
-      "AGE_SPECIFIC_K",
-      "BIOLOGY",
-      "Biology_at_age_in_endyr",
+      # "AGE_AGE_KEY",
+      # "AGE_LENGTH_KEY",
+      # "AGE_SPECIFIC_K",
+      # "BIOLOGY",
+      # "Biology_at_age_in_endyr",
       "Growth_Parameters",
-      "MEAN_BODY_WT(Begin)",
+      # "MEAN_BODY_WT(Begin)",
       "MOVEMENT",
       "Natural_Mortality",
-      "RECRUITMENT_DIST",
-      "Seas_Effects",
-      "SIZEFREQ_TRANSLATION",
+      # "RECRUITMENT_DIST",
+      # "Seas_Effects",
+      # "SIZEFREQ_TRANSLATION",
       "Dynamic_Bzero",
-      "GLOBAL_MSY",
+      # "GLOBAL_MSY",
       "Kobe_Plot",
       "SPR/YPR_Profile"
     )
@@ -203,9 +217,9 @@ convert_output <- function(
              "TIME_SERIES",
              "DISCARD_OUTPUT",
              "INDEX_2",
-             "FIT_LEN_COMPS",
-             "FIT_AGE_COMPS",
-             "FIT_SIZE_COMPS",
+             # "FIT_LEN_COMPS",
+             # "FIT_AGE_COMPS",
+             # "FIT_SIZE_COMPS",
              "SELEX_database",
              # "Biology_at_age_in_endyr",
              # "Growth_Parameters",
@@ -213,9 +227,10 @@ convert_output <- function(
     std2 <- c("OVERALL_COMPS")
     cha <- c("Dynamic_Bzero")
     rand <- c(# "SPR_SERIES",
-              "selparm(Size)_By_Year_after_adjustments",
-              "selparm(Age)_By_Year_after_adjustments")
-    info <- c("LIKELIHOOD")
+              # "selparm(Size)_By_Year_after_adjustments",
+              # "selparm(Age)_By_Year_after_adjustments"
+      )
+    # info <- c("LIKELIHOOD")
     aa.al <- c("BIOMASS_AT_AGE",
                "BIOMASS_AT_LENGTH",
                "DISCARD_AT_AGE",
@@ -226,13 +241,12 @@ convert_output <- function(
                "NUMBERS_AT_LENGTH",
                "AGE_SELEX",
                "LEN_SELEX")
-    nn <- NA
+    # nn <- NA
 
     # Loop for all identified parameters to extract for plotting and use
     # Create list of parameters that were not found in the output file
-    # std: 2, 6, 13, 21, 24, 27, 29, 55
-    # c(2,6,13,21,24,27,29,31,32,33,38,40,45,46,55) # 23,
-    factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "platoon", "platoo","growth_pattern", "gp")
+    # 1,4,10,17,19,20,22,32,37
+    factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo","growth_pattern", "gp")
     errors <- c("StdDev","sd","se","SE","cv","CV")
     miss_parms <- c()
     out_list <- list()
@@ -285,9 +299,6 @@ convert_output <- function(
           } else if (any(colnames(df3) %in% c(factors, errors))) {
             # Keeping check here if case arises that there is a similar situation to the error
             # aka there are multiple columns containing the string and they are not selected properly
-            # if (any(factors %in% colnames(df3))) {
-            #   fac_names <- names(df3)[grepl(paste(factors, collapse = "|"), names(df3))]
-            # }
 
             df4 <- df3 |>
               tidyr::pivot_longer(
@@ -295,36 +306,40 @@ convert_output <- function(
                 names_to = "label",
                 values_to = "estimate") |> # , colnames(dplyr::select(df3, tidyselect::matches(errors)))
               dplyr::mutate(area = dplyr::case_when(grepl("_[0-9]_", label) ~ stringr::str_extract(label, "(?<=_)[0-9]+"),
+                                                    grepl(":_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]+"),
+                                                    grepl(":_[0-9][0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9][0-9]+"),
                                                     TRUE ~ NA),
                             sex = dplyr::case_when(grepl("_fem_", label) ~ "female",
                                                    grepl("_mal_", label) ~ "male",
                                                    grepl("_sx:1$", label) ~ "female",
                                                    grepl("_sx:2$", label) ~ "male",
+                                                   grepl("_sx:1_", label) ~ "female",
+                                                   grepl("_sx:2_", label) ~ "male",
                                                    TRUE ~ NA),
-                            growth_Pattern = dplyr::case_when(grepl("_gp_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
-                                                              TRUE ~ NA),
-                            fleet = dplyr::case_when("fleet" %in% colnames(df3) ~ fleet,
-                                                     grepl("):_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
-                                                     grepl("):_[0-9][0-9]+$", label) ~ stringr::str_extract(label, "(?<=_)[0-9][0-9]$"),
-                                                     TRUE ~ NA),
-                            label = stringr::str_extract(label, "^.*?(?=_\\d|_gp|_fem|_mal|_sx|:|$)")
-                            )
+                            growth_pattern = dplyr::case_when(grepl("_gp_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
+                                                              grepl("_gp:[0-9]$", label) ~ stringr::str_extract(label, "(?<=:)[0-9]$"),
+                                                              grepl("_gp:[0-9][0-9]$", label) ~ stringr::str_extract(label, "(?<=:)[0-9][0-9]$"),
+                                                              TRUE ~ NA))
+
+            if("fleet" %in% colnames(df3)){
+              df4 <- df4 |>
+                dplyr::mutate(fleet = dplyr::case_when("fleet" %in% colnames(df3) ~ fleet,
+                                                       # grepl("):_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
+                                                       # grepl("):_[0-9][0-9]+$", label) ~ stringr::str_extract(label, "(?<=_)[0-9][0-9]$"),
+                                                       TRUE ~ NA),
+                              label = stringr::str_extract(label, "^.*?(?=_\\d|_gp|_fem|_mal|_sx|:|$)"))
+            } else {
+              df4 <- df4 |>
+                dplyr::mutate(fleet = dplyr::case_when(grepl("):_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
+                                                       grepl("):_[0-9][0-9]+$", label) ~ stringr::str_extract(label, "(?<=_)[0-9][0-9]$"),
+                                                       TRUE ~ NA),
+                              label = stringr::str_extract(label, "^.*?(?=_\\d|_gp|_fem|_mal|_sx|:|$)"))
+            }
           } else {
             warning("Data frame not compatible.")
           }
           if(any(colnames(df4) %in% c("value"))) df4 <- dplyr::rename(df4, estimate = value)
-          # need to add conditional for setup of the data param_SX:X_GP:#
-          # if(any(grepl("_SX:[0-9]_GP:[0-9]", unique(df4$label)))){
-          #   df4 <- df4 |>
-          #     dplyr::mutate(label = dplyr::case_when(grepl("_SX:[0-9]_GP:[0-9]", label) ~ stringr::str_extract(label, ),
-          #                                            grepl("_GP:[0-9]", label) ~ stringr::str_extract(label, ),
-          #                                            grepl("_GP:[0-9]", label) ~ stringr::str_extract(label, ),
-          #                                            TRUE ~ label),
-          #                   fleet = NA,
-          #                   growth_pattern = NA,
-          #                   sex = NA
-          #                   )
-          # }
+
           # Check if error values are in the labels column and extract out
           if (any(sapply(errors, function(x) grepl(x, unique(df4$label))))) {
             err_names <- unique(df4$label)[grepl(paste(errors, collapse = "|"), unique(df4$label)) & !unique(df4$label) %in% errors]
@@ -401,6 +416,7 @@ convert_output <- function(
             df5 <- df5 |>
               dplyr::rename(season = seas)
           }
+          if("subseas" %in% colnames(df5)) df5 <- dplyr::rename(df5, subseason = subseas)
           df5[setdiff(tolower(names(out_new)), tolower(names(df5)))] <- NA
           if (ncol(out_new) < ncol(df5)){
             diff <- setdiff(names(df5), names(out_new))
@@ -493,12 +509,12 @@ convert_output <- function(
                           module_name = parm_sel)
           df2[setdiff(tolower(names(out_new)), tolower(names(df2)))] <- NA
           out_list[[parm_sel]] <- df2
-        } else if (parm_sel %in% rand) {
-          miss_parms <- c(miss_parms, parm_sel)
-          next
-        } else if (parm_sel %in% info) {
-          miss_parms <- c(miss_parms, parm_sel)
-          next
+        # } else if (parm_sel %in% rand) {
+        #   miss_parms <- c(miss_parms, parm_sel)
+        #   next
+        # } else if (parm_sel %in% info) {
+        #   miss_parms <- c(miss_parms, parm_sel)
+        #   next
         } else if (parm_sel %in% aa.al) {
           # remove first row - naming
           df1 <- extract[-1,]
@@ -554,7 +570,7 @@ convert_output <- function(
             df3 <- dplyr::select(df3, -"label")
           }
           # Pivot table long
-          other_factors <- c("bio_pattern", "birthseas", "settlement", "morph", "beg/mid", "type", "label", "factor")
+          other_factors <- c("bio_pattern", "birthseas", "settlement", "morph", "beg/mid", "type", "label", "factor", "platoon", "month","sexes","part","bin","kind")
           df4 <- df3 |>
             tidyr::pivot_longer(
               cols = -intersect(c(factors, errors, other_factors), colnames(df3)),
@@ -589,9 +605,9 @@ convert_output <- function(
             # out_new <- rbind(out_new, df4)
             out_list[[parm_sel]] <- df4
           }
-        } else if (parm_sel %in% nn) {
-          miss_parms <- c(miss_parms, parm_sel)
-          next
+        # } else if (parm_sel %in% nn) {
+        #   miss_parms <- c(miss_parms, parm_sel)
+        #   next
         } else {
           miss_parms <- c(miss_parms, parm_sel)
           next
