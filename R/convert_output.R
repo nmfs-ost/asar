@@ -136,7 +136,7 @@ convert_output <- function(
       "NUMBERS_AT_LENGTH",
       "SPAWN_RECRUIT",
       "SPAWN_RECR_CURVE",
-      "SPR_SERIES",
+      # "SPR_SERIES",
       "TIME_SERIES",
       "COMPOSITION_DATABASE",
       "DISCARD_SPECIFICATION",
@@ -207,12 +207,12 @@ convert_output <- function(
              "FIT_AGE_COMPS",
              "FIT_SIZE_COMPS",
              "SELEX_database",
-             "Biology_at_age_in_endyr",
-             "Growth_Parameters",
+             # "Biology_at_age_in_endyr",
+             # "Growth_Parameters",
              "Kobe_Plot")
     std2 <- c("OVERALL_COMPS")
     cha <- c("Dynamic_Bzero")
-    rand <- c("SPR_SERIES",
+    rand <- c(# "SPR_SERIES",
               "selparm(Size)_By_Year_after_adjustments",
               "selparm(Age)_By_Year_after_adjustments")
     info <- c("LIKELIHOOD")
@@ -232,7 +232,7 @@ convert_output <- function(
     # Create list of parameters that were not found in the output file
     # std: 2, 6, 13, 21, 24, 27, 29, 55
     # c(2,6,13,21,24,27,29,31,32,33,38,40,45,46,55) # 23,
-    factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "platoon","growth_pattern", "gp")
+    factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "platoon", "platoo","growth_pattern", "gp")
     errors <- c("StdDev","sd","se","SE","cv","CV")
     miss_parms <- c()
     out_list <- list()
@@ -303,7 +303,8 @@ convert_output <- function(
                                                    TRUE ~ NA),
                             growth_Pattern = dplyr::case_when(grepl("_gp_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
                                                               TRUE ~ NA),
-                            fleet = dplyr::case_when(grepl("):_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
+                            fleet = dplyr::case_when("fleet" %in% colnames(df3) ~ fleet,
+                                                     grepl("):_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
                                                      grepl("):_[0-9][0-9]+$", label) ~ stringr::str_extract(label, "(?<=_)[0-9][0-9]$"),
                                                      TRUE ~ NA),
                             label = stringr::str_extract(label, "^.*?(?=_\\d|_gp|_fem|_mal|_sx|:|$)")
@@ -662,3 +663,4 @@ convert_output <- function(
   } # close asap if statement
   out_new
 } # close function
+
