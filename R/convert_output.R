@@ -72,9 +72,6 @@ convert_output <- function(
   if(!file.exists(output.file)){
     stop("output file path is invalid.")
   }
-
-  # Convert SS3 output Report.sso file
-  if (model %in% c("ss3", "SS3")) {
     # read SS3 report file
     # Associated function to extract columns for table - from r4ss
     get_ncol <- function(file, skip = 0) {
@@ -84,18 +81,6 @@ convert_output <- function(
       )) + 1
       return(nummax)
     }
-    # Read as table
-    dat <- utils::read.table(
-      file = output.file,
-      col.names = 1:get_ncol(output.file),
-      fill = TRUE,
-      quote = "",
-      # colClasses = "character", # reads all data as characters
-      nrows = -1,
-      comment.char = "",
-      blank.lines.skip = FALSE
-    )
-
     # Step 1 identify and extract breaks in output
     # Function to extract rows, identify the dfs, and clean them up
     SS3_extract_df <- function(dat, label) {
@@ -122,6 +107,32 @@ convert_output <- function(
 
       return(clean_df)
     }
+
+    # Convert SS3 output Report.sso file
+    if (model %in% c("ss3", "SS3")) {
+      # warning("This functions only operates with Stock Synthesis version 3.30 and newer.")
+      # question1 <- readline("Would you like to proceed? (Y/N)")
+      # if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+        # Read as table
+        dat <- utils::read.table(
+          file = output.file,
+          col.names = 1:get_ncol(output.file),
+          fill = TRUE,
+          quote = "",
+          # colClasses = "character", # reads all data as characters
+          nrows = -1,
+          comment.char = "",
+          blank.lines.skip = FALSE
+        )
+      # } else {
+      #   stop("This function in its current state can not process the data.")
+      # }
+
+      # Check SS3 model version
+      vers <- as.numeric(stringr::str_extract(dat[1,1], "[0-9].[0-9][0-9]"))
+      if(vers < 3.3){
+        stop("This function in its current state can not process the data.")
+      }
 
     # Estimated and focal parameters to put into reformatted output df - naming conventions from SS3
     # Future changes will include a direct pull of these parameters from the output file instead of a manual list
@@ -247,7 +258,7 @@ convert_output <- function(
     # Create list of parameters that were not found in the output file
     # 1,4,10,17,19,20,22,32,37
     factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo","growth_pattern", "gp")
-    errors <- c("StdDev","sd","se","SE","cv","CV")
+    errors <- c("StdDev","^sd$", "_sd", "_sd_", "sd_","^se$", "_se$", "_se_", "^se_","SE","cv","CV")
     miss_parms <- c()
     out_list <- list()
     # add progress bar for each SS3 variable
@@ -258,7 +269,7 @@ convert_output <- function(
       svMisc::progress(i,)
       # setTxtProgressBar(pb,i)
       # Start processing data frame
-      parm_sel <- param_names[i]
+      parm_sel <- param_names[4]
       extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
       if (!is.data.frame(extract)) {
         miss_parms <- c(miss_parms, parm_sel)
@@ -279,7 +290,7 @@ convert_output <- function(
           df3 <- df1[-c(1:rownum),]
           colnames(df3) <- tolower(row)
           # Reformat data frame
-          if (any(colnames(df3) %in% c("Yr", "yr", "year"))) {
+          if (any(colnames(df3) %in% c("Yr", "yr"))) {
             df3 <- df3 |>
               dplyr::rename(year = yr)
           }
@@ -348,7 +359,7 @@ convert_output <- function(
             } else if (length(intersect(errors, colnames(df4))) == 1) {
               df4 <- df4[-grep(paste(errors, "_", collapse = "|", sep = ""), df4$label),]
             } else {
-              df4 <- df4 |>
+              df42 <- df4 |>
                 tidyr::pivot_wider(
                   names_from = label,
                   values_from = estimate,
