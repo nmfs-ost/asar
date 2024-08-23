@@ -72,44 +72,45 @@ convert_output <- function(
   if(!file.exists(output.file)){
     stop("output file path is invalid.")
   }
-    # read SS3 report file
-    # Associated function to extract columns for table - from r4ss
-    get_ncol <- function(file, skip = 0) {
-      nummax <- max(utils::count.fields(file,
-        skip = skip, quote = "",
-        comment.char = ""
-      )) + 1
-      return(nummax)
-    }
-    # Step 1 identify and extract breaks in output
-    # Function to extract rows, identify the dfs, and clean them up
-    SS3_extract_df <- function(dat, label) {
-      # Locate the row containing the specified value from the df
-      value_row <- which(apply(dat, 1, function(row) any(row == label)))[2]
-
-      # If the parameter value is not found, return NA
-      if (is.na(value_row)) {
-        message("Label not found in data frame.")
-        return(NA)
-      }
-      # Search for the next blank row after the value
-      next_blank <- which(apply(dat, 1, function(row) all(is.na(row) | row == "" | row == "-" | row == "#")) & (seq_len(nrow(dat)) > value_row))[1]
-      if(is.na(next_blank)){
-        next_blank <- nrow(dat)
-      }
-      # Combine the rows surrounding the selected metric from the output table
-      rows <- c(value_row, next_blank)
-
-      # Extract the metric using the rows from above as a guide and clean up empty columns
-      clean_df <- dat[rows[1]:(rows[2] - 1), ] |>
-        naniar::replace_with_na_all(condition = ~ .x == "")
-      clean_df <- Filter(function(x) !all(is.na(x)), clean_df)
-
-      return(clean_df)
-    }
 
     # Convert SS3 output Report.sso file
     if (model %in% c("ss3", "SS3")) {
+      # read SS3 report file
+      # Associated function to extract columns for table - from r4ss
+      get_ncol <- function(file, skip = 0) {
+        nummax <- max(utils::count.fields(file,
+                                          skip = skip, quote = "",
+                                          comment.char = ""
+        )) + 1
+        return(nummax)
+      }
+      # Step 1 identify and extract breaks in output
+      # Function to extract rows, identify the dfs, and clean them up
+      SS3_extract_df <- function(dat, label) {
+        # Locate the row containing the specified value from the df
+        value_row <- which(apply(dat, 1, function(row) any(row == label)))[2]
+
+        # If the parameter value is not found, return NA
+        if (is.na(value_row)) {
+          message("Label not found in data frame.")
+          return(NA)
+        }
+        # Search for the next blank row after the value
+        next_blank <- which(apply(dat, 1, function(row) all(is.na(row) | row == "" | row == "-" | row == "#")) & (seq_len(nrow(dat)) > value_row))[1]
+        if(is.na(next_blank)){
+          next_blank <- nrow(dat)
+        }
+        # Combine the rows surrounding the selected metric from the output table
+        rows <- c(value_row, next_blank)
+
+        # Extract the metric using the rows from above as a guide and clean up empty columns
+        clean_df <- dat[rows[1]:(rows[2] - 1), ] |>
+          naniar::replace_with_na_all(condition = ~ .x == "")
+        clean_df <- Filter(function(x) !all(is.na(x)), clean_df)
+
+        return(clean_df)
+      }
+
       # warning("This functions only operates with Stock Synthesis version 3.30 and newer.")
       # question1 <- readline("Would you like to proceed? (Y/N)")
       # if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
@@ -258,7 +259,7 @@ convert_output <- function(
     # Create list of parameters that were not found in the output file
     # 1,4,10,17,19,20,22,32,37
     factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo","growth_pattern", "gp")
-    errors <- c("StdDev","^sd$", "_sd", "_sd_", "sd_","^se$", "_se$", "_se_", "^se_","SE","cv","CV")
+    errors <- c("StdDev","sd","se","SE","cv","CV")
     miss_parms <- c()
     out_list <- list()
     # add progress bar for each SS3 variable
@@ -266,11 +267,11 @@ convert_output <- function(
     # Start loop over variables
     for (i in 1:length(param_names)) {
       # Indication for progress bar
-      svMisc::progress(i,)
-      # setTxtProgressBar(pb,i)
+      # svMisc::progress(i,)
       # Start processing data frame
-      parm_sel <- param_names[4]
+      parm_sel <- param_names[i]
       extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
+      message("Processed ", parm_sel)
       if (!is.data.frame(extract)) {
         miss_parms <- c(miss_parms, parm_sel)
         next
@@ -434,11 +435,8 @@ convert_output <- function(
             message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
             # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
             df5 <- dplyr::select(df5, -c(diff))
-            # out_new <- rbind(out_new, df5)
             out_list[[parm_sel]] <- df5
           } else {
-            # df5[setdiff(tolower(names(out_new)), tolower(names(df5)))] <- NA
-            # out_new <- rbind(out_new, df5)
             out_list[[parm_sel]] <- df5
           }
         } else if (parm_sel %in% std2) {
@@ -494,15 +492,14 @@ convert_output <- function(
               dplyr::rename(season = seas)
           }
           # Add to new dataframe
+          df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
           if (ncol(out_new) < ncol(df4)){
-            diff <- setdiff(names(out_new), names(df4))
+            diff <- setdiff(names(df4), names(out_new))
             message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
             # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
             df4 <- dplyr::select(df4, -tidyselect::all_of(diff))
             out_list[[parm_sel]] <- df4
           } else {
-            df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
-            # out_new <- rbind(out_new, df4)
             out_list[[parm_sel]] <- df4
           }
         } else if (parm_sel %in% cha) {
@@ -519,7 +516,14 @@ convert_output <- function(
                           growth_pattern = gp_val$X3,
                           module_name = parm_sel)
           df2[setdiff(tolower(names(out_new)), tolower(names(df2)))] <- NA
-          out_list[[parm_sel]] <- df2
+          if (ncol(out_new) < ncol(df2)){
+            diff <- setdiff(names(df2), names(out_new))
+            message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
+            df2 <- dplyr::select(df2, -tidyselect::all_of(diff))
+            out_list[[parm_sel]] <- df2
+          } else {
+            out_list[[parm_sel]] <- df2
+          }
         # } else if (parm_sel %in% rand) {
         #   miss_parms <- c(miss_parms, parm_sel)
         #   next
@@ -609,11 +613,8 @@ convert_output <- function(
             message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
             # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
             df4 <- dplyr::select(df4, -tidyselect::all_of(diff))
-            # out_new <- rbind(out_new, df4)
             out_list[[parm_sel]] <- df4
           } else {
-            # df5[setdiff(tolower(names(out_new)), tolower(names(df5)))] <- NA
-            # out_new <- rbind(out_new, df4)
             out_list[[parm_sel]] <- df4
           }
         # } else if (parm_sel %in% nn) {
@@ -626,8 +627,8 @@ convert_output <- function(
       } # close if param is in output file
       # Close progress bar for iteration
       # close(pb)
-    Sys.sleep(0.01)
-    if(i == max(length(param_names))) cat("Done! \n")
+    # Sys.sleep(0.01)
+    # if(i == max(length(param_names))) cat("Done! \n")
     } # close loop
     if(length(miss_parms)>0){
       message("Some parameters were not found or included in the output file. The inital release of this converter only inlcudes to most necessary parameters and values. The following parameters were not added into the new output file: \n", paste(miss_parms, collapse = "\n"))
