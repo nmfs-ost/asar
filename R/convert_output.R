@@ -874,11 +874,11 @@ convert_output <- function(
                                                      # grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(ex, paste(fleet_names,collapse="|")),
                                                      TRUE ~ NA),
                             # Number after fleet name is what? variable among df?
-                            age = dplyr::case_when(grepl("[0-9]$", label) ~ stringr::str_extract(label, "[0-9]$"),
-                                                   TRUE ~ NA)
-                            # label = dplyr::case_when(grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(ex, paste("^(.*)", fleet_names, "[0-9]", sep = "",collapse = "|")),
-                            #                          grepl(paste(fleet_names, "[0-9$]", collapse = "|"), label) ~ stringr::str_extract(label, "[0-9]$"),
-                            #                          TRUE ~ label)
+                            age = dplyr::case_when(grepl("[0-9]+$", label) & stringr::str_extract(label, "[0-9]+$") < 30 ~ stringr::str_extract(label, "[0-9]+$"),
+                                                   TRUE ~ NA),
+                            label = dplyr::case_when(stringr::str_extract(label, "[0-9]+$") == 0 ~ label,
+                                                     stringr::str_extract(label, "[0-9]+$") < 30 ~ stringr::str_remove(label, "[0-9]+$"),
+                                                     TRUE ~ label)
               )
           } else if (any(grepl("[0-9]$", unique(df2$label)))) {
             df2 <- df2 |>
@@ -887,7 +887,8 @@ convert_output <- function(
                             age = dplyr::case_when(grepl("[0-9]+$", label) & stringr::str_extract(label, "[0-9]+$") < 30 ~ stringr::str_extract(label, "[0-9]+$"),
                                                    TRUE ~ NA),
                             # label_init = label,
-                            label = dplyr::case_when(stringr::str_extract(label, "[0-9]+$") < 30 ~ stringr::str_remove(label, "[0-9]+$"),
+                            label = dplyr::case_when(stringr::str_extract(label, "[0-9]+$") == 0 ~ label,
+                                                     stringr::str_extract(label, "[0-9]+$") < 30 ~ stringr::str_remove(label, "[0-9]+$"),
                                                      TRUE ~ label)
               )
           } else {
