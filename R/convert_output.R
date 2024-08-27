@@ -24,7 +24,9 @@ convert_output <- function(
     output.file = NULL,
     input.file = NULL,
     outdir = NULL,
-    model = NULL) {
+    model = NULL,
+    fleet_names = NULL) {
+
   # Blank dataframe and set up to mold output into
   out_new <- data.frame(
     label = NA,
@@ -638,7 +640,7 @@ convert_output <- function(
     out_new <- Reduce(rbind, out_list)
   } # close SS3 if statement
 
-  if (model == "bam") {
+  if (model %in% c("bam", "BAM")) {
     # check fleet names are input
     if (is.null(fleet_names)) {
       message("No fleet names were added as an argument. Fleets will not be extracted from the data.")
@@ -882,10 +884,11 @@ convert_output <- function(
             df2 <- df2 |>
               dplyr::mutate(fleet = NA,
                             # Number after fleet name is what? variable among df?
-                            age = dplyr::case_when(grepl("[0-9]$", label) ~ stringr::str_extract(label, "[0-9]$"),
+                            age = dplyr::case_when(grepl("[0-9]+$", label) & stringr::str_extract(label, "[0-9]+$") < 30 ~ stringr::str_extract(label, "[0-9]+$"),
                                                    TRUE ~ NA),
                             # label_init = label,
-                            label = stringr::str_remove(label, ".[0-9]+$")
+                            label = dplyr::case_when(stringr::str_extract(label, "[0-9]+$") < 30 ~ stringr::str_remove(label, "[0-9]+$"),
+                                                     TRUE ~ label)
               )
           } else {
             df2 <- df2 |>
