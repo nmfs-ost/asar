@@ -740,20 +740,22 @@ convert_output <- function(
                                                        # grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(ex, paste(fleet_names,collapse="|")),
                                                        TRUE ~ NA),
                               # Number after fleet name is what? variable among df?
-                              age = dplyr::case_when(grepl("[0-9]$", label) ~ stringr::str_extract(label, "[0-9]$"),
-                                                     TRUE ~ NA)
-                              # label = dplyr::case_when(grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(ex, paste("^(.*)", fleet_names, "[0-9]", sep = "",collapse = "|")),
-                              #                          grepl(paste(fleet_names, "[0-9$]", collapse = "|"), label) ~ stringr::str_extract(label, "[0-9]$"),
-                              #                          TRUE ~ label)
+                              age = dplyr::case_when(grepl("[0-9]+$", label) & stringr::str_extract(label, "[0-9]+$") < 30 ~ stringr::str_extract(label, "[0-9]+$"),
+                                                     TRUE ~ NA),
+                              label = dplyr::case_when(as.numeric(stringr::str_extract(label, "[0-9]+$")) == 0 ~ label,
+                                                       as.numeric(stringr::str_extract(label, "[0-9]+$")) < 30 ~ stringr::str_remove(label, "[0-9]+$"),
+                                                       TRUE ~ label)
                 )
             } else if (any(grepl("[0-9]$", unique(df2$label)))) {
               df2 <- df2 |>
                 dplyr::mutate(fleet = NA,
                               # Number after fleet name is what? variable among df?
-                              age = dplyr::case_when(grepl("[0-9]$", label) ~ stringr::str_extract(label, "[0-9]$"),
+                              age = dplyr::case_when(grepl("[0-9]+$", label) & stringr::str_extract(label, "[0-9]+$") < 30 ~ stringr::str_extract(label, "[0-9]+$"),
                                                      TRUE ~ NA),
                               # label_init = label,
-                              label = stringr::str_remove(label, ".[0-9]+$")
+                              label = dplyr::case_when(as.numeric(stringr::str_extract(label, "[0-9]+$")) == 0 ~ label,
+                                                       as.numeric(stringr::str_extract(label, "[0-9]+$")) < 30 ~ stringr::str_remove(label, "[0-9]+$"),
+                                                       TRUE ~ label)
                 )
             } else {
               df2 <- df2 |>
@@ -851,6 +853,17 @@ convert_output <- function(
           out_list[[names(extract)]] <- new_df
         } else if(any(sapply(extract[[1]], is.vector))){ # all must be a vector to work - so there must be conditions for dfs with a mix
           df <- data.frame(extract[[1]])
+          if(max(as.numeric(row.names(df))) < 1800) {
+            fac <- "age"
+          } else {
+            fac <- "year"
+          }
+          if(any((colnames(df) %in% c("age","year")))) {
+            df <- df
+          } else {
+            df <- tibble::rowid_to_column(df, var = fac) |>
+              dplyr::mutate(age = as.character(age))
+          }
           if (length(intersect(colnames(df), c(factors, errors))) > 0) {
             df2 <- df |>
               tidyr::pivot_longer(
@@ -874,10 +887,16 @@ convert_output <- function(
                                                      # grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(ex, paste(fleet_names,collapse="|")),
                                                      TRUE ~ NA),
                             # Number after fleet name is what? variable among df?
-                            age = dplyr::case_when(grepl("[0-9]+$", label) & stringr::str_extract(label, "[0-9]+$") < 30 ~ stringr::str_extract(label, "[0-9]+$"),
-                                                   TRUE ~ NA),
-                            label = dplyr::case_when(stringr::str_extract(label, "[0-9]+$") == 0 ~ label,
-                                                     stringr::str_extract(label, "[0-9]+$") < 30 ~ stringr::str_remove(label, "[0-9]+$"),
+                            age = dplyr::case_when(is.na(age) & grepl("_age[0-9]+_", label) ~ stringr::str_extract(label, "(?<=age:?)[0-9]+"),
+                                                   is.na(age) & grepl("[0-9]+$", label) ~ stringr::str_extract(label, "[0-9]+$"), # this is not age
+                                                   TRUE ~ age),
+                            label = dplyr::case_when(grepl("_age[0-9]_", label) & grepl(paste("_", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_age[0-9]+_", fleet_names, sep = "", collapse = "|"), ""),
+                                                     grepl("_age[0-9]_", label) ~ stringr::str_replace(label, "_age[0-9]+_", ""),
+                                                     grepl(paste("_", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_", fleet_names, sep = "", collapse = "|"), ""),
+                                                     grepl(paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), ""),
+                                                     grepl(paste(".", fleet_names, "d[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "d[0-9]+$", sep = "", collapse = "|"), ""),
+                                                     grepl(paste(".", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, sep = "", collapse = "|"), ""),
+                                                     grepl(paste(fleet_names, "[0-9]+$", collapse = "|"), label) ~ stringr::str_replace(label, "[0-9]+$", ""),
                                                      TRUE ~ label)
               )
           } else if (any(grepl("[0-9]$", unique(df2$label)))) {
@@ -887,8 +906,9 @@ convert_output <- function(
                             age = dplyr::case_when(grepl("[0-9]+$", label) & stringr::str_extract(label, "[0-9]+$") < 30 ~ stringr::str_extract(label, "[0-9]+$"),
                                                    TRUE ~ NA),
                             # label_init = label,
-                            label = dplyr::case_when(stringr::str_extract(label, "[0-9]+$") == 0 ~ label,
-                                                     stringr::str_extract(label, "[0-9]+$") < 30 ~ stringr::str_remove(label, "[0-9]+$"),
+                            label = dplyr::case_when(as.numeric(stringr::str_extract(label, "[0-9]+$")) == 0 ~ label,
+                                                     # issue here that stocks with ages > 29 will not be extracted - maybe add condition if F, t or other preceeeds the number then don't extract?
+                                                     as.numeric(stringr::str_extract(label, "[0-9]+$")) < 30 ~ stringr::str_remove(label, "[0-9]+$"),
                                                      TRUE ~ label)
               )
           } else {
