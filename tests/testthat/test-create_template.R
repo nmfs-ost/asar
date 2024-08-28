@@ -104,49 +104,51 @@ test_that("create_template() creates correct files", {
 })
 
 test_that("warning is triggered for missing models", {
-
   # Test if warning is triggered when resdir is NULL and results or model name is not defined
-  expect_warning(create_template(
-    new_template = TRUE,
-    format = "pdf",
-    office = "NWFSC",
-    species = "Dover sole",
-    spp_latin = "Pomatomus saltatrix",
-    year = 2010,
-    author = c("John Snow", "Danny Phantom", "Patrick Star"),
-    include_affiliation = TRUE,
-    parameters = FALSE,
-    resdir = NULL,
-    model_results = NULL,
-    model = NULL
-  ),
-  regexp = "Results file or model name not defined.")
+  expect_warning(
+    create_template(
+      new_template = TRUE,
+      format = "pdf",
+      office = "NWFSC",
+      species = "Dover sole",
+      spp_latin = "Pomatomus saltatrix",
+      year = 2010,
+      author = c("John Snow", "Danny Phantom", "Patrick Star"),
+      include_affiliation = TRUE,
+      parameters = FALSE,
+      resdir = NULL,
+      model_results = NULL,
+      model = NULL
+    ),
+    regexp = "Results file or model name not defined."
+  )
 })
 
 test_that("warning is triggered for existing files", {
-
   # Test if warning is triggered when there are existing files in the provided location
   file_path <- tempfile(tmpdir = getwd())
   on.exit(unlink(file_path), add = TRUE)
   ifelse(!file.exists(file_path),
-         file.create(file_path, showWarnings = FALSE),
-         FALSE)
-  expect_warning(create_template(
-    new_template = TRUE,
-    format = "pdf",
-    office = "NWFSC",
-    species = "Dover sole",
-    spp_latin = "Pomatomus saltatrix",
-    year = 2010,
-    author = c("John Snow", "Danny Phantom", "Patrick Star"),
-    include_affiliation = TRUE,
-    parameters = FALSE,
-    resdir = NULL,
-    model_results = "Report.sso",
-    model = "SS3"
-  ),
-  regexp = "There are files in this location.")
-
+    file.create(file_path, showWarnings = FALSE),
+    FALSE
+  )
+  expect_warning(
+    create_template(
+      new_template = TRUE,
+      format = "pdf",
+      office = "NWFSC",
+      species = "Dover sole",
+      spp_latin = "Pomatomus saltatrix",
+      year = 2010,
+      author = c("John Snow", "Danny Phantom", "Patrick Star"),
+      include_affiliation = TRUE,
+      parameters = FALSE,
+      resdir = NULL,
+      model_results = "Report.sso",
+      model = "SS3"
+    ),
+    regexp = "There are files in this location."
+  )
 })
 
 
