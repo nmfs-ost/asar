@@ -23,9 +23,13 @@ add_chunk <- function(
     add_option = FALSE,
     chunk_op = NULL) {
   chunk <- paste0(
-    "```{r} \n",
+    "```{r} \n")
+  if (!is.null(label)) {
+    chunk <- paste0(chunk,
+                   "#| label: ", "'", label, "'", "\n")
+  }
     # Add output options
-    if (!is.null(label)) "#| label: ", "'", label, "'", "\n",
+  chunk <- paste0(chunk,
     "#| echo: ", echo, " \n",
     "#| warning: ", warnings, " \n",
     "#| eval: ", eval, " \n"
