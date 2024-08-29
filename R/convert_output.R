@@ -970,11 +970,6 @@ convert_output <- function(
         warning(paste(names(extract), " not compatible.", sep = ""))
       } # close if statement
     } # close loop over objects listed in dat file
-
-    # Combind DFs into one
-    out_new <- Reduce(rbind, out_list)
-
-
   #### WHAM ####
   } else if (model == "wham") {
     # This is how Bai read the ASAP output
@@ -991,6 +986,8 @@ convert_output <- function(
   } else {
     warning("Model not compatible.")
   }
+  # Combind DFs into one
+  out_new <- Reduce(rbind, out_list)
   out_new
 } # close function
 
