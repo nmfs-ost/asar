@@ -79,7 +79,7 @@ convert_output <- function(
     stop("output file path is invalid.")
   }
 
-  #### SS3 ####
+    #### SS3 ####
     # Convert SS3 output Report.sso file
     if (model %in% c("ss3", "SS3")) {
       # read SS3 report file
@@ -269,6 +269,7 @@ convert_output <- function(
     errors <- c("StdDev","sd","se","SE","cv","CV")
     miss_parms <- c()
     out_list <- list()
+    ### SS3 loop ####
     # add progress bar for each SS3 variable
     # pb = txtProgressBar(min = 0, max = length(param_names), initial = 0)
     # Start loop over variables
@@ -324,7 +325,8 @@ convert_output <- function(
                 !tidyselect::any_of(c(factors, errors)),
                 names_to = "label",
                 values_to = "estimate") |> # , colnames(dplyr::select(df3, tidyselect::matches(errors)))
-              dplyr::mutate(area = dplyr::case_when(grepl("_[0-9]_", label) ~ stringr::str_extract(label, "(?<=_)[0-9]+"),
+              dplyr::mutate(area = dplyr::case_when(grepl("?_area_[0-9]_?", label) ~ stringr::str_extract(label, "(?<=area_)[0-9]+"),
+                                                    grepl("_[0-9]_", label) ~ stringr::str_extract(label, "(?<=_)[0-9]+"),
                                                     grepl(":_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]+"),
                                                     grepl(":_[0-9][0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9][0-9]+"),
                                                     TRUE ~ NA),
@@ -338,7 +340,9 @@ convert_output <- function(
                             growth_pattern = dplyr::case_when(grepl("_gp_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
                                                               grepl("_gp:[0-9]$", label) ~ stringr::str_extract(label, "(?<=:)[0-9]$"),
                                                               grepl("_gp:[0-9][0-9]$", label) ~ stringr::str_extract(label, "(?<=:)[0-9][0-9]$"),
-                                                              TRUE ~ NA))
+                                                              TRUE ~ NA),
+                            month = dplyr::case_when(grepl("_month_[0-9]+$", label) ~ stringr::str_extract(label, "(?<=month_)[0-9]+$"),
+                                                     TRUE ~ NA))
 
             if("fleet" %in% colnames(df3)){
               df4 <- df4 |>
@@ -352,7 +356,10 @@ convert_output <- function(
                 dplyr::mutate(fleet = dplyr::case_when(grepl("):_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
                                                        grepl("):_[0-9][0-9]+$", label) ~ stringr::str_extract(label, "(?<=_)[0-9][0-9]$"),
                                                        TRUE ~ NA),
-                              label = stringr::str_extract(label, "^.*?(?=_\\d|_gp|_fem|_mal|_sx|:|$)"))
+                              label = dplyr::case_when(grepl("?_month_[0-9]_?", label) ~ stringr::str_replace(label, "_?month_\\d?", ""),
+                                                       grepl("?_area_[0-9]_?", label) ~ stringr::str_replace(label, "_?area_\\d?", ""),
+                                                       TRUE ~ stringr::str_extract(label, "^.*?(?=_\\d|_gp|_fem|_mal|_sx|:|$)"))
+                              )
             }
           } else {
             warning("Data frame not compatible.")
@@ -366,8 +373,11 @@ convert_output <- function(
               df4 <- df4
             } else if (length(intersect(errors, colnames(df4))) == 1) {
               df4 <- df4[-grep(paste(errors, "_", collapse = "|", sep = ""), df4$label),]
+            } else if (parm_sel == "MGparm_By_Year_after_adjustments") { # this is too specific
+              df4 <- df4
+              message("Error values are present, but are unique to the data frame and not to a selected parameter.")
             } else {
-              df42 <- df4 |>
+              df4 <- df4 |>
                 tidyr::pivot_wider(
                   names_from = label,
                   values_from = estimate,
@@ -381,6 +391,7 @@ convert_output <- function(
                 ) |>
                 dplyr::select(tidyselect::any_of(c("label", "estimate", factors, errors, err_names)))
               if(length(err_names) > 1) {
+                warning("There are multiple reported error metrics.")
                 if(any(grepl(paste(err_names, collapse = "|"), colnames(df4)))){
                 df4 <- df4 |>
                   dplyr::select(-tidyselect::all_of(c(err_names[2:length(err_names)])))
