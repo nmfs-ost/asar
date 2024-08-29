@@ -186,7 +186,7 @@ convert_output <- function(
       "LEN_SELEX",
       "selparm(Size)_By_Year_after_adjustments",
       "selparm(Age)_By_Year_after_adjustments",
-      "SELEX_database",
+      # "SELEX_database",
       # "AGE_AGE_KEY",
       # "AGE_LENGTH_KEY",
       # "AGE_SPECIFIC_K",
@@ -239,7 +239,7 @@ convert_output <- function(
              # "FIT_LEN_COMPS",
              # "FIT_AGE_COMPS",
              # "FIT_SIZE_COMPS",
-             "SELEX_database",
+             # "SELEX_database",
              # "Biology_at_age_in_endyr",
              # "Growth_Parameters",
              "Kobe_Plot")
