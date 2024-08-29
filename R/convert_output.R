@@ -1,9 +1,8 @@
 #' Convert Output
 #'
-#' Format stock assessment output files. Function is unfinished
+#' Format stock assessment output files to a standardized format.
 #'
 #' @param output.file name of the file containing assessment model output. This is the Report.sso file for SS3, the rdat file for BAM, the...
-#' @param input.file name of the input file for running the assessment model
 #' @param outdir output directory folder
 #' @param model assessment model used in evaluation;
 #'              "ss3", "bam", "asap", "fims", "amak", "ms-java", "wham", "mas", "asap"
@@ -16,17 +15,20 @@
 #'         for application in building a stock assessment reports and to easily
 #'         adapt results among regional assessments. The resulting object is
 #'         simply a transformed and machine readable version of a model output file.
+#'         There are 2 options for adding data to the function. (1) Add the full
+#'         path with the file name in output.file or (2) output.file is the file
+#'         name and outdir is the path to the file without a trailing forward slash.
 #'
 #'
 #' @export
 #'
 convert_output <- function(
     output.file = NULL,
-    input.file = NULL,
     outdir = NULL,
     model = NULL,
     fleet_names = NULL) {
 
+  #### out_new ####
   # Blank dataframe and set up to mold output into
   out_new <- data.frame(
     label = NA,
@@ -77,6 +79,7 @@ convert_output <- function(
     stop("output file path is invalid.")
   }
 
+  #### SS3 ####
     # Convert SS3 output Report.sso file
     if (model %in% c("ss3", "SS3")) {
       # read SS3 report file
@@ -638,9 +641,9 @@ convert_output <- function(
       message("Some parameters were not found or included in the output file. The inital release of this converter only inlcudes to most necessary parameters and values. The following parameters were not added into the new output file: \n", paste(miss_parms, collapse = "\n"))
     }
     out_new <- Reduce(rbind, out_list)
-  } # close SS3 if statement
 
-  if (model %in% c("bam", "BAM")) {
+  #### BAM ####
+  } else if (model %in% c("bam", "BAM")) {
     # check fleet names are input
     if (is.null(fleet_names)) {
       message("No fleet names were added as an argument. Fleets will not be extracted from the data.")
@@ -656,7 +659,6 @@ convert_output <- function(
     # argument for function when model == BAM
     # fleet_names <- c("cl", "cL","cp","mrip","ct", "hb", "HB", "comm","Mbft","CVID")
 
-    #### Start loop ####
     # Extract data from list fit to output df
     # Loop over all items to output each object/transform
     # Not transforming or inclusing info chunk
@@ -664,11 +666,11 @@ convert_output <- function(
       extract <- dat[p]
       # is the object class matrix, list, or vector
       if (is.vector(extract[[1]])) {
-        if(is.list(extract[[1]])){ # indicates vector and list
-          if(any(sapply(extract[[1]], is.matrix))) {
+        if (is.list(extract[[1]])) { # indicates vector and list
+          if (any(sapply(extract[[1]], is.matrix))) {
             extract_list <- list()
-            for(i in 1:length(extract[[1]])){
-              if(is.vector(extract[[1]][[i]])) {
+            for (i in 1:length(extract[[1]])) {
+              if (is.vector(extract[[1]][[i]])) {
                 df <- as.data.frame(extract[[1]][i]) |>
                   tibble::rownames_to_column(var = "age") |>
                   tidyr::pivot_longer(
@@ -715,7 +717,7 @@ convert_output <- function(
             } # close for loop
             new_df <- Reduce(rbind, extract_list)
             out_list[[names(extract)]] <- new_df
-          } else if(any(sapply(extract[[1]], is.vector))){ # all must be a vector to work - so there must be conditions for dfs with a mix
+          } else if (any(sapply(extract[[1]], is.vector))) { # all must be a vector to work - so there must be conditions for dfs with a mix
             df <- data.frame(extract[[1]])
             if (length(intersect(colnames(df), c(factors, errors))) > 0) {
               df2 <- df |>
@@ -851,18 +853,25 @@ convert_output <- function(
           } # close for loop
           new_df <- Reduce(rbind, extract_list)
           out_list[[names(extract)]] <- new_df
-        } else if(any(sapply(extract[[1]], is.vector))){ # all must be a vector to work - so there must be conditions for dfs with a mix
+        } else if(any(sapply(extract[[1]], is.vector))) { # all must be a vector to work - so there must be conditions for dfs with a mix
           df <- data.frame(extract[[1]])
           if(max(as.numeric(row.names(df))) < 1800) {
             fac <- "age"
           } else {
             fac <- "year"
           }
-          if(any((colnames(df) %in% c("age","year")))) {
+          if(any(colnames(df) %in% c("age","year"))) {
             df <- df
           } else {
-            df <- tibble::rowid_to_column(df, var = fac) |>
-              dplyr::mutate(age = as.character(age))
+            if(fac == "year"){
+              df <- tibble::rowid_to_column(df, var = fac) |>
+                dplyr::mutate(year = as.character(year))
+            } else if (fac == "age") {
+              df <- tibble::rowid_to_column(df, var = fac) |>
+                dplyr::mutate(age = as.character(age))
+            } else {
+              warning("not compatible")
+            }
           }
           if (length(intersect(colnames(df), c(factors, errors))) > 0) {
             df2 <- df |>
@@ -882,14 +891,22 @@ convert_output <- function(
               dplyr::mutate(module_name = names(extract))
           }
           if (any(grepl(paste(fleet_names, collapse = "|"), unique(df2$label)))) {
+            if("age" %in% colnames(df2)){
+              df2 <- df2
+            } else {
+              df2 <- df2 |>
+                dplyr::mutate(age = NA)
+            }
             df2 <- df2 |>
               dplyr::mutate(fleet = dplyr::case_when(grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(label, paste(fleet_names,collapse="|")),
-                                                     # grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(ex, paste(fleet_names,collapse="|")),
-                                                     TRUE ~ NA),
+                                                          # grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(ex, paste(fleet_names,collapse="|")),
+                                                          TRUE ~ NA),
                             # Number after fleet name is what? variable among df?
                             age = dplyr::case_when(is.na(age) & grepl("_age[0-9]+_", label) ~ stringr::str_extract(label, "(?<=age:?)[0-9]+"),
                                                    is.na(age) & grepl("[0-9]+$", label) ~ stringr::str_extract(label, "[0-9]+$"), # this is not age
                                                    TRUE ~ age),
+                            # area = dplyr::case_when(is.na(age) & grepl("[0-9]+$", label) ~ stringr::str_extract(label, "[0-9]+$"), # this is not age
+                            #                         TRUE ~ NA),
                             label = dplyr::case_when(grepl("_age[0-9]_", label) & grepl(paste("_", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_age[0-9]+_", fleet_names, sep = "", collapse = "|"), ""),
                                                      grepl("_age[0-9]_", label) ~ stringr::str_replace(label, "_age[0-9]+_", ""),
                                                      grepl(paste("_", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_", fleet_names, sep = "", collapse = "|"), ""),
@@ -957,15 +974,23 @@ convert_output <- function(
     # Combind DFs into one
     out_new <- Reduce(rbind, out_list)
 
-  } # close BAM if statement
 
-  if (model == "asap") {
+  #### WHAM ####
+  } else if (model == "wham") {
     # This is how Bai read the ASAP output
     # asap_output conversion written by Bai Li
     # asap_output <- dget(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = ""), "asap3.rdat"))
     # setwd(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = "")))
     # asap_std <- readRep("asap3", suffix = ".std")
-  } # close asap if statement
+    stop("Model not currently compatible.")
+
+  #### AMAK ####
+  } else if (model == "amak"){
+    stop("Model not currently compatible.")
+
+  } else {
+    warning("Model not compatible.")
+  }
   out_new
 } # close function
 
