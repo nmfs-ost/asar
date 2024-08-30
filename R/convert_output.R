@@ -278,14 +278,15 @@ convert_output <- function(
       # svMisc::progress(i,)
       # Start processing data frame
       parm_sel <- param_names[i]
-      extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
-      message("Processed ", parm_sel)
-      if (!is.data.frame(extract)) {
-        miss_parms <- c(miss_parms, parm_sel)
-        next
-      } else {
+      # if (!is.data.frame(extract)) {
+      #   miss_parms <- c(miss_parms, parm_sel)
+      #   next
+      # } else {
         ##### STD ####
         if(parm_sel %in% std){
+          message("Processing ", parm_sel)
+          extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
+
           # remove first row - naming
           df1 <- extract[-1,]
           # Find first row without NAs = headers
@@ -460,6 +461,9 @@ convert_output <- function(
           }
           #### STD2 ####
         } else if (parm_sel %in% std2) {
+          message("Processing ", parm_sel)
+          extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
+
           # 4, 8
           # remove first row - naming
           df1 <- extract[-1,]
@@ -559,6 +563,8 @@ convert_output <- function(
         #   next
           ##### aa.al ####
         } else if (parm_sel %in% aa.al) {
+          message("Processing ", parm_sel)
+          extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
           # remove first row - naming
           df1 <- extract[-1,]
           # Find first row without NAs = headers
@@ -649,10 +655,11 @@ convert_output <- function(
         #   miss_parms <- c(miss_parms, parm_sel)
         #   next
         } else {
+          message("Processing ", parm_sel)
           miss_parms <- c(miss_parms, parm_sel)
           next
         }
-      } # close if param is in output file
+      # } # close if param is in output file
       # Close progress bar for iteration
       # close(pb)
     # Sys.sleep(0.01)
