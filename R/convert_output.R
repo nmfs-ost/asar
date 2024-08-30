@@ -265,12 +265,17 @@ convert_output <- function(
     for (i in 1:length(param_names)) {
       # Processing data frame
       parm_sel <- param_names[i]
+      if(parm_sel %in% c(std, std2, cha, rand, aa.al)){
+        message("Processing ", parm_sel)
+        extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
+      if (!is.data.frame(extract)) {
+        miss_parms <- c(miss_parms, parm_sel)
+        message("Skipped ", parm_sel)
+        next
+      } else {
         ##### STD ####
       # 1,4,10,17,19,36
         if(parm_sel %in% std){
-          message("Processing ", parm_sel)
-          extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
-
           # remove first row - naming
           df1 <- extract[-1,]
           # Find first row without NAs = headers
@@ -445,9 +450,6 @@ convert_output <- function(
           }
           #### STD2 ####
         } else if (parm_sel %in% std2) {
-          message("Processing ", parm_sel)
-          extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
-
           # 4, 8
           # remove first row - naming
           df1 <- extract[-1,]
@@ -548,11 +550,9 @@ convert_output <- function(
         # } else if (parm_sel %in% info) {
         #   miss_parms <- c(miss_parms, parm_sel)
         #   next
-          ##### aa.al ####
+        #### aa.al ####
         } else if (parm_sel %in% aa.al) {
           # 8,9,11,12,13,14,15,16,28,29
-          message("Processing ", parm_sel)
-          extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
           # remove first row - naming
           df1 <- extract[-1,]
           # Find first row without NAs = headers
@@ -647,7 +647,11 @@ convert_output <- function(
           miss_parms <- c(miss_parms, parm_sel)
           next
         }
-      # } # close if param is in output file
+      } # close if param is in output file
+      } else {
+        message("Skipped ", parm_sel)
+        next
+      }
     } # close loop
     if(length(miss_parms)>0){
       message("Some parameters were not found or included in the output file. The inital release of this converter only inlcudes to most necessary parameters and values. The following parameters were not added into the new output file: \n", paste(miss_parms, collapse = "\n"))
