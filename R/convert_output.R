@@ -604,7 +604,7 @@ convert_output <- function(
               dplyr::rename(subseason = subseas)
           }
           if("label" %in% colnames(df3)){
-            df3 <- dplyr::select(df3, -"label")
+            df3 <- dplyr::select(df3, -tidyselect::any_of("label"))
           }
           # Pivot table long
           other_factors <- c("bio_pattern", "birthseas", "settlement", "morph", "beg/mid", "type", "label", "factor", "platoon", "month","sexes","part","bin","kind")
