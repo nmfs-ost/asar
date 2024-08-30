@@ -438,7 +438,7 @@ convert_output <- function(
             diff <- setdiff(names(df5), names(out_new))
             message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
             # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
-            df5 <- dplyr::select(df5, -c(diff))
+            df5 <- dplyr::select(df5, -tidyselect::all_of(c(diff)))
             out_list[[parm_sel]] <- df5
           } else {
             out_list[[parm_sel]] <- df5
@@ -495,6 +495,7 @@ convert_output <- function(
               dplyr::select(-tidyselect::all_of(repd_name))
             colnames(df3) <- tolower(names(df3))
           }
+          if("age_bins" %in% colnames(df3)) df3 <- dplyr::rename(df3, age = age_bins)
           df4 <- df3 |>
             tidyr::pivot_longer(
               cols = -intersect(c(factors, errors, std2_id, "n_obs"), colnames(df3)),
@@ -517,6 +518,7 @@ convert_output <- function(
           } else {
             out_list[[parm_sel]] <- df4
           }
+          ##### cha ####
         } else if (parm_sel %in% cha) {
           # Only one keyword characterized as this
           area_row <- which(apply(extract, 1, function(row) any(row == "Area:")))
@@ -539,6 +541,7 @@ convert_output <- function(
           } else {
             out_list[[parm_sel]] <- df2
           }
+          ##### rand ####
         # } else if (parm_sel %in% rand) {
         #   miss_parms <- c(miss_parms, parm_sel)
         #   next
