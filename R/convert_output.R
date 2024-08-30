@@ -117,25 +117,17 @@ convert_output <- function(
 
         return(clean_df)
       }
-
-      # warning("This functions only operates with Stock Synthesis version 3.30 and newer.")
-      # question1 <- readline("Would you like to proceed? (Y/N)")
-      # if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-        # Read as table
-        dat <- utils::read.table(
-          file = output.file,
-          col.names = 1:get_ncol(output.file),
-          fill = TRUE,
-          quote = "",
-          # colClasses = "character", # reads all data as characters
-          nrows = -1,
-          comment.char = "",
-          blank.lines.skip = FALSE
-        )
-      # } else {
-      #   stop("This function in its current state can not process the data.")
-      # }
-
+      # Read as table
+      dat <- utils::read.table(
+        file = output.file,
+        col.names = 1:get_ncol(output.file),
+        fill = TRUE,
+        quote = "",
+        # colClasses = "character", # reads all data as characters
+        nrows = -1,
+        comment.char = "",
+        blank.lines.skip = FALSE
+      )
       # Check SS3 model version
       vers <- as.numeric(stringr::str_extract(dat[1,1], "[0-9].[0-9][0-9]"))
       if(vers < 3.3){
@@ -270,19 +262,11 @@ convert_output <- function(
     miss_parms <- c()
     out_list <- list()
     ### SS3 loop ####
-    # add progress bar for each SS3 variable
-    # pb = txtProgressBar(min = 0, max = length(param_names), initial = 0)
-    # Start loop over variables
     for (i in 1:length(param_names)) {
-      # Indication for progress bar
-      # svMisc::progress(i,)
-      # Start processing data frame
+      # Processing data frame
       parm_sel <- param_names[i]
-      # if (!is.data.frame(extract)) {
-      #   miss_parms <- c(miss_parms, parm_sel)
-      #   next
-      # } else {
         ##### STD ####
+      # 1,4,10,17,19,36
         if(parm_sel %in% std){
           message("Processing ", parm_sel)
           extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
@@ -563,6 +547,7 @@ convert_output <- function(
         #   next
           ##### aa.al ####
         } else if (parm_sel %in% aa.al) {
+          # 8,9,11,12,13,14,15,16,28,29
           message("Processing ", parm_sel)
           extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
           # remove first row - naming
@@ -660,10 +645,6 @@ convert_output <- function(
           next
         }
       # } # close if param is in output file
-      # Close progress bar for iteration
-      # close(pb)
-    # Sys.sleep(0.01)
-    # if(i == max(length(param_names))) cat("Done! \n")
     } # close loop
     if(length(miss_parms)>0){
       message("Some parameters were not found or included in the output file. The inital release of this converter only inlcudes to most necessary parameters and values. The following parameters were not added into the new output file: \n", paste(miss_parms, collapse = "\n"))
