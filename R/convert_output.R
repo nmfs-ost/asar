@@ -284,6 +284,7 @@ convert_output <- function(
         miss_parms <- c(miss_parms, parm_sel)
         next
       } else {
+        ##### STD ####
         if(parm_sel %in% std){
           # remove first row - naming
           df1 <- extract[-1,]
@@ -457,6 +458,7 @@ convert_output <- function(
           } else {
             out_list[[parm_sel]] <- df5
           }
+          #### STD2 ####
         } else if (parm_sel %in% std2) {
           # 4, 8
           # remove first row - naming
@@ -467,21 +469,28 @@ convert_output <- function(
           # identify first row
           row <- tolower(df2[1,])
           # make row the header names for first df
-          colnames(df1) <- row
+          colnames(df2) <- row
           # find row number that matches 'row'
           # rownum <- prodlim::row.match(row, df1)
           # Subset data frame
-          df1 <- df1[-1,]
+          df2 <- df2[-1,]
           # Defining columns for the grouping
-          if(any(grepl("len_bins", colnames(df1)))){
-            std2_id <- "len_bins"
+          if(any(grepl("len_bins", colnames(df2)))){
+            std2_id = "len_bins"
+          } else if (any(grepl("age_bins", colnames(df2)))) {
+            std2_id = "age_bins"
           } else {
-            std2_id <- "fleet"
+            std2_id = "fleet"
           }
           # pivot data
-          df3 <- df1[-max(nrow(df1)),] |>
+          if(any(grepl(":", df2[max(nrow(df2)),]))){
+            df2 <- df2[-max(nrow(df2)),]
+          } else {
+            df2 <- df2
+          }
+          df3 <- df2 |>
             tidyr::pivot_longer(
-              cols = -intersect(c(factors, errors, "len_bins"), colnames(df1)),
+              cols = -intersect(c(factors, errors, std2_id, "n_obs"), colnames(df2)),
               names_to = "label",
               values_to = "estimate"
             ) |>
@@ -500,7 +509,7 @@ convert_output <- function(
           }
           df4 <- df3 |>
             tidyr::pivot_longer(
-              cols = -intersect(c(factors, errors, "len_bins"), colnames(df1)),
+              cols = -intersect(c(factors, errors, std2_id, "n_obs"), colnames(df3)),
               names_to = "label",
               values_to = "estimate"
             ) |>
@@ -548,6 +557,7 @@ convert_output <- function(
         # } else if (parm_sel %in% info) {
         #   miss_parms <- c(miss_parms, parm_sel)
         #   next
+          ##### aa.al ####
         } else if (parm_sel %in% aa.al) {
           # remove first row - naming
           df1 <- extract[-1,]
