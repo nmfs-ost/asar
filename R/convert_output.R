@@ -123,7 +123,7 @@ convert_output <- function(
         col.names = 1:get_ncol(output.file),
         fill = TRUE,
         quote = "",
-        # colClasses = "character", # reads all data as characters
+        colClasses = "character", # reads all data as characters
         nrows = -1,
         comment.char = "",
         blank.lines.skip = FALSE
@@ -606,6 +606,9 @@ convert_output <- function(
           if("label" %in% colnames(df3)){
             df3 <- dplyr::select(df3, -tidyselect::any_of("label"))
           }
+          # Change all columns to chatacters to a avoid issues in pivoting - this will be changed in final df anyway
+          df3 <- df3 |>
+            dplyr::mutate(dplyr::across(everything(), as.character))
           # Pivot table long
           other_factors <- c("bio_pattern", "birthseas", "settlement", "morph", "beg/mid", "type", "label", "factor", "platoon", "month","sexes","part","bin","kind")
           df4 <- df3 |>
