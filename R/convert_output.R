@@ -489,16 +489,23 @@ convert_output <- function(
         } else if (parm_sel %in% cha) {
           # Only one keyword characterized as this
           area_row <- which(apply(extract, 1, function(row) any(row == "Area:")))
-          area_val <- extract[area_row, 3]
+          area_val <- c(t(extract[area_row, 3:ncol(extract)]))
           gp_row <- which(apply(extract, 1, function(row) any(row == "GP:")))
-          gp_val <- extract[gp_row, 3]
+          gp_val <- c(t(extract[gp_row, 3:ncol(extract)]))
           df1 <- extract[-c(1:4),]
-          colnames(df1) <- c("year","era","estimate")
+          col_name_repl <- paste(parm_sel, "_", area_val, "_", gp_val, sep = "")
+          colnames(df1) <- c("year","era", col_name_repl)
           df2 <- df1 |>
-            dplyr::mutate(label = parm_sel,
-                          area = area_val$X3,
-                          growth_pattern = gp_val$X3,
-                          module_name = parm_sel)
+            tidyr::pivot_longer(
+              cols = -intersect(colnames(df1), c(factors, errors)),
+              names_to = "label",
+              values_to = "estimate"
+            ) |>
+            dplyr::mutate(
+              area = stringr::str_extract(label, "(?<=_)[0-9]+"),
+              growth_pattern = stringr::str_extract(label, "(?<=_)[0-9]+$"),
+              label = stringr::str_extract(label, "^.*?(?=_[0-9]+)")
+            )
           df2[setdiff(tolower(names(out_new)), tolower(names(df2)))] <- NA
           if (ncol(out_new) < ncol(df2)){
             diff <- setdiff(names(df2), names(out_new))
