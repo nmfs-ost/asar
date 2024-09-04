@@ -244,7 +244,7 @@ convert_output <- function(
           # remove first row - naming
           df1 <- extract[-1,]
           # Find first row without NAs = headers
-          df2 <- df1[complete.cases(df1), ]
+          df2 <- df1[stats::complete.cases(df1), ]
           # identify first row
           row <- df2[1,]
           # make row the header names for first df
@@ -358,7 +358,7 @@ convert_output <- function(
                 find_error_value <- function(column_names, to_match_vector){
                   vals <- sapply(column_names, function(col_name) {
                     match <- sapply(to_match_vector, function(err) if (grepl(err, col_name)) err else NA)
-                    na.omit(match)[1]
+                    stats::na.omit(match)[1]
                     })
                   # only unique values and those that intersect with values vector
                   intersect(unique(vals), to_match_vector)
@@ -419,7 +419,7 @@ convert_output <- function(
           # remove first row - naming
           df1 <- extract[-1,]
           # Find first row without NAs = headers
-          df2 <- df1[complete.cases(df1), ]
+          df2 <- df1[stats::complete.cases(df1), ]
           # rotate data
           # identify first row
           row <- tolower(df2[1,])
@@ -528,7 +528,7 @@ convert_output <- function(
           # remove first row - naming
           df1 <- extract[-1,]
           # Find first row without NAs = headers
-          df2 <- df1[complete.cases(df1), ]
+          df2 <- df1[stats::complete.cases(df1), ]
           # identify first row
           row <- df2[1,]
           if(any(row %in% "XX")){

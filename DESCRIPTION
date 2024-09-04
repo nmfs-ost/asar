@@ -18,9 +18,13 @@ Imports:
     naniar,
     officer,
     openxlsx,
+    prodlim,
+    stats,
     stringr,
     svDialogs,
+    tibble,
     tidyr,
+    tidyselect,
     utils
 Suggests: 
     knitr,
