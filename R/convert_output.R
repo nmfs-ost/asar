@@ -580,7 +580,7 @@ convert_output <- function(
           }
           # Change all columns to chatacters to a avoid issues in pivoting - this will be changed in final df anyway
           df3 <- df3 |>
-            dplyr::mutate(dplyr::across(everything(), as.character))
+            dplyr::mutate(dplyr::across(tidyselect::everything(), as.character))
           # Pivot table long
           other_factors <- c("bio_pattern", "birthseas", "settlement", "morph", "beg/mid", "type", "label", "factor", "platoon", "month","sexes","part","bin","kind")
           df4 <- df3 |>
@@ -721,7 +721,7 @@ convert_output <- function(
             } else {
               df2 <- df |>
                 tidyr::pivot_longer(
-                  cols = everything(),
+                  cols = tidyselect::everything(),
                   names_to = "label",
                   values_to = "estimate"
                 ) |>
@@ -882,7 +882,7 @@ convert_output <- function(
           } else {
             df2 <- df |>
               tidyr::pivot_longer(
-                cols = everything(),
+                cols = tidyselect::everything(),
                 names_to = "label",
                 values_to = "estimate"
               ) |>
