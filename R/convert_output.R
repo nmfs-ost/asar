@@ -982,10 +982,23 @@ convert_output <- function(
     stop("Model not currently compatible.")
 
   } else {
-    warning("Model not compatible.")
+    stop("Model not compatible.")
   }
   # Combind DFs into one
   out_new <- Reduce(rbind, out_list)
+  if (tolower(model) == "ss3") {
+    con_file <- system.file("resources", "ss3_var_names.xlsx", package = "asar", mustWork = TRUE)
+    var_names_sheet <- openxlsx::read.xlsx(con.file)
+  } else if (tolower(model) == "bam"){
+    con_file <- system.file("resources", "bam_var_names.xlsx", package = "asar", mustWork = TRUE)
+    var_names_sheet <- openxlsx::read.xlsx(con.file)
+  }
+  if (file.exists(con.file)) {
+    out_new <- dplyr::inner_join(out_new, var_names_sheet, by = "label") |>
+    dplyr::mutate(label = dplyr::case_when(!is.na(alt_label) ~ alt_label,
+                                           TRUE ~ label)) |>
+    dplyr::select(-alt_label)
+  }
   out_new
 } # close function
 
