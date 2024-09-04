@@ -733,10 +733,17 @@ convert_output <- function(
                                                        # grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(ex, paste(fleet_names,collapse="|")),
                                                        TRUE ~ NA),
                               # Number after fleet name is what? variable among df?
-                              age = dplyr::case_when(grepl("[0-9]+$", label) & stringr::str_extract(label, "[0-9]+$") < 30 ~ stringr::str_extract(label, "[0-9]+$"),
+                              age = dplyr::case_when(grepl(".Age[0-9]+.", label) ~ stringr::str_extract(label, "(?<=.Age?)[0-9]+"),
+                                                     grepl("[0-9]+$", label) & as.numeric(stringr::str_extract(label, "[0-9]+$")) < 30 ~ stringr::str_extract(label, "[0-9]+$"),
                                                      TRUE ~ NA),
-                              label = dplyr::case_when(as.numeric(stringr::str_extract(label, "[0-9]+$")) == 0 ~ label,
-                                                       as.numeric(stringr::str_extract(label, "[0-9]+$")) < 30 ~ stringr::str_remove(label, "[0-9]+$"),
+                              label = dplyr::case_when(grepl(paste(".", fleet_names, "d[0-9]+", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "d[0-9]+", sep = "", collapse = "|"), ".d"),
+                                                       grepl(paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "[0-9]+", sep = "", collapse = "|"), ""),
+                                                       grepl(paste(".", fleet_names, "$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, sep = "", collapse = "|"), ""),
+                                                       grepl(".Age[0-9]+.[a-z]+", label) ~ stringr::str_replace(label, ".Age[0-9]+.[a-z]+", ""),
+                                                       grepl("[0-9]+$", label) ~ stringr::str_replace(label, "[0-9]+$", ""),
+                                                       # !is.na(fleet) | !is.na(age) ~ stringr::str_replace(label, paste(c(paste(".", fleet_names, "[0-9]+", sep = ""), ".Age[0-9]+.[a-z]+", "[0-9]+$"), collapse = "|"), ""),
+                                                       # as.numeric(stringr::str_extract(label, "[0-9]+$")) == 0 ~ label,
+                                                       # as.numeric(stringr::str_extract(label, "[0-9]+$")) < 30 ~ stringr::str_remove(label, "[0-9]+$"),
                                                        TRUE ~ label)
                 )
             } else if (any(grepl("[0-9]$", unique(df2$label)))) {
