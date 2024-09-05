@@ -554,6 +554,7 @@ create_template <- function(
               label = gsub(".qmd", "", unlist(sec_list2))
             )
           } else { # custom_sections explicit
+
             # Add selected sections from base
             sec_list1 <- add_base_section(custom_sections)
             # Create new sections as .qmd in folder
@@ -561,8 +562,14 @@ create_template <- function(
             if(stringr::str_replace(ex,"^[a-z]+-","") %in% custom_sections) {
               stop("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
             }
+            if(include_tables){
+              sec_list1 <- c(sec_list1, "tables.qmd")
+            }
+            if(include_figures){
+              sec_list1 <- c(sec_list1, "figures.qmd")
+            }
             sec_list2 <- add_section(
-              sec_names = new_section,
+              sec_names = section_name,
               location = section_location,
               other_sections = sec_list1,
               subdir = subdir
