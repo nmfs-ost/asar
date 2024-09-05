@@ -569,7 +569,7 @@ create_template <- function(
               sec_list1 <- c(sec_list1, "figures.qmd")
             }
             sec_list2 <- add_section(
-              sec_names = section_name,
+              sec_names = new_section,
               location = section_location,
               other_sections = sec_list1,
               subdir = subdir
