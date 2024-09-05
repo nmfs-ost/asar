@@ -30,7 +30,7 @@
 #' @param prev_year Year that previous assessment report was conducted in - for pulling previous assessment template
 #' @param custom TRUE/FALSE Build custom sectioning for the template rather than the default for stock assessments in your region
 #' @param custom_sections List of the sections you want to include in the custom template. Note: this only includes sections within
-#'        'templates' > 'skeleton'. The section name can be used such as 'abstract' rather than the entire name '00_abstract.qmd'.
+#'        list.files(system.file("templates", "skeleton", package = "asar")). The section name can be used such as 'abstract' rather than the entire name '00_abstract.qmd'.
 #'        If a new section is to be added, please also use parameters 'new_section', and 'section_location'
 #' @param include_figures Determine if figures are included into the report
 #' @param include_tables Indicate if tables are included into the report
@@ -99,9 +99,7 @@ create_template <- function(
       gsub("(\\b[A-Z])[^A-Z]+", "\\1", region)
     )
   } else {
-    report_name <- paste0(
-      report_name, "region"
-    )
+    report_name <- report_name
   }
   # Add species to name
   if (!is.null(species)) {
@@ -559,6 +557,10 @@ create_template <- function(
             # Add selected sections from base
             sec_list1 <- add_base_section(custom_sections)
             # Create new sections as .qmd in folder
+            # check if sections are in custom_sections list
+            if(stringr::str_replace(ex,"^[a-z]+-","") %in% custom_sections) {
+              stop("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
+            }
             sec_list2 <- add_section(
               sec_names = new_section,
               location = section_location,
