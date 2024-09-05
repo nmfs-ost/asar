@@ -559,7 +559,7 @@ create_template <- function(
             sec_list1 <- add_base_section(custom_sections)
             # Create new sections as .qmd in folder
             # check if sections are in custom_sections list
-            if(stringr::str_replace(ex,"^[a-z]+-","") %in% custom_sections) {
+            if(any(stringr::str_replace(section_location,"^[a-z]+-","") %notin% custom_sections)) {
               stop("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
             }
             if(include_tables){
