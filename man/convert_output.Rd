@@ -6,29 +6,33 @@
 \usage{
 convert_output(
   output.file = NULL,
-  input.file = NULL,
   outdir = NULL,
-  model = NULL
+  model = NULL,
+  fleet_names = NULL
 )
 }
 \arguments{
 \item{output.file}{name of the file containing assessment model output. This is the Report.sso file for SS3, the rdat file for BAM, the...}
 
-\item{input.file}{name of the input file for running the assessment model}
-
 \item{outdir}{output directory folder}
 
 \item{model}{assessment model used in evaluation;
 "ss3", "bam", "asap", "fims", "amak", "ms-java", "wham", "mas", "asap"}
+
+\item{fleet_names}{Names of fleets in the assessment model as shortened in the
+output file, required for transforming BAM model output}
 }
 \value{
 A reformatted and standardized version of assessment model results
 for application in building a stock assessment reports and to easily
 adapt results among regional assessments. The resulting object is
 simply a transformed and machine readable version of a model output file.
+There are 2 options for adding data to the function. (1) Add the full
+path with the file name in output.file or (2) output.file is the file
+name and outdir is the path to the file without a trailing forward slash.
 }
 \description{
-Format stock assessment output files. Function is unfinished
+Format stock assessment output files to a standardized format.
 }
 \author{
 Samantha Schiano

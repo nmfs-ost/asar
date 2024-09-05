@@ -27,10 +27,12 @@ kableExtra
 modularized
 nmfs
 ost
+outdir
 pre
 qmd
 rdat
 rdata
+roboto
 satf
 snakecase
 ss
@@ -39,4 +41,3 @@ subfiles
 tex
 titlepage
 xlsx
-roboto

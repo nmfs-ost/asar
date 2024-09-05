@@ -42,7 +42,7 @@ ASAR::create_template(
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
   include_affiliation = TRUE,
   parameters = FALSE,
-  resdir = "C:/Users/samantha.schiano/Documents/Stock Assessment Workflow/Dover Sole Example Files",
+  resdir = "C:/Users/Documents/Example_Files",
   model_results = "Report.sso",
   model = "SS3"
 )
