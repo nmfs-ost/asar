@@ -65,7 +65,11 @@ create_title <- function(
       title <- paste0("Stock Assessment for ", species, " (", spp_latin, ") on ", region, " in ", year)
     }
   } else if (office == "SEFSC") {
-    title <- paste0("SEDAR XX Assessment Report for ", species, " (", spp_latin, ") in the ", region, " in ", year)
+    if(is.null(region)){
+      title <- paste0("SEDAR XX Assessment Report for ", species, " (", spp_latin, ") in ", year)
+    } else {
+      title <- paste0("SEDAR XX Assessment Report for ", species, " (", spp_latin, ") in the ", region, " in ", year)
+    }
   } else if (office == "SWFSC") {
     if (is.null(region)) {
       title <- paste0("Status of the ", species, " stock along the U.S. West Coast in ", year)
