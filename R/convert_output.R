@@ -30,7 +30,7 @@ convert_output <- function(
     outdir = NULL,
     model = NULL,
     fleet_names = NULL,
-    file_save = TRUE,
+    file_save = FALSE,
     savedir = NULL,
     save_name = "std_model_output") {
 
@@ -1007,7 +1007,7 @@ convert_output <- function(
   }
   if(file_save){
     save_path <- paste(savedir, "/", save_name, ".csv", sep = "")
-    utils::write.csv(out_new, file = save_path)
+    utils::write.csv(out_new, file = save_path, row.names = FALSE)
   } else {
     out_new
   }
