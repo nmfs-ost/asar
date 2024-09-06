@@ -2,12 +2,15 @@
 #'
 #' Format stock assessment output files to a standardized format.
 #'
-#' @param output.file name of the file containing assessment model output. This is the Report.sso file for SS3, the rdat file for BAM, the...
+#' @param output_file name of the file containing assessment model output. This is the Report.sso file for SS3, the rdat file for BAM, the...
 #' @param outdir output directory folder
 #' @param model assessment model used in evaluation;
 #'              "ss3", "bam", "asap", "fims", "amak", "ms-java", "wham", "mas", "asap"
 #' @param fleet_names Names of fleets in the assessment model as shortened in the
 #'                    output file, required for transforming BAM model output
+#' @param file_save TRUE/FALSE save the formatted object rather than calling the function and adding to global environment
+#' @param savedir directory to save the file
+#' @param save_name file name (do not use spaces)
 #'
 #' @author Samantha Schiano
 #'
@@ -23,10 +26,13 @@
 #' @export
 #'
 convert_output <- function(
-    output.file = NULL,
+    output_file = NULL,
     outdir = NULL,
     model = NULL,
-    fleet_names = NULL) {
+    fleet_names = NULL,
+    file_save = TRUE,
+    savedir = NULL,
+    save_name = "std_model_output") {
 
   #### out_new ####
   # Blank dataframe and set up to mold output into
@@ -69,13 +75,13 @@ convert_output <- function(
 
   # pull together path
   if(!is.null(outdir)){
-    output.file = paste(outdir, "/", output.file, sep = "")
+    output_file = paste(outdir, "/", output_file, sep = "")
   } else {
-    output.file = output.file
+    output_file = output_file
   }
 
   # Check if can locate output file
-  if(!file.exists(output.file)){
+  if(!file.exists(output_file)){
     stop("output file path is invalid.")
   }
 
@@ -84,8 +90,8 @@ convert_output <- function(
     if (model %in% c("ss3", "SS3")) {
       # read SS3 report file
       dat <- utils::read.table(
-        file = output.file,
-        col.names = 1:get_ncol(output.file),
+        file = output_file,
+        col.names = 1:get_ncol(output_file),
         fill = TRUE,
         quote = "",
         colClasses = "character", # reads all data as characters
@@ -641,7 +647,7 @@ convert_output <- function(
       fleet_names <- NA
     }
     # Extract values from BAM output - model file after following ADMB2R
-    dat <- dget(output.file)
+    dat <- dget(output_file)
     # Create list for morphed dfs to go into (for rbind later)
     out_list <- list()
 
@@ -988,17 +994,22 @@ convert_output <- function(
   out_new <- Reduce(rbind, out_list)
   if (tolower(model) == "ss3") {
     con_file <- system.file("resources", "ss3_var_names.xlsx", package = "asar", mustWork = TRUE)
-    var_names_sheet <- openxlsx::read.xlsx(con.file)
+    var_names_sheet <- openxlsx::read.xlsx(con_file)
   } else if (tolower(model) == "bam"){
     con_file <- system.file("resources", "bam_var_names.xlsx", package = "asar", mustWork = TRUE)
-    var_names_sheet <- openxlsx::read.xlsx(con.file)
+    var_names_sheet <- openxlsx::read.xlsx(con_file)
   }
-  if (file.exists(con.file)) {
+  if (file.exists(con_file)) {
     out_new <- dplyr::inner_join(out_new, var_names_sheet, by = "label") |>
     dplyr::mutate(label = dplyr::case_when(!is.na(alt_label) ~ alt_label,
                                            TRUE ~ label)) |>
     dplyr::select(-alt_label)
   }
-  out_new
+  if(file_save){
+    save_path <- paste(savedir, "/", save_name, ".csv", sep = "")
+    utils::write.csv(out_new, file = save_path)
+  } else {
+    out_new
+  }
 } # close function
 
