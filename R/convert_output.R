@@ -2,12 +2,15 @@
 #'
 #' Format stock assessment output files to a standardized format.
 #'
-#' @param output.file name of the file containing assessment model output. This is the Report.sso file for SS3, the rdat file for BAM, the...
+#' @param output_file name of the file containing assessment model output. This is the Report.sso file for SS3, the rdat file for BAM, the...
 #' @param outdir output directory folder
 #' @param model assessment model used in evaluation;
 #'              "ss3", "bam", "asap", "fims", "amak", "ms-java", "wham", "mas", "asap"
 #' @param fleet_names Names of fleets in the assessment model as shortened in the
 #'                    output file, required for transforming BAM model output
+#' @param file_save TRUE/FALSE save the formatted object rather than calling the function and adding to global environment
+#' @param savedir directory to save the file
+#' @param save_name file name (do not use spaces)
 #'
 #' @author Samantha Schiano
 #'
@@ -23,10 +26,13 @@
 #' @export
 #'
 convert_output <- function(
-    output.file = NULL,
+    output_file = NULL,
     outdir = NULL,
     model = NULL,
-    fleet_names = NULL) {
+    fleet_names = NULL,
+    file_save = FALSE,
+    savedir = NULL,
+    save_name = "std_model_output") {
 
   #### out_new ####
   # Blank dataframe and set up to mold output into
@@ -42,7 +48,7 @@ convert_output <- function(
     sex = NA,
     growth_pattern = NA,
     len_bins = NA,
-    intial = NA,
+    initial = NA,
     estimate = NA,
     uncertainty = NA,
     uncertainty_label = NA,
@@ -69,13 +75,13 @@ convert_output <- function(
 
   # pull together path
   if(!is.null(outdir)){
-    output.file = paste(outdir, "/", output.file, sep = "")
+    output_file = paste(outdir, "/", output_file, sep = "")
   } else {
-    output.file = output.file
+    output_file = output_file
   }
 
   # Check if can locate output file
-  if(!file.exists(output.file)){
+  if(!file.exists(output_file)){
     stop("output file path is invalid.")
   }
 
@@ -84,8 +90,8 @@ convert_output <- function(
     if (model %in% c("ss3", "SS3")) {
       # read SS3 report file
       dat <- utils::read.table(
-        file = output.file,
-        col.names = 1:get_ncol(output.file),
+        file = output_file,
+        col.names = 1:get_ncol(output_file),
         fill = TRUE,
         quote = "",
         colClasses = "character", # reads all data as characters
@@ -244,7 +250,14 @@ convert_output <- function(
           # remove first row - naming
           df1 <- extract[-1,]
           # Find first row without NAs = headers
+          # temp fix for catch df
           df2 <- df1[stats::complete.cases(df1), ]
+          if(any(c("#") %in% df2[,1])){
+            full_row <- which(apply(df1, 1, function(row) is.na(row) | row == " " | row == "-" | row == "#"))[1]
+            df1 <- df1[-full_row[1], ]
+            df1 <- Filter(function(x)!all(is.na(x)), df1)
+            df2 <- df1[stats::complete.cases(df1), ]
+          }
           # identify first row
           row <- df2[1,]
           # make row the header names for first df
@@ -318,7 +331,7 @@ convert_output <- function(
                               )
             }
           } else {
-            warning("Data frame not compatible.")
+            warning("Data frame not compatible in ", parm_sel, ".")
           }
           if(any(colnames(df4) %in% c("value"))) df4 <- dplyr::rename(df4, estimate = value)
 
@@ -379,7 +392,9 @@ convert_output <- function(
 
           df5 <- df4 |>
             dplyr::select(tidyselect::any_of(c("label", "estimate", "year", factors, errors))) |>
-            dplyr::mutate(module_name = parm_sel)
+            dplyr::mutate(module_name = parm_sel,
+                          label = dplyr::case_when(label == "f" ~ "fishing_mortality",
+                                                   TRUE ~ label))
 
           if(any(colnames(df5) %in% errors)){
             df5 <- df5 |>
@@ -418,73 +433,90 @@ convert_output <- function(
           # 4, 8
           # remove first row - naming
           df1 <- extract[-1,]
-          # Find first row without NAs = headers
-          df2 <- df1[stats::complete.cases(df1), ]
-          # rotate data
-          # identify first row
-          row <- tolower(df2[1,])
-          # make row the header names for first df
-          colnames(df2) <- row
-          # find row number that matches 'row'
-          # rownum <- prodlim::row.match(row, df1)
-          # Subset data frame
-          df2 <- df2[-1,]
-          # Defining columns for the grouping
-          if(any(grepl("len_bins", colnames(df2)))){
-            std2_id = "len_bins"
-          } else if (any(grepl("age_bins", colnames(df2)))) {
-            std2_id = "age_bins"
+          #check for age and length comps
+          rows <- df1 |> dplyr::filter_all(dplyr::any_vars(. %in% c("age_bins","len_bins")))
+          if (length(rows) > 1) {
+            matchr <- prodlim::row.match(rows, df1)
+            df1a <- df1[matchr[1]:matchr[2]-1, ]
+            df1a <- Filter(function(x)!all(is.na(x)), df1a)
+            df1b <- df1[matchr[2]:nrow(df1), ]
+            df1b <- Filter(function(x)!all(is.na(x)), df1b)
+            df_list <- list(df1a, df1b)
           } else {
-            std2_id = "fleet"
+            # Find first row without NAs = headers
+            df_sel <- df1[stats::complete.cases(df1), ]
+            df_list <- list(df_sel)
           }
-          # pivot data
-          if(any(grepl(":", df2[max(nrow(df2)),]))){
-            df2 <- df2[-max(nrow(df2)),]
-          } else {
-            df2 <- df2
-          }
-          df3 <- df2 |>
-            tidyr::pivot_longer(
-              cols = -intersect(c(factors, errors, std2_id, "n_obs"), colnames(df2)),
-              names_to = "label",
-              values_to = "estimate"
-            ) |>
-            tidyr::pivot_wider(
-              names_from = tidyselect::all_of(std2_id),
-              values_from = estimate
-            )
-          # if(!std2_id %in% factors){
-            colnames(df3) <- stringr::str_replace(colnames(df3), "label", std2_id)
-          # }
-          if(any(duplicated(tolower(names(df3))))){
-            repd_name <- names(which(table(tolower(names(df3))) > 1))
-            df3 <- df3 |>
-              dplyr::select(-tidyselect::all_of(repd_name))
-            colnames(df3) <- tolower(names(df3))
-          }
-          if("age_bins" %in% colnames(df3)) df3 <- dplyr::rename(df3, age = age_bins)
-          df4 <- df3 |>
-            tidyr::pivot_longer(
-              cols = -intersect(c(factors, errors, std2_id, "n_obs"), colnames(df3)),
-              names_to = "label",
-              values_to = "estimate"
-            ) |>
-            dplyr::mutate(module_name = parm_sel)
-          if("seas" %in% colnames(df4)){
-            df4 <- df4 |>
-              dplyr::rename(season = seas)
+          comps_list <- list()
+          for (i in 1:length(df_list)) {
+            df2 <- df_list[[i]]
+            # identify first row
+            row <- tolower(df2[1, ])
+            # make row the header names for first df
+            colnames(df2) <- row
+            df2 <- df2[-1,]
+            # Defining columns for the grouping
+            if(any(grepl("len_bins", colnames(df2)))){
+              std2_id = "len_bins"
+            } else if (any(grepl("age_bins", colnames(df2)))) {
+              std2_id = "age_bins"
+            } else {
+              std2_id = "fleet"
+            }
+            # pivot data
+            if(any(grepl(":", df2[max(nrow(df2)),]))){
+              df2 <- df2[-max(nrow(df2)),]
+            } else {
+              df2 <- df2
+            }
+            df3 <- df2 |>
+              tidyr::pivot_longer(
+                cols = -intersect(c(factors, errors, std2_id, "n_obs"), colnames(df2)),
+                names_to = "label",
+                values_to = "estimate"
+              ) |>
+              tidyr::pivot_wider(
+                names_from = tidyselect::all_of(std2_id),
+                values_from = estimate
+              )
+            # if(!std2_id %in% factors){
+              colnames(df3) <- stringr::str_replace(colnames(df3), "label", std2_id)
+            # }
+            if(any(duplicated(tolower(names(df3))))){
+              repd_name <- names(which(table(tolower(names(df3))) > 1))
+              df3 <- df3 |>
+                dplyr::select(-tidyselect::all_of(repd_name))
+              colnames(df3) <- tolower(names(df3))
+            }
+            if("age_bins" %in% colnames(df3)) df3 <- dplyr::rename(df3, age = age_bins)
+            if (nrow(df3) > 0) {
+              df4 <- df3 |>
+              tidyr::pivot_longer(
+                cols = -intersect(c(factors, errors, std2_id, "n_obs"), colnames(df3)),
+                names_to = "label",
+                values_to = "estimate"
+              ) |>
+              dplyr::mutate(module_name = parm_sel)
+            } else {
+              df4 <- df3
+            }
+            if("seas" %in% colnames(df4)){
+              df4 <- df4 |>
+                dplyr::rename(season = seas)
+            }
+            df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
+            if (ncol(out_new) < ncol(df4)){
+              diff <- setdiff(names(df4), names(out_new))
+              message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
+              # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
+              df4 <- dplyr::select(df4, -tidyselect::all_of(diff))
+            }
+            comps_list[[i]] <- df4
           }
           # Add to new dataframe
-          df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
-          if (ncol(out_new) < ncol(df4)){
-            diff <- setdiff(names(df4), names(out_new))
-            message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
-            # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
-            df4 <- dplyr::select(df4, -tidyselect::all_of(diff))
-            out_list[[parm_sel]] <- df4
-          } else {
-            out_list[[parm_sel]] <- df4
-          }
+          df5 <- Reduce(rbind, comps_list)
+          out_list[[parm_sel]] <- df5
+
           ##### cha ####
         } else if (parm_sel %in% cha) {
           # Only one keyword characterized as this
@@ -641,7 +673,7 @@ convert_output <- function(
       fleet_names <- NA
     }
     # Extract values from BAM output - model file after following ADMB2R
-    dat <- dget(output.file)
+    dat <- dget(output_file)
     # Create list for morphed dfs to go into (for rbind later)
     out_list <- list()
 
@@ -984,21 +1016,31 @@ convert_output <- function(
   } else {
     stop("Model not compatible.")
   }
+
+  #### Exporting ####
   # Combind DFs into one
-  out_new <- Reduce(rbind, out_list)
+  out_new <- Reduce(rbind, out_list) # |>
+    # dplyr::mutate(estimate = as.numeric(estimate),
+    #               uncertainty = as.numeric(uncertainty),
+    #               initial = as.numeric(initial))
   if (tolower(model) == "ss3") {
     con_file <- system.file("resources", "ss3_var_names.xlsx", package = "asar", mustWork = TRUE)
-    var_names_sheet <- openxlsx::read.xlsx(con.file)
+    var_names_sheet <- openxlsx::read.xlsx(con_file)
   } else if (tolower(model) == "bam"){
     con_file <- system.file("resources", "bam_var_names.xlsx", package = "asar", mustWork = TRUE)
-    var_names_sheet <- openxlsx::read.xlsx(con.file)
+    var_names_sheet <- openxlsx::read.xlsx(con_file)
   }
-  if (file.exists(con.file)) {
+  if (file.exists(con_file)) {
     out_new <- dplyr::inner_join(out_new, var_names_sheet, by = "label") |>
     dplyr::mutate(label = dplyr::case_when(!is.na(alt_label) ~ alt_label,
                                            TRUE ~ label)) |>
     dplyr::select(-alt_label)
   }
-  out_new
+  if(file_save){
+    save_path <- paste(savedir, "/", save_name, ".csv", sep = "")
+    utils::write.csv(out_new, file = save_path, row.names = FALSE)
+  } else {
+    out_new
+  }
 } # close function
 
