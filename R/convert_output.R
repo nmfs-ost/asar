@@ -489,13 +489,17 @@ convert_output <- function(
               colnames(df3) <- tolower(names(df3))
             }
             if("age_bins" %in% colnames(df3)) df3 <- dplyr::rename(df3, age = age_bins)
-            df4 <- df3 |>
+            if (nrow(df3) > 0) {
+              df4 <- df3 |>
               tidyr::pivot_longer(
                 cols = -intersect(c(factors, errors, std2_id, "n_obs"), colnames(df3)),
                 names_to = "label",
                 values_to = "estimate"
               ) |>
               dplyr::mutate(module_name = parm_sel)
+            } else {
+              df4 <- df3
+            }
             if("seas" %in% colnames(df4)){
               df4 <- df4 |>
                 dplyr::rename(season = seas)
