@@ -21,6 +21,8 @@
 #'        and species listed in function parameters
 #' @param param_values List of values associated with the order of parameter names; parameters automatically included are office, region,
 #'        and species listed in function parameters
+#' @param convert_output TRUE/FALSE convert output file to standard while creating report template
+#' @param fleet_names list of fleet names as seen in BAM output file (abbreviations)
 #' @param resdir Directory where the model results file(s) are located
 #' @param model_results Name of the model results file
 #' @param model Type of assessment model that was used to assess the stock (i.e. "BAM", "SS3", "AMAK", "ASAP", ect)
@@ -63,6 +65,8 @@ create_template <- function(
     parameters = TRUE,
     param_names = NULL,
     param_values = NULL,
+    convert_output = FALSE,
+    fleet_names = NULL,
     resdir = NULL,
     model_results = NULL,
     model = NULL,
@@ -459,16 +463,28 @@ create_template <- function(
       # yaml_save <- capture.output(cat(yaml))
       # cat(yaml, file = here('template','yaml_header.qmd'))
 
-      # Add chunk to load in assessment data
-      ass_output <- add_chunk(
-        paste0(
-          "convert_output(output.file = ", "c('", paste(model_results, collapse = "', '"), "')",
-          ", model = ", "'", model, "'",
-          ", outdir = ", "'", resdir, "'", ")"
-        ),
-        label = "model_output",
-        eval = "false" # set false for testing this function in the template for now
-      )
+      # Convert output file if TRUE
+      if (convert_output) {
+        print("__________Converting output file__________")
+        if(tolower(model) == "bam" & is.null(fleet_names)) {
+          warning("Fleet names not defined.")
+        } else if (tolower(model) == "bam") {
+          convert_output(output_file = model_results,
+                         outdir = resdir,
+                         file_save = TRUE,
+                         model = model,
+                         fleet_names = fleet_names,
+                         savedir = subdir,
+                         save_name = paste(species, "_std_res_", year, sep = ""))
+        } else {
+          convert_output(output_file = model_results,
+                         outdir = resdir,
+                         file_save = TRUE,
+                         model = model,
+                         savedir = subdir,
+                         save_name = paste(species, "_std_res_", year, sep = ""))
+        }
+      }
 
       # print("_______Standardized output data________")
 
@@ -585,7 +601,6 @@ create_template <- function(
 
       # Combine template sections
       report_template <- paste(yaml,
-        ass_output,
         citation,
         sections,
         sep = "\n"
