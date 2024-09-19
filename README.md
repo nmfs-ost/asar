@@ -13,7 +13,7 @@ The goal of ASAR is to automate stock assessment reports for NOAA science center
 
 ## Installation
 
-First please check to make sure `tinytex` package is installed on your machine. If not please install using the following lines:
+First please check to make sure `tinytex` package is installed on your machine. If not, please install using the following lines:
 
 ```r
 install.packages("tinytex")
