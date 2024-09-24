@@ -98,7 +98,8 @@ create_template <- function(
   if (!is.null(region)) {
     report_name <- paste0(
       report_name,
-      gsub("(\\b[A-Z])[^A-Z]+", "\\1", region)
+      gsub("(\\b[A-Z])[^A-Z]+", "\\1", region),
+      "_"
     )
   } else {
     report_name <- report_name
@@ -106,13 +107,13 @@ create_template <- function(
   # Add species to name
   if (!is.null(species)) {
     report_name <- paste0(
-      report_name, "_",
+      report_name,
       gsub(" ", "_", species),
       "_skeleton.qmd"
     )
   } else {
     report_name <- paste0(
-      report_name, "_species_skeleton.qmd"
+      report_name, "species_skeleton.qmd"
     )
   }
 
