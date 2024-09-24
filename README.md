@@ -24,7 +24,8 @@ Then install the package:
 
 ```r
 install.packages("remotes")
-remotes::install_github("Schiano-NOAA/ASAR")
+remotes::install_github("nmfs-ost/asar")
+remotes::install_github("nmfs-ost/satf")
 ```
 
 ## Example

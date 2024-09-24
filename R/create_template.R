@@ -9,6 +9,7 @@
 #' @param species Full common name for target species, split naming by a space and capitalize first letter(s)
 #' @param spp_latin Latin name for the target species of this assessment
 #' @param year Year the assessment is being conducted, default is current year report is being rendered
+#' @param file_dir location where the stock assessment files will be kept produced from this function. Default is set to working directory
 #' @param author List of authors to include in the assessment; keep authorship order
 #' @param add_author temporarily add an author that is not currently in the database. Follow the format of "First MI Last".
 #'        Please leave a comment on the github issues page to be added.
@@ -54,6 +55,7 @@ create_template <- function(
     species = NULL,
     spp_latin = NULL,
     year = NULL,
+    file_dir = getwd(),
     author = "",
     add_author = NULL,
     include_affiliation = FALSE,
@@ -127,11 +129,11 @@ create_template <- function(
   }
 
   if (is.null(office) | office == "") {
-    subdir <- paste0("~/stock_assessment_reports/report")
+    subdir <- paste0(file_dir,"/stock_assessment_reports/report")
   } else if (!is.null(region)) {
-    subdir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", region, "/", year)
+    subdir <- paste0(file_dir, "/stock_assessment_reports", "/", office, "/", species, "/", region, "/", year)
   } else {
-    subdir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", year)
+    subdir <- paste0(file_dir, "/stock_assessment_reports", "/", office, "/", species, "/", year)
   }
 
   # Supporting files folder
@@ -766,10 +768,10 @@ create_template <- function(
     # Copy old template and rename for new year
     # Create copy of previous assessment
     if (!is.null(region)) {
-      olddir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", region, "/", prev_year)
+      olddir <- paste0(file_dir, "/stock_assessment_reports", "/", office, "/", species, "/", region, "/", prev_year)
       invisible(file.copy(file.path(olddir, list.files(olddir)), subdir, recursive = FALSE))
     } else {
-      olddir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", prev_year)
+      olddir <- paste0(file_dir, "/stock_assessment_reports", "/", office, "/", species, "/", prev_year)
       invisible(file.copy(file.path(olddir, list.files(olddir)), subdir, recursive = FALSE))
     }
 
