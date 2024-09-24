@@ -129,7 +129,7 @@ create_template <- function(
   }
 
   if (is.null(office) | office == "") {
-    subdir <- fs::path(file_dir,"stock_assessment_reports/report")
+    subdir <- fs::path(file_dir,"stock_assessment_reports", "report")
   } else if (!is.null(region)) {
     subdir <- fs::path(file_dir, "stock_assessment_reports", office, species, region, year)
   } else {
