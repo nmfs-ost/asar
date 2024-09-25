@@ -65,7 +65,7 @@ create_title <- function(
       title <- paste0("Stock Assessment for ", species, " (", spp_latin, ") on ", region, " in ", year)
     }
   } else if (office == "SEFSC") {
-    if(is.null(region)){
+    if (is.null(region)) {
       title <- paste0("SEDAR XX Assessment Report for ", species, " (", spp_latin, ") in ", year)
     } else {
       title <- paste0("SEDAR XX Assessment Report for ", species, " (", spp_latin, ") in the ", region, " in ", year)

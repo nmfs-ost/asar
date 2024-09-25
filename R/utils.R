@@ -32,8 +32,8 @@ add_base_section <- function(x) {
 # Sourced from r4ss
 get_ncol <- function(file, skip = 0) {
   nummax <- max(utils::count.fields(file,
-                                    skip = skip, quote = "",
-                                    comment.char = ""
+    skip = skip, quote = "",
+    comment.char = ""
   )) + 1
   return(nummax)
 }
@@ -52,7 +52,7 @@ SS3_extract_df <- function(dat, label) {
   }
   # Search for the next blank row after the value
   next_blank <- which(apply(dat, 1, function(row) all(is.na(row) | row == "" | row == "-" | row == "#")) & (seq_len(nrow(dat)) > value_row))[1]
-  if(is.na(next_blank)){
+  if (is.na(next_blank)) {
     next_blank <- nrow(dat)
   }
   # Combine the rows surrounding the selected metric from the output table

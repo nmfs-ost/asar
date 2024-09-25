@@ -130,7 +130,7 @@ create_template <- function(
   }
 
   if (is.null(office) | office == "") {
-    subdir <- fs::path(file_dir,"stock_assessment_reports", "report")
+    subdir <- fs::path(file_dir, "stock_assessment_reports", "report")
   } else if (!is.null(region)) {
     subdir <- fs::path(file_dir, "stock_assessment_reports", office, species, region, year)
   } else {
@@ -562,13 +562,13 @@ create_template <- function(
             sec_list1 <- add_base_section(custom_sections)
             # Create new sections as .qmd in folder
             # check if sections are in custom_sections list
-            if(any(stringr::str_replace(section_location,"^[a-z]+-","") %notin% custom_sections)) {
+            if (any(stringr::str_replace(section_location, "^[a-z]+-", "") %notin% custom_sections)) {
               stop("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
             }
-            if(include_tables){
+            if (include_tables) {
               sec_list1 <- c(sec_list1, "tables.qmd")
             }
-            if(include_figures){
+            if (include_figures) {
               sec_list1 <- c(sec_list1, "figures.qmd")
             }
             sec_list2 <- add_section(
@@ -769,7 +769,7 @@ create_template <- function(
     # Copy old template and rename for new year
     # Create copy of previous assessment
     if (!is.null(region)) {
-      olddir <- fs::path(file_dir, "stock_assessment_reports",office, species, region, prev_year)
+      olddir <- fs::path(file_dir, "stock_assessment_reports", office, species, region, prev_year)
       invisible(file.copy(file.path(olddir, list.files(olddir)), subdir, recursive = FALSE))
     } else {
       olddir <- fs::path(file_dir, "stock_assessment_reports", office, species, prev_year)
