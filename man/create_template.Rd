@@ -13,6 +13,7 @@ create_template(
   species = NULL,
   spp_latin = NULL,
   year = NULL,
+  file_dir = getwd(),
   author = "",
   add_author = NULL,
   include_affiliation = FALSE,
@@ -55,6 +56,8 @@ the species, do not use this variable.}
 
 \item{year}{Year the assessment is being conducted, default is current year report is being rendered}
 
+\item{file_dir}{location where the stock assessment files will be kept produced from this function. Default is set to working directory}
+
 \item{author}{List of authors to include in the assessment; keep authorship order}
 
 \item{add_author}{temporarily add an author that is not currently in the database. Follow the format of "First MI Last".
@@ -93,7 +96,7 @@ and species listed in function parameters}
 \item{custom}{TRUE/FALSE Build custom sectioning for the template rather than the default for stock assessments in your region}
 
 \item{custom_sections}{List of the sections you want to include in the custom template. Note: this only includes sections within
-'templates' > 'skeleton'. The section name can be used such as 'abstract' rather than the entire name '00_abstract.qmd'.
+list.files(system.file("templates", "skeleton", package = "asar")). The section name can be used such as 'abstract' rather than the entire name '00_abstract.qmd'.
 If a new section is to be added, please also use parameters 'new_section', and 'section_location'}
 
 \item{include_figures}{Determine if figures are included into the report}

@@ -9,6 +9,7 @@
 #' @param species Full common name for target species, split naming by a space and capitalize first letter(s)
 #' @param spp_latin Latin name for the target species of this assessment
 #' @param year Year the assessment is being conducted, default is current year report is being rendered
+#' @param file_dir location where the stock assessment files will be kept produced from this function. Default is set to working directory
 #' @param author List of authors to include in the assessment; keep authorship order
 #' @param add_author temporarily add an author that is not currently in the database. Follow the format of "First MI Last".
 #'        Please leave a comment on the github issues page to be added.
@@ -54,6 +55,7 @@ create_template <- function(
     species = NULL,
     spp_latin = NULL,
     year = NULL,
+    file_dir = getwd(),
     author = "",
     add_author = NULL,
     include_affiliation = FALSE,
@@ -96,7 +98,8 @@ create_template <- function(
   if (!is.null(region)) {
     report_name <- paste0(
       report_name,
-      gsub("(\\b[A-Z])[^A-Z]+", "\\1", region)
+      gsub("(\\b[A-Z])[^A-Z]+", "\\1", region),
+      "_"
     )
   } else {
     report_name <- report_name
@@ -104,13 +107,13 @@ create_template <- function(
   # Add species to name
   if (!is.null(species)) {
     report_name <- paste0(
-      report_name, "_",
+      report_name,
       gsub(" ", "_", species),
       "_skeleton.qmd"
     )
   } else {
     report_name <- paste0(
-      report_name, "_species_skeleton.qmd"
+      report_name, "species_skeleton.qmd"
     )
   }
 
@@ -127,11 +130,11 @@ create_template <- function(
   }
 
   if (is.null(office) | office == "") {
-    subdir <- paste0("~/stock_assessment_reports/report")
+    subdir <- fs::path(file_dir,"stock_assessment_reports", "report")
   } else if (!is.null(region)) {
-    subdir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", region, "/", year)
+    subdir <- fs::path(file_dir, "stock_assessment_reports", office, species, region, year)
   } else {
-    subdir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", year)
+    subdir <- fs::path(file_dir, "stock_assessment_reports", office, species, year)
   }
 
   # Supporting files folder
@@ -193,7 +196,7 @@ create_template <- function(
           # Copy us doc logo
           file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-          print(paste0("Report template files were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder."))
+          warning("Report template files were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder.")
         }
       }
 
@@ -211,7 +214,7 @@ create_template <- function(
             "### Tables \n \n",
             "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
           )
-          utils::capture.output(cat(tables_doc), file = paste0(subdir, "/", "tables.qmd"), append = FALSE)
+          utils::capture.output(cat(tables_doc), file = fs::path(subdir, "tables.qmd"), append = FALSE)
           warning("Results file or model name not defined.")
         }
       } else {
@@ -219,7 +222,7 @@ create_template <- function(
           "### Tables \n \n",
           "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures"
         )
-        utils::capture.output(cat(tables_doc), file = paste0(subdir, "/", "tables.qmd"), append = FALSE)
+        utils::capture.output(cat(tables_doc), file = fs::path(subdir, "tables.qmd"), append = FALSE)
       }
       # Create figures qmd
       if (include_figures) {
@@ -233,12 +236,12 @@ create_template <- function(
           )
         } else {
           figures_doc <- paste0("## Figures \n")
-          utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "figures.qmd"), append = FALSE)
+          utils::capture.output(cat(figures_doc), file = fs::path(subdir, "figures.qmd"), append = FALSE)
           warning("Results file or model name not defined.")
         }
       } else {
         figures_doc <- paste0("## Figures \n")
-        utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "figures.qmd"), append = FALSE)
+        utils::capture.output(cat(figures_doc), file = fs::path(subdir, "figures.qmd"), append = FALSE)
       }
 
       # Part I
@@ -610,7 +613,7 @@ create_template <- function(
         if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
           file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE) |> suppressWarnings()
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-          print(paste0("Blank files for template sections were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder."))
+          message("Blank files for template sections were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder.")
         }
       } else if (length(list.files(subdir)) == 0) {
         file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
@@ -752,31 +755,31 @@ create_template <- function(
     }
 
     # Save template as .qmd to render
-    utils::capture.output(cat(report_template), file = paste0(subdir, "/", report_name), append = FALSE)
+    utils::capture.output(cat(report_template), file = file.path(subdir, report_name), append = FALSE)
     # Print message
-    cat(paste0(
+    message(
       "Saved report template in directory: ", subdir, "\n",
       "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
-    ))
+    )
     # Open file for analyst
-    file.show(file.path(paste0(subdir, "/", report_name))) # this opens the new file, but also restarts the session
+    file.show(file.path(subdir, report_name)) # this opens the new file, but also restarts the session
     # Open the file so path to other docs is clear
     # utils::browseURL(subdir)
   } else {
     # Copy old template and rename for new year
     # Create copy of previous assessment
     if (!is.null(region)) {
-      olddir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", region, "/", prev_year)
+      olddir <- fs::path(file_dir, "stock_assessment_reports",office, species, region, prev_year)
       invisible(file.copy(file.path(olddir, list.files(olddir)), subdir, recursive = FALSE))
     } else {
-      olddir <- paste0("~/stock_assessment_reports", "/", office, "/", species, "/", prev_year)
+      olddir <- fs::path(file_dir, "stock_assessment_reports", office, species, prev_year)
       invisible(file.copy(file.path(olddir, list.files(olddir)), subdir, recursive = FALSE))
     }
 
     # Edit skeleton to update year and results file
     skeleton <- list.files(subdir, pattern = "skeleton.qmd")
     # Open previous skeleton
-    file.show(file.path(paste0(subdir, "/", report_name)))
+    file.show(file.path(subdir, report_name))
 
     svDialogs::dlg_message("Reminder: there are changes to be made when calling an old report. Please change the year in the citation and the location and name of the results file in the first chunk of the report.",
       type = "ok"

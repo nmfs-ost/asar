@@ -5,14 +5,17 @@
 \title{Convert Output}
 \usage{
 convert_output(
-  output.file = NULL,
+  output_file = NULL,
   outdir = NULL,
   model = NULL,
-  fleet_names = NULL
+  fleet_names = NULL,
+  file_save = FALSE,
+  savedir = NULL,
+  save_name = "std_model_output"
 )
 }
 \arguments{
-\item{output.file}{name of the file containing assessment model output. This is the Report.sso file for SS3, the rdat file for BAM, the...}
+\item{output_file}{name of the file containing assessment model output. This is the Report.sso file for SS3, the rdat file for BAM, the...}
 
 \item{outdir}{output directory folder}
 
@@ -21,6 +24,12 @@ convert_output(
 
 \item{fleet_names}{Names of fleets in the assessment model as shortened in the
 output file, required for transforming BAM model output}
+
+\item{file_save}{TRUE/FALSE save the formatted object rather than calling the function and adding to global environment}
+
+\item{savedir}{directory to save the file}
+
+\item{save_name}{file name (do not use spaces)}
 }
 \value{
 A reformatted and standardized version of assessment model results
