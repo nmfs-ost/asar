@@ -192,8 +192,8 @@ test_that("file_dir works", {
   dir <- tempdir()
   on.exit(unlink(dir, recursive = TRUE), add = TRUE)
   ifelse(!dir.exists(dir),
-         dir.create(dir, showWarnings = FALSE),
-         FALSE
+    dir.create(dir, showWarnings = FALSE),
+    FALSE
   )
 
   create_template(
@@ -214,5 +214,4 @@ test_that("file_dir works", {
 
   expect_gt(length(list.files(dir)), 1)
   on.exit(unlink(dir, recursive = TRUE), add = TRUE)
-
 })
