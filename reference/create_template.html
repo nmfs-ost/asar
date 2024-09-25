@@ -48,6 +48,7 @@
 <span>  species <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  spp_latin <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  year <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  file_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  author <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  add_author <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  include_affiliation <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -108,6 +109,10 @@ the species, do not use this variable.</p></dd>
 
 <dt id="arg-year">year<a class="anchor" aria-label="anchor" href="#arg-year"></a></dt>
 <dd><p>Year the assessment is being conducted, default is current year report is being rendered</p></dd>
+
+
+<dt id="arg-file-dir">file_dir<a class="anchor" aria-label="anchor" href="#arg-file-dir"></a></dt>
+<dd><p>location where the stock assessment files will be kept produced from this function. Default is set to working directory</p></dd>
 
 
 <dt id="arg-author">author<a class="anchor" aria-label="anchor" href="#arg-author"></a></dt>
@@ -183,7 +188,7 @@ and species listed in function parameters</p></dd>
 
 <dt id="arg-custom-sections">custom_sections<a class="anchor" aria-label="anchor" href="#arg-custom-sections"></a></dt>
 <dd><p>List of the sections you want to include in the custom template. Note: this only includes sections within
-'templates' &gt; 'skeleton'. The section name can be used such as 'abstract' rather than the entire name '00_abstract.qmd'.
+list.files(system.file("templates", "skeleton", package = "asar")). The section name can be used such as 'abstract' rather than the entire name '00_abstract.qmd'.
 If a new section is to be added, please also use parameters 'new_section', and 'section_location'</p></dd>
 
 
@@ -221,8 +226,8 @@ each of the child documents should be edited separately.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Authorship is not defined.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "_______Add Report Citation________"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "___Created report template______"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Saved report template in directory: ~/stock_assessment_reports/report</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> To proceeed, please edit sections within the report template in order to produce a completed stock assessment report.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Saved report template in directory: /tmp/Rtmp6kiTSS/file18402b9532cb/reference/stock_assessment_reports/report</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> To proceeed, please edit sections within the report template in order to produce a completed stock assessment report.</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

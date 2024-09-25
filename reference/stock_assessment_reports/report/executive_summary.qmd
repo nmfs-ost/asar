@@ -1,0 +1,24 @@
+## Executive Summary
+
+<!---
+Table of updates among the current stock assessment report
+--->
+
+### Assessment Methods
+
+<!---
+- Current Assessment
+- Additional data updates
+- Major changes
+--->
+
+### Stock Status
+
+<!---
+Short description followed by a tables with reference points, stock status, and projections
+
+If applicable, please add the stock TOR and responses here.
+--->
+
+
+

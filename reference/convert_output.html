@@ -40,10 +40,13 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">convert_output</span><span class="op">(</span></span>
-<span>  output.file <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  output_file <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  outdir <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  model <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  fleet_names <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  fleet_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  file_save <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  savedir <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  save_name <span class="op">=</span> <span class="st">"std_model_output"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -51,7 +54,7 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-output-file">output.file<a class="anchor" aria-label="anchor" href="#arg-output-file"></a></dt>
+<dl><dt id="arg-output-file">output_file<a class="anchor" aria-label="anchor" href="#arg-output-file"></a></dt>
 <dd><p>name of the file containing assessment model output. This is the Report.sso file for SS3, the rdat file for BAM, the...</p></dd>
 
 
@@ -67,6 +70,18 @@
 <dt id="arg-fleet-names">fleet_names<a class="anchor" aria-label="anchor" href="#arg-fleet-names"></a></dt>
 <dd><p>Names of fleets in the assessment model as shortened in the
 output file, required for transforming BAM model output</p></dd>
+
+
+<dt id="arg-file-save">file_save<a class="anchor" aria-label="anchor" href="#arg-file-save"></a></dt>
+<dd><p>TRUE/FALSE save the formatted object rather than calling the function and adding to global environment</p></dd>
+
+
+<dt id="arg-savedir">savedir<a class="anchor" aria-label="anchor" href="#arg-savedir"></a></dt>
+<dd><p>directory to save the file</p></dd>
+
+
+<dt id="arg-save-name">save_name<a class="anchor" aria-label="anchor" href="#arg-save-name"></a></dt>
+<dd><p>file name (do not use spaces)</p></dd>
 
 </dl></div>
     <div class="section level2">

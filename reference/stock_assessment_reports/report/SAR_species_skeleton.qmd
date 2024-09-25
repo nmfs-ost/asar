@@ -1,0 +1,173 @@
+---
+title: 'Stock Assessment Report Template'
+author:
+  - 'FIRST LAST' 
+date: today
+cover: 
+format: 
+  pdf: 
+    documentclass: scrartcl
+    number-sections: true
+    template-partials:
+      - 'support_files/before-body.tex'
+      - 'support_files/_titlepage.tex'
+    include-in-header:
+      - 'support_files/in-header.tex'
+    toc: true
+    lof: true
+    lot: true
+    titlepage-geometry: 
+      - top=2in
+      - bottom=1in
+      - right=1in
+      - left=1in
+params:
+   office: ''
+   species: ''
+   spp_latin: ''
+---
+```{r} 
+#| label: 'model_output'
+#| echo: false 
+#| warning: false 
+#| eval: false 
+convert_output(output.file = c(''), model = '', outdir = '')
+``` 
+
+{{< pagebreak >}} 
+
+Please cite this publication as 
+
+AUTHOR NAME. YEAR. Stock Assessment Report Template. NOAA Fisheries Science Center, CITY, STATE. 
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'executive_summary'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('executive_summary.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'introduction'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('introduction.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'data'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('data.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'modeling_approach'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('modeling_approach.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'results'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('results.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'projections'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('projections.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'discussion'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('discussion.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'acknowlesgements'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('acknowledgments.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'references'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('references.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'tables'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('tables.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'figures'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('figures.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'appendix'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('appendix.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```

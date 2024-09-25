@@ -1,0 +1,5 @@
+## Discussion
+
+<!---
+There are no specified guidelines to structure this section; however, please include subsections discussing ecosystem considerations (if applicable) and research recommendations/improvements to the assessment.
+--->

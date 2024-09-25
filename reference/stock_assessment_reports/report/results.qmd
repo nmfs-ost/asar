@@ -1,0 +1,43 @@
+## Results
+
+### Parameter Estimates
+
+<!---
+Table of the parameters that were estimated and text interpretation as needed; includes Bayesian parameter fit values.
+--->
+
+### Recruitment Estimates and Deviations
+
+<!---
+Interpretation of the spawner-recruit curve estimation, challenges or issues, and any interpretation of recruitment deviations (i.e. if there is a pattern indicating regime shift, ect.)
+--->
+
+### Model Fits
+
+<!---
+- Indices
+- Composition data
+- Selectivity and retention
+- Catchability
+- Catch
+- Other metrics (if applicable) - discards, environmental data, ect.
+--->
+
+### Model Diagnostics
+
+<!---
+Where applicable:
+- Bridging analysis
+- Correlation analysis
+- Profile likelihoods
+- Jitter analysis
+- Retrospective analysis
+--->
+
+### Sensitivity Analysis
+
+<!---
+Results and comparison with the base model; each scenario result and what was changed; please include key metrics from each scenario such as steepness (h), R0, Bcurrent, Fcurrent, F/Fmsy, B/Bmsy, ect.
+--->
+
+
