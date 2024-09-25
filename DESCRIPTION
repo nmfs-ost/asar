@@ -30,12 +30,17 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown,
+    parallel,
+    snowfall, 
+    r4ss,
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
 Remotes:
-    nmfs-ost/satf
+    nmfs-ost/satf,
+    r4ss/r4ss
 Config/testthat/edition: 3
+Config/testthat/parallel: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
