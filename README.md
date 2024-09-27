@@ -32,7 +32,7 @@ remotes::install_github("Schiano-NOAA/ASAR")
 The following is a basic example to render a stock assessment report for a particular region in the U.S.:
 
 ```r
-ASAR::create_template(
+asar::create_template(
   new_template = TRUE,
   format = "pdf",
   office = "NWFSC",
