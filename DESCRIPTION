@@ -19,6 +19,7 @@ Imports:
     officer,
     openxlsx,
     prodlim,
+    satf,
     stats,
     stringr,
     svDialogs,
