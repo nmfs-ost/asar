@@ -26,14 +26,6 @@ params:
    species: ''
    spp_latin: ''
 ---
-```{r} 
-#| label: 'model_output'
-#| echo: false 
-#| warning: false 
-#| eval: false 
-convert_output(output.file = c(''), model = '', outdir = '')
-``` 
-
 {{< pagebreak >}} 
 
 Please cite this publication as 
