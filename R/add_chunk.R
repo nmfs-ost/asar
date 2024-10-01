@@ -1,12 +1,15 @@
 #' Write R chunk to template
 #'
-#' @param x content within the R chunk to be written contained inside quotation marks
-#' @param label What to name the chunk in the 'label:' section of the r code chunk; should be in snakecase
-#' @param echo repeat code into the document; default is false
-#' @param warnings Report warnings into console during render? Default is false
-#' @param eval Evaluate the chunk? default is true
-#' @param add_option TRUE/FALSE add additional chunk options? default is FALSE
-#' @param chunk_op list of chunk options to add; example: c("output: true", "error: false)
+#' @param x Content to be written within the R chunk. Wrap in quotation marks ("").
+#' @param label The name of the chunk in the 'label:' section of the R code chunk.
+#'  This should be in snakecase (i.e., in which words are written in lowercase and
+#'   connected by underscores).
+#' @param echo TRUE/FALSE; Option to repeat code in the document. Default is false.
+#' @param warnings TRUE/FALSE; Option to report warnings in the console during render.
+#'  Default is false.
+#' @param eval TRUE/FALSE; Option to evaluate the chunk. Default is true.
+#' @param add_option TRUE/FALSE; Option to add additional chunk options. Default is false.
+#' @param chunk_op List of chunk options to add. For example: c("output: true", "error: false)
 #'
 #' @return Write an additional R chunk into the template using this function.
 #'         The code can be written as usual, just remember to put it entirely
