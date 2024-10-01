@@ -1,6 +1,6 @@
 #' Add selected sections to outline
 #'
-#' @inheritParams create_template
+#' @inheritParams create_template 'custom_sections' parameter is from create_template.R
 #'
 #' @return Call and copy the sections in the package templates to create an outline for a stock assessment
 #' @export
