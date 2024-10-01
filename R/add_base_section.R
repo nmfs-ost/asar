@@ -1,17 +1,17 @@
 #' Add selected sections to outline
 #'
-#' @inheritParams create_template 'custom_sections' parameter is from create_template.R
+#' @inheritParams create_template
 #'
 #' @return Call and copy the sections in the package templates to create an outline for a stock assessment
 #' @export
 #'
 #' @examples add_base_section(c("executive summary", "modeling approach", "results"))
 add_base_section <- function(custom_sections) {
-  sec_sel <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2", x)))
+  sec_sel <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2", custom_sections)))
   section_list <- list()
   for (i in 1:length(sec_sel)) {
     sec_file <- grep(
-      x = list.files(system.file("templates", "skeleton", package = "asar")),
+      custom_sections = list.files(system.file("templates", "skeleton", package = "asar")),
       pattern = sec_sel[i],
       value = TRUE
     )
