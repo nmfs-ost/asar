@@ -1,7 +1,1 @@
-## References
-
-\begingroup
-\raggedright
-::: {#refs}
-:::
-\endgroup
+## References {#sec-references}
