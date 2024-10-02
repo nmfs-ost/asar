@@ -3,12 +3,13 @@
 #' Function to export specified object from R environment found in the
 #' stock assessment report.
 #'
-#' @param object table, plot, or other object in the environment to export for
-#'                reference outside of the report document
-#' @param file_format pdf, docx, xlsx, csv, rdata; default is docx
-#' @param subdir directory where to export the object
-#' @return Objects put through this function will be put into the folder "exported"
-#'         for better organization; DO NOT PUSH THESE TO THE REPO
+#' @param object Table, plot, or other object in the R environment
+#' to export for reference outside of the report document.
+#' @param file_format The format of the exported file. Options include
+#' pdf, docx, xlsx, csv, and rdata. Default is docx.
+#' @param subdir Directory where object will be exported.
+#' @return Objects put through this function will be put into the
+#' folder "exported" for better organization; DO NOT PUSH THESE TO THE REPO
 #' @author Samantha Schiano
 #' @export
 #'
