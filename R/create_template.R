@@ -478,7 +478,7 @@ create_template <- function(
                          model = model,
                          fleet_names = fleet_names,
                          savedir = subdir,
-                         save_name = paste(species, "_std_res_", year, sep = ""))
+                         save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = ""))
         } else {
           convert_output(output_file = model_results,
                          outdir = resdir,
