@@ -37,7 +37,7 @@ add_theme <- function(x) {
         panel.border = ggplot2::element_rect(colour = "black", fill = NA, linewidth = 0.5)
         # text = ggplot2::element_text(size = 12, family = "Cambria")
       ) +
-      # add nmfs color palette (palette will be default)
+      # add nmfs color palette "ocean" (palette will be default)
       # I believe including both functions is fine and will
       # works regardless of the type of plot (one won't be used)
       nmfspalette::scale_color_nmfs() +
