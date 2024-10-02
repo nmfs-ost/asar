@@ -1,6 +1,7 @@
 #' Write Stock Assessment Title
 #'
 #' @inheritParams create_template
+#' @param complex TRUE/FALSE; Is this a species complex?
 #'
 #' @return NULL
 #' @export
