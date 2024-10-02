@@ -1,12 +1,10 @@
 #' Generate Citation for Stock Assessment Report
 #'
-#' @param author author list- inherited from template function is using
-#' @param title title of the report - inherited from template function if using
-#' @param year year of the report for citation purposes
-#' @param office NOAA line office that the report is being processed out of
+#' @inheritParams create_template
 #'
-#' @return Generate a citation for use in publications and other references for
-#'         the stock assessment report generated in the asar package.
+#' @return Generate a citation for use in publications and other
+#' references associated with the stock assessment report produced
+#' with `asar`.
 #' @export
 #'
 #' @examples create_citation(
