@@ -1,24 +1,26 @@
-#' Add New Section to Template
+#' Add New Section or Subsection to Template
 #'
-#' @param sec_names section_names of the subsection. Please keep this short as the template
-#'                  will be created as a quarto document into your skeleton and saved
-#'                  later for reference. More than one section can be added. Please
-#'                  make a list if this is desired.
-#' @param location Where the section will be added in the generic template using
-#'                 the notation of 'placement-section'. Example would be 'in-introduction'
-#'                 where the new content would be created as a child document
-#'                 and added into the 02_introduction.qmd. There is an option to
-#'                 add more than one section. Add the location as a list
-#'                 corresponding to the order of section names listed in the
-#'                 'title' parameter
-#' @param other_sections List of other sections that the added sections will be combined with (if not NULL)
-#' @param subdir directory where the new sections will be saved - in the create_template
-#'               fxn this defaults to the location where the template is saved
+#' @param sec_names Names of section(s) (e.g., introduction, results) or
+#' subsection(s) (e.g., a section within the introduction) that will be
+#' added to the document. Please make a short list if >1 section/subsection
+#' will be added. The template will be created as a quarto document, added
+#' into the skeleton, and saved for reference.
+#' @param location Where the section(s)/subsection(s) will be added to
+#' the skeleton template. Please use the notation of 'placement-section'.
+#' For example, 'in-introduction' signifies that the new content would
+#' be created as a child document and added into the 02_introduction.qmd.
+#' To add >1 (sub)section, make the location a list corresponding to the
+#' order of (sub)section names listed in the 'sec_names' parameter.
+#' @param other_sections List of other sections in which the added (sub)sections
+#' will be added (if not NULL).
+#' @param subdir Directory where the new sections will be saved. In the
+#' create_template function, this defaults to the location where the
+#' template is saved.
 #'
-#' @return Add an additional section to the report template if it is not already
-#'         in the default template. This provides the option to adding it as a
-#'         subsection either before or after it or within the subsection itself
-#'         as a child document.
+#' @return Add an additional section or subsection to the report template
+#' if it is not already present in the default template. This provides
+#' the option to add it as a section before or after an existing section,
+#' or within a section as a child document.
 #' @export
 #'
 #' @examples add_section(
