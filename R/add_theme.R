@@ -16,6 +16,11 @@ add_theme <- function(x) {
   #     )
   # )
   # this is bad coding practice, but what I have for now
+
+
+  # Initialize theme_obj to NULL
+  theme_obj <- NULL
+
   if (class(x)[1] == "flextable") {
     theme_obj <- x |>
       flextable::merge_h(i = 1, part = "header") |>
@@ -26,9 +31,10 @@ add_theme <- function(x) {
   } else if (class(x)[1] == "gt_tbl") {
     theme_obj <- x
     # gt object
-  } else if (class(x)[1] == "kableExtra" | as.character(class(x)[2]) == "knitr_kable") {
+  } else if ("kableExtra" %in% class(x) ||
+             (length(class(x)) > 1 && class(x)[2] == "knitr_kable")) {
     theme_obj <- x
-  } else if (class(x)[1] == "gg" | class(x)[2] == "ggplot") { #  - removed bc wouldn't work with only 1 entry in the class for other object classes
+  } else if ("gg" %in% class(x) || "ggplot" %in% class(x)) {
     theme_obj <- x +
       ggplot2::theme(
         plot.background = ggplot2::element_rect(fill = "transparent"),
@@ -37,9 +43,9 @@ add_theme <- function(x) {
         panel.border = ggplot2::element_rect(colour = "black", fill = NA, linewidth = 0.5)
         # text = ggplot2::element_text(size = 12, family = "Cambria")
       ) +
-      # add nmfs color palette "ocean" (palette will be default)
-      nmfspalette::scale_color_nmfs("ocean") +
-      nmfspalette::scale_fill_nmfs("ocean")
+      # add default nmfs color palette (palette will be "ocean")
+      nmfspalette::scale_color_nmfs() +
+      nmfspalette::scale_fill_nmfs()
     # Determining how to treat a legend if there is one
     # check if one is present
     # check_for_legend <- function(x) {
@@ -49,7 +55,8 @@ add_theme <- function(x) {
     #   move_legend <- theme_obj +
     #     ggplot2::theme()
     # }
-  } else {
+
+    } else {
     message("NOAA formatting cannot be applied to this object.")
   }
 
