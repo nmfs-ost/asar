@@ -2,47 +2,33 @@
 % Please edit documentation in R/add_section.R
 \name{add_section}
 \alias{add_section}
-\title{Add New Section to Template}
+\title{Add New Section or Subsection to Template}
 \usage{
 add_section(
-  sec_names = NULL,
-  location = NULL,
-  other_sections = NULL,
+  new_section = NULL,
+  section_location = NULL,
+  custom_sections = NULL,
   subdir = NULL
 )
 }
 \arguments{
-\item{sec_names}{section_names of the subsection. Please keep this short as the template
-will be created as a quarto document into your skeleton and saved
-later for reference. More than one section can be added. Please
-make a list if this is desired.}
-
-\item{location}{Where the section will be added in the generic template using
-the notation of 'placement-section'. Example would be 'in-introduction'
-where the new content would be created as a child document
-and added into the 02_introduction.qmd. There is an option to
-add more than one section. Add the location as a list
-corresponding to the order of section names listed in the
-'title' parameter}
-
-\item{other_sections}{List of other sections that the added sections will be combined with (if not NULL)}
-
-\item{subdir}{directory where the new sections will be saved - in the create_template
-fxn this defaults to the location where the template is saved}
+\item{subdir}{Directory where the new sections will be saved. In the
+create_template function, this defaults to the location where the
+template is saved.}
 }
 \value{
-Add an additional section to the report template if it is not already
-in the default template. This provides the option to adding it as a
-subsection either before or after it or within the subsection itself
-as a child document.
+Add an additional section or subsection to the report template
+if it is not already present in the default template. This provides
+the option to add it as a section before or after an existing section,
+or within a section as a child document.
 }
 \description{
-Add New Section to Template
+Add New Section or Subsection to Template
 }
 \examples{
 add_section(
-  sec_names = "Ecosystem Considerations", location = "after-discussion",
-  other_sections = c("introduction.qmd", "model.qmd", "results.qmd", "discussion.qmd"),
+  new_section = "Ecosystem Considerations", section_location = "after-discussion",
+  custom_sections = c("introduction.qmd", "model.qmd", "results.qmd", "discussion.qmd"),
   subdir = tempdir()
 )
 }
