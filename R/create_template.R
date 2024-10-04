@@ -1,44 +1,102 @@
-#' Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'asar'))' in the console.
+#' Create Stock Assessment Report Template
 #'
-#' @param new_template TRUE/FALSE; default is false otherwise if true, will pull the last saved stock assessment report skeleton
-#' @param format File type for the render (i.e. pdf, docx, html)
-#' @param office Regional fisheries science center producing the report (AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC)
-#' @param region Full name of region in which the species is evaluated if applicable; Note: if this is not specified for your center or for
-#'        the species, do not use this variable.
-#' @param complex Is this a species complex? "YES" or "NO"
-#' @param species Full common name for target species, split naming by a space and capitalize first letter(s)
-#' @param spp_latin Latin name for the target species of this assessment
-#' @param year Year the assessment is being conducted, default is current year report is being rendered
-#' @param file_dir location where the stock assessment files will be kept produced from this function. Default is set to working directory
-#' @param author List of authors to include in the assessment; keep authorship order
-#' @param add_author temporarily add an author that is not currently in the database. Follow the format of "First MI Last".
-#'        Please leave a comment on the github issues page to be added.
-#' @param include_affiliation TRUE/FALSE; does the analyst want to include affiliations of the authors in the document?
-#' @param simple_affiliation If including affiliation, adding just office name rather than full address; TRUE/FALSE, default is TRUE
-#' @param alt_title TRUE/FALSE create an alternative title than the default
-#' @param title Name of new title if default is not appropriate; Example, "Management Track Assessments Spring 2024"
-#' @param parameters TRUE/FALSE; default TRUE - for parameterization of the script
-#' @param param_names List of parameter names that will be called in the document; parameters automatically included are office, region,
-#'        and species listed in function parameters
-#' @param param_values List of values associated with the order of parameter names; parameters automatically included are office, region,
-#'        and species listed in function parameters
-#' @param convert_output TRUE/FALSE convert output file to standard while creating report template
-#' @param fleet_names list of fleet names as seen in BAM output file (abbreviations)
-#' @param resdir Directory where the model results file(s) are located
-#' @param model_results Name of the model results file
-#' @param model Type of assessment model that was used to assess the stock (i.e. "BAM", "SS3", "AMAK", "ASAP", ect)
-#' @param new_section File name of the new section
-#' @param section_location Location where the section should be added relative to the base skeleton document
-#' @param type Type of report to build - default is SAR
-#' @param prev_year Year that previous assessment report was conducted in - for pulling previous assessment template
-#' @param custom TRUE/FALSE Build custom sectioning for the template rather than the default for stock assessments in your region
-#' @param custom_sections List of the sections you want to include in the custom template. Note: this only includes sections within
-#'        list.files(system.file("templates", "skeleton", package = "asar")). The section name can be used such as 'abstract' rather than the entire name '00_abstract.qmd'.
-#'        If a new section is to be added, please also use parameters 'new_section', and 'section_location'
-#' @param include_figures Determine if figures are included into the report
-#' @param include_tables Indicate if tables are included into the report
-#' @param add_image add outside image of species to the template
-#' @param spp_image full directory and species image name to direct the program where to find and extract the image
+#' To see templates included in the base skeleton, please run
+#' 'list.files(system.file('templates','skeleton', package = 'asar'))'
+#'  in the console.
+#'
+#' @param new_template TRUE/FALSE; Create a new template? If true,
+#' will pull the last saved stock assessment report skeleton.
+#' Default is false.
+#' @param format Rendering format (pdf, html, or docx).
+#' @param office Regional Fisheries Science Center producing the
+#'  report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).
+#' @param region Full name of region in which the species is
+#'  evaluated (if applicable). If the region is not specified for
+#'   your center or species, do not use this variable.
+#' @param complex TRUE/FALSE; Is this a species complex? Default
+#'  is false.
+#' @param species Full common name for target species. Split
+#' naming with a space and capitalize first letter(s). Example:
+#' "Dover sole".
+#' @param spp_latin Latin name for the target species. Example:
+#' "Pomatomus saltatrix".
+#' @param year Year the assessment is being conducted. Default
+#' is the year in which the report is rendered.
+#' @param file_dir Location of stock assessment files produced
+#' by this function. Default is the working directory.
+#' @param author Ordered list of authors included in the assessment.
+#' @param add_author Author that is not currently in the database
+#' and who should be temporarily added to the author list. Format
+#' as "First MI Last".
+#' Please leave a comment on the GitHub issues page to be added.
+#' @param include_affiliation TRUE/FALSE; Does the analyst want to
+#'  include the authors' affiliations in the document? Default is
+#'  false.
+#' @param simple_affiliation TRUE/FALSE; If including affiliations,
+#'  should the office name function as the affiliation, rather
+#'  than the full address? Default is true.
+#' @param alt_title TRUE/FALSE; Use a title that is not the
+#' default title (i.e., an alternative title)? Default is false.
+#' @param title The alternative title. Example:
+#' "Management Track Assessments Spring 2024".
+#' @param parameters TRUE/FALSE; For
+#' parameterization of the script. Default is true.
+#' @param param_names List of parameter names that will be called
+#'  in the document. Parameters automatically included:
+#'  office, region, species (each of which are listed as
+#'  individual parameters for this function, above).
+#' @param param_values List of values associated with the order
+#'  of parameter names. Parameters automatically included:
+#'  office, region, species (each of which are listed as
+#'  individual parameters for this function, above).
+#' @param convert_output TRUE/FALSE; Convert the output file to
+#' standard model format while creating report template? Default
+#' is false.
+#' @param fleet_names List of fleet names as described in BAM output
+#'  file (abbreviations).
+#' @param resdir Filepath of the directory storing the model
+#'  results file(s). Examples where dover_sole_2024 is the project root
+#'  for absolute and relative filepaths, respectively:
+#'  "C:/Users/patrick.star/Documents/dover_sole_2024/models",
+#'  "here::here("models")".
+#' @param model_results The .csv file produced after converting the
+#' stock assessment output file to a standardized format with
+#' the function convert_output.R.
+#' @param model Type of assessment model that was used to assess
+#'  the stock (e.g., "BAM", "SS3", "AMAK", "ASAP", etc.).
+#' @param new_section Names of section(s) (e.g., introduction, results) or
+#' subsection(s) (e.g., a section within the introduction) that will be
+#' added to the document. Please make a short list if >1 section/subsection
+#' will be added. The template will be created as a quarto document, added
+#' into the skeleton, and saved for reference.
+#' @param section_location Where new section(s)/subsection(s) will be added to
+#' the skeleton template. Please use the notation of 'placement-section'.
+#' For example, 'in-introduction' signifies that the new content would
+#' be created as a child document and added into the 02_introduction.qmd.
+#' To add >1 (sub)section, make the location a list corresponding to the
+#' order of (sub)section names listed in the 'new_section' parameter.
+#' @param type Type of report to build. Default is SAR.
+#' @param prev_year Year in which the previous assessment report
+#'  was conducted. Used to pull previous assessment template.
+#' @param custom TRUE/FALSE; Build custom sectioning for the
+#' template, rather than the default for stock assessments in
+#' your region? Default is false.
+#' @param custom_sections List of existing sections to include in
+#' the custom template. Note: this only includes sections within
+#'  list.files(system.file("templates", "skeleton",
+#'  package = "asar")). The name of the section, rather than the
+#'  name of the file, can be used (e.g., 'abstract' rather than
+#'  '00_abstract.qmd'). If adding a new section, also use
+#'   parameters 'new_section' and 'section_location'.
+#' @param include_figures TRUE/FALSE; Should figures be
+#' included in the report? Default is true.
+#' @param include_tables TRUE/FALSE; Should tables be included
+#'  in the report? Default is true.
+#' @param add_image TRUE/FALSE; Add image of species to the
+#' template that is not already included in the project's
+#' inst/resources/spp_img folder? Default is false.
+#' @param spp_image Filepath to the species' image if not
+#' using the image included in the project's repository.
 #'
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
@@ -53,7 +111,7 @@ create_template <- function(
     format = c("pdf", "docx", "html", NULL),
     office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
     region = NULL,
-    complex = "NO",
+    complex = FALSE,
     species = NULL,
     spp_latin = NULL,
     year = NULL,
@@ -563,9 +621,9 @@ create_template <- function(
               "appendix.qmd"
             )
             sec_list2 <- add_section(
-              sec_names = new_section,
-              location = section_location,
-              other_sections = sec_list1,
+              new_section = new_section,
+              section_location = section_location,
+              custom_sections = sec_list1,
               subdir = subdir
             )
             # Create sections object to add into template
@@ -589,9 +647,9 @@ create_template <- function(
               sec_list1 <- c(sec_list1, "figures.qmd")
             }
             sec_list2 <- add_section(
-              sec_names = new_section,
-              location = section_location,
-              other_sections = sec_list1,
+              new_section = new_section,
+              section_location = section_location,
+              custom_sections = sec_list1,
               subdir = subdir
             )
             # Create sections object to add into template
@@ -730,9 +788,9 @@ create_template <- function(
               "appendix.qmd"
             )
             sec_list2 <- add_section(
-              sec_names = new_section,
-              location = section_location,
-              other_sections = sec_list1,
+              new_section = new_section,
+              new_section = section_location,
+              custom_sections = sec_list1,
               subdir = subdir
             )
             # Create sections object to add into template
@@ -745,9 +803,9 @@ create_template <- function(
             sec_list1 <- add_base_section(custom_sections)
             # Create new sections as .qmd in folder
             sec_list2 <- add_section(
-              sec_names = new_section,
-              location = section_location,
-              other_sections = sec_list1,
+              new_section = new_section,
+              new_section = section_location,
+              custom_sections = sec_list1,
               subdir = subdir
             )
             # Create sections object to add into template
