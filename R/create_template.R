@@ -381,7 +381,8 @@ create_template <- function(
       yaml <- paste0(
         yaml,
         # Date
-        "date: today", "\n"
+        "date: today", "\n",
+        "lang: en \n",
       )
 
       # Add species image on title page
