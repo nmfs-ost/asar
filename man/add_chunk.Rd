@@ -15,19 +15,22 @@ add_chunk(
 )
 }
 \arguments{
-\item{x}{content within the R chunk to be written contained inside quotation marks}
+\item{x}{Content to be written within the R chunk. Wrap in quotation marks ("").}
 
-\item{echo}{repeat code into the document; default is false}
+\item{echo}{TRUE/FALSE; Option to repeat code in the document. Default is false.}
 
-\item{warnings}{Report warnings into console during render? Default is false}
+\item{warnings}{TRUE/FALSE; Option to report warnings in the console during render.
+Default is false.}
 
-\item{eval}{Evaluate the chunk? default is true}
+\item{eval}{TRUE/FALSE; Option to evaluate the chunk. Default is true.}
 
-\item{label}{What to name the chunk in the 'label:' section of the r code chunk; should be in snakecase}
+\item{label}{The name of the chunk in the 'label:' section of the R code chunk.
+This should be in snakecase (i.e., in which words are written in lowercase and
+connected by underscores).}
 
-\item{add_option}{TRUE/FALSE add additional chunk options? default is FALSE}
+\item{add_option}{TRUE/FALSE; Option to add additional chunk options. Default is false.}
 
-\item{chunk_op}{list of chunk options to add; example: c("output: true", "error: false)}
+\item{chunk_op}{List of chunk options to add. For example: c("output: true", "error: false)}
 }
 \value{
 Write an additional R chunk into the template using this function.

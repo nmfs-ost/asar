@@ -6,9 +6,6 @@
 \usage{
 add_base_section(x)
 }
-\arguments{
-\item{x}{inherited 'custom_sections' parameter from create_template}
-}
 \value{
 Call and copy the sections in the package templates to create an outline for a stock assessment
 }
