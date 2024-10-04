@@ -1,6 +1,6 @@
 #' Add Formatting Arguments for YAML Header
 #'
-#' @param format Rendering format (pdf, html, or docx).
+#' @inheritParams create_template
 #'
 #' @return This function returns part of a quarto YAML header
 #' involved in formatting the document during rendering.
