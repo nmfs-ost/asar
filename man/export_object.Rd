@@ -7,16 +7,17 @@
 export_object(object = NULL, file_format = "docx", subdir = NULL)
 }
 \arguments{
-\item{object}{table, plot, or other object in the environment to export for
-reference outside of the report document}
+\item{object}{Table, plot, or other object in the R environment
+to export for reference outside of the report document.}
 
-\item{file_format}{pdf, docx, xlsx, csv, rdata; default is docx}
+\item{file_format}{The format of the exported file. Options include
+pdf, docx, xlsx, csv, and rdata. Default is docx.}
 
-\item{subdir}{directory where to export the object}
+\item{subdir}{Directory where object will be exported.}
 }
 \value{
-Objects put through this function will be put into the folder "exported"
-for better organization; DO NOT PUSH THESE TO THE REPO
+Objects put through this function will be put into the
+folder "exported" for better organization; DO NOT PUSH THESE TO THE REPO
 }
 \description{
 Function to export specified object from R environment found in the

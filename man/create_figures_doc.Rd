@@ -14,21 +14,30 @@ create_figures_doc(
 )
 }
 \arguments{
-\item{resdir}{directory where the results file is located}
+\item{resdir}{Filepath of the directory storing the model
+results file(s). Examples where dover_sole_2024 is the project root
+for absolute and relative filepaths, respectively:
+"C:/Users/patrick.star/Documents/dover_sole_2024/models",
+"here::here("models")".}
 
-\item{model_results}{name of the results file of assessment output}
+\item{model_results}{The .csv file produced after converting the
+stock assessment output file to a standardized format with
+the function convert_output.R.}
 
-\item{model}{stock assessment model}
+\item{model}{Type of assessment model that was used to assess
+the stock (e.g., "BAM", "SS3", "AMAK", "ASAP", etc.).}
 
-\item{year}{end year for assessment to include in plotting}
+\item{year}{End year for assessment, for inclusion in plotting}
 
-\item{subdir}{subdirectory where the assessment report template is being stored}
+\item{subdir}{Location of subdirectory storing the assessment report template}
 
-\item{include_all}{include all default figures for a stock assessment report}
+\item{include_all}{TRUE/FALSE; Option to include all default
+figures for a stock assessment report. Default is true.}
 }
 \value{
-Create a quarto document as part of a stock assessment outline with
-pre-loaded R chunk adding the stock assessment tables from the nmfs-ost/satf R package
+A quarto document with pre-loaded R chunk that adds the
+stock assessment tables from the nmfs-ost/satf R package. The
+quarto document will become part of the stock assessment outline.
 }
 \description{
 Create Quarto Document of Figures
