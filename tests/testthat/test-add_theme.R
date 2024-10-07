@@ -1,5 +1,4 @@
 test_that("add_theme applies NOAA formatting correctly", {
-
   # Test with a ggplot object
   ggplot_obj <- ggplot2::ggplot(data = cars, ggplot2::aes(x = speed, y = dist)) +
     ggplot2::geom_point()
@@ -32,12 +31,11 @@ test_that("add_theme applies NOAA formatting correctly", {
   unsupported_obj <- data.frame(a = 1, b = 2)
   expect_message(add_theme(unsupported_obj), "NOAA formatting cannot be applied to this object.")
 
-  unsupported_obj2 <- list(1,3,4)
+  unsupported_obj2 <- list(1, 3, 4)
   expect_message(add_theme(unsupported_obj2), "NOAA formatting cannot be applied to this object.")
 })
 
 test_that("nmfspalette returns correct scales", {
-
   # Test 1: Ensure nmfspalette integrates with ggplot color scales
   ggplot_obj <- ggplot2::ggplot(data = cars, ggplot2::aes(x = speed, y = dist, color = speed)) +
     ggplot2::geom_point() +
@@ -55,7 +53,6 @@ test_that("nmfspalette returns correct scales", {
   # Check if the correct fill scale is applied
   expect_true("ScaleDiscrete" %in% class(ggplot_fill_obj$scales$scales[[1]]))
   expect_true(ggplot_fill_obj$scales$scales[[1]]$aesthetics == "fill")
-
 })
 
 test_that("nmfspalette scales are applied to ggplot object", {
@@ -72,14 +69,19 @@ test_that("nmfspalette scales are applied to ggplot object", {
   expect_true(grepl("nmfs", deparse(color_scale$call))) # Check if nmfspalette scale is used
 
   # Ensure the color scale is the default "oceans" nmfspalette scale
-  test_plot <- ggplot2::ggplot(Orange,
-                               ggplot2::aes(
-                          x = age,
-                          y = circumference,
-                          color = Tree)) +
-    ggplot2::geom_smooth(se = F,
-                method = "loess",
-                formula = "y ~ x")
+  test_plot <- ggplot2::ggplot(
+    Orange,
+    ggplot2::aes(
+      x = age,
+      y = circumference,
+      color = Tree
+    )
+  ) +
+    ggplot2::geom_smooth(
+      se = F,
+      method = "loess",
+      formula = "y ~ x"
+    )
 
   ## use default color palette
   plot_default <- test_plot +
@@ -98,7 +100,6 @@ test_that("nmfspalette scales are applied to ggplot object", {
 
   ## test if plots' colors are identical
   expect_equal(colors_default, colors_oceans) # Check if the colors match
-
 })
 
 # Test for both color and fill scales
@@ -118,4 +119,3 @@ test_that("nmfspalette scales apply both color and fill scales", {
   fill_scale <- scales[[2]]
   expect_true(grepl("nmfs", deparse(fill_scale$call))) # Fill scale from nmfspalette
 })
-

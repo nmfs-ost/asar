@@ -34,7 +34,7 @@ Suggests:
     parallel,
     r4ss,
     rmarkdown,
-    snowfall, 
+    snowfall,
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr

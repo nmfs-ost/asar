@@ -9,7 +9,7 @@ ss3_exe <- r4ss::get_ss3_exe(
 )
 
 # Function to run a specific SS3 model
-run_ss3_models <- function(model_id, model_dir, exe_dir){
+run_ss3_models <- function(model_id, model_dir, exe_dir) {
   # Define the working directory for the model
   working_dir <- model_dir[model_id]
 
@@ -23,8 +23,8 @@ run_ss3_models <- function(model_id, model_dir, exe_dir){
 # List all the model directories to be processed
 all_models <- list.dirs(
   file.path(test_path("fixtures", "ss3_models"), "models"),
-                      full.names = TRUE,
-                      recursive = FALSE
+  full.names = TRUE,
+  recursive = FALSE
 )
 
 # Detect the number of available CPU cores, leaving one free

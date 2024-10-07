@@ -32,7 +32,7 @@ add_theme <- function(x) {
     theme_obj <- x
     # gt object
   } else if ("kableExtra" %in% class(x) ||
-             (length(class(x)) > 1 && class(x)[2] == "knitr_kable")) {
+    (length(class(x)) > 1 && class(x)[2] == "knitr_kable")) {
     theme_obj <- x
   } else if ("gg" %in% class(x) || "ggplot" %in% class(x)) {
     theme_obj <- x +
@@ -55,8 +55,7 @@ add_theme <- function(x) {
     #   move_legend <- theme_obj +
     #     ggplot2::theme()
     # }
-
-    } else {
+  } else {
     message("NOAA formatting cannot be applied to this object.")
   }
 
