@@ -59,8 +59,8 @@ test_that("nmfspalette returns correct scales", {
 })
 
 test_that("nmfspalette scales are applied to ggplot object", {
-  p <- ggplot(mtcars, aes(x = wt, y = mpg, color = as.factor(cyl))) +
-    geom_point()
+  p <- ggplot2::ggplot(mtcars, ggplot2::aes(x = wt, y = mpg, color = as.factor(cyl))) +
+    ggplot2::geom_point()
   formatted_plot <- add_theme(p)
 
   # Extract the color and fill scales from the plot
@@ -72,12 +72,12 @@ test_that("nmfspalette scales are applied to ggplot object", {
   expect_true(grepl("nmfs", deparse(color_scale$call))) # Check if nmfspalette scale is used
 
   # Ensure the color scale is the default "oceans" nmfspalette scale
-  test_plot <- ggplot(Orange,
-                        aes(
+  test_plot <- ggplot2::ggplot(Orange,
+                               ggplot2::aes(
                           x = age,
                           y = circumference,
                           color = Tree)) +
-    geom_smooth(se = F,
+    ggplot2::geom_smooth(se = F,
                 method = "loess",
                 formula = "y ~ x")
 
@@ -90,10 +90,10 @@ test_that("nmfspalette scales are applied to ggplot object", {
     nmfspalette::scale_color_nmfs("oceans", 5)
 
   ## extract colors used for both plots
-  plot_default_build <- ggplot_build(plot_default)
+  plot_default_build <- ggplot2::ggplot_build(plot_default)
   colors_default <- unique(plot_default_build$data[[1]]["colour"])
 
-  plot_oceans_build <- ggplot_build(plot_oceans)
+  plot_oceans_build <- ggplot2::ggplot_build(plot_oceans)
   colors_oceans <- unique(plot_oceans_build$data[[1]]["colour"])
 
   ## test if plots' colors are identical
@@ -103,8 +103,8 @@ test_that("nmfspalette scales are applied to ggplot object", {
 
 # Test for both color and fill scales
 test_that("nmfspalette scales apply both color and fill scales", {
-  p <- ggplot(mtcars, aes(x = wt, y = mpg, color = as.factor(cyl), fill = as.factor(cyl))) +
-    geom_point()
+  p <- ggplot2::ggplot(mtcars, ggplot2::aes(x = wt, y = mpg, color = as.factor(cyl), fill = as.factor(cyl))) +
+    ggplot2::geom_point()
   formatted_plot <- add_theme(p)
 
   # Extract the scales from the plot
