@@ -196,13 +196,17 @@ test_that("file_dir works", {
     FALSE
   )
 
+  office <- "NWFSC"
+  species <- "Dover sole"
+  year <- 2010
+
   create_template(
     new_template = TRUE,
     format = "pdf",
-    office = "NWFSC",
-    species = "Dover sole",
+    office = office,
+    species = species,
     spp_latin = "Pomatomus saltatrix",
-    year = 2010,
+    year = year,
     author = c("John Snow", "Danny Phantom", "Patrick Star"),
     include_affiliation = TRUE,
     parameters = FALSE,
@@ -212,6 +216,7 @@ test_that("file_dir works", {
     file_dir = dir
   )
 
-  expect_gt(length(list.files(dir)), 1)
+  file_path <- file.path(dir, "stock_assessment_reports", office, species, year)
+  expect_gt(length(list.files(file_path)), 1)
   on.exit(unlink(dir, recursive = TRUE), add = TRUE)
 })
