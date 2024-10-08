@@ -3,6 +3,8 @@ title: 'Stock Assessment Report Template'
 author:
   - 'FIRST LAST' 
 date: today
+lang: en 
+keep-tex: true 
 cover: 
 format: 
   pdf: 
