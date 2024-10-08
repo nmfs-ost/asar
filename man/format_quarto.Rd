@@ -7,11 +7,11 @@
 format_quarto(format = NULL)
 }
 \arguments{
-\item{format}{format for rendering (pdf, html, or docx)}
+\item{format}{Rendering format (pdf, html, or docx).}
 }
 \value{
-This function returns part of a quarto YAML header that helps with
-formatting the document during rendering.
+This function returns part of a quarto YAML header
+involved in formatting the document during rendering.
 }
 \description{
 Add Formatting Arguments for YAML Header

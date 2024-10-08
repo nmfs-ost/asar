@@ -15,21 +15,27 @@ create_title(
 )
 }
 \arguments{
-\item{office}{Fishery science center performing the assessment}
+\item{office}{Regional Fisheries Science Center producing the
+report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
 
-\item{species}{Target species}
+\item{species}{Full common name for target species. Split
+naming with a space and capitalize first letter(s). Example:
+"Dover sole".}
 
-\item{region}{Region where the stock is being assessed if applicable.
-Please be explicit in the name and follow the preferred convention
-for the management organization.}
+\item{region}{Full name of region in which the species is
+evaluated (if applicable). If the region is not specified for
+your center or species, do not use this variable.}
 
-\item{year}{Year conducting the assessment report}
+\item{year}{Year the assessment is being conducted. Default
+is the year in which the report is rendered.}
 
-\item{complex}{TRUE/FALSE is this a species complex?}
+\item{complex}{TRUE/FALSE; Is this a species complex? Default
+is false.}
 
-\item{type}{Stock assessment type; usually inherited from the template}
+\item{type}{Type of report to build. Default is SAR.}
 
-\item{spp_latin}{Latin name for the target species}
+\item{spp_latin}{Latin name for the target species. Example:
+"Pomatomus saltatrix".}
 }
 \description{
 Write Stock Assessment Title
