@@ -50,5 +50,5 @@ create_figures_doc <- function(resdir = NULL,
   }
 
   # Save tables doc to template folder
-  utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "figures.qmd"), append = FALSE)
+  utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "09_figures.qmd"), append = FALSE)
 }
