@@ -1,20 +1,23 @@
 test_that("Can trace template files from package", {
   path <- system.file("templates", "skeleton", package = "asar")
   base_temp_files <- c(
-    "acknowledgments.qmd",
-    "appendix.qmd",
-    "assessment_glossaries.tex",
-    "data.qmd",
-    "discussion.qmd",
-    "executive_summary.qmd",
-    # "figures.qmd",
+    "01_executive_summary.qmd",
+    "02_introduction.qmd",
+    "03_data.qmd",
+    "04a_assessment-configuration.qmd",
+    "04b_assessment-results.qmd",
+    "04c_assessment-sensitivity.qmd",
+    "04d_asessment-benchmarks.qmd",
+    "04e_assessment-projections.qmd",
+    "05_discussion.qmd",
+    "06_acknowledgments.qmd",
+    "07_references.qmd",
+    "10_notes.qmd",
+    "11_appendix.qmd",
+    "assessment_glossaries.tex"
+    # "09_figures.qmd",
     # "in-header.tex",
-    "introduction.qmd",
-    "modeling_approach.qmd",
-    "projections.qmd",
-    "references.qmd",
-    "results.qmd"
-    # "tables.qmd",
+    # "08_tables.qmd",
     # "title.tex"
   )
   expect_equal(list.files(path), base_temp_files)
@@ -23,22 +26,25 @@ test_that("Can trace template files from package", {
 test_that("create_template() creates correct files", {
   # Define expected report files
   expect_report_files <- c(
-    "acknowledgments.qmd",
-    "appendix.qmd",
+    "01_executive_summary.qmd",
+    "02_introduction.qmd",
+    "03_data.qmd",
+    "04a_assessment-configuration.qmd",
+    "04b_assessment-results.qmd",
+    "04c_assessment-sensitivity.qmd",
+    "04d_asessment-benchmarks.qmd",
+    "04e_assessment-projections.qmd",
+    "05_discussion.qmd",
+    "06_acknowledgments.qmd",
+    "07_references.qmd",
+    "08_tables.qmd",
+    "09_figures.qmd",
+    "10_notes.qmd",
+    "11_appendix.qmd",
     "assessment_glossaries.tex",
-    "data.qmd",
-    "discussion.qmd",
-    "executive_summary.qmd",
-    "figures.qmd",
-    "introduction.qmd",
-    "modeling_approach.qmd",
-    "projections.qmd",
-    "references.qmd",
-    "results.qmd",
     "SAR_species_skeleton.qmd",
-    "support_files",
-    "tables.qmd"
-  )
+    "support_files"
+    )
 
   # Define expected support files
   expect_support_files <- c(
@@ -57,7 +63,8 @@ test_that("create_template() creates correct files", {
   object_report_files <- list.files(no_inputs_output_path)
   object_support_files <- list.files(file.path(no_inputs_output_path, "support_files"))
 
-  on.exit(unlink(file.path(path, "stock_assessment_reports"), recursive = TRUE), add = TRUE)
+  on.exit(unlink(file.path(path, "stock_assessment_reports"),
+                 recursive = TRUE), add = TRUE)
   # Check if all expected report files are created
   expect_true(all(sort(expect_report_files) == sort(object_report_files)))
 
@@ -91,21 +98,24 @@ test_that("create_template() creates correct files", {
   on.exit(unlink(file.path(path, "stock_assessment_reports"), recursive = TRUE), add = TRUE)
   # Define expected report files for Dover sole
   expect_report_files <- c(
-    "acknowledgments.qmd",
-    "appendix.qmd",
+    "01_executive_summary.qmd",
+    "02_introduction.qmd",
+    "03_data.qmd",
+    "04a_assessment-configuration.qmd",
+    "04b_assessment-results.qmd",
+    "04c_assessment-sensitivity.qmd",
+    "04d_asessment-benchmarks.qmd",
+    "04e_assessment-projections.qmd",
+    "05_discussion.qmd",
+    "06_acknowledgments.qmd",
+    "07_references.qmd",
+    "08_tables.qmd",
+    "09_figures.qmd",
+    "10_notes.qmd",
+    "11_appendix.qmd",
     "assessment_glossaries.tex",
-    "data.qmd",
-    "discussion.qmd",
-    "executive_summary.qmd",
-    "figures.qmd",
-    "introduction.qmd",
-    "modeling_approach.qmd",
-    "projections.qmd",
-    "references.qmd",
-    "results.qmd",
     "SAR_Dover_sole_skeleton.qmd",
-    "support_files",
-    "tables.qmd"
+    "support_files"
   )
   # Define expected support files for Dover sole
   expect_dover_sole_support_files <- c(
@@ -142,7 +152,8 @@ test_that("warning is triggered for missing models", {
     ),
     regexp = "Results file or model name not defined."
   )
-  on.exit(unlink(file.path(getwd(), "stock_assessment_reports"), recursive = TRUE), add = TRUE)
+  on.exit(unlink(file.path(getwd(), "stock_assessment_reports"),
+                 recursive = TRUE), add = TRUE)
 })
 
 test_that("warning is triggered for existing files", {
@@ -218,5 +229,8 @@ test_that("file_dir works", {
 
   file_path <- file.path(dir, "stock_assessment_reports", office, species, year)
   expect_gt(length(list.files(file_path)), 1)
+
+  expect_gte(length(list.files(dir)), 1)
+
   on.exit(unlink(dir, recursive = TRUE), add = TRUE)
 })
