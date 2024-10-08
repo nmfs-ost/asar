@@ -26,7 +26,8 @@ create_tables_doc <- function(resdir = NULL,
         paste0(
           "satf::table_indices(dat = '", resdir, "/", model_results, "', model = '", model, "')"
         ),
-        label = "indices"
+        label = "indices",
+        eval = "false"
       )
     )
 

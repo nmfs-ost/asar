@@ -441,6 +441,7 @@ create_template <- function(
         # Date
         "date: today", "\n",
         "lang: en \n",
+        "keep-tex: true \n"
       )
 
       # Add species image on title page
