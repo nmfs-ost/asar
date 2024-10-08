@@ -42,7 +42,6 @@ asar::create_template(
   year = 2010,
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
   include_affiliation = TRUE,
-  parameters = FALSE,
   resdir = "C:/Users/Documents/Example_Files",
   model_results = "Report.sso",
   model = "SS3"

@@ -1,0 +1,69 @@
+name: Bug Report
+description: Report asar not working as expected.
+title: "[Bug]: "
+labels: ["bug", "triage_needed"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report! Before
+        filling out this report please search the existing issues to see
+        if the problem has already been reported. If it has, please add a
+        comment to the open issue or link to the related, but closed, issue in
+        this report.
+  - type: textarea
+    id: describe
+    attributes:
+      label: Describe the bug
+      description: Please provide a description of the bug.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Describe how to reproduce the bug
+      description: |
+        Please include a minimal reproducible example (i.e., a
+        [reprex]((https://reprex.tidyverse.org/articles/reprex-dos-and-donts.html))).
+        If you have not heard of a [reprex](http://reprex.tidyverse.org/)
+        before, you can start by reading about them on the [tidyverse
+        blog](https://www.tidyverse.org/help/#reprex). Feel free to copy, paste,
+        and edit the [demo
+        vignette](https://github.com/NOAA-FIMS/FIMS/blob/4539fc4b6e65b901231c4fb66a113bb5b5d54d22/vignettes/fims-demo.Rmd)
+        for your reprex.
+      placeholder: |
+        # insert reprex here
+    validations:
+      required: false
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+    validations:
+      required: false
+  - type: dropdown
+    id: os
+    attributes:
+      label: Which OS are you seeing the problem on?
+      multiple: true
+      options:
+        - Windows
+        - Mac
+        - Linux
+        - Other
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: Which version of asar are you seeing the problem on?
+    validations:
+      required: false
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here.
+    validations:
+      required: false

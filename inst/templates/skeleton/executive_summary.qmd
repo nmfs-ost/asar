@@ -1,10 +1,10 @@
-## Executive Summary
+## Executive Summary {#sec-executive-summary}
 
 <!---
 Table of updates among the current stock assessment report
 --->
 
-### Assessment Methods
+### Assessment Methods {#sec-assessment-methods}
 
 <!---
 - Current Assessment
@@ -12,7 +12,7 @@ Table of updates among the current stock assessment report
 - Major changes
 --->
 
-### Stock Status
+### Stock Status {#sec-stock-status}
 
 <!---
 Short description followed by a tables with reference points, stock status, and projections

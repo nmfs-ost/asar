@@ -1,6 +1,6 @@
-## Modeling Approach
+## Modeling Approach {#sec-modeling-approach}
 
-### Current Approach
+### Current Approach {#sec-current-approach}
 
 <!---
 This is a potential automated subsection which will dynamically changed according to the assessment model used to perform the analysis. 
@@ -8,7 +8,7 @@ This is a potential automated subsection which will dynamically changed accordin
 Please provide a short, general overview of platform including reference to the model's paper or online reference.
 --->
 
-### Configuration
+### Configuration {#sec-configuration}
 
 <!---
 - Time blocks
@@ -22,25 +22,25 @@ Please provide a short, general overview of platform including reference to the 
 - Likelihood (penalty, reweighting, ect.)
 --->
 
-### Sensitivity Analyses
+### Sensitivity Analyses {#sec-model-sensitivity-analyses}
 
 <!---
 Descriptions of which sensitivity analysis to be performed. (i.e. which parameters or data input streams changed in different setups of the model and why)
 --->
 
-### Management Benchmarks
+### Management Benchmarks {#sec-management-benchmarks}
 
 <!---
 Description decisions on management metrics/benchmarks.
 --->
 
-### Diagnostics
+### Diagnostics {#sec-diagnostics}
 
 <!---
 Description of which diagnostics will be used.
 --->
 
-### Projection Scenarios
+### Projection Scenarios {#sec-projection-scenarios}
 
 <!---
 Description of which projection scenarios will be run and how the projections will be set up.
