@@ -1,0 +1,14 @@
+### Modeling Results
+
+<!-- For each of the following subsections, please describe the results for the base model. -->
+
+#### Parameter Estimates
+
+
+#### Recruitment Estimates and Deviations
+
+
+#### Model Fits
+
+
+#### Model Diagnostics
