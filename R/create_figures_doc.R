@@ -27,7 +27,9 @@ create_figures_doc <- function(resdir = NULL,
       figures_doc,
       add_chunk(
         paste0("satf::plot_recruitment(dat = '", resdir, "/", model_results, "', model = '", model, "')"),
-        label = "recruitment"
+        label = "recruitment",
+        add_option = TRUE,
+        chunk_op = "fig-cap: 'this is the caption for the figure.'"
       ),
       "\n"
     )
