@@ -16,6 +16,7 @@ Imports:
     fs,
     ggplot2,
     gridExtra,
+    gt,
     naniar,
     officer,
     openxlsx,
@@ -30,10 +31,10 @@ Imports:
     utils
 Suggests: 
     knitr,
-    rmarkdown,
     parallel,
-    snowfall, 
     r4ss,
+    rmarkdown,
+    snowfall,
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr

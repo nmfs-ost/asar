@@ -528,23 +528,27 @@ create_template <- function(
       # Convert output file if TRUE
       if (convert_output) {
         print("__________Converting output file__________")
-        if(tolower(model) == "bam" & is.null(fleet_names)) {
+        if (tolower(model) == "bam" & is.null(fleet_names)) {
           warning("Fleet names not defined.")
         } else if (tolower(model) == "bam") {
-          convert_output(output_file = model_results,
-                         outdir = resdir,
-                         file_save = TRUE,
-                         model = model,
-                         fleet_names = fleet_names,
-                         savedir = subdir,
-                         save_name = paste(species, "_std_res_", year, sep = ""))
+          convert_output(
+            output_file = model_results,
+            outdir = resdir,
+            file_save = TRUE,
+            model = model,
+            fleet_names = fleet_names,
+            savedir = subdir,
+            save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+          )
         } else {
-          convert_output(output_file = model_results,
-                         outdir = resdir,
-                         file_save = TRUE,
-                         model = model,
-                         savedir = subdir,
-                         save_name = paste(species, "_std_res_", year, sep = ""))
+          convert_output(
+            output_file = model_results,
+            outdir = resdir,
+            file_save = TRUE,
+            model = model,
+            savedir = subdir,
+            save_name = paste(species, "_std_res_", year, sep = "")
+          )
         }
       }
 

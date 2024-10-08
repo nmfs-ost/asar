@@ -1,0 +1,23 @@
+name: Question about asar
+description: Ask a question about asar
+title: "[Question]: "
+labels: ["question", "triage_needed"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to ask a question!
+  - type: textarea
+    id: question
+    attributes:
+      label: What is your question?
+      placeholder: Please ask a clear and concise question about asar.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add any other context or screenshots here.
+    validations:
+      required: false
