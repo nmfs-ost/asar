@@ -1,3 +1,0 @@
-### Tables 
- 
-Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables.
