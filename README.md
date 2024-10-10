@@ -30,23 +30,20 @@ remotes::install_github("nmfs-ost/satf")
 
 ## Example
 
-The following code will allow the user to replicate the [2023 petrale sole stock assessment](https://www.pcouncil.org/documents/2024/02/status-of-petrale-sole-eopsetta-jordanialong-the-u-s-west-coast-in-2023.pdf/) produced from the NWFSC and made available by the Pacific Fisheries Management Council. The assessment model files are also available on the PFMC's website. The SS3 Report.sso files was converted using the following code:
+The following code will allow the user to replicate the [2023 petrale sole stock assessment](https://www.pcouncil.org/documents/2024/02/status-of-petrale-sole-eopsetta-jordanialong-the-u-s-west-coast-in-2023.pdf/) produced by the NWFSC and made available by the Pacific Fisheries Management Council. The assessment model files are also available on the PFMC's website. The SS3 Report.sso files was converted using the following code:
 
 ```r
-# if users want to use a relative path, use the package 'here'
-library(here)
 asar::convert_output(
   output_file = "Report.sso",
-  outdir = here("asar_example"),
+  outdir = "data",
   model = "ss3",
   file_save = TRUE,
-  savedir = here("asar_example"),
   save_name = "petrale_convert_output")
 ```
 
-In this function, the users have the option to convert output files to a standardized framework from either SS3 (Report.sso) or BAM (.rdat) output files.
+In this function, the users have the option to convert output files to a standardized framework from either SS3 (Report.sso) or BAM (.rdat) output files. The converted output was saved as an Rdata file and can be found in the example folder in this repository.
 
-The user should then 
+To proceed, the user should then run the following:
 
 ```r
 asar::create_template(
@@ -55,12 +52,13 @@ asar::create_template(
   region = "U.S. West Coast",
   species = "Petrale sole",
   spp_latin = "Eopsetta jordani",
-  file_dir = here("asar_example"),
+  year = 2023,
+  author = c("Ian G. Taylor", "Vladlena Gertseva", "Nick Tolimieri"),
   include_affiliation = TRUE,
   simple_affiliation = FALSE,
   param_names = c("nf","sf"),
   param_values = c("North fleet", "South fleet"),
-  resdir = here("asar_example"),
+  resdir = "data",
   model_results = "petrale_convert_output.csv",
   model = "SS3"
 )
