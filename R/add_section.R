@@ -26,7 +26,7 @@ add_section <- function(
   # after-section
   # in-section (will always append to the end of the section)
   for (i in 1:length(new_section)) {
-    section_i_name <- paste0(gsub(" ", "_", new_section[i]), ".qmd")
+    section_i_name <- paste0(gsub(" ", "_", tolower(new_section[i])), ".qmd")
     local_section <- forstringr::str_extract_part(section_location[i], "-", before = FALSE)
     local_section_prev <- forstringr::str_extract_part(section_location[i - 1], "-", before = FALSE)
 
@@ -39,7 +39,7 @@ add_section <- function(
     }
 
     section_i <- paste0(
-      "## ", stringr::str_to_title(sub("_", " ", new_section[i])), "\n",
+      "## ", stringr::str_to_title(sub("_", " ", tolower(new_section[i]))), "\n",
       "\n",
       "[Insert text here]", "\n",
       "\n",
@@ -51,9 +51,9 @@ add_section <- function(
       custom_sections <- append(custom_sections, section_i_name, after = (which(grepl(local_section, custom_sections)) - 1))
     } else if (locality == "after") {
       if (locality %in% locality_prev & local_section %in% local_section_prev) {
-        custom_sections <- append(custom_sections, section_i_name, after = which(grepl(gsub(" ", "_", new_section[i - 1]), custom_sections)))
+        custom_sections <- append(custom_sections, section_i_name, after = which(grepl(gsub(" ", "_", tolower(new_section[i - 1])), custom_sections)))
       } else {
-        custom_sections <- append(custom_sections, section_i_name, after = which(grepl(local_section, custom_sections)))
+        custom_sections <- append(custom_sections, section_i_name, after = max(which(grepl(local_section, custom_sections))))
       }
     } else if (locality == "in") {
       stop("No available option for adding a new section 'in' another quarto document.", call. = FALSE)

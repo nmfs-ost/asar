@@ -28,6 +28,7 @@ create_figures_doc <- function(resdir = NULL,
       add_chunk(
         paste0("satf::plot_recruitment(dat = '", resdir, "/", model_results, "', model = '", model, "')"),
         label = "recruitment",
+        eval = "false",
         add_option = TRUE,
         chunk_op = "fig-cap: 'this is the caption for the figure.'"
       ),
@@ -41,7 +42,7 @@ create_figures_doc <- function(resdir = NULL,
     )
     figures_doc <- paste0(
       figures_doc,
-      add_chunk(plot_code, label = "spawn_bio"),
+      add_chunk(plot_code, label = "spawn_bio", eval = "false"),
       "\n"
     )
   } else {
@@ -49,5 +50,5 @@ create_figures_doc <- function(resdir = NULL,
   }
 
   # Save tables doc to template folder
-  utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "figures.qmd"), append = FALSE)
+  utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "09_figures.qmd"), append = FALSE)
 }
