@@ -23,6 +23,8 @@ create_template(
   parameters = TRUE,
   param_names = NULL,
   param_values = NULL,
+  convert_output = FALSE,
+  fleet_names = NULL,
   resdir = NULL,
   model_results = NULL,
   model = NULL,
@@ -78,6 +80,10 @@ and species listed in function parameters}
 
 \item{param_values}{List of values associated with the order of parameter names; parameters automatically included are office, region,
 and species listed in function parameters}
+
+\item{convert_output}{TRUE/FALSE convert output file to standard while creating report template}
+
+\item{fleet_names}{list of fleet names as seen in BAM output file (abbreviations)}
 
 \item{resdir}{Directory where the model results file(s) are located}
 
