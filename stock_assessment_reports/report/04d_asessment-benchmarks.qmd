@@ -1,3 +1,0 @@
-### Management Benchmarks
-
-<!-- Decisions on management metrics/benchmarks (e.g., provide a rationale for why a specific F-proxy was recommended for management). -->
