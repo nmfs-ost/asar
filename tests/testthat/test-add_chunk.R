@@ -7,3 +7,4 @@
 #
 #   expect_snapshot(cat(add_chunk("plot(cars$speed, cars$distance)", echo = "true")))
 # })
+
