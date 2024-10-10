@@ -41,7 +41,7 @@ test_that("Adding new sections does not work.", {
     "harvest_control_rules.qmd",
     "regional_management_considerations.qmd",
     "research_and_data_needs.qmd",
-    "06_acknowledgements.qmd",
+    "06_acknowledgments.qmd",
     "11_appendix.qmd",
     "07_references.qmd"
   )
