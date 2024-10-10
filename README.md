@@ -59,7 +59,7 @@ asar::create_template(
   param_names = c("nf","sf"),
   param_values = c("North fleet", "South fleet"),
   resdir = "data",
-  model_results = "petrale_convert_output.csv",
+  model_results = "Petrale_sole_std_res_2023.csv",
   model = "SS3"
 )
 ```
