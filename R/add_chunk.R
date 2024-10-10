@@ -8,15 +8,26 @@
 #' @param warnings TRUE/FALSE; Option to report warnings in the console during render.
 #'  Default is false.
 #' @param eval TRUE/FALSE; Option to evaluate the chunk. Default is true.
-#' @param add_option TRUE/FALSE; Option to add additional chunk options. Default is false.
-#' @param chunk_op List of chunk options to add. For example: c("output: true", "error: false)
+#' @param add_option TRUE/FALSE; Option to add additional chunk options.
+#' Default is false.
+#' @param chunk_op List of chunk options to add.
 #'
 #' @return Write an additional R chunk into the template using this function.
 #'         The code can be written as usual, just remember to put it entirely
 #'         in quotes for the function to render it properly
 #' @export
 #'
-#' @examples add_chunk("plot(cars$speed, cars$distance)")
+#' @examples
+#'\dontrun{
+#' add_chunk("plot(cars$speed, cars$distance)")
+#' add_chunk(x = "A string of text",
+#'           label = "new_text_string",
+#'           echo = FALSE,
+#'           warnings = TRUE,
+#'           eval = TRUE,
+#'           add_option = TRUE,
+#'           chunk_op = c("output: true", "error: false"))
+#' }
 add_chunk <- function(
     x,
     echo = "false",
