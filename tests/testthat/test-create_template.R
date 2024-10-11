@@ -84,7 +84,7 @@ test_that("create_template() creates correct files", {
     author = c("John Snow", "Danny Phantom", "Patrick Star"),
     include_affiliation = TRUE,
     parameters = FALSE,
-    resdir = NULL,
+    resdir = "data",
     model_results = "Report.sso",
     model = "SS3"
   )
@@ -164,7 +164,7 @@ test_that("warning is triggered for existing files", {
     author = c("John Snow", "Danny Phantom", "Patrick Star"),
     include_affiliation = TRUE,
     parameters = FALSE,
-    resdir = NULL,
+    resdir = "data",
     model_results = "Report.sso",
     model = "SS3"
   )
@@ -187,7 +187,7 @@ test_that("warning is triggered for existing files", {
       author = c("John Snow", "Danny Phantom", "Patrick Star"),
       include_affiliation = TRUE,
       parameters = FALSE,
-      resdir = NULL,
+      resdir = "data",
       model_results = "Report.sso",
       model = "SS3"
     ),
@@ -218,7 +218,7 @@ test_that("file_dir works", {
     author = c("John Snow", "Danny Phantom", "Patrick Star"),
     include_affiliation = TRUE,
     parameters = FALSE,
-    resdir = NULL,
+    resdir = "data",
     model_results = "Report.sso",
     model = "SS3",
     file_dir = dir
