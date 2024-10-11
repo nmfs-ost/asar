@@ -1,15 +1,11 @@
 #' Convert Output
 #'
 #' Format stock assessment output files to a standardized format.
-#'
+
+#' @inheritParams create_template
 #' @param output_file Assessment model output file (e.g., the
 #'  Report.sso file for SS3, the rdat file for BAM, etc.)
 #' @param outdir Directory of the assessment model output file.
-#' @param model Assessment model used in evaluation ("ss3", "bam",
-#'  "asap", "fims", "amak", "ms-java", "wham", "mas").
-#' @param fleet_names Names of fleets in the assessment model as
-#'  shortened in the output file. Required for converting BAM
-#'  model output.
 #' @param file_save TRUE/FALSE; Save the formatted object rather
 #'  than calling the function and adding the formatted object to
 #'  the global environment? Default is false.
@@ -34,7 +30,7 @@
 #' convert_output(
 #'  output_file = "Report.sso",
 #'  outdir = "my_output_dir",
-#'  model = "ss3",
+#'  model = "SS3",
 #'  fleet_names = "fleet1, fleet2, fleet3",
 #'  file_save = FALSE,
 #'  savedir = "my_save_dir",

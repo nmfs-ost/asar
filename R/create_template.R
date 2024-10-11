@@ -20,7 +20,8 @@
 #' "Dover sole".
 #' @param spp_latin Latin name for the target species. Example:
 #' "Pomatomus saltatrix".
-#' @param year Year the assessment is being conducted. Default
+#' @param year Year in which the assessment is being conducted.
+#' This will be shown on the title page of the document. Default
 #' is the year in which the report is rendered.
 #' @param file_dir Location of stock assessment files produced
 #' by this function. Default is the working directory.
@@ -52,8 +53,9 @@
 #' @param convert_output TRUE/FALSE; Convert the output file to
 #' standard model format while creating report template? Default
 #' is false.
-#' @param fleet_names List of fleet names as described in BAM output
-#'  file (abbreviations).
+#' @param fleet_names Names of fleets in the assessment model as
+#'  shortened in the output file. Required for converting BAM
+#'  model output.
 #' @param resdir Filepath of the directory storing the model
 #'  results file(s). Examples where dover_sole_2024 is the project root
 #'  for absolute and relative filepaths, respectively:
@@ -63,18 +65,18 @@
 #' stock assessment output file to a standardized format with
 #' the function convert_output.R.
 #' @param model Type of assessment model that was used to assess
-#'  the stock (e.g., "BAM", "SS3", "AMAK", "ASAP", etc.).
-#' @param new_section Names of section(s) (e.g., introduction, results) or
-#' subsection(s) (e.g., a section within the introduction) that will be
-#' added to the document. Please make a short list if >1 section/subsection
-#' will be added. The template will be created as a quarto document, added
-#' into the skeleton, and saved for reference.
-#' @param section_location Where new section(s)/subsection(s) will be added to
+#' the stock (e.g., "BAM", "SS3", "AMAK", "ASAP", etc.).
+#' @param new_section Names of section(s) (e.g., introduction, results)
+#' that will be added to the document. Please make a short list
+#' if >1 section will be added. The template will be created as a
+#'  quarto document, added into the skeleton, and saved for reference.
+#' @param section_location Where new section(s) will be added to
 #' the skeleton template. Please use the notation of 'placement-section'.
-#' For example, 'in-introduction' signifies that the new content would
-#' be created as a child document and added into the 02_introduction.qmd.
-#' To add >1 (sub)section, make the location a list corresponding to the
-#' order of (sub)section names listed in the 'new_section' parameter.
+#' Placement can be "before" or "after". For example, 'before-introduction'
+#' signifies that the new content would be created as a child document
+#' and added before the 02_introduction.qmd. To add >1 section, make
+#' the section_location a list corresponding to the order of section
+#' names listed in the 'new_section' parameter.
 #' @param type Type of report to build. Default is SAR.
 #' @param prev_year Year in which the previous assessment report
 #'  was conducted. Used to pull previous assessment template.
@@ -104,7 +106,81 @@
 #'         General sections are called as child documents in this skeleton and
 #'         each of the child documents should be edited separately.
 #' @export
-#' @examples create_template()
+#'
+#' @examples
+#' \dontrun{
+#' create_template(
+#'   new_section = "a_new_section",
+#'   section_location = "before-introduction",
+#'   )
+#'
+#'
+#' create_template(
+#'   new_template = TRUE,
+#'   format = "pdf",
+#'   office = "NWFSC",
+#'   species = "Dover sole",
+#'   spp_latin = "Microstomus pacificus",
+#'   year = 2010,
+#'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
+#'   include_affiliation = TRUE,
+#'   resdir = "C:/Users/Documents/Example_Files",
+#'   model_results = "Report.sso",
+#'   model = "SS3",
+#'   new_section = "an_additional_section",
+#'   section_location = "after-introduction",
+#'   )
+#'
+#' asar::create_template(
+#'   new_template = TRUE,
+#'   format = "pdf",
+#'   office = "PIFSC",
+#'   species = "Striped marlin",
+#'   spp_latin = "Kajikia audax",
+#'   year = 2018,
+#'   author = "Alba Tross",
+#'   model = "BAM",
+#'   new_section = c("a_new_section", "another_new_section"),
+#'   section_location = c("before-introduction", "after-introduction"),
+#'   custom = TRUE,
+#'   custom_sections = c("executive_summary", "introduction")
+#' )
+#'
+#' create_template(
+#'   new_template = TRUE,
+#'   format = "pdf",
+#'   office = "NWFSC",
+#'   region = "my_region",
+#'   complex = FALSE,
+#'   species = "Bluefish",
+#'   spp_latin = "Pomatomus saltatrix",
+#'   year = 2010,
+#'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
+#'   add_author = "Sun E Day",
+#'   include_affiliation = TRUE,
+#'   simple_affiliation = TRUE,
+#'   alt_title = FALSE,
+#'   title = "Management Track Assessments Spring 2024",
+#'   parameters = TRUE,
+#'   param_names = c("region", "year"),
+#'   param_values = c("my_region", "2024"),
+#'   convert_output = FALSE,
+#'   fleet_names = c("fleet1", "fleet2", "fleet3"),
+#'   resdir = "C:/Users/Documents/Example_Files",
+#'   model_results = "Report.sso",
+#'   model = "SS3",
+#'   new_section = "an_additional_section",
+#'   section_location = "before-discussion",
+#'   type = "SAR",
+#'   prev_year = 2021,
+#'   custom = TRUE,
+#'   custom_sections = c("executive_summary", "introduction", "discussion"),
+#'   include_figures = TRUE,
+#'   include_tables = TRUE,
+#'   add_image = TRUE,
+#'   spp_image = "dir/containing/spp_image"
+#' )
+#' }
 #'
 create_template <- function(
     new_template = TRUE,
