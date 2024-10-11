@@ -7,14 +7,13 @@ test_that("Can trace template files from package", {
     "04a_assessment-configuration.qmd",
     "04b_assessment-results.qmd",
     "04c_assessment-sensitivity.qmd",
-    "04d_asessment-benchmarks.qmd",
+    "04d_assessment-benchmarks.qmd",
     "04e_assessment-projections.qmd",
     "05_discussion.qmd",
     "06_acknowledgments.qmd",
     "07_references.qmd",
     "10_notes.qmd",
-    "11_appendix.qmd",
-    "assessment_glossaries.tex"
+    "11_appendix.qmd"
     # "09_figures.qmd",
     # "in-header.tex",
     # "08_tables.qmd",
@@ -32,7 +31,7 @@ test_that("create_template() creates correct files", {
     "04a_assessment-configuration.qmd",
     "04b_assessment-results.qmd",
     "04c_assessment-sensitivity.qmd",
-    "04d_asessment-benchmarks.qmd",
+    "04d_assessment-benchmarks.qmd",
     "04e_assessment-projections.qmd",
     "05_discussion.qmd",
     "06_acknowledgments.qmd",
@@ -41,7 +40,6 @@ test_that("create_template() creates correct files", {
     "09_figures.qmd",
     "10_notes.qmd",
     "11_appendix.qmd",
-    "assessment_glossaries.tex",
     "SAR_species_skeleton.qmd",
     "support_files"
     )
@@ -104,7 +102,7 @@ test_that("create_template() creates correct files", {
     "04a_assessment-configuration.qmd",
     "04b_assessment-results.qmd",
     "04c_assessment-sensitivity.qmd",
-    "04d_asessment-benchmarks.qmd",
+    "04d_assessment-benchmarks.qmd",
     "04e_assessment-projections.qmd",
     "05_discussion.qmd",
     "06_acknowledgments.qmd",
@@ -113,7 +111,6 @@ test_that("create_template() creates correct files", {
     "09_figures.qmd",
     "10_notes.qmd",
     "11_appendix.qmd",
-    "assessment_glossaries.tex",
     "SAR_Dover_sole_skeleton.qmd",
     "support_files"
   )
