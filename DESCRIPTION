@@ -18,9 +18,11 @@ Imports:
     gridExtra,
     gt,
     naniar,
+    nmfspalette,
     officer,
     openxlsx,
     prodlim,
+    r4ss,
     satf,
     stats,
     stringr,
@@ -40,7 +42,8 @@ VignetteBuilder:
     knitr
 Remotes:
     nmfs-ost/satf,
-    r4ss/r4ss
+    r4ss/r4ss,
+    nmfs-fish-tools/nmfspalette
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Encoding: UTF-8
