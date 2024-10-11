@@ -6,8 +6,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' create_title(
+#' new_title <- create_title(
 #'   office = "SEFSC",
 #'   species = "Red Snapper",
 #'   region = "South Atlantic",
@@ -16,7 +15,7 @@
 #'   complex = FALSE,
 #'   spp_latin = "Lutjanus campechanus"
 #' )
-#' }
+#' cat(new_title)
 create_title <- function(
     office = NULL,
     species = NULL,
