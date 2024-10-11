@@ -7,12 +7,15 @@
 #' with `asar`.
 #' @export
 #'
-#' @examples create_citation(
-#'   title = "SA Report for Jellyfish",
+#' @examples
+#'\dontrun{
+#' create_citation(
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
-#'   year = 2024, office = "NEFSC"
+#'   title = "SA Report for Jellyfish",
+#'   year = 2024,
+#'   office = "NEFSC"
 #' )
-#'
+#'}
 create_citation <- function(
     author = NULL,
     title = NULL,
