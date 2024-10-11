@@ -1,20 +1,47 @@
 url: nmfs-ost.github.io/asar/
 
-template:
-  bootstrap: 5
-
-development:
-  mode: auto
-
-home:
-  title: Automated Stock Assessment Reporting
-
-reference:
-
-articles:
-- title: Manual
-  contents:
+navbar:
+  structure:
+    left:
+    - home
+    - reference
     - manual
-    - regional_workflows
-    - markdown_notation
+    - sourcecode
+    - articles
+    - documents
+    - news
+    right:
+    - issue
+    - github
 
+  components:
+    home:
+      icon: fas fa-home fa-lg
+      href: index.html
+
+    reference:
+      text: Functions
+      icon: far fa-file-code fa-lg
+      href: reference/index.html
+
+    sourcecode:
+      text: Source Code
+      icon: fab fa-github fa-lg
+      href: https://github.com/nmfs-ost/asar
+
+    issue:
+      text: Issues
+      icon: fas fa-question-circle fa-lg
+      href: https://github.com/nmfs-fish-tools/pkgdownTemplate/issues/
+
+    articles:
+      text: Articles
+      icon: fas fa-file-contract fa-lg
+      href: articles/index.html
+
+    documents:
+      text: References
+      icon: fas fa-book fa-lg
+      menu:
+      - text: Petrale Example
+        href: SAR_USWC_Petrale_sole_skeleton.pdf
