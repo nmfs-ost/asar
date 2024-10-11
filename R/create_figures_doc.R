@@ -1,15 +1,28 @@
 #' Create Quarto Document of Figures
 #'
 #' @inheritParams create_template
-#' @param year End year for assessment, for inclusion in plotting
+#' @param year The terminal year of the assessment model, which is
+#' included in plotting.
 #' @param subdir Location of subdirectory storing the assessment report template
 #' @param include_all TRUE/FALSE; Option to include all default
-#' figures for a stock assessment report. Default is true.
+#' figures (create_figures_doc.R) or tables (create_tables_doc.R)
+#' for a stock assessment report. Default is true.
 #'
 #' @return A quarto document with pre-loaded R chunk that adds the
 #' stock assessment tables from the nmfs-ost/satf R package. The
 #' quarto document will become part of the stock assessment outline.
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' create_figures_doc(
+#'  resdir = "my_save_dir",
+#'  model_results = "std_model_output.csv",
+#'  model = "SS3",
+#'  year = 2024,
+#'  subdir = "my_subdir",
+#'  include_all = TRUE)
+#' }
 #'
 create_figures_doc <- function(resdir = NULL,
                                model_results = NULL,

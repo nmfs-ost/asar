@@ -1,14 +1,21 @@
 #' Create Quarto Document of Tables
 #'
-#' @param resdir directory where the results file is located
-#' @param model_results name of the results file of assessment output
-#' @param model stock assessment model
-#' @param subdir subdirectory where the assessment report template is being stored
-#' @param include_all include all default tables for a stock assessment report
+#' @inheritParams create_template
+#' @inheritParams create_figures_doc
 #'
 #' @return Create a quarto document as part of a stock assessment outline with
 #' pre-loaded R chunk adding the stock assessment tables from the nmfs-ost/satf R package
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' create_tables_doc(
+#'   resdir = "my_save_dir",
+#'   model_results = "std_model_output.csv",
+#'   model = "SS3",
+#'   subdir = "my_subdir",
+#'   include_all = TRUE)
+#' }
 #'
 create_tables_doc <- function(resdir = NULL,
                               model_results = NULL,

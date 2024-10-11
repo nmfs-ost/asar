@@ -3,7 +3,9 @@ create_styles_css <- function(
     savedir = NULL) {
   # Add species image to title
   spp_name <- sub(" ", "_", species)
-  spp_image <- list.files(file.path(find.package("asar"), "resources", "spp_img"), pattern = spp_name)
+  spp_image <- list.files(
+    file.path(find.package("asar"),"resources", "spp_img"),
+    pattern = spp_name)
   styles_css <- paste(
     ".quarto-title-block .quarto-title-banner {", "\n",
     "  ", "background-image: ", spp_image, ";", "\n",
@@ -15,5 +17,7 @@ create_styles_css <- function(
     "}", "\n"
   )
 
-  utils::capture.output(cat(styles_css), file = paste0(savedir, "/", "styles.css"), append = FALSE)
+  utils::capture.output(cat(styles_css),
+                        file = paste0(savedir, "/", "styles.css"),
+                        append = FALSE)
 }

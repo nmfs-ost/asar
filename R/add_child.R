@@ -14,7 +14,8 @@
 #'
 #' @examples
 #'\dontrun{
-#' add_child(x = "test_quarto.qmd", label = "test_doc")
+#' add_child(x = "test_quarto.qmd",
+#'  label = "test_doc")
 #' }
 add_child <- function(x,
                       label = NULL) {
