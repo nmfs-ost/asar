@@ -14,17 +14,34 @@
 #' @export
 #'
 #' @examples
-#' source <- c("NMFS Groundfish Survey", "", "U.S. Trawl Fisheries", "", "")
-#' data <- c("Survey biomass", "Age Composition", "Catch", "Age Composition", "Length Composition")
+#' \dontrun{
+#' source <- c(
+#'  "NMFS Groundfish Survey",
+#'  "",
+#'  "U.S. Trawl Fisheries",
+#'  "",
+#'  "")
+#' data <- c(
+#'  "Survey biomass",
+#'  "Age Composition",
+#'  "Catch",
+#'  "Age Composition",
+#'  "Length Composition")
 #' years <- c(
 #'   "1984-1999 (triennial), 2001-2013 (biennial)",
-#'   "1984, 1987, 1990, 1993, 1996, 1999, 2003, 2005, 2007, 2009, 2011", "1961-2013",
-#'   "1990,1998-2002, 2004, 2005, 2006, 2008, 2010", "1963-1977, 1991-1997"
+#'   "1984, 1987, 1990, 1993, 1996, 1999, 2003, 2005, 2007, 2009, 2011",
+#'   "1961-2013",
+#'   "1990,1998-2002, 2004, 2005, 2006, 2008, 2010",
+#'   "1963-1977, 1991-1997"
 #' )
+#'
 #' test_obj <- data.frame(source, data, years)
 #'
-#' export_object(object = test_obj, file_format = "csv", subdir = "~")
-#'
+#' export_object(
+#'  object = test_obj,
+#'  file_format = "csv",
+#'  subdir = "~")
+#'}
 export_object <- function(
     object = NULL,
     file_format = "docx",

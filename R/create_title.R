@@ -5,10 +5,18 @@
 #' @return NULL
 #' @export
 #'
-#' @examples create_title(
-#'   office = "SEFSC", species = "Red Snapper", region = "South Atlantic",
-#'   year = 2024, type = "SAR", spp_latin = "Lutjanus campechanus"
+#' @examples
+#' \dontrun{
+#' create_title(
+#'   office = "SEFSC",
+#'   species = "Red Snapper",
+#'   region = "South Atlantic",
+#'   year = 2024,
+#'   type = "SAR",
+#'   complex = FALSE,
+#'   spp_latin = "Lutjanus campechanus"
 #' )
+#' }
 create_title <- function(
     office = NULL,
     species = NULL,
