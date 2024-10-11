@@ -81,14 +81,13 @@ This is a modularized template, there is no need to make any edits to the skelet
 -   Executive Summary
 -   Introduction
 -   Data
--   Modeling Approach
--   Results
--   Projections
+-   Assessment
 -   Discussion
 -   Acknowledgments
 -   References
 -   Tables
 -   Figures 
+-   Appendix
 
 Please leave an issue for any bugs or suggestions to improve the package during testing on the [Issues Page](https://github.com/Schiano-NOAA/ASAR/issues). Please remember that this package is currently in development and we do not project to release version 1.0 until December 2024. Thank you for helping us improve this package!
 
