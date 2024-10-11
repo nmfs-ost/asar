@@ -8,14 +8,13 @@
 #' @export
 #'
 #' @examples
-#'\dontrun{
-#' create_citation(
+#' citation <- create_citation(
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
 #'   title = "SA Report for Jellyfish",
 #'   year = 2024,
 #'   office = "NEFSC"
 #' )
-#'}
+#' cat(citation)
 create_citation <- function(
     author = NULL,
     title = NULL,
