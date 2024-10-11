@@ -29,7 +29,17 @@
 #'
 #'
 #' @export
-#'
+#' @examples
+#'\dontrun{
+#' convert_output(
+#'  output_file = "Report.sso",
+#'  outdir = "my_output_dir",
+#'  model = "ss3",
+#'  fleet_names = "fleet1, fleet2, fleet3",
+#'  file_save = FALSE,
+#'  savedir = "my_save_dir",
+#'  save_name = "std_model_output")
+#'}
 convert_output <- function(
     output_file = NULL,
     outdir = NULL,

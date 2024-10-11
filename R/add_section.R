@@ -11,11 +11,15 @@
 #' or within a section as a child document.
 #' @export
 #'
-#' @examples add_section(
-#'   new_section = "Ecosystem Considerations", section_location = "after-discussion",
+#' @examples
+#'\dontrun{
+#' add_section(
+#'   new_section = "Ecosystem Considerations",
+#'   section_location = "after-discussion",
 #'   custom_sections = c("introduction.qmd", "model.qmd", "results.qmd", "discussion.qmd"),
 #'   subdir = tempdir()
 #' )
+#' }
 add_section <- function(
     new_section = NULL,
     section_location = NULL,
