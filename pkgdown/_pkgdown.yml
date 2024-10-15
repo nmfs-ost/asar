@@ -6,6 +6,7 @@ navbar:
     - home
     - reference
     - manual
+    - tutorial
     - sourcecode
     - articles
     - documents
@@ -45,3 +46,7 @@ navbar:
       menu:
       - text: Petrale Example
         href: SAR_USWC_Petrale_sole_skeleton.pdf
+
+    tutorial:
+      text: Tutorial
+      href: artic
