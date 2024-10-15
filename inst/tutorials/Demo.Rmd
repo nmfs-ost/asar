@@ -1,0 +1,174 @@
+---
+title: "asar Tutorial"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+description: >
+  Learn how to efficiently use the asar R package and its associated functions 
+  to create a stock assessment report.
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+```
+
+```{r, include = FALSE, eval=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Welcome
+
+The `asar` R package is a tool intended to improve and streamline the workflows of stock assessment scientists focusing on reporting. The following instructions will guide the user on how to efficiently use the tool. The other articles available on this website will provide descriptions of other tools that will help a user implement this package into their workflow.
+
+This tutorial is an extension of the example presented on the [home page](https://nmfs-ost.github.io/asar/).
+
+## TLDR Video
+
+Below is a shortened demonstration of what is in this tutorial:
+
+<iframe width="640" height="360" src="https://youtube.com/embed/Q8XJTTkjcts?autoplay&end=1577&start=1200 " frameborder="0" allowfullscreen></iframe>
+
+
+## Background
+
+Petrale sole is a right-eyed flounder ranging from the western Gulf of Alaska to the Coronado Islands in northern Baja California. It is often referred to as brill, California sole, Jordan's flounder, cape sole, and other additional common names. The stock has consistently been the most commercially valuable flatfish in the California Current Ecosystem and has been sought after since the late 19th century. This stock was last assessed in 2023 by NOAA Fisheries Northwest Fisheries Science Center. The following example will recreate the [stock assessment report](https://www.pcouncil.org/documents/2024/02/status-of-petrale-sole-eopsetta-jordanialong-the-u-s-west-coast-in-2023.pdf/) published by the Pacific Fisheries Management Council (PFMC). Additional assessments from the PFMC can be found online [here](https://www.pcouncil.org/stock-assessments-star-reports-stat-reports-rebuilding-analyses-terms-of-reference/groundfish-stock-assessment-documents/).
+
+## Prerequisites
+
+### Package Download
+
+To begin please download the following packages
+
+```{r echo=TRUE, eval=FALSE}
+install.packages("remotes")
+remotes::install_github("nmfs-ost/asar")
+remotes::install_github("nmfs-ost/satf")
+```
+
+## Set Working Directory
+
+Additionally, please set your working directory to the folder you want the files created from this package to remain. The `create_template` function in asar will create a standardized folder structure to store all of the files, but you as the user need to identify where they should be placed.
+
+Tip: if a working directory is not set manually, the function will default to the default working directory in R found in Tools > Global Options > General.
+
+## Create blank R script
+
+This script will be the way you execute the primary functions of this package and create a template for a stock assessment report. It can be helpful to save this script for later use or future assessments.
+
+![](images/new_script.png)
+
+## Relative Paths
+
+It is recommended to use a method to create relative paths to files such as the `here` package. The here function creates a file that allows R to create a path to a folder without having the user manually write out the path. The way to use this is to download the packages, run the function `here`after setting the working directory. 
+
+```
+install.packages("here")
+here::here()
+```
+
+The user can now designate paths within the folder containing the 'here' file. Note: the file will be hidden within the Rstudio interface, but can be seen in File explorer or an equal local file location. 
+
+Example:
+
+```
+output <- load(here::here("data", "Report.sso))
+```
+
+## Locate Model Ouptut File
+
+To help streamline the report writing process, an additional R package that compliments asar was developed called satf. This package contains pre-coded tables (flextable) and figure (ggplot2) using a standardized framework of data produced from the function `convert_output` in `asar`. 
+
+For this step we recommend either placing the model results file for either Stock Synthesis (SS3) or Beaufort Assessment Model (BAM) into your working directory. For SS3, this is the Report.sso file and for BAM this is the .rdat file produced after running the ADMB2R routines. 
+
+The petrale sole output file is located [here](https://github.com/nmfs-ost/asar/tree/main/data/Report.sso) for users to download and try themselves.
+
+## Getting Started
+
+We recommend converting your output file outside of the create_template function for large and/or complex data sets. There are two options for running this function.
+
+1) (Recommended) Save the output as a .csv then reload into your R environment 
+
+```{r, include=TRUE, eval=FALSE}
+asar::convert_output(
+  output_file = "Report.sso",
+  outdir = getwd(), # or wherever you saved the example output file
+  model = "SS3",
+  file_save = TRUE,
+  savedir = getwd(),
+  save_name = "petrale_sole_std_output"
+)
+```
+
+2) Save as an object in your environment
+
+```{r, include=TRUE, eval=FALSE}
+output <- asar::convert_output(
+  output_file = "Report.sso",
+  outdir = getwd(),
+  model = "SS3"
+)
+```
+
+**Note:** for users converting results from BAM, you will need to define an additional argument of fleet names in the form of the acronyms used in the file. This will hopefully be deprecated in the future. 
+
+## Run create_template
+
+Define your arguments for creating a stock assessment report template. Running the function without any arguments will produce a blank report, but will not be organized in the standard file framework. 
+
+Recommended minimum arguments:
+
+  - office
+  - region (if applicable)
+  - species
+  - spp_latin
+  - year (if different than the current year)
+  
+```{r, include=TRUE, eval=FALSE}
+asar::create_template(
+  format = "pdf",
+  office = "NWFSC",
+  region = "U.S. West Coast",
+  species = "Petrale sole",
+  spp_latin = "Eopsetta jordani",
+  year = 2023,
+  author = c("Ian G. Taylor", "Vladlena Gertseva", "Nick Tolimieri"),
+  include_affiliation = TRUE,
+  simple_affiliation = FALSE,
+  param_names = c("nf","sf"),
+  param_values = c("North fleet", "South fleet"),
+  resdir = here(), # indicate where the model output is located
+  model_results = "petrale_convert_output.csv", # converted model output
+)
+```
+
+## What to expect
+
+1) During processing, you will see progress for the template being built in the R console. A message is displayed that let's you know where the template was saved and to fill out the template.
+
+`asar` is only a partially automated tool that still requires the analyst to complete the bulk of the content in the report. Future release will allow the user to call on old assessments that were made using `asar::create_template`, so only minor adjustments will be made as needed by the current assessment.
+
+2) There will be a series of quarto (.qmd) files along with some others generated with the folder. The user will not need to modify the 'skeleton.qmd', but all other quarto files will need to be filled in. 
+
+![](images/example-pop-up.png)
+
+Each section quarto file contains pre-built heading tags and subsections with details indicating what the user should touch on for each section. 
+
+![](images/example-section.png)
+
+The optional addition of new sections as indicated by the user in the `create_template` function will be blank with the exception of a pre-built header with the new section name. 
+
+  - Indicate the new section name (more than one section can be added using `c()`)
+  - Indicate the placement of the section relative to the base sections (cases with more than one new sections added relative to another section will be added in the order listed)
+
+```
+new_section = "Management"
+section_location = "after-modeling_approach"
+```
+
+3) 
+
