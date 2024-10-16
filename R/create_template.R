@@ -812,7 +812,7 @@ create_template <- function(
             )
             sec_list2 <- add_section(
               new_section = new_section,
-              new_section = section_location,
+              section_location = section_location,
               custom_sections = sec_list1,
               subdir = subdir
             )
@@ -827,7 +827,7 @@ create_template <- function(
             # Create new sections as .qmd in folder
             sec_list2 <- add_section(
               new_section = new_section,
-              new_section = section_location,
+              section_location = section_location,
               custom_sections = sec_list1,
               subdir = subdir
             )
