@@ -4,7 +4,16 @@
 \alias{add_base_section}
 \title{Add selected sections to outline}
 \usage{
-add_base_section(x)
+add_base_section(custom_sections)
+}
+\arguments{
+\item{custom_sections}{List of existing sections to include in
+the custom template. Note: this only includes sections within
+list.files(system.file("templates", "skeleton",
+package = "asar")). The name of the section, rather than the
+name of the file, can be used (e.g., 'abstract' rather than
+'00_abstract.qmd'). If adding a new section, also use
+parameters 'new_section' and 'section_location'.}
 }
 \value{
 Call and copy the sections in the package templates to create an outline for a stock assessment
@@ -13,5 +22,5 @@ Call and copy the sections in the package templates to create an outline for a s
 Add selected sections to outline
 }
 \examples{
-add_base_section(c("executive summary", "modeling approach", "results"))
+add_base_section(c("executive summary", "assessment", "results"))
 }

@@ -16,14 +16,11 @@ Imports:
     fs,
     ggplot2,
     gridExtra,
-    gt,
     naniar,
     nmfspalette,
     officer,
     openxlsx,
     prodlim,
-    r4ss,
-    satf,
     stats,
     stringr,
     svDialogs,
@@ -32,10 +29,12 @@ Imports:
     tidyselect,
     utils
 Suggests: 
+    gt,
     knitr,
     parallel,
     r4ss,
     rmarkdown,
+    satf,
     snowfall,
     testthat (>= 3.0.0)
 VignetteBuilder: 
