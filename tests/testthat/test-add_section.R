@@ -1,35 +1,48 @@
 test_that("Adding new sections works.", {
-  sec_list <- add_base_section(c("introduction", "modeling approach", "results", "discussion"))
+  sec_list <- add_base_section(c("introduction", "assessment", "discussion"))
   sections <- add_section(
-    sec_names = c("abstract", "ecosystem_considerations", "alt_models"),
-    location = c("before-introduction", "after-discussion", "after-model"),
-    other_sections = sec_list,
+    new_section = c("abstract", "ecosystem_considerations", "alt_models"),
+    section_location = c("before-introduction", "after-discussion", "after-assessment"),
+    custom_sections = sec_list,
     subdir = tempdir()
   )
   exp_list <- list(
     "abstract.qmd",
-    "introduction.qmd",
-    "modeling_approach.qmd",
+    "02_introduction.qmd",
+    "04a_assessment-configuration.qmd",
+    "04b_assessment-results.qmd",
+    "04c_assessment-sensitivity.qmd",
+    "04d_assessment-benchmarks.qmd",
+    "04e_assessment-projections.qmd",
     "alt_models.qmd",
-    "results.qmd",
-    "discussion.qmd",
+    "05_discussion.qmd",
     "ecosystem_considerations.qmd"
   )
   expect_equal(sections, exp_list)
 })
 
 test_that("Adding new sections does not work.", {
-  sec_list <- add_base_section(c("introduction", "data", "modeling approach", "acknowledgments", "appendix", "references"))
+  sec_list <- add_base_section(c("introduction", "data", "assessment", "acknowledgments", "appendix", "references"))
   sections <- add_section(
-    sec_names = c("Harvest Control Rules", "Regional Management Considerations", "Research and Data Needs"),
-    location = c("after-model", "after-model", "after-model"),
-    other_sections = sec_list,
+    new_section = c("Harvest Control Rules", "Regional Management Considerations", "Research and Data Needs"),
+    section_location = c("after-assessment", "after-assessment", "after-assessment"),
+    custom_sections = sec_list,
     subdir = tempdir()
   )
   exp_list <- list(
-    "introduction.qmd", "data.qmd", "modeling_approach.qmd", "Harvest_Control_Rules.qmd",
-    "Regional_Management_Considerations.qmd", "Research_and_Data_Needs.qmd",
-    "acknowledgments.qmd", "appendix.qmd", "references.qmd"
+    "02_introduction.qmd",
+    "03_data.qmd",
+    "04a_assessment-configuration.qmd",
+    "04b_assessment-results.qmd",
+    "04c_assessment-sensitivity.qmd",
+    "04d_assessment-benchmarks.qmd",
+    "04e_assessment-projections.qmd",
+    "harvest_control_rules.qmd",
+    "regional_management_considerations.qmd",
+    "research_and_data_needs.qmd",
+    "06_acknowledgments.qmd",
+    "11_appendix.qmd",
+    "07_references.qmd"
   )
   expect_equal(sections, exp_list)
 })
