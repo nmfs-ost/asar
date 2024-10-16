@@ -276,7 +276,7 @@ create_template <- function(
             "### Tables \n \n",
             "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
           )
-          utils::capture.output(cat(tables_doc), file = fs::path(subdir, "tables.qmd"), append = FALSE)
+          utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
           warning("Results file or model name not defined.")
         }
       } else {
@@ -284,7 +284,7 @@ create_template <- function(
           "### Tables \n \n",
           "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures"
         )
-        utils::capture.output(cat(tables_doc), file = fs::path(subdir, "tables.qmd"), append = FALSE)
+        utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
       }
       # Create figures qmd
       if (include_figures) {
@@ -298,12 +298,12 @@ create_template <- function(
           )
         } else {
           figures_doc <- paste0("## Figures \n")
-          utils::capture.output(cat(figures_doc), file = fs::path(subdir, "figures.qmd"), append = FALSE)
+          utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
           warning("Results file or model name not defined.")
         }
       } else {
         figures_doc <- paste0("## Figures \n")
-        utils::capture.output(cat(figures_doc), file = fs::path(subdir, "figures.qmd"), append = FALSE)
+        utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
       }
 
       # Part I
@@ -441,6 +441,7 @@ create_template <- function(
         # Date
         "date: today", "\n",
         "lang: en \n",
+        "keep-tex: true \n"
       )
 
       # Add species image on title page
@@ -569,32 +570,38 @@ create_template <- function(
       if (custom == FALSE) {
         sections <- add_child(
           c(
-            "executive_summary.qmd",
-            "introduction.qmd",
-            "data.qmd",
-            "modeling_approach.qmd",
-            "results.qmd",
-            "projections.qmd",
-            "discussion.qmd",
-            "acknowledgments.qmd",
-            "references.qmd",
-            "tables.qmd",
-            "figures.qmd",
-            "appendix.qmd"
+            "01_executive_summary.qmd",
+            "02_introduction.qmd",
+            "03_data.qmd",
+            "04a_assessment-configuration.qmd",
+            "04b_assessment-results.qmd",
+            "04c_assessment-sensitivity.qmd",
+            "04d_asessment-benchmarks.qmd",
+            "04e_assessment-projections.qmd",
+            "05_discussion.qmd",
+            "06_acknowledgments.qmd",
+            "07_references.qmd",
+            "08_tables.qmd",
+            "09_figures.qmd",
+            "10_notes.qmd",
+            "11_appendix.qmd"
           ),
           label = c(
-            "executive_summary",
-            "introduction",
-            "data",
-            "modeling_approach",
-            "results",
-            "projections",
-            "discussion",
-            "acknowlesgements",
-            "references",
-            "tables",
-            "figures",
-            "appendix"
+            "01_executive_summary",
+            "02_introduction",
+            "03_data",
+            "04a_assessment-configuration",
+            "04b_assessment-results",
+            "04c_assessment-sensitivity",
+            "04d_asessment-benchmarks",
+            "04e_assessment-projections",
+            "05_discussion",
+            "06_acknowledgments",
+            "07_references",
+            "08_tables",
+            "09_figures",
+            "10_notes",
+            "11_appendix"
           )
         )
       } else {
@@ -611,18 +618,21 @@ create_template <- function(
 
           if (is.null(custom_sections)) {
             sec_list1 <- list(
-              "executive_summary.qmd",
-              "introduction.qmd",
-              "data.qmd",
-              "modeling_approach.qmd",
-              "results.qmd",
-              "projections.qmd",
-              "discussion.qmd",
-              "acknowledgments.qmd",
-              "references.qmd",
-              "tables.qmd",
-              "figures.qmd",
-              "appendix.qmd"
+              "01_executive_summary.qmd",
+              "02_introduction.qmd",
+              "03_data.qmd",
+              "04a_assessment-configuration.qmd",
+              "04b_assessment-results.qmd",
+              "04c_assessment-sensitivity.qmd",
+              "04d_asessment-benchmarks.qmd",
+              "04e_assessment-projections.qmd",
+              "05_discussion.qmd",
+              "06_acknowledgments.qmd",
+              "07_references.qmd",
+              "08_tables.qmd",
+              "09_figures.qmd",
+              "10_notes.qmd",
+              "11_appendix.qmd"
             )
             sec_list2 <- add_section(
               new_section = new_section,
@@ -645,10 +655,10 @@ create_template <- function(
               stop("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
             }
             if (include_tables) {
-              sec_list1 <- c(sec_list1, "tables.qmd")
+              sec_list1 <- c(sec_list1, "08_tables.qmd")
             }
             if (include_figures) {
-              sec_list1 <- c(sec_list1, "figures.qmd")
+              sec_list1 <- c(sec_list1, "09_figures.qmd")
             }
             sec_list2 <- add_section(
               new_section = new_section,
@@ -736,32 +746,38 @@ create_template <- function(
       if (custom == FALSE) {
         sections <- add_child(
           c(
-            "executive_summary.qmd",
-            "introduction.qmd",
-            "data.qmd",
-            "modeling_approach.qmd",
-            "results.qmd",
-            "projections.qmd",
-            "discussion.qmd",
-            "acknowledgments.qmd",
-            "references.qmd",
-            "tables.qmd",
-            "figures.qmd",
-            "appendix.qmd"
+            "01_executive_summary.qmd",
+            "02_introduction.qmd",
+            "03_data.qmd",
+            "04a_assessment-configuration.qmd",
+            "04b_assessment-results.qmd",
+            "04c_assessment-sensitivity.qmd",
+            "04d_asessment-benchmarks.qmd",
+            "04e_assessment-projections.qmd",
+            "05_discussion.qmd",
+            "06_acknowledgments.qmd",
+            "07_references.qmd",
+            "08_tables.qmd",
+            "09_figures.qmd",
+            "10_notes.qmd",
+            "11_appendix.qmd"
           ),
           label = c(
-            "executive_summary",
-            "introduction",
-            "data",
-            "modeling_approach",
-            "results",
-            "projections",
-            "discussion",
-            "acknowlesgements",
-            "references",
-            "tables",
-            "figures",
-            "appendix"
+            "01_executive_summary",
+            "02_introduction",
+            "03_data",
+            "04a_assessment-configuration",
+            "04b_assessment-results",
+            "04c_assessment-sensitivity",
+            "04d_asessment-benchmarks",
+            "04e_assessment-projections",
+            "05_discussion",
+            "06_acknowledgments",
+            "07_references",
+            "08_tables",
+            "09_figures",
+            "10_notes",
+            "11_appendix"
           )
         )
       } else {
@@ -778,22 +794,25 @@ create_template <- function(
 
           if (is.null(custom_sections)) {
             sec_list1 <- list(
-              "executive_summary.qmd",
-              "introduction.qmd",
-              "data.qmd",
-              "modeling_approach.qmd",
-              "results.qmd",
-              "projections.qmd",
-              "discussion.qmd",
-              "acknowledgments.qmd",
-              "references.qmd",
-              "tables.qmd",
-              "figures.qmd",
-              "appendix.qmd"
+              "01_executive_summary.qmd",
+              "02_introduction.qmd",
+              "03_data.qmd",
+              "04a_assessment-configuration.qmd",
+              "04b_assessment-results.qmd",
+              "04c_assessment-sensitivity.qmd",
+              "04d_asessment-benchmarks.qmd",
+              "04e_assessment-projections.qmd",
+              "05_discussion.qmd",
+              "06_acknowledgments.qmd",
+              "07_references.qmd",
+              "08_tables.qmd",
+              "09_figures.qmd",
+              "10_notes.qmd",
+              "11_appendix.qmd"
             )
             sec_list2 <- add_section(
               new_section = new_section,
-              new_section = section_location,
+              section_location = section_location,
               custom_sections = sec_list1,
               subdir = subdir
             )
@@ -808,7 +827,7 @@ create_template <- function(
             # Create new sections as .qmd in folder
             sec_list2 <- add_section(
               new_section = new_section,
-              new_section = section_location,
+              section_location = section_location,
               custom_sections = sec_list1,
               subdir = subdir
             )
