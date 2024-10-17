@@ -1,5 +1,0 @@
-## Projections {#sec-projections}
-
-<!---
-Description of stock status, biological reference points (BRPs), and trends for each scenario; include rebuilding times
---->
