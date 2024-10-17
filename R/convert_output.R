@@ -388,10 +388,10 @@ convert_output <- function(
                   ) |>
                   dplyr::select(tidyselect::any_of(c("label", "estimate", factors, errors, err_names)))
                 if (length(err_names) > 1) {
-                  warning("There are multiple reported error metrics.")
+                  # warning("There are multiple reported error metrics.")
                   if (any(grepl(paste(err_names, collapse = "|"), colnames(df4)))) {
                     df4 <- df4 |>
-                      dplyr::select(-tidyselect::all_of(c(err_names[2:length(err_names)])))
+                      dplyr::select(-tidyselect::all_of(err_names[2:length(err_names)]))
                   } else {
                     df4 <- df4 |>
                       dplyr::filter(!(label %in% err_names[2:length(err_names)]))
