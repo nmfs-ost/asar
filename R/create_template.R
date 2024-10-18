@@ -95,8 +95,10 @@
 #' @param add_image TRUE/FALSE; Add image of species to the
 #' template that is not already included in the project's
 #' inst/resources/spp_img folder? Default is false.
-#' @param spp_image Filepath to the species' image if not
+#' @param spp_image File path to the species' image if not
 #' using the image included in the project's repository.
+#' @param bib_file File path to a .bib file used for citing references in
+#' the report
 #'
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
@@ -471,7 +473,9 @@ create_template <- function(
       # Formatting
       yaml <- paste0(
         yaml,
-        format_quarto(format = format)
+        format_quarto(format = format),
+        # Add in output file name (Rendered name of pdf)
+        "output-file: '", stringr::str_replace(species, " ", "_"), "_SAR_", year, "'", "\n"
       )
 
       # Add lua filters for compliance
@@ -519,6 +523,15 @@ create_template <- function(
       #   "css: styles.css", "\n"
       # )
 
+      # Add option for bib file
+      if(!is.null(bib_file)) {
+        bib <- glue::glue(
+          "bibliography: ", bib_file, "\n"
+        )
+        yaml <- paste0(yaml, bib)
+      }
+      # add in else statement once a national .bib file is made
+
       # Close yaml
       yaml <- paste0(yaml, "---")
 
@@ -551,9 +564,22 @@ create_template <- function(
             save_name = paste(species, "_std_res_", year, sep = "")
           )
         }
+        # Rename model results file and results file directory if the results are converted in this fxn
+        model_results <- glue::glue(species, "_std_res_", year, ".csv")
+        resdir <- subdir
       }
 
       # print("_______Standardized output data________")
+
+      # Add in quantities and data R chunk
+      params_chunk <- add_chunk(
+        glue::glue(
+          "output <- read.csv('", resdir, "/", model_results, "') \n \n",
+          "# Reference quantities \n",
+          "# sbtgt \n"
+        ),
+        label = "output_and_quantities"
+      )
 
       # Add page for citation of assessment report
       citation <- create_citation(
@@ -676,7 +702,9 @@ create_template <- function(
       } # close if statement for custom
 
       # Combine template sections
-      report_template <- paste(yaml,
+      report_template <- paste(
+        yaml,
+        params_chunk,
         citation,
         sections,
         sep = "\n"
@@ -717,17 +745,6 @@ create_template <- function(
       print("__________Built YAML Header______________")
       # yaml_save <- capture.output(cat(yaml))
       # cat(yaml, file = here('template','yaml_header.qmd'))
-
-      # Add chunk to load in assessment data
-      ass_output <- add_chunk(
-        paste0(
-          "convert_output(output.file = ", "c('", paste(model_results, collapse = "', '"), "')",
-          ", model = ", "'", model, "'",
-          ", outdir = ", "'", resdir, "'", ")"
-        ),
-        label = "model_output",
-        eval = "false" # set false for testing this function in the template for now
-      )
 
       # print("_______Standardized output data________")
 
@@ -841,8 +858,9 @@ create_template <- function(
       }
 
       # Combine template sections
-      report_template <- paste( # yaml,
-        ass_output,
+      report_template <- paste(
+        yaml,
+        # ass_output,
         citation,
         sections,
         sep = "\n"
