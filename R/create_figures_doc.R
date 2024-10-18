@@ -1,14 +1,14 @@
 #' Create Quarto Document of Figures
 #'
-#' @param resdir directory where the results file is located
-#' @param model_results name of the results file of assessment output
-#' @param model stock assessment model
-#' @param year end year for assessment to include in plotting
-#' @param subdir subdirectory where the assessment report template is being stored
-#' @param include_all include all default figures for a stock assessment report
+#' @inheritParams create_template
+#' @param year End year for assessment, for inclusion in plotting
+#' @param subdir Location of subdirectory storing the assessment report template
+#' @param include_all TRUE/FALSE; Option to include all default
+#' figures for a stock assessment report. Default is true.
 #'
-#' @return Create a quarto document as part of a stock assessment outline with
-#' pre-loaded R chunk adding the stock assessment tables from the nmfs-ost/satf R package
+#' @return A quarto document with pre-loaded R chunk that adds the
+#' stock assessment tables from the nmfs-ost/satf R package. The
+#' quarto document will become part of the stock assessment outline.
 #' @export
 #'
 create_figures_doc <- function(resdir = NULL,
@@ -28,7 +28,9 @@ create_figures_doc <- function(resdir = NULL,
       add_chunk(
         paste0("satf::plot_recruitment(dat = '", resdir, "/", model_results, "', model = '", model, "')"),
         label = "recruitment",
-        eval = "false"
+        eval = "false",
+        add_option = TRUE,
+        chunk_op = "fig-cap: 'this is the caption for the figure.'"
       ),
       "\n"
     )
@@ -48,5 +50,5 @@ create_figures_doc <- function(resdir = NULL,
   }
 
   # Save tables doc to template folder
-  utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "figures.qmd"), append = FALSE)
+  utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "09_figures.qmd"), append = FALSE)
 }

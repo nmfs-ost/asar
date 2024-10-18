@@ -2,15 +2,20 @@
 #'
 #' Format stock assessment output files to a standardized format.
 #'
-#' @param output_file name of the file containing assessment model output. This is the Report.sso file for SS3, the rdat file for BAM, the...
-#' @param outdir output directory folder
-#' @param model assessment model used in evaluation;
-#'              "ss3", "bam", "asap", "fims", "amak", "ms-java", "wham", "mas", "asap"
-#' @param fleet_names Names of fleets in the assessment model as shortened in the
-#'                    output file, required for transforming BAM model output
-#' @param file_save TRUE/FALSE save the formatted object rather than calling the function and adding to global environment
-#' @param savedir directory to save the file
-#' @param save_name file name (do not use spaces)
+#' @param output_file Assessment model output file (e.g., the
+#'  Report.sso file for SS3, the rdat file for BAM, etc.)
+#' @param outdir Directory of the assessment model output file.
+#' @param model Assessment model used in evaluation ("ss3", "bam",
+#'  "asap", "fims", "amak", "ms-java", "wham", "mas").
+#' @param fleet_names Names of fleets in the assessment model as
+#'  shortened in the output file. Required for converting BAM
+#'  model output.
+#' @param file_save TRUE/FALSE; Save the formatted object rather
+#'  than calling the function and adding the formatted object to
+#'  the global environment? Default is false.
+#' @param savedir Directory to save the converted output file.
+#' @param save_name Name of the converted output file (do not use
+#'  spaces).
 #'
 #' @author Samantha Schiano
 #'
@@ -383,10 +388,10 @@ convert_output <- function(
                   ) |>
                   dplyr::select(tidyselect::any_of(c("label", "estimate", factors, errors, err_names)))
                 if (length(err_names) > 1) {
-                  warning("There are multiple reported error metrics.")
+                  # warning("There are multiple reported error metrics.")
                   if (any(grepl(paste(err_names, collapse = "|"), colnames(df4)))) {
                     df4 <- df4 |>
-                      dplyr::select(-tidyselect::all_of(c(err_names[2:length(err_names)])))
+                      dplyr::select(-tidyselect::all_of(err_names[2:length(err_names)]))
                   } else {
                     df4 <- df4 |>
                       dplyr::filter(!(label %in% err_names[2:length(err_names)]))
