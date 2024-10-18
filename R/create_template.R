@@ -141,7 +141,8 @@ create_template <- function(
     include_figures = TRUE,
     include_tables = TRUE,
     add_image = FALSE,
-    spp_image = NULL) {
+    spp_image = NULL,
+    bib_file = NULL) {
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
