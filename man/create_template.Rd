@@ -37,7 +37,8 @@ create_template(
   include_figures = TRUE,
   include_tables = TRUE,
   add_image = FALSE,
-  spp_image = NULL
+  spp_image = NULL,
+  bib_file = NULL
 )
 }
 \arguments{
@@ -164,8 +165,11 @@ in the report? Default is true.}
 template that is not already included in the project's
 inst/resources/spp_img folder? Default is false.}
 
-\item{spp_image}{Filepath to the species' image if not
+\item{spp_image}{File path to the species' image if not
 using the image included in the project's repository.}
+
+\item{bib_file}{File path to a .bib file used for citing references in
+the report}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.

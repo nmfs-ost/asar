@@ -527,7 +527,12 @@ create_template <- function(
       # Add option for bib file
       if(!is.null(bib_file)) {
         bib <- glue::glue(
-          "bibliography: ", bib_file, "\n"
+          "bibliography: ", "\n"
+        )
+        bib_all <- paste("  ", "- ", bib_file, "\n", collapse = "")
+        bib <- glue::glue(
+          bib, "\n",
+          bib_all, "\n"
         )
         yaml <- paste0(yaml, bib)
       }

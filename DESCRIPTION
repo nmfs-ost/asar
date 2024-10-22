@@ -15,6 +15,7 @@ Imports:
     forstringr,
     fs,
     ggplot2,
+    glue,
     gridExtra,
     naniar,
     nmfspalette,
@@ -30,6 +31,7 @@ Imports:
     utils
 Suggests: 
     gt,
+    kableExtra,
     knitr,
     parallel,
     r4ss,
