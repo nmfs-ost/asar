@@ -19,6 +19,8 @@ create_figures_doc <- function(resdir = NULL,
                                include_all = TRUE) {
   model <- match.arg(model, several.ok = FALSE)
 
+  # sheet <- read.csv()
+
   if (include_all) {
     # Create tables quarto doc - maybe should add this as separate fxn - same with figs
     figures_doc <- paste0("## Figures \n \n")
@@ -29,8 +31,15 @@ create_figures_doc <- function(resdir = NULL,
         paste0("satf::plot_recruitment(dat = '", resdir, "/", model_results, "', model = '", model, "')"),
         label = "recruitment",
         eval = "false",
-        add_option = TRUE,
-        chunk_op = "fig-cap: 'this is the caption for the figure.'"
+        add_option = TRUE # ,
+        # chunk_op = c(
+        #   glue::glue(
+        #     "fig-cap: "
+        #   ),
+        #   glue::glue(
+        #     "fig-alt: '", sheet$alt_text-all[label=="recruitment"], "'",
+        #   )
+        # )
       ),
       "\n"
     )
