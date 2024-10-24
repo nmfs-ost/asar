@@ -5,9 +5,11 @@ Filepath
 NEFSC
 NOAA
 NWFSC
+PFMC's
 PIFSC
 Pomatomus
 REPO
+Rdata
 SAR
 SEFSC
 SSC
@@ -31,6 +33,7 @@ nmfs
 ost
 outdir
 patrick
+petrale
 pre
 qmd
 rdat
