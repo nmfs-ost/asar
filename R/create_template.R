@@ -652,12 +652,17 @@ create_template <- function(
 
       # print("_______Standardized output data________")
 
-      # Add in quantities and data R chunk
-      params_chunk <- add_chunk(
-        glue::glue(
-          "output <- read.csv('", resdir, "/", model_results, "') \n \n",
-          "# Reference quantities \n",
-          "# sbtgt \n"
+      # Add preamble
+      # add in quantities and output data R chunk
+      preamble <- add_chunk(
+        paste0(
+          "output <- utils::read.csv('",
+          ifelse(convert_output,
+                 paste0(subdir, "/", species, "_",  "_std_res_", year, ".csv"),
+                 paste0(resdir, "/", model_results)), "') \n",
+          "# Call reference points and quantities below \n",
+          "# sbmsy = 10000 \n",
+          "# fmsy = 0.3 \n"
         ),
         label = "output_and_quantities"
       )
@@ -785,7 +790,7 @@ create_template <- function(
       # Combine template sections
       report_template <- paste(
         yaml,
-        params_chunk,
+        preamble,
         citation,
         sections,
         sep = "\n"
@@ -941,7 +946,7 @@ create_template <- function(
       # Combine template sections
       report_template <- paste(
         yaml,
-        # ass_output,
+        # preamble,
         citation,
         sections,
         sep = "\n"
