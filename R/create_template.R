@@ -789,7 +789,7 @@ create_template <- function(
       # Combine template sections
       report_template <- paste(
         yaml,
-        params_chunk,
+        preamble,
         citation,
         sections,
         sep = "\n"
@@ -945,7 +945,7 @@ create_template <- function(
       # Combine template sections
       report_template <- paste(
         yaml,
-        preamble,
+        # preamble,
         citation,
         sections,
         sep = "\n"
