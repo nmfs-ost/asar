@@ -19,6 +19,10 @@ create_figures_doc <- function(resdir = NULL,
                                include_all = TRUE) {
   model <- match.arg(model, several.ok = FALSE)
 
+  captions_alttext <- utils::read.csv(
+    system.file("resources", "captions_alttext.csv", package = "asar")
+  )
+
   if (include_all) {
     # Create tables quarto doc - maybe should add this as separate fxn - same with figs
     figures_doc <- paste0("## Figures \n \n")
@@ -30,25 +34,69 @@ create_figures_doc <- function(resdir = NULL,
         label = "recruitment",
         eval = "false",
         add_option = TRUE,
-        chunk_op = "fig-cap: 'this is the caption for the figure.'"
+        chunk_op = c(
+          glue::glue(
+            "fig-cap: '",
+            captions_alttext |>
+              dplyr::filter(label == "recruitment" & type == "figure") |>
+              dplyr::select(caption) |>
+              as.character(),
+            "'"
+          ),
+          glue::glue(
+            "fig-alt: '",
+            captions_alttext |>
+              dplyr::filter(label == "recruitment" & type == "figure") |>
+              dplyr::select(alt_text) |>
+              as.character(),
+            "'"
+          )
+        )
       ),
       "\n"
     )
+
     # SB figure
     plot_code <- paste0(
       "satf::plot_spawning_biomass(dat = '", resdir, "/", model_results,
       "', model = '", model,
       "', ref_line = 'target', endyr = ", year, ")"
     )
+
+
     figures_doc <- paste0(
       figures_doc,
-      add_chunk(plot_code, label = "spawn_bio", eval = "false"),
+      add_chunk(plot_code,
+                label = "spawn_bio",
+                eval = "false",
+                add_option = TRUE,
+                chunk_op = c(
+                  glue::glue(
+                    "fig-cap: '",
+                    captions_alttext |>
+                      dplyr::filter(label == "spawning_biomass" & type == "figure") |>
+                      dplyr::select(caption) |>
+                      as.character(),
+                    "'"
+                  ),
+                  glue::glue(
+                    "fig-alt: '",
+                    captions_alttext |>
+                      dplyr::filter(label == "spawning_biomass" & type == "figure") |>
+                      dplyr::select(alt_text) |>
+                      as.character(),
+                    "'"
+                    )
+                  )
+                ),
       "\n"
     )
   } else {
-    # add option for only adding specified tables
+    # add option for only adding specified figures
   }
 
-  # Save tables doc to template folder
-  utils::capture.output(cat(figures_doc), file = paste0(subdir, "/", "09_figures.qmd"), append = FALSE)
+  # Save figures doc to template folder
+  utils::capture.output(cat(figures_doc),
+                        file = paste0(subdir, "/", "09_figures.qmd"),
+                        append = FALSE)
 }

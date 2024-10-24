@@ -37,7 +37,8 @@ create_template(
   include_figures = TRUE,
   include_tables = TRUE,
   add_image = FALSE,
-  spp_image = NULL
+  spp_image = NULL,
+  bib_file = NULL
 )
 }
 \arguments{
@@ -164,8 +165,11 @@ in the report? Default is true.}
 template that is not already included in the project's
 inst/resources/spp_img folder? Default is false.}
 
-\item{spp_image}{Filepath to the species' image if not
+\item{spp_image}{File path to the species' image if not
 using the image included in the project's repository.}
+
+\item{bib_file}{File path to a .bib file used for citing references in
+the report}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
@@ -180,6 +184,78 @@ To see templates included in the base skeleton, please run
 in the console.
 }
 \examples{
-create_template()
+\dontrun{
+create_template(
+  new_section = "a_new_section",
+  section_location = "before-introduction",
+  )
+
+
+create_template(
+  new_template = TRUE,
+  format = "pdf",
+  office = "NWFSC",
+  species = "Dover sole",
+  spp_latin = "Microstomus pacificus",
+  year = 2010,
+  author = c("John Snow", "Danny Phantom", "Patrick Star"),
+  include_affiliation = TRUE,
+  resdir = "C:/Users/Documents/Example_Files",
+  model_results = "Report.sso",
+  model = "SS3",
+  new_section = "an_additional_section",
+  section_location = "after-introduction",
+  )
+
+asar::create_template(
+  new_template = TRUE,
+  format = "pdf",
+  office = "PIFSC",
+  species = "Striped marlin",
+  spp_latin = "Kajikia audax",
+  year = 2018,
+  author = "Alba Tross",
+  model = "BAM",
+  new_section = c("a_new_section", "another_new_section"),
+  section_location = c("before-introduction", "after-introduction"),
+  custom = TRUE,
+  custom_sections = c("executive_summary", "introduction")
+)
+
+create_template(
+  new_template = TRUE,
+  format = "pdf",
+  office = "NWFSC",
+  region = "my_region",
+  complex = FALSE,
+  species = "Bluefish",
+  spp_latin = "Pomatomus saltatrix",
+  year = 2010,
+  author = c("John Snow", "Danny Phantom", "Patrick Star"),
+  add_author = "Sun E Day",
+  include_affiliation = TRUE,
+  simple_affiliation = TRUE,
+  alt_title = FALSE,
+  title = "Management Track Assessments Spring 2024",
+  parameters = TRUE,
+  param_names = c("region", "year"),
+  param_values = c("my_region", "2024"),
+  convert_output = FALSE,
+  fleet_names = c("fleet1", "fleet2", "fleet3"),
+  resdir = "C:/Users/Documents/Example_Files",
+  model_results = "Report.sso",
+  model = "SS3",
+  new_section = "an_additional_section",
+  section_location = "before-discussion",
+  type = "SAR",
+  prev_year = 2021,
+  custom = TRUE,
+  custom_sections = c("executive_summary", "introduction", "discussion"),
+  include_figures = TRUE,
+  include_tables = TRUE,
+  add_image = TRUE,
+  spp_image = "dir/containing/spp_image"
+)
+}
 
 }

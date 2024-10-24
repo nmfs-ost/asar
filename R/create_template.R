@@ -95,8 +95,10 @@
 #' @param add_image TRUE/FALSE; Add image of species to the
 #' template that is not already included in the project's
 #' inst/resources/spp_img folder? Default is false.
-#' @param spp_image Filepath to the species' image if not
+#' @param spp_image File path to the species' image if not
 #' using the image included in the project's repository.
+#' @param bib_file File path to a .bib file used for citing references in
+#' the report
 #'
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
@@ -104,7 +106,81 @@
 #'         General sections are called as child documents in this skeleton and
 #'         each of the child documents should be edited separately.
 #' @export
-#' @examples create_template()
+#'
+#' @examples
+#' \dontrun{
+#' create_template(
+#'   new_section = "a_new_section",
+#'   section_location = "before-introduction",
+#'   )
+#'
+#'
+#' create_template(
+#'   new_template = TRUE,
+#'   format = "pdf",
+#'   office = "NWFSC",
+#'   species = "Dover sole",
+#'   spp_latin = "Microstomus pacificus",
+#'   year = 2010,
+#'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
+#'   include_affiliation = TRUE,
+#'   resdir = "C:/Users/Documents/Example_Files",
+#'   model_results = "Report.sso",
+#'   model = "SS3",
+#'   new_section = "an_additional_section",
+#'   section_location = "after-introduction",
+#'   )
+#'
+#' asar::create_template(
+#'   new_template = TRUE,
+#'   format = "pdf",
+#'   office = "PIFSC",
+#'   species = "Striped marlin",
+#'   spp_latin = "Kajikia audax",
+#'   year = 2018,
+#'   author = "Alba Tross",
+#'   model = "BAM",
+#'   new_section = c("a_new_section", "another_new_section"),
+#'   section_location = c("before-introduction", "after-introduction"),
+#'   custom = TRUE,
+#'   custom_sections = c("executive_summary", "introduction")
+#' )
+#'
+#' create_template(
+#'   new_template = TRUE,
+#'   format = "pdf",
+#'   office = "NWFSC",
+#'   region = "my_region",
+#'   complex = FALSE,
+#'   species = "Bluefish",
+#'   spp_latin = "Pomatomus saltatrix",
+#'   year = 2010,
+#'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
+#'   add_author = "Sun E Day",
+#'   include_affiliation = TRUE,
+#'   simple_affiliation = TRUE,
+#'   alt_title = FALSE,
+#'   title = "Management Track Assessments Spring 2024",
+#'   parameters = TRUE,
+#'   param_names = c("region", "year"),
+#'   param_values = c("my_region", "2024"),
+#'   convert_output = FALSE,
+#'   fleet_names = c("fleet1", "fleet2", "fleet3"),
+#'   resdir = "C:/Users/Documents/Example_Files",
+#'   model_results = "Report.sso",
+#'   model = "SS3",
+#'   new_section = "an_additional_section",
+#'   section_location = "before-discussion",
+#'   type = "SAR",
+#'   prev_year = 2021,
+#'   custom = TRUE,
+#'   custom_sections = c("executive_summary", "introduction", "discussion"),
+#'   include_figures = TRUE,
+#'   include_tables = TRUE,
+#'   add_image = TRUE,
+#'   spp_image = "dir/containing/spp_image"
+#' )
+#' }
 #'
 create_template <- function(
     new_template = TRUE,
@@ -139,7 +215,8 @@ create_template <- function(
     include_figures = TRUE,
     include_tables = TRUE,
     add_image = FALSE,
-    spp_image = NULL) {
+    spp_image = NULL,
+    bib_file = NULL) {
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -471,7 +548,9 @@ create_template <- function(
       # Formatting
       yaml <- paste0(
         yaml,
-        format_quarto(format = format)
+        format_quarto(format = format),
+        # Add in output file name (Rendered name of pdf)
+        "output-file: '", stringr::str_replace(species, " ", "_"), "_SAR_", year, "'", "\n"
       )
 
       # Add lua filters for compliance
@@ -519,6 +598,20 @@ create_template <- function(
       #   "css: styles.css", "\n"
       # )
 
+      # Add option for bib file
+      if(!is.null(bib_file)) {
+        bib <- glue::glue(
+          "bibliography: ", "\n"
+        )
+        bib_all <- paste("  ", "- ", bib_file, "\n", collapse = "")
+        bib <- glue::glue(
+          bib, "\n",
+          bib_all, "\n"
+        )
+        yaml <- paste0(yaml, bib)
+      }
+      # add in else statement once a national .bib file is made
+
       # Close yaml
       yaml <- paste0(yaml, "---")
 
@@ -551,11 +644,15 @@ create_template <- function(
             save_name = paste(species, "_std_res_", year, sep = "")
           )
         }
+        # Rename model results file and results file directory if the results are converted in this fxn
+        model_results <- glue::glue(species, "_std_res_", year, ".csv")
+        resdir <- subdir
       }
 
       # print("_______Standardized output data________")
 
       # Add preamble
+      # add in quantities and output data R chunk
       preamble <- add_chunk(
         paste0(
           "output <- utils::read.csv('",
@@ -565,7 +662,8 @@ create_template <- function(
           "# Call reference points and quantities below \n",
           "# sbmsy = 10000 \n",
           "# fmsy = 0.3 \n"
-        )
+        ),
+        label = "output_and_quantities"
       )
 
       # Add page for citation of assessment report
@@ -589,7 +687,7 @@ create_template <- function(
             "04a_assessment-configuration.qmd",
             "04b_assessment-results.qmd",
             "04c_assessment-sensitivity.qmd",
-            "04d_asessment-benchmarks.qmd",
+            "04d_assessment-benchmarks.qmd",
             "04e_assessment-projections.qmd",
             "05_discussion.qmd",
             "06_acknowledgments.qmd",
@@ -606,7 +704,7 @@ create_template <- function(
             "04a_assessment-configuration",
             "04b_assessment-results",
             "04c_assessment-sensitivity",
-            "04d_asessment-benchmarks",
+            "04d_assessment-benchmarks",
             "04e_assessment-projections",
             "05_discussion",
             "06_acknowledgments",
@@ -637,7 +735,7 @@ create_template <- function(
               "04a_assessment-configuration.qmd",
               "04b_assessment-results.qmd",
               "04c_assessment-sensitivity.qmd",
-              "04d_asessment-benchmarks.qmd",
+              "04d_assessment-benchmarks.qmd",
               "04e_assessment-projections.qmd",
               "05_discussion.qmd",
               "06_acknowledgments.qmd",
@@ -689,7 +787,9 @@ create_template <- function(
       } # close if statement for custom
 
       # Combine template sections
-      report_template <- paste(yaml,
+      report_template <- paste(
+        yaml,
+        params_chunk,
         citation,
         sections,
         sep = "\n"
@@ -731,17 +831,6 @@ create_template <- function(
       # yaml_save <- capture.output(cat(yaml))
       # cat(yaml, file = here('template','yaml_header.qmd'))
 
-      # Add chunk to load in assessment data
-      ass_output <- add_chunk(
-        paste0(
-          "convert_output(output.file = ", "c('", paste(model_results, collapse = "', '"), "')",
-          ", model = ", "'", model, "'",
-          ", outdir = ", "'", resdir, "'", ")"
-        ),
-        label = "model_output",
-        eval = "false" # set false for testing this function in the template for now
-      )
-
       # print("_______Standardized output data________")
 
       # Add page for citation of assessment report
@@ -765,7 +854,7 @@ create_template <- function(
             "04a_assessment-configuration.qmd",
             "04b_assessment-results.qmd",
             "04c_assessment-sensitivity.qmd",
-            "04d_asessment-benchmarks.qmd",
+            "04d_assessment-benchmarks.qmd",
             "04e_assessment-projections.qmd",
             "05_discussion.qmd",
             "06_acknowledgments.qmd",
@@ -782,7 +871,7 @@ create_template <- function(
             "04a_assessment-configuration",
             "04b_assessment-results",
             "04c_assessment-sensitivity",
-            "04d_asessment-benchmarks",
+            "04d_assessment-benchmarks",
             "04e_assessment-projections",
             "05_discussion",
             "06_acknowledgments",
@@ -813,7 +902,7 @@ create_template <- function(
               "04a_assessment-configuration.qmd",
               "04b_assessment-results.qmd",
               "04c_assessment-sensitivity.qmd",
-              "04d_asessment-benchmarks.qmd",
+              "04d_assessment-benchmarks.qmd",
               "04e_assessment-projections.qmd",
               "05_discussion.qmd",
               "06_acknowledgments.qmd",
@@ -854,7 +943,8 @@ create_template <- function(
       }
 
       # Combine template sections
-      report_template <- paste( # yaml,
+      report_template <- paste(
+        yaml,
         preamble,
         citation,
         sections,
