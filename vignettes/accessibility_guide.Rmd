@@ -1,0 +1,25 @@
+---
+title: "Enhance Accessibility"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Enhance Accessibility}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Recommended Practices
+
+### Alternative Text
+
+text text text
+
+### Acronyms
+
+text text text
