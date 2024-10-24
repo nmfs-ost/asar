@@ -5,9 +5,8 @@ navbar:
     left:
     - home
     - reference
-    - manual
-    - tutorial
     - sourcecode
+    - tutorial
     - articles
     - documents
     - news
@@ -38,7 +37,13 @@ navbar:
     articles:
       text: Articles
       icon: fas fa-file-contract fa-lg
-      href: articles/index.html
+      menu:
+      - text: Manual
+        href: articles/manual.html
+      - text: Markdown Notation
+        href: articles/markdown_notation.html
+      - text: Regional Workflows
+        href: articles/regional_workflows.html
 
     documents:
       text: References
