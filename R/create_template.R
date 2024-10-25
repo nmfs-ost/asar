@@ -310,7 +310,7 @@ create_template <- function(
         # copy before-body tex
         file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
         # customize titlepage tex
-        create_titlepage_tex(office = office, subdir = supdir)
+        create_titlepage_tex(office = office, subdir = supdir, species = species)
         # customize in-header tex
         create_inheader_tex(species = species, year = year, subdir = supdir)
         # Copy species image from package
@@ -327,7 +327,7 @@ create_template <- function(
           # copy before-body tex
           file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
           # customize titlepage tex
-          create_titlepage_tex(office = office, subdir = supdir)
+          create_titlepage_tex(office = office, subdir = supdir, species = species)
           # customize in-header tex
           create_inheader_tex(species = species, year = year, subdir = supdir)
           # Copy species image from package
