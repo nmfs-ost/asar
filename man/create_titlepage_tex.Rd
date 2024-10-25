@@ -4,12 +4,14 @@
 \alias{create_titlepage_tex}
 \title{Create a title page latex document}
 \usage{
-create_titlepage_tex(office = "", subdir)
+create_titlepage_tex(office = "", subdir, species)
 }
 \arguments{
 \item{office}{primary science center writing the document}
 
 \item{subdir}{directory where files are going to be held}
+
+\item{species}{target species for assessment}
 }
 \value{
 Create a _titlepage.tex document that contains formatting options for
