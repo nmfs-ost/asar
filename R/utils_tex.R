@@ -4,15 +4,32 @@
 
 #' Create a title page latex document
 #'
-#' @param office primary science center writing the document
-#' @param subdir directory where files are going to be held
+#' @inheritParams create_template
+#' @param subdir directory where supporting files are going to be held
 #'
 #' @return Create a _titlepage.tex document that contains formatting options for
 #'  a cover page. The only thing that changes currently is the primary author's
 #'  fishery science center.
 #' @export
 create_titlepage_tex <- function(office = "",
-                                 subdir) {
+                                 subdir,
+                                 species) {
+  # Read basic latex file
+  lines <- readLines(
+    system.file("resources", "formatting_files", "_titlepage.tex", package = "asar")
+  )
+
+  # Add alt text to cover page image
+  line_before <- grep("\\$if\\(cover)\\$", lines)
+  cp_alt <- paste(
+    "\\pdftooltip{\\includegraphics{$cover$}}{",
+    "An illustration of ", species,
+    "}",
+    sep = ""
+  )
+  lines <- append(lines, cp_alt, after = line_before)
+
+  # Add office to bottom ref of title page
   if (office == "NEFSC") {
     center <- "Northeast Fisheries Science Center"
   } else if (office == "NWFSC") {
@@ -26,17 +43,16 @@ create_titlepage_tex <- function(office = "",
   } else if (office == "PIFSC") {
     center <- "Pacific Islands Fisheries Science Center"
   }
-  # Read basic latex file
-  lines <- readLines(
-    system.file("resources", "formatting_files", "_titlepage.tex", package = "asar")
-  )
   if (office != "") {
     to_add <- paste(center, "\\newline", sep = "") # unlist(rlang::dots_list(...))
-    lines <- append(lines, to_add, after = 110)
+    line_before <- grep("National Marine Fisheries Service", lines)
+    lines <- append(lines, to_add, after = line_before)
   }
   # write latex file to directory of local template
   write(lines, file = paste(subdir, "/_titlepage.tex", sep = ""))
 }
+
+#------------------------------------------------------------------------------
 
 #' Create in-header latex document
 #'
@@ -81,3 +97,5 @@ create_inheader_tex <- function(species = NULL, year = NULL, subdir) {
   }
   write(lines, file = paste(subdir, "/in-header.tex", sep = ""))
 }
+
+#------------------------------------------------------------------------------
