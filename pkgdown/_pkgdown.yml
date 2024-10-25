@@ -44,6 +44,8 @@ navbar:
         href: articles/markdown_notation.html
       - text: Regional Workflows
         href: articles/regional_workflows.html
+      - text: Enhance Accessibility
+        href: articles/accessibility_guide.html
 
     documents:
       text: References

@@ -1,0 +1,98 @@
+---
+title: "Enhance Accessibility"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Enhance Accessibility}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: references.bib
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Recommended practices
+
+When someone reads your document, they may read it with a [screen reader](https://www.afb.org/blindness-and-low-vision/using-technology/assistive-technology-products/screen-readers). TO ensure that they are able to interpret your document as intended, the document must contain some essential features, like tagged elements, alternative text, and metadata.
+
+We have built `asar` so that the produced documents uphold several [federal accessibility standards](https://www.section508.gov/test/documents/). However, to achieve our goal of producing accessible documents, **you must complete a few tasks yourself**. But don't fret! We will help you. Below, we provide several resources to help you achieve this important goal.
+
+## Alternative text
+
+### What is alternative text?
+
+After using `create_template()` to create a skeleton of your document, you will see chunks containing `fig-alt:` in the figures.qmd files, like this:
+
+```{r}
+#| fig-alt: '...' 
+```
+
+The [`fig-alt`](https://quarto.org/docs/computations/execution-options.html#caption-and-alt-text) parameter in this chunk signifies that this is where you should add a description of your figure that can be read aloud by the screen reader. This description, otherwise known as [alternative text](https://www.section508.gov/create/alternative-text/) (alt text for short) should answer this essential question:
+
+> What is this image conveying?
+
+### How do I write alt text?
+
+While tempting, tools like AI cannot be used to easily answer this question. Additionally, one should not use the caption as the alt text. Here are four essential ingredients for well-written alt text, as described by Drs. Silvia Canelón and Liz Hare in their talk, "Revealing Room for Improvement in Accessibility within a Social Media Data Visualization Learning Community"[^1]:
+
+[^1]: Canelón, Silvia, and Liz Hare. *Revealing Room for Improvement in Accessibility within a Social Media Data Visualization Learning Community*, csv,conf,v6, 7 May 2021, [spcanelon.github.io/csvConf2021/slides/](spcanelon.github.io/csvConf2021/slides/).
+
+1.  Type of data visualization (e.g., scatterplot, line graph, box-and-whisker plot)
+2.  Axis variables
+3.  Range of the data
+4.  The relationship between the variables shown (i.e., what the figure is conveying)
+
+Dr. Hare stresses the importance of ingredient #4 by explaining,
+
+> Don't waste my time with 1-3 if you aren't going to include 4. While some automatic alt text processes mine some of this information, I don't want to spend time building a mental model of the graph if I can't find out what the graph says.[^2]
+
+[^2]: Hare, Liz. *Writing Meaningful Alt Texts for Data Visualizations in R*, R Ladies NYC, 10 Oct. 2022, [lizharedogs.github.io/RLadiesNYAltText/](lizharedogs.github.io/RLadiesNYAltText/).
+
+**Both presentations are great resources** for learning about alt text and will help you as you craft your own alt text!
+
+### Example of alt text
+
+Here is an example of a figure with a caption and alt text. The caption is shown directly below the figure and is written in the chunk's options (`fig.cap=""`). The alt text is also included in the chunk's options (`fig.alt=""`) but is not shown unless the webpage is inspected with Developer Tools or it's extracted with a screen reader.
+
+```{r, warning=FALSE, eval = TRUE, fig.align='center', fig.cap= "Tree circumference and age for 5 orange trees.", fig.alt="A line graph showing how tree circumference increases with age for a set of 5 orange trees. Age, shown on the x axis, is measured in days since 1968/12/31 and spans from 118-1582 days. Circumference, shown on the y axis, spans from 30-214 mm. All trees showed an increasing trend of trunk circumference with age, with each tree starting with a circumference of 30-33 mm at age 0 and ending with a circumference of 140-216 mm at age 1582. At age 1582, the tree with the largest circumference was tree 4, followed by trees 2, 5, 1, and 3."}
+
+library(ggplot2)
+
+orange <- as.data.frame(Orange)
+orange <- orange |>
+  dplyr::mutate(Tree = base::factor(Tree,
+                                    levels = c(1,2,3,4,5))) |>
+  dplyr::rename(Age = age,
+                Circumference = circumference)
+
+ggplot2::ggplot(data = orange,
+                aes(x = Age,
+                    y = Circumference,
+                    color = Tree)) +
+ggplot2::geom_line(size = 1) +
+ggplot2::geom_point(size = 2) +
+ggplot2::scale_color_viridis_d() +
+ggplot2::xlim(0, NA) +
+ggplot2::ylim(0, NA) +
+ggplot2::theme_bw() +
+  labs(x = "Age (days since 1968/12/31)",
+       y = "Orange Tree Circumference (mm)")
+```
+
+The figure's alt text is written as such:
+
+*A line graph showing how tree circumference increases with age for a set of 5 orange trees. Age, shown on the x axis, is measured in days since 1968/12/31 and spans from 118-1582 days. Circumference, shown on the y axis, spans from 30-214 mm. All trees showed an increasing trend of trunk circumference with age, with each tree starting with a circumference of 30-33 mm at age 0 and ending with a circumference of 140-216 mm at age 1582. At age 1582, the tree with the largest circumference was tree 4, followed by trees 2, 5, 1, and 3.*
+
+### More resources
+
+Looking for more resources for writing alt text? Check out the [NOAA Library's website for creating accessible documents](https://library.noaa.gov/Section508/CreatingDocs).
+
+## Acronyms
+
+Your report will likely include several acronyms (e.g., NOAA in place of the National Oceanic and Atmospheric Administration). To ensure that your audience will be able to correctly interpret your acronyms, please **write the acronym's entire expanded form upon its first usage, followed by the acronym in parentheses. Upon further usage, use the acronym alone.** For example:
+
+*The National Oceanic and Atmospheric Administration (NOAA) has offices spread throughout the United States of America (USA). NOAA regularly produces stock assessments on fish and mammal species.*
