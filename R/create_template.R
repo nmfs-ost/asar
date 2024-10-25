@@ -310,7 +310,7 @@ create_template <- function(
         # copy before-body tex
         file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
         # customize titlepage tex
-        create_titlepage_tex(office = office, subdir = supdir)
+        create_titlepage_tex(office = office, subdir = supdir, species = species)
         # customize in-header tex
         create_inheader_tex(species = species, year = year, subdir = supdir)
         # Copy species image from package
@@ -327,7 +327,7 @@ create_template <- function(
           # copy before-body tex
           file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
           # customize titlepage tex
-          create_titlepage_tex(office = office, subdir = supdir)
+          create_titlepage_tex(office = office, subdir = supdir, species = species)
           # customize in-header tex
           create_inheader_tex(species = species, year = year, subdir = supdir)
           # Copy species image from package
@@ -413,6 +413,7 @@ create_template <- function(
         ) |>
         dplyr::select(name, office) |>
         dplyr::filter(name %in% author)
+      authors <- authors[match(author, authors$name),]
 
       if (include_affiliation) {
         affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
@@ -545,6 +546,14 @@ create_template <- function(
         )
       }
 
+      # Add lualatex engine
+      if (format == "pdf") {
+        yaml <- paste0(
+          yaml,
+          "pdf-engine: lualatex", "\n"
+        )
+      }
+
       # Formatting
       yaml <- paste0(
         yaml,
@@ -660,12 +669,24 @@ create_template <- function(
                  paste0(subdir, "/", species, "_",  "_std_res_", year, ".csv"),
                  paste0(resdir, "/", model_results)), "') \n",
           "# Call reference points and quantities below \n",
-          "# sbmsy = 10000 \n",
-          "# fmsy = 0.3 \n"
+          "# start_year <- min(output$year) \n",
+          "# end_year <- '", year, "' \n",
+          "# Fend <- output$estimate[output$label == 'fishing_mortality' & output$year == year] \n",
+          "# Ftarg ", "\n",
+          "# F_Ftarg ", "\n",
+          "# Bend ", "\n",
+          "# Btarg ", "\n",
+          "# tot_catch", "\n",
+          "# sbtarg", "\n",
+          "# M ", "\n",
+          "# Bmsy ", "\n",
+          "# SBmsy ", "\n",
+          "# steep ", "\n",
+          "# R0", "\n",
+          "# fSB ", "\n"
         ),
         label = "output_and_quantities"
       )
-
       # Add page for citation of assessment report
       citation <- create_citation(
         author = author,
@@ -789,7 +810,7 @@ create_template <- function(
       # Combine template sections
       report_template <- paste(
         yaml,
-        params_chunk,
+        preamble,
         citation,
         sections,
         sep = "\n"
