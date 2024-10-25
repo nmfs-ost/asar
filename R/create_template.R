@@ -546,6 +546,14 @@ create_template <- function(
         )
       }
 
+      # Add lualatex engine
+      if (format == "pdf") {
+        yaml <- paste0(
+          yaml,
+          "pdf-engine: lualatex", "\n"
+        )
+      }
+
       # Formatting
       yaml <- paste0(
         yaml,
