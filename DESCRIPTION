@@ -2,15 +2,15 @@ Package: asar
 Title: Build NOAA Stock Assessment Report
 Version: 0.0.0.9000
 Authors@R: 
-    person("Samantha", "Schiano", , "samantha.schiano@noaa.gov", role = c("aut", "cre"),
+    c(person("Samantha", "Schiano", , "samantha.schiano@noaa.gov", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0003-3744-6428"))
-    person("Sophie", "Breitbart", "T", "sophie.breitbart@noaa.gov", role = c("aut", "ctb"),
+    person("Sophie", "Breitbart", , "sophie.breitbart@noaa.gov", role = c("aut", "ctb"),
            comment = c(ORCID = "0000-0001-9641-9786"))  
     person("Steve", "Saul", , "steven.saul@noaa.gov", , role = c("aut", "ctb"))
-    person("Kelli", "Johnson", "F", "kelli.johnson@noaa.gov", role = c("ctb"),
+    person("Kelli", "Johnson", , "kelli.johnson@noaa.gov", role = c("ctb"),
            comment = c(ORCID = "0000-0002-5149-451X"))
     person("Bai", "Li", , "bai.li@noaa.gov", role = c("ctb"),
-           comment = c(ORCID = "0000-0002-8249-1442"))
+           comment = c(ORCID = "0000-0002-8249-1442")))
 Description: Build a full or update stock assessment report for any stock
     assessment model. Parameterization allows the user to call a template
     based on their regional science center, species, area, ect.
