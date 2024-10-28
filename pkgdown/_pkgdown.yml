@@ -44,7 +44,8 @@ navbar:
         href: articles/markdown_notation.html
       - text: Regional Workflows
         href: articles/regional_workflows.html
-
+      - text: Accessibility
+        href: articles/accessibility_guide.html
     documents:
       text: References
       icon: fas fa-book fa-lg
