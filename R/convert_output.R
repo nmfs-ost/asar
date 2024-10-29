@@ -709,20 +709,32 @@ convert_output <- function(
     dat <- dget(output_file)
 
     # Find fleet names
-    # Extract names from indices
-    indices <- dat$t.series |>
-      dplyr::select(dplyr::contains("U.") & contains(".ob"))
-    fleets_ind <- stringr::str_extract(as.vector(colnames(indices)), "(?<=U\\.)\\w+(?=\\.ob)")
-    # Extract names from landings
-    landings <- dat$t.series |>
-      dplyr::select(dplyr::contains("L.") & contains(".ob"))
-    fleets_land <- stringr::str_extract(as.vector(colnames(landings)), "(?<=L\\.)\\w+(?=\\.ob)")
-    fleets <- unique(c(fleets_ind, fleets_land))
-    fleet_names <- fleets[!is.na(fleets)]
+    if(is.null(fleet_names)) {
+      # Extract names from indices
+      indices <- dat$t.series |>
+        dplyr::select(dplyr::contains("U.") & contains(".ob"))
+      fleets_ind <- stringr::str_extract(as.vector(colnames(indices)), "(?<=U\\.)\\w+(?=\\.ob)")
+      # Extract names from landings
+      landings <- dat$t.series |>
+        dplyr::select(dplyr::contains("L.") & contains(".ob") |
+                      dplyr::contains("D.") & contains(".ob"))
+      fleets_land <- stringr::str_extract(as.vector(colnames(landings)), "(?<=L\\.)\\w+(?=\\.ob)")
+      fleets_disc <- stringr::str_extract(as.vector(colnames(landings)), "(?<=D\\.)\\w+(?=\\.ob)")
+      # Extract names from lof F dev
+      parm <- dat$parm.tvec |>
+        dplyr::select(dplyr::contains("log.F.dev.")|
+                        dplyr::contains("log.F.dev.") & contains(".D"))
+      # fleets_parm_D <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+(?=\\.D)")
+      fleets_parm <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+")
+      fleets <- unique(c(fleets_ind, fleets_land, fleets_disc, fleets_parm))
+      fleet_names <- fleets[!is.na(fleets)]
+      if(any(is.na(fleet_names))){
+        stop("No fleet names found in dataframe. Please indicate the abbreviations of fleet names using fleet_names arg.")
+      }
+    } else {
     # check fleet names are input
-    if (any(is.na(fleet_names))) {
-      stop("No fleet names found in dataframe. Please indicate the abbreviations of fleet names using fleet_names arg.")
-      # fleet_names <- NA
+    # if (any(is.na(fleet_names))) {
+      fleet_names <- fleet_names
     }
     # Create list for morphed dfs to go into (for rbind later)
     out_list <- list()
