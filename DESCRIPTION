@@ -1,27 +1,35 @@
 Package: asar
 Title: Build NOAA Stock Assessment Report
 Version: 0.0.0.9000
-Authors@R: 
-    c(person(given = "Samantha", 
-             family = "Schiano", 
-             email = "samantha.schiano@noaa.gov", 
-             role = c("aut", "cre"),
-             comment = c(ORCID = "0009-0003-3744-6428")),
-      person(given = "Sophie", family = "Breitbart", middle = "T",
+Authors@R: c(
+      person(
+            "Samantha", "Schiano", 
+            email = "samantha.schiano@noaa.gov", 
+            role = c("aut", "cre"),
+            comment = c(ORCID = "0009-0003-3744-6428")
+            ),
+      person(
+            "Sophie", "Breitbart",
              email = "sophie.breitbart@noaa.gov", 
              role = c("aut", "ctb"),
-             comment = c(ORCID = "0000-0001-9641-9786"))  ,
-      person(given = "Steve", family = "Saul",
+             comment = c(ORCID = "0000-0001-9641-9786")
+             ),
+      person(
+            "Steve", "Saul",
              email = "steven.saul@noaa.gov",
-             role = c("aut", "ctb")),
-      person(given = "Kelli", family = "Johnson", middle = "F",
+             role = c("aut", "ctb")
+             ),
+      person("Kelli", "Johnson",
              email = "kelli.johnson@noaa.gov", 
              role = c("ctb"),
-             comment = c(ORCID = "0000-0002-5149-451X")),
-      person(given = "Bai", fmaily = "Li",
+             comment = c(ORCID = "0000-0002-5149-451X")
+             ),
+      person(
+             "Bai", "Li",
              email = "bai.li@noaa.gov", 
              role = c("ctb"),
-             comment = c(ORCID = "0000-0002-8249-1442")))
+             comment = c(ORCID = "0000-0002-8249-1442")
+             ))
 Description: Build a full or update stock assessment report for any stock
     assessment model. Parameterization allows the user to call a template
     based on their regional science center, species, area, ect.
