@@ -704,13 +704,26 @@ convert_output <- function(
 
     #### BAM ####
   } else if (model %in% c("bam", "BAM")) {
-    # check fleet names are input
-    if (is.null(fleet_names)) {
-      message("No fleet names were added as an argument. Fleets will not be extracted from the data.")
-      fleet_names <- NA
-    }
+
     # Extract values from BAM output - model file after following ADMB2R
     dat <- dget(output_file)
+
+    # Find fleet names
+    # Extract names from indices
+    indices <- dat$t.series |>
+      dplyr::select(dplyr::contains("U.") & contains(".ob"))
+    fleets_ind <- stringr::str_extract(as.vector(colnames(indices)), "(?<=U\\.)\\w+(?=\\.ob)")
+    # Extract names from landings
+    landings <- dat$t.series |>
+      dplyr::select(dplyr::contains("L.") & contains(".ob"))
+    fleets_land <- stringr::str_extract(as.vector(colnames(landings)), "(?<=L\\.)\\w+(?=\\.ob)")
+    fleets <- unique(c(fleets_ind, fleets_land))
+    fleet_names <- fleets[!is.na(fleets)]
+    # check fleet names are input
+    if (any(is.na(fleet_names))) {
+      stop("No fleet names found in dataframe. Please indicate the abbreviations of fleet names using fleet_names arg.")
+      # fleet_names <- NA
+    }
     # Create list for morphed dfs to go into (for rbind later)
     out_list <- list()
 
@@ -1112,13 +1125,15 @@ convert_output <- function(
     # asap_output <- dget(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = ""), "asap3.rdat"))
     # setwd(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = "")))
     # asap_std <- readRep("asap3", suffix = ".std")
-    stop("Model not currently compatible.")
-
+    stop("File not currently compatible.")
     #### AMAK ####
   } else if (model == "amak") {
-    stop("Model not currently compatible.")
+    stop("File not currently compatible.")
+    #### JABBA ####
+  } else  if (tolower(model) == "jabba") {
+    stop("File not currently compatible.")
   } else {
-    stop("Model not compatible.")
+    stop("File not compatible.")
   }
 
   #### Exporting ####
@@ -1143,7 +1158,9 @@ convert_output <- function(
       dplyr::select(-alt_label)
   }
   if (file_save) {
-    save_path <- paste(savedir, "/", save_name, ".csv", sep = "")
+    save_path <- paste(savedir, "/",
+                       ifelse(is.null(save_name), "converted_output", save_name),
+                       ".csv", sep = "")
     utils::write.csv(out_new, file = save_path, row.names = FALSE)
   } else {
     out_new
