@@ -27,22 +27,18 @@ create_figures_doc <- function(resdir = NULL,
 
   # import converted model output
   output <- utils::read.csv(
-    paste0(resdir, "/", model_results)
+    paste0(resdir, "/", model_results, ".csv")
   )
+
+  # output <- utils::read.csv(
+  #   "petrale_convert_output.csv"
+  # )
 
   # extract quantities
   # using the <<- exports the object to the R environment!
-  start_year <<- output |>
-    dplyr::select(year) |>
-    dplyr::filter(year == as.numeric(year)) |>
-    dplyr::filter(year == min(year)) |>
-    unique() |>
-    as.numeric()
+  start_year <<- as.numeric(output[5,5])
 
-  Fend <<- output |>
-    dplyr::filter(label == 'fishing_mortality' & year == 2023 & age == 1 & fleet == 1 & sex == 1 & module_name == "F_AT_AGE") |>
-    dplyr::select(estimate) |>
-    as.numeric()
+  Fend <<- as.numeric(output[2,2])
 
 
   # create the figure chunks
@@ -121,12 +117,15 @@ create_figures_doc <- function(resdir = NULL,
 
   # substitute quantity placeholders in the captions/alt text with
   # the real values, extracted above
-  figures_doc <- gsub('start_year',
-                      start_year,
-                 gsub('Fend',
-                      Fend,
-                      figures_doc)
-                 )
+
+  stringr::str_replace_all(figures_doc,
+                       'Fend',
+                       as.character(Fend))
+
+  stringr::str_replace_all(figures_doc,
+                       'start_year',
+                       as.character(start_year))
+
 
   # Save figures doc to template folder
   utils::capture.output(cat(figures_doc),
