@@ -24,7 +24,7 @@ create_figures_doc <- function(resdir = NULL,
   model <- match.arg(model, several.ok = FALSE)
 
 # create the figure chunks
-  if (include_all) {
+if (include_all) {
     # Create tables quarto doc - maybe should add this as separate fxn - same with figs
     figures_doc <- paste0("## Figures \n \n")
     # Recruitment ts figure
