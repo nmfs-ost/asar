@@ -1046,9 +1046,9 @@ convert_output <- function(
                 ),
                 # Number after fleet name is what? variable among df?
                 age = dplyr::case_when(
-                  is.na(age) & grepl("_age[0-9]+_", label) ~ stringr::str_extract(label, "(?<=age:?)[0-9]+"),
-                  is.na(age) & grepl("[0-9]+$", label) ~ stringr::str_extract(label, "[0-9]+$"), # this is not age
-                  TRUE ~ age
+                  is.na(as.numeric(age)) & grepl("_age[0-9]+_", label) ~ as.numeric(stringr::str_extract(label, "(?<=age:?)[0-9]+")),
+                  is.na(as.numeric(age)) & grepl("[0-9]+$", label) ~ as.numeric(stringr::str_extract(label, "[0-9]+$")), # this is not age
+                  TRUE ~ as.numeric(age)
                 ),
                 # area = dplyr::case_when(is.na(age) & grepl("[0-9]+$", label) ~ stringr::str_extract(label, "[0-9]+$"), # this is not age
                 #                         TRUE ~ NA),
