@@ -17,12 +17,35 @@ create_figures_doc <- function(resdir = NULL,
                                year = NULL,
                                subdir = NULL,
                                include_all = TRUE) {
+
   model <- match.arg(model, several.ok = FALSE)
 
+  # import pre-written captions and alt text
   captions_alttext <- utils::read.csv(
     system.file("resources", "captions_alttext.csv", package = "asar")
   )
 
+  # import converted model output
+  output <- utils::read.csv(
+    paste0(resdir, "/", model_results)
+  )
+
+  # extract quantities
+  # using the <<- exports the object to the R environment!
+  start_year <<- output |>
+    dplyr::select(year) |>
+    dplyr::filter(year == as.numeric(year)) |>
+    dplyr::filter(year == min(year)) |>
+    unique() |>
+    as.numeric()
+
+  Fend <<- output |>
+    dplyr::filter(label == 'fishing_mortality' & year == 2023 & age == 1 & fleet == 1 & sex == 1 & module_name == "F_AT_AGE") |>
+    dplyr::select(estimate) |>
+    as.numeric()
+
+
+  # create the figure chunks
   if (include_all) {
     # Create tables quarto doc - maybe should add this as separate fxn - same with figs
     figures_doc <- paste0("## Figures \n \n")
@@ -55,6 +78,7 @@ create_figures_doc <- function(resdir = NULL,
       ),
       "\n"
     )
+
 
     # SB figure
     plot_code <- paste0(
@@ -242,6 +266,15 @@ create_figures_doc <- function(resdir = NULL,
   } else {
     # add option for only adding specified figures
   }
+
+  # substitute quantity placeholders in the captions/alt text with
+  # the real values, extracted above
+  figures_doc <- gsub('start_year',
+                      start_year,
+                 gsub('Fend',
+                      Fend,
+                      figures_doc)
+                 )
 
   # Save figures doc to template folder
   utils::capture.output(cat(figures_doc),
