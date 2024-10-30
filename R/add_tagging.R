@@ -1,0 +1,42 @@
+#' Title
+#'
+#' @param x .tex file to add accessibility into
+#' @param dir directory where the tex file is located that will be edited
+#'
+#' @return
+#' @export
+#'
+add_tagging <- function(x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
+                           dir = getwd()) {
+  # Read latex file
+  tex_file <- readLines(file.path(dir, x))
+  # Identify line where the new accessibility content should be added after
+  line_after <- grep("\\PassOptionsToPackage\\{dvipsnames\\,svgnames\\,x11names\\}\\{xcolor\\}", tex_file)
+  # Acessibility additions before /documentclass
+  line_to_add <- "\input{accessibility.tex}"
+  # Add line into file
+  tex_file <- append(line_to_add, tex_file, after = line_after)
+  # Export file
+  write(tex_file, file = paste(subdir, x, sep = ""))
+
+  # Add accessibility.tex to directory
+  accessibility <- paste0(
+    "\\RequirePackage{pdfmanagement-testphase}", "\n",
+    "\\RequirePackage{latex-lab}", "\n",
+    "\\RequirePackage{tagpdf}", "\n",
+    "\\DocumentMetadata{%", "\n",
+    "  %  uncompress, %only for debugging!!", "\n",
+    "  ", "pdfversion=2.0,", "\n",
+    "  ", "testphase={phase-II, tabular, graphic}%", "\n",
+    "  ", "% testphase={phase-II,math, tabular, graphic}% TOC Does not work", "\n",
+    "  ", "% testphase={phase-III,math}% TOC works", "\n",
+    "}", "\n",
+    "\\tagpdfsetup{activate, tabsorder=structure}", "\n",
+    "% Use the following to fix bug in November 2023 download of LaTeX", "\n",
+    "\\ExplSyntaxOn", "\n",
+    "\\cs_generate_variant:Nn__tag_prop_gput:Nnn{cnx}", "\n",
+    "\\ExplSyntaxOff", "\n",
+    "%", "\n"
+  )
+  utils::capture.output(cat(accessibility), file = file.path(dir, "accessibility.tex"), append = FALSE)
+}
