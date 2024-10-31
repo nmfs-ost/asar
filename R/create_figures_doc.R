@@ -27,18 +27,17 @@ create_figures_doc <- function(resdir = NULL,
 
   # import converted model output
   output <- utils::read.csv(
-    paste0(resdir, "/", model_results, ".csv")
+    file.path(resdir, paste0(model_results, ".csv"))
   )
 
   # output <- utils::read.csv(
   #   "petrale_convert_output.csv"
   # )
 
-  # extract quantities
-  # using the <<- exports the object to the R environment!
-  start_year <<- as.numeric(output[5,5])
+  # extract quantities (these are examples and are not accurate)
+  start_year <- as.numeric(output[5,5])
 
-  Fend <<- as.numeric(output[2,2])
+  Fend <- as.numeric(output[2,2])
 
 
   # create the figure chunks
