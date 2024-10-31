@@ -20,26 +20,6 @@ create_figures_doc <- function(resdir = NULL,
 
   model <- match.arg(model, several.ok = FALSE)
 
-  # import pre-written captions and alt text
-  captions_alttext <- utils::read.csv(
-    system.file("resources", "captions_alttext.csv", package = "asar")
-  )
-
-  # import converted model output
-  output <- utils::read.csv(
-    file.path(resdir, paste0(model_results, ".csv"))
-  )
-
-  # output <- utils::read.csv(
-  #   "petrale_convert_output.csv"
-  # )
-
-  # extract quantities (these are examples and are not accurate)
-  start_year <- as.numeric(output[5,5])
-
-  Fend <- as.numeric(output[2,2])
-
-
   # create the figure chunks
   if (include_all) {
     # Create tables quarto doc - maybe should add this as separate fxn - same with figs
@@ -261,17 +241,6 @@ create_figures_doc <- function(resdir = NULL,
   } else {
     # add option for only adding specified figures
   }
-
-  # substitute quantity placeholders in the captions/alt text with
-  # the real values, extracted above
-
-  stringr::str_replace_all(figures_doc,
-                       'Fend',
-                       as.character(Fend))
-
-  stringr::str_replace_all(figures_doc,
-                       'start_year',
-                       as.character(start_year))
 
 
   # Save figures doc to template folder
