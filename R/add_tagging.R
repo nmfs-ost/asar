@@ -2,12 +2,14 @@
 #'
 #' @param x .tex file to add accessibility into
 #' @param dir directory where the tex file is located that will be edited
+#' @param compile TRUE/FALSE - indicate whether the document (X) should be rendered after these files are changed
 #'
 #' @return
 #' @export
 #'
 add_tagging <- function(x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
-                           dir = getwd()) {
+                        dir = getwd(),
+                        compile = TRUE) {
   # Read latex file
   tex_file <- readLines(file.path(dir, x))
   # Identify line where the new accessibility content should be added after
@@ -39,4 +41,8 @@ add_tagging <- function(x = list.files(getwd())[grep("skeleton.tex", list.files(
     "%", "\n"
   )
   utils::capture.output(cat(accessibility), file = file.path(dir, "accessibility.tex"), append = FALSE)
+  # Render the .tex file after edits
+  if (compile) {
+    tinytex::lualatex(x)
+  }
 }
