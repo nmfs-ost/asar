@@ -696,8 +696,8 @@ create_template <- function(
         paste0(
           "output <- utils::read.csv('",
           ifelse(convert_output,
-                 paste0(subdir, "/", species, "_std_res_", year, ".csv"),
-                 paste0(resdir, "/", model_results)), "') \n \n",
+                 filepath(subdir, paste0(species, "_std_res_", year, ".csv")),
+                 filepath(resdir, model_results)), "') \n \n",
           "# The following reference points and quantities have
 # been extracted from the model results and are saved
 # in the R environment. Each can be referenced: \n \n",

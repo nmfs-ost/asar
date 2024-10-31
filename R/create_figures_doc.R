@@ -25,7 +25,7 @@ create_figures_doc <- function(resdir = NULL,
 
 # create the figure chunks
 if (include_all) {
-    # Create tables quarto doc - maybe should add this as separate fxn - same with figs
+ # Create tables quarto doc - maybe should add this as separate fxn - same with figs
     figures_doc <- paste0("## Figures \n \n")
     # Recruitment ts figure
     figures_doc <- paste0(
