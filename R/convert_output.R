@@ -712,18 +712,18 @@ convert_output <- function(
     if(is.null(fleet_names)) {
       # Extract names from indices
       indices <- dat$t.series |>
-        dplyr::select(dplyr::contains("U.") & contains(".ob"))
+        dplyr::select(dplyr::contains("U.") & dplyr::contains(".ob"))
       fleets_ind <- stringr::str_extract(as.vector(colnames(indices)), "(?<=U\\.)\\w+(?=\\.ob)")
       # Extract names from landings
       landings <- dat$t.series |>
-        dplyr::select(dplyr::contains("L.") & contains(".ob") |
-                      dplyr::contains("D.") & contains(".ob"))
+        dplyr::select(dplyr::contains("L.") & dplyr::contains(".ob") |
+                      dplyr::contains("D.") & dplyr::contains(".ob"))
       fleets_land <- stringr::str_extract(as.vector(colnames(landings)), "(?<=L\\.)\\w+(?=\\.ob)")
       fleets_disc <- stringr::str_extract(as.vector(colnames(landings)), "(?<=D\\.)\\w+(?=\\.ob)")
       # Extract names from lof F dev
       parm <- dat$parm.tvec |>
         dplyr::select(dplyr::contains("log.F.dev.")|
-                        dplyr::contains("log.F.dev.") & contains(".D"))
+                        dplyr::contains("log.F.dev.") & dplyr::contains(".D"))
       # fleets_parm_D <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+(?=\\.D)")
       fleets_parm <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+")
       fleets <- unique(c(fleets_ind, fleets_land, fleets_disc, fleets_parm))

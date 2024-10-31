@@ -28,6 +28,7 @@ Imports:
     tibble,
     tidyr,
     tidyselect,
+    tinytex,
     utils
 Suggests: 
     gt,
