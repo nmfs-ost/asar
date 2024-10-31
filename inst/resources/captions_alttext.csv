@@ -1,6 +1,0 @@
-label,type,caption,alt_text
-recruitment,figure,recruitment figure caption here. Starts in start_year. The F(end) = Fend,recruitment alt text here
-spawning_biomass,figure,spawning biomass figure caption here. Starts in start_year. The F(end) = Fend,spawning biomass alt text here
-recruitment,table,recruitment table caption here,
-spawning_biomass,table,spawning biomass table caption here,
-indices,table,indices table caption here,
