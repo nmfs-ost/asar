@@ -668,13 +668,9 @@ create_template <- function(
           ifelse(convert_output,
                  filepath(subdir, paste0(species, "_std_res_", year, ".csv")),
                  filepath(resdir, model_results)), "') \n \n",
-          "# The following reference points and quantities have
-# been extracted from the model results and are saved
-# in the R environment. Each can be referenced: \n \n",
-          "start_year # (explanation of what this means) \n",
+          "# Call reference points and quantities below \n",
           "# start_year <- min(output$year) \n",
           "# end_year <- '", year, "' \n",
-          "Fend # (explanation of what this means) \n",
           "# Fend <- output$estimate[output$label == 'fishing_mortality' & output$year == year] \n",
           "# Ftarg ", "\n",
           "# F_Ftarg ", "\n",
