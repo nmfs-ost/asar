@@ -89,6 +89,9 @@
 #'  name of the file, can be used (e.g., 'abstract' rather than
 #'  '00_abstract.qmd'). If adding a new section, also use
 #'   parameters 'new_section' and 'section_location'.
+#' @param used_satf TRUE/FALSE; has the user already used the satf
+#' package to generate figures, tables, and therefore figure/table
+#' captions and alt text? Default is false.
 #' @param include_figures TRUE/FALSE; Should figures be
 #' included in the report? Default is true.
 #' @param include_tables TRUE/FALSE; Should tables be included
@@ -176,6 +179,7 @@
 #'   prev_year = 2021,
 #'   custom = TRUE,
 #'   custom_sections = c("executive_summary", "introduction", "discussion"),
+#'   used_satf = FALSE,
 #'   include_figures = TRUE,
 #'   include_tables = TRUE,
 #'   add_image = TRUE,
@@ -213,6 +217,7 @@ create_template <- function(
     prev_year = NULL,
     custom = FALSE,
     custom_sections = NULL,
+    used_satf = FALSE,
     include_figures = TRUE,
     include_tables = TRUE,
     add_image = FALSE,
@@ -696,6 +701,25 @@ create_template <- function(
         ),
         label = "output_and_quantities"
       )
+
+      # Create a chunk that imports csv with full captions and alt text
+      # created by satf
+      add_captions <- add_chunk(
+        paste0(
+          ifelse(used_satf,
+                 # the user HAS already generated captions with satf
+                 "caps_and_alt_text <- read.csv('captions_alt_text.csv')",
+                 # the user has NOT already generated captions with satf
+                 paste0(
+                   "satf::write_captions(output)", "\n",
+                   "caps_and_alt_text <- read.csv('captions_alt_text.csv')"
+                 )
+          )
+        )
+        ,
+        label = "captions_and_alt_text"
+      )
+
       # Add page for citation of assessment report
       citation <- create_citation(
         author = author,
@@ -820,6 +844,7 @@ create_template <- function(
       report_template <- paste(
         yaml,
         preamble,
+        add_captions,
         citation,
         sections,
         sep = "\n"
@@ -976,6 +1001,7 @@ create_template <- function(
       report_template <- paste(
         yaml,
         # preamble,
+        add_captions,
         citation,
         sections,
         sep = "\n"
