@@ -704,13 +704,38 @@ convert_output <- function(
 
     #### BAM ####
   } else if (model %in% c("bam", "BAM")) {
-    # check fleet names are input
-    if (is.null(fleet_names)) {
-      message("No fleet names were added as an argument. Fleets will not be extracted from the data.")
-      fleet_names <- NA
-    }
+
     # Extract values from BAM output - model file after following ADMB2R
     dat <- dget(output_file)
+
+    # Find fleet names
+    if(is.null(fleet_names)) {
+      # Extract names from indices
+      indices <- dat$t.series |>
+        dplyr::select(dplyr::contains("U.") & dplyr::contains(".ob"))
+      fleets_ind <- stringr::str_extract(as.vector(colnames(indices)), "(?<=U\\.)\\w+(?=\\.ob)")
+      # Extract names from landings
+      landings <- dat$t.series |>
+        dplyr::select(dplyr::contains("L.") & dplyr::contains(".ob") |
+                      dplyr::contains("D.") & dplyr::contains(".ob"))
+      fleets_land <- stringr::str_extract(as.vector(colnames(landings)), "(?<=L\\.)\\w+(?=\\.ob)")
+      fleets_disc <- stringr::str_extract(as.vector(colnames(landings)), "(?<=D\\.)\\w+(?=\\.ob)")
+      # Extract names from lof F dev
+      parm <- dat$parm.tvec |>
+        dplyr::select(dplyr::contains("log.F.dev.")|
+                        dplyr::contains("log.F.dev.") & dplyr::contains(".D"))
+      # fleets_parm_D <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+(?=\\.D)")
+      fleets_parm <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+")
+      fleets <- unique(c(fleets_ind, fleets_land, fleets_disc, fleets_parm))
+      fleet_names <- fleets[!is.na(fleets)]
+      if(any(is.na(fleet_names))){
+        stop("No fleet names found in dataframe. Please indicate the abbreviations of fleet names using fleet_names arg.")
+      }
+    } else {
+    # check fleet names are input
+    # if (any(is.na(fleet_names))) {
+      fleet_names <- fleet_names
+    }
     # Create list for morphed dfs to go into (for rbind later)
     out_list <- list()
 
@@ -1021,9 +1046,9 @@ convert_output <- function(
                 ),
                 # Number after fleet name is what? variable among df?
                 age = dplyr::case_when(
-                  is.na(age) & grepl("_age[0-9]+_", label) ~ stringr::str_extract(label, "(?<=age:?)[0-9]+"),
-                  is.na(age) & grepl("[0-9]+$", label) ~ stringr::str_extract(label, "[0-9]+$"), # this is not age
-                  TRUE ~ age
+                  is.na(as.numeric(age)) & grepl("_age[0-9]+_", label) ~ as.numeric(stringr::str_extract(label, "(?<=age:?)[0-9]+")),
+                  is.na(as.numeric(age)) & grepl("[0-9]+$", label) ~ as.numeric(stringr::str_extract(label, "[0-9]+$")), # this is not age
+                  TRUE ~ as.numeric(age)
                 ),
                 # area = dplyr::case_when(is.na(age) & grepl("[0-9]+$", label) ~ stringr::str_extract(label, "[0-9]+$"), # this is not age
                 #                         TRUE ~ NA),
@@ -1112,13 +1137,15 @@ convert_output <- function(
     # asap_output <- dget(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = ""), "asap3.rdat"))
     # setwd(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = "")))
     # asap_std <- readRep("asap3", suffix = ".std")
-    stop("Model not currently compatible.")
-
+    stop("File not currently compatible.")
     #### AMAK ####
   } else if (model == "amak") {
-    stop("Model not currently compatible.")
+    stop("File not currently compatible.")
+    #### JABBA ####
+  } else  if (tolower(model) == "jabba") {
+    stop("File not currently compatible.")
   } else {
-    stop("Model not compatible.")
+    stop("File not compatible.")
   }
 
   #### Exporting ####
@@ -1143,7 +1170,9 @@ convert_output <- function(
       dplyr::select(-alt_label)
   }
   if (file_save) {
-    save_path <- paste(savedir, "/", save_name, ".csv", sep = "")
+    save_path <- paste(savedir, "/",
+                       ifelse(is.null(save_name), "converted_output", save_name),
+                       ".csv", sep = "")
     utils::write.csv(out_new, file = save_path, row.names = FALSE)
   } else {
     out_new
