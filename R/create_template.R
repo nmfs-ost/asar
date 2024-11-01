@@ -406,7 +406,8 @@ create_template <- function(
       # Pull authors and affiliations from national db
       # Parameters to add authorship to YAML
       # Read authorship file
-      authors <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
+      authors <- utils::read.csv(system.file("resources", "authorship.csv",
+                                             package = "asar", mustWork = TRUE)) |>
         dplyr::mutate(
           mi = dplyr::case_when(
             mi == "" ~ NA,
