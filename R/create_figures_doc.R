@@ -35,7 +35,7 @@ create_figures_doc <- function(resdir = NULL,
         chunk_op = c(
           glue::glue(
             "fig-cap: '",
-            captions_alttext |>
+            caps_and_alt_text |>
               dplyr::filter(label == "recruitment" & type == "figure") |>
               dplyr::select(caption) |>
               as.character(),
@@ -43,7 +43,7 @@ create_figures_doc <- function(resdir = NULL,
           ),
           glue::glue(
             "fig-alt: '",
-            captions_alttext |>
+            caps_and_alt_text |>
               dplyr::filter(label == "recruitment" & type == "figure") |>
               dplyr::select(alt_text) |>
               as.character(),
@@ -72,7 +72,7 @@ create_figures_doc <- function(resdir = NULL,
                 chunk_op = c(
                   glue::glue(
                     "fig-cap: '",
-                    captions_alttext |>
+                    caps_and_alt_text |>
                       dplyr::filter(label == "spawning_biomass" & type == "figure") |>
                       dplyr::select(caption) |>
                       as.character(),
@@ -80,7 +80,7 @@ create_figures_doc <- function(resdir = NULL,
                   ),
                   glue::glue(
                     "fig-alt: '",
-                    captions_alttext |>
+                    caps_and_alt_text |>
                       dplyr::filter(label == "spawning_biomass" & type == "figure") |>
                       dplyr::select(alt_text) |>
                       as.character(),
