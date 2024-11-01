@@ -29,9 +29,6 @@ add_tagging <- function(x = list.files(getwd())[grep("skeleton.tex", list.files(
 
   # Add accessibility.tex to directory
   accessibility <- paste0(
-    "\\RequirePackage{pdfmanagement-testphase}", "\n",
-    "\\RequirePackage{latex-lab}", "\n",
-    "\\RequirePackage{tagpdf}", "\n",
     "\\DocumentMetadata{%", "\n",
     "  %  uncompress, %only for debugging!!", "\n",
     "  ", "pdfversion=2.0,", "\n",
