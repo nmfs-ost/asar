@@ -650,7 +650,7 @@ create_template <- function(
             file_save = TRUE,
             model = model,
             savedir = subdir,
-            save_name = paste(species, "_std_res_", year, sep = "")
+            save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
           )
         }
         # Rename model results file and results file directory if the results are converted in this fxn
