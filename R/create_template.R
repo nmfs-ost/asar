@@ -632,7 +632,15 @@ create_template <- function(
       if (convert_output) {
         print("__________Converting output file__________")
         if (tolower(model) == "bam" & is.null(fleet_names)) {
-          warning("Fleet names not defined.")
+          # warning("Fleet names not defined.")
+          convert_output(
+            output_file = model_results,
+            outdir = resdir,
+            file_save = TRUE,
+            model = model,
+            savedir = subdir,
+            save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+          )
         } else if (tolower(model) == "bam") {
           convert_output(
             output_file = model_results,
