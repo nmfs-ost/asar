@@ -697,12 +697,15 @@ create_template <- function(
       # Create a chunk that imports csv with full captions and alt text
       # created by satf
 
-      if (used_satf == F) {
+      if (used_satf) {
+        caps_and_alt_text <- read.csv('captions_alt_text.csv')
+      } else {
         satf::write_captions(output)
-       }
+        caps_and_alt_text <- read.csv('captions_alt_text.csv')
+      }
 
       add_captions <- add_chunk(
-        paste0(
+        print(
           ifelse(used_satf,
                  # the user HAS already generated captions with satf
                  "caps_and_alt_text <- read.csv('captions_alt_text.csv')",
@@ -996,7 +999,7 @@ create_template <- function(
       report_template <- paste(
         yaml,
         # preamble,
-        add_captions,
+        # add_captions,
         citation,
         sections,
         sep = "\n"
