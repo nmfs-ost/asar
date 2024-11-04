@@ -181,7 +181,6 @@
 #'   prev_year = 2021,
 #'   custom = TRUE,
 #'   custom_sections = c("executive_summary", "introduction", "discussion"),
-#'   used_satf = FALSE,
 #'   include_figures = TRUE,
 #'   include_tables = TRUE,
 #'   add_image = TRUE,
@@ -873,7 +872,6 @@ create_template <- function(
       report_template <- paste(
         yaml,
         preamble,
-        add_captions,
         citation,
         sections,
         sep = "\n"
