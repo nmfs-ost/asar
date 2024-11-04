@@ -736,7 +736,6 @@ create_template <- function(
        print("passed")
        }
 
-
       add_captions <- add_chunk(
         print(
           paste0(
