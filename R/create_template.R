@@ -181,6 +181,7 @@
 #'   prev_year = 2021,
 #'   custom = TRUE,
 #'   custom_sections = c("executive_summary", "introduction", "discussion"),
+#'   used_satf = FALSE,
 #'   include_figures = TRUE,
 #'   include_tables = TRUE,
 #'   add_image = TRUE,
@@ -421,8 +422,7 @@ create_template <- function(
       # Pull authors and affiliations from national db
       # Parameters to add authorship to YAML
       # Read authorship file
-      authors <- utils::read.csv(system.file("resources", "authorship.csv",
-                                             package = "asar", mustWork = TRUE)) |>
+      authors <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
         dplyr::mutate(
           mi = dplyr::case_when(
             mi == "" ~ NA,
@@ -696,8 +696,8 @@ create_template <- function(
         paste0(
           "output <- utils::read.csv('",
           ifelse(convert_output,
-                 filepath(subdir, paste0(species, "_std_res_", year, ".csv")),
-                 filepath(resdir, model_results)), "') \n \n",
+                 paste0(subdir, "/", species, "_std_res_", year, ".csv"),
+                 paste0(resdir, "/", model_results)), "') \n",
           "# Call reference points and quantities below \n",
           "# start_year <- min(output$year) \n",
           "# end_year <- '", year, "' \n",
@@ -717,6 +717,8 @@ create_template <- function(
         ),
         label = "output_and_quantities"
       )
+
+
 
       # Create a chunk that imports csv with full captions and alt text
       # created by satf
@@ -872,6 +874,7 @@ create_template <- function(
       report_template <- paste(
         yaml,
         preamble,
+        add_captions,
         citation,
         sections,
         sep = "\n"
