@@ -220,7 +220,8 @@ create_template <- function(
     include_tables = TRUE,
     add_image = FALSE,
     spp_image = NULL,
-    bib_file = NULL) {
+    bib_file = NULL,
+    used_satf = TRUE) {
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -307,6 +308,16 @@ create_template <- function(
         spp_image <- system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar")
       }
 
+      # Add in caps and alt text
+      if (used_satf) {
+        caps_and_alt_text <- read.csv(file.path(subdir, 'captions_alt_text.csv'))
+      } else { # might need to add case here when convert output is TRUE
+        satf::write_captions(read.csv(file.path(resdir, model_results)), # also need condition when this is empty
+                       dir = subdir,
+                       year = year)
+        caps_and_alt_text <- read.csv(file.path(subdir, 'captions_alt_text.csv'))
+      }
+
       # Check if there are already files in the folder
       if (length(list.files(subdir)) < 2) {
         # copy quarto files
@@ -350,7 +361,8 @@ create_template <- function(
             resdir = resdir,
             model_results = model_results,
             model = model,
-            subdir = subdir
+            subdir = subdir,
+            caps_file = caps_and_alt_text
           )
         } else {
           tables_doc <- paste0(
@@ -375,7 +387,8 @@ create_template <- function(
             model_results = model_results,
             model = model,
             subdir = subdir,
-            year = year
+            year = year,
+            caps_file = caps_and_alt_text
           )
         } else {
           figures_doc <- paste0("## Figures \n")
@@ -692,31 +705,13 @@ create_template <- function(
         label = "output_and_quantities"
       )
 
-
-
       # Create a chunk that imports csv with full captions and alt text
       # created by satf
-
-      if (used_satf) {
-        caps_and_alt_text <- read.csv('captions_alt_text.csv')
-      } else {
-        satf::write_captions(output)
-        caps_and_alt_text <- read.csv('captions_alt_text.csv')
-      }
-
       add_captions <- add_chunk(
-        print(
-          ifelse(used_satf,
-                 # the user HAS already generated captions with satf
-                 "caps_and_alt_text <- read.csv('captions_alt_text.csv')",
-                 # the user has NOT already generated captions with satf
-                 "satf::write_captions(output) \n caps_and_alt_text <- read.csv('captions_alt_text.csv')"
-          )
-        )
-        ,
+        paste0("caps_and_alt_text <- read.csv('captions_alt_text.csv')"
+        ),
         label = "captions_and_alt_text"
       )
-
 
       # Add page for citation of assessment report
       citation <- create_citation(

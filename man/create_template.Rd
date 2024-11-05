@@ -38,7 +38,8 @@ create_template(
   include_tables = TRUE,
   add_image = FALSE,
   spp_image = NULL,
-  bib_file = NULL
+  bib_file = NULL,
+  used_satf = TRUE
 )
 }
 \arguments{
@@ -170,6 +171,10 @@ using the image included in the project's repository.}
 
 \item{bib_file}{File path to a .bib file used for citing references in
 the report}
+
+\item{used_satf}{TRUE/FALSE; has the user already used the satf
+package to generate figures, tables, and therefore figure/table
+captions and alt text? Default is false.}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
@@ -251,6 +256,7 @@ create_template(
   prev_year = 2021,
   custom = TRUE,
   custom_sections = c("executive_summary", "introduction", "discussion"),
+  used_satf = FALSE,
   include_figures = TRUE,
   include_tables = TRUE,
   add_image = TRUE,

@@ -5,6 +5,8 @@
 #' @param model stock assessment model
 #' @param subdir subdirectory where the assessment report template is being stored
 #' @param include_all include all default tables for a stock assessment report
+#' @param caps_file .csv file containing captions and alternative text for
+#' figures and tables generated using satf::write_captions(...)
 #'
 #' @return Create a quarto document as part of a stock assessment outline with
 #' pre-loaded R chunk adding the stock assessment tables from the nmfs-ost/satf R package
@@ -14,12 +16,13 @@ create_tables_doc <- function(resdir = NULL,
                               model_results = NULL,
                               model = c("SS3", "BAM", "ASAP", "AMAK", "WHAM"),
                               subdir = NULL,
-                              include_all = TRUE) {
+                              include_all = TRUE,
+                              caps_file = NULL) {
   model <- match.arg(model, several.ok = FALSE)
 
-  captions_alttext <- utils::read.csv(
-    system.file("resources", "captions_alttext.csv", package = "asar")
-  )
+  # captions_alttext <- utils::read.csv(
+  #   system.file("resources", "captions_alttext.csv", package = "asar")
+  # )
 
   if (include_all) {
     # Create tables quarto doc - maybe should add this as separate fxn - same with figs
@@ -36,7 +39,7 @@ create_tables_doc <- function(resdir = NULL,
         chunk_op = c(
           glue::glue(
             "tbl-cap: '",
-            captions_alttext |>
+            caps_file |>
               dplyr::filter(label == "indices" & type == "table") |>
               dplyr::select(caption) |>
               as.character(),
