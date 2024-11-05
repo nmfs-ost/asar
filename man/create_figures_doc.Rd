@@ -10,7 +10,8 @@ create_figures_doc(
   model = c("SS3", "BAM", "ASAP", "AMAK", "WHAM"),
   year = NULL,
   subdir = NULL,
-  include_all = TRUE
+  include_all = TRUE,
+  caps_file = NULL
 )
 }
 \arguments{
@@ -34,6 +35,9 @@ the stock (e.g., "BAM", "SS3", "AMAK", "ASAP", etc.).}
 
 \item{include_all}{TRUE/FALSE; Option to include all default
 figures for a stock assessment report. Default is true.}
+
+\item{caps_file}{.csv file containing captions and alternative text for
+figures and tables generated using satf::write_captions(...)}
 }
 \value{
 A quarto document with pre-loaded R chunk that adds the
