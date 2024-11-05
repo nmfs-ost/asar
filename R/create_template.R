@@ -718,8 +718,6 @@ create_template <- function(
         label = "output_and_quantities"
       )
 
-
-
       # Create a chunk that imports csv with full captions and alt text
       # created by satf
       if (used_satf == TRUE) {
