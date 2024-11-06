@@ -74,7 +74,8 @@ convert_output <- function(
     part = NA,
     bin = NA,
     kind = NA,
-    nsim = NA
+    nsim = NA,
+    age_a = NA
   )
   out_new <- out_new[-1, ]
 
@@ -740,7 +741,7 @@ convert_output <- function(
     # Create list for morphed dfs to go into (for rbind later)
     out_list <- list()
 
-    factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo", "growth_pattern", "gp", "nsim")
+    factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo", "growth_pattern", "gp", "nsim", "age_a")
     errors <- c("StdDev", "sd", "se", "SE", "cv", "CV")
     # argument for function when model == BAM
     # fleet_names <- c("cl", "cL","cp","mrip","ct", "hb", "HB", "comm","Mbft","CVID")
@@ -782,6 +783,12 @@ convert_output <- function(
               } else {
                 df <- as.data.frame(extract[[1]][[i]]) |>
                   tibble::rownames_to_column(var = "year")
+                df <- df |>
+                  dplyr::rename_with(
+                    ~ ifelse(max(as.numeric(df$year)) < 50,
+                           c("age_a"), c("year")),
+                    year
+                  )
                 if (grepl("lcomp", names(extract[[1]][i]))) {
                   namesto <- "len_bins"
                 } else if (grepl("acomp", names(extract[[1]][i]))) {
@@ -792,20 +799,20 @@ convert_output <- function(
                 }
                 df2 <- df |>
                   tidyr::pivot_longer(
-                    cols = -year,
+                    cols = -intersect(colnames(df), c("year","age_a")),
                     names_to = namesto,
                     values_to = "estimate"
                   ) |>
                   dplyr::mutate(
                     module_name = names(extract),
-                    label = names(extract[[1]][i]),
+                    label = names(extract[[1]][1]),
                     # label_init = names(extract[[1]][i]),
                     fleet = dplyr::case_when(
                       grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(label, paste(fleet_names, collapse = "|")),
                       TRUE ~ NA
                     ), # stringr::str_extract(module_name, "(?<=\\.)\\w+(?=\\.)"),
                     label = dplyr::case_when(
-                      is.na(fleet) ~ names(extract[[1]][i]),
+                      is.na(fleet) ~ names(extract[[1]][1]),
                       TRUE ~ stringr::str_replace(label, paste(".", fleet_names, sep = "", collapse = "|"), "")
                     )
                   ) # stringr::str_replace(module_name, "\\.[^.]+\\.", "."))
