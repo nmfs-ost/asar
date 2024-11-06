@@ -1055,6 +1055,7 @@ convert_output <- function(
                 label = dplyr::case_when(
                   grepl("_age[0-9]_", label) & grepl(paste("_", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_age[0-9]+_", fleet_names, sep = "", collapse = "|"), ""),
                   grepl("_age[0-9]_", label) ~ stringr::str_replace(label, "_age[0-9]+_", ""),
+                  grepl(paste(fleet_names, ".", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(fleet_names, ".", sep = "", collapse = "|"), ""),
                   grepl(paste("_", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_", fleet_names, sep = "", collapse = "|"), ""),
                   grepl(paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), ""),
                   grepl(paste(".", fleet_names, "d[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "d[0-9]+$", sep = "", collapse = "|"), ""),
