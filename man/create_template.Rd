@@ -109,7 +109,7 @@ individual parameters for this function, above).}
 standard model format while creating report template? Default
 is false.}
 
-\item{fleet_names}{List of fleet names as described in BAM output
+\item{fleet_names}{Deprecated: List of fleet names as described in BAM output
 file (abbreviations).}
 
 \item{resdir}{Filepath of the directory storing the model
