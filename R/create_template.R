@@ -52,7 +52,7 @@
 #' @param convert_output TRUE/FALSE; Convert the output file to
 #' standard model format while creating report template? Default
 #' is false.
-#' @param fleet_names List of fleet names as described in BAM output
+#' @param fleet_names Deprecated: List of fleet names as described in BAM output
 #'  file (abbreviations).
 #' @param resdir Filepath of the directory storing the model
 #'  results file(s). Examples where dover_sole_2024 is the project root
@@ -641,16 +641,16 @@ create_template <- function(
             savedir = subdir,
             save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
           )
-        } else if (tolower(model) == "bam") {
-          convert_output(
-            output_file = model_results,
-            outdir = resdir,
-            file_save = TRUE,
-            model = model,
-            fleet_names = fleet_names,
-            savedir = subdir,
-            save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
-          )
+        # } else if (tolower(model) == "bam") {
+        #   convert_output(
+        #     output_file = model_results,
+        #     outdir = resdir,
+        #     file_save = TRUE,
+        #     model = model,
+        #     fleet_names = fleet_names,
+        #     savedir = subdir,
+        #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+        #   )
         } else {
           convert_output(
             output_file = model_results,
