@@ -311,6 +311,22 @@ create_template <- function(
         spp_image <- system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar")
       }
 
+      # Add in caps and alt text
+      if (used_satf) {
+        caps_and_alt_text <- read.csv(file.path(resdir, 'captions_alt_text.csv'))
+      } else if (used_satf == FALSE & convert_output == FALSE) {
+        output <- read.csv(fs::path(resdir, model_results))
+        satf::write_captions(output)
+        caps_and_alt_text <- read.csv(fs::path('captions_alt_text.csv'))
+       # satf::write_captions(read.csv(file.path(resdir, model_results)))
+       # caps_and_alt_text <- read.csv(file.path(subdir, 'captions_alt_text.csv'))
+      } else if (used_satf == FALSE & convert_output == TRUE) {
+        output <- read.csv(fs::path(subdir, paste(sub(" ", "_", species), "_std_res_", year, ".csv", sep = "")))
+        satf::write_captions(output)
+        # caps_and_alt_text <- read.csv(fs::path(resdir, 'captions_alt_text.csv'))
+        caps_and_alt_text <- read.csv(fs::path('captions_alt_text.csv'))
+      }
+
       # Check if there are already files in the folder
       if (length(list.files(subdir)) < 2) {
         # copy quarto files
@@ -354,7 +370,8 @@ create_template <- function(
             resdir = resdir,
             model_results = model_results,
             model = model,
-            subdir = subdir
+            subdir = subdir,
+            caps_file = caps_and_alt_text
           )
         } else {
           tables_doc <- paste0(
@@ -379,7 +396,8 @@ create_template <- function(
             model_results = model_results,
             model = model,
             subdir = subdir,
-            year = year
+            year = year,
+            caps_file = caps_and_alt_text
           )
         } else {
           figures_doc <- paste0("## Figures \n")
@@ -696,23 +714,19 @@ create_template <- function(
         label = "output_and_quantities"
       )
 
-
-
-      # Create a chunk that imports csv with full captions and alt text
-      # created by satf
-      if (used_satf == TRUE) {
-        caps_and_alt_text <- read.csv(fs::path(caps_dir, 'captions_alt_text.csv'))
-      } else if (used_satf == FALSE & convert_output == FALSE) {
-        output <- read.csv(fs::path(resdir, model_results))
-        satf::write_captions(output)
-        caps_and_alt_text <- read.csv(fs::path('captions_alt_text.csv'))
-      } else if (used_satf == FALSE & convert_output == TRUE) {
-       output <- read.csv(fs::path(subdir, paste(sub(" ", "_", species), "_std_res_", year, ".csv", sep = "")))
-       satf::write_captions(output)
-       # caps_and_alt_text <- read.csv(fs::path(resdir, 'captions_alt_text.csv'))
-       caps_and_alt_text <- read.csv(fs::path('captions_alt_text.csv'))
-       print("passed")
-       }
+      # # Create a chunk that imports csv with full captions and alt text
+      # # created by satf
+      # if (used_satf == TRUE) {
+      #   caps_and_alt_text <- read.csv(fs::path(caps_dir, 'captions_alt_text.csv'))
+      # } else if (used_satf == FALSE & convert_output == FALSE) {
+      #   output <- read.csv(fs::path(resdir, model_results))
+      #   satf::write_captions(output)
+      #   caps_and_alt_text <- read.csv(fs::path('captions_alt_text.csv'))
+      # } else if (used_satf == FALSE & convert_output == TRUE) {
+      #  output <- read.csv(fs::path(subdir, paste(sub(" ", "_", species), "_std_res_", year, ".csv", sep = "")))
+      #  satf::write_captions(output)
+      #  caps_and_alt_text <- read.csv(fs::path('captions_alt_text.csv'))
+      #  }
 
 
       add_captions <- add_chunk(
@@ -724,10 +738,12 @@ create_template <- function(
                    "/captions_alt_text.csv",
                    "'))"
                    ),
-        label = "captions_and_alt_text"
+      # add_captions <- add_chunk(
+      #   paste0("caps_and_alt_text <- read.csv('captions_alt_text.csv')"
+      #   ),
+         label = "captions_and_alt_text"
+         )
         )
-        )
-
 
       # Add page for citation of assessment report
       citation <- create_citation(

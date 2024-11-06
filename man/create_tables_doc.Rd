@@ -9,7 +9,8 @@ create_tables_doc(
   model_results = NULL,
   model = c("SS3", "BAM", "ASAP", "AMAK", "WHAM"),
   subdir = NULL,
-  include_all = TRUE
+  include_all = TRUE,
+  caps_file = NULL
 )
 }
 \arguments{
@@ -22,6 +23,9 @@ create_tables_doc(
 \item{subdir}{subdirectory where the assessment report template is being stored}
 
 \item{include_all}{include all default tables for a stock assessment report}
+
+\item{caps_file}{.csv file containing captions and alternative text for
+figures and tables generated using satf::write_captions(...)}
 }
 \value{
 Create a quarto document as part of a stock assessment outline with

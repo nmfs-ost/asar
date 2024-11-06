@@ -5,6 +5,8 @@
 #' @param subdir Location of subdirectory storing the assessment report template
 #' @param include_all TRUE/FALSE; Option to include all default
 #' figures for a stock assessment report. Default is true.
+#' @param caps_file .csv file containing captions and alternative text for
+#' figures and tables generated using satf::write_captions(...)
 #'
 #' @return A quarto document with pre-loaded R chunk that adds the
 #' stock assessment tables from the nmfs-ost/satf R package. The
@@ -16,7 +18,8 @@ create_figures_doc <- function(resdir = NULL,
                                model = c("SS3", "BAM", "ASAP", "AMAK", "WHAM"),
                                year = NULL,
                                subdir = NULL,
-                               include_all = TRUE) {
+                               include_all = TRUE,
+                               caps_file = NULL) {
 
   model <- match.arg(model, several.ok = FALSE)
 
@@ -35,18 +38,12 @@ create_figures_doc <- function(resdir = NULL,
         chunk_op = c(
           glue::glue(
             "fig-cap: '",
-            caps_and_alt_text |>
-              dplyr::filter(label == "recruitment" & type == "figure") |>
-              dplyr::select(caption) |>
-              as.character(),
+            caps_file[1,3],
             "'"
           ),
           glue::glue(
             "fig-alt: '",
-            caps_and_alt_text |>
-              dplyr::filter(label == "recruitment" & type == "figure") |>
-              dplyr::select(alt_text) |>
-              as.character(),
+            caps_file[1,4],
             "'"
           )
         )
@@ -72,18 +69,12 @@ create_figures_doc <- function(resdir = NULL,
                 chunk_op = c(
                   glue::glue(
                     "fig-cap: '",
-                    caps_and_alt_text |>
-                      dplyr::filter(label == "spawning_biomass" & type == "figure") |>
-                      dplyr::select(caption) |>
-                      as.character(),
+                    caps_file[2,3],
                     "'"
                   ),
                   glue::glue(
                     "fig-alt: '",
-                    caps_and_alt_text |>
-                      dplyr::filter(label == "spawning_biomass" & type == "figure") |>
-                      dplyr::select(alt_text) |>
-                      as.character(),
+                    caps_file[2,4],
                     "'"
                     )
                   )
