@@ -639,7 +639,7 @@ create_template <- function(
             file_save = TRUE,
             model = model,
             savedir = subdir,
-            save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+            save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
           )
         # } else if (tolower(model) == "bam") {
         #   convert_output(
@@ -658,11 +658,11 @@ create_template <- function(
             file_save = TRUE,
             model = model,
             savedir = subdir,
-            save_name = paste(species, "_std_res_", year, sep = "")
+            save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
           )
         }
         # Rename model results file and results file directory if the results are converted in this fxn
-        model_results <- glue::glue(species, "_std_res_", year, ".csv")
+        model_results <- glue::glue(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
         resdir <- subdir
       }
 
