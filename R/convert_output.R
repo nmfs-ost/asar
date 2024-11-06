@@ -73,7 +73,8 @@ convert_output <- function(
     sexes = NA,
     part = NA,
     bin = NA,
-    kind = NA
+    kind = NA,
+    nsim = NA
   )
   out_new <- out_new[-1, ]
 
@@ -739,7 +740,7 @@ convert_output <- function(
     # Create list for morphed dfs to go into (for rbind later)
     out_list <- list()
 
-    factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo", "growth_pattern", "gp")
+    factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo", "growth_pattern", "gp", "nsim")
     errors <- c("StdDev", "sd", "se", "SE", "cv", "CV")
     # argument for function when model == BAM
     # fleet_names <- c("cl", "cL","cp","mrip","ct", "hb", "HB", "comm","Mbft","CVID")
@@ -995,10 +996,12 @@ convert_output <- function(
           out_list[[names(extract)]] <- new_df
         } else if (any(sapply(extract[[1]], is.vector))) { # all must be a vector to work - so there must be conditions for dfs with a mix
           df <- data.frame(extract[[1]])
-          if (max(as.numeric(row.names(df))) < 1800) {
+          if (max(as.numeric(row.names(df))) < 1000) {
             fac <- "age"
-          } else {
+          } else if (1000 < max(as.numeric(row.names(df))) & max(as.numeric(row.names(df))) < 2100) {
             fac <- "year"
+          } else {
+            fac <- "nsim"
           }
           if (any(colnames(df) %in% c("age", "year"))) {
             df <- df
@@ -1009,6 +1012,9 @@ convert_output <- function(
             } else if (fac == "age") {
               df <- tibble::rowid_to_column(df, var = fac) |>
                 dplyr::mutate(age = as.character(age))
+            } else if (fac == "nsim") {
+              df <- tibble::rowid_to_column(df, var = fac) |>
+                dplyr::mutate(nsim = as.character(nsim))
             } else {
               warning("not compatible")
             }
