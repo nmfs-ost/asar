@@ -92,6 +92,8 @@
 #' @param used_satf TRUE/FALSE; has the user already used the satf
 #' package to generate figures, tables, and therefore figure/table
 #' captions and alt text? Default is false.
+#' @param caps_dir Filepath of the directory storing the captions
+#' and alt text csv, if already generated with satf.
 #' @param include_figures TRUE/FALSE; Should figures be
 #' included in the report? Default is true.
 #' @param include_tables TRUE/FALSE; Should tables be included
@@ -217,6 +219,8 @@ create_template <- function(
     prev_year = NULL,
     custom = FALSE,
     custom_sections = NULL,
+    used_satf = FALSE,
+    caps_dir = NULL,
     include_figures = TRUE,
     include_tables = TRUE,
     add_image = FALSE,
@@ -669,7 +673,7 @@ create_template <- function(
         # Rename model results file and results file directory if the results are converted in this fxn
         model_results <- glue::glue(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
         resdir <- subdir
-      }
+        }
 
       # print("_______Standardized output data________")
 
@@ -705,26 +709,33 @@ create_template <- function(
 
       # Create a chunk that imports csv with full captions and alt text
       # created by satf
-
-      if (used_satf) {
-        caps_and_alt_text <- read.csv('captions_alt_text.csv')
-      } else {
+      if (used_satf == TRUE) {
+        caps_and_alt_text <- read.csv(fs::path(caps_dir, 'captions_alt_text.csv'))
+      } else if (used_satf == FALSE & convert_output == FALSE) {
+        output <- read.csv(fs::path(resdir, model_results))
         satf::write_captions(output)
-        caps_and_alt_text <- read.csv('captions_alt_text.csv')
-      }
+        caps_and_alt_text <- read.csv(fs::path('captions_alt_text.csv'))
+      } else if (used_satf == FALSE & convert_output == TRUE) {
+       output <- read.csv(fs::path(subdir, paste(sub(" ", "_", species), "_std_res_", year, ".csv", sep = "")))
+       satf::write_captions(output)
+       # caps_and_alt_text <- read.csv(fs::path(resdir, 'captions_alt_text.csv'))
+       caps_and_alt_text <- read.csv(fs::path('captions_alt_text.csv'))
+       print("passed")
+       }
+
 
       add_captions <- add_chunk(
         print(
-          ifelse(used_satf,
-                 # the user HAS already generated captions with satf
-                 "caps_and_alt_text <- read.csv('captions_alt_text.csv')",
-                 # the user has NOT already generated captions with satf
-                 "satf::write_captions(output) \n caps_and_alt_text <- read.csv('captions_alt_text.csv')"
-          )
-        )
-        ,
+          paste0(
+                   "caps_and_alt_text <- read.csv(fs::path(",
+                   "'",
+                   caps_dir,
+                   "/captions_alt_text.csv",
+                   "'))"
+                   ),
         label = "captions_and_alt_text"
-      )
+        )
+        )
 
 
       # Add page for citation of assessment report
