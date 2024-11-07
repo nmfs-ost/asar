@@ -52,7 +52,7 @@
 #' @param convert_output TRUE/FALSE; Convert the output file to
 #' standard model format while creating report template? Default
 #' is false.
-#' @param fleet_names List of fleet names as described in BAM output
+#' @param fleet_names Deprecated: List of fleet names as described in BAM output
 #'  file (abbreviations).
 #' @param resdir Filepath of the directory storing the model
 #'  results file(s). Examples where dover_sole_2024 is the project root
@@ -633,17 +633,25 @@ create_template <- function(
       if (convert_output) {
         print("__________Converting output file__________")
         if (tolower(model) == "bam" & is.null(fleet_names)) {
-          warning("Fleet names not defined.")
-        } else if (tolower(model) == "bam") {
+          # warning("Fleet names not defined.")
           convert_output(
             output_file = model_results,
             outdir = resdir,
             file_save = TRUE,
             model = model,
-            fleet_names = fleet_names,
             savedir = subdir,
-            save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+            save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
           )
+        # } else if (tolower(model) == "bam") {
+        #   convert_output(
+        #     output_file = model_results,
+        #     outdir = resdir,
+        #     file_save = TRUE,
+        #     model = model,
+        #     fleet_names = fleet_names,
+        #     savedir = subdir,
+        #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+        #   )
         } else {
           convert_output(
             output_file = model_results,
@@ -651,11 +659,11 @@ create_template <- function(
             file_save = TRUE,
             model = model,
             savedir = subdir,
-            save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+            save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
           )
         }
         # Rename model results file and results file directory if the results are converted in this fxn
-        model_results <- glue::glue(species, "_std_res_", year, ".csv")
+        model_results <- glue::glue(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
         resdir <- subdir
       }
 
