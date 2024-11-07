@@ -728,21 +728,21 @@ create_template <- function(
             "11_appendix.qmd"
           ),
           label = c(
-            "01_executive_summary",
-            "02_introduction",
-            "03_data",
-            "04a_assessment-configuration",
-            "04b_assessment-results",
-            "04c_assessment-sensitivity",
-            "04d_assessment-benchmarks",
-            "04e_assessment-projections",
-            "05_discussion",
-            "06_acknowledgments",
-            "07_references",
-            "08_tables",
-            "09_figures",
-            "10_notes",
-            "11_appendix"
+            "executive_summary",
+            "introduction",
+            "data",
+            "assessment-configuration",
+            "assessment-results",
+            "assessment-sensitivity",
+            "assessment-benchmarks",
+            "assessment-projections",
+            "discussion",
+            "acknowledgments",
+            "references",
+            "tables",
+            "figures",
+            "notes",
+            "appendix"
           )
         )
       } else {
@@ -895,21 +895,21 @@ create_template <- function(
             "11_appendix.qmd"
           ),
           label = c(
-            "01_executive_summary",
-            "02_introduction",
-            "03_data",
-            "04a_assessment-configuration",
-            "04b_assessment-results",
-            "04c_assessment-sensitivity",
-            "04d_assessment-benchmarks",
-            "04e_assessment-projections",
-            "05_discussion",
-            "06_acknowledgments",
-            "07_references",
-            "08_tables",
-            "09_figures",
-            "10_notes",
-            "11_appendix"
+            "executive_summary",
+            "introduction",
+            "data",
+            "assessment-configuration",
+            "assessment-results",
+            "assessment-sensitivity",
+            "assessment-benchmarks",
+            "assessment-projections",
+            "discussion",
+            "acknowledgments",
+            "references",
+            "tables",
+            "figures",
+            "notes",
+            "appendix"
           )
         )
       } else {
