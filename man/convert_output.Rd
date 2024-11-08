@@ -15,21 +15,26 @@ convert_output(
 )
 }
 \arguments{
-\item{output_file}{name of the file containing assessment model output. This is the Report.sso file for SS3, the rdat file for BAM, the...}
+\item{output_file}{Assessment model output file (e.g., the
+Report.sso file for SS3, the rdat file for BAM, etc.)}
 
-\item{outdir}{output directory folder}
+\item{outdir}{Directory of the assessment model output file.}
 
-\item{model}{assessment model used in evaluation;
-"ss3", "bam", "asap", "fims", "amak", "ms-java", "wham", "mas", "asap"}
+\item{model}{Assessment model used in evaluation ("ss3", "bam",
+"asap", "fims", "amak", "ms-java", "wham", "mas").}
 
-\item{fleet_names}{Names of fleets in the assessment model as shortened in the
-output file, required for transforming BAM model output}
+\item{fleet_names}{Names of fleets in the assessment model as
+shortened in the output file. If fleet names are not properly read, then
+indicate the fleets names as an acronym in a vector}
 
-\item{file_save}{TRUE/FALSE save the formatted object rather than calling the function and adding to global environment}
+\item{file_save}{TRUE/FALSE; Save the formatted object rather
+than calling the function and adding the formatted object to
+the global environment? Default is false.}
 
-\item{savedir}{directory to save the file}
+\item{savedir}{Directory to save the converted output file.}
 
-\item{save_name}{file name (do not use spaces)}
+\item{save_name}{Name of the converted output file (do not use
+spaces).}
 }
 \value{
 A reformatted and standardized version of assessment model results

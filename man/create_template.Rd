@@ -2,14 +2,14 @@
 % Please edit documentation in R/create_template.R
 \name{create_template}
 \alias{create_template}
-\title{Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'asar'))' in the console.}
+\title{Create Stock Assessment Report Template}
 \usage{
 create_template(
   new_template = TRUE,
   format = c("pdf", "docx", "html", NULL),
   office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
   region = NULL,
-  complex = "NO",
+  complex = FALSE,
   species = NULL,
   spp_latin = NULL,
   year = NULL,
@@ -37,81 +37,139 @@ create_template(
   include_figures = TRUE,
   include_tables = TRUE,
   add_image = FALSE,
-  spp_image = NULL
+  spp_image = NULL,
+  bib_file = NULL
 )
 }
 \arguments{
-\item{new_template}{TRUE/FALSE; default is false otherwise if true, will pull the last saved stock assessment report skeleton}
+\item{new_template}{TRUE/FALSE; Create a new template? If true,
+will pull the last saved stock assessment report skeleton.
+Default is false.}
 
-\item{format}{File type for the render (i.e. pdf, docx, html)}
+\item{format}{Rendering format (pdf, html, or docx).}
 
-\item{office}{Regional fisheries science center producing the report (AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC)}
+\item{office}{Regional Fisheries Science Center producing the
+report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
 
-\item{region}{Full name of region in which the species is evaluated if applicable; Note: if this is not specified for your center or for
-the species, do not use this variable.}
+\item{region}{Full name of region in which the species is
+evaluated (if applicable). If the region is not specified for
+your center or species, do not use this variable.}
 
-\item{complex}{Is this a species complex? "YES" or "NO"}
+\item{complex}{TRUE/FALSE; Is this a species complex? Default
+is false.}
 
-\item{species}{Full common name for target species, split naming by a space and capitalize first letter(s)}
+\item{species}{Full common name for target species. Split
+naming with a space and capitalize first letter(s). Example:
+"Dover sole".}
 
-\item{spp_latin}{Latin name for the target species of this assessment}
+\item{spp_latin}{Latin name for the target species. Example:
+"Pomatomus saltatrix".}
 
-\item{year}{Year the assessment is being conducted, default is current year report is being rendered}
+\item{year}{Year the assessment is being conducted. Default
+is the year in which the report is rendered.}
 
-\item{file_dir}{location where the stock assessment files will be kept produced from this function. Default is set to working directory}
+\item{file_dir}{Location of stock assessment files produced
+by this function. Default is the working directory.}
 
-\item{author}{List of authors to include in the assessment; keep authorship order}
+\item{author}{Ordered list of authors included in the assessment.}
 
-\item{add_author}{temporarily add an author that is not currently in the database. Follow the format of "First MI Last".
-Please leave a comment on the github issues page to be added.}
+\item{add_author}{Author that is not currently in the database
+and who should be temporarily added to the author list. Format
+as "First MI Last".
+Please leave a comment on the GitHub issues page to be added.}
 
-\item{include_affiliation}{TRUE/FALSE; does the analyst want to include affiliations of the authors in the document?}
+\item{include_affiliation}{TRUE/FALSE; Does the analyst want to
+include the authors' affiliations in the document? Default is
+false.}
 
-\item{simple_affiliation}{If including affiliation, adding just office name rather than full address; TRUE/FALSE, default is TRUE}
+\item{simple_affiliation}{TRUE/FALSE; If including affiliations,
+should the office name function as the affiliation, rather
+than the full address? Default is true.}
 
-\item{alt_title}{TRUE/FALSE create an alternative title than the default}
+\item{alt_title}{TRUE/FALSE; Use a title that is not the
+default title (i.e., an alternative title)? Default is false.}
 
-\item{title}{Name of new title if default is not appropriate; Example, "Management Track Assessments Spring 2024"}
+\item{title}{The alternative title. Example:
+"Management Track Assessments Spring 2024".}
 
-\item{parameters}{TRUE/FALSE; default TRUE - for parameterization of the script}
+\item{parameters}{TRUE/FALSE; For
+parameterization of the script. Default is true.}
 
-\item{param_names}{List of parameter names that will be called in the document; parameters automatically included are office, region,
-and species listed in function parameters}
+\item{param_names}{List of parameter names that will be called
+in the document. Parameters automatically included:
+office, region, species (each of which are listed as
+individual parameters for this function, above).}
 
-\item{param_values}{List of values associated with the order of parameter names; parameters automatically included are office, region,
-and species listed in function parameters}
+\item{param_values}{List of values associated with the order
+of parameter names. Parameters automatically included:
+office, region, species (each of which are listed as
+individual parameters for this function, above).}
 
-\item{convert_output}{TRUE/FALSE convert output file to standard while creating report template}
+\item{convert_output}{TRUE/FALSE; Convert the output file to
+standard model format while creating report template? Default
+is false.}
 
-\item{fleet_names}{list of fleet names as seen in BAM output file (abbreviations)}
+\item{fleet_names}{Deprecated: List of fleet names as described in BAM output
+file (abbreviations).}
 
-\item{resdir}{Directory where the model results file(s) are located}
+\item{resdir}{Filepath of the directory storing the model
+results file(s). Examples where dover_sole_2024 is the project root
+for absolute and relative filepaths, respectively:
+"C:/Users/patrick.star/Documents/dover_sole_2024/models",
+"here::here("models")".}
 
-\item{model_results}{Name of the model results file}
+\item{model_results}{The .csv file produced after converting the
+stock assessment output file to a standardized format with
+the function convert_output.R.}
 
-\item{model}{Type of assessment model that was used to assess the stock (i.e. "BAM", "SS3", "AMAK", "ASAP", ect)}
+\item{model}{Type of assessment model that was used to assess
+the stock (e.g., "BAM", "SS3", "AMAK", "ASAP", etc.).}
 
-\item{new_section}{File name of the new section}
+\item{new_section}{Names of section(s) (e.g., introduction, results) or
+subsection(s) (e.g., a section within the introduction) that will be
+added to the document. Please make a short list if >1 section/subsection
+will be added. The template will be created as a quarto document, added
+into the skeleton, and saved for reference.}
 
-\item{section_location}{Location where the section should be added relative to the base skeleton document}
+\item{section_location}{Where new section(s)/subsection(s) will be added to
+the skeleton template. Please use the notation of 'placement-section'.
+For example, 'in-introduction' signifies that the new content would
+be created as a child document and added into the 02_introduction.qmd.
+To add >1 (sub)section, make the location a list corresponding to the
+order of (sub)section names listed in the 'new_section' parameter.}
 
-\item{type}{Type of report to build - default is SAR}
+\item{type}{Type of report to build. Default is SAR.}
 
-\item{prev_year}{Year that previous assessment report was conducted in - for pulling previous assessment template}
+\item{prev_year}{Year in which the previous assessment report
+was conducted. Used to pull previous assessment template.}
 
-\item{custom}{TRUE/FALSE Build custom sectioning for the template rather than the default for stock assessments in your region}
+\item{custom}{TRUE/FALSE; Build custom sectioning for the
+template, rather than the default for stock assessments in
+your region? Default is false.}
 
-\item{custom_sections}{List of the sections you want to include in the custom template. Note: this only includes sections within
-list.files(system.file("templates", "skeleton", package = "asar")). The section name can be used such as 'abstract' rather than the entire name '00_abstract.qmd'.
-If a new section is to be added, please also use parameters 'new_section', and 'section_location'}
+\item{custom_sections}{List of existing sections to include in
+the custom template. Note: this only includes sections within
+list.files(system.file("templates", "skeleton",
+package = "asar")). The name of the section, rather than the
+name of the file, can be used (e.g., 'abstract' rather than
+'00_abstract.qmd'). If adding a new section, also use
+parameters 'new_section' and 'section_location'.}
 
-\item{include_figures}{Determine if figures are included into the report}
+\item{include_figures}{TRUE/FALSE; Should figures be
+included in the report? Default is true.}
 
-\item{include_tables}{Indicate if tables are included into the report}
+\item{include_tables}{TRUE/FALSE; Should tables be included
+in the report? Default is true.}
 
-\item{add_image}{add outside image of species to the template}
+\item{add_image}{TRUE/FALSE; Add image of species to the
+template that is not already included in the project's
+inst/resources/spp_img folder? Default is false.}
 
-\item{spp_image}{full directory and species image name to direct the program where to find and extract the image}
+\item{spp_image}{File path to the species' image if not
+using the image included in the project's repository.}
+
+\item{bib_file}{File path to a .bib file used for citing references in
+the report}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
@@ -121,9 +179,83 @@ General sections are called as child documents in this skeleton and
 each of the child documents should be edited separately.
 }
 \description{
-Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'asar'))' in the console.
+To see templates included in the base skeleton, please run
+'list.files(system.file('templates','skeleton', package = 'asar'))'
+in the console.
 }
 \examples{
-create_template()
+\dontrun{
+create_template(
+  new_section = "a_new_section",
+  section_location = "before-introduction",
+  )
+
+
+create_template(
+  new_template = TRUE,
+  format = "pdf",
+  office = "NWFSC",
+  species = "Dover sole",
+  spp_latin = "Microstomus pacificus",
+  year = 2010,
+  author = c("John Snow", "Danny Phantom", "Patrick Star"),
+  include_affiliation = TRUE,
+  resdir = "C:/Users/Documents/Example_Files",
+  model_results = "Report.sso",
+  model = "SS3",
+  new_section = "an_additional_section",
+  section_location = "after-introduction",
+  )
+
+asar::create_template(
+  new_template = TRUE,
+  format = "pdf",
+  office = "PIFSC",
+  species = "Striped marlin",
+  spp_latin = "Kajikia audax",
+  year = 2018,
+  author = "Alba Tross",
+  model = "BAM",
+  new_section = c("a_new_section", "another_new_section"),
+  section_location = c("before-introduction", "after-introduction"),
+  custom = TRUE,
+  custom_sections = c("executive_summary", "introduction")
+)
+
+create_template(
+  new_template = TRUE,
+  format = "pdf",
+  office = "NWFSC",
+  region = "my_region",
+  complex = FALSE,
+  species = "Bluefish",
+  spp_latin = "Pomatomus saltatrix",
+  year = 2010,
+  author = c("John Snow", "Danny Phantom", "Patrick Star"),
+  add_author = "Sun E Day",
+  include_affiliation = TRUE,
+  simple_affiliation = TRUE,
+  alt_title = FALSE,
+  title = "Management Track Assessments Spring 2024",
+  parameters = TRUE,
+  param_names = c("region", "year"),
+  param_values = c("my_region", "2024"),
+  convert_output = FALSE,
+  fleet_names = c("fleet1", "fleet2", "fleet3"),
+  resdir = "C:/Users/Documents/Example_Files",
+  model_results = "Report.sso",
+  model = "SS3",
+  new_section = "an_additional_section",
+  section_location = "before-discussion",
+  type = "SAR",
+  prev_year = 2021,
+  custom = TRUE,
+  custom_sections = c("executive_summary", "introduction", "discussion"),
+  include_figures = TRUE,
+  include_tables = TRUE,
+  add_image = TRUE,
+  spp_image = "dir/containing/spp_image"
+)
+}
 
 }

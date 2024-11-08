@@ -1,16 +1,6 @@
-#---- Write Title ----
-
 #' Write Stock Assessment Title
 #'
-#' @param office Fishery science center performing the assessment
-#' @param species Target species
-#' @param region Region where the stock is being assessed if applicable.
-#'               Please be explicit in the name and follow the preferred convention
-#'               for the management organization.
-#' @param year Year conducting the assessment report
-#' @param complex TRUE/FALSE is this a species complex?
-#' @param type Stock assessment type; usually inherited from the template
-#' @param spp_latin Latin name for the target species
+#' @inheritParams create_template
 #'
 #' @return NULL
 #' @export

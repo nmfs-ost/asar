@@ -30,25 +30,43 @@ remotes::install_github("nmfs-ost/satf")
 
 ## Example
 
-The following is a basic example to render a stock assessment report for a particular region in the U.S.:
+The following code will allow the user to replicate the [2023 petrale sole stock assessment](https://www.pcouncil.org/documents/2024/02/status-of-petrale-sole-eopsetta-jordanialong-the-u-s-west-coast-in-2023.pdf/) produced by the NWFSC and made available by the Pacific Fisheries Management Council. The assessment model files are also available on the PFMC's website. A (DRAFT) tutorial for using `asar` can be found [here](https://connect.fisheries.noaa.gov/asar_tutorial/).
+
+The SS3 Report.sso files was converted using the following code:
+
+```r
+asar::convert_output(
+  output_file = "Report.sso",
+  outdir = "data",
+  model = "ss3",
+  file_save = TRUE,
+  save_name = "petrale_convert_output")
+```
+
+In this function, the users have the option to convert output files to a standardized framework from either SS3 (Report.sso) or BAM (.rdat) output files. The converted output was saved as an Rdata file and can be found in the example folder in this repository.
+
+To proceed, the user should then run the following:
 
 ```r
 asar::create_template(
-  new_template = TRUE,
   format = "pdf",
   office = "NWFSC",
-  species = "Dover sole",
-  spp_latin = "Pomatomus saltatrix",
-  year = 2010,
-  author = c("John Snow", "Danny Phantom", "Patrick Star"),
+  region = "U.S. West Coast",
+  species = "Petrale sole",
+  spp_latin = "Eopsetta jordani",
+  year = 2023,
+  author = c("Ian G. Taylor", "Vladlena Gertseva", "Nick Tolimieri"),
   include_affiliation = TRUE,
-  resdir = "C:/Users/Documents/Example_Files",
-  model_results = "Report.sso",
+  simple_affiliation = FALSE,
+  param_names = c("nf","sf"),
+  param_values = c("North fleet", "South fleet"),
+  resdir = "data",
+  model_results = "Petrale_sole_std_res_2023.csv",
   model = "SS3"
 )
 ```
 
-Note: This is only an example. The parameters in the example do not convey accurate stock assessment information.
+Note: The output of this report is an example based on a real stock assessment. Please refer to the link in the beginning of this section for the full assessment report. 
 
 ## Testing
 
@@ -65,14 +83,13 @@ This is a modularized template, there is no need to make any edits to the skelet
 -   Executive Summary
 -   Introduction
 -   Data
--   Modeling Approach
--   Results
--   Projections
+-   Assessment
 -   Discussion
 -   Acknowledgments
 -   References
 -   Tables
 -   Figures 
+-   Appendix
 
 Please leave an issue for any bugs or suggestions to improve the package during testing on the [Issues Page](https://github.com/Schiano-NOAA/ASAR/issues). Please remember that this package is currently in development and we do not project to release version 1.0 until December 2024. Thank you for helping us improve this package!
 

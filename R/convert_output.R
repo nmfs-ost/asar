@@ -2,15 +2,20 @@
 #'
 #' Format stock assessment output files to a standardized format.
 #'
-#' @param output_file name of the file containing assessment model output. This is the Report.sso file for SS3, the rdat file for BAM, the...
-#' @param outdir output directory folder
-#' @param model assessment model used in evaluation;
-#'              "ss3", "bam", "asap", "fims", "amak", "ms-java", "wham", "mas", "asap"
-#' @param fleet_names Names of fleets in the assessment model as shortened in the
-#'                    output file, required for transforming BAM model output
-#' @param file_save TRUE/FALSE save the formatted object rather than calling the function and adding to global environment
-#' @param savedir directory to save the file
-#' @param save_name file name (do not use spaces)
+#' @param output_file Assessment model output file (e.g., the
+#'  Report.sso file for SS3, the rdat file for BAM, etc.)
+#' @param outdir Directory of the assessment model output file.
+#' @param model Assessment model used in evaluation ("ss3", "bam",
+#'  "asap", "fims", "amak", "ms-java", "wham", "mas").
+#' @param fleet_names Names of fleets in the assessment model as
+#'  shortened in the output file. If fleet names are not properly read, then
+#'  indicate the fleets names as an acronym in a vector
+#' @param file_save TRUE/FALSE; Save the formatted object rather
+#'  than calling the function and adding the formatted object to
+#'  the global environment? Default is false.
+#' @param savedir Directory to save the converted output file.
+#' @param save_name Name of the converted output file (do not use
+#'  spaces).
 #'
 #' @author Samantha Schiano
 #'
@@ -68,7 +73,9 @@ convert_output <- function(
     sexes = NA,
     part = NA,
     bin = NA,
-    kind = NA
+    kind = NA,
+    nsim = NA,
+    age_a = NA
   )
   out_new <- out_new[-1, ]
 
@@ -383,10 +390,10 @@ convert_output <- function(
                   ) |>
                   dplyr::select(tidyselect::any_of(c("label", "estimate", factors, errors, err_names)))
                 if (length(err_names) > 1) {
-                  warning("There are multiple reported error metrics.")
+                  # warning("There are multiple reported error metrics.")
                   if (any(grepl(paste(err_names, collapse = "|"), colnames(df4)))) {
                     df4 <- df4 |>
-                      dplyr::select(-tidyselect::all_of(c(err_names[2:length(err_names)])))
+                      dplyr::select(-tidyselect::all_of(err_names[2:length(err_names)]))
                   } else {
                     df4 <- df4 |>
                       dplyr::filter(!(label %in% err_names[2:length(err_names)]))
@@ -699,17 +706,42 @@ convert_output <- function(
 
     #### BAM ####
   } else if (model %in% c("bam", "BAM")) {
-    # check fleet names are input
-    if (is.null(fleet_names)) {
-      message("No fleet names were added as an argument. Fleets will not be extracted from the data.")
-      fleet_names <- NA
-    }
+
     # Extract values from BAM output - model file after following ADMB2R
     dat <- dget(output_file)
+
+    # Find fleet names
+    if(is.null(fleet_names)) {
+      # Extract names from indices
+      indices <- dat$t.series |>
+        dplyr::select(dplyr::contains("U.") & contains(".ob"))
+      fleets_ind <- stringr::str_extract(as.vector(colnames(indices)), "(?<=U\\.)\\w+(?=\\.ob)")
+      # Extract names from landings
+      landings <- dat$t.series |>
+        dplyr::select(dplyr::contains("L.") & contains(".ob") |
+                      dplyr::contains("D.") & contains(".ob"))
+      fleets_land <- stringr::str_extract(as.vector(colnames(landings)), "(?<=L\\.)\\w+(?=\\.ob)")
+      fleets_disc <- stringr::str_extract(as.vector(colnames(landings)), "(?<=D\\.)\\w+(?=\\.ob)")
+      # Extract names from lof F dev
+      parm <- dat$parm.tvec |>
+        dplyr::select(dplyr::contains("log.F.dev.")|
+                        dplyr::contains("log.F.dev.") & contains(".D"))
+      # fleets_parm_D <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+(?=\\.D)")
+      fleets_parm <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+")
+      fleets <- unique(c(fleets_ind, fleets_land, fleets_disc, fleets_parm))
+      fleet_names <- fleets[!is.na(fleets)]
+      if(any(is.na(fleet_names))){
+        stop("No fleet names found in dataframe. Please indicate the abbreviations of fleet names using fleet_names arg.")
+      }
+    } else {
+    # check fleet names are input
+    # if (any(is.na(fleet_names))) {
+      fleet_names <- fleet_names
+    }
     # Create list for morphed dfs to go into (for rbind later)
     out_list <- list()
 
-    factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo", "growth_pattern", "gp")
+    factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo", "growth_pattern", "gp", "nsim", "age_a")
     errors <- c("StdDev", "sd", "se", "SE", "cv", "CV")
     # argument for function when model == BAM
     # fleet_names <- c("cl", "cL","cp","mrip","ct", "hb", "HB", "comm","Mbft","CVID")
@@ -751,6 +783,12 @@ convert_output <- function(
               } else {
                 df <- as.data.frame(extract[[1]][[i]]) |>
                   tibble::rownames_to_column(var = "year")
+                df <- df |>
+                  dplyr::rename_with(
+                    ~ ifelse(max(as.numeric(df$year)) < 50,
+                           c("age_a"), c("year")),
+                    year
+                  )
                 if (grepl("lcomp", names(extract[[1]][i]))) {
                   namesto <- "len_bins"
                 } else if (grepl("acomp", names(extract[[1]][i]))) {
@@ -761,20 +799,20 @@ convert_output <- function(
                 }
                 df2 <- df |>
                   tidyr::pivot_longer(
-                    cols = -year,
+                    cols = -intersect(colnames(df), c("year","age_a")),
                     names_to = namesto,
                     values_to = "estimate"
                   ) |>
                   dplyr::mutate(
                     module_name = names(extract),
-                    label = names(extract[[1]][i]),
+                    label = names(extract[[1]][1]),
                     # label_init = names(extract[[1]][i]),
                     fleet = dplyr::case_when(
                       grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(label, paste(fleet_names, collapse = "|")),
                       TRUE ~ NA
                     ), # stringr::str_extract(module_name, "(?<=\\.)\\w+(?=\\.)"),
                     label = dplyr::case_when(
-                      is.na(fleet) ~ names(extract[[1]][i]),
+                      is.na(fleet) ~ names(extract[[1]][1]),
                       TRUE ~ stringr::str_replace(label, paste(".", fleet_names, sep = "", collapse = "|"), "")
                     )
                   ) # stringr::str_replace(module_name, "\\.[^.]+\\.", "."))
@@ -965,10 +1003,12 @@ convert_output <- function(
           out_list[[names(extract)]] <- new_df
         } else if (any(sapply(extract[[1]], is.vector))) { # all must be a vector to work - so there must be conditions for dfs with a mix
           df <- data.frame(extract[[1]])
-          if (max(as.numeric(row.names(df))) < 1800) {
+          if (max(as.numeric(row.names(df))) < 1000) {
             fac <- "age"
-          } else {
+          } else if (1000 < max(as.numeric(row.names(df))) & max(as.numeric(row.names(df))) < 2100) {
             fac <- "year"
+          } else {
+            fac <- "nsim"
           }
           if (any(colnames(df) %in% c("age", "year"))) {
             df <- df
@@ -979,6 +1019,9 @@ convert_output <- function(
             } else if (fac == "age") {
               df <- tibble::rowid_to_column(df, var = fac) |>
                 dplyr::mutate(age = as.character(age))
+            } else if (fac == "nsim") {
+              df <- tibble::rowid_to_column(df, var = fac) |>
+                dplyr::mutate(nsim = as.character(nsim))
             } else {
               warning("not compatible")
             }
@@ -1016,15 +1059,16 @@ convert_output <- function(
                 ),
                 # Number after fleet name is what? variable among df?
                 age = dplyr::case_when(
-                  is.na(age) & grepl("_age[0-9]+_", label) ~ stringr::str_extract(label, "(?<=age:?)[0-9]+"),
-                  is.na(age) & grepl("[0-9]+$", label) ~ stringr::str_extract(label, "[0-9]+$"), # this is not age
-                  TRUE ~ age
+                  is.na(as.numeric(age)) & grepl("_age[0-9]+_", label) ~ as.numeric(stringr::str_extract(label, "(?<=age:?)[0-9]+")),
+                  is.na(as.numeric(age)) & grepl("[0-9]+$", label) ~ as.numeric(stringr::str_extract(label, "[0-9]+$")), # this is not age
+                  TRUE ~ as.numeric(age)
                 ),
                 # area = dplyr::case_when(is.na(age) & grepl("[0-9]+$", label) ~ stringr::str_extract(label, "[0-9]+$"), # this is not age
                 #                         TRUE ~ NA),
                 label = dplyr::case_when(
                   grepl("_age[0-9]_", label) & grepl(paste("_", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_age[0-9]+_", fleet_names, sep = "", collapse = "|"), ""),
                   grepl("_age[0-9]_", label) ~ stringr::str_replace(label, "_age[0-9]+_", ""),
+                  grepl(paste(fleet_names, ".", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(fleet_names, ".", sep = "", collapse = "|"), ""),
                   grepl(paste("_", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_", fleet_names, sep = "", collapse = "|"), ""),
                   grepl(paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), ""),
                   grepl(paste(".", fleet_names, "d[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "d[0-9]+$", sep = "", collapse = "|"), ""),
@@ -1107,13 +1151,15 @@ convert_output <- function(
     # asap_output <- dget(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = ""), "asap3.rdat"))
     # setwd(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = "")))
     # asap_std <- readRep("asap3", suffix = ".std")
-    stop("Model not currently compatible.")
-
+    stop("File not currently compatible.")
     #### AMAK ####
   } else if (model == "amak") {
-    stop("Model not currently compatible.")
+    stop("File not currently compatible.")
+    #### JABBA ####
+  } else  if (tolower(model) == "jabba") {
+    stop("File not currently compatible.")
   } else {
-    stop("Model not compatible.")
+    stop("File not compatible.")
   }
 
   #### Exporting ####
@@ -1138,7 +1184,9 @@ convert_output <- function(
       dplyr::select(-alt_label)
   }
   if (file_save) {
-    save_path <- paste(savedir, "/", save_name, ".csv", sep = "")
+    save_path <- paste(savedir, "/",
+                       ifelse(is.null(save_name), "converted_output", save_name),
+                       ".csv", sep = "")
     utils::write.csv(out_new, file = save_path, row.names = FALSE)
   } else {
     out_new

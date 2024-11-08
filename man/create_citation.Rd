@@ -7,17 +7,21 @@
 create_citation(author = NULL, title = NULL, year = NULL, office = NULL)
 }
 \arguments{
-\item{author}{author list- inherited from template function is using}
+\item{author}{Ordered list of authors included in the assessment.}
 
-\item{title}{title of the report - inherited from template function if using}
+\item{title}{The alternative title. Example:
+"Management Track Assessments Spring 2024".}
 
-\item{year}{year of the report for citation purposes}
+\item{year}{Year the assessment is being conducted. Default
+is the year in which the report is rendered.}
 
-\item{office}{NOAA line office that the report is being processed out of}
+\item{office}{Regional Fisheries Science Center producing the
+report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
 }
 \value{
-Generate a citation for use in publications and other references for
-the stock assessment report generated in the asar package.
+Generate a citation for use in publications and other
+references associated with the stock assessment report produced
+with \code{asar}.
 }
 \description{
 Generate Citation for Stock Assessment Report

@@ -1,44 +1,105 @@
-#' Create Stock Assessment Report Template. To see templates included in the base skeleton, please run 'list.files(system.file('templates','skeleton', package = 'asar'))' in the console.
+#' Create Stock Assessment Report Template
 #'
-#' @param new_template TRUE/FALSE; default is false otherwise if true, will pull the last saved stock assessment report skeleton
-#' @param format File type for the render (i.e. pdf, docx, html)
-#' @param office Regional fisheries science center producing the report (AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC)
-#' @param region Full name of region in which the species is evaluated if applicable; Note: if this is not specified for your center or for
-#'        the species, do not use this variable.
-#' @param complex Is this a species complex? "YES" or "NO"
-#' @param species Full common name for target species, split naming by a space and capitalize first letter(s)
-#' @param spp_latin Latin name for the target species of this assessment
-#' @param year Year the assessment is being conducted, default is current year report is being rendered
-#' @param file_dir location where the stock assessment files will be kept produced from this function. Default is set to working directory
-#' @param author List of authors to include in the assessment; keep authorship order
-#' @param add_author temporarily add an author that is not currently in the database. Follow the format of "First MI Last".
-#'        Please leave a comment on the github issues page to be added.
-#' @param include_affiliation TRUE/FALSE; does the analyst want to include affiliations of the authors in the document?
-#' @param simple_affiliation If including affiliation, adding just office name rather than full address; TRUE/FALSE, default is TRUE
-#' @param alt_title TRUE/FALSE create an alternative title than the default
-#' @param title Name of new title if default is not appropriate; Example, "Management Track Assessments Spring 2024"
-#' @param parameters TRUE/FALSE; default TRUE - for parameterization of the script
-#' @param param_names List of parameter names that will be called in the document; parameters automatically included are office, region,
-#'        and species listed in function parameters
-#' @param param_values List of values associated with the order of parameter names; parameters automatically included are office, region,
-#'        and species listed in function parameters
-#' @param convert_output TRUE/FALSE convert output file to standard while creating report template
-#' @param fleet_names list of fleet names as seen in BAM output file (abbreviations)
-#' @param resdir Directory where the model results file(s) are located
-#' @param model_results Name of the model results file
-#' @param model Type of assessment model that was used to assess the stock (i.e. "BAM", "SS3", "AMAK", "ASAP", ect)
-#' @param new_section File name of the new section
-#' @param section_location Location where the section should be added relative to the base skeleton document
-#' @param type Type of report to build - default is SAR
-#' @param prev_year Year that previous assessment report was conducted in - for pulling previous assessment template
-#' @param custom TRUE/FALSE Build custom sectioning for the template rather than the default for stock assessments in your region
-#' @param custom_sections List of the sections you want to include in the custom template. Note: this only includes sections within
-#'        list.files(system.file("templates", "skeleton", package = "asar")). The section name can be used such as 'abstract' rather than the entire name '00_abstract.qmd'.
-#'        If a new section is to be added, please also use parameters 'new_section', and 'section_location'
-#' @param include_figures Determine if figures are included into the report
-#' @param include_tables Indicate if tables are included into the report
-#' @param add_image add outside image of species to the template
-#' @param spp_image full directory and species image name to direct the program where to find and extract the image
+#' To see templates included in the base skeleton, please run
+#' 'list.files(system.file('templates','skeleton', package = 'asar'))'
+#'  in the console.
+#'
+#' @param new_template TRUE/FALSE; Create a new template? If true,
+#' will pull the last saved stock assessment report skeleton.
+#' Default is false.
+#' @param format Rendering format (pdf, html, or docx).
+#' @param office Regional Fisheries Science Center producing the
+#'  report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).
+#' @param region Full name of region in which the species is
+#'  evaluated (if applicable). If the region is not specified for
+#'   your center or species, do not use this variable.
+#' @param complex TRUE/FALSE; Is this a species complex? Default
+#'  is false.
+#' @param species Full common name for target species. Split
+#' naming with a space and capitalize first letter(s). Example:
+#' "Dover sole".
+#' @param spp_latin Latin name for the target species. Example:
+#' "Pomatomus saltatrix".
+#' @param year Year the assessment is being conducted. Default
+#' is the year in which the report is rendered.
+#' @param file_dir Location of stock assessment files produced
+#' by this function. Default is the working directory.
+#' @param author Ordered list of authors included in the assessment.
+#' @param add_author Author that is not currently in the database
+#' and who should be temporarily added to the author list. Format
+#' as "First MI Last".
+#' Please leave a comment on the GitHub issues page to be added.
+#' @param include_affiliation TRUE/FALSE; Does the analyst want to
+#'  include the authors' affiliations in the document? Default is
+#'  false.
+#' @param simple_affiliation TRUE/FALSE; If including affiliations,
+#'  should the office name function as the affiliation, rather
+#'  than the full address? Default is true.
+#' @param alt_title TRUE/FALSE; Use a title that is not the
+#' default title (i.e., an alternative title)? Default is false.
+#' @param title The alternative title. Example:
+#' "Management Track Assessments Spring 2024".
+#' @param parameters TRUE/FALSE; For
+#' parameterization of the script. Default is true.
+#' @param param_names List of parameter names that will be called
+#'  in the document. Parameters automatically included:
+#'  office, region, species (each of which are listed as
+#'  individual parameters for this function, above).
+#' @param param_values List of values associated with the order
+#'  of parameter names. Parameters automatically included:
+#'  office, region, species (each of which are listed as
+#'  individual parameters for this function, above).
+#' @param convert_output TRUE/FALSE; Convert the output file to
+#' standard model format while creating report template? Default
+#' is false.
+#' @param fleet_names Deprecated: List of fleet names as described in BAM output
+#'  file (abbreviations).
+#' @param resdir Filepath of the directory storing the model
+#'  results file(s). Examples where dover_sole_2024 is the project root
+#'  for absolute and relative filepaths, respectively:
+#'  "C:/Users/patrick.star/Documents/dover_sole_2024/models",
+#'  "here::here("models")".
+#' @param model_results The model results file. Before the stock
+#' assessment output file has been converted to a standardized format
+#'  with the function convert_output.R, the model results file may be
+#'  a .sso or .rdata file. After conversion, this file will be a .csv file.
+#' @param model Type of assessment model that was used to assess
+#'  the stock (e.g., "BAM", "SS3", "AMAK", "ASAP", etc.).
+#' @param new_section Names of section(s) (e.g., introduction, results) or
+#' subsection(s) (e.g., a section within the introduction) that will be
+#' added to the document. Please make a short list if >1 section/subsection
+#' will be added. The template will be created as a quarto document, added
+#' into the skeleton, and saved for reference.
+#' @param section_location Where new section(s)/subsection(s) will be added to
+#' the skeleton template. Please use the notation of 'placement-section'.
+#' For example, 'in-introduction' signifies that the new content would
+#' be created as a child document and added into the 02_introduction.qmd.
+#' To add >1 (sub)section, make the location a list corresponding to the
+#' order of (sub)section names listed in the 'new_section' parameter.
+#' @param type Type of report to build. Default is SAR.
+#' @param prev_year Year in which the previous assessment report
+#'  was conducted. Used to pull previous assessment template.
+#' @param custom TRUE/FALSE; Build custom sectioning for the
+#' template, rather than the default for stock assessments in
+#' your region? Default is false.
+#' @param custom_sections List of existing sections to include in
+#' the custom template. Note: this only includes sections within
+#'  list.files(system.file("templates", "skeleton",
+#'  package = "asar")). The name of the section, rather than the
+#'  name of the file, can be used (e.g., 'abstract' rather than
+#'  '00_abstract.qmd'). If adding a new section, also use
+#'   parameters 'new_section' and 'section_location'.
+#' @param include_figures TRUE/FALSE; Should figures be
+#' included in the report? Default is true.
+#' @param include_tables TRUE/FALSE; Should tables be included
+#'  in the report? Default is true.
+#' @param add_image TRUE/FALSE; Add image of species to the
+#' template that is not already included in the project's
+#' inst/resources/spp_img folder? Default is false.
+#' @param spp_image File path to the species' image if not
+#' using the image included in the project's repository.
+#' @param bib_file File path to a .bib file used for citing references in
+#' the report
 #'
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
@@ -46,14 +107,88 @@
 #'         General sections are called as child documents in this skeleton and
 #'         each of the child documents should be edited separately.
 #' @export
-#' @examples create_template()
+#'
+#' @examples
+#' \dontrun{
+#' create_template(
+#'   new_section = "a_new_section",
+#'   section_location = "before-introduction",
+#'   )
+#'
+#'
+#' create_template(
+#'   new_template = TRUE,
+#'   format = "pdf",
+#'   office = "NWFSC",
+#'   species = "Dover sole",
+#'   spp_latin = "Microstomus pacificus",
+#'   year = 2010,
+#'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
+#'   include_affiliation = TRUE,
+#'   resdir = "C:/Users/Documents/Example_Files",
+#'   model_results = "Report.sso",
+#'   model = "SS3",
+#'   new_section = "an_additional_section",
+#'   section_location = "after-introduction",
+#'   )
+#'
+#' asar::create_template(
+#'   new_template = TRUE,
+#'   format = "pdf",
+#'   office = "PIFSC",
+#'   species = "Striped marlin",
+#'   spp_latin = "Kajikia audax",
+#'   year = 2018,
+#'   author = "Alba Tross",
+#'   model = "BAM",
+#'   new_section = c("a_new_section", "another_new_section"),
+#'   section_location = c("before-introduction", "after-introduction"),
+#'   custom = TRUE,
+#'   custom_sections = c("executive_summary", "introduction")
+#' )
+#'
+#' create_template(
+#'   new_template = TRUE,
+#'   format = "pdf",
+#'   office = "NWFSC",
+#'   region = "my_region",
+#'   complex = FALSE,
+#'   species = "Bluefish",
+#'   spp_latin = "Pomatomus saltatrix",
+#'   year = 2010,
+#'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
+#'   add_author = "Sun E Day",
+#'   include_affiliation = TRUE,
+#'   simple_affiliation = TRUE,
+#'   alt_title = FALSE,
+#'   title = "Management Track Assessments Spring 2024",
+#'   parameters = TRUE,
+#'   param_names = c("region", "year"),
+#'   param_values = c("my_region", "2024"),
+#'   convert_output = FALSE,
+#'   fleet_names = c("fleet1", "fleet2", "fleet3"),
+#'   resdir = "C:/Users/Documents/Example_Files",
+#'   model_results = "Report.sso",
+#'   model = "SS3",
+#'   new_section = "an_additional_section",
+#'   section_location = "before-discussion",
+#'   type = "SAR",
+#'   prev_year = 2021,
+#'   custom = TRUE,
+#'   custom_sections = c("executive_summary", "introduction", "discussion"),
+#'   include_figures = TRUE,
+#'   include_tables = TRUE,
+#'   add_image = TRUE,
+#'   spp_image = "dir/containing/spp_image"
+#' )
+#' }
 #'
 create_template <- function(
     new_template = TRUE,
     format = c("pdf", "docx", "html", NULL),
     office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
     region = NULL,
-    complex = "NO",
+    complex = FALSE,
     species = NULL,
     spp_latin = NULL,
     year = NULL,
@@ -81,7 +216,8 @@ create_template <- function(
     include_figures = TRUE,
     include_tables = TRUE,
     add_image = FALSE,
-    spp_image = NULL) {
+    spp_image = NULL,
+    bib_file = NULL) {
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -175,7 +311,7 @@ create_template <- function(
         # copy before-body tex
         file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
         # customize titlepage tex
-        create_titlepage_tex(office = office, subdir = supdir)
+        create_titlepage_tex(office = office, subdir = supdir, species = species)
         # customize in-header tex
         create_inheader_tex(species = species, year = year, subdir = supdir)
         # Copy species image from package
@@ -192,7 +328,7 @@ create_template <- function(
           # copy before-body tex
           file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
           # customize titlepage tex
-          create_titlepage_tex(office = office, subdir = supdir)
+          create_titlepage_tex(office = office, subdir = supdir, species = species)
           # customize in-header tex
           create_inheader_tex(species = species, year = year, subdir = supdir)
           # Copy species image from package
@@ -218,7 +354,7 @@ create_template <- function(
             "### Tables \n \n",
             "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
           )
-          utils::capture.output(cat(tables_doc), file = fs::path(subdir, "tables.qmd"), append = FALSE)
+          utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
           warning("Results file or model name not defined.")
         }
       } else {
@@ -226,7 +362,7 @@ create_template <- function(
           "### Tables \n \n",
           "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures"
         )
-        utils::capture.output(cat(tables_doc), file = fs::path(subdir, "tables.qmd"), append = FALSE)
+        utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
       }
       # Create figures qmd
       if (include_figures) {
@@ -240,12 +376,12 @@ create_template <- function(
           )
         } else {
           figures_doc <- paste0("## Figures \n")
-          utils::capture.output(cat(figures_doc), file = fs::path(subdir, "figures.qmd"), append = FALSE)
+          utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
           warning("Results file or model name not defined.")
         }
       } else {
         figures_doc <- paste0("## Figures \n")
-        utils::capture.output(cat(figures_doc), file = fs::path(subdir, "figures.qmd"), append = FALSE)
+        utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
       }
 
       # Part I
@@ -278,6 +414,7 @@ create_template <- function(
         ) |>
         dplyr::select(name, office) |>
         dplyr::filter(name %in% author)
+      authors <- authors[match(author, authors$name),]
 
       if (include_affiliation) {
         affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
@@ -410,10 +547,20 @@ create_template <- function(
         )
       }
 
+      # Add lualatex engine
+      if (format == "pdf") {
+        yaml <- paste0(
+          yaml,
+          "pdf-engine: lualatex", "\n"
+        )
+      }
+
       # Formatting
       yaml <- paste0(
         yaml,
-        format_quarto(format = format)
+        format_quarto(format = format),
+        # Add in output file name (Rendered name of pdf)
+        "output-file: '", stringr::str_replace(species, " ", "_"), "_SAR_", year, "'", "\n"
       )
 
       # Add lua filters for compliance
@@ -461,6 +608,20 @@ create_template <- function(
       #   "css: styles.css", "\n"
       # )
 
+      # Add option for bib file
+      if(!is.null(bib_file)) {
+        bib <- glue::glue(
+          "bibliography: ", "\n"
+        )
+        bib_all <- paste("  ", "- ", bib_file, "\n", collapse = "")
+        bib <- glue::glue(
+          bib, "\n",
+          bib_all, "\n"
+        )
+        yaml <- paste0(yaml, bib)
+      }
+      # add in else statement once a national .bib file is made
+
       # Close yaml
       yaml <- paste0(yaml, "---")
 
@@ -472,17 +633,25 @@ create_template <- function(
       if (convert_output) {
         print("__________Converting output file__________")
         if (tolower(model) == "bam" & is.null(fleet_names)) {
-          warning("Fleet names not defined.")
-        } else if (tolower(model) == "bam") {
+          # warning("Fleet names not defined.")
           convert_output(
             output_file = model_results,
             outdir = resdir,
             file_save = TRUE,
             model = model,
-            fleet_names = fleet_names,
             savedir = subdir,
-            save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+            save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
           )
+        # } else if (tolower(model) == "bam") {
+        #   convert_output(
+        #     output_file = model_results,
+        #     outdir = resdir,
+        #     file_save = TRUE,
+        #     model = model,
+        #     fleet_names = fleet_names,
+        #     savedir = subdir,
+        #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+        #   )
         } else {
           convert_output(
             output_file = model_results,
@@ -490,13 +659,43 @@ create_template <- function(
             file_save = TRUE,
             model = model,
             savedir = subdir,
-            save_name = paste(species, "_std_res_", year, sep = "")
+            save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
           )
         }
+        # Rename model results file and results file directory if the results are converted in this fxn
+        model_results <- glue::glue(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
+        resdir <- subdir
       }
 
       # print("_______Standardized output data________")
 
+      # Add preamble
+      # add in quantities and output data R chunk
+      preamble <- add_chunk(
+        paste0(
+          "output <- utils::read.csv('",
+          ifelse(convert_output,
+                 paste0(subdir, "/", species, "_std_res_", year, ".csv"),
+                 paste0(resdir, "/", model_results)), "') \n",
+          "# Call reference points and quantities below \n",
+          "# start_year <- min(output$year) \n",
+          "# end_year <- '", year, "' \n",
+          "# Fend <- output$estimate[output$label == 'fishing_mortality' & output$year == year] \n",
+          "# Ftarg ", "\n",
+          "# F_Ftarg ", "\n",
+          "# Bend ", "\n",
+          "# Btarg ", "\n",
+          "# tot_catch", "\n",
+          "# sbtarg", "\n",
+          "# M ", "\n",
+          "# Bmsy ", "\n",
+          "# SBmsy ", "\n",
+          "# steep ", "\n",
+          "# R0", "\n",
+          "# fSB ", "\n"
+        ),
+        label = "output_and_quantities"
+      )
       # Add page for citation of assessment report
       citation <- create_citation(
         author = author,
@@ -512,31 +711,37 @@ create_template <- function(
       if (custom == FALSE) {
         sections <- add_child(
           c(
-            "executive_summary.qmd",
-            "introduction.qmd",
-            "data.qmd",
-            "modeling_approach.qmd",
-            "results.qmd",
-            "projections.qmd",
-            "discussion.qmd",
-            "acknowledgments.qmd",
-            "references.qmd",
-            "tables.qmd",
-            "figures.qmd",
-            "appendix.qmd"
+            "01_executive_summary.qmd",
+            "02_introduction.qmd",
+            "03_data.qmd",
+            "04a_assessment-configuration.qmd",
+            "04b_assessment-results.qmd",
+            "04c_assessment-sensitivity.qmd",
+            "04d_assessment-benchmarks.qmd",
+            "04e_assessment-projections.qmd",
+            "05_discussion.qmd",
+            "06_acknowledgments.qmd",
+            "07_references.qmd",
+            "08_tables.qmd",
+            "09_figures.qmd",
+            "10_notes.qmd",
+            "11_appendix.qmd"
           ),
           label = c(
             "executive_summary",
             "introduction",
             "data",
-            "modeling_approach",
-            "results",
-            "projections",
+            "assessment-configuration",
+            "assessment-results",
+            "assessment-sensitivity",
+            "assessment-benchmarks",
+            "assessment-projections",
             "discussion",
-            "acknowlesgements",
+            "acknowledgments",
             "references",
             "tables",
             "figures",
+            "notes",
             "appendix"
           )
         )
@@ -554,23 +759,26 @@ create_template <- function(
 
           if (is.null(custom_sections)) {
             sec_list1 <- list(
-              "executive_summary.qmd",
-              "introduction.qmd",
-              "data.qmd",
-              "modeling_approach.qmd",
-              "results.qmd",
-              "projections.qmd",
-              "discussion.qmd",
-              "acknowledgments.qmd",
-              "references.qmd",
-              "tables.qmd",
-              "figures.qmd",
-              "appendix.qmd"
+              "01_executive_summary.qmd",
+              "02_introduction.qmd",
+              "03_data.qmd",
+              "04a_assessment-configuration.qmd",
+              "04b_assessment-results.qmd",
+              "04c_assessment-sensitivity.qmd",
+              "04d_assessment-benchmarks.qmd",
+              "04e_assessment-projections.qmd",
+              "05_discussion.qmd",
+              "06_acknowledgments.qmd",
+              "07_references.qmd",
+              "08_tables.qmd",
+              "09_figures.qmd",
+              "10_notes.qmd",
+              "11_appendix.qmd"
             )
             sec_list2 <- add_section(
-              sec_names = new_section,
-              location = section_location,
-              other_sections = sec_list1,
+              new_section = new_section,
+              section_location = section_location,
+              custom_sections = sec_list1,
               subdir = subdir
             )
             # Create sections object to add into template
@@ -588,15 +796,15 @@ create_template <- function(
               stop("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
             }
             if (include_tables) {
-              sec_list1 <- c(sec_list1, "tables.qmd")
+              sec_list1 <- c(sec_list1, "08_tables.qmd")
             }
             if (include_figures) {
-              sec_list1 <- c(sec_list1, "figures.qmd")
+              sec_list1 <- c(sec_list1, "09_figures.qmd")
             }
             sec_list2 <- add_section(
-              sec_names = new_section,
-              location = section_location,
-              other_sections = sec_list1,
+              new_section = new_section,
+              section_location = section_location,
+              custom_sections = sec_list1,
               subdir = subdir
             )
             # Create sections object to add into template
@@ -609,7 +817,9 @@ create_template <- function(
       } # close if statement for custom
 
       # Combine template sections
-      report_template <- paste(yaml,
+      report_template <- paste(
+        yaml,
+        preamble,
         citation,
         sections,
         sep = "\n"
@@ -651,17 +861,6 @@ create_template <- function(
       # yaml_save <- capture.output(cat(yaml))
       # cat(yaml, file = here('template','yaml_header.qmd'))
 
-      # Add chunk to load in assessment data
-      ass_output <- add_chunk(
-        paste0(
-          "convert_output(output.file = ", "c('", paste(model_results, collapse = "', '"), "')",
-          ", model = ", "'", model, "'",
-          ", outdir = ", "'", resdir, "'", ")"
-        ),
-        label = "model_output",
-        eval = "false" # set false for testing this function in the template for now
-      )
-
       # print("_______Standardized output data________")
 
       # Add page for citation of assessment report
@@ -679,31 +878,37 @@ create_template <- function(
       if (custom == FALSE) {
         sections <- add_child(
           c(
-            "executive_summary.qmd",
-            "introduction.qmd",
-            "data.qmd",
-            "modeling_approach.qmd",
-            "results.qmd",
-            "projections.qmd",
-            "discussion.qmd",
-            "acknowledgments.qmd",
-            "references.qmd",
-            "tables.qmd",
-            "figures.qmd",
-            "appendix.qmd"
+            "01_executive_summary.qmd",
+            "02_introduction.qmd",
+            "03_data.qmd",
+            "04a_assessment-configuration.qmd",
+            "04b_assessment-results.qmd",
+            "04c_assessment-sensitivity.qmd",
+            "04d_assessment-benchmarks.qmd",
+            "04e_assessment-projections.qmd",
+            "05_discussion.qmd",
+            "06_acknowledgments.qmd",
+            "07_references.qmd",
+            "08_tables.qmd",
+            "09_figures.qmd",
+            "10_notes.qmd",
+            "11_appendix.qmd"
           ),
           label = c(
             "executive_summary",
             "introduction",
             "data",
-            "modeling_approach",
-            "results",
-            "projections",
+            "assessment-configuration",
+            "assessment-results",
+            "assessment-sensitivity",
+            "assessment-benchmarks",
+            "assessment-projections",
             "discussion",
-            "acknowlesgements",
+            "acknowledgments",
             "references",
             "tables",
             "figures",
+            "notes",
             "appendix"
           )
         )
@@ -721,23 +926,26 @@ create_template <- function(
 
           if (is.null(custom_sections)) {
             sec_list1 <- list(
-              "executive_summary.qmd",
-              "introduction.qmd",
-              "data.qmd",
-              "modeling_approach.qmd",
-              "results.qmd",
-              "projections.qmd",
-              "discussion.qmd",
-              "acknowledgments.qmd",
-              "references.qmd",
-              "tables.qmd",
-              "figures.qmd",
-              "appendix.qmd"
+              "01_executive_summary.qmd",
+              "02_introduction.qmd",
+              "03_data.qmd",
+              "04a_assessment-configuration.qmd",
+              "04b_assessment-results.qmd",
+              "04c_assessment-sensitivity.qmd",
+              "04d_assessment-benchmarks.qmd",
+              "04e_assessment-projections.qmd",
+              "05_discussion.qmd",
+              "06_acknowledgments.qmd",
+              "07_references.qmd",
+              "08_tables.qmd",
+              "09_figures.qmd",
+              "10_notes.qmd",
+              "11_appendix.qmd"
             )
             sec_list2 <- add_section(
-              sec_names = new_section,
-              location = section_location,
-              other_sections = sec_list1,
+              new_section = new_section,
+              section_location = section_location,
+              custom_sections = sec_list1,
               subdir = subdir
             )
             # Create sections object to add into template
@@ -750,9 +958,9 @@ create_template <- function(
             sec_list1 <- add_base_section(custom_sections)
             # Create new sections as .qmd in folder
             sec_list2 <- add_section(
-              sec_names = new_section,
-              location = section_location,
-              other_sections = sec_list1,
+              new_section = new_section,
+              section_location = section_location,
+              custom_sections = sec_list1,
               subdir = subdir
             )
             # Create sections object to add into template
@@ -765,8 +973,9 @@ create_template <- function(
       }
 
       # Combine template sections
-      report_template <- paste( # yaml,
-        ass_output,
+      report_template <- paste(
+        yaml,
+        # preamble,
         citation,
         sections,
         sep = "\n"

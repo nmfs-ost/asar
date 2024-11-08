@@ -1,9 +1,9 @@
 #' Add Formatting Arguments for YAML Header
 #'
-#' @param format format for rendering (pdf, html, or docx)
+#' @inheritParams create_template
 #'
-#' @return This function returns part of a quarto YAML header that helps with
-#' formatting the document during rendering.
+#' @return This function returns part of a quarto YAML header
+#' involved in formatting the document during rendering.
 #' @export
 #'
 #' @examples format_quarto(format = "pdf")

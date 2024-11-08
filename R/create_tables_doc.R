@@ -17,6 +17,10 @@ create_tables_doc <- function(resdir = NULL,
                               include_all = TRUE) {
   model <- match.arg(model, several.ok = FALSE)
 
+  captions_alttext <- utils::read.csv(
+    system.file("resources", "captions_alttext.csv", package = "asar")
+  )
+
   if (include_all) {
     # Create tables quarto doc - maybe should add this as separate fxn - same with figs
     tables_doc <- paste0(
@@ -27,7 +31,18 @@ create_tables_doc <- function(resdir = NULL,
           "satf::table_indices(dat = '", resdir, "/", model_results, "', model = '", model, "')"
         ),
         label = "indices",
-        eval = "false"
+        eval = "false",
+        add_option = TRUE,
+        chunk_op = c(
+          glue::glue(
+            "tbl-cap: '",
+            captions_alttext |>
+              dplyr::filter(label == "indices" & type == "table") |>
+              dplyr::select(caption) |>
+              as.character(),
+            "'"
+          )
+        )
       )
     )
 
@@ -45,5 +60,7 @@ create_tables_doc <- function(resdir = NULL,
   }
 
   # Save tables doc to template folder
-  utils::capture.output(cat(tables_doc), file = paste0(subdir, "/", "tables.qmd"), append = FALSE)
+  utils::capture.output(cat(tables_doc),
+                        file = paste0(subdir, "/", "08_tables.qmd"),
+                        append = FALSE)
 }
