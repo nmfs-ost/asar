@@ -672,46 +672,77 @@ create_template <- function(
           "# Call reference points and quantities below \n",
           "output2 <- output |> \n",
           "  ", "dplyr::mutate(estimate = as.numeric(estimate), \n",
-          "  ", "  ", "  ", "  ", "  ", "  ", "uncertainty = as.numeric(uncertainty)) \n",
+          "  ", "  ", "uncertainty = as.numeric(uncertainty)) \n",
 
           "start_year <- as.numeric(min(output2$year, na.rm = TRUE))",
-          "end_year <- (output2 |> \n
-                         dplyr::filter(!(year %in% c('Virg', 'Init', 'S/Rcurve', 'INIT')), \n
-                                       !is.na(year)) |> \n
-                         dplyr::mutate(year = as.numeric(year)) |> \n
-                         dplyr::summarize(max_val = max(year)) |> \n
-                         dplyr::pull(max_val))-10", "\n",
+          # change end year in the fxn to ifelse where is.null(year)
+          "end_year <- (output2 |> \n",
+          "  ", "dplyr::filter(!(year %in% c('Virg', 'Init', 'S/Rcurve', 'INIT')), \n",
+          "  ", "  ", "!is.na(year)) |> \n",
+          "  ", "dplyr::mutate(year = as.numeric(year)) |> \n",
+          "  ", "dplyr::summarize(max_val = max(year)) |> \n",
+          "  ", "dplyr::pull(max_val))-10", "\n",
           # for quantities - don't want any values that are split by factor
-          "output3 <- output2|> \n
-            dplyr::filter(is.na(season), \n
-                          is.na(fleet), \n
-                          is.na(sex), \n
-                          is.na(area), \n
-                          is.na(growth_pattern), \n
-                          is.na(subseason), \n
-                          is.na(age)) \n",
-          "Fend <- output3 |> \n
-            dplyr::filter(label == 'fishing_mortality' | label == 'fishing_mortality_full', \n
-                          year == end_year) |> \n
-            dplyr::pull(estimate) \n",
-          "Ftarg <- output3 |> \n
-            dplyr::filter(grepl('f_target', label) | grepl('f_msy', label)) |> \n
-            dplyr::pull(estimate) \n",
-         " F_Ftarg <- Fend / Ftarg \n",
-          "Bend <- output3 |>
-            dplyr::filter(grepl('mature_biomass', label) | label == 'biomass',
-                          year == end_year) |>
-            dplyr::pull(estimate)",
-          "Btarg <- output3 |>
-            dplyr::filter(grepl('biomass', label) & grepl('target', label),
-                          estimate > 1) |>
-            dplyr::pull(estimate)",
-          "# Btarg ", "\n",
-          "# tot_catch", "\n",
-          "# sbtarg", "\n",
-          "# M ", "\n",
-          "# Bmsy ", "\n",
-          "# SBmsy ", "\n",
+          "output3 <- output2|> \n",
+          "  ", "dplyr::filter(is.na(season), \n",
+          "  ", "  ", "is.na(fleet), \n",
+          "  ", "  ", "is.na(sex), \n",
+          "  ", "  ", "is.na(area), \n",
+          "  ", "  ", "is.na(growth_pattern), \n",
+          "  ", "  ", "is.na(subseason), \n",
+          "  ", "  ", "is.na(age))",  "\n",
+
+          "Fend <- output2 |> ", "\n",
+          "  ", "dplyr::filter(c(label == 'fishing_mortality' & year == end_year) | c(label == 'terminal_fishing_mortality' & is.na(year))) |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+
+          "Ftarg <- output2 |>", "\n",
+          "  ", "dplyr::filter(grepl('f_target', label) | grepl('f_msy', label) | c(grepl('fishing_mortality_msy', label) & is.na(year))) |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+
+          "F_Ftarg <- Fend / Ftarg", "\n",
+
+          "Bend <- output2 |>", "\n",
+          "  ", "dplyr::filter(grepl('mature_biomass', label) | grepl('^biomass$,' label),", "\n",
+          "  ", "  ", "year == end_year) |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+
+          "Btarg <- output2 |>", "\n",
+          "  ", "dplyr::filter(c(grepl('biomass', label) & grepl('target', label) & estimate >1) | label == 'biomass_msy') |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+
+          "total_catch <- output |>", "\n",
+          "  ", "dplyr::filter(grepl('^catch$,' label), year == end_year,", "\n",
+          "  ", "  ", "is.na(fleet),", "\n",
+          "  ", "  ", "is.na(age),", "\n",
+          "  ", "  ", "is.na(area),", "\n",
+          "  ", "  ", "is.na(growth_pattern)) |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+          # chk_c <- dplyr::filter(output2, grepl("^catch$", label), year == end_year) |>
+          #   dplyr::group_by(year) |>
+          #   dplyr::summarise(total_catch = sum(estimate))
+          "total_landings <- output |>", "\n",
+          "  ", "dplyr::filter(grepl('landings_weight', label), year == end_year,", "\n",
+          "  ", "  ", "is.na(fleet),", "\n",
+          "  ", "  ", "is.na(age)) |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+
+          "sbtarg <- output2 |>", "\n",
+          "  ", "dplyr::filter(grepl('spawning_biomass', label), year == end_year) |>", "\n",
+          "  ", "dplyr::pull(estimate) |>", "\n",
+          "  ", "  ", "unique()", "\n",
+
+          "M <- output |>", "\n",
+          "  ", "dplyr::filter(grepl('natural_mortality', label))", "\n",
+
+          "Bmsy <- output2 |>", "\n",
+          "  ", "dplyr::filter(c(grepl('biomass', label) & grepl('msy', label) & estimate >1) | label == 'biomass_msy') |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+
+          "SBmsy <- output2 |>", "\n",
+          "  ", "dplyr::filter(c(grepl('spawning_biomass', label) & grepl('msy$', label) & estimate >1) | label == 'spawning_biomass_msy$') |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+
           "# steep ", "\n",
           "# R0", "\n",
           "# fSB ", "\n"
