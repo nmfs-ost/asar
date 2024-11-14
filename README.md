@@ -28,6 +28,14 @@ remotes::install_github("nmfs-ost/asar")
 remotes::install_github("nmfs-ost/satf")
 ```
 
+Occassionally, the package can not be installed using the `remotes` package. If this is the case for you, please try:
+
+```r
+install.packages("pak")
+pak::pak("nmfs-ost/asar")
+pak::pak("nmfs-ost/satf")
+```
+
 ## Example
 
 The following code will allow the user to replicate the [2023 petrale sole stock assessment](https://www.pcouncil.org/documents/2024/02/status-of-petrale-sole-eopsetta-jordanialong-the-u-s-west-coast-in-2023.pdf/) produced by the NWFSC and made available by the Pacific Fisheries Management Council. The assessment model files are also available on the PFMC's website. A (DRAFT) tutorial for using `asar` can be found [here](https://connect.fisheries.noaa.gov/asar_tutorial/).
