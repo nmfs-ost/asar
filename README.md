@@ -28,7 +28,7 @@ remotes::install_github("nmfs-ost/asar")
 remotes::install_github("nmfs-ost/satf")
 ```
 
-Occassionally, the package can not be installed using the `remotes` package. If this is the case for you, please try:
+Occasionally, the package can not be installed using the `remotes` package. If this is the case for you, please try:
 
 ```r
 install.packages("pak")
