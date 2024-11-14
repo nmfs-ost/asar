@@ -113,7 +113,7 @@
 #' create_template(
 #'   new_section = "a_new_section",
 #'   section_location = "before-introduction",
-#'   )
+#' )
 #'
 #'
 #' create_template(
@@ -130,7 +130,7 @@
 #'   model = "SS3",
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction",
-#'   )
+#' )
 #'
 #' asar::create_template(
 #'   new_template = TRUE,
@@ -414,7 +414,7 @@ create_template <- function(
         ) |>
         dplyr::select(name, office) |>
         dplyr::filter(name %in% author)
-      authors <- authors[match(author, authors$name),]
+      authors <- authors[match(author, authors$name), ]
 
       if (include_affiliation) {
         affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
@@ -609,7 +609,7 @@ create_template <- function(
       # )
 
       # Add option for bib file
-      if(!is.null(bib_file)) {
+      if (!is.null(bib_file)) {
         bib <- glue::glue(
           "bibliography: ", "\n"
         )
@@ -642,16 +642,16 @@ create_template <- function(
             savedir = subdir,
             save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
           )
-        # } else if (tolower(model) == "bam") {
-        #   convert_output(
-        #     output_file = model_results,
-        #     outdir = resdir,
-        #     file_save = TRUE,
-        #     model = model,
-        #     fleet_names = fleet_names,
-        #     savedir = subdir,
-        #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
-        #   )
+          # } else if (tolower(model) == "bam") {
+          #   convert_output(
+          #     output_file = model_results,
+          #     outdir = resdir,
+          #     file_save = TRUE,
+          #     model = model,
+          #     fleet_names = fleet_names,
+          #     savedir = subdir,
+          #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+          #   )
         } else {
           convert_output(
             output_file = model_results,
@@ -675,8 +675,9 @@ create_template <- function(
         paste0(
           "output <- utils::read.csv('",
           ifelse(convert_output,
-                 paste0(subdir, "/", species, "_std_res_", year, ".csv"),
-                 paste0(resdir, "/", model_results)), "') \n",
+            paste0(subdir, "/", species, "_std_res_", year, ".csv"),
+            paste0(resdir, "/", model_results)
+          ), "') \n",
           "# Call reference points and quantities below \n",
           "# start_year <- min(output$year) \n",
           "# end_year <- '", year, "' \n",
