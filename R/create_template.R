@@ -560,7 +560,7 @@ create_template <- function(
         yaml,
         format_quarto(format = format),
         # Add in output file name (Rendered name of pdf)
-        "output-file: '", stringr::str_replace(species, " ", "_"), "_SAR_", year, "'", "\n"
+        "output-file: '", stringr::str_replace_all(species, " ", "_"), "_SAR_", year, "'", " \n"
       )
 
       # Add lua filters for compliance
@@ -675,7 +675,7 @@ create_template <- function(
         paste0(
           "output <- utils::read.csv('",
           ifelse(convert_output,
-                 paste0(subdir, "/", species, "_std_res_", year, ".csv"),
+                 paste0(subdir, "/", stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv"),
                  paste0(resdir, "/", model_results)), "') \n",
           "# Call reference points and quantities below \n",
           "# start_year <- min(output$year) \n",
