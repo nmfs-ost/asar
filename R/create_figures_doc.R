@@ -67,28 +67,28 @@ create_figures_doc <- function(resdir = NULL,
     figures_doc <- paste0(
       figures_doc,
       add_chunk(plot_code,
-                label = "spawn_bio",
-                eval = "false",
-                add_option = TRUE,
-                chunk_op = c(
-                  glue::glue(
-                    "fig-cap: '",
-                    captions_alttext |>
-                      dplyr::filter(label == "spawning_biomass" & type == "figure") |>
-                      dplyr::select(caption) |>
-                      as.character(),
-                    "'"
-                  ),
-                  glue::glue(
-                    "fig-alt: '",
-                    captions_alttext |>
-                      dplyr::filter(label == "spawning_biomass" & type == "figure") |>
-                      dplyr::select(alt_text) |>
-                      as.character(),
-                    "'"
-                    )
-                  )
-                ),
+        label = "spawn_bio",
+        eval = "false",
+        add_option = TRUE,
+        chunk_op = c(
+          glue::glue(
+            "fig-cap: '",
+            captions_alttext |>
+              dplyr::filter(label == "spawning_biomass" & type == "figure") |>
+              dplyr::select(caption) |>
+              as.character(),
+            "'"
+          ),
+          glue::glue(
+            "fig-alt: '",
+            captions_alttext |>
+              dplyr::filter(label == "spawning_biomass" & type == "figure") |>
+              dplyr::select(alt_text) |>
+              as.character(),
+            "'"
+          )
+        )
+      ),
       "\n"
     )
   } else {
@@ -97,6 +97,7 @@ create_figures_doc <- function(resdir = NULL,
 
   # Save figures doc to template folder
   utils::capture.output(cat(figures_doc),
-                        file = paste0(subdir, "/", "09_figures.qmd"),
-                        append = FALSE)
+    file = paste0(subdir, "/", "09_figures.qmd"),
+    append = FALSE
+  )
 }
