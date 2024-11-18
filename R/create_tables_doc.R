@@ -28,7 +28,7 @@ create_tables_doc <- function(resdir = NULL,
       # Indices table
       add_chunk(
         paste0(
-          "satf::table_indices(dat = '", resdir, "/", model_results, "', model = '", model, "')"
+          "satf::table_indices(dat = output)"
         ),
         label = "indices",
         eval = "false",

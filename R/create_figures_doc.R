@@ -30,7 +30,7 @@ create_figures_doc <- function(resdir = NULL,
     figures_doc <- paste0(
       figures_doc,
       add_chunk(
-        paste0("satf::plot_recruitment(dat = '", resdir, "/", model_results, "', model = '", model, "')"),
+        paste0("satf::plot_recruitment(dat = output)"),
         label = "recruitment",
         eval = "false",
         add_option = TRUE,
@@ -58,11 +58,8 @@ create_figures_doc <- function(resdir = NULL,
 
     # SB figure
     plot_code <- paste0(
-      "satf::plot_spawning_biomass(dat = '", resdir, "/", model_results,
-      "', model = '", model,
-      "', ref_line = 'target', endyr = ", year, ")"
+      "satf::plot_spawning_biomass(dat = output, ref_line = 'target', endyr = ", year, ")"
     )
-
 
     figures_doc <- paste0(
       figures_doc,
