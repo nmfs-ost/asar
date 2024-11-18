@@ -6,6 +6,12 @@ $if(titlepage-geometry)$
 \newgeometry{$for(titlepage-geometry)$$titlepage-geometry$$sep$,$endfor$}
 $endif$
 \begin{minipage}[b][\textheight][s]{\textwidth}
+% Ross would've subbed lines 6, 8 with these lines:
+%\newgeometry{top=2in,bottom=1in,right=1in,left=1in}%
+%\noindent  %\tracingall
+%\begin{minipage}[b][\textheight][s]{.975\textwidth}%% RRM: avoid Overfull box
+
+
 \raggedright
 
 % \includegraphics[width=2cm]{NOAA_Transparent_Logo.png}
@@ -18,9 +24,13 @@ $endif$
 
 % Title and subtitle
 {\huge\bfseries\nohyphens{$title$}}\\[1\baselineskip]
+% Ross would change the end of the above line to the following because \par must come before the group closes and line-depth reverts.
+% }\par}%\\[1\baselineskip]
+
 $if(subtitle)${\large{$subtitle$}}\\[4\baselineskip]$endif$
 
 \vspace{1\baselineskip}
+% Ross would change this to 2\baselineskip
 
 %%%%%% Cover image
 $if(cover)$
