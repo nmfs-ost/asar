@@ -118,9 +118,10 @@ for absolute and relative filepaths, respectively:
 "C:/Users/patrick.star/Documents/dover_sole_2024/models",
 "here::here("models")".}
 
-\item{model_results}{The .csv file produced after converting the
-stock assessment output file to a standardized format with
-the function convert_output.R.}
+\item{model_results}{The model results file. Before the stock
+assessment output file has been converted to a standardized format
+with the function convert_output.R, the model results file may be
+a .sso or .rdata file. After conversion, this file will be a .csv file.}
 
 \item{model}{Type of assessment model that was used to assess
 the stock (e.g., "BAM", "SS3", "AMAK", "ASAP", etc.).}
@@ -188,7 +189,7 @@ in the console.
 create_template(
   new_section = "a_new_section",
   section_location = "before-introduction",
-  )
+)
 
 
 create_template(
@@ -205,7 +206,7 @@ create_template(
   model = "SS3",
   new_section = "an_additional_section",
   section_location = "after-introduction",
-  )
+)
 
 asar::create_template(
   new_template = TRUE,
