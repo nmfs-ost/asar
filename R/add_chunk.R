@@ -10,6 +10,7 @@
 #' @param eval TRUE/FALSE; Option to evaluate the chunk. Default is true.
 #' @param add_option TRUE/FALSE; Option to add additional chunk options. Default is false.
 #' @param chunk_op List of chunk options to add. For example: c("output: true", "error: false)
+#' @param rmark_op List of chunk options to add after indicating the language of the chunk as used in Rmarkdown.
 #'
 #' @return Write an additional R chunk into the template using this function.
 #'         The code can be written as usual, just remember to put it entirely
@@ -26,7 +27,7 @@ add_chunk <- function(
     add_option = FALSE,
     chunk_op = NULL) {
   chunk <- paste0(
-    "```{r} \n"
+    "```{r", ifelse(add_option, paste0(c("",rmark_op), collapse = ", "), ""), "} \n"
   )
   if (!is.null(label)) {
     chunk <- paste0(
