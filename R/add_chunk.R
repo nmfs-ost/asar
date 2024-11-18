@@ -25,7 +25,8 @@ add_chunk <- function(
     eval = "true",
     label = NULL,
     add_option = FALSE,
-    chunk_op = NULL) {
+    chunk_op = NULL,
+    rmark_op = NULL) {
   chunk <- paste0(
     "```{r", ifelse(add_option, paste0(c("",rmark_op), collapse = ", "), ""), "} \n"
   )
