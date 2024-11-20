@@ -115,7 +115,7 @@ create_citation <- function(
     cit <- paste0(
       "{{< pagebreak >}} \n",
       "\n",
-      "Please cite this publication as \n",
+      "Please cite this publication as: \n",
       "\n",
       "AUTHOR NAME. YEAR. ",
       title, ". ", off_title, ", ",
@@ -125,7 +125,7 @@ create_citation <- function(
     cit <- paste0(
       "{{< pagebreak >}} \n",
       "\n",
-      "Please cite this publication as \n",
+      "Please cite this publication as: \n",
       "\n",
       author_list, ". ", year, ". ",
       title, ". ", off_title, ", ",
@@ -135,7 +135,7 @@ create_citation <- function(
     cit <- paste0(
       "'{{< pagebreak >}}' \n",
       "\n",
-      "Please cite this publication as \n",
+      "Please cite this publication as: \n",
       "\n",
       "SEDAR. ", year, ". ", title,
       "SEDAR, North Charleston SC. XXpp. ",
