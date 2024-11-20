@@ -675,8 +675,9 @@ create_template <- function(
         paste0(
           "output <- utils::read.csv('",
           ifelse(convert_output,
-                 paste0(subdir, "/", stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv"),
-                 paste0(resdir, "/", model_results)), "') \n",
+            paste0(subdir, "/", stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv"),
+            paste0(resdir, "/", model_results)
+          ), "') \n",
           "# Call reference points and quantities below \n",
           "# start_year <- min(output$year) \n",
           "# end_year <- '", year, "' \n",
