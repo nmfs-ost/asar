@@ -58,7 +58,7 @@ create_figures_doc <- function(resdir = NULL,
 
     # SB figure
     plot_code <- paste0(
-      "satf::plot_spawning_biomass(dat = output, ref_line = 'target', endyr = ", year, ")"
+      "satf::plot_spawning_biomass(dat = output, ref_line = 'target', end_year = ", year, ")"
     )
 
     figures_doc <- paste0(
