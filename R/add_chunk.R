@@ -41,12 +41,13 @@ add_chunk <- function(
     chunk,
     "#| echo: ", echo, " \n",
     "#| warning: ", warnings, " \n",
-    "#| eval: ", eval, " \n"
+    "#| eval: ", eval, " \n",
+    ifelse(add_option & !is.null(chunk_op), paste0(paste0("#| ", chunk_op, collapse = " \n"), "\n"), "")
   )
-  if (add_option == TRUE) {
-    for (i in 1:length(chunk_op)) {
-      chunk <- paste0(chunk, "#| ", chunk_op[i], " \n")
-    }
-  }
+  # if (add_option == TRUE) {
+  #   for (i in 1:length(chunk_op)) {
+  #     chunk <- paste0(chunk, "#| ", chunk_op[i], " \n")
+  #   }
+  # }
   paste0(chunk, x, "\n", "``` \n")
 }
