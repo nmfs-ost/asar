@@ -1,8 +1,11 @@
 ---
-title: "Enhance Accessibility"
-output: rmarkdown::html_vignette
+title: "Achieve Greater Accessibility"
+output:
+  rmarkdown::html_vignette:
+    toc: TRUE
+    toc_depth: 3
 vignette: >
-  %\VignetteIndexEntry{Enhance Accessibility}
+  %\VignetteIndexEntry{Achieve Greater Accessibility}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: references.bib
@@ -15,11 +18,21 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Recommended practices
-
-When someone reads your document, they may read it with a [screen reader](https://www.afb.org/blindness-and-low-vision/using-technology/assistive-technology-products/screen-readers). TO ensure that they are able to interpret your document as intended, the document must contain some essential features, like tagged elements, alternative text, and metadata.
+When someone reads your document, they may read it with a [screen reader](https://www.afb.org/blindness-and-low-vision/using-technology/assistive-technology-products/screen-readers). To ensure that they are able to interpret your document as intended, the document must contain some essential features, like tagged elements, alternative text, and metadata.
 
 We have built `asar` so that the produced documents uphold several [federal accessibility standards](https://www.section508.gov/test/documents/). However, to achieve our goal of producing accessible documents, **you must complete a few tasks yourself**. But don't fret! We will help you. Below, we provide several resources to help you achieve this important goal.
+
+# Your to-do list
+
+1.  **Check the accuracy** of each figure's alternative text ("alt text" for short).
+
+    -   `asar`'s figures already contains some prewritten alt text that includes data from the model results file. This means that most of the work has been done for you! However, it is crucial that you check this information for accuracy and update it where necessary. This is especially true if the default figures have been modified.
+
+2.  **Write the final component** of each figure's alt text.
+
+    -   This prewritten alt text usually contains 3/4 essential ingredients for well-written alt text. The remaining ingredient (#4): *the relationship between the variables shown (i.e., what the figure is conveying).* Since we can't program `asar` to analyze the figure's meaning, *you must provide this*.
+
+# Guidance and Resources
 
 ## Alternative text
 
@@ -31,11 +44,11 @@ After using `create_template()` to create a skeleton of your document, you will 
 #| fig-alt: '...' 
 ```
 
-The [`fig-alt`](https://quarto.org/docs/computations/execution-options.html#caption-and-alt-text) parameter in this chunk signifies that this is where you should add a description of your figure that can be read aloud by the screen reader. This description, otherwise known as [alternative text](https://www.section508.gov/create/alternative-text/) (alt text for short) should answer this essential question:
+The [`fig-alt`](https://quarto.org/docs/computations/execution-options.html#caption-and-alt-text) parameter in this chunk signifies that this is where you should add a description of your figure that can be read aloud by the screen reader. This description, otherwise known as [alternative text](https://www.section508.gov/create/alternative-text/) should answer this essential question:
 
 > What is this image conveying?
 
-### How do I write alt text?
+### Which information belongs in alt text?
 
 While tempting, tools like AI cannot be used to easily answer this question. Additionally, one should not use the caption as the alt text. Here are four essential ingredients for well-written alt text, as described by Drs. Silvia Canelón and Liz Hare in their talk, "Revealing Room for Improvement in Accessibility within a Social Media Data Visualization Learning Community"[^1]:
 
@@ -46,13 +59,13 @@ While tempting, tools like AI cannot be used to easily answer this question. Add
 3.  Range of the data
 4.  The relationship between the variables shown (i.e., what the figure is conveying)
 
-Dr. Hare stresses the importance of ingredient #4 by explaining,
-
-> Don't waste my time with 1-3 if you aren't going to include 4. While some automatic alt text processes mine some of this information, I don't want to spend time building a mental model of the graph if I can't find out what the graph says.[^2]
+Dr. Hare stresses the importance of ingredient #4 by explaining, *"Don't waste my time with 1-3 if you aren't going to include 4. While some automatic alt text processes mine some of this information, I don't want to spend time building a mental model of the graph if I can't find out what the graph says.*[^2]*"*
 
 [^2]: Hare, Liz. *Writing Meaningful Alt Texts for Data Visualizations in R*, R Ladies NYC, 10 Oct. 2022, [lizharedogs.github.io/RLadiesNYAltText/](lizharedogs.github.io/RLadiesNYAltText/).
 
-**Both presentations are great resources** for learning about alt text and will help you as you craft your own alt text!
+Both presentations are great resources for learning about alt text and will help you as you craft your own alt text!
+
+> Remember: The first three essential ingredients should already be present in your figures' prewritten alt texts! You just need to check them for accuracy and provide ingredient #4.
 
 ### Example of alt text
 
@@ -87,6 +100,28 @@ The figure's alt text is written as such:
 
 *A line graph showing how tree circumference increases with age for a set of 5 orange trees. Age, shown on the x axis, is measured in days since 1968/12/31 and spans from 118-1582 days. Circumference, shown on the y axis, spans from 30-214 mm. All trees showed an increasing trend of trunk circumference with age, with each tree starting with a circumference of 30-33 mm at age 0 and ending with a circumference of 140-216 mm at age 1582. At age 1582, the tree with the largest circumference was tree 4, followed by trees 2, 5, 1, and 3.*
 
+### How to write ingredient #4
+
+> Ingredient #4 = the relationship between the variables shown (i.e., what the figure is conveying).
+
+There is no one-size-fits-all approach for explaining what a figure is conveying. We've included some prompts, below, to get you started, but *you will need to go beyond these prompts to properly complete this task.*
+
+#### Many figures
+
+-   Describe the span of the 95% confidence interval at a meaningful x axis value.
+-   Describe the meaning of the legend.
+
+#### Line graphs
+
+-   Describe where the line increases and decreases.
+-   Describe where the line dips below the reference point (if present).
+
+#### Kobe plots
+
+-   Describe where most points fall (in the four quadrants).
+
+### How to edit your report's alt text
+
 ### More resources
 
 Looking for more resources for writing alt text? Check out the [NOAA Library's website for creating accessible documents](https://library.noaa.gov/Section508/CreatingDocs).
@@ -96,3 +131,7 @@ Looking for more resources for writing alt text? Check out the [NOAA Library's w
 Your report will likely include several acronyms (e.g., NOAA in place of the National Oceanic and Atmospheric Administration). To ensure that your audience will be able to correctly interpret your acronyms, please **write the acronym's entire expanded form upon its first usage, followed by the acronym in parentheses. Upon further usage, use the acronym alone.** For example:
 
 *The National Oceanic and Atmospheric Administration (NOAA) has offices spread throughout the United States of America (USA). NOAA regularly produces stock assessments on fish and mammal species.*
+
+## Tables
+
+Please do not place figures inside tables. Doing so makes it very difficult for software to properly identify the structure of (i.e., *tag*) the table and its inner elements.
