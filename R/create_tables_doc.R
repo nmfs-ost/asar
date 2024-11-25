@@ -28,7 +28,7 @@ create_tables_doc <- function(resdir = NULL,
       # Indices table
       add_chunk(
         paste0(
-          "satf::table_indices(dat = '", resdir, "/", model_results, "', model = '", model, "')"
+          "satf::table_indices(dat = output)"
         ),
         label = "indices",
         eval = "false",
@@ -61,6 +61,7 @@ create_tables_doc <- function(resdir = NULL,
 
   # Save tables doc to template folder
   utils::capture.output(cat(tables_doc),
-                        file = paste0(subdir, "/", "08_tables.qmd"),
-                        append = FALSE)
+    file = paste0(subdir, "/", "08_tables.qmd"),
+    append = FALSE
+  )
 }
