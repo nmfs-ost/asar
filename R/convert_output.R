@@ -4,7 +4,8 @@
 #'
 #' @param output_file Assessment model output file (e.g., the
 #'  Report.sso file for SS3, the rdat file for BAM, etc.)
-#' @param outdir Directory of the assessment model output file.
+#' @param outdir Directory of the assessment model output file. Defaults to
+#' working directory.
 #' @param model Assessment model used in evaluation ("ss3", "bam",
 #'  "asap", "fims", "amak", "ms-java", "wham", "mas").
 #' @param fleet_names Names of fleets in the assessment model as
@@ -13,7 +14,8 @@
 #' @param file_save TRUE/FALSE; Save the formatted object rather
 #'  than calling the function and adding the formatted object to
 #'  the global environment? Default is false.
-#' @param savedir Directory to save the converted output file.
+#' @param savedir Directory to save the converted output file.Defaults to
+#' working directory.
 #' @param save_name Name of the converted output file (do not use
 #'  spaces).
 #'
@@ -32,7 +34,7 @@
 #'
 convert_output <- function(
     output_file = NULL,
-    outdir = NULL,
+    outdir = getwd(),
     model = NULL,
     fleet_names = NULL,
     file_save = FALSE,
@@ -80,15 +82,15 @@ convert_output <- function(
   out_new <- out_new[-1, ]
 
   # pull together path
-  if (!is.null(outdir)) {
-    output_file <- paste(outdir, "/", output_file, sep = "")
-  } else {
+  if(file.exists(output_file)) {
     output_file <- output_file
+  } else {
+    output_file <- paste(outdir, "/", output_file, sep = "")
   }
 
-  # Check if can locate output file
+  # check path
   if (!file.exists(output_file)) {
-    stop("output file path is invalid.")
+    stop("File not found.")
   }
 
   #### SS3 ####

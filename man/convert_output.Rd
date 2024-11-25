@@ -6,11 +6,11 @@
 \usage{
 convert_output(
   output_file = NULL,
-  outdir = NULL,
+  outdir = getwd(),
   model = NULL,
   fleet_names = NULL,
   file_save = FALSE,
-  savedir = NULL,
+  savedir = getwd(),
   save_name = "std_model_output"
 )
 }
@@ -18,7 +18,8 @@ convert_output(
 \item{output_file}{Assessment model output file (e.g., the
 Report.sso file for SS3, the rdat file for BAM, etc.)}
 
-\item{outdir}{Directory of the assessment model output file.}
+\item{outdir}{Directory of the assessment model output file. Defaults to
+working directory.}
 
 \item{model}{Assessment model used in evaluation ("ss3", "bam",
 "asap", "fims", "amak", "ms-java", "wham", "mas").}
@@ -31,7 +32,8 @@ indicate the fleets names as an acronym in a vector}
 than calling the function and adding the formatted object to
 the global environment? Default is false.}
 
-\item{savedir}{Directory to save the converted output file.}
+\item{savedir}{Directory to save the converted output file.Defaults to
+working directory.}
 
 \item{save_name}{Name of the converted output file (do not use
 spaces).}
