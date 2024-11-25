@@ -36,7 +36,7 @@ convert_output <- function(
     model = NULL,
     fleet_names = NULL,
     file_save = FALSE,
-    savedir = NULL,
+    savedir = getwd(),
     save_name = "std_model_output") {
   #### out_new ####
   # Blank dataframe and set up to mold output into
