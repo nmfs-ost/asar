@@ -31,7 +31,7 @@ create_figures_doc <- function(resdir = NULL,
       figures_doc,
       add_chunk(
         paste0("satf::plot_recruitment(dat = '", resdir, "/", model_results, "', model = '", model, "')"),
-        label = "recruitment",
+        label = "fig-recruitment",
         eval = "false",
         add_option = TRUE,
         chunk_op = c(
@@ -67,7 +67,7 @@ create_figures_doc <- function(resdir = NULL,
     figures_doc <- paste0(
       figures_doc,
       add_chunk(plot_code,
-                label = "spawn_bio",
+                label = "fig-spawn_bio",
                 eval = "false",
                 add_option = TRUE,
                 chunk_op = c(
