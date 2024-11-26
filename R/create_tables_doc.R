@@ -21,7 +21,7 @@ create_tables_doc <- function(resdir = NULL,
   model <- match.arg(model, several.ok = FALSE)
 
   # captions_alttext <- utils::read.csv(
-  #   system.file("resources", "captions_alttext.csv", package = "asar")
+  #   system.file("resources", "captions_alt_text_template.csv", package = "asar")
   # )
 
   if (include_all) {
