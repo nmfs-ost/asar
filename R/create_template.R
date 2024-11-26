@@ -321,7 +321,6 @@ create_template <- function(
                        dir = subdir,
                        year = year)
         caps_and_alt_text <- read.csv(file.path(subdir, 'captions_alt_text.csv'))
-      }
 
       # Check if there are already files in the folder
       if (length(list.files(subdir)) < 2) {
