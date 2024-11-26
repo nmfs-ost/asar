@@ -30,7 +30,7 @@ create_tables_doc <- function(resdir = NULL,
         paste0(
           "satf::table_indices(dat = output)"
         ),
-        label = "indices",
+        label = "tbl-indices",
         eval = "false",
         add_option = TRUE,
         chunk_op = c(
