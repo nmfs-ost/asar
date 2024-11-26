@@ -82,7 +82,7 @@ convert_output <- function(
   out_new <- out_new[-1, ]
 
   # pull together path
-  if(file.exists(output_file)) {
+  if (file.exists(output_file)) {
     output_file <- output_file
   } else {
     output_file <- file.path(outdir, output_file)
@@ -1167,9 +1167,11 @@ convert_output <- function(
   #### Exporting ####
   # Combind DFs into one
   out_new <- Reduce(rbind, out_list) |>
-    dplyr::mutate(estimate = as.numeric(estimate),
-                  uncertainty = as.numeric(uncertainty),
-                  initial = as.numeric(initial)) |>
+    dplyr::mutate(
+      estimate = as.numeric(estimate),
+      uncertainty = as.numeric(uncertainty),
+      initial = as.numeric(initial)
+    ) |>
     suppressWarnings()
   if (tolower(model) == "ss3") {
     con_file <- system.file("resources", "ss3_var_names.xlsx", package = "asar", mustWork = TRUE)
