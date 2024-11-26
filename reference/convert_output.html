@@ -112,11 +112,11 @@
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">convert_output</span><span class="op">(</span></span>
 <span>  output_file <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  outdir <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  outdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  model <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  fleet_names <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  file_save <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  savedir <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  savedir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  save_name <span class="op">=</span> <span class="st">"std_model_output"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -131,7 +131,8 @@ Report.sso file for SS3, the rdat file for BAM, etc.)</p></dd>
 
 
 <dt id="arg-outdir">outdir<a class="anchor" aria-label="anchor" href="#arg-outdir"></a></dt>
-<dd><p>Directory of the assessment model output file.</p></dd>
+<dd><p>Directory of the assessment model output file. Defaults to
+working directory.</p></dd>
 
 
 <dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
@@ -152,7 +153,8 @@ the global environment? Default is false.</p></dd>
 
 
 <dt id="arg-savedir">savedir<a class="anchor" aria-label="anchor" href="#arg-savedir"></a></dt>
-<dd><p>Directory to save the converted output file.</p></dd>
+<dd><p>Directory to save the converted output file. Defaults to
+working directory.</p></dd>
 
 
 <dt id="arg-save-name">save_name<a class="anchor" aria-label="anchor" href="#arg-save-name"></a></dt>
