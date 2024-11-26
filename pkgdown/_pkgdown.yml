@@ -46,6 +46,8 @@ navbar:
         href: articles/regional_workflows.html
       - text: Accessibility
         href: articles/accessibility_guide.html
+      - text: Frequently Asked Questions (FAQs)
+        href: articles/faqs.html
     documents:
       text: References
       icon: fas fa-book fa-lg
