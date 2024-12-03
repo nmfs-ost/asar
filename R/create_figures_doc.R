@@ -24,6 +24,7 @@ create_figures_doc <- function(resdir = NULL,
   model <- match.arg(model, several.ok = FALSE)
 
   # create the figure chunks
+
   if (include_all) {
     # Create tables quarto doc - maybe should add this as separate fxn - same with figs
     figures_doc <- paste0("## Figures \n \n")
@@ -57,14 +58,10 @@ create_figures_doc <- function(resdir = NULL,
       "\n"
     )
 
-
     # SB figure
     plot_code <- paste0(
-      "satf::plot_spawning_biomass(dat = '", resdir, "/", model_results,
-      "', model = '", model,
-      "', ref_line = 'target', endyr = ", year, ")"
+      "satf::plot_spawning_biomass(dat = output, ref_line = 'target', end_year = ", year, ")"
     )
-
 
     figures_doc <- paste0(
       figures_doc,
@@ -250,4 +247,5 @@ create_figures_doc <- function(resdir = NULL,
   utils::capture.output(cat(figures_doc),
                         file = paste0(subdir, "/", "09_figures.qmd"),
                         append = FALSE)
+
 }

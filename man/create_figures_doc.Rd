@@ -38,6 +38,7 @@ figures for a stock assessment report. Default is true.}
 
 \item{caps_file}{.csv file containing captions and alternative text for
 figures and tables generated using satf::write_captions(...)}
+
 }
 \value{
 A quarto document with pre-loaded R chunk that adds the

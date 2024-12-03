@@ -185,6 +185,7 @@ the report}
 \item{used_satf}{TRUE/FALSE; has the user already used the satf
 package to generate figures, tables, and therefore figure/table
 captions and alt text? Default is false.}
+
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
@@ -221,6 +222,7 @@ create_template(
   new_section = "an_additional_section",
   section_location = "after-introduction",
   )
+
 
 asar::create_template(
   new_template = TRUE,

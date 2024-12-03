@@ -34,6 +34,7 @@ connected by underscores).}
 \item{chunk_op}{List of chunk options to add. For example: c("output: true", "error: false)}
 
 \item{rmark_op}{List of chunk options to add after indicating the language of the chunk as used in Rmarkdown.}
+
 }
 \value{
 Write an additional R chunk into the template using this function.
