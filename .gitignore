@@ -12,7 +12,9 @@ Report.sso
 petrale_convert_output.csv
 stock_assessment_reports
 /doc/
-/Meta/
-captions_alt_text.csv
 converted_file_1126.csv
 saved_converted_output.csv
+rda_files
+Meta
+captions_alt_text.csv
+doc

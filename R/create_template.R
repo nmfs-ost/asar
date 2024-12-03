@@ -227,6 +227,7 @@ create_template <- function(
     spp_image = NULL,
     bib_file = NULL,
     used_satf = TRUE) {
+
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -321,7 +322,6 @@ create_template <- function(
                        dir = subdir,
                        year = year)
         caps_and_alt_text <- read.csv(file.path(subdir, 'captions_alt_text.csv'))
-      }
 
       # Check if there are already files in the folder
       if (length(list.files(subdir)) < 2) {
@@ -581,7 +581,7 @@ create_template <- function(
         yaml,
         format_quarto(format = format),
         # Add in output file name (Rendered name of pdf)
-        "output-file: '", stringr::str_replace(species, " ", "_"), "_SAR_", year, "'", "\n"
+        "output-file: '", stringr::str_replace_all(species, " ", "_"), "_SAR_", year, "'", " \n"
       )
 
       # Add lua filters for compliance
@@ -631,6 +631,7 @@ create_template <- function(
 
       # Add option for bib file
       if(!is.null(bib_file)) {
+
         bib <- glue::glue(
           "bibliography: ", "\n"
         )
@@ -673,6 +674,7 @@ create_template <- function(
         #     savedir = subdir,
         #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
         #   )
+
         } else {
           convert_output(
             output_file = model_results,
@@ -696,8 +698,10 @@ create_template <- function(
         paste0(
           "output <- utils::read.csv('",
           ifelse(convert_output,
-                 paste0(subdir, "/", species, "_std_res_", year, ".csv"),
-                 paste0(resdir, "/", model_results)), "') \n",
+
+            paste0(subdir, "/", stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv"),
+            paste0(resdir, "/", model_results)
+          ), "') \n",
           "# Call reference points and quantities below \n",
           "# start_year <- min(output$year) \n",
           "# end_year <- '", year, "' \n",
@@ -746,6 +750,7 @@ create_template <- function(
         label = "captions_and_alt_text"
         )
         )
+
 
       # Add page for citation of assessment report
       citation <- create_citation(

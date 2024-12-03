@@ -44,6 +44,8 @@ create_title <- function(
   } else if (office == "NWFSC") {
     if (is.null(region)) {
       title <- paste0("Status of the ", species, " stock along the U.S. West Coast in ", year)
+    } else if (grepl("coast", tolower(region))) {
+      title <- paste0("Status of the ", species, " stock off the ", region, " in ", year)
     } else {
       # region in NW should be specified as a state
       title <- paste0("Status of the ", species, " stock in U.S. waters off the coast of ", region, " in ", year)
