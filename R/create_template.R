@@ -278,7 +278,7 @@ create_template <- function(
   }
 
   # Supporting files folder
-  supdir <- paste(subdir, "/support_files", sep = "")
+  supdir <- file.path(subdir, "support_files")
 
   # if (!is.null(region)) {
   if (dir.exists(subdir) == FALSE) {
@@ -642,7 +642,7 @@ create_template <- function(
             model = model,
             fleet_names = fleet_names,
             savedir = subdir,
-            save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+            save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
           )
         } else {
           convert_output(
@@ -651,11 +651,11 @@ create_template <- function(
             file_save = TRUE,
             model = model,
             savedir = subdir,
-            save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+            save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
           )
         }
         # Rename model results file and results file directory if the results are converted in this fxn
-        model_results <- glue::glue(species, "_std_res_", year, ".csv")
+        model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
         resdir <- subdir
       }
 
@@ -667,14 +667,15 @@ create_template <- function(
         paste0(
           "output <- utils::read.csv('",
           ifelse(convert_output,
-                 paste0(subdir, "/", species, "_std_res_", year, ".csv"),
-                 paste0(resdir, "/", model_results)), "') \n",
+                 paste0(subdir, "/", stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv"),
+                 paste0(resdir, "/", model_results)
+                 ), "') \n",
           "# Call reference points and quantities below \n",
-          # "output2 <- output |> \n",
-          # "  ", "dplyr::mutate(estimate = as.numeric(estimate), \n",
-          # "  ", "  ", "uncertainty = as.numeric(uncertainty)) \n",
+          "output <- output |> \n",
+          "  ", "dplyr::mutate(estimate = as.numeric(estimate), \n",
+          "  ", "  ", "uncertainty = as.numeric(uncertainty)) \n",
 
-          "start_year <- as.numeric(min(output$year, na.rm = TRUE))",
+          "start_year <- as.numeric(min(output$year, na.rm = TRUE)) \n",
           # change end year in the fxn to ifelse where is.null(year)
           "end_year <- (output |> \n",
           "  ", "dplyr::filter(!(year %in% c('Virg', 'Init', 'S/Rcurve', 'INIT')), \n",
@@ -703,7 +704,7 @@ create_template <- function(
           "F_Ftarg <- Fend / Ftarg", "\n",
 
           "Bend <- output2 |>", "\n",
-          "  ", "dplyr::filter(grepl('mature_biomass', label) | grepl('^biomass$,' label),", "\n",
+          "  ", "dplyr::filter(grepl('mature_biomass', label) | grepl('^biomass$', label),", "\n",
           "  ", "  ", "year == end_year) |>", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
 
@@ -712,7 +713,8 @@ create_template <- function(
           "  ", "dplyr::pull(estimate)", "\n",
 
           "total_catch <- output |>", "\n",
-          "  ", "dplyr::filter(grepl('^catch$,' label), year == end_year,", "\n",
+          "  ", "dplyr::filter(grepl('^catch$', label), \n,",
+          "  ", "year == end_year,", "\n",
           "  ", "  ", "is.na(fleet),", "\n",
           "  ", "  ", "is.na(age),", "\n",
           "  ", "  ", "is.na(area),", "\n",
@@ -744,15 +746,15 @@ create_template <- function(
           "  ", "dplyr::filter(c(grepl('spawning_biomass', label) & grepl('msy$', label) & estimate >1) | label == 'spawning_biomass_msy$') |>", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
 
-          "# h <- output |> ", "\n",
+          "h <- output |> ", "\n",
           "  ", "dplyr::filter(grepl('steep', label)) |> ", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
 
-          "# R0 <- output |> ", "\n",
+          "R0 <- output |> ", "\n",
           "  ", "dplyr::filter(grepl('R0', label) | grepl('recruitment_virgin', label)) |> ", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
 
-          "# female SB ", "\n",
+          "# female SB ", "\n"
         ),
         label = "output_and_quantities"
       )
