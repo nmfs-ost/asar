@@ -670,20 +670,20 @@ create_template <- function(
                  paste0(subdir, "/", species, "_std_res_", year, ".csv"),
                  paste0(resdir, "/", model_results)), "') \n",
           "# Call reference points and quantities below \n",
-          "output2 <- output |> \n",
-          "  ", "dplyr::mutate(estimate = as.numeric(estimate), \n",
-          "  ", "  ", "uncertainty = as.numeric(uncertainty)) \n",
+          # "output2 <- output |> \n",
+          # "  ", "dplyr::mutate(estimate = as.numeric(estimate), \n",
+          # "  ", "  ", "uncertainty = as.numeric(uncertainty)) \n",
 
-          "start_year <- as.numeric(min(output2$year, na.rm = TRUE))",
+          "start_year <- as.numeric(min(output$year, na.rm = TRUE))",
           # change end year in the fxn to ifelse where is.null(year)
-          "end_year <- (output2 |> \n",
+          "end_year <- (output |> \n",
           "  ", "dplyr::filter(!(year %in% c('Virg', 'Init', 'S/Rcurve', 'INIT')), \n",
           "  ", "  ", "!is.na(year)) |> \n",
           "  ", "dplyr::mutate(year = as.numeric(year)) |> \n",
           "  ", "dplyr::summarize(max_val = max(year)) |> \n",
           "  ", "dplyr::pull(max_val))-10", "\n",
           # for quantities - don't want any values that are split by factor
-          "output3 <- output2|> \n",
+          "output2 <- output |> \n",
           "  ", "dplyr::filter(is.na(season), \n",
           "  ", "  ", "is.na(fleet), \n",
           "  ", "  ", "is.na(sex), \n",
@@ -733,7 +733,8 @@ create_template <- function(
           "  ", "  ", "unique()", "\n",
 
           "M <- output |>", "\n",
-          "  ", "dplyr::filter(grepl('natural_mortality', label))", "\n",
+          "  ", "dplyr::filter(grepl('natural_mortality', label)) |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
 
           "Bmsy <- output2 |>", "\n",
           "  ", "dplyr::filter(c(grepl('biomass', label) & grepl('msy', label) & estimate >1) | label == 'biomass_msy') |>", "\n",
@@ -743,9 +744,15 @@ create_template <- function(
           "  ", "dplyr::filter(c(grepl('spawning_biomass', label) & grepl('msy$', label) & estimate >1) | label == 'spawning_biomass_msy$') |>", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
 
-          "# steep ", "\n",
-          "# R0", "\n",
-          "# fSB ", "\n"
+          "# h <- output |> ", "\n",
+          "  ", "dplyr::filter(grepl('steep', label)) |> ", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+
+          "# R0 <- output |> ", "\n",
+          "  ", "dplyr::filter(grepl('R0', label) | grepl('recruitment_virgin', label)) |> ", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+
+          "# female SB ", "\n",
         ),
         label = "output_and_quantities"
       )
