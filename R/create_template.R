@@ -364,6 +364,13 @@ create_template <- function(
         )
         utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
       }
+
+      # Rename model results for figures and tables files
+      # TODO: check if this is needed once the tables and figures docs are reformatted
+      # if (convert_output) {
+      #   model_results <- paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
+      # }
+
       # Create figures qmd
       if (include_figures) {
         if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
