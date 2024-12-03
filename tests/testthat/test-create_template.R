@@ -44,6 +44,7 @@ test_that("create_template() creates correct files", {
     "support_files"
     )
 
+
   # Define expected support files
   expect_support_files <- c(
     "_titlepage.tex",
@@ -63,6 +64,7 @@ test_that("create_template() creates correct files", {
 
   on.exit(unlink(file.path(path, "stock_assessment_reports"),
                  recursive = TRUE), add = TRUE)
+
   # Check if all expected report files are created
   expect_true(all(sort(expect_report_files) == sort(object_report_files)))
 
@@ -151,6 +153,7 @@ test_that("warning is triggered for missing models", {
   )
   on.exit(unlink(file.path(getwd(), "stock_assessment_reports"),
                  recursive = TRUE), add = TRUE)
+
 })
 
 test_that("warning is triggered for existing files", {

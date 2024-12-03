@@ -34,11 +34,14 @@ create_template(
   prev_year = NULL,
   custom = FALSE,
   custom_sections = NULL,
+  used_satf = FALSE,
+  caps_dir = NULL,
   include_figures = TRUE,
   include_tables = TRUE,
   add_image = FALSE,
   spp_image = NULL,
-  bib_file = NULL
+  bib_file = NULL,
+  used_satf = TRUE
 )
 }
 \arguments{
@@ -156,6 +159,13 @@ name of the file, can be used (e.g., 'abstract' rather than
 '00_abstract.qmd'). If adding a new section, also use
 parameters 'new_section' and 'section_location'.}
 
+\item{used_satf}{TRUE/FALSE; has the user already used the satf
+package to generate figures, tables, and therefore figure/table
+captions and alt text? Default is false.}
+
+\item{caps_dir}{Filepath of the directory storing the captions
+and alt text csv, if already generated with satf.}
+
 \item{include_figures}{TRUE/FALSE; Should figures be
 included in the report? Default is true.}
 
@@ -171,6 +181,11 @@ using the image included in the project's repository.}
 
 \item{bib_file}{File path to a .bib file used for citing references in
 the report}
+
+\item{used_satf}{TRUE/FALSE; has the user already used the satf
+package to generate figures, tables, and therefore figure/table
+captions and alt text? Default is false.}
+
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
@@ -207,6 +222,7 @@ create_template(
   new_section = "an_additional_section",
   section_location = "after-introduction",
   )
+
 
 asar::create_template(
   new_template = TRUE,
@@ -252,6 +268,7 @@ create_template(
   prev_year = 2021,
   custom = TRUE,
   custom_sections = c("executive_summary", "introduction", "discussion"),
+  used_satf = FALSE,
   include_figures = TRUE,
   include_tables = TRUE,
   add_image = TRUE,

@@ -89,6 +89,11 @@
 #'  name of the file, can be used (e.g., 'abstract' rather than
 #'  '00_abstract.qmd'). If adding a new section, also use
 #'   parameters 'new_section' and 'section_location'.
+#' @param used_satf TRUE/FALSE; has the user already used the satf
+#' package to generate figures, tables, and therefore figure/table
+#' captions and alt text? Default is false.
+#' @param caps_dir Filepath of the directory storing the captions
+#' and alt text csv, if already generated with satf.
 #' @param include_figures TRUE/FALSE; Should figures be
 #' included in the report? Default is true.
 #' @param include_tables TRUE/FALSE; Should tables be included
@@ -176,6 +181,7 @@
 #'   prev_year = 2021,
 #'   custom = TRUE,
 #'   custom_sections = c("executive_summary", "introduction", "discussion"),
+#'   used_satf = FALSE,
 #'   include_figures = TRUE,
 #'   include_tables = TRUE,
 #'   add_image = TRUE,
@@ -213,11 +219,15 @@ create_template <- function(
     prev_year = NULL,
     custom = FALSE,
     custom_sections = NULL,
+    used_satf = FALSE,
+    caps_dir = NULL,
     include_figures = TRUE,
     include_tables = TRUE,
     add_image = FALSE,
     spp_image = NULL,
-    bib_file = NULL) {
+    bib_file = NULL,
+    used_satf = TRUE) {
+
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -304,6 +314,15 @@ create_template <- function(
         spp_image <- system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar")
       }
 
+      # Add in caps and alt text
+      if (used_satf) {
+        caps_and_alt_text <- read.csv(file.path(subdir, 'captions_alt_text.csv'))
+      } else { # might need to add case here when convert output is TRUE
+        satf::write_captions(read.csv(file.path(resdir, model_results)), # also need condition when this is empty
+                       dir = subdir,
+                       year = year)
+        caps_and_alt_text <- read.csv(file.path(subdir, 'captions_alt_text.csv'))
+
       # Check if there are already files in the folder
       if (length(list.files(subdir)) < 2) {
         # copy quarto files
@@ -347,7 +366,8 @@ create_template <- function(
             resdir = resdir,
             model_results = model_results,
             model = model,
-            subdir = subdir
+            subdir = subdir,
+            caps_file = caps_and_alt_text
           )
         } else {
           tables_doc <- paste0(
@@ -372,7 +392,8 @@ create_template <- function(
             model_results = model_results,
             model = model,
             subdir = subdir,
-            year = year
+            year = year,
+            caps_file = caps_and_alt_text
           )
         } else {
           figures_doc <- paste0("## Figures \n")
@@ -560,7 +581,7 @@ create_template <- function(
         yaml,
         format_quarto(format = format),
         # Add in output file name (Rendered name of pdf)
-        "output-file: '", stringr::str_replace(species, " ", "_"), "_SAR_", year, "'", "\n"
+        "output-file: '", stringr::str_replace_all(species, " ", "_"), "_SAR_", year, "'", " \n"
       )
 
       # Add lua filters for compliance
@@ -610,6 +631,7 @@ create_template <- function(
 
       # Add option for bib file
       if(!is.null(bib_file)) {
+
         bib <- glue::glue(
           "bibliography: ", "\n"
         )
@@ -652,6 +674,7 @@ create_template <- function(
         #     savedir = subdir,
         #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
         #   )
+
         } else {
           convert_output(
             output_file = model_results,
@@ -665,7 +688,7 @@ create_template <- function(
         # Rename model results file and results file directory if the results are converted in this fxn
         model_results <- glue::glue(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
         resdir <- subdir
-      }
+        }
 
       # print("_______Standardized output data________")
 
@@ -675,8 +698,10 @@ create_template <- function(
         paste0(
           "output <- utils::read.csv('",
           ifelse(convert_output,
-                 paste0(subdir, "/", species, "_std_res_", year, ".csv"),
-                 paste0(resdir, "/", model_results)), "') \n",
+
+            paste0(subdir, "/", stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv"),
+            paste0(resdir, "/", model_results)
+          ), "') \n",
           "# Call reference points and quantities below \n",
           "# start_year <- min(output$year) \n",
           "# end_year <- '", year, "' \n",
@@ -696,6 +721,37 @@ create_template <- function(
         ),
         label = "output_and_quantities"
       )
+
+      # Create a chunk that imports csv with full captions and alt text
+      # created by satf
+      if (used_satf == TRUE) {
+        caps_and_alt_text <- read.csv(fs::path(caps_dir, 'captions_alt_text.csv'))
+      } else if (used_satf == FALSE & convert_output == FALSE) {
+        output <- read.csv(fs::path(resdir, model_results))
+        satf::write_captions(output)
+        caps_and_alt_text <- read.csv(fs::path('captions_alt_text.csv'))
+      } else if (used_satf == FALSE & convert_output == TRUE) {
+       output <- read.csv(fs::path(subdir, paste(sub(" ", "_", species), "_std_res_", year, ".csv", sep = "")))
+       satf::write_captions(output)
+       # caps_and_alt_text <- read.csv(fs::path(resdir, 'captions_alt_text.csv'))
+       caps_and_alt_text <- read.csv(fs::path('captions_alt_text.csv'))
+       print("passed")
+       }
+
+      add_captions <- add_chunk(
+        print(
+          paste0(
+                   "caps_and_alt_text <- read.csv(fs::path(",
+                   "'",
+                   caps_dir,
+                   "/captions_alt_text.csv",
+                   "'))"
+                   ),
+        label = "captions_and_alt_text"
+        )
+        )
+
+
       # Add page for citation of assessment report
       citation <- create_citation(
         author = author,
@@ -751,7 +807,7 @@ create_template <- function(
         if (is.null(new_section)) {
           section_list <- add_base_section(custom_sections)
           sections <- add_child(section_list,
-            label = custom_sections
+                                label = custom_sections
           )
         } else { # custom = TRUE
           # Create custom template using existing sections and new sections from analyst
@@ -820,6 +876,7 @@ create_template <- function(
       report_template <- paste(
         yaml,
         preamble,
+        add_captions,
         citation,
         sections,
         sep = "\n"
@@ -918,7 +975,7 @@ create_template <- function(
         if (is.null(new_section)) {
           section_list <- add_base_section(custom_sections)
           sections <- add_child(section_list,
-            label = custom_sections
+                                label = custom_sections
           )
         } else { # custom = TRUE
           # Create custom template using existing sections and new sections from analyst
@@ -976,6 +1033,7 @@ create_template <- function(
       report_template <- paste(
         yaml,
         # preamble,
+        # add_captions,
         citation,
         sections,
         sep = "\n"
@@ -1012,7 +1070,7 @@ create_template <- function(
     file.show(file.path(subdir, report_name))
 
     svDialogs::dlg_message("Reminder: there are changes to be made when calling an old report. Please change the year in the citation and the location and name of the results file in the first chunk of the report.",
-      type = "ok"
+                           type = "ok"
     )
   }
 }

@@ -78,22 +78,31 @@ library(ggplot2)
 orange <- as.data.frame(Orange)
 orange <- orange |>
   dplyr::mutate(Tree = base::factor(Tree,
-                                    levels = c(1,2,3,4,5))) |>
-  dplyr::rename(Age = age,
-                Circumference = circumference)
+    levels = c(1, 2, 3, 4, 5)
+  )) |>
+  dplyr::rename(
+    Age = age,
+    Circumference = circumference
+  )
 
-ggplot2::ggplot(data = orange,
-                aes(x = Age,
-                    y = Circumference,
-                    color = Tree)) +
-ggplot2::geom_line(size = 1) +
-ggplot2::geom_point(size = 2) +
-ggplot2::scale_color_viridis_d() +
-ggplot2::xlim(0, NA) +
-ggplot2::ylim(0, NA) +
-ggplot2::theme_bw() +
-  labs(x = "Age (days since 1968/12/31)",
-       y = "Orange Tree Circumference (mm)")
+ggplot2::ggplot(
+  data = orange,
+  aes(
+    x = Age,
+    y = Circumference,
+    color = Tree
+  )
+) +
+  ggplot2::geom_line(size = 1) +
+  ggplot2::geom_point(size = 2) +
+  ggplot2::scale_color_viridis_d() +
+  ggplot2::xlim(0, NA) +
+  ggplot2::ylim(0, NA) +
+  ggplot2::theme_bw() +
+  labs(
+    x = "Age (days since 1968/12/31)",
+    y = "Orange Tree Circumference (mm)"
+  )
 ```
 
 The figure's alt text is written as such:

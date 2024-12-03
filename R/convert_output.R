@@ -711,7 +711,8 @@ convert_output <- function(
     dat <- dget(output_file)
 
     # Find fleet names
-    if(is.null(fleet_names)) {
+
+    if (is.null(fleet_names)) {
       # Extract names from indices
       indices <- dat$t.series |>
         dplyr::select(dplyr::contains("U.") & contains(".ob"))
@@ -730,12 +731,13 @@ convert_output <- function(
       fleets_parm <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+")
       fleets <- unique(c(fleets_ind, fleets_land, fleets_disc, fleets_parm))
       fleet_names <- fleets[!is.na(fleets)]
-      if(any(is.na(fleet_names))){
+
+      if (any(is.na(fleet_names))) {
         stop("No fleet names found in dataframe. Please indicate the abbreviations of fleet names using fleet_names arg.")
       }
     } else {
-    # check fleet names are input
-    # if (any(is.na(fleet_names))) {
+      # check fleet names are input
+      # if (any(is.na(fleet_names))) {
       fleet_names <- fleet_names
     }
     # Create list for morphed dfs to go into (for rbind later)
@@ -786,7 +788,8 @@ convert_output <- function(
                 df <- df |>
                   dplyr::rename_with(
                     ~ ifelse(max(as.numeric(df$year)) < 50,
-                           c("age_a"), c("year")),
+                      c("age_a"), c("year")
+                    ),
                     year
                   )
                 if (grepl("lcomp", names(extract[[1]][i]))) {
@@ -799,7 +802,8 @@ convert_output <- function(
                 }
                 df2 <- df |>
                   tidyr::pivot_longer(
-                    cols = -intersect(colnames(df), c("year","age_a")),
+
+                    cols = -intersect(colnames(df), c("year", "age_a")),
                     names_to = namesto,
                     values_to = "estimate"
                   ) |>
@@ -1156,7 +1160,7 @@ convert_output <- function(
   } else if (model == "amak") {
     stop("File not currently compatible.")
     #### JABBA ####
-  } else  if (tolower(model) == "jabba") {
+  } else if (tolower(model) == "jabba") {
     stop("File not currently compatible.")
   } else {
     stop("File not compatible.")
@@ -1187,6 +1191,7 @@ convert_output <- function(
     save_path <- paste(savedir, "/",
                        ifelse(is.null(save_name), "converted_output", save_name),
                        ".csv", sep = "")
+
     utils::write.csv(out_new, file = save_path, row.names = FALSE)
   } else {
     out_new

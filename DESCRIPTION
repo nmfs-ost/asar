@@ -2,39 +2,23 @@ Package: asar
 Title: Build NOAA Stock Assessment Report
 Version: 0.0.0.9000
 Authors@R: c(
-      person(
-            "Samantha", "Schiano", 
-            email = "samantha.schiano@noaa.gov", 
-            role = c("aut", "cre"),
-            comment = c(ORCID = "0009-0003-3744-6428")
-            ),
-      person(
-            "Sophie", "Breitbart",
-             email = "sophie.breitbart@noaa.gov", 
-             role = c("aut", "ctb"),
-             comment = c(ORCID = "0000-0001-9641-9786")
-             ),
-      person(
-            "Steve", "Saul",
-             email = "steven.saul@noaa.gov",
-             role = c("aut", "ctb")
-             ),
-      person("Kelli", "Johnson",
-             email = "kelli.johnson@noaa.gov", 
-             role = c("ctb"),
-             comment = c(ORCID = "0000-0002-5149-451X")
-             ),
-      person(
-             "Bai", "Li",
-             email = "bai.li@noaa.gov", 
-             role = c("ctb"),
-             comment = c(ORCID = "0000-0002-8249-1442")
-             ))
+    person("Samantha", "Schiano", , "samantha.schiano@noaa.gov", role = c("aut", "cre"),
+           comment = c(ORCID = "0009-0003-3744-6428")),
+    person("Sophie", "Breitbart", , "sophie.breitbart@noaa.gov", role = c("aut", "ctb"),
+           comment = c(ORCID = "0000-0001-9641-9786")),
+    person("Steve", "Saul", , "steven.saul@noaa.gov", role = c("aut", "ctb")),
+    person("Kelli", "Johnson", , "kelli.johnson@noaa.gov", role = "ctb",
+           comment = c(ORCID = "0000-0002-5149-451X")),
+    person("Bai", "Li", , "bai.li@noaa.gov", role = "ctb",
+           comment = c(ORCID = "0000-0002-8249-1442"))
+  )
 Description: Build a full or update stock assessment report for any stock
     assessment model. Parameterization allows the user to call a template
     based on their regional science center, species, area, ect.
 License: MIT + file LICENSE
 URL: https://github.com/nmfs-ost/asar
+Depends: 
+    R (>= 2.10)
 Imports: 
     dplyr,
     flextable,
@@ -68,6 +52,7 @@ Suggests:
 VignetteBuilder: 
     knitr
 Remotes:
+    nmfs-fish-tools/nmfspalette,
     nmfs-ost/satf,
     r4ss/r4ss,
     nmfs-fish-tools/nmfspalette
@@ -75,8 +60,8 @@ Config/testthat/edition: 3
 Config/testthat/parallel: true
 Encoding: UTF-8
 Language: en-US
+LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Depends: 
     R (>= 2.10)
-LazyData: true

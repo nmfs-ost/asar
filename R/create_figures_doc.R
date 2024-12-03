@@ -5,6 +5,8 @@
 #' @param subdir Location of subdirectory storing the assessment report template
 #' @param include_all TRUE/FALSE; Option to include all default
 #' figures for a stock assessment report. Default is true.
+#' @param caps_file .csv file containing captions and alternative text for
+#' figures and tables generated using satf::write_captions(...)
 #'
 #' @return A quarto document with pre-loaded R chunk that adds the
 #' stock assessment tables from the nmfs-ost/satf R package. The
@@ -16,15 +18,21 @@ create_figures_doc <- function(resdir = NULL,
                                model = c("SS3", "BAM", "ASAP", "AMAK", "WHAM"),
                                year = NULL,
                                subdir = NULL,
-                               include_all = TRUE) {
+                               include_all = TRUE,
+                               caps_file = NULL) {
+
   model <- match.arg(model, several.ok = FALSE)
 
-  captions_alttext <- utils::read.csv(
-    system.file("resources", "captions_alttext.csv", package = "asar")
-  )
+<<<<<<< HEAD
+# create the figure chunks
+if (include_all) {
+ # Create tables quarto doc - maybe should add this as separate fxn - same with figs
+=======
+  # create the figure chunks
 
   if (include_all) {
     # Create tables quarto doc - maybe should add this as separate fxn - same with figs
+>>>>>>> 2654bc9ec6526915f2f650ae2cbffb3334ffe70f
     figures_doc <- paste0("## Figures \n \n")
     # Recruitment ts figure
     figures_doc <- paste0(
@@ -37,7 +45,7 @@ create_figures_doc <- function(resdir = NULL,
         chunk_op = c(
           glue::glue(
             "fig-cap: '",
-            captions_alttext |>
+            caps_file |>
               dplyr::filter(label == "recruitment" & type == "figure") |>
               dplyr::select(caption) |>
               as.character(),
@@ -45,7 +53,7 @@ create_figures_doc <- function(resdir = NULL,
           ),
           glue::glue(
             "fig-alt: '",
-            captions_alttext |>
+            caps_file |>
               dplyr::filter(label == "recruitment" & type == "figure") |>
               dplyr::select(alt_text) |>
               as.character(),
@@ -58,11 +66,8 @@ create_figures_doc <- function(resdir = NULL,
 
     # SB figure
     plot_code <- paste0(
-      "satf::plot_spawning_biomass(dat = '", resdir, "/", model_results,
-      "', model = '", model,
-      "', ref_line = 'target', endyr = ", year, ")"
+      "satf::plot_spawning_biomass(dat = output, ref_line = 'target', end_year = ", year, ")"
     )
-
 
     figures_doc <- paste0(
       figures_doc,
@@ -73,7 +78,7 @@ create_figures_doc <- function(resdir = NULL,
                 chunk_op = c(
                   glue::glue(
                     "fig-cap: '",
-                    captions_alttext |>
+                    caps_file |>
                       dplyr::filter(label == "spawning_biomass" & type == "figure") |>
                       dplyr::select(caption) |>
                       as.character(),
@@ -81,7 +86,7 @@ create_figures_doc <- function(resdir = NULL,
                   ),
                   glue::glue(
                     "fig-alt: '",
-                    captions_alttext |>
+                    caps_file |>
                       dplyr::filter(label == "spawning_biomass" & type == "figure") |>
                       dplyr::select(alt_text) |>
                       as.character(),
@@ -243,8 +248,10 @@ create_figures_doc <- function(resdir = NULL,
     # add option for only adding specified figures
   }
 
+
   # Save figures doc to template folder
   utils::capture.output(cat(figures_doc),
                         file = paste0(subdir, "/", "09_figures.qmd"),
                         append = FALSE)
+
 }
