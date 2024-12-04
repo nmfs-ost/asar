@@ -27,7 +27,7 @@ create_figures_doc <- function(resdir = NULL,
     figures_doc <- paste0("## Figures \n \n")
 
     # add chunk that creates object as the directory of all rdas
-    figures_doc <- paste0(
+figures_doc <- paste0(
       figures_doc,
       add_chunk(
         paste0("rda_dir <- '", rda_dir, "/rda_files'"),
