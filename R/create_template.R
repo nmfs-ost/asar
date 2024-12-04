@@ -100,6 +100,13 @@
 #' using the image included in the project's repository.
 #' @param bib_file File path to a .bib file used for citing references in
 #' the report
+#' @param rda_dir If applicable, the location of the folder containing .rda files
+#' ("rda_files") containing figures, tables, captions, and alt text
+#' that were already made with `satf`. Specifically, the folder would have
+#' been made with `satf::exp_all_figs_tables()`, or by exporting files
+#' by running individual `satf` figure- and table-generating functions. If you
+#' have not used `satf` to generate these .rda files, leave this blank, and
+#' the .rda files will be generated for you.
 #'
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
@@ -179,7 +186,8 @@
 #'   include_figures = TRUE,
 #'   include_tables = TRUE,
 #'   add_image = TRUE,
-#'   spp_image = "dir/containing/spp_image"
+#'   spp_image = "dir/containing/spp_image",
+#'   rda_dir = "C:/Users/Documents"
 #' )
 #' }
 #'
@@ -217,7 +225,8 @@ create_template <- function(
     include_tables = TRUE,
     add_image = FALSE,
     spp_image = NULL,
-    bib_file = NULL) {
+    bib_file = NULL,
+    rda_dir = NULL) {
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
