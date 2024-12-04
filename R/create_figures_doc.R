@@ -24,8 +24,23 @@ create_figures_doc <- function(resdir = NULL,
   )
 
   if (include_all) {
-    # Create tables quarto doc - maybe should add this as separate fxn - same with figs
+
+    # add header
     figures_doc <- paste0("## Figures \n \n")
+
+    # add chunk that imports all rdas
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(
+        paste0("rda_dir <- '", rda_dir, "/rda_dir'"),
+        label = "import-rda",
+        eval = "true",
+        add_option = TRUE
+        ),
+      "\n"
+    )
+
+
     # Recruitment ts figure
     figures_doc <- paste0(
       figures_doc,
