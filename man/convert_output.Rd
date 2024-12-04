@@ -24,8 +24,8 @@ Report.sso file for SS3, the rdat file for BAM, etc.)}
 "asap", "fims", "amak", "ms-java", "wham", "mas").}
 
 \item{fleet_names}{Names of fleets in the assessment model as
-shortened in the output file. Required for converting BAM
-model output.}
+shortened in the output file. If fleet names are not properly read, then
+indicate the fleets names as an acronym in a vector}
 
 \item{file_save}{TRUE/FALSE; Save the formatted object rather
 than calling the function and adding the formatted object to

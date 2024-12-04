@@ -31,8 +31,8 @@ create_figures_doc <- function(resdir = NULL,
       figures_doc,
       add_chunk(
         paste0("satf::plot_recruitment(dat = '", resdir, "/", model_results, "', model = '", model, "')"),
-        label = "recruitment",
-        eval = "false",
+        label = "fig-recruitment",
+        eval = "true",
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
@@ -67,8 +67,8 @@ create_figures_doc <- function(resdir = NULL,
     figures_doc <- paste0(
       figures_doc,
       add_chunk(plot_code,
-                label = "spawn_bio",
-                eval = "false",
+                label = "fig-spawn_bio",
+                eval = "true",
                 add_option = TRUE,
                 chunk_op = c(
                   glue::glue(
@@ -91,6 +91,154 @@ create_figures_doc <- function(resdir = NULL,
                 ),
       "\n"
     )
+
+    # B figure
+    plot_code <- paste0(
+      "satf::plot_biomass(dat = '", resdir, "/", model_results,
+      "', model = '", model,
+      "', ref_line = 'target', endyr = ", year, ")"
+    )
+
+
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(plot_code,
+                label = "fig-bio",
+                eval = "true",
+                add_option = TRUE,
+                chunk_op = c(
+                  glue::glue(
+                    "fig-cap: '",
+                    captions_alttext |>
+                      dplyr::filter(label == "tot_b" & type == "figure") |>
+                      dplyr::select(caption) |>
+                      as.character(),
+                    "'"
+                  ),
+                  glue::glue(
+                    "fig-alt: '",
+                    captions_alttext |>
+                      dplyr::filter(label == "tot_b" & type == "figure") |>
+                      dplyr::select(alt_text) |>
+                      as.character(),
+                    "'"
+                  )
+                )
+      ),
+      "\n"
+    )
+
+
+    # Landings figure
+    plot_code <- paste0(
+      "satf::plot_landings(dat = '", resdir, "/", model_results,
+      "', model = '", model,
+      "', ref_line = 'target', endyr = ", year, ")"
+    )
+
+
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(plot_code,
+                label = "fig-landings",
+                eval = "true",
+                add_option = TRUE,
+                chunk_op = c(
+                  glue::glue(
+                    "fig-cap: '",
+                    captions_alttext |>
+                      dplyr::filter(label == "landings" & type == "figure") |>
+                      dplyr::select(caption) |>
+                      as.character(),
+                    "'"
+                  ),
+                  glue::glue(
+                    "fig-alt: '",
+                    captions_alttext |>
+                      dplyr::filter(label == "landings" & type == "figure") |>
+                      dplyr::select(alt_text) |>
+                      as.character(),
+                    "'"
+                  )
+                )
+      ),
+      "\n"
+    )
+
+
+    # Recruitment deviations figure
+    plot_code <- paste0(
+      "satf::plot_recruitment_deviations(dat = '", resdir, "/", model_results,
+      "', model = '", model,
+      "', ref_line = 'target', endyr = ", year, ")"
+    )
+
+
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(plot_code,
+                label = "fig-recruitment_deviations",
+                eval = "true",
+                add_option = TRUE,
+                chunk_op = c(
+                  glue::glue(
+                    "fig-cap: '",
+                    captions_alttext |>
+                      dplyr::filter(label == "recruitment_deviations" & type == "figure") |>
+                      dplyr::select(caption) |>
+                      as.character(),
+                    "'"
+                  ),
+                  glue::glue(
+                    "fig-alt: '",
+                    captions_alttext |>
+                      dplyr::filter(label == "recruitment_deviations" & type == "figure") |>
+                      dplyr::select(alt_text) |>
+                      as.character(),
+                    "'"
+                  )
+                )
+      ),
+      "\n"
+    )
+
+
+    # spawning recruitment figure
+    plot_code <- paste0(
+      "satf::plot_spawning_recruitment(dat = '", resdir, "/", model_results,
+      "', model = '", model,
+      "', ref_line = 'target', endyr = ", year, ")"
+    )
+
+
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(plot_code,
+                label = "fig-spawn_recruitment",
+                eval = "true",
+                add_option = TRUE,
+                chunk_op = c(
+                  glue::glue(
+                    "fig-cap: '",
+                    captions_alttext |>
+                      dplyr::filter(label == "est_stock_recruitment" & type == "figure") |>
+                      dplyr::select(caption) |>
+                      as.character(),
+                    "'"
+                  ),
+                  glue::glue(
+                    "fig-alt: '",
+                    captions_alttext |>
+                      dplyr::filter(label == "est_stock_recruitment" & type == "figure") |>
+                      dplyr::select(alt_text) |>
+                      as.character(),
+                    "'"
+                  )
+                )
+      ),
+      "\n"
+    )
+
   } else {
     # add option for only adding specified figures
   }

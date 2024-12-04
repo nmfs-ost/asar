@@ -11,7 +11,8 @@ add_chunk(
   eval = "true",
   label = NULL,
   add_option = FALSE,
-  chunk_op = NULL
+  chunk_op = NULL,
+  rmark_op = NULL
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ connected by underscores).}
 \item{add_option}{TRUE/FALSE; Option to add additional chunk options. Default is false.}
 
 \item{chunk_op}{List of chunk options to add. For example: c("output: true", "error: false)}
+
+\item{rmark_op}{List of chunk options to add after indicating the language of the chunk as used in Rmarkdown.}
 }
 \value{
 Write an additional R chunk into the template using this function.
