@@ -4,7 +4,8 @@
 #'
 #' @param output_file Assessment model output file (e.g., the
 #'  Report.sso file for SS3, the rdat file for BAM, etc.)
-#' @param outdir Directory of the assessment model output file.
+#' @param outdir Directory of the assessment model output file. Defaults to
+#' working directory.
 #' @param model Assessment model used in evaluation ("ss3", "bam",
 #'  "asap", "fims", "amak", "ms-java", "wham", "mas").
 #' @param fleet_names Names of fleets in the assessment model as
@@ -13,7 +14,8 @@
 #' @param file_save TRUE/FALSE; Save the formatted object rather
 #'  than calling the function and adding the formatted object to
 #'  the global environment? Default is false.
-#' @param savedir Directory to save the converted output file.
+#' @param savedir Directory to save the converted output file. Defaults to
+#' working directory.
 #' @param save_name Name of the converted output file (do not use
 #'  spaces).
 #'
@@ -32,11 +34,11 @@
 #'
 convert_output <- function(
     output_file = NULL,
-    outdir = NULL,
+    outdir = getwd(),
     model = NULL,
     fleet_names = NULL,
     file_save = FALSE,
-    savedir = NULL,
+    savedir = getwd(),
     save_name = "std_model_output") {
   #### out_new ####
   # Blank dataframe and set up to mold output into
@@ -80,15 +82,15 @@ convert_output <- function(
   out_new <- out_new[-1, ]
 
   # pull together path
-  if (!is.null(outdir)) {
-    output_file <- paste(outdir, "/", output_file, sep = "")
-  } else {
+  if (file.exists(output_file)) {
     output_file <- output_file
+  } else {
+    output_file <- file.path(outdir, output_file)
   }
 
-  # Check if can locate output file
+  # check path
   if (!file.exists(output_file)) {
-    stop("output file path is invalid.")
+    stop("File not found.")
   }
 
   #### SS3 ####
@@ -706,36 +708,35 @@ convert_output <- function(
 
     #### BAM ####
   } else if (model %in% c("bam", "BAM")) {
-
     # Extract values from BAM output - model file after following ADMB2R
     dat <- dget(output_file)
 
     # Find fleet names
-    if(is.null(fleet_names)) {
+    if (is.null(fleet_names)) {
       # Extract names from indices
       indices <- dat$t.series |>
         dplyr::select(dplyr::contains("U.") & contains(".ob"))
       fleets_ind <- stringr::str_extract(as.vector(colnames(indices)), "(?<=U\\.)\\w+(?=\\.ob)")
       # Extract names from landings
       landings <- dat$t.series |>
-        dplyr::select(dplyr::contains("L.") & contains(".ob") |
-                      dplyr::contains("D.") & contains(".ob"))
+        dplyr::select(dplyr::contains("L.") & contains(".ob") |>
+          dplyr::contains("D.") & contains(".ob"))
       fleets_land <- stringr::str_extract(as.vector(colnames(landings)), "(?<=L\\.)\\w+(?=\\.ob)")
       fleets_disc <- stringr::str_extract(as.vector(colnames(landings)), "(?<=D\\.)\\w+(?=\\.ob)")
       # Extract names from lof F dev
       parm <- dat$parm.tvec |>
-        dplyr::select(dplyr::contains("log.F.dev.")|
-                        dplyr::contains("log.F.dev.") & contains(".D"))
+        dplyr::select(dplyr::contains("log.F.dev.") |
+          dplyr::contains("log.F.dev.") & contains(".D"))
       # fleets_parm_D <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+(?=\\.D)")
       fleets_parm <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+")
       fleets <- unique(c(fleets_ind, fleets_land, fleets_disc, fleets_parm))
       fleet_names <- fleets[!is.na(fleets)]
-      if(any(is.na(fleet_names))){
+      if (any(is.na(fleet_names))) {
         stop("No fleet names found in dataframe. Please indicate the abbreviations of fleet names using fleet_names arg.")
       }
     } else {
-    # check fleet names are input
-    # if (any(is.na(fleet_names))) {
+      # check fleet names are input
+      # if (any(is.na(fleet_names))) {
       fleet_names <- fleet_names
     }
     # Create list for morphed dfs to go into (for rbind later)
@@ -786,7 +787,8 @@ convert_output <- function(
                 df <- df |>
                   dplyr::rename_with(
                     ~ ifelse(max(as.numeric(df$year)) < 50,
-                           c("age_a"), c("year")),
+                      c("age_a"), c("year")
+                    ),
                     year
                   )
                 if (grepl("lcomp", names(extract[[1]][i]))) {
@@ -799,7 +801,7 @@ convert_output <- function(
                 }
                 df2 <- df |>
                   tidyr::pivot_longer(
-                    cols = -intersect(colnames(df), c("year","age_a")),
+                    cols = -intersect(colnames(df), c("year", "age_a")),
                     names_to = namesto,
                     values_to = "estimate"
                   ) |>
@@ -1156,7 +1158,7 @@ convert_output <- function(
   } else if (model == "amak") {
     stop("File not currently compatible.")
     #### JABBA ####
-  } else  if (tolower(model) == "jabba") {
+  } else if (tolower(model) == "jabba") {
     stop("File not currently compatible.")
   } else {
     stop("File not compatible.")
@@ -1164,10 +1166,13 @@ convert_output <- function(
 
   #### Exporting ####
   # Combind DFs into one
-  out_new <- Reduce(rbind, out_list) # |>
-  # dplyr::mutate(estimate = as.numeric(estimate),
-  #               uncertainty = as.numeric(uncertainty),
-  #               initial = as.numeric(initial))
+  out_new <- Reduce(rbind, out_list) |>
+    dplyr::mutate(
+      estimate = as.numeric(estimate),
+      uncertainty = as.numeric(uncertainty),
+      initial = as.numeric(initial)
+    ) |>
+    suppressWarnings()
   if (tolower(model) == "ss3") {
     con_file <- system.file("resources", "ss3_var_names.xlsx", package = "asar", mustWork = TRUE)
     var_names_sheet <- openxlsx::read.xlsx(con_file)
@@ -1185,8 +1190,10 @@ convert_output <- function(
   }
   if (file_save) {
     save_path <- paste(savedir, "/",
-                       ifelse(is.null(save_name), "converted_output", save_name),
-                       ".csv", sep = "")
+      ifelse(is.null(save_name), "converted_output", save_name),
+      ".csv",
+      sep = ""
+    )
     utils::write.csv(out_new, file = save_path, row.names = FALSE)
   } else {
     out_new

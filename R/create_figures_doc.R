@@ -30,9 +30,9 @@ create_figures_doc <- function(resdir = NULL,
     figures_doc <- paste0(
       figures_doc,
       add_chunk(
-        paste0("satf::plot_recruitment(dat = '", resdir, "/", model_results, "', model = '", model, "')"),
-        label = "fig-recruitment",
-        eval = "true",
+        paste0("satf::plot_recruitment(dat = output)"),
+        label = "recruitment",
+        eval = "false",
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
@@ -58,37 +58,33 @@ create_figures_doc <- function(resdir = NULL,
 
     # SB figure
     plot_code <- paste0(
-      "satf::plot_spawning_biomass(dat = '", resdir, "/", model_results,
-      "', model = '", model,
-      "', ref_line = 'target', endyr = ", year, ")"
+      "satf::plot_spawning_biomass(dat = output, ref_line = 'target', end_year = ", year, ")"
     )
-
-
     figures_doc <- paste0(
       figures_doc,
       add_chunk(plot_code,
-                label = "fig-spawn_bio",
-                eval = "true",
-                add_option = TRUE,
-                chunk_op = c(
-                  glue::glue(
-                    "fig-cap: '",
-                    captions_alttext |>
-                      dplyr::filter(label == "spawning_biomass" & type == "figure") |>
-                      dplyr::select(caption) |>
-                      as.character(),
-                    "'"
-                  ),
-                  glue::glue(
-                    "fig-alt: '",
-                    captions_alttext |>
-                      dplyr::filter(label == "spawning_biomass" & type == "figure") |>
-                      dplyr::select(alt_text) |>
-                      as.character(),
-                    "'"
-                    )
-                  )
-                ),
+        label = "spawn_bio",
+        eval = "false",
+        add_option = TRUE,
+        chunk_op = c(
+          glue::glue(
+            "fig-cap: '",
+            captions_alttext |>
+              dplyr::filter(label == "spawning_biomass" & type == "figure") |>
+              dplyr::select(caption) |>
+              as.character(),
+            "'"
+          ),
+          glue::glue(
+            "fig-alt: '",
+            captions_alttext |>
+              dplyr::filter(label == "spawning_biomass" & type == "figure") |>
+              dplyr::select(alt_text) |>
+              as.character(),
+            "'"
+          )
+        )
+      ),
       "\n"
     )
 
@@ -245,6 +241,7 @@ create_figures_doc <- function(resdir = NULL,
 
   # Save figures doc to template folder
   utils::capture.output(cat(figures_doc),
-                        file = paste0(subdir, "/", "09_figures.qmd"),
-                        append = FALSE)
+    file = paste0(subdir, "/", "09_figures.qmd"),
+    append = FALSE
+  )
 }

@@ -21,6 +21,9 @@ create_title <- function(
     year <- format(Sys.Date(), "%Y")
   }
 
+  # Species latin name with italics latex fxn
+  spp_latin <- paste("\\textit{", spp_latin, "}", sep = "")
+
   # Create title dependent on regional language
   if (office == "AFSC") {
     if (is.null(complex)) {
@@ -44,6 +47,8 @@ create_title <- function(
   } else if (office == "NWFSC") {
     if (is.null(region)) {
       title <- paste0("Status of the ", species, " stock along the U.S. West Coast in ", year)
+    } else if (grepl("coast", tolower(region))) {
+      title <- paste0("Status of the ", species, " stock off the ", region, " in ", year)
     } else {
       # region in NW should be specified as a state
       title <- paste0("Status of the ", species, " stock in U.S. waters off the coast of ", region, " in ", year)

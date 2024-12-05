@@ -35,6 +35,7 @@ connected by underscores).}
 
 \item{rmark_op}{List of chunk options to add after indicating the language of the chunk as used in Rmarkdown.}
 }
+
 \value{
 Write an additional R chunk into the template using this function.
 The code can be written as usual, just remember to put it entirely

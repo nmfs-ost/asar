@@ -113,7 +113,7 @@
 #' create_template(
 #'   new_section = "a_new_section",
 #'   section_location = "before-introduction",
-#'   )
+#' )
 #'
 #'
 #' create_template(
@@ -130,7 +130,7 @@
 #'   model = "SS3",
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction",
-#'   )
+#' )
 #'
 #' asar::create_template(
 #'   new_template = TRUE,
@@ -421,7 +421,7 @@ create_template <- function(
         ) |>
         dplyr::select(name, office) |>
         dplyr::filter(name %in% author)
-      authors <- authors[match(author, authors$name),]
+      authors <- authors[match(author, authors$name), ]
 
       if (include_affiliation) {
         affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
@@ -567,7 +567,7 @@ create_template <- function(
         yaml,
         format_quarto(format = format),
         # Add in output file name (Rendered name of pdf)
-        "output-file: '", stringr::str_replace(species, " ", "_"), "_SAR_", year, "'", "\n"
+        "output-file: '", stringr::str_replace_all(species, " ", "_"), "_SAR_", year, "'", " \n"
       )
 
       # Add lua filters for compliance
@@ -616,7 +616,7 @@ create_template <- function(
       # )
 
       # Add option for bib file
-      if(!is.null(bib_file)) {
+      if (!is.null(bib_file)) {
         bib <- glue::glue(
           "bibliography: ", "\n"
         )
