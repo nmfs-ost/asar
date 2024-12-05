@@ -1,5 +1,6 @@
 #' Create Quarto Document of Tables
 #'
+#' @inheritParams create_template
 #' @param resdir directory where the results file is located
 #' @param model_results name of the results file of assessment output
 #' @param model stock assessment model
@@ -14,47 +15,66 @@ create_tables_doc <- function(resdir = NULL,
                               model_results = NULL,
                               model = c("SS3", "BAM", "ASAP", "AMAK", "WHAM"),
                               subdir = NULL,
-                              include_all = TRUE) {
+                              include_all = TRUE,
+                              rda_dir = NULL) {
+
   model <- match.arg(model, several.ok = FALSE)
 
-  captions_alttext <- utils::read.csv(
-    system.file("resources", "captions_alttext.csv", package = "asar")
-  )
-
   if (include_all) {
-    # Create tables quarto doc - maybe should add this as separate fxn - same with figs
+
+    # add header
+    tables_doc <- paste0("## Tables \n \n")
+
+    # add chunk that creates object as the directory of all rdas
     tables_doc <- paste0(
-      "## Tables \n \n",
-      # Indices table
+      tables_doc,
       add_chunk(
-        paste0(
-          "satf::table_indices(dat = '", resdir, "/", model_results, "', model = '", model, "')"
-        ),
-        label = "tbl-indices",
+        paste0("rda_dir <- '", rda_dir, "/rda_files'"),
+        label = "set-rda-dir",
+        eval = "true"
+      ),
+      "\n"
+    )
+
+    # Indices table
+    ## import table, caption
+    tables_doc <- paste0(
+      tables_doc,
+      add_chunk(
+        paste0("# load rda
+load(file.path(rda_dir, 'indices_table.rda'))\n
+# save rda with plot-specific name
+indices_plot_rda <- rda\n
+# remove generic rda object
+rm(rda)\n
+# save table, caption as separate objects
+indices_table <- indices_table_rda$table
+indices_cap <- indices_table_rda$cap"),
+        label = "tbl-indices-setup",
+        eval = "true"
+      ),
+      "\n"
+    )
+
+    ## add table
+    tables_doc <- paste0(
+      tables_doc,
+      add_chunk(
+        paste0("indices_table"),
+        label = "tbl-indices-plot",
         eval = "false",
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "tbl-cap: '",
-            captions_alttext |>
-              dplyr::filter(label == "indices" & type == "table") |>
-              dplyr::select(caption) |>
-              as.character(),
-            "'"
+            "tbl-cap: indices_cap"
           )
         )
-      )
+      ),
+      "\n"
     )
 
     # Add other tables follow the same above format
-    # tables_doc <- paste0("/n",
-    #                      tables_doc,
-    #                      add_chunk(
-    #                        paste0(
-    #                          "satf::table_XX()"
-    #                        )
-    #                       )
-    #                      )
+
   } else {
     # add option for only adding specified tables
   }
