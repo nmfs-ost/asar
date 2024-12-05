@@ -64,3 +64,4 @@ create_tables_doc <- function(resdir = NULL,
     file = paste0(subdir, "/", "08_tables.qmd"),
     append = FALSE
   )
+}

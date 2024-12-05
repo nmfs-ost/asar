@@ -189,7 +189,7 @@ in the console.
 create_template(
   new_section = "a_new_section",
   section_location = "before-introduction",
-  )
+)
 
 
 create_template(
@@ -206,7 +206,7 @@ create_template(
   model = "SS3",
   new_section = "an_additional_section",
   section_location = "after-introduction",
-  )
+)
 
 asar::create_template(
   new_template = TRUE,
