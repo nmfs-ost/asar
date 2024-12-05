@@ -753,6 +753,7 @@ convert_output <- function(
     # Not transforming or inclusing info chunk
     for (p in 2:length(dat)) {
       extract <- dat[p]
+      message("Processing ", names(extract))
       # is the object class matrix, list, or vector
       if (is.vector(extract[[1]])) {
         if (is.list(extract[[1]])) { # indicates vector and list
