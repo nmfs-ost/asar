@@ -100,14 +100,14 @@
 #' using the image included in the project's repository.
 #' @param bib_file File path to a .bib file used for citing references in
 #' the report
-#' @param rda_dir If applicable, the location of the folder containing .rda files
-#' ("rda_files") containing figures, tables, captions, and alt text
-#' that were already made with `satf`. Specifically, the folder would have
+#' @param rda_dir The location of the folder containing .rda files
+#' ("rda_files") already made with `satf`, or, if the user has not used
+#' `satf` to make those .rda files already, rda_dir represents the location
+#' that will contain .rda files in an "rda_files" folder. The folder would have
 #' been made with `satf::exp_all_figs_tables()`, or by exporting files
-#' by running individual `satf` figure- and table-generating functions. If you
-#' have not used `satf` to generate these .rda files, leave this blank and
-#' the .rda files will be generated for you. If you have used `satf` to generate
-#' these .rda files, you can leave the arguments below blank.
+#' by running individual `satf` figure- and table-generating functions.
+#' If you have used `satf` to generate these .rda files, you can leave
+#' the arguments below blank.
 #' @inheritParams satf::plot_recruitment
 #' @param ref_line An argument inherited from `satf::plot_spawning_biomass.R`.
 #' A string specifying the type of reference you want to
@@ -392,6 +392,33 @@ create_template <- function(
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
           warning("Report template files were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder.")
         }
+      }
+
+      print(paste0("rda dir: ", rda_dir))
+      premade_rda <- file.path(rda_dir, "rda_files")
+      print(paste("premade rda:", premade_rda))
+
+      # run satf::exp_all_figs_tables() if rda files not premade
+      if (dir.exists(premade_rda) == FALSE){
+
+        # load converted output
+        output <- utils::read.csv(paste0(resdir, "/", model_results))
+
+        # run satf::exp_all_figs_tables() to make rda files
+        satf::exp_all_figs_tables(
+          dat = output,
+          unit_label = unit_label,
+          scale_amount = scale_amount,
+          end_year = end_year,
+          n_projected_years = n_projected_years,
+          relative = relative,
+          make_rda = TRUE,
+          rda_dir = rda_dir,
+          ref_line = ref_line,
+          spawning_biomass_label = spawning_biomass_label,
+          recruitment_label = recruitment_label,
+          ref_line_sb = ref_line_sb
+        )
       }
 
       # Create tables qmd

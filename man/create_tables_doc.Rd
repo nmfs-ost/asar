@@ -9,7 +9,8 @@ create_tables_doc(
   model_results = NULL,
   model = c("SS3", "BAM", "ASAP", "AMAK", "WHAM"),
   subdir = NULL,
-  include_all = TRUE
+  include_all = TRUE,
+  rda_dir = NULL
 )
 }
 \arguments{
@@ -22,6 +23,15 @@ create_tables_doc(
 \item{subdir}{subdirectory where the assessment report template is being stored}
 
 \item{include_all}{include all default tables for a stock assessment report}
+
+\item{rda_dir}{The location of the folder containing .rda files
+("rda_files") already made with \code{satf}, or, if the user has not used
+\code{satf} to make those .rda files already, rda_dir represents the location
+that will contain .rda files in an "rda_files" folder. The folder would have
+been made with \code{satf::exp_all_figs_tables()}, or by exporting files
+by running individual \code{satf} figure- and table-generating functions.
+If you have used \code{satf} to generate these .rda files, you can leave
+the arguments below blank.}
 }
 \value{
 Create a quarto document as part of a stock assessment outline with
