@@ -1193,4 +1193,5 @@ convert_output <- function(
   } else {
     out_new
   }
+  message("Finished!")
 } # close function
