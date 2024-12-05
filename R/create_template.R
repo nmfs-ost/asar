@@ -105,9 +105,31 @@
 #' that were already made with `satf`. Specifically, the folder would have
 #' been made with `satf::exp_all_figs_tables()`, or by exporting files
 #' by running individual `satf` figure- and table-generating functions. If you
-#' have not used `satf` to generate these .rda files, leave this blank, and
-#' the .rda files will be generated for you.
-#'
+#' have not used `satf` to generate these .rda files, leave this blank and
+#' the .rda files will be generated for you. If you have used `satf` to generate
+#' these .rda files, you can leave the arguments below blank.
+#' @inheritParams satf::plot_recruitment
+#' @param ref_line An argument inherited from `satf::plot_spawning_biomass.R`.
+#' A string specifying the type of reference you want to
+#' compare spawning biomass to. The default is `"target"`, which looks for
+#' `"spawning_biomass_target"` in the `"label"` column of `dat`. The actual
+#' searching in `dat` is case agnostic and will work with either upper- or
+#' lower-case letters but you must use one of the options specified in the
+#' default list to ensure that the label on the figure looks correct
+#' regardless of how it is specified in `dat`.
+#' @param spawning_biomass_label An argument inherited from
+#' `satf::plot_spawn_recruitment.R`. Units for spawning biomass.
+#' @param recruitment_label An argument inherited from
+#' `satf::plot_spawn_recruitment.R`. Units for recruitment.
+#' @param ref_line_sb An argument with inherited from `satf::plot_spawning_biomass.R`
+#' (under the parameter name `ref_line`, changed slightly to differentiate from
+#' the ref_line indicated for `satf::plot_biomass.`) A string specifying the type of
+#' reference you want to compare spawning biomass to. The default is `"target"`,
+#' which looks for `"spawning_biomass_target"` in the `"label"` column of `dat`.
+#' The actual searching in `dat` is case agnostic and will work with either upper- or
+#' lower-case letters but you must use one of the options specified in the
+#' default list to ensure that the label on the figure looks correct
+#' regardless of how it is specified in `dat`.
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
 #'         resources and workflows from different U.S. Fishery Science Centers.
@@ -187,7 +209,17 @@
 #'   include_tables = TRUE,
 #'   add_image = TRUE,
 #'   spp_image = "dir/containing/spp_image",
-#'   rda_dir = "C:/Users/Documents"
+#'   rda_dir = "C:/Users/Documents",
+#'   unit_label = "metric tons",
+#'   scale_amount = 1,
+#'   end_year = NULL,
+#'   n_projected_years = 10,
+#'   relative = FALSE,
+#'   make_rda = FALSE,
+#'   ref_line = c("target", "MSY", "msy", "unfished"),
+#'   spawning_biomass_label = "metric tons",
+#'   recruitment_label = "metric tons",
+#'   ref_line_sb = c("target", "MSY", "msy", "unfished")
 #' )
 #' }
 #'
@@ -226,7 +258,18 @@ create_template <- function(
     add_image = FALSE,
     spp_image = NULL,
     bib_file = NULL,
-    rda_dir = NULL) {
+    rda_dir = NULL,
+    unit_label = "metric tons",
+    scale_amount = 1,
+    end_year = NULL,
+    n_projected_years = 10,
+    relative = FALSE,
+    make_rda = FALSE,
+    ref_line = c("target", "MSY", "msy", "unfished"),
+    spawning_biomass_label = "metric tons",
+    recruitment_label = "metric tons",
+    ref_line_sb = c("target", "MSY", "msy", "unfished")
+    ) {
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -356,7 +399,8 @@ create_template <- function(
             resdir = resdir,
             model_results = model_results,
             model = model,
-            subdir = subdir
+            subdir = subdir,
+            rda_dir = rda_dir
           )
         } else {
           tables_doc <- paste0(
@@ -388,7 +432,8 @@ create_template <- function(
             model_results = model_results,
             model = model,
             subdir = subdir,
-            year = year
+            year = year,
+            rda_dir = rda_dir
           )
         } else {
           figures_doc <- paste0("## Figures \n")
