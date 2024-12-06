@@ -18,7 +18,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-
 When someone reads your document, they may read it with a [screen reader](https://www.afb.org/blindness-and-low-vision/using-technology/assistive-technology-products/screen-readers). To ensure that they are able to interpret your document as intended, the document must contain some essential features, like tagged elements, alternative text, and metadata.
 
 We have built `asar` so that the produced documents uphold several [federal accessibility standards](https://www.section508.gov/test/documents/). However, to achieve our goal of producing accessible documents, **you must complete a few tasks yourself**. But don't fret! We will help you. Below, we provide several resources to help you achieve this important goal.
@@ -41,22 +40,18 @@ We have built `asar` so that the produced documents uphold several [federal acce
 
 After using `create_template()` to create a skeleton of your document, you will see chunks containing `fig-alt:` in the figures.qmd files, like this:
 
+````{verbatim}
 ```{r}
 #| eval: false
-#| fig-alt: '...' 
+#| fig-alt: '...'
 ```
+````
 
 The [`fig-alt`](https://quarto.org/docs/computations/execution-options.html#caption-and-alt-text) parameter in this chunk signifies that this is where you should add a description of your figure that can be read aloud by the screen reader. This description, otherwise known as [alternative text](https://www.section508.gov/create/alternative-text/) should answer this essential question:
 
 > What is this image conveying?
 
 ### Which information belongs in alt text?
-
-The [`fig-alt`](https://quarto.org/docs/computations/execution-options.html#caption-and-alt-text) parameter in this chunk signifies that this is where you should add a description of your figure that can be read aloud by the screen reader. This description, otherwise known as [alternative text](https://www.section508.gov/create/alternative-text/) (alt text for short) should answer this essential question:
-
-> What is this image conveying?
-
-### How do I write alt text?
 
 While tempting, tools like AI cannot be used to easily answer this question. Additionally, one should not use the caption as the alt text. Here are four essential ingredients for well-written alt text, as described by Drs. Silvia Canelón and Liz Hare in their talk, "Revealing Room for Improvement in Accessibility within a Social Media Data Visualization Learning Community"[^1]:
 
@@ -108,7 +103,6 @@ The figure's alt text is written as such:
 
 *A line graph showing how tree circumference increases with age for a set of 5 orange trees. Age, shown on the x axis, is measured in days since 1968/12/31 and spans from 118-1582 days. Circumference, shown on the y axis, spans from 30-214 mm. All trees showed an increasing trend of trunk circumference with age, with each tree starting with a circumference of 30-33 mm at age 0 and ending with a circumference of 140-216 mm at age 1582. At age 1582, the tree with the largest circumference was tree 4, followed by trees 2, 5, 1, and 3.*
 
-
 ### How to write ingredient #4
 
 > Ingredient #4 = the relationship between the variables shown (i.e., what the figure is conveying).
@@ -144,4 +138,3 @@ Your report will likely include several acronyms (e.g., NOAA in place of the Nat
 ## Tables
 
 Please do not place figures inside tables. Doing so makes it very difficult for software to properly identify the structure of (i.e., *tag*) the table and its inner elements.
-
