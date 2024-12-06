@@ -269,13 +269,15 @@ create_template <- function(
     office <- ""
   }
 
-  if (is.null(office) | office == "") {
-    subdir <- fs::path(file_dir, "stock_assessment_reports", "report")
-  } else if (!is.null(region)) {
-    subdir <- fs::path(file_dir, "stock_assessment_reports", office, species, region, year)
-  } else {
-    subdir <- fs::path(file_dir, "stock_assessment_reports", office, species, year)
-  }
+  # Create subdirectory for files
+  subdir <- fs::path(file_dir, "report")
+  # if (is.null(office) | office == "") {
+  #   subdir <- fs::path(file_dir, "stock_assessment_reports", "report")
+  # } else if (!is.null(region)) {
+  #   subdir <- fs::path(file_dir, "stock_assessment_reports", office, species, region, year)
+  # } else {
+  #   subdir <- fs::path(file_dir, "stock_assessment_reports", office, species, year)
+  # }
 
   # Supporting files folder
   supdir <- file.path(subdir, "support_files")
