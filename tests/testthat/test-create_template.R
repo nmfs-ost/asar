@@ -57,11 +57,11 @@ test_that("create_template() creates correct files", {
 
   create_template()
 
-  no_inputs_output_path <- file.path(path, "stock_assessment_reports", "report")
+  no_inputs_output_path <- file.path(path, "report")
   object_report_files <- list.files(no_inputs_output_path)
   object_support_files <- list.files(file.path(no_inputs_output_path, "support_files"))
 
-  on.exit(unlink(file.path(path, "stock_assessment_reports"),
+  on.exit(unlink(file.path(path, "reports"),
                  recursive = TRUE), add = TRUE)
   # Check if all expected report files are created
   expect_true(all(sort(expect_report_files) == sort(object_report_files)))
@@ -89,11 +89,11 @@ test_that("create_template() creates correct files", {
     model = "SS3"
   )
 
-  long_inputs_output_path <- file.path(path, "stock_assessment_reports", office, species, year)
+  long_inputs_output_path <- file.path(path, "reports", office, species, year)
   object_report_files <- list.files(long_inputs_output_path)
   object_support_files <- list.files(file.path(long_inputs_output_path, "support_files"))
 
-  on.exit(unlink(file.path(path, "stock_assessment_reports"), recursive = TRUE), add = TRUE)
+  on.exit(unlink(file.path(path, "reports"), recursive = TRUE), add = TRUE)
   # Define expected report files for Dover sole
   expect_report_files <- c(
     "01_executive_summary.qmd",
@@ -149,7 +149,7 @@ test_that("warning is triggered for missing models", {
     ),
     regexp = "Results file or model name not defined."
   )
-  on.exit(unlink(file.path(getwd(), "stock_assessment_reports"),
+  on.exit(unlink(file.path(getwd(), "reports"),
                  recursive = TRUE), add = TRUE)
 })
 
@@ -193,7 +193,7 @@ test_that("warning is triggered for existing files", {
     ),
     regexp = "There are files in this location."
   )
-  on.exit(unlink(file.path(getwd(), "stock_assessment_reports"), recursive = TRUE), add = TRUE)
+  on.exit(unlink(file.path(getwd(), "report"), recursive = TRUE), add = TRUE)
 })
 
 test_that("file_dir works", {
@@ -224,7 +224,7 @@ test_that("file_dir works", {
     file_dir = dir
   )
 
-  file_path <- file.path(dir, "stock_assessment_reports", office, species, year)
+  file_path <- file.path(dir, "reports", office, species, year)
   expect_gt(length(list.files(file_path)), 1)
 
   expect_gte(length(list.files(dir)), 1)

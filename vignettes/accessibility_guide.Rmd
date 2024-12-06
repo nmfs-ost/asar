@@ -42,6 +42,7 @@ We have built `asar` so that the produced documents uphold several [federal acce
 After using `create_template()` to create a skeleton of your document, you will see chunks containing `fig-alt:` in the figures.qmd files, like this:
 
 ```{r}
+#| eval: false
 #| fig-alt: '...' 
 ```
 
