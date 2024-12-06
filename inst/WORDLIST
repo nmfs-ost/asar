@@ -1,6 +1,8 @@
 AFSC
 AMAK
 BAM
+Canelón
+Drs
 Filepath
 NEFSC
 NOAA
@@ -10,6 +12,7 @@ PIFSC
 Pomatomus
 REPO
 Rdata
+Rmarkdown
 SAR
 SEFSC
 SSC
@@ -17,6 +20,7 @@ SWFSC
 YAML
 amak
 bam
+conf
 csv
 docx
 dover
@@ -35,6 +39,7 @@ outdir
 patrick
 petrale
 pre
+prewritten
 qmd
 rdat
 rdata
@@ -49,6 +54,3 @@ subfiles
 tex
 titlepage
 xlsx
-Canelón
-Drs
-conf

@@ -719,7 +719,7 @@ convert_output <- function(
       fleets_ind <- stringr::str_extract(as.vector(colnames(indices)), "(?<=U\\.)\\w+(?=\\.ob)")
       # Extract names from landings
       landings <- dat$t.series |>
-        dplyr::select(dplyr::contains("L.") & contains(".ob") |
+        dplyr::select(dplyr::contains("L.") & contains(".ob") |>
           dplyr::contains("D.") & contains(".ob"))
       fleets_land <- stringr::str_extract(as.vector(colnames(landings)), "(?<=L\\.)\\w+(?=\\.ob)")
       fleets_disc <- stringr::str_extract(as.vector(colnames(landings)), "(?<=D\\.)\\w+(?=\\.ob)")
