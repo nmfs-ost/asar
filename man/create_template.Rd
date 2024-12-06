@@ -205,6 +205,11 @@ By default this number is set to 10}
 be relative spawning biomass. The default is `FALSE`. `ref_line` indicates
 which reference point to use.}
 
+\item{make_rda}{This argument is automatically assessed based on the presence
+or absence of .rda files and should be left blank. TRUE/FALSE; indicate
+whether to produce an .rda file containing a list with the figure/table,
+caption, and alternative text (if figure) for each figure and table.}
+
 \item{ref_line}{An argument inherited from \code{satf::plot_spawning_biomass.R}.
 A string specifying the type of reference you want to
 compare spawning biomass to. The default is \code{"target"}, which looks for

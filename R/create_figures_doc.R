@@ -31,7 +31,7 @@ create_figures_doc <- function(resdir = NULL,
       figures_doc,
       add_chunk(
         paste0("rda_dir <- '", rda_dir, "/rda_files'"),
-        label = "set-rda-dir",
+        label = "set-rda-dir-figs",
         eval = "true"
         ),
       "\n"
