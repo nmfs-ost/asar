@@ -30,8 +30,8 @@ create_tables_doc <- function(resdir = NULL,
       tables_doc,
       add_chunk(
         paste0("rda_dir <- '", rda_dir, "/rda_files'"),
-        label = "set-rda-dir",
-        eval = "true"
+        label = "set-rda-dir-tbls",
+        eval = "false"
       ),
       "\n"
     )
