@@ -402,12 +402,8 @@ create_template <- function(
         }
       }
 
-      print(paste0("rda dir: ", rda_dir))
-      premade_rda <- file.path(rda_dir, "rda_files")
-      print(paste("premade rda:", premade_rda))
-
       # run satf::exp_all_figs_tables() if rda files not premade
-      if (dir.exists(premade_rda) == FALSE){
+      if (dir.exists(file.path(rda_dir, "rda_files")) == FALSE){
 
         # load converted output
         output <- utils::read.csv(paste0(resdir, "/", model_results))
