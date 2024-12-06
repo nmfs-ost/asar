@@ -89,7 +89,7 @@ test_that("create_template() creates correct files", {
     model = "SS3"
   )
 
-  long_inputs_output_path <- file.path(path, "reports", office, species, year)
+  long_inputs_output_path <- file.path(path, "reports")
   object_report_files <- list.files(long_inputs_output_path)
   object_support_files <- list.files(file.path(long_inputs_output_path, "support_files"))
 
@@ -224,7 +224,7 @@ test_that("file_dir works", {
     file_dir = dir
   )
 
-  file_path <- file.path(dir, "reports", office, species, year)
+  file_path <- file.path(dir, "reports")
   expect_gt(length(list.files(file_path)), 1)
 
   expect_gte(length(list.files(dir)), 1)
