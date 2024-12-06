@@ -1099,10 +1099,10 @@ convert_output <- function(
                 )
               )
           } else {
-            df2 <- df2 |>
+            df3 <- df2 |>
               dplyr::mutate(
-                fleet = NA,
-                age = NA,
+                fleet = ifelse(any(colnames(df2) %in% c("fleet")), fleet, NA),
+                age = ifelse(any(colnames(df2) %in% c("age")), age, NA),
                 label = label,
                 module_name = names(extract)
               )
@@ -1198,7 +1198,7 @@ convert_output <- function(
     )
     utils::write.csv(out_new, file = save_path, row.names = FALSE)
   } else {
-    out_new
+    return(out_new)
   }
   message("Finished!")
 } # close function
