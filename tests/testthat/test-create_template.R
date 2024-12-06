@@ -224,7 +224,7 @@ test_that("file_dir works", {
     file_dir = dir
   )
 
-  file_path <- file.path(dir, "reports")
+  file_path <- file.path(dir, "report")
   expect_gt(length(list.files(file_path)), 1)
 
   expect_gte(length(list.files(dir)), 1)
