@@ -25,6 +25,7 @@ csv
 docx
 dover
 ect
+filepath
 fims
 flextable
 ggplot
@@ -41,6 +42,8 @@ petrale
 pre
 prewritten
 qmd
+rda
+rda's
 rdat
 rdata
 roboto
