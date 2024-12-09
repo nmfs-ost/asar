@@ -325,6 +325,10 @@ create_template <- function(
         question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
 
         if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+          # remove old skeleton if present
+          if (any(grepl("_skeleton.qmd", list.files(subdir)))) {
+            file.remove(file.path(subdir, (list.files(subdir)[grep("_skeleton.qmd", list.files(subdir))])))
+          }
           # copy quarto files
           file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = TRUE) |> suppressWarnings()
           # copy before-body tex
@@ -569,7 +573,7 @@ create_template <- function(
         yaml,
         format_quarto(format = format),
         # Add in output file name (Rendered name of pdf)
-        "output-file: '", stringr::str_replace_all(species, " ", "_"), "_SAR_", year, "'", " \n"
+        "output-file: '", stringr::str_replace_all(species, " ", "_"), ifelse(is.null(species), "SAR_", "_SAR_"), year, "'", " \n"
       )
 
       # Add lua filters for compliance
