@@ -1099,7 +1099,7 @@ convert_output <- function(
                 )
               )
           } else {
-            df3 <- df2 |>
+            df2 <- df2 |>
               dplyr::mutate(
                 fleet = ifelse(any(colnames(df2) %in% c("fleet")), fleet, NA),
                 age = ifelse(any(colnames(df2) %in% c("age")), age, NA),
