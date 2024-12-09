@@ -123,7 +123,45 @@ There is no one-size-fits-all approach for explaining what a figure is conveying
 
 -   Describe where most points fall (in the four quadrants).
 
-### How to edit your report's alt text
+### How to edit your report's alt text and captions
+
+To edit your rda’s alt text, follow these steps:
+
+1.  Open your report's 09_figures.qmd file.
+2.  Run the first code chunk, which saves the filepath of your rda directory as an object (it has the label `"set-rda-dir-figs"`).
+3.  Find the two code chunks associated with the figure you're interested (e.g., recruitment). Run the first chunk, which will have "setup" in the label (e.g., `"fig-recruitment-setup"`,`"fig-spawning_biomass-setup"`, etc.).
+4.  **Add to the alt text by** pasting the existing alt text with a new string *within the chunk*. To do this, find your existing alt text object, which is an object named with the figure's topic and "alt_text" (e.g., `recruitment_alt_text`). Then, make an object (a string) containing your additional text (e.g., `new_alt_text`). Then, paste together the existing alt text object and your new text object. For example:
+
+```{r, eval = FALSE}
+
+# the original alt text for the recruitment figure
+recruitment_alt_text
+
+# the new text that will be added on to the recruitment figure's alt text
+new_alt_text <- "This is my new alt text."
+
+# add the new text to the old text
+recruitment_alt_text <- paste0(recruitment_alt_text, new_alt_text)
+```
+
+5.  **Replace the alt text by** updating the original alt text object *within the chunk*. To do this, reassign the original alt text object as your new text object. For example:
+
+```{r, eval = FALSE}
+
+# the original alt text for the recruitment figure
+recruitment_alt_text
+
+# the new text that will replace the recruitment figure's alt text
+new_alt_text <- "This is my new alt text."
+
+# replace the old alt text with the new alt text
+recruitment_alt_text <- new_alt_text
+```
+
+**NOTES**:
+
+1.  Changes to your alt text will be saved within your 09_figures.qmd file, but not within the rda file itself.
+2.  Edit figure and table captions with the same process. Just substitute mentions of alt text with caption or cap, depending on the context.
 
 ### More resources
 
