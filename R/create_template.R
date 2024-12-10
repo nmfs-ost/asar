@@ -261,7 +261,7 @@ create_template <- function(
     include_tables = TRUE,
     add_image = FALSE,
     spp_image = NULL,
-    bib_file = NULL,
+    bib_file = "asar_references.bib",
     rda_dir = NULL,
     unit_label = "metric tons",
     scale_amount = 1,
@@ -362,6 +362,17 @@ create_template <- function(
         spp_image <- system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar")
       }
 
+      # Add bib file
+      if (bib_file == "asar_references.bib") {
+        bib_loc <- system.file("resources", "asar_references.bib", package = "asar")
+        bib_name <- bib_file
+      } else {
+        # check if enter file exists
+        if (!file.exists(bib_file)) stop(".bib file not found.")
+        bib_loc <- bib_file # dirname(bib_file)
+        bib_name <- tail(stringr::str_split(bib_file, "/")[[1]], n=1)
+      }
+
       # Check if there are already files in the folder
       if (length(list.files(subdir)) < 2) {
         # copy quarto files
@@ -374,6 +385,8 @@ create_template <- function(
         create_inheader_tex(species = species, year = year, subdir = supdir)
         # Copy species image from package
         file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
+        # Copy bib file
+        file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
         # Copy us doc logo
         file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
       } else {
@@ -395,6 +408,8 @@ create_template <- function(
           create_inheader_tex(species = species, year = year, subdir = supdir)
           # Copy species image from package
           file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
+          # Copy bib file
+          file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
           # Copy us doc logo
           file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
@@ -695,17 +710,17 @@ create_template <- function(
       # )
 
       # Add option for bib file
-      if (!is.null(bib_file)) {
+      # if (!is.null(bib_file)) {
         bib <- glue::glue(
           "bibliography: ", "\n"
         )
-        bib_all <- paste("  ", "- ", bib_file, "\n", collapse = "")
+        bib_all <- paste("  ", "- ", bib_name, "\n", collapse = "")
         bib <- glue::glue(
           bib, "\n",
           bib_all, "\n"
         )
         yaml <- paste0(yaml, bib)
-      }
+      # }
       # add in else statement once a national .bib file is made
 
       # Close yaml
@@ -896,7 +911,8 @@ create_template <- function(
 
           "# female SB (placeholder)", "\n"
         ),
-        label = "output_and_quantities"
+        label = "output_and_quantities",
+        eval = ifelse(is.null(model_results), "false", "true")
       )
       # Add page for citation of assessment report
       citation <- create_citation(
