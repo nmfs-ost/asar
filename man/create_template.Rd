@@ -38,7 +38,7 @@ create_template(
   include_tables = TRUE,
   add_image = FALSE,
   spp_image = NULL,
-  bib_file = NULL,
+  bib_file = "asar_references.bib",
   rda_dir = NULL,
   unit_label = "metric tons",
   scale_amount = 1,
