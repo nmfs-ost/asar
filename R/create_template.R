@@ -370,7 +370,7 @@ create_template <- function(
         # check if enter file exists
         if (!file.exists(bib_file)) stop(".bib file not found.")
         bib_loc <- bib_file # dirname(bib_file)
-        bib_name <- tail(stringr::str_split(bib_file, "/")[[1]], n=1)
+        bib_name <- utils::tail(stringr::str_split(bib_file, "/")[[1]], n=1)
       }
 
       # Check if there are already files in the folder
