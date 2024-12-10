@@ -41,6 +41,7 @@ test_that("create_template() creates correct files", {
     "10_notes.qmd",
     "11_appendix.qmd",
     "SAR_species_skeleton.qmd",
+    "asar_references.bib",
     "support_files"
     )
 
@@ -112,6 +113,7 @@ test_that("create_template() creates correct files", {
     "10_notes.qmd",
     "11_appendix.qmd",
     "SAR_Dover_sole_skeleton.qmd",
+    "asar_references.bib",
     "support_files"
   )
   # Define expected support files for Dover sole
