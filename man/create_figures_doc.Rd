@@ -10,7 +10,8 @@ create_figures_doc(
   model = c("SS3", "BAM", "ASAP", "AMAK", "WHAM"),
   year = NULL,
   subdir = NULL,
-  include_all = TRUE
+  include_all = TRUE,
+  rda_dir = NULL
 )
 }
 \arguments{
@@ -34,6 +35,15 @@ the stock (e.g., "BAM", "SS3", "AMAK", "ASAP", etc.).}
 
 \item{include_all}{TRUE/FALSE; Option to include all default
 figures for a stock assessment report. Default is true.}
+
+\item{rda_dir}{The location of the folder containing .rda files
+("rda_files") already made with \code{satf}, or, if the user has not used
+\code{satf} to make those .rda files already, rda_dir represents the location
+that will contain .rda files in an "rda_files" folder. The folder would have
+been made with \code{satf::exp_all_figs_tables()}, or by exporting files
+by running individual \code{satf} figure- and table-generating functions.
+If you have used \code{satf} to generate these .rda files, you can leave
+the arguments below blank.}
 }
 \value{
 A quarto document with pre-loaded R chunk that adds the
