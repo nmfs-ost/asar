@@ -861,7 +861,7 @@ create_template <- function(
           "  ", "  ", "is.na(age)) |>", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
 
-          "# spawning biomass in the last year",
+          "# spawning biomass in the last year\n",
           "sbend <- output2 |>", "\n",
           "  ", "dplyr::filter(grepl('spawning_biomass', label), year == end_year) |>", "\n",
           "  ", "dplyr::pull(estimate) |>", "\n",
