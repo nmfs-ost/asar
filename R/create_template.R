@@ -272,8 +272,7 @@ create_template <- function(
     ref_line = c("target", "MSY", "msy", "unfished"),
     spawning_biomass_label = "metric tons",
     recruitment_label = "metric tons",
-    ref_line_sb = c("target", "MSY", "msy", "unfished")
-    ) {
+    ref_line_sb = c("target", "MSY", "msy", "unfished")) {
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -370,7 +369,7 @@ create_template <- function(
         # check if enter file exists
         if (!file.exists(bib_file)) stop(".bib file not found.")
         bib_loc <- bib_file # dirname(bib_file)
-        bib_name <- utils::tail(stringr::str_split(bib_file, "/")[[1]], n=1)
+        bib_name <- utils::tail(stringr::str_split(bib_file, "/")[[1]], n = 1)
       }
 
       # Check if there are already files in the folder
@@ -420,23 +419,22 @@ create_template <- function(
       # Create tables qmd
       if (include_tables) {
         if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
-          if (!is.null(rda_dir) & !is.null(end_year)){
-              create_tables_doc(
-                resdir = resdir,
-                model_results = model_results,
-                model = model,
-                subdir = subdir,
-                rda_dir = rda_dir
-              )
-
-            } else {
-              tables_doc <- paste0(
-                "### Tables \n \n",
-                "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
-              )
-              utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
-              warning("Rda directory and/or arguments needed to create .rda files not defined.")
-            }
+          if (!is.null(rda_dir) & !is.null(end_year)) {
+            create_tables_doc(
+              resdir = resdir,
+              model_results = model_results,
+              model = model,
+              subdir = subdir,
+              rda_dir = rda_dir
+            )
+          } else {
+            tables_doc <- paste0(
+              "### Tables \n \n",
+              "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
+            )
+            utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
+            warning("Rda directory and/or arguments needed to create .rda files not defined.")
+          }
         } else {
           tables_doc <- paste0(
             "### Tables \n \n",
@@ -444,7 +442,7 @@ create_template <- function(
           )
           utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
           warning("Results file or model name not defined.")
-          }
+        }
       }
 
 
@@ -457,23 +455,23 @@ create_template <- function(
       # Create figures qmd
       if (include_figures) {
         if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
-          if (!is.null(rda_dir) & !is.null(end_year)){
-              create_figures_doc(
-                resdir = resdir,
-                model_results = model_results,
-                model = model,
-                subdir = subdir,
-                year = year,
-                rda_dir = rda_dir
-              )
-            } else {
-              figures_doc <- paste0(
-                "### Figures \n \n",
-                "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."
-              )
-              utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
-              warning("Rda directory and/or arguments needed to create .rda files not defined.")
-            }
+          if (!is.null(rda_dir) & !is.null(end_year)) {
+            create_figures_doc(
+              resdir = resdir,
+              model_results = model_results,
+              model = model,
+              subdir = subdir,
+              year = year,
+              rda_dir = rda_dir
+            )
+          } else {
+            figures_doc <- paste0(
+              "### Figures \n \n",
+              "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."
+            )
+            utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
+            warning("Rda directory and/or arguments needed to create .rda files not defined.")
+          }
         } else {
           figures_doc <- paste0(
             "### Figures \n \n",
@@ -481,8 +479,7 @@ create_template <- function(
           )
           utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
           warning("Results file or model name not defined.")
-
-          }
+        }
       }
 
       # Part I
@@ -711,15 +708,15 @@ create_template <- function(
 
       # Add option for bib file
       # if (!is.null(bib_file)) {
-        bib <- glue::glue(
-          "bibliography: ", "\n"
-        )
-        bib_all <- paste("  ", "- ", bib_name, "\n", collapse = "")
-        bib <- glue::glue(
-          bib, "\n",
-          bib_all, "\n"
-        )
-        yaml <- paste0(yaml, bib)
+      bib <- glue::glue(
+        "bibliography: ", "\n"
+      )
+      bib_all <- paste("  ", "- ", bib_name, "\n", collapse = "")
+      bib <- glue::glue(
+        bib, "\n",
+        bib_all, "\n"
+      )
+      yaml <- paste0(yaml, bib)
       # }
       # add in else statement once a national .bib file is made
 
@@ -743,16 +740,16 @@ create_template <- function(
             savedir = subdir,
             save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
           )
-        # } else if (tolower(model) == "bam") {
-        #   convert_output(
-        #     output_file = model_results,
-        #     outdir = resdir,
-        #     file_save = TRUE,
-        #     model = model,
-        #     fleet_names = fleet_names,
-        #     savedir = subdir,
-        #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
-        #   )
+          # } else if (tolower(model) == "bam") {
+          #   convert_output(
+          #     output_file = model_results,
+          #     outdir = resdir,
+          #     file_save = TRUE,
+          #     model = model,
+          #     fleet_names = fleet_names,
+          #     savedir = subdir,
+          #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+          #   )
         } else {
           convert_output(
             output_file = model_results,
@@ -769,28 +766,26 @@ create_template <- function(
       }
 
       # run satf::exp_all_figs_tables() if rda files not premade
-      if (!is.null(rda_dir) & !is.null(end_year)){
+      if (!is.null(rda_dir) & !is.null(end_year)) {
+        if (!dir.exists(file.path(rda_dir, "rda_files"))) {
+          # load converted output
+          output <- utils::read.csv(paste0(resdir, "/", model_results))
 
-        if(!dir.exists(file.path(rda_dir, "rda_files"))){
-
-        # load converted output
-        output <- utils::read.csv(paste0(resdir, "/", model_results))
-
-        # run satf::exp_all_figs_tables() to make rda files
-        satf::exp_all_figs_tables(
-          dat = output,
-          unit_label = unit_label,
-          scale_amount = scale_amount,
-          end_year = end_year,
-          n_projected_years = n_projected_years,
-          relative = relative,
-          make_rda = TRUE,
-          rda_dir = rda_dir,
-          ref_line = ref_line,
-          spawning_biomass_label = spawning_biomass_label,
-          recruitment_label = recruitment_label,
-          ref_line_sb = ref_line_sb
-        )
+          # run satf::exp_all_figs_tables() to make rda files
+          satf::exp_all_figs_tables(
+            dat = output,
+            unit_label = unit_label,
+            scale_amount = scale_amount,
+            end_year = end_year,
+            n_projected_years = n_projected_years,
+            relative = relative,
+            make_rda = TRUE,
+            rda_dir = rda_dir,
+            ref_line = ref_line,
+            spawning_biomass_label = spawning_biomass_label,
+            recruitment_label = recruitment_label,
+            ref_line_sb = ref_line_sb
+          )
         }
       }
 
@@ -804,14 +799,13 @@ create_template <- function(
           "# load converted output from asar::convert_output() \n",
           "output <- utils::read.csv('",
           ifelse(convert_output,
-                 paste0(subdir, "/", stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv"),
-                 paste0(resdir, "/", model_results)
-                 ), "') \n",
+            paste0(subdir, "/", stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv"),
+            paste0(resdir, "/", model_results)
+          ), "') \n",
           "# Call reference points and quantities below \n",
           "output <- output |> \n",
           "  ", "dplyr::mutate(estimate = as.numeric(estimate), \n",
           "  ", "  ", "uncertainty = as.numeric(uncertainty)) \n",
-
           "start_year <- as.numeric(min(output$year, na.rm = TRUE)) \n",
           # change end year in the fxn to ifelse where is.null(year)
           "end_year <- (output |> \n",
@@ -829,34 +823,28 @@ create_template <- function(
           "  ", "  ", "is.na(area), \n",
           "  ", "  ", "is.na(growth_pattern), \n",
           "  ", "  ", "is.na(subseason), \n",
-          "  ", "  ", "is.na(age))",  "\n",
-
+          "  ", "  ", "is.na(age))", "\n",
           "# terminal fishing mortality \n",
           "Fend <- output2 |> ", "\n",
           "  ", "dplyr::filter(c(label == 'fishing_mortality' & year == end_year) | c(label == 'terminal_fishing_mortality' & is.na(year))) |>", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
-
           "# fishing mortality at msy \n",
           "# please change target if desired \n",
           "Ftarg <- output2 |>", "\n",
           "  ", "dplyr::filter(grepl('f_target', label) | grepl('f_msy', label) | c(grepl('fishing_mortality_msy', label) & is.na(year))) |>", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
-
           "# Terminal year F respective to F target \n",
           "F_Ftarg <- Fend / Ftarg", "\n",
-
           "# terminal year biomass \n",
           "Bend <- output2 |>", "\n",
           "  ", "dplyr::filter(grepl('mature_biomass', label) | grepl('^biomass$', label),", "\n",
           "  ", "  ", "year == end_year) |>", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
-
           "# target biomass (msy) \n",
           "# please change target if desired \n",
           "Btarg <- output2 |>", "\n",
           "  ", "dplyr::filter(c(grepl('biomass', label) & grepl('target', label) & estimate >1) | label == 'biomass_msy') |>", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
-
           "# total catch in the last year \n",
           "total_catch <- output |>", "\n",
           "  ", "dplyr::filter(grepl('^catch$', label), \n",
@@ -875,40 +863,33 @@ create_template <- function(
           "  ", "  ", "is.na(fleet),", "\n",
           "  ", "  ", "is.na(age)) |>", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
-
           "# spawning biomass in the last year\n",
           "sbend <- output2 |>", "\n",
           "  ", "dplyr::filter(grepl('spawning_biomass', label), year == end_year) |>", "\n",
           "  ", "dplyr::pull(estimate) |>", "\n",
           "  ", "  ", "unique()", "\n",
-
           "# overall natural mortality or at age \n",
           "M <- output |>", "\n",
           "  ", "dplyr::filter(grepl('natural_mortality', label)) |>", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
-
           "# Biomass at msy \n",
           "# to change to another reference point, replace msy in the following lines with other label \n",
           "Bmsy <- output2 |>", "\n",
           "  ", "dplyr::filter(c(grepl('biomass', label) & grepl('msy', label) & estimate >1) | label == 'biomass_msy') |>", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
-
           "# target spawning biomass(msy) \n",
           "# please change target if desired \n",
           "SBtarg <- output2 |>", "\n",
           "  ", "dplyr::filter(c(grepl('spawning_biomass', label) & grepl('msy$', label) & estimate >1) | label == 'spawning_biomass_msy$') |>", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
-
           "# steepness \n",
           "h <- output |> ", "\n",
           "  ", "dplyr::filter(grepl('steep', label)) |> ", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
-
           "# recruitment \n",
           "R0 <- output |> ", "\n",
           "  ", "dplyr::filter(grepl('R0', label) | grepl('recruitment_virgin', label)) |> ", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
-
           "# female SB (placeholder)", "\n"
         ),
         label = "output_and_quantities",

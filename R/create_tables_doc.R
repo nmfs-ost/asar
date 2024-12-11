@@ -17,11 +17,9 @@ create_tables_doc <- function(resdir = NULL,
                               subdir = NULL,
                               include_all = TRUE,
                               rda_dir = NULL) {
-
   model <- match.arg(model, several.ok = FALSE)
 
   if (include_all) {
-
     # add header
     tables_doc <- paste0("## Tables \n \n")
 
@@ -32,7 +30,7 @@ create_tables_doc <- function(resdir = NULL,
         paste0("rda_dir <- '", rda_dir, "/rda_files'"),
         label = "set-rda-dir-tbls",
         eval = "false"
-        ),
+      ),
       "\n"
     )
 
@@ -74,7 +72,6 @@ indices_cap <- indices_table_rda$cap"),
     )
 
     # Add other tables follow the same above format
-
   } else {
     # add option for only adding specified tables
   }
