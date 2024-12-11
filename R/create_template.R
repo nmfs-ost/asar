@@ -435,7 +435,7 @@ create_template <- function(
                 "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
               )
               utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
-              warning("Rda directory and/or arguments needed to create .rda files not defined.")
+              warning("Rda directory and/or arguments needed to create .rda files not defined. Arguments rda_dir and end_year must be defined to automatically generate tables from model results file.")
             }
         } else {
           tables_doc <- paste0(
@@ -472,7 +472,7 @@ create_template <- function(
                 "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."
               )
               utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
-              warning("Rda directory and/or arguments needed to create .rda files not defined.")
+              warning("Rda directory and/or arguments needed to create .rda files not defined. Arguments rda_dir and end_year must be defined to automatically generate figures from model results file.")
             }
         } else {
           figures_doc <- paste0(
