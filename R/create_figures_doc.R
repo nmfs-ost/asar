@@ -16,40 +16,62 @@ create_figures_doc <- function(resdir = NULL,
                                model = c("SS3", "BAM", "ASAP", "AMAK", "WHAM"),
                                year = NULL,
                                subdir = NULL,
-                               include_all = TRUE) {
+                               include_all = TRUE,
+                               rda_dir = NULL) {
+
   model <- match.arg(model, several.ok = FALSE)
 
-  captions_alttext <- utils::read.csv(
-    system.file("resources", "captions_alttext.csv", package = "asar")
-  )
-
   if (include_all) {
-    # Create tables quarto doc - maybe should add this as separate fxn - same with figs
+
+    # add header
     figures_doc <- paste0("## Figures \n \n")
+
+    # add chunk that creates object as the directory of all rdas
+figures_doc <- paste0(
+      figures_doc,
+      add_chunk(
+        paste0("rda_dir <- '", rda_dir, "/rda_files'"),
+        label = "set-rda-dir-figs",
+        eval = "true"
+        ),
+      "\n"
+    )
+
     # Recruitment ts figure
+    ## import plot, caption, alt text
     figures_doc <- paste0(
       figures_doc,
       add_chunk(
-        paste0("satf::plot_recruitment(dat = output)"),
-        label = "recruitment",
-        eval = "false",
+        paste0("# load rda
+load(file.path(rda_dir, 'recruitment_figure.rda'))\n
+# save rda with plot-specific name
+recruitment_plot_rda <- rda\n
+# remove generic rda object
+rm(rda)\n
+# save figure, caption, and alt text as separate objects
+recruitment_plot <- recruitment_plot_rda$figure
+recruitment_cap <- recruitment_plot_rda$cap
+recruitment_alt_text <- recruitment_plot_rda$alt_text"),
+        label = "fig-recruitment-setup",
+        eval = "true"
+      ),
+      "\n"
+    )
+
+    ## add figure
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(
+        paste0("recruitment_plot"),
+        label = "fig-recruitment-plot",
+        eval = "true",
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: '",
-            captions_alttext |>
-              dplyr::filter(label == "recruitment" & type == "figure") |>
-              dplyr::select(caption) |>
-              as.character(),
-            "'"
+            "fig-cap: recruitment_cap"
           ),
           glue::glue(
-            "fig-alt: '",
-            captions_alttext |>
-              dplyr::filter(label == "recruitment" & type == "figure") |>
-              dplyr::select(alt_text) |>
-              as.character(),
-            "'"
+            "fig-alt: recruitment_alt_text"
           )
         )
       ),
@@ -57,37 +79,211 @@ create_figures_doc <- function(resdir = NULL,
     )
 
     # SB figure
-    plot_code <- paste0(
-      "satf::plot_spawning_biomass(dat = output, ref_line = 'target', end_year = ", year, ")"
-    )
-
+    ## import plot, caption, alt text
     figures_doc <- paste0(
       figures_doc,
-      add_chunk(plot_code,
-        label = "spawn_bio",
-        eval = "false",
+      add_chunk(
+        paste0("# load rda
+load(file.path(rda_dir, 'spawning_biomass_figure.rda'))\n
+# save rda with plot-specific name
+spawning_biomass_plot_rda <- rda\n
+# remove generic rda object
+rm(rda)\n
+# save figure, caption, and alt text as separate objects
+spawning_biomass_plot <- spawning_biomass_plot_rda$figure
+spawning_biomass_cap <- spawning_biomass_plot_rda$cap
+spawning_biomass_alt_text <- spawning_biomass_plot_rda$alt_text"),
+        label = "fig-spawning_biomass-setup",
+        eval = "true"
+      ),
+      "\n"
+    )
+
+    ## add figure
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(
+        paste0("spawning_biomass_plot"),
+        label = "fig-spawning_biomass-plot",
+        eval = "true",
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: '",
-            captions_alttext |>
-              dplyr::filter(label == "spawning_biomass" & type == "figure") |>
-              dplyr::select(caption) |>
-              as.character(),
-            "'"
+            "fig-cap: spawning_biomass_cap"
           ),
           glue::glue(
-            "fig-alt: '",
-            captions_alttext |>
-              dplyr::filter(label == "spawning_biomass" & type == "figure") |>
-              dplyr::select(alt_text) |>
-              as.character(),
-            "'"
+            "fig-alt: spawning_biomass_alt_text"
           )
         )
       ),
       "\n"
     )
+
+    # B figure
+    ## import plot, caption, alt text
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(
+        paste0("# load rda
+load(file.path(rda_dir, 'biomass_figure.rda'))\n
+# save rda with plot-specific name
+biomass_plot_rda <- rda\n
+# remove generic rda object
+rm(rda)\n
+# save figure, caption, and alt text as separate objects
+biomass_plot <- biomass_plot_rda$figure
+biomass_cap <- biomass_plot_rda$cap
+biomass_alt_text <- biomass_plot_rda$alt_text"),
+        label = "fig-biomass-setup",
+        eval = "true"
+      ),
+      "\n"
+    )
+
+    ## add figure
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(
+        paste0("biomass_plot"),
+        label = "fig-biomass-plot",
+        eval = "true",
+        add_option = TRUE,
+        chunk_op = c(
+          glue::glue(
+            "fig-cap: biomass_cap"
+          ),
+          glue::glue(
+            "fig-alt: biomass_alt_text"
+          )
+        )
+      ),
+      "\n"
+    )
+
+
+    # Landings figure
+    ## import plot, caption, alt text
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(
+        paste0("# load rda
+load(file.path(rda_dir, 'landings_figure.rda'))\n
+# save rda with plot-specific name
+landings_plot_rda <- rda\n
+# remove generic rda object
+rm(rda)\n
+# save figure, caption, and alt text as separate objects
+landings_plot <- landings_plot_rda$figure
+landings_cap <- landings_plot_rda$cap
+landings_alt_text <- landings_plot_rda$alt_text"),
+        label = "fig-landings-setup",
+        eval = "true"
+      ),
+      "\n"
+    )
+
+    ## add figure
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(
+        paste0("landings_plot"),
+        label = "fig-landings-plot",
+        eval = "true",
+        add_option = TRUE,
+        chunk_op = c(
+          glue::glue(
+            "fig-cap: landings_cap"
+          ),
+          glue::glue(
+            "fig-alt: landings_alt_text"
+          )
+        )
+      ),
+      "\n"
+    )
+
+    # recruitment deviations figure
+    ## import plot, caption, alt text
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(
+        paste0("# load rda
+load(file.path(rda_dir, 'recruitment_deviations_figure.rda'))\n
+# save rda with plot-specific name
+recruitment_deviations_plot_rda <- rda\n
+# remove generic rda object
+rm(rda)\n
+# save figure, caption, and alt text as separate objects
+recruitment_deviations_plot <- recruitment_deviations_plot_rda$figure
+recruitment_deviations_cap <- recruitment_deviations_plot_rda$cap
+recruitment_deviations_alt_text <- recruitment_deviations_plot_rda$alt_text"),
+        label = "fig-recruitment_deviations-setup",
+        eval = "true"
+      ),
+      "\n"
+    )
+
+    ## add figure
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(
+        paste0("recruitment_deviations_plot"),
+        label = "fig-recruitment_deviations-plot",
+        eval = "true",
+        add_option = TRUE,
+        chunk_op = c(
+          glue::glue(
+            "fig-cap: recruitment_deviations_cap"
+          ),
+          glue::glue(
+            "fig-alt: recruitment_deviations_alt_text"
+          )
+        )
+      ),
+      "\n"
+    )
+
+    # spawning recruitment figure
+    ## import plot, caption, alt text
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(
+        paste0("# load rda
+load(file.path(rda_dir, 'est_stock_recruitment_figure.rda'))\n
+# save rda with plot-specific name
+spawning_recruitment_plot_rda <- rda\n
+# remove generic rda object
+rm(rda)\n
+# save figure, caption, and alt text as separate objects
+spawning_recruitment_plot <- spawning_recruitment_plot_rda$figure
+spawning_recruitment_cap <- spawning_recruitment_plot_rda$cap
+spawning_recruitment_alt_text <- spawning_recruitment_plot_rda$alt_text"),
+        label = "fig-spawning_recruitment-setup",
+        eval = "true"
+      ),
+      "\n"
+    )
+
+    ## add figure
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(
+        paste0("spawning_recruitment_plot"),
+        label = "fig-spawning_recruitment-plot",
+        eval = "true",
+        add_option = TRUE,
+        chunk_op = c(
+          glue::glue(
+            "fig-cap: spawning_recruitment_cap"
+          ),
+          glue::glue(
+            "fig-alt: spawning_recruitment_alt_text"
+          )
+        )
+      ),
+      "\n"
+    )
+
   } else {
     # add option for only adding specified figures
   }

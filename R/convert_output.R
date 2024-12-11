@@ -244,7 +244,7 @@ convert_output <- function(
     errors <- c("StdDev", "sd", "se", "SE", "cv", "CV")
     miss_parms <- c()
     out_list <- list()
-    ### SS3 loop ####
+    #### SS3 loop ####
     for (i in 1:length(param_names)) {
       # Processing data frame
       parm_sel <- param_names[i]
@@ -715,18 +715,18 @@ convert_output <- function(
     if (is.null(fleet_names)) {
       # Extract names from indices
       indices <- dat$t.series |>
-        dplyr::select(dplyr::contains("U.") & contains(".ob"))
+        dplyr::select(dplyr::contains("U.") & dplyr::contains(".ob"))
       fleets_ind <- stringr::str_extract(as.vector(colnames(indices)), "(?<=U\\.)\\w+(?=\\.ob)")
       # Extract names from landings
       landings <- dat$t.series |>
-        dplyr::select(dplyr::contains("L.") & contains(".ob") |
-          dplyr::contains("D.") & contains(".ob"))
+        dplyr::select(dplyr::contains("L.") & dplyr::contains(".ob") |
+                      dplyr::contains("D.") & dplyr::contains(".ob"))
       fleets_land <- stringr::str_extract(as.vector(colnames(landings)), "(?<=L\\.)\\w+(?=\\.ob)")
       fleets_disc <- stringr::str_extract(as.vector(colnames(landings)), "(?<=D\\.)\\w+(?=\\.ob)")
       # Extract names from lof F dev
       parm <- dat$parm.tvec |>
-        dplyr::select(dplyr::contains("log.F.dev.") |
-          dplyr::contains("log.F.dev.") & contains(".D"))
+        dplyr::select(dplyr::contains("log.F.dev.")|
+                        dplyr::contains("log.F.dev.") & dplyr::contains(".D"))
       # fleets_parm_D <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+(?=\\.D)")
       fleets_parm <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+")
       fleets <- unique(c(fleets_ind, fleets_land, fleets_disc, fleets_parm))
@@ -747,11 +747,13 @@ convert_output <- function(
     # argument for function when model == BAM
     # fleet_names <- c("cl", "cL","cp","mrip","ct", "hb", "HB", "comm","Mbft","CVID")
 
+    ##### BAM loop ----
     # Extract data from list fit to output df
     # Loop over all items to output each object/transform
     # Not transforming or inclusing info chunk
     for (p in 2:length(dat)) {
       extract <- dat[p]
+      message("Processing ", names(extract))
       # is the object class matrix, list, or vector
       if (is.vector(extract[[1]])) {
         if (is.list(extract[[1]])) { # indicates vector and list
@@ -1099,8 +1101,8 @@ convert_output <- function(
           } else {
             df2 <- df2 |>
               dplyr::mutate(
-                fleet = NA,
-                age = NA,
+                fleet = ifelse(any(colnames(df2) %in% c("fleet")), fleet, NA),
+                age = ifelse(any(colnames(df2) %in% c("age")), age, NA),
                 label = label,
                 module_name = names(extract)
               )
@@ -1146,7 +1148,7 @@ convert_output <- function(
         warning(paste(names(extract), " not compatible.", sep = ""))
       } # close if statement
     } # close loop over objects listed in dat file
-    #### WHAM ####
+    #### WHAM ----
   } else if (model == "wham") {
     # This is how Bai read the ASAP output
     # asap_output conversion written by Bai Li
@@ -1181,7 +1183,7 @@ convert_output <- function(
     var_names_sheet <- openxlsx::read.xlsx(con_file)
   }
   if (file.exists(con_file)) {
-    out_new <- dplyr::inner_join(out_new, var_names_sheet, by = "label") |>
+    out_new <- dplyr::inner_join(out_new, var_names_sheet, by = c("module_name","label")) |>
       dplyr::mutate(label = dplyr::case_when(
         !is.na(alt_label) ~ alt_label,
         TRUE ~ label
@@ -1196,6 +1198,7 @@ convert_output <- function(
     )
     utils::write.csv(out_new, file = save_path, row.names = FALSE)
   } else {
-    out_new
+    return(out_new)
   }
+  message("Finished!")
 } # close function

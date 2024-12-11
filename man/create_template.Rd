@@ -38,7 +38,18 @@ create_template(
   include_tables = TRUE,
   add_image = FALSE,
   spp_image = NULL,
-  bib_file = NULL
+  bib_file = "asar_references.bib",
+  rda_dir = NULL,
+  unit_label = "metric tons",
+  scale_amount = 1,
+  end_year = NULL,
+  n_projected_years = 10,
+  relative = FALSE,
+  make_rda = FALSE,
+  ref_line = c("target", "MSY", "msy", "unfished"),
+  spawning_biomass_label = "metric tons",
+  recruitment_label = "metric tons",
+  ref_line_sb = c("target", "MSY", "msy", "unfished")
 )
 }
 \arguments{
@@ -171,6 +182,58 @@ using the image included in the project's repository.}
 
 \item{bib_file}{File path to a .bib file used for citing references in
 the report}
+
+\item{rda_dir}{The location of the folder containing .rda files
+("rda_files") already made with \code{satf}, or, if the user has not used
+\code{satf} to make those .rda files already, rda_dir represents the location
+that will contain .rda files in an "rda_files" folder. The folder would have
+been made with \code{satf::exp_all_figs_tables()}, or by exporting files
+by running individual \code{satf} figure- and table-generating functions.
+If you have used \code{satf} to generate these .rda files, you can leave
+the arguments below blank.}
+
+\item{unit_label}{units for recruitment}
+
+\item{scale_amount}{indicate the exact amount of scale (i.e. 1000)}
+
+\item{end_year}{last year of assessment}
+
+\item{n_projected_years}{Number of years spawning biomass is projected for.
+By default this number is set to 10}
+
+\item{relative}{A logical value specifying if the resulting figures should
+be relative spawning biomass. The default is `FALSE`. `ref_line` indicates
+which reference point to use.}
+
+\item{make_rda}{This argument is automatically assessed based on the presence
+or absence of .rda files and should be left blank. TRUE/FALSE; indicate
+whether to produce an .rda file containing a list with the figure/table,
+caption, and alternative text (if figure) for each figure and table.}
+
+\item{ref_line}{An argument inherited from \code{satf::plot_spawning_biomass.R}.
+A string specifying the type of reference you want to
+compare spawning biomass to. The default is \code{"target"}, which looks for
+\code{"spawning_biomass_target"} in the \code{"label"} column of \code{dat}. The actual
+searching in \code{dat} is case agnostic and will work with either upper- or
+lower-case letters but you must use one of the options specified in the
+default list to ensure that the label on the figure looks correct
+regardless of how it is specified in \code{dat}.}
+
+\item{spawning_biomass_label}{An argument inherited from
+\code{satf::plot_spawn_recruitment.R}. Units for spawning biomass.}
+
+\item{recruitment_label}{An argument inherited from
+\code{satf::plot_spawn_recruitment.R}. Units for recruitment.}
+
+\item{ref_line_sb}{An argument with inherited from \code{satf::plot_spawning_biomass.R}
+(under the parameter name \code{ref_line}, changed slightly to differentiate from
+the ref_line indicated for \code{satf::plot_biomass.}) A string specifying the type of
+reference you want to compare spawning biomass to. The default is \code{"target"},
+which looks for \code{"spawning_biomass_target"} in the \code{"label"} column of \code{dat}.
+The actual searching in \code{dat} is case agnostic and will work with either upper- or
+lower-case letters but you must use one of the options specified in the
+default list to ensure that the label on the figure looks correct
+regardless of how it is specified in \code{dat}.}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
@@ -255,7 +318,18 @@ create_template(
   include_figures = TRUE,
   include_tables = TRUE,
   add_image = TRUE,
-  spp_image = "dir/containing/spp_image"
+  spp_image = "dir/containing/spp_image",
+  rda_dir = "C:/Users/Documents",
+  unit_label = "metric tons",
+  scale_amount = 1,
+  end_year = NULL,
+  n_projected_years = 10,
+  relative = FALSE,
+  make_rda = FALSE,
+  ref_line = c("target", "MSY", "msy", "unfished"),
+  spawning_biomass_label = "metric tons",
+  recruitment_label = "metric tons",
+  ref_line_sb = c("target", "MSY", "msy", "unfished")
 )
 }
 

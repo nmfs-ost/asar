@@ -7,5 +7,23 @@
 \usepackage{wallpaper} % for the background image on title page
 \usepackage{geometry}
 % set font
+
+% added by Ross
+% % set font - - depends upon the driver
+% \ifPDFTeX
+%  %% only want this in body section headings and ToC, using \sf
+%  \def\sfdefault{phv}% Helvetica instead of its clone Arial
+%  \renewcommand{\sectfont}{\normalcolor
+%   \def\bfdefault{bc}% bold condensed; i.e., narrow
+%   \maybesffamily \bfseries }%% uses uhvb8ac
+% % \def\sfdefault{lmss}% Latin Modern replaces Arial
+% % \renewcommand{\sectfont}{\normalcolor
+%  % \fontseries{sbc}\fontfamily{lmss}\selectfont }%% uses lmssdc10
+% \else
+
 \usepackage{fontspec}
 \setsansfont[Ligatures=TeX]{Arial Narrow}
+
+% added by Ross
+%\fi
+%\usepackage[scaled=0.9]{helvet}% needed later to replace Arial Narrow
