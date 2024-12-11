@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Enhance Accessibility • asar</title>
+<title>Achieve Greater Accessibility • asar</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="Enhance Accessibility">
+<meta property="og:title" content="Achieve Greater Accessibility">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -83,6 +83,9 @@
     <li>
       <a href="../articles/accessibility_guide.html">Accessibility</a>
     </li>
+    <li>
+      <a href="../articles/faqs.html">Frequently Asked Questions (FAQs)</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -127,7 +130,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Enhance Accessibility</h1>
+      <h1 data-toc-skip>Achieve Greater Accessibility</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/vignettes/accessibility_guide.Rmd" class="external-link"><code>vignettes/accessibility_guide.Rmd</code></a></small>
@@ -137,11 +140,8 @@
 
     
     
-<div class="section level2">
-<h2 id="recommended-practices">Recommended practices<a class="anchor" aria-label="anchor" href="#recommended-practices"></a>
-</h2>
 <p>When someone reads your document, they may read it with a <a href="https://www.afb.org/blindness-and-low-vision/using-technology/assistive-technology-products/screen-readers" class="external-link">screen
-reader</a>. TO ensure that they are able to interpret your document as
+reader</a>. To ensure that they are able to interpret your document as
 intended, the document must contain some essential features, like tagged
 elements, alternative text, and metadata.</p>
 <p>We have built <code>asar</code> so that the produced documents uphold
@@ -150,6 +150,44 @@ accessibility standards</a>. However, to achieve our goal of producing
 accessible documents, <strong>you must complete a few tasks
 yourself</strong>. But don’t fret! We will help you. Below, we provide
 several resources to help you achieve this important goal.</p>
+<div class="section level2">
+<h2 id="your-to-do-list">Your to-do list<a class="anchor" aria-label="anchor" href="#your-to-do-list"></a>
+</h2>
+<ol style="list-style-type: decimal">
+<li>
+<p><strong>Check the accuracy</strong> of each figure’s alternative
+text (“alt text” for short).</p>
+<ul>
+<li>
+<code>asar</code>’s figures already contains some prewritten alt
+text that includes data from the model results file. This means that
+most of the work has been done for you! However, it is crucial that you
+check this information for accuracy and update it where necessary. This
+is especially true if the default figures have been modified. If you see
+text that looks like a placeholder (e.g., “The x axis, showing the year,
+spans from B_start_year to B_end_year…”), that means that there was at
+least one instance where our tool failed to extract a specific value
+from the model results and substitute it into the placeholder. Learn how
+to manually add the right values in section “How to edit your report’s
+alt text and captions”, below.</li>
+</ul>
+</li>
+<li>
+<p><strong>Write the final component</strong> of each figure’s alt
+text.</p>
+<ul>
+<li>This prewritten alt text usually contains 3/4 essential ingredients
+for well-written alt text. The remaining ingredient (#4): <em>the
+relationship between the variables shown (i.e., what the figure is
+conveying).</em> Since we can’t program <code>asar</code> to analyze the
+figure’s meaning, <em>you must provide this</em>.</li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section level2">
+<h2 id="guidance-and-resources">Guidance and Resources<a class="anchor" aria-label="anchor" href="#guidance-and-resources"></a>
+</h2>
 <div class="section level3">
 <h3 id="alternative-text">Alternative text<a class="anchor" aria-label="anchor" href="#alternative-text"></a>
 </h3>
@@ -159,17 +197,21 @@ several resources to help you achieve this important goal.</p>
 <p>After using <code><a href="../reference/create_template.html">create_template()</a></code> to create a skeleton of
 your document, you will see chunks containing <code>fig-alt:</code> in
 the figures.qmd files, like this:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>```{r}</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>#| eval: false</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>#| fig-alt: '...'</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>```</span></code></pre></div>
 <p>The <a href="https://quarto.org/docs/computations/execution-options.html#caption-and-alt-text" class="external-link"><code>fig-alt</code></a>
 parameter in this chunk signifies that this is where you should add a
 description of your figure that can be read aloud by the screen reader.
 This description, otherwise known as <a href="https://www.section508.gov/create/alternative-text/" class="external-link">alternative
-text</a> (alt text for short) should answer this essential question:</p>
+text</a> should answer this essential question:</p>
 <blockquote>
 <p>What is this image conveying?</p>
 </blockquote>
 </div>
 <div class="section level4">
-<h4 id="how-do-i-write-alt-text">How do I write alt text?<a class="anchor" aria-label="anchor" href="#how-do-i-write-alt-text"></a>
+<h4 id="which-information-belongs-in-alt-text">Which information belongs in alt text?<a class="anchor" aria-label="anchor" href="#which-information-belongs-in-alt-text"></a>
 </h4>
 <p>While tempting, tools like AI cannot be used to easily answer this
 question. Additionally, one should not use the caption as the alt text.
@@ -185,15 +227,18 @@ box-and-whisker plot)</li>
 <li>The relationship between the variables shown (i.e., what the figure
 is conveying)</li>
 </ol>
-<p>Dr. Hare stresses the importance of ingredient #4 by explaining,</p>
+<p>Dr. Hare stresses the importance of ingredient #4 by explaining,
+<em>“Don’t waste my time with 1-3 if you aren’t going to include 4.
+While some automatic alt text processes mine some of this information, I
+don’t want to spend time building a mental model of the graph if I can’t
+find out what the graph says.<em><a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></em>”</em></p>
+<p>Both presentations are great resources for learning about alt text
+and will help you as you craft your own alt text!</p>
 <blockquote>
-<p>Don’t waste my time with 1-3 if you aren’t going to include 4. While
-some automatic alt text processes mine some of this information, I don’t
-want to spend time building a mental model of the graph if I can’t find
-out what the graph says.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p>Remember: The first three essential ingredients should already be
+present in your figures’ prewritten alt texts! You just need to check
+them for accuracy and provide ingredient #4.</p>
 </blockquote>
-<p><strong>Both presentations are great resources</strong> for learning
-about alt text and will help you as you craft your own alt text!</p>
 </div>
 <div class="section level4">
 <h4 id="example-of-alt-text">Example of alt text<a class="anchor" aria-label="anchor" href="#example-of-alt-text"></a>
@@ -204,37 +249,29 @@ options (<code>fig.cap=""</code>). The alt text is also included in the
 chunk’s options (<code>fig.alt=""</code>) but is not shown unless the
 webpage is inspected with Developer Tools or it’s extracted with a
 screen reader.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">orange</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">Orange</span><span class="op">)</span></span>
 <span><span class="va">orange</span> <span class="op">&lt;-</span> <span class="va">orange</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Tree <span class="op">=</span> <span class="fu">base</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">Tree</span>,</span>
-<span>    levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span></span>
-<span>  <span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span></span>
-<span>    Age <span class="op">=</span> <span class="va">age</span>,</span>
-<span>    Circumference <span class="op">=</span> <span class="va">circumference</span></span>
-<span>  <span class="op">)</span></span>
+<span>                                    levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>Age <span class="op">=</span> <span class="va">age</span>,</span>
+<span>                Circumference <span class="op">=</span> <span class="va">circumference</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">orange</span>,</span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
-<span>    x <span class="op">=</span> <span class="va">Age</span>,</span>
-<span>    y <span class="op">=</span> <span class="va">Circumference</span>,</span>
-<span>    color <span class="op">=</span> <span class="va">Tree</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_color_viridis_d</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">ylim</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
-<span>    x <span class="op">=</span> <span class="st">"Age (days since 1968/12/31)"</span>,</span>
-<span>    y <span class="op">=</span> <span class="st">"Orange Tree Circumference (mm)"</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">orange</span>,</span>
+<span>                <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Age</span>,</span>
+<span>                    y <span class="op">=</span> <span class="va">Circumference</span>,</span>
+<span>                    color <span class="op">=</span> <span class="va">Tree</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_color_viridis_d</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">xlim</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/lims.html" class="external-link">ylim</a></span><span class="op">(</span><span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Age (days since 1968/12/31)"</span>,</span>
+<span>       y <span class="op">=</span> <span class="st">"Orange Tree Circumference (mm)"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure" style="text-align: center">
 <img src="accessibility_guide_files/figure-html/unnamed-chunk-3-1.png" alt="A line graph showing how tree circumference increases with age for a set of 5 orange trees. Age, shown on the x axis, is measured in days since 1968/12/31 and spans from 118-1582 days. Circumference, shown on the y axis, spans from 30-214 mm. All trees showed an increasing trend of trunk circumference with age, with each tree starting with a circumference of 30-33 mm at age 0 and ending with a circumference of 140-216 mm at age 1582. At age 1582, the tree with the largest circumference was tree 4, followed by trees 2, 5, 1, and 3." width="700"><p class="caption">
 Tree circumference and age for 5 orange trees.
@@ -249,6 +286,112 @@ trend of trunk circumference with age, with each tree starting with a
 circumference of 30-33 mm at age 0 and ending with a circumference of
 140-216 mm at age 1582. At age 1582, the tree with the largest
 circumference was tree 4, followed by trees 2, 5, 1, and 3.</em></p>
+</div>
+<div class="section level4">
+<h4 id="how-to-write-ingredient-4">How to write ingredient #4<a class="anchor" aria-label="anchor" href="#how-to-write-ingredient-4"></a>
+</h4>
+<blockquote>
+<p>Ingredient #4 = the relationship between the variables shown (i.e.,
+what the figure is conveying).</p>
+</blockquote>
+<p>There is no one-size-fits-all approach for explaining what a figure
+is conveying. We’ve included some prompts, below, to get you started,
+but <em>you will need to go beyond these prompts to properly complete
+this task.</em></p>
+<div class="section level5">
+<h5 id="many-figures">Many figures<a class="anchor" aria-label="anchor" href="#many-figures"></a>
+</h5>
+<ul>
+<li>Describe the span of the 95% confidence interval at a meaningful x
+axis value.</li>
+<li>Describe the meaning of the legend.</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="line-graphs">Line graphs<a class="anchor" aria-label="anchor" href="#line-graphs"></a>
+</h5>
+<ul>
+<li>Describe where the line increases and decreases.</li>
+<li>Describe where the line dips below the reference point (if
+present).</li>
+</ul>
+</div>
+<div class="section level5">
+<h5 id="kobe-plots">Kobe plots<a class="anchor" aria-label="anchor" href="#kobe-plots"></a>
+</h5>
+<ul>
+<li>Describe where most points fall (in the four quadrants).</li>
+</ul>
+</div>
+</div>
+<div class="section level4">
+<h4 id="how-to-edit-your-reports-alt-text-and-captions">How to edit your report’s alt text and captions<a class="anchor" aria-label="anchor" href="#how-to-edit-your-reports-alt-text-and-captions"></a>
+</h4>
+<p>To edit your rda’s alt text, follow these steps:</p>
+<ol style="list-style-type: decimal">
+<li>Open your report’s 09_figures.qmd file.</li>
+<li>Run the first code chunk, which saves the filepath of your rda
+directory as an object (it has the label
+<code>"set-rda-dir-figs"</code>).</li>
+<li>Find the two code chunks associated with the figure you’re
+interested (e.g., recruitment). Run the first chunk, which will have
+“setup” in the label (e.g.,
+<code>"fig-recruitment-setup"</code>,<code>"fig-spawning_biomass-setup"</code>,
+etc.).</li>
+<li>
+<strong>Add to the alt text by</strong> pasting the existing alt
+text with a new string <em>within the chunk</em>. To do this, find your
+existing alt text object, which is an object named with the figure’s
+topic and “alt_text” (e.g., <code>recruitment_alt_text</code>). Then,
+make an object (a string) containing your additional text (e.g.,
+<code>new_alt_text</code>). Then, paste together the existing alt text
+object and your new text object. For example:</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># the original alt text for the recruitment figure</span></span>
+<span><span class="va">recruitment_alt_text</span></span>
+<span></span>
+<span><span class="co"># the new text that will be added on to the recruitment figure's alt text</span></span>
+<span><span class="va">new_alt_text</span> <span class="op">&lt;-</span> <span class="st">"This is my new alt text."</span></span>
+<span></span>
+<span><span class="co"># add the new text to the old text</span></span>
+<span><span class="va">recruitment_alt_text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">recruitment_alt_text</span>, <span class="va">new_alt_text</span><span class="op">)</span></span></code></pre></div>
+<ol start="5" style="list-style-type: decimal">
+<li>
+<strong>Replace the alt text by</strong> updating the original alt
+text object <em>within the chunk</em>. To do this, reassign the original
+alt text object as your new text object. For example:</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># the original alt text for the recruitment figure</span></span>
+<span><span class="va">recruitment_alt_text</span></span>
+<span></span>
+<span><span class="co"># the new text that will replace the recruitment figure's alt text</span></span>
+<span><span class="va">new_alt_text</span> <span class="op">&lt;-</span> <span class="st">"This is my new alt text."</span></span>
+<span></span>
+<span><span class="co"># replace the old alt text with the new alt text</span></span>
+<span><span class="va">recruitment_alt_text</span> <span class="op">&lt;-</span> <span class="va">new_alt_text</span></span></code></pre></div>
+<p><strong>NOTES</strong>:</p>
+<ol style="list-style-type: decimal">
+<li>Changes to your alt text will be saved within your 09_figures.qmd
+file, but not within the rda file itself.</li>
+<li>Edit figure and table captions with the same process. Just
+substitute mentions of alt text with caption or cap, depending on the
+context.</li>
+<li>As stated earlier, if you see text that looks like a placeholder
+(e.g., “The x axis, showing the year, spans from B_start_year to
+B_end_year…”), that means that there was at least one instance where our
+tool failed to extract a specific value from the model results and
+substitute it into the placeholder. Please make sure that your alt text
+and captions contain the expected values before moving forward with your
+report. Check out the inst/resources/captions_alt_text_template.csv file
+to view the template with placeholders. The
+<code>write_captions()</code> function in the <code>satf</code> package
+shows how values are extracted from the model results and substituted
+into the placeholders.</li>
+</ol>
 </div>
 <div class="section level4">
 <h4 id="more-resources">More resources<a class="anchor" aria-label="anchor" href="#more-resources"></a>
@@ -270,6 +413,13 @@ acronym alone.</strong> For example:</p>
 offices spread throughout the United States of America (USA). NOAA
 regularly produces stock assessments on fish and mammal
 species.</em></p>
+</div>
+<div class="section level3">
+<h3 id="tables">Tables<a class="anchor" aria-label="anchor" href="#tables"></a>
+</h3>
+<p>Please do not place figures inside tables. Doing so makes it very
+difficult for software to properly identify the structure of (i.e.,
+<em>tag</em>) the table and its inner elements.</p>
 </div>
 </div>
 <div class="footnotes footnotes-end-of-document">
