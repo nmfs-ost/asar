@@ -18,22 +18,20 @@ create_figures_doc <- function(resdir = NULL,
                                subdir = NULL,
                                include_all = TRUE,
                                rda_dir = NULL) {
-
   model <- match.arg(model, several.ok = FALSE)
 
   if (include_all) {
-
     # add header
     figures_doc <- paste0("## Figures \n \n")
 
     # add chunk that creates object as the directory of all rdas
-figures_doc <- paste0(
+    figures_doc <- paste0(
       figures_doc,
       add_chunk(
         paste0("rda_dir <- '", rda_dir, "/rda_files'"),
         label = "set-rda-dir-figs",
         eval = "true"
-        ),
+      ),
       "\n"
     )
 
@@ -283,7 +281,6 @@ spawning_recruitment_alt_text <- spawning_recruitment_plot_rda$alt_text"),
       ),
       "\n"
     )
-
   } else {
     # add option for only adding specified figures
   }

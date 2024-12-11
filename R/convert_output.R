@@ -720,13 +720,13 @@ convert_output <- function(
       # Extract names from landings
       landings <- dat$t.series |>
         dplyr::select(dplyr::contains("L.") & dplyr::contains(".ob") |
-                      dplyr::contains("D.") & dplyr::contains(".ob"))
+          dplyr::contains("D.") & dplyr::contains(".ob"))
       fleets_land <- stringr::str_extract(as.vector(colnames(landings)), "(?<=L\\.)\\w+(?=\\.ob)")
       fleets_disc <- stringr::str_extract(as.vector(colnames(landings)), "(?<=D\\.)\\w+(?=\\.ob)")
       # Extract names from lof F dev
       parm <- dat$parm.tvec |>
-        dplyr::select(dplyr::contains("log.F.dev.")|
-                        dplyr::contains("log.F.dev.") & dplyr::contains(".D"))
+        dplyr::select(dplyr::contains("log.F.dev.") |
+          dplyr::contains("log.F.dev.") & dplyr::contains(".D"))
       # fleets_parm_D <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+(?=\\.D)")
       fleets_parm <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+")
       fleets <- unique(c(fleets_ind, fleets_land, fleets_disc, fleets_parm))
@@ -1183,7 +1183,7 @@ convert_output <- function(
     var_names_sheet <- openxlsx::read.xlsx(con_file)
   }
   if (file.exists(con_file)) {
-    out_new <- dplyr::inner_join(out_new, var_names_sheet, by = c("module_name","label")) |>
+    out_new <- dplyr::inner_join(out_new, var_names_sheet, by = c("module_name", "label")) |>
       dplyr::mutate(label = dplyr::case_when(
         !is.na(alt_label) ~ alt_label,
         TRUE ~ label
