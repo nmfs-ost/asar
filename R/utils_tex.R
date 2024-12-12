@@ -23,7 +23,7 @@ create_titlepage_tex <- function(office = "",
   # Add alt text to cover page image
   line_before <- grep("\\$if\\(cover)\\$", lines)
   cp_alt <- paste(
-    "\\pdftooltip{\\includegraphics{$cover$}}{",
+    "\\pdftooltip{\\includegraphics[width=6in]{$cover$}}{",
     "An illustration of ", species,
     "}",
     sep = ""
