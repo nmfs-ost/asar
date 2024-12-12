@@ -619,11 +619,10 @@ create_template <- function(
       if (add_image) {
         # extract image name
         new_img <- sapply(strsplit(spp_image, "/"), utils::tail, 1)
-
         yaml <- paste0(
           yaml,
           # image as pulled in from above
-          "cover: ", new_img, "\n"
+          "cover: support_files/", new_img, "\n"
         )
       } else if (spp_image == "") {
         yaml <- paste0(
