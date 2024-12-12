@@ -22,7 +22,38 @@ create_tables_doc <- function(subdir = NULL,
         paste0("library(flextable)\n
 rda_dir <- '", rda_dir, "/rda_files'"),
         label = "set-rda-dir-tbls",
-        eval = "true",
+        eval = "true"
+        ),
+      "\n"
+    )
+
+    # Indices table
+    ## import table, caption
+    tables_doc <- paste0(
+      tables_doc,
+      add_chunk(
+        paste0("# load rda
+load(file.path(rda_dir, 'indices_table.rda'))\n
+# save rda with plot-specific name
+indices_plot_rda <- rda\n
+# remove generic rda object
+rm(rda)\n
+# save table, caption as separate objects
+indices_table <- indices_table_rda$table
+indices_cap <- indices_table_rda$cap"),
+        label = "tbl-indices-setup",
+        eval = "false"
+      ),
+      "\n"
+    )
+
+    ## add table
+    tables_doc <- paste0(
+      tables_doc,
+      add_chunk(
+        paste0("indices_table"),
+        label = "tbl-indices-plot",
+        eval = "false",
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
