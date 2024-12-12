@@ -24,14 +24,17 @@ create_tables_doc(
 
 \item{include_all}{include all default tables for a stock assessment report}
 
-\item{rda_dir}{The location of the folder containing .rda files
-("rda_files") already made with \code{satf}, or, if the user has not used
-\code{satf} to make those .rda files already, rda_dir represents the location
-that will contain .rda files in an "rda_files" folder. The folder would have
-been made with \code{satf::exp_all_figs_tables()}, or by exporting files
-by running individual \code{satf} figure- and table-generating functions.
-If you have used \code{satf} to generate these .rda files, you can leave
-the arguments below blank.}
+\item{rda_dir}{If the user has already created .rda files containing
+figures, tables, alt text, and captions with \code{satf}, rda_dir represents
+the location of the folder containing these .rda files ("rda_files").
+Otherwise, if the user has not used \code{satf} to make those .rda files already,
+those files will be generated automatically and placed within the "report"
+folder within the \code{file_dir}. The "rda_files" folder would have been
+made with \code{satf::exp_all_figs_tables()}, or by exporting files by running individual
+\code{satf} figure- and table-generating functions. If you have used \code{satf} to
+generate these .rda files, you can leave the arguments below blank. NOTE:
+If an "rda_files" folder is detected within rda_dir, .rda files will not be
+regenerated.}
 }
 \value{
 Create a quarto document as part of a stock assessment outline with
