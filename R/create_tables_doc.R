@@ -31,7 +31,7 @@ create_tables_doc <- function(resdir = NULL,
       add_chunk(
         paste0("rda_dir <- '", rda_dir, "/rda_files'"),
         label = "set-rda-dir-tbls",
-        eval = "false"
+        eval = "true"
         ),
       "\n"
     )
@@ -51,7 +51,7 @@ rm(rda)\n
 indices_table <- indices_table_rda$table
 indices_cap <- indices_table_rda$cap"),
         label = "tbl-indices-setup",
-        eval = "true"
+        eval = "false"
       ),
       "\n"
     )
