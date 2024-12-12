@@ -109,10 +109,6 @@
 #' If you have used `satf` to generate these .rda files, you can leave
 #' the arguments below blank.
 #' @inheritParams satf::plot_recruitment
-#' @param make_rda This argument is automatically assessed based on the presence
-#' or absence of .rda files and should be left blank. TRUE/FALSE; indicate
-#' whether to produce an .rda file containing a list with the figure/table,
-#'  caption, and alternative text (if figure) for each figure and table.
 #' @param ref_line An argument inherited from `satf::plot_spawning_biomass.R`.
 #' A string specifying the type of reference you want to
 #' compare spawning biomass to. The default is `"target"`, which looks for
@@ -219,7 +215,6 @@
 #'   end_year = NULL,
 #'   n_projected_years = 10,
 #'   relative = FALSE,
-#'   make_rda = FALSE,
 #'   ref_line = c("target", "MSY", "msy", "unfished"),
 #'   spawning_biomass_label = "metric tons",
 #'   recruitment_label = "metric tons",
@@ -268,7 +263,6 @@ create_template <- function(
     end_year = NULL,
     n_projected_years = 10,
     relative = FALSE,
-    make_rda = FALSE,
     ref_line = c("target", "MSY", "msy", "unfished"),
     spawning_biomass_label = "metric tons",
     recruitment_label = "metric tons",
