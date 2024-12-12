@@ -142,6 +142,7 @@
 #' create_template(
 #'   new_section = "a_new_section",
 #'   section_location = "before-introduction",
+#'   rda_dir = here::here()
 #' )
 #'
 #'
@@ -159,6 +160,7 @@
 #'   model = "SS3",
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction",
+#'   rda_dir = here::here()
 #' )
 #'
 #' asar::create_template(
@@ -173,7 +175,8 @@
 #'   new_section = c("a_new_section", "another_new_section"),
 #'   section_location = c("before-introduction", "after-introduction"),
 #'   custom = TRUE,
-#'   custom_sections = c("executive_summary", "introduction")
+#'   custom_sections = c("executive_summary", "introduction"),
+#'   rda_dir = here::here()
 #' )
 #'
 #' create_template(
@@ -212,13 +215,13 @@
 #'   rda_dir = "C:/Users/Documents",
 #'   unit_label = "metric tons",
 #'   scale_amount = 1,
-#'   end_year = NULL,
+#'   end_year = 2022,
 #'   n_projected_years = 10,
 #'   relative = FALSE,
-#'   ref_line = c("target", "MSY", "msy", "unfished"),
+#'   ref_line = "target",
 #'   spawning_biomass_label = "metric tons",
 #'   recruitment_label = "metric tons",
-#'   ref_line_sb = c("target", "MSY", "msy", "unfished")
+#'   ref_line_sb = "target"
 #' )
 #' }
 #'
