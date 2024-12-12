@@ -108,6 +108,7 @@
 #' by running individual `satf` figure- and table-generating functions.
 #' If you have used `satf` to generate these .rda files, you can leave
 #' the arguments below blank.
+#' @param end_year The last year of assessment. The default is year - 1.
 #' @inheritParams satf::plot_recruitment
 #' @param ref_line An argument inherited from `satf::plot_spawning_biomass.R`.
 #' A string specifying the type of reference you want to
@@ -276,6 +277,11 @@ create_template <- function(
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
   }
 
+  # If analyst forgets to add end year, default will be year - 1
+  if (is.null(end_year)) {
+   end_year <- as.numeric(year) - 1
+  }
+
   # Name report
   if (!is.null(type)) {
     report_name <- paste0(
@@ -417,7 +423,7 @@ create_template <- function(
       # Create tables qmd
       if (include_tables) {
         if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
-          if (!is.null(rda_dir) & !is.null(end_year)){
+          if (!is.null(rda_dir)){
               create_tables_doc(
                 resdir = resdir,
                 model_results = model_results,
@@ -432,7 +438,7 @@ create_template <- function(
                 "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
               )
               utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
-              warning("Rda directory and/or arguments needed to create .rda files not defined.")
+              warning("Rda directory (rda_dir) needed to create .rda files not defined.")
             }
         } else {
           tables_doc <- paste0(
@@ -454,7 +460,7 @@ create_template <- function(
       # Create figures qmd
       if (include_figures) {
         if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
-          if (!is.null(rda_dir) & !is.null(end_year)){
+          if (!is.null(rda_dir)){
               create_figures_doc(
                 resdir = resdir,
                 model_results = model_results,
@@ -469,7 +475,7 @@ create_template <- function(
                 "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."
               )
               utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
-              warning("Rda directory and/or arguments needed to create .rda files not defined.")
+              warning("Rda directory (rda_dir) needed to create .rda files not defined.")
             }
         } else {
           figures_doc <- paste0(
