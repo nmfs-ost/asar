@@ -824,7 +824,7 @@ create_template <- function(
           "  ", "dplyr::summarize(max_val = max(year)) |> \n",
           "  ", "dplyr::pull(max_val))-10", "\n",
           # for quantities - don't want any values that are split by factor
-          "# subset output to remove quantities that are fplit by factor \n",
+          "# subset output to remove quantities that are split by factor \n",
           "output2 <- output |> \n",
           "  ", "dplyr::filter(is.na(season), \n",
           "  ", "  ", "is.na(fleet), \n",
