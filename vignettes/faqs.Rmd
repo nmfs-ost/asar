@@ -14,4 +14,59 @@ knitr::opts_chunk$set(
 )
 ```
 
-Placeholder for FAQs.
+### **How can I download the package?**
+
+Our README page provides a lot of basic directions to prepare you to successfully download the package. Please consult the page for downloading. In the case you are having troubles downloading, and receiving the following error:
+
+```
+Using GitHub PAT from the git credential store.
+Initiating curl with CURL_SSL_BACKEND: openssl
+Error: Failed to install 'unknown package' from GitHub:
+  HTTP error 403.
+  Resource protected by organization SAML enforcement. You must grant your OAuth token access to this organization.
+```
+
+Please download the package using this code:
+
+```
+install.packages("asar", repos = c("https://nmfs-ost.r-universe.dev", "https://cloud.r-project.org"))
+```
+
+### **Why am I getting the following error message when I try to render my template?:**
+
+```ERROR: 
+compilation failed- error
+LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.419 \end{CSLReferences}
+```
+
+The above error message is created due to a bug introduced in Quarto in the last year where the notation in *07_references.qmd* creates an issue when there is no in-text reference in the text. To correct this, please add this sentence temporarily to any of the quarto files in the outlined document (*only if you are using the default asar_references.bib file*):
+
+`Here is an example of an in text citation (@methot_stock_2013).`
+
+
+### **How do I reference one of the quantities in the preamble in my text? **
+
+You can use the quantities in the preamble to make dynamic reports that can easily be changed within the text by changing the output file. To reference these quantities in your text please use the following notation:
+
+```{verbatim}
+`r Fend`
+```
+
+For more help with using quarto (and using it efficiently), please see our [markdown guide](markdown_notation.html) to learn the in's and out's of writing a stock assessment report in quarto.
+
+### **create_template isn't working, what do I do?**
+
+This could mean a lot of things. Most of the time, when create_template is not working, it means you are missing a key argument to the function. Make sure to read the error message(s) clearly and check the 'report' folder where all of the file were created. If you have exhausted your options and double checked that you have all of the correct arguments, then please leave an [issue](https://github.com/nmfs-ost/asar/issues).
+
+### **What should I do if I have a species complex/multispecies assessment?**
+
+`asar` was not developed with the intention to use it for multiple species in one go. While in testing, users have simply combined the species using "and" in the species argument of create_template. The report can be written as desired after the fact. The beauty of asar is that it is still a template and highly customizable. User's familiar with Quarto can make edits to the YAML, chunk options, and other important components controlling the production of the document. We highly discourage making changes to the formatting or adding large additions of sections to the document that stray too far from the intended "NOAA" formatting.
+
+
+
