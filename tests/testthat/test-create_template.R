@@ -85,10 +85,10 @@ test_that("create_template() creates correct files", {
     year = year,
     author = c("John Snow", "Danny Phantom", "Patrick Star"),
     include_affiliation = TRUE,
-    parameters = FALSE,
-    resdir = "data",
-    model_results = "Report.sso",
-    model = "SS3"
+    parameters = FALSE
+    # resdir = "data",
+    # model_results = "Report.sso",
+    # model = "SS3"
   )
 
   long_inputs_output_path <- file.path(path, "report")
@@ -167,10 +167,10 @@ test_that("warning is triggered for existing files", {
     year = 2010,
     author = c("John Snow", "Danny Phantom", "Patrick Star"),
     include_affiliation = TRUE,
-    parameters = FALSE,
-    resdir = "data",
-    model_results = "Report.sso",
-    model = "SS3"
+    parameters = FALSE
+    # resdir = "data",
+    # model_results = "Report.sso",
+    # model = "SS3"
   )
 
   # Test if warning is triggered when there are existing files in the provided location
@@ -190,10 +190,10 @@ test_that("warning is triggered for existing files", {
       year = 2010,
       author = c("John Snow", "Danny Phantom", "Patrick Star"),
       include_affiliation = TRUE,
-      parameters = FALSE,
-      resdir = "data",
-      model_results = "Report.sso",
-      model = "SS3"
+      parameters = FALSE
+      # resdir = "data",
+      # model_results = "Report.sso",
+      # model = "SS3"
     ),
     regexp = "There are files in this location."
   )
@@ -222,9 +222,9 @@ test_that("file_dir works", {
     author = c("John Snow", "Danny Phantom", "Patrick Star"),
     include_affiliation = TRUE,
     parameters = FALSE,
-    resdir = "data",
-    model_results = "Report.sso",
-    model = "SS3",
+    # resdir = "data",
+    # model_results = "Report.sso",
+    # model = "SS3",
     file_dir = dir
   )
 
