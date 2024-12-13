@@ -10,5 +10,4 @@ on:
     #- cron: '0 0 * * 0'
 jobs:
   call-workflow:
-    uses: check-standard.yaml
-    # nmfs-fish-tools/ghactions4r/.github/workflows/r-cmd-check.yml@main
+    uses: nmfs-fish-tools/ghactions4r/.github/workflows/r-cmd-check.yml@main
