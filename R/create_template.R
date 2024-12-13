@@ -782,7 +782,8 @@ create_template <- function(
       # run satf::exp_all_figs_tables() if rda files not premade
 
       # output folder: subdir
-        if(!dir.exists(file.path(rda_dir, "rda_files"))){
+        if(!dir.exists(fs::path(rda_dir, "rda_files"))){
+          if (!is.null(resdir) | !is.null(model_results)) {
 
         # load converted output
         output <- utils::read.csv(paste0(resdir, "/", model_results))
@@ -803,6 +804,7 @@ create_template <- function(
           ref_line_sb = ref_line_sb
 >>>>>>> 0fda2ac (update(create_template):)
           )
+          }
         }
 
 
