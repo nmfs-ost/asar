@@ -54,9 +54,9 @@ The above error message is created due to a bug introduced in Quarto in the last
 
 You can use the quantities in the preamble to make dynamic reports that can easily be changed within the text by changing the output file. To reference these quantities in your text please use the following notation:
 
-```{verbatim}
+````{verbatim}
 `r Fend`
-```
+````
 
 For more help with using quarto (and using it efficiently), please see our [markdown guide](markdown_notation.html) to learn the in's and out's of writing a stock assessment report in quarto.
 
