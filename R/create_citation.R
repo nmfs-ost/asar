@@ -117,9 +117,9 @@ create_citation <- function(
       "\n",
       "Please cite this publication as: \n",
       "\n",
-      "AUTHOR NAME. YEAR. ",
+      "[AUTHOR NAME]. [YEAR]. ",
       title, ". ", off_title, ", ",
-      "CITY, STATE. "
+      "[CITY], [STATE]. "
     )
 
     } else if (office == "AFSC") {
@@ -141,7 +141,7 @@ create_citation <- function(
         "Please cite this publication as: \n",
         "\n",
         author_list, ". ", title, ".", year,
-         ". Prepared by ... . XX p."
+         ". Prepared by [COMMITTEE]. [XX] p."
       )
 
     } else if (office == "PIFSC") {
@@ -152,7 +152,7 @@ create_citation <- function(
         "\n",
         author_list, ". ", year, ". ",
         title, ". NOAA Tech. Memo. [TECH MEMO NUMBER]",
-        ", ", "XX p."
+        ", ", "[XX] p."
       )
 
   } else if (office == "SEFSC") {
@@ -162,7 +162,7 @@ create_citation <- function(
       "Please cite this publication as: \n",
       "\n",
       "SEDAR. ", year, ". ", title, ". ",
-      "SEDAR, North Charleston SC. XX pp. ",
+      "SEDAR, North Charleston SC. [XX] pp. ",
       "available online at: http://sedarweb.org/"
     )
 
