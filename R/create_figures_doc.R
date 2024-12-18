@@ -68,10 +68,10 @@ recruitment_alt_text <- recruitment_plot_rda$alt_text"),
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: recruitment_cap"
+            "fig-cap: !expr recruitment_cap"
           ),
           glue::glue(
-            "fig-alt: recruitment_alt_text"
+            "fig-alt: !expr recruitment_alt_text"
           )
         )
       ),
@@ -109,10 +109,10 @@ spawning_biomass_alt_text <- spawning_biomass_plot_rda$alt_text"),
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: spawning_biomass_cap"
+            "fig-cap: !expr spawning_biomass_cap"
           ),
           glue::glue(
-            "fig-alt: spawning_biomass_alt_text"
+            "fig-alt: !expr spawning_biomass_alt_text"
           )
         )
       ),
@@ -150,10 +150,10 @@ biomass_alt_text <- biomass_plot_rda$alt_text"),
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: biomass_cap"
+            "fig-cap: !expr biomass_cap"
           ),
           glue::glue(
-            "fig-alt: biomass_alt_text"
+            "fig-alt: !expr biomass_alt_text"
           )
         )
       ),
@@ -192,10 +192,10 @@ landings_alt_text <- landings_plot_rda$alt_text"),
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: landings_cap"
+            "fig-cap: !expr landings_cap"
           ),
           glue::glue(
-            "fig-alt: landings_alt_text"
+            "fig-alt: !expr landings_alt_text"
           )
         )
       ),
@@ -233,10 +233,10 @@ recruitment_deviations_alt_text <- recruitment_deviations_plot_rda$alt_text"),
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: recruitment_deviations_cap"
+            "fig-cap: !expr recruitment_deviations_cap"
           ),
           glue::glue(
-            "fig-alt: recruitment_deviations_alt_text"
+            "fig-alt: !expr recruitment_deviations_alt_text"
           )
         )
       ),
@@ -274,10 +274,10 @@ spawning_recruitment_alt_text <- spawning_recruitment_plot_rda$alt_text"),
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: spawning_recruitment_cap"
+            "fig-cap: !expr spawning_recruitment_cap"
           ),
           glue::glue(
-            "fig-alt: spawning_recruitment_alt_text"
+            "fig-alt: !expr spawning_recruitment_alt_text"
           )
         )
       ),
