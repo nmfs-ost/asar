@@ -802,7 +802,7 @@ create_template <- function(
           spawning_biomass_label = spawning_biomass_label,
           recruitment_label = recruitment_label,
           ref_line_sb = ref_line_sb
->>>>>>> 0fda2ac (update(create_template):)
+
           )
           }
         }
