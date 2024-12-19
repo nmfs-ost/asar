@@ -168,7 +168,7 @@ recruitment_alt_text <- new_alt_text
 
 1.  Changes to your alt text will be saved within your 09_figures.qmd file, but not within the rda file itself.
 2.  Edit figure and table captions with the same process. Just substitute mentions of alt text with caption or cap, depending on the context.
-3.  As stated earlier, if you see text that looks like a placeholder (e.g., "The x axis, showing the year, spans from B_start_year to B_end_year..."), that means that there was at least one instance where our tool failed to extract a specific value from the model results and substitute it into the placeholder. Please make sure that your alt text and captions contain the expected values before moving forward with your report. Check out the inst/resources/captions_alt_text_template.csv file to view the template with placeholders. The `write_captions()` function in the `satf` package shows how values are extracted from the model results and substituted into the placeholders.
+3.  As stated earlier, if you see text that looks like a placeholder (e.g., "The x axis, showing the year, spans from B_start_year to B_end_year..."), that means that there was at least one instance where our tool failed to extract a specific value from the model results and substitute it into the placeholder. Please make sure that your alt text and captions contain the expected values before moving forward with your report. Check out the inst/resources/captions_alt_text_template.csv file in the `satf` package to view the template with placeholders. The same package's `write_captions()` function shows how values are extracted from the model results and substituted into the placeholders.
 
 ### More resources
 
