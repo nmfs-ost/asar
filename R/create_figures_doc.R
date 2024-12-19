@@ -71,10 +71,10 @@ if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){\n
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: !expr recruitment_cap"
+            "fig-cap: !expr if(eval_recruitment) recruitment_cap"
           ),
           glue::glue(
-            "fig-alt: !expr recruitment_alt_text"
+            "fig-alt: !expr if(eval_recruitment) recruitment_alt_text"
           )
         )
       ),
@@ -117,10 +117,10 @@ if (file.exists(file.path(rda_dir, 'spawning_biomass_figure.rda'))){\n
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: !expr spawning_biomass_cap"
+            "fig-cap: !expr if(eval_spawning_biomass) spawning_biomass_cap"
           ),
           glue::glue(
-            "fig-alt: !expr spawning_biomass_alt_text"
+            "fig-alt: !expr if(eval_spawning_biomass) spawning_biomass_alt_text"
           )
         )
       ),
@@ -163,10 +163,10 @@ if (file.exists(file.path(rda_dir, 'biomass_figure.rda'))){\n
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: !expr biomass_cap"
+            "fig-cap: !expr if(eval_biomass) biomass_cap"
           ),
           glue::glue(
-            "fig-alt: !expr biomass_alt_text"
+            "fig-alt: !expr if(eval_biomass) biomass_alt_text"
           )
         )
       ),
@@ -210,10 +210,10 @@ if (file.exists(file.path(rda_dir, 'landings_figure.rda'))){\n
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: !expr landings_cap"
+            "fig-cap: !expr if(eval_landings) landings_cap"
           ),
           glue::glue(
-            "fig-alt: !expr landings_alt_text"
+            "fig-alt: !expr if(eval_landings) landings_alt_text"
           )
         )
       ),
@@ -256,10 +256,10 @@ if (file.exists(file.path(rda_dir, 'recruitment_deviations_figure.rda'))){\n
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: !expr recruitment_deviations_cap"
+            "fig-cap: !expr if(eval_recruitment_deviations) recruitment_deviations_cap"
           ),
           glue::glue(
-            "fig-alt: !expr recruitment_deviations_alt_text"
+            "fig-alt: !expr if(eval_recruitment_deviations) recruitment_deviations_alt_text"
           )
         )
       ),
@@ -302,10 +302,10 @@ if (file.exists(file.path(rda_dir, 'est_stock_recruitment_figure.rda'))){\n
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: !expr spawning_recruitment_cap"
+            "fig-cap: !expr if(eval_spawning_recruitment) spawning_recruitment_cap"
           ),
           glue::glue(
-            "fig-alt: !expr spawning_recruitment_alt_text"
+            "fig-alt: !expr if(eval_spawning_recruitment) spawning_recruitment_alt_text"
           )
         )
       ),

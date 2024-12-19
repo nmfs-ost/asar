@@ -29,7 +29,13 @@ create_tables_doc <- function(resdir = NULL,
       add_chunk(
         paste0("rda_dir <- '", rda_dir, "/rda_files'"),
         label = "set-rda-dir-tbls",
-        eval = "true"
+        eval = "true",
+        add_option = TRUE,
+        chunk_op = c(
+          glue::glue(
+            "include: false"
+          )
+        )
         ),
       "\n"
     )
@@ -44,7 +50,7 @@ if (file.exists(file.path(rda_dir, 'indices_table.rda'))){\n
   # load rda
   load(file.path(rda_dir, 'indices_table.rda'))\n
   # save rda with plot-specific name
-  indices_plot_rda <- rda\n
+  indices_table_rda <- rda\n
   # remove generic rda object
   rm(rda)\n
   # save table, caption as separate objects; set eval to TRUE
@@ -55,8 +61,14 @@ if (file.exists(file.path(rda_dir, 'indices_table.rda'))){\n
 } else {eval_indices <- FALSE}"
                ),
         label = "tbl-indices-setup",
-        eval = "true"
-      ),
+        eval = "true",
+        add_option = TRUE,
+        chunk_op = c(
+          glue::glue(
+            "include: false"
+          )
+        )
+        ),
       "\n"
     )
 
@@ -70,9 +82,11 @@ if (file.exists(file.path(rda_dir, 'indices_table.rda'))){\n
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "tbl-cap: !expr indices_cap"
-          )
-        )
+            "tbl-cap: !expr if(eval_indices) indices_cap"
+          ),
+          glue::glue(
+            "include: !expr eval_indices"
+          ))
       ),
       "\n"
     )
