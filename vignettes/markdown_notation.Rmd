@@ -90,6 +90,37 @@ Many symbols can be written by adding a backslash (\\) before a symbol name. For
 - \$|b|$ renders as $|b|$
 - \$\\sqrt\{4+i\}$ renders as $\sqrt{4+i}$
 
+##### Greek Letters
+
+Generalized notation - `$\alpha$`
+
+| Greek Letter Spelling | Lowercase  | Capital    |
+|-----------------------|------------|------------|
+| alpha                 | $\alpha$   | A          |
+| beta                  | $\beta$    | B          |
+| gamma                 | $\gamma$   | $\Gamma$   |
+| delta                 | $\delta$   | $\Delta$   |
+| epsilon               | $\epsilon$ | E          |
+| zeta                  | $\zeta$    | Z          |
+| eta                   | $\eta$     | H          |
+| theta                 | $\theta$   | $\Theta$   |
+| kappa                 | $\kappa$   | K          |
+| lambda                | $\lambda$  | $\Lambda$  |
+| mu                    | $\mu$      | M          |
+| nu                    | $\nu$      | N          |
+| omicron               | $\omicron$ | O          |
+| rho                   | $\rho$     | P          |
+| sigma                 | $\sigma$   | $\Sigma$   |
+| tau                   | $\tau$     | T          |
+| upsilon               | $\upsilon$ | $\Upsilon$ |
+| chi                   | $\chi$     | X          |
+| psi                   | $\psi$     | $\Psi$     |
+| iota                  | $\iota$    | I          |
+| xi                    | $\xi$      | $\Xi$      |
+| pi                    | $\pi$      | $\Pi$      |
+| phi                   | $\phi$     | $\Phi$     |
+| omega                 | $\omega$   | $\Omega$   |
+
 #### Fractions
 
 To make a fraction, write \\frac before your numerator and denominator, both of which are enclosed in curly brackets (\{ \}). For instance, \$\\frac{7}{8}$ renders as $\frac{7}{8}$.
@@ -99,9 +130,13 @@ To make a fraction, write \\frac before your numerator and denominator, both of 
 Lots of these special symbols can be combined into complex terms and equations. For instance:
 
 - \$R^2_{adj}$ renders as $R^2_{adj}$
+
 - \$y = ax^2 + bx + c$ renders as $y = ax^2 + bx + c$
+
 - \$\\frac\{\\theta^\{10\}\}\{2a\} \\le \\frac\{5c^4\}\{b_\{min\}\}$ renders as $\frac{\theta^{10}}{2a} \le \frac{5c^4}{b_{min}}$
+
 - \$SBPR_f = \\sum_\{a\} N_a m_a w_a$ renders as $SBPR_f = \sum_{a} N_a m_a w_a$
+
   - Note: when sums are rendered in-text, like the one above, the bounds will appear next to the summation. When rendered as a block equation, the bounds will appear as expected, like this: $$SBPR_f = \sum_{a} N_a m_a w_a$$
 
 #### Further guidance
@@ -122,7 +157,6 @@ To add a piece of code into the text directly, encase R code within a pair of ba
 params$region
 ```
 
-
 The above example shows how one would incorporate the *region* parameter into a sentence in a markdown or quarto file. In google docs, this notation formatted to green and the font roboto mono.
 
 If we define the parameter of region as NWFSC, the phrase "my region is  \`params\$region\` would render as  "my region is `r params$region`".
@@ -132,6 +166,24 @@ Other ways to incorporate markdown notation include:
 #### In-line calculations
 
   - `\r 2+2\` would render as `r 2+2`.
+  
+#### Code Chunk Options
+
+The following are some of the ways you can tell quarto to evaluate code:
+
+| Execute options | Actions              |
+|-----------------|----------------------|
+| echo            | true, false          |
+| warning         | true, false          |
+| eval            | true, false, \[...\] |
+| output          | true, false, asis    |
+| warning         | true, false          |
+| error           | true, false          |
+| include         | true, false          |
+| cache           | true, false, refresh |
+| freeze          | true, false, auto    |
+
+
   
 ### References
 
