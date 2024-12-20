@@ -63,11 +63,50 @@ Efficiently using this package in the stock assessment workflow requires a basic
 | Comment out text | ````<!--- text here ---```` |
 | in-text email or URLs | ````<www.example.com>```` <br> ````<example@noaa.gov>````` |
 
-### Equations
+### Math
 
-| Element | Markdown Syntax |
-|---------|-----------------|
-|
+Two helpful things to know about writing mathematical expressions with R markdown:
+
+1. R markdown supports LaTex-style mathematical expressions.
+2. *In-line expressions* are surrounded by one set of dollar signs (\$) while equations that are on their own line (*"block" expressions*) are surrounded by two sets. For instance, \$1+1=2\$ is rendered as $1+1=2$ while ```$$1 + 1 = 2$$``` is rendered as: $$1+1=2$$
+
+#### Superscript
+
+To write a superscript, use a caret (\^) before a value. For instance, \$b^2\$ renders as $b^2$.
+
+#### Subscript
+
+To write a subscript, use an underscore (\_) before a value. For instance, \$b_2\$ renders as $b_2$. For longer subscripts, enclose the text in curly brackets (\$b_{12345}\$ renders as $b_{12345}$)
+
+#### Symbols
+
+Many symbols can be written by adding a backslash (\\) before a symbol name. For instance:
+
+- \$\\pi$ renders as $\pi$
+- \$\\beta$ renders as $\beta$
+- \$\\mu$ renders as $\mu$
+- \$\\sigma$ renders as $\sigma$
+- \$\\overline\{b\}$ renders as $\overline{b}$
+- \$|b|$ renders as $|b|$
+- \$\\sqrt\{4+i\}$ renders as $\sqrt{4+i}$
+
+#### Fractions
+
+To make a fraction, write \\frac before your numerator and denominator, both of which are enclosed in curly brackets (\{ \}). For instance, \$\\frac{7}{8}$ renders as $\frac{7}{8}$.
+
+#### Equations and combinations
+
+Lots of these special symbols can be combined into complex terms and equations. For instance:
+
+- \$R^2_{adj}$ renders as $R^2_{adj}$
+- \$y = ax^2 + bx + c$ renders as $y = ax^2 + bx + c$
+- \$\\frac\{\\theta^\{10\}\}\{2a\} \\le \\frac\{5c^4\}\{b_\{min\}\}$ renders as $\frac{\theta^{10}}{2a} \le \frac{5c^4}{b_{min}}$
+- \$SBPR_f = \\sum_\{a\} N_a m_a w_a$ renders as $SBPR_f = \sum_{a} N_a m_a w_a$
+  - Note: when sums are rendered in-text, like the one above, the bounds will appear next to the summation. When rendered as a block equation, the bounds will appear as expected, like this: $$SBPR_f = \sum_{a} N_a m_a w_a$$
+
+#### Further guidance
+
+Check out [Overleaf's LaTeX reference guide to mathematical expressions](https://www.overleaf.com/learn/latex/Mathematical_expressions) for more guidance writing mathematical text.
 
 ## Markdown Syntax
 
