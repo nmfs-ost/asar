@@ -29,7 +29,13 @@ create_tables_doc <- function(resdir = NULL,
       add_chunk(
         paste0("rda_dir <- '", rda_dir, "/rda_files'"),
         label = "set-rda-dir-tbls",
-        eval = "true"
+        eval = "true",
+        add_option = TRUE,
+        chunk_op = c(
+          glue::glue(
+            "include: false"
+          )
+        )
         ),
       "\n"
     )
@@ -39,18 +45,30 @@ create_tables_doc <- function(resdir = NULL,
     tables_doc <- paste0(
       tables_doc,
       add_chunk(
-        paste0("# load rda
-load(file.path(rda_dir, 'indices_table.rda'))\n
-# save rda with plot-specific name
-indices_plot_rda <- rda\n
-# remove generic rda object
-rm(rda)\n
-# save table, caption as separate objects
-indices_table <- indices_table_rda$table
-indices_cap <- indices_table_rda$cap"),
+        paste0("# if the indices table rda exists:
+if (file.exists(file.path(rda_dir, 'indices_table.rda'))){\n
+  # load rda
+  load(file.path(rda_dir, 'indices_table.rda'))\n
+  # save rda with plot-specific name
+  indices_table_rda <- rda\n
+  # remove generic rda object
+  rm(rda)\n
+  # save table, caption as separate objects; set eval to TRUE
+  indices_table <- indices_table_rda$table
+  indices_cap <- indices_table_rda$cap
+  eval_indices <- TRUE\n
+# if the indices table rda does not exist, don't evaluate the next chunk
+} else {eval_indices <- FALSE}"
+               ),
         label = "tbl-indices-setup",
-        eval = "false"
-      ),
+        eval = "true",
+        add_option = TRUE,
+        chunk_op = c(
+          glue::glue(
+            "include: false"
+          )
+        )
+        ),
       "\n"
     )
 
@@ -60,13 +78,15 @@ indices_cap <- indices_table_rda$cap"),
       add_chunk(
         paste0("indices_table"),
         label = "tbl-indices-plot",
-        eval = "false",
+        eval = "!expr eval_indices",
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "tbl-cap: !expr indices_cap"
-          )
-        )
+            "tbl-cap: !expr if(eval_indices) indices_cap"
+          ),
+          glue::glue(
+            "include: !expr eval_indices"
+          ))
       ),
       "\n"
     )

@@ -40,16 +40,21 @@ create_figures_doc <- function(resdir = NULL,
     figures_doc <- paste0(
       figures_doc,
       add_chunk(
-        paste0("# load rda
-load(file.path(rda_dir, 'recruitment_figure.rda'))\n
-# save rda with plot-specific name
-recruitment_plot_rda <- rda\n
-# remove generic rda object
-rm(rda)\n
-# save figure, caption, and alt text as separate objects
-recruitment_plot <- recruitment_plot_rda$figure
-recruitment_cap <- recruitment_plot_rda$cap
-recruitment_alt_text <- recruitment_plot_rda$alt_text"),
+        paste0("# if the recruitment figure rda exists:
+if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){\n
+  # load rda
+  load(file.path(rda_dir, 'recruitment_figure.rda'))\n
+  # save rda with plot-specific name
+  recruitment_plot_rda <- rda\n
+  # remove generic rda object
+  rm(rda)\n
+  # save figure, caption, and alt text as separate objects; set eval to TRUE
+  recruitment_plot <- recruitment_plot_rda$figure
+  recruitment_cap <- recruitment_plot_rda$cap
+  recruitment_alt_text <- recruitment_plot_rda$alt_text
+  eval_recruitment <- TRUE\n
+# if the recruitment figure rda does not exist, don't evaluate the next chunk
+} else {eval_recruitment <- FALSE}"),
         label = "fig-recruitment-setup",
         eval = "true"
       ),
@@ -62,14 +67,14 @@ recruitment_alt_text <- recruitment_plot_rda$alt_text"),
       add_chunk(
         paste0("recruitment_plot"),
         label = "fig-recruitment-plot",
-        eval = "true",
+        eval = "!expr eval_recruitment",
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: !expr recruitment_cap"
+            "fig-cap: !expr if(eval_recruitment) recruitment_cap"
           ),
           glue::glue(
-            "fig-alt: !expr recruitment_alt_text"
+            "fig-alt: !expr if(eval_recruitment) recruitment_alt_text"
           )
         )
       ),
@@ -81,16 +86,21 @@ recruitment_alt_text <- recruitment_plot_rda$alt_text"),
     figures_doc <- paste0(
       figures_doc,
       add_chunk(
-        paste0("# load rda
-load(file.path(rda_dir, 'spawning_biomass_figure.rda'))\n
-# save rda with plot-specific name
-spawning_biomass_plot_rda <- rda\n
-# remove generic rda object
-rm(rda)\n
-# save figure, caption, and alt text as separate objects
-spawning_biomass_plot <- spawning_biomass_plot_rda$figure
-spawning_biomass_cap <- spawning_biomass_plot_rda$cap
-spawning_biomass_alt_text <- spawning_biomass_plot_rda$alt_text"),
+        paste0("# if the spawning biomass figure rda exists:
+if (file.exists(file.path(rda_dir, 'spawning_biomass_figure.rda'))){\n
+  # load rda
+  load(file.path(rda_dir, 'spawning_biomass_figure.rda'))\n
+  # save rda with plot-specific name
+  spawning_biomass_plot_rda <- rda\n
+  # remove generic rda object
+  rm(rda)\n
+  # save figure, caption, and alt text as separate objects; set eval to TRUE
+  spawning_biomass_plot <- spawning_biomass_plot_rda$figure
+  spawning_biomass_cap <- spawning_biomass_plot_rda$cap
+  spawning_biomass_alt_text <- spawning_biomass_plot_rda$alt_text
+  eval_spawning_biomass <- TRUE\n
+# if the spawning biomass figure rda does not exist, don't evaluate the next chunk
+} else {eval_spawning_biomass <- FALSE}"),
         label = "fig-spawning_biomass-setup",
         eval = "true"
       ),
@@ -103,14 +113,14 @@ spawning_biomass_alt_text <- spawning_biomass_plot_rda$alt_text"),
       add_chunk(
         paste0("spawning_biomass_plot"),
         label = "fig-spawning_biomass-plot",
-        eval = "true",
+        eval = "!expr eval_spawning_biomass",
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: !expr spawning_biomass_cap"
+            "fig-cap: !expr if(eval_spawning_biomass) spawning_biomass_cap"
           ),
           glue::glue(
-            "fig-alt: !expr spawning_biomass_alt_text"
+            "fig-alt: !expr if(eval_spawning_biomass) spawning_biomass_alt_text"
           )
         )
       ),
@@ -122,16 +132,21 @@ spawning_biomass_alt_text <- spawning_biomass_plot_rda$alt_text"),
     figures_doc <- paste0(
       figures_doc,
       add_chunk(
-        paste0("# load rda
-load(file.path(rda_dir, 'biomass_figure.rda'))\n
-# save rda with plot-specific name
-biomass_plot_rda <- rda\n
-# remove generic rda object
-rm(rda)\n
-# save figure, caption, and alt text as separate objects
-biomass_plot <- biomass_plot_rda$figure
-biomass_cap <- biomass_plot_rda$cap
-biomass_alt_text <- biomass_plot_rda$alt_text"),
+        paste0("# if the biomass figure rda exists:
+if (file.exists(file.path(rda_dir, 'biomass_figure.rda'))){\n
+  # load rda
+  load(file.path(rda_dir, 'biomass_figure.rda'))\n
+  # save rda with plot-specific name
+  biomass_plot_rda <- rda\n
+  # remove generic rda object
+  rm(rda)\n
+  # save figure, caption, and alt text as separate objects; set eval to TRUE
+  biomass_plot <- biomass_plot_rda$figure
+  biomass_cap <- biomass_plot_rda$cap
+  biomass_alt_text <- biomass_plot_rda$alt_text
+  eval_biomass <- TRUE\n
+# if the biomass figure rda does not exist, don't evaluate the next chunk
+} else {eval_biomass <- FALSE}"),
         label = "fig-biomass-setup",
         eval = "true"
       ),
@@ -144,14 +159,14 @@ biomass_alt_text <- biomass_plot_rda$alt_text"),
       add_chunk(
         paste0("biomass_plot"),
         label = "fig-biomass-plot",
-        eval = "true",
+        eval = "!expr eval_biomass",
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: !expr biomass_cap"
+            "fig-cap: !expr if(eval_biomass) biomass_cap"
           ),
           glue::glue(
-            "fig-alt: !expr biomass_alt_text"
+            "fig-alt: !expr if(eval_biomass) biomass_alt_text"
           )
         )
       ),
@@ -164,16 +179,21 @@ biomass_alt_text <- biomass_plot_rda$alt_text"),
     figures_doc <- paste0(
       figures_doc,
       add_chunk(
-        paste0("# load rda
-load(file.path(rda_dir, 'landings_figure.rda'))\n
-# save rda with plot-specific name
-landings_plot_rda <- rda\n
-# remove generic rda object
-rm(rda)\n
-# save figure, caption, and alt text as separate objects
-landings_plot <- landings_plot_rda$figure
-landings_cap <- landings_plot_rda$cap
-landings_alt_text <- landings_plot_rda$alt_text"),
+        paste0("# if the landings figure rda exists:
+if (file.exists(file.path(rda_dir, 'landings_figure.rda'))){\n
+  # load rda
+  load(file.path(rda_dir, 'landings_figure.rda'))\n
+  # save rda with plot-specific name
+  landings_plot_rda <- rda\n
+  # remove generic rda object
+  rm(rda)\n
+  # save figure, caption, and alt text as separate objects; set eval to TRUE
+  landings_plot <- landings_plot_rda$figure
+  landings_cap <- landings_plot_rda$cap
+  landings_alt_text <- landings_plot_rda$alt_text
+  eval_landings <- TRUE\n
+# if the landings figure rda does not exist, don't evaluate the next chunk
+} else {eval_landings <- FALSE}"),
         label = "fig-landings-setup",
         eval = "true"
       ),
@@ -186,14 +206,14 @@ landings_alt_text <- landings_plot_rda$alt_text"),
       add_chunk(
         paste0("landings_plot"),
         label = "fig-landings-plot",
-        eval = "true",
+        eval = "!expr eval_landings",
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: !expr landings_cap"
+            "fig-cap: !expr if(eval_landings) landings_cap"
           ),
           glue::glue(
-            "fig-alt: !expr landings_alt_text"
+            "fig-alt: !expr if(eval_landings) landings_alt_text"
           )
         )
       ),
@@ -205,16 +225,21 @@ landings_alt_text <- landings_plot_rda$alt_text"),
     figures_doc <- paste0(
       figures_doc,
       add_chunk(
-        paste0("# load rda
-load(file.path(rda_dir, 'recruitment_deviations_figure.rda'))\n
-# save rda with plot-specific name
-recruitment_deviations_plot_rda <- rda\n
-# remove generic rda object
-rm(rda)\n
-# save figure, caption, and alt text as separate objects
-recruitment_deviations_plot <- recruitment_deviations_plot_rda$figure
-recruitment_deviations_cap <- recruitment_deviations_plot_rda$cap
-recruitment_deviations_alt_text <- recruitment_deviations_plot_rda$alt_text"),
+        paste0("# if the recruitment deviations figure rda exists:
+if (file.exists(file.path(rda_dir, 'recruitment_deviations_figure.rda'))){\n
+  # load rda
+  load(file.path(rda_dir, 'recruitment_deviations_figure.rda'))\n
+  # save rda with plot-specific name
+  recruitment_deviations_plot_rda <- rda\n
+  # remove generic rda object
+  rm(rda)\n
+  # save figure, caption, and alt text as separate objects; set eval to TRUE
+  recruitment_deviations_plot <- recruitment_deviations_plot_rda$figure
+  recruitment_deviations_cap <- recruitment_deviations_plot_rda$cap
+  recruitment_deviations_alt_text <- recruitment_deviations_plot_rda$alt_text
+  eval_recruitment_deviations <- TRUE\n
+# if the recruitment deviations figure rda does not exist, don't evaluate the next chunk
+} else {eval_recruitment_deviations <- FALSE}"),
         label = "fig-recruitment_deviations-setup",
         eval = "true"
       ),
@@ -227,14 +252,14 @@ recruitment_deviations_alt_text <- recruitment_deviations_plot_rda$alt_text"),
       add_chunk(
         paste0("recruitment_deviations_plot"),
         label = "fig-recruitment_deviations-plot",
-        eval = "true",
+        eval = "!expr eval_recruitment_deviations",
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: !expr recruitment_deviations_cap"
+            "fig-cap: !expr if(eval_recruitment_deviations) recruitment_deviations_cap"
           ),
           glue::glue(
-            "fig-alt: !expr recruitment_deviations_alt_text"
+            "fig-alt: !expr if(eval_recruitment_deviations) recruitment_deviations_alt_text"
           )
         )
       ),
@@ -246,16 +271,21 @@ recruitment_deviations_alt_text <- recruitment_deviations_plot_rda$alt_text"),
     figures_doc <- paste0(
       figures_doc,
       add_chunk(
-        paste0("# load rda
-load(file.path(rda_dir, 'est_stock_recruitment_figure.rda'))\n
-# save rda with plot-specific name
-spawning_recruitment_plot_rda <- rda\n
-# remove generic rda object
-rm(rda)\n
-# save figure, caption, and alt text as separate objects
-spawning_recruitment_plot <- spawning_recruitment_plot_rda$figure
-spawning_recruitment_cap <- spawning_recruitment_plot_rda$cap
-spawning_recruitment_alt_text <- spawning_recruitment_plot_rda$alt_text"),
+        paste0("# if the spawning recruitment figure rda exists:
+if (file.exists(file.path(rda_dir, 'est_stock_recruitment_figure.rda'))){\n
+  # load rda
+  load(file.path(rda_dir, 'est_stock_recruitment_figure.rda'))\n
+  # save rda with plot-specific name
+  spawning_recruitment_plot_rda <- rda\n
+  # remove generic rda object
+  rm(rda)\n
+  # save figure, caption, and alt text as separate objects; set eval to TRUE
+  spawning_recruitment_plot <- spawning_recruitment_plot_rda$figure
+  spawning_recruitment_cap <- spawning_recruitment_plot_rda$cap
+  spawning_recruitment_alt_text <- spawning_recruitment_plot_rda$alt_text
+  eval_spawning_recruitment <- TRUE\n
+# if the spawning recruitment figure rda does not exist, don't evaluate the next chunk
+} else {eval_spawning_recruitment <- FALSE}"),
         label = "fig-spawning_recruitment-setup",
         eval = "true"
       ),
@@ -268,14 +298,14 @@ spawning_recruitment_alt_text <- spawning_recruitment_plot_rda$alt_text"),
       add_chunk(
         paste0("spawning_recruitment_plot"),
         label = "fig-spawning_recruitment-plot",
-        eval = "true",
+        eval = "!expr eval_spawning_recruitment",
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: !expr spawning_recruitment_cap"
+            "fig-cap: !expr if(eval_spawning_recruitment) spawning_recruitment_cap"
           ),
           glue::glue(
-            "fig-alt: !expr spawning_recruitment_alt_text"
+            "fig-alt: !expr if(eval_spawning_recruitment) spawning_recruitment_alt_text"
           )
         )
       ),
