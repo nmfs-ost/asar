@@ -145,7 +145,7 @@ Check out [Overleaf's LaTeX reference guide to mathematical expressions](https:/
 
 ## Markdown Syntax
 
-### Code Chunks {#sec-codechunk}
+## Code Chunks {#sec-codechunk}
 
 To add a piece of code into the text directly, encase R code within a pair of back ticks (\`). For example, \`params$region` will render like this:
 
@@ -185,7 +185,7 @@ The following are some of the ways you can tell quarto to evaluate code:
 
 
   
-### References
+## References
 
 `asar` comes with a default .bib file which contains example references, but users are encouraged to replace it or expand upon it with their own .bib files for references in their report. To references an article or other references from the file within the test use the following notation:
 
@@ -197,7 +197,7 @@ renders as
 
 The citation will properly format according to APA standards and include the citation in `07_references.qmd`. A good rule of thumb to follow is that references are cited use the @ symbol followed by the first author's last name then the publication year. This is not always the case, so it is advised that users check their bib file for the proper citation or use the Visual editor that provides a convenient drop down with a list of suggested citations base on author name, year, or keyword from the title.
   
-### Combinations
+## Combinations
 
 A lot of the notation in this document can be combined for a highly customizable document. For example, you can bold or italicize a link by surrounding the notation to insert a link by asterisks (\*):
 
