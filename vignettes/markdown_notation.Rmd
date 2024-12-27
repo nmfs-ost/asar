@@ -210,7 +210,7 @@ A lot of the notation in this document can be combined for a highly customizable
 \*\*\[NOAA Fisheries]\(https://www.fisheries.noaa.gov)** renders as **[NOAA Fisheries](https://www.fisheries.noaa.gov/)**
 
 
-## Acknowledgement
+## Acknowledgments
 
 This content was sourced and adapted from the Markdown Guide [Markdown Cheat Sheet](https://www.markdownguide.org/cheat-sheet/), a helpful resource for the markdown language. 
 
