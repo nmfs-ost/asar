@@ -488,7 +488,7 @@ create_template <- function(
               recruitment_label = recruitment_label,
               ref_line_sb = ref_line_sb
             ),
-            finally = print("Failed to create rda files from satf package.")
+            error = function(e) print("Failed to create all rda files from satf package.")
           )
         }
       }
