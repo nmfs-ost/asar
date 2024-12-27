@@ -40,15 +40,20 @@ create_template(
   spp_image = NULL,
   bib_file = "asar_references.bib",
   rda_dir = getwd(),
-  unit_label = "metric tons",
   scale_amount = 1,
   end_year = NULL,
   n_projected_years = 10,
   relative = FALSE,
+  recruitment_unit_label = "metric tons",
   ref_line = c("target", "MSY", "msy", "unfished"),
+  ref_point = NULL,
+  landings_unit_label = "metric tons",
+  ref_point_sb = NULL,
   spawning_biomass_label = "metric tons",
-  recruitment_label = "metric tons",
-  ref_line_sb = c("target", "MSY", "msy", "unfished")
+  ref_line_sb = c("target", "MSY", "msy", "unfished"),
+  indices_unit_label = NULL,
+  biomass_unit_label = "mt",
+  catch_unit_label = "mt"
 )
 }
 \arguments{
@@ -194,8 +199,6 @@ generate these .rda files, you can leave the arguments below blank. NOTE:
 If an "rda_files" folder is detected within rda_dir, .rda files will not be
 regenerated.}
 
-\item{unit_label}{units for recruitment}
-
 \item{scale_amount}{indicate the exact amount of scale (i.e. 1000)}
 
 \item{end_year}{The last year of assessment. The default is year - 1.}
@@ -207,6 +210,8 @@ By default this number is set to 10}
 be relative spawning biomass. The default is `FALSE`. `ref_line` indicates
 which reference point to use.}
 
+\item{recruitment_unit_label}{Units for recruitment}
+
 \item{ref_line}{An argument inherited from \code{satf::plot_spawning_biomass.R}.
 A string specifying the type of reference you want to
 compare spawning biomass to. The default is \code{"target"}, which looks for
@@ -216,21 +221,29 @@ lower-case letters but you must use one of the options specified in the
 default list to ensure that the label on the figure looks correct
 regardless of how it is specified in \code{dat}.}
 
-\item{spawning_biomass_label}{An argument inherited from
-\code{satf::plot_spawn_recruitment.R}. Units for spawning biomass.}
+\item{ref_point}{An argument inherited from \code{satf::plot_biomass.R}. A known
+value of the reference point along with the label for the reference point as
+specified in the output file. Please use this option if the ref_line cannot
+find your desired point. Indicate the reference point in the form
+c("label" = value).}
 
-\item{recruitment_label}{An argument inherited from
-\code{satf::plot_spawn_recruitment.R}. Units for recruitment.}
+\item{landings_unit_label}{Units for landings}
 
-\item{ref_line_sb}{An argument with inherited from \code{satf::plot_spawning_biomass.R}
-(under the parameter name \code{ref_line}, changed slightly to differentiate from
-the ref_line indicated for \code{satf::plot_biomass.}) A string specifying the type of
+\item{spawning_biomass_label}{Units for spawning biomass}
+
+\item{ref_line_sb}{A string specifying the type of
 reference you want to compare spawning biomass to. The default is \code{"target"},
 which looks for \code{"spawning_biomass_target"} in the \code{"label"} column of \code{dat}.
 The actual searching in \code{dat} is case agnostic and will work with either upper- or
 lower-case letters but you must use one of the options specified in the
 default list to ensure that the label on the figure looks correct
 regardless of how it is specified in \code{dat}.}
+
+\item{indices_unit_label}{Units for index of abundance/CPUE}
+
+\item{biomass_unit_label}{Abbreviated units for biomass}
+
+\item{catch_unit_label}{Abbreviated units for catch}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
@@ -320,15 +333,19 @@ create_template(
   add_image = TRUE,
   spp_image = "dir/containing/spp_image",
   rda_dir = "C:/Users/Documents",
-  unit_label = "metric tons",
   scale_amount = 1,
   end_year = 2022,
   n_projected_years = 10,
   relative = FALSE,
+  recruitment_unit_label = "metric tons",
   ref_line = "target",
+  landings_unit_label = "metric tons",
   spawning_biomass_label = "metric tons",
-  recruitment_label = "metric tons",
-  ref_line_sb = "target"
+  recruitment_unit_label = "metric tons",
+  ref_line_sb = "target",
+  indices_unit_label = "CPUE",
+  biomass_unit_label = "mt",
+  catch_unit_label = "mt"
 )
 }
 
