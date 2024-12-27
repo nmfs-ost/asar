@@ -36,13 +36,6 @@
   </a>
 </li>
 <li>
-  <a href="https://github.com/nmfs-ost/asar" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
-
-    Source Code
-  </a>
-</li>
-<li>
   <a href="https://connect.fisheries.noaa.gov/asar_tutorial/" class="external-link">Tutorial</a>
 </li>
 <li class="dropdown">
@@ -148,14 +141,17 @@
 
 
 <dt id="arg-rda-dir">rda_dir<a class="anchor" aria-label="anchor" href="#arg-rda-dir"></a></dt>
-<dd><p>The location of the folder containing .rda files
-("rda_files") already made with <code>satf</code>, or, if the user has not used
-<code>satf</code> to make those .rda files already, rda_dir represents the location
-that will contain .rda files in an "rda_files" folder. The folder would have
-been made with <code><a href="https://rdrr.io/pkg/satf/man/exp_all_figs_tables.html" class="external-link">satf::exp_all_figs_tables()</a></code>, or by exporting files
-by running individual <code>satf</code> figure- and table-generating functions.
-If you have used <code>satf</code> to generate these .rda files, you can leave
-the arguments below blank.</p></dd>
+<dd><p>If the user has already created .rda files containing
+figures, tables, alt text, and captions with <code>satf</code>, rda_dir represents
+the location of the folder containing these .rda files ("rda_files").
+Otherwise, if the user has not used <code>satf</code> to make those .rda files already,
+those files will be generated automatically and placed within the "report"
+folder within the <code>file_dir</code>. The "rda_files" folder would have been
+made with <code><a href="https://rdrr.io/pkg/satf/man/exp_all_figs_tables.html" class="external-link">satf::exp_all_figs_tables()</a></code>, or by exporting files by running individual
+<code>satf</code> figure- and table-generating functions. If you have used <code>satf</code> to
+generate these .rda files, you can leave the arguments below blank. NOTE:
+If an "rda_files" folder is detected within rda_dir, .rda files will not be
+regenerated.</p></dd>
 
 </dl></div>
     <div id="value">
