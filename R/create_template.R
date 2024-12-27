@@ -490,25 +490,27 @@ create_template <- function(
             output <- utils::read.csv(paste0(resdir, "/", model_results))
           }
           # run satf::exp_all_figs_tables() to make rda files
-          satf::exp_all_figs_tables(
-            dat = output,
-            scale_amount = scale_amount,
-            end_year = end_year,
-            n_projected_years = n_projected_years,
-            relative = relative,
-            # make_rda = TRUE,
-            rda_dir = subdir,
-            ref_line = ref_line,
-            ref_point = ref_point,
-            landings_unit_label = landings_unit_label,
-            spawning_biomass_label = spawning_biomass_label,
-            recruitment_unit_label = recruitment_unit_label,
-            ref_line_sb = ref_line_sb,
-            ref_point_sb = ref_point_sb,
-            indices_unit_label = indices_unit_label,
-            biomass_unit_label = biomass_unit_label,
-            catch_unit_label = catch_unit_label
-          )
+          try(
+            satf::exp_all_figs_tables(
+              dat = output,
+              scale_amount = scale_amount,
+              end_year = end_year,
+              n_projected_years = n_projected_years,
+              relative = relative,
+              # make_rda = TRUE,
+              rda_dir = subdir,
+              ref_line = ref_line,
+              ref_point = ref_point,
+              landings_unit_label = landings_unit_label,
+              spawning_biomass_label = spawning_biomass_label,
+              recruitment_unit_label = recruitment_unit_label,
+              ref_line_sb = ref_line_sb,
+              ref_point_sb = ref_point_sb,
+              indices_unit_label = indices_unit_label,
+              biomass_unit_label = biomass_unit_label,
+              catch_unit_label = catch_unit_label
+            ),
+            silent = TRUE)
         }
       }
 
@@ -544,7 +546,6 @@ create_template <- function(
           warning("Results file or model name not defined.")
         }
       }
-
 
       # Rename model results for figures and tables files
       # TODO: check if this is needed once the tables and figures docs are reformatted
