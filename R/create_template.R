@@ -281,7 +281,7 @@ create_template <- function(
 
   # If analyst forgets to add end year, default will be year - 1
   if (is.null(end_year)) {
-   end_year <- as.numeric(year) - 1
+    end_year <- as.numeric(year) - 1
   }
 
   # Name report
@@ -426,14 +426,14 @@ create_template <- function(
       if (include_tables) {
         if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
           # if there is an existing folder with "rda_files" in the rda_dir:
-          if(dir.exists(fs::path(rda_dir, "rda_files"))){
-              create_tables_doc(
-                resdir = resdir,
-                model_results = model_results,
-                model = model,
-                subdir = subdir,
-                rda_dir = rda_dir
-              )
+          if (dir.exists(fs::path(rda_dir, "rda_files"))) {
+            create_tables_doc(
+              resdir = resdir,
+              model_results = model_results,
+              model = model,
+              subdir = subdir,
+              rda_dir = rda_dir
+            )
             # if there isn't an existing folder with "rda_files" in the rda_dir,
             # and the rda_files will be placed in the subdir:
           } else {
@@ -444,7 +444,7 @@ create_template <- function(
               subdir = subdir,
               rda_dir = subdir
             )
-            }
+          }
         } else {
           tables_doc <- paste0(
             "### Tables \n \n",
@@ -466,15 +466,15 @@ create_template <- function(
       if (include_figures) {
         if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
           # if there is an existing folder with "rda_files" in the rda_dir:
-          if(dir.exists(fs::path(rda_dir, "rda_files"))){
-              create_figures_doc(
-                resdir = resdir,
-                model_results = model_results,
-                model = model,
-                subdir = subdir,
-                year = year,
-                rda_dir = rda_dir
-              )
+          if (dir.exists(fs::path(rda_dir, "rda_files"))) {
+            create_figures_doc(
+              resdir = resdir,
+              model_results = model_results,
+              model = model,
+              subdir = subdir,
+              year = year,
+              rda_dir = rda_dir
+            )
             # if there isn't an existing folder with "rda_files" in the rda_dir,
             # and the rda_files will be placed in the subdir:
           } else {
@@ -487,7 +487,7 @@ create_template <- function(
               rda_dir = subdir
             )
           }
-      } else {
+        } else {
           figures_doc <- paste0(
             "### Figures \n \n",
             "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."
@@ -781,29 +781,28 @@ create_template <- function(
 
       # run satf::exp_all_figs_tables() if rda files not premade
       # output folder: subdir
-        if(!dir.exists(fs::path(rda_dir, "rda_files"))){
-          if (!is.null(resdir) | !is.null(model_results)) {
+      if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
+        if (!is.null(resdir) | !is.null(model_results)) {
+          # load converted output
+          output <- utils::read.csv(paste0(resdir, "/", model_results))
 
-        # load converted output
-        output <- utils::read.csv(paste0(resdir, "/", model_results))
-
-        # run satf::exp_all_figs_tables() to make rda files
-        satf::exp_all_figs_tables(
-          dat = output,
-          unit_label = unit_label,
-          scale_amount = scale_amount,
-          end_year = end_year,
-          n_projected_years = n_projected_years,
-          relative = relative,
-          # make_rda = TRUE,
-          rda_dir = subdir,
-          ref_line = ref_line,
-          spawning_biomass_label = spawning_biomass_label,
-          recruitment_label = recruitment_label,
-          ref_line_sb = ref_line_sb
+          # run satf::exp_all_figs_tables() to make rda files
+          satf::exp_all_figs_tables(
+            dat = output,
+            unit_label = unit_label,
+            scale_amount = scale_amount,
+            end_year = end_year,
+            n_projected_years = n_projected_years,
+            relative = relative,
+            # make_rda = TRUE,
+            rda_dir = subdir,
+            ref_line = ref_line,
+            spawning_biomass_label = spawning_biomass_label,
+            recruitment_label = recruitment_label,
+            ref_line_sb = ref_line_sb
           )
-          }
         }
+      }
 
 
       # print("_______Standardized output data________")
