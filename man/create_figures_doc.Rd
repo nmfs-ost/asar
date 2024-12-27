@@ -36,14 +36,17 @@ the stock (e.g., "BAM", "SS3", "AMAK", "ASAP", etc.).}
 \item{include_all}{TRUE/FALSE; Option to include all default
 figures for a stock assessment report. Default is true.}
 
-\item{rda_dir}{The location of the folder containing .rda files
-("rda_files") already made with \code{satf}, or, if the user has not used
-\code{satf} to make those .rda files already, rda_dir represents the location
-that will contain .rda files in an "rda_files" folder. The folder would have
-been made with \code{satf::exp_all_figs_tables()}, or by exporting files
-by running individual \code{satf} figure- and table-generating functions.
-If you have used \code{satf} to generate these .rda files, you can leave
-the arguments below blank.}
+\item{rda_dir}{If the user has already created .rda files containing
+figures, tables, alt text, and captions with \code{satf}, rda_dir represents
+the location of the folder containing these .rda files ("rda_files").
+Otherwise, if the user has not used \code{satf} to make those .rda files already,
+those files will be generated automatically and placed within the "report"
+folder within the \code{file_dir}. The "rda_files" folder would have been
+made with \code{satf::exp_all_figs_tables()}, or by exporting files by running individual
+\code{satf} figure- and table-generating functions. If you have used \code{satf} to
+generate these .rda files, you can leave the arguments below blank. NOTE:
+If an "rda_files" folder is detected within rda_dir, .rda files will not be
+regenerated.}
 }
 \value{
 A quarto document with pre-loaded R chunk that adds the

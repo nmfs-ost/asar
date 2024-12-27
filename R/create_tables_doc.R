@@ -49,7 +49,7 @@ rm(rda)\n
 indices_table <- indices_table_rda$table
 indices_cap <- indices_table_rda$cap"),
         label = "tbl-indices-setup",
-        eval = "true"
+        eval = "false"
       ),
       "\n"
     )

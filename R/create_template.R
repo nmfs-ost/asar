@@ -100,14 +100,18 @@
 #' using the image included in the project's repository.
 #' @param bib_file File path to a .bib file used for citing references in
 #' the report
-#' @param rda_dir The location of the folder containing .rda files
-#' ("rda_files") already made with `satf`, or, if the user has not used
-#' `satf` to make those .rda files already, rda_dir represents the location
-#' that will contain .rda files in an "rda_files" folder. The folder would have
-#' been made with `satf::exp_all_figs_tables()`, or by exporting files
-#' by running individual `satf` figure- and table-generating functions.
-#' If you have used `satf` to generate these .rda files, you can leave
-#' the arguments below blank.
+#' @param rda_dir If the user has already created .rda files containing
+#' figures, tables, alt text, and captions with `satf`, rda_dir represents
+#' the location of the folder containing these .rda files ("rda_files").
+#' Otherwise, if the user has not used `satf` to make those .rda files already,
+#' those files will be generated automatically and placed within the "report"
+#' folder within the `file_dir`. The "rda_files" folder would have been
+#' made with `satf::exp_all_figs_tables()`, or by exporting files by running individual
+#' `satf` figure- and table-generating functions. If you have used `satf` to
+#' generate these .rda files, you can leave the arguments below blank. NOTE:
+#' If an "rda_files" folder is detected within rda_dir, .rda files will not be
+#' regenerated.
+#' @param end_year The last year of assessment. The default is year - 1.
 #' @inheritParams satf::plot_recruitment
 #' @param ref_line An argument inherited from `satf::plot_spawning_biomass.R`.
 #' A string specifying the type of reference you want to
@@ -142,6 +146,7 @@
 #' create_template(
 #'   new_section = "a_new_section",
 #'   section_location = "before-introduction",
+#'   rda_dir = here::here()
 #' )
 #'
 #'
@@ -159,6 +164,7 @@
 #'   model = "SS3",
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction",
+#'   rda_dir = here::here()
 #' )
 #'
 #' asar::create_template(
@@ -173,7 +179,8 @@
 #'   new_section = c("a_new_section", "another_new_section"),
 #'   section_location = c("before-introduction", "after-introduction"),
 #'   custom = TRUE,
-#'   custom_sections = c("executive_summary", "introduction")
+#'   custom_sections = c("executive_summary", "introduction"),
+#'   rda_dir = here::here()
 #' )
 #'
 #' create_template(
@@ -212,13 +219,13 @@
 #'   rda_dir = "C:/Users/Documents",
 #'   unit_label = "metric tons",
 #'   scale_amount = 1,
-#'   end_year = NULL,
+#'   end_year = 2022,
 #'   n_projected_years = 10,
 #'   relative = FALSE,
-#'   ref_line = c("target", "MSY", "msy", "unfished"),
+#'   ref_line = "target",
 #'   spawning_biomass_label = "metric tons",
 #'   recruitment_label = "metric tons",
-#'   ref_line_sb = c("target", "MSY", "msy", "unfished")
+#'   ref_line_sb = "target"
 #' )
 #' }
 #'
@@ -257,7 +264,7 @@ create_template <- function(
     add_image = FALSE,
     spp_image = NULL,
     bib_file = "asar_references.bib",
-    rda_dir = NULL,
+    rda_dir = getwd(),
     unit_label = "metric tons",
     scale_amount = 1,
     end_year = NULL,
@@ -270,6 +277,11 @@ create_template <- function(
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
+  }
+
+  # If analyst forgets to add end year, default will be year - 1
+  if (is.null(end_year)) {
+   end_year <- as.numeric(year) - 1
   }
 
   # Name report
@@ -413,22 +425,26 @@ create_template <- function(
       # Create tables qmd
       if (include_tables) {
         if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
-          if (!is.null(rda_dir) & !is.null(end_year)) {
+          # if there is an existing folder with "rda_files" in the rda_dir:
+          if(dir.exists(fs::path(rda_dir, "rda_files"))){
+              create_tables_doc(
+                resdir = resdir,
+                model_results = model_results,
+                model = model,
+                subdir = subdir,
+                rda_dir = rda_dir
+              )
+            # if there isn't an existing folder with "rda_files" in the rda_dir,
+            # and the rda_files will be placed in the subdir:
+          } else {
             create_tables_doc(
               resdir = resdir,
               model_results = model_results,
               model = model,
               subdir = subdir,
-              rda_dir = rda_dir
+              rda_dir = subdir
             )
-          } else {
-            tables_doc <- paste0(
-              "### Tables \n \n",
-              "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
-            )
-            utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
-            warning("Rda directory and/or arguments needed to create .rda files not defined.")
-          }
+            }
         } else {
           tables_doc <- paste0(
             "### Tables \n \n",
@@ -449,24 +465,29 @@ create_template <- function(
       # Create figures qmd
       if (include_figures) {
         if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
-          if (!is.null(rda_dir) & !is.null(end_year)) {
+          # if there is an existing folder with "rda_files" in the rda_dir:
+          if(dir.exists(fs::path(rda_dir, "rda_files"))){
+              create_figures_doc(
+                resdir = resdir,
+                model_results = model_results,
+                model = model,
+                subdir = subdir,
+                year = year,
+                rda_dir = rda_dir
+              )
+            # if there isn't an existing folder with "rda_files" in the rda_dir,
+            # and the rda_files will be placed in the subdir:
+          } else {
             create_figures_doc(
               resdir = resdir,
               model_results = model_results,
               model = model,
               subdir = subdir,
               year = year,
-              rda_dir = rda_dir
+              rda_dir = subdir
             )
-          } else {
-            figures_doc <- paste0(
-              "### Figures \n \n",
-              "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."
-            )
-            utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
-            warning("Rda directory and/or arguments needed to create .rda files not defined.")
           }
-        } else {
+      } else {
           figures_doc <- paste0(
             "### Figures \n \n",
             "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."
@@ -759,28 +780,30 @@ create_template <- function(
       }
 
       # run satf::exp_all_figs_tables() if rda files not premade
-      if (!is.null(rda_dir) & !is.null(end_year)) {
-        if (!dir.exists(file.path(rda_dir, "rda_files"))) {
-          # load converted output
-          output <- utils::read.csv(paste0(resdir, "/", model_results))
+      # output folder: subdir
+        if(!dir.exists(fs::path(rda_dir, "rda_files"))){
+          if (!is.null(resdir) | !is.null(model_results)) {
 
-          # run satf::exp_all_figs_tables() to make rda files
-          satf::exp_all_figs_tables(
-            dat = output,
-            unit_label = unit_label,
-            scale_amount = scale_amount,
-            end_year = end_year,
-            n_projected_years = n_projected_years,
-            relative = relative,
-            make_rda = TRUE,
-            rda_dir = rda_dir,
-            ref_line = ref_line,
-            spawning_biomass_label = spawning_biomass_label,
-            recruitment_label = recruitment_label,
-            ref_line_sb = ref_line_sb
+        # load converted output
+        output <- utils::read.csv(paste0(resdir, "/", model_results))
+
+        # run satf::exp_all_figs_tables() to make rda files
+        satf::exp_all_figs_tables(
+          dat = output,
+          unit_label = unit_label,
+          scale_amount = scale_amount,
+          end_year = end_year,
+          n_projected_years = n_projected_years,
+          relative = relative,
+          # make_rda = TRUE,
+          rda_dir = subdir,
+          ref_line = ref_line,
+          spawning_biomass_label = spawning_biomass_label,
+          recruitment_label = recruitment_label,
+          ref_line_sb = ref_line_sb
           )
+          }
         }
-      }
 
 
       # print("_______Standardized output data________")
@@ -808,7 +831,7 @@ create_template <- function(
           "  ", "dplyr::summarize(max_val = max(year)) |> \n",
           "  ", "dplyr::pull(max_val))-10", "\n",
           # for quantities - don't want any values that are split by factor
-          "# subset output to remove quantities that are fplit by factor \n",
+          "# subset output to remove quantities that are split by factor \n",
           "output2 <- output |> \n",
           "  ", "dplyr::filter(is.na(season), \n",
           "  ", "  ", "is.na(fleet), \n",

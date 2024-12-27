@@ -39,7 +39,7 @@ create_template(
   add_image = FALSE,
   spp_image = NULL,
   bib_file = "asar_references.bib",
-  rda_dir = NULL,
+  rda_dir = getwd(),
   unit_label = "metric tons",
   scale_amount = 1,
   end_year = NULL,
@@ -182,20 +182,23 @@ using the image included in the project's repository.}
 \item{bib_file}{File path to a .bib file used for citing references in
 the report}
 
-\item{rda_dir}{The location of the folder containing .rda files
-("rda_files") already made with \code{satf}, or, if the user has not used
-\code{satf} to make those .rda files already, rda_dir represents the location
-that will contain .rda files in an "rda_files" folder. The folder would have
-been made with \code{satf::exp_all_figs_tables()}, or by exporting files
-by running individual \code{satf} figure- and table-generating functions.
-If you have used \code{satf} to generate these .rda files, you can leave
-the arguments below blank.}
+\item{rda_dir}{If the user has already created .rda files containing
+figures, tables, alt text, and captions with \code{satf}, rda_dir represents
+the location of the folder containing these .rda files ("rda_files").
+Otherwise, if the user has not used \code{satf} to make those .rda files already,
+those files will be generated automatically and placed within the "report"
+folder within the \code{file_dir}. The "rda_files" folder would have been
+made with \code{satf::exp_all_figs_tables()}, or by exporting files by running individual
+\code{satf} figure- and table-generating functions. If you have used \code{satf} to
+generate these .rda files, you can leave the arguments below blank. NOTE:
+If an "rda_files" folder is detected within rda_dir, .rda files will not be
+regenerated.}
 
 \item{unit_label}{units for recruitment}
 
 \item{scale_amount}{indicate the exact amount of scale (i.e. 1000)}
 
-\item{end_year}{last year of assessment}
+\item{end_year}{The last year of assessment. The default is year - 1.}
 
 \item{n_projected_years}{Number of years spawning biomass is projected for.
 By default this number is set to 10}
@@ -246,6 +249,7 @@ in the console.
 create_template(
   new_section = "a_new_section",
   section_location = "before-introduction",
+  rda_dir = here::here()
 )
 
 
@@ -263,6 +267,7 @@ create_template(
   model = "SS3",
   new_section = "an_additional_section",
   section_location = "after-introduction",
+  rda_dir = here::here()
 )
 
 asar::create_template(
@@ -277,7 +282,8 @@ asar::create_template(
   new_section = c("a_new_section", "another_new_section"),
   section_location = c("before-introduction", "after-introduction"),
   custom = TRUE,
-  custom_sections = c("executive_summary", "introduction")
+  custom_sections = c("executive_summary", "introduction"),
+  rda_dir = here::here()
 )
 
 create_template(
@@ -316,13 +322,13 @@ create_template(
   rda_dir = "C:/Users/Documents",
   unit_label = "metric tons",
   scale_amount = 1,
-  end_year = NULL,
+  end_year = 2022,
   n_projected_years = 10,
   relative = FALSE,
-  ref_line = c("target", "MSY", "msy", "unfished"),
+  ref_line = "target",
   spawning_biomass_label = "metric tons",
   recruitment_label = "metric tons",
-  ref_line_sb = c("target", "MSY", "msy", "unfished")
+  ref_line_sb = "target"
 )
 }
 
