@@ -92,9 +92,9 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
       tables_doc,
       add_chunk(
         paste0("# if the indices table rda exists:
-if (file.exists(file.path(rda_dir, 'indices_table.rda'))){\n
+if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
   # load rda
-  load(file.path(rda_dir, 'indices_table.rda'))\n
+  load(file.path(rda_dir, 'indices.abundance_table.rda'))\n
   # save rda with plot-specific name
   indices_table_rda <- rda\n
   # remove generic rda object
