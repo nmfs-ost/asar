@@ -226,10 +226,15 @@
 #'   end_year = 2022,
 #'   n_projected_years = 10,
 #'   relative = FALSE,
+#'   recruitment_unit_label = "metric tons",
 #'   ref_line = "target",
+#'   landings_unit_label = "metric tons",
 #'   spawning_biomass_label = "metric tons",
 #'   recruitment_unit_label = "metric tons",
-#'   ref_line_sb = "target"
+#'   ref_line_sb = "target",
+#'   indices_unit_label = "CPUE",
+#'   biomass_unit_label = "mt",
+#'   catch_unit_label = "mt"
 #' )
 #' }
 #'
