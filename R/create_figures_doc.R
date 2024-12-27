@@ -87,9 +87,9 @@ if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){\n
       figures_doc,
       add_chunk(
         paste0("# if the spawning biomass figure rda exists:
-if (file.exists(file.path(rda_dir, 'spawning_biomass_figure.rda'))){\n
+if (file.exists(file.path(rda_dir, 'spawning.biomass_figure.rda'))){\n
   # load rda
-  load(file.path(rda_dir, 'spawning_biomass_figure.rda'))\n
+  load(file.path(rda_dir, 'spawning.biomass_figure.rda'))\n
   # save rda with plot-specific name
   spawning_biomass_plot_rda <- rda\n
   # remove generic rda object
@@ -226,9 +226,9 @@ if (file.exists(file.path(rda_dir, 'landings_figure.rda'))){\n
       figures_doc,
       add_chunk(
         paste0("# if the recruitment deviations figure rda exists:
-if (file.exists(file.path(rda_dir, 'recruitment_deviations_figure.rda'))){\n
+if (file.exists(file.path(rda_dir, 'recruitment.deviations_figure.rda'))){\n
   # load rda
-  load(file.path(rda_dir, 'recruitment_deviations_figure.rda'))\n
+  load(file.path(rda_dir, 'recruitment.deviations_figure.rda'))\n
   # save rda with plot-specific name
   recruitment_deviations_plot_rda <- rda\n
   # remove generic rda object
@@ -272,21 +272,21 @@ if (file.exists(file.path(rda_dir, 'recruitment_deviations_figure.rda'))){\n
       figures_doc,
       add_chunk(
         paste0("# if the spawning recruitment figure rda exists:
-if (file.exists(file.path(rda_dir, 'est_stock_recruitment_figure.rda'))){\n
+if (file.exists(file.path(rda_dir, 'sr_figure.rda'))){\n
   # load rda
-  load(file.path(rda_dir, 'est_stock_recruitment_figure.rda'))\n
+  load(file.path(rda_dir, 'sr_figure.rda'))\n
   # save rda with plot-specific name
-  spawning_recruitment_plot_rda <- rda\n
+  sr_plot_rda <- rda\n
   # remove generic rda object
   rm(rda)\n
   # save figure, caption, and alt text as separate objects; set eval to TRUE
-  spawning_recruitment_plot <- spawning_recruitment_plot_rda$figure
-  spawning_recruitment_cap <- spawning_recruitment_plot_rda$cap
-  spawning_recruitment_alt_text <- spawning_recruitment_plot_rda$alt_text
-  eval_spawning_recruitment <- TRUE\n
+  sr_plot <- sr_plot_rda$figure
+  sr_cap <- sr_plot_rda$cap
+  sr_alt_text <- sr_plot_rda$alt_text
+  eval_sr <- TRUE\n
 # if the spawning recruitment figure rda does not exist, don't evaluate the next chunk
-} else {eval_spawning_recruitment <- FALSE}"),
-        label = "fig-spawning_recruitment-setup",
+} else {eval_sr <- FALSE}"),
+        label = "fig-sr-setup",
         eval = "true"
       ),
       "\n"
@@ -296,21 +296,68 @@ if (file.exists(file.path(rda_dir, 'est_stock_recruitment_figure.rda'))){\n
     figures_doc <- paste0(
       figures_doc,
       add_chunk(
-        paste0("spawning_recruitment_plot"),
-        label = "fig-spawning_recruitment-plot",
-        eval = "!expr eval_spawning_recruitment",
+        paste0("sr_plot"),
+        label = "fig-sr-plot",
+        eval = "!expr eval_sr",
         add_option = TRUE,
         chunk_op = c(
           glue::glue(
-            "fig-cap: !expr if(eval_spawning_recruitment) spawning_recruitment_cap"
+            "fig-cap: !expr if(eval_sr) sr_cap"
           ),
           glue::glue(
-            "fig-alt: !expr if(eval_spawning_recruitment) spawning_recruitment_alt_text"
+            "fig-alt: !expr if(eval_sr) sr_alt_text"
           )
         )
       ),
       "\n"
     )
+
+    # indices figure
+    ## import plot, caption, alt text
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(
+        paste0("# if the indices figure rda exists:
+if (file.exists(file.path(rda_dir, 'indices_figure.rda'))){\n
+  # load rda
+  load(file.path(rda_dir, 'indices_figure.rda'))\n
+  # save rda with plot-specific name
+  indices_plot_rda <- rda\n
+  # remove generic rda object
+  rm(rda)\n
+  # save figure, caption, and alt text as separate objects; set eval to TRUE
+  indices_plot <- indices_plot_rda$figure
+  indices_cap <- indices_plot_rda$cap
+  indices_alt_text <- indices_plot_rda$alt_text
+  eval_indices <- TRUE\n
+# if the indices figure rda does not exist, don't evaluate the next chunk
+} else {eval_indices <- FALSE}"),
+        label = "fig-indices-setup",
+        eval = "true"
+      ),
+      "\n"
+    )
+
+    ## add figure
+    figures_doc <- paste0(
+      figures_doc,
+      add_chunk(
+        paste0("indices_plot"),
+        label = "fig-indices-plot",
+        eval = "!expr eval_indices",
+        add_option = TRUE,
+        chunk_op = c(
+          glue::glue(
+            "fig-cap: !expr if(eval_indices) indices_cap"
+          ),
+          glue::glue(
+            "fig-alt: !expr if(eval_indices) indices_alt_text"
+          )
+        )
+      ),
+      "\n"
+    )
+
   } else {
     # add option for only adding specified figures
   }
