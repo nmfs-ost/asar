@@ -422,6 +422,77 @@ create_template <- function(
         }
       }
 
+      # Convert output file if TRUE
+      if (convert_output) {
+        print("__________Converting output file__________")
+        if (tolower(model) == "bam" & is.null(fleet_names)) {
+          # warning("Fleet names not defined.")
+          convert_output(
+            output_file = model_results,
+            outdir = resdir,
+            file_save = TRUE,
+            model = model,
+            savedir = subdir,
+            save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
+          )
+          # } else if (tolower(model) == "bam") {
+          #   convert_output(
+          #     output_file = model_results,
+          #     outdir = resdir,
+          #     file_save = TRUE,
+          #     model = model,
+          #     fleet_names = fleet_names,
+          #     savedir = subdir,
+          #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+          #   )
+        } else {
+          convert_output(
+            output_file = model_results,
+            outdir = resdir,
+            file_save = TRUE,
+            model = model,
+            savedir = subdir,
+            save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
+          )
+        }
+        # Rename model results file and results file directory if the results are converted in this fxn
+        model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
+        resdir <- subdir
+      }
+
+      # print("_______Standardized output data________")
+
+      # run satf::exp_all_figs_tables() if rda files not premade
+      # output folder: subdir
+      if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
+        if (!is.null(resdir) | !is.null(model_results)) {
+          # load converted output
+          if (convert_output) {
+            output <- utils::read.csv(paste0(subdir, "/", paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))
+          } else {
+            output <- utils::read.csv(paste0(resdir, "/", model_results))
+          }
+          # run satf::exp_all_figs_tables() to make rda files
+          try(
+            satf::exp_all_figs_tables(
+              dat = output,
+              unit_label = unit_label,
+              scale_amount = scale_amount,
+              end_year = end_year,
+              n_projected_years = n_projected_years,
+              relative = relative,
+              # make_rda = TRUE,
+              rda_dir = subdir,
+              ref_line = ref_line,
+              spawning_biomass_label = spawning_biomass_label,
+              recruitment_label = recruitment_label,
+              ref_line_sb = ref_line_sb
+            ),
+            silent = TRUE
+          )
+        }
+      }
+
       # Create tables qmd
       if (include_tables) {
         if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
@@ -454,7 +525,6 @@ create_template <- function(
           warning("Results file or model name not defined.")
         }
       }
-
 
       # Rename model results for figures and tables files
       # TODO: check if this is needed once the tables and figures docs are reformatted
@@ -740,72 +810,6 @@ create_template <- function(
       print("__________Built YAML Header______________")
       # yaml_save <- capture.output(cat(yaml))
       # cat(yaml, file = here('template','yaml_header.qmd'))
-
-      # Convert output file if TRUE
-      if (convert_output) {
-        print("__________Converting output file__________")
-        if (tolower(model) == "bam" & is.null(fleet_names)) {
-          # warning("Fleet names not defined.")
-          convert_output(
-            output_file = model_results,
-            outdir = resdir,
-            file_save = TRUE,
-            model = model,
-            savedir = subdir,
-            save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
-          )
-          # } else if (tolower(model) == "bam") {
-          #   convert_output(
-          #     output_file = model_results,
-          #     outdir = resdir,
-          #     file_save = TRUE,
-          #     model = model,
-          #     fleet_names = fleet_names,
-          #     savedir = subdir,
-          #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
-          #   )
-        } else {
-          convert_output(
-            output_file = model_results,
-            outdir = resdir,
-            file_save = TRUE,
-            model = model,
-            savedir = subdir,
-            save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
-          )
-        }
-        # Rename model results file and results file directory if the results are converted in this fxn
-        model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
-        resdir <- subdir
-      }
-
-      # run satf::exp_all_figs_tables() if rda files not premade
-      # output folder: subdir
-      if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
-        if (!is.null(resdir) | !is.null(model_results)) {
-          # load converted output
-          output <- utils::read.csv(paste0(resdir, "/", model_results))
-
-          # run satf::exp_all_figs_tables() to make rda files
-          satf::exp_all_figs_tables(
-            dat = output,
-            unit_label = unit_label,
-            scale_amount = scale_amount,
-            end_year = end_year,
-            n_projected_years = n_projected_years,
-            relative = relative,
-            # make_rda = TRUE,
-            rda_dir = subdir,
-            ref_line = ref_line,
-            spawning_biomass_label = spawning_biomass_label,
-            recruitment_label = recruitment_label,
-            ref_line_sb = ref_line_sb
-          )
-        }
-      }
-
-
-      # print("_______Standardized output data________")
 
       # Add preamble
       # add in quantities and output data R chunk
