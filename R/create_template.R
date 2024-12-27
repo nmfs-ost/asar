@@ -473,7 +473,7 @@ create_template <- function(
             output <- utils::read.csv(paste0(resdir, "/", model_results))
           }
           # run satf::exp_all_figs_tables() to make rda files
-          try(
+          tryCatch(
             satf::exp_all_figs_tables(
               dat = output,
               unit_label = unit_label,
@@ -488,7 +488,7 @@ create_template <- function(
               recruitment_label = recruitment_label,
               ref_line_sb = ref_line_sb
             ),
-            silent = TRUE
+            finally = print("Failed to create rda files from satf package.")
           )
         }
       }
