@@ -20,21 +20,28 @@ install.packages("tinytex")
 library(tinytex)
 
 ```
-Then install the package:
+Then install the package using one of the three following ways:
+
+(1) Using remotes
 
 ```r
 install.packages("remotes")
 remotes::install_github("nmfs-ost/asar")
-remotes::install_github("nmfs-ost/satf")
 ```
 
-Occasionally, the package can not be installed using the `remotes` package. If this is the case for you, please try:
+(2) Occasionally, the package can not be installed using the `remotes` package. If this is the case for you, please try:
 
 ```r
 install.packages("pak")
 pak::pak("nmfs-ost/asar")
-pak::pak("nmfs-ost/satf")
 ```
+(3) From the nmfs-ost r-universe
+
+```r
+install.packages("asar", repos = c("https://nmfs-ost.r-universe.dev", "https://cloud.r-project.org"))
+```
+
+We also recommend to download the `satf` package. While it is listed as a dependency of the package, it sometimes does not load as intended. Use one of the previous download instructions to also install satf.
 
 ## Example
 

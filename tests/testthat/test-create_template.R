@@ -43,7 +43,7 @@ test_that("create_template() creates correct files", {
     "SAR_species_skeleton.qmd",
     "asar_references.bib",
     "support_files"
-    )
+  )
 
   # Define expected support files
   expect_support_files <- c(
@@ -63,7 +63,8 @@ test_that("create_template() creates correct files", {
   object_support_files <- list.files(file.path(no_inputs_output_path, "support_files"))
 
   on.exit(unlink(file.path(path, "report"),
-                 recursive = TRUE), add = TRUE)
+    recursive = TRUE
+  ), add = TRUE)
   # Check if all expected report files are created
   expect_true(all(sort(expect_report_files) == sort(object_report_files)))
 
@@ -152,7 +153,8 @@ test_that("warning is triggered for missing models", {
     regexp = "Results file or model name not defined."
   )
   on.exit(unlink(file.path(getwd(), "report"),
-                 recursive = TRUE), add = TRUE)
+    recursive = TRUE
+  ), add = TRUE)
 })
 
 test_that("warning is triggered for existing files", {
