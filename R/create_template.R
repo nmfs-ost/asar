@@ -136,6 +136,8 @@
 #' lower-case letters but you must use one of the options specified in the
 #' default list to ensure that the label on the figure looks correct
 #' regardless of how it is specified in `dat`.
+#' @param ref_point_sb Identical definition as `ref_point`, but this argument is
+#' applied to plot_spawning_biomass.
 #' @param indices_unit_label Units for index of abundance/CPUE
 #' @param biomass_unit_label Abbreviated units for biomass
 #' @param catch_unit_label Abbreviated units for catch

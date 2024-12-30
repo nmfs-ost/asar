@@ -229,6 +229,9 @@ c("label" = value).}
 
 \item{landings_unit_label}{Units for landings}
 
+\item{ref_point_sb}{Identical definition as \code{ref_point}, but this argument is
+applied to plot_spawning_biomass.}
+
 \item{spawning_biomass_label}{Units for spawning biomass}
 
 \item{ref_line_sb}{A string specifying the type of
