@@ -10,8 +10,7 @@
 #' quarto document will become part of the stock assessment outline.
 #' @export
 #'
-create_figures_doc <- function(resdir = NULL,
-                               subdir = NULL,
+create_figures_doc <- function(subdir = NULL,
                                include_all = TRUE,
                                rda_dir = NULL) {
 

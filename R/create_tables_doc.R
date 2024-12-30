@@ -1,7 +1,6 @@
 #' Create Quarto Document of Tables
 #'
 #' @inheritParams create_template
-#' @param resdir directory where the results file is located
 #' @param subdir subdirectory where the assessment report template is being stored
 #' @param include_all include all default tables for a stock assessment report
 #'
@@ -9,8 +8,7 @@
 #' pre-loaded R chunk adding the stock assessment tables from the nmfs-ost/satf R package
 #' @export
 #'
-create_tables_doc <- function(resdir = NULL,
-                              subdir = NULL,
+create_tables_doc <- function(subdir = NULL,
                               include_all = TRUE,
                               rda_dir = NULL) {
 

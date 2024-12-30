@@ -4,16 +4,9 @@
 \alias{create_tables_doc}
 \title{Create Quarto Document of Tables}
 \usage{
-create_tables_doc(
-  resdir = NULL,
-  subdir = NULL,
-  include_all = TRUE,
-  rda_dir = NULL
-)
+create_tables_doc(subdir = NULL, include_all = TRUE, rda_dir = NULL)
 }
 \arguments{
-\item{resdir}{directory where the results file is located}
-
 \item{subdir}{subdirectory where the assessment report template is being stored}
 
 \item{include_all}{include all default tables for a stock assessment report}
