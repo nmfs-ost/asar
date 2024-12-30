@@ -1,7 +1,6 @@
 #' Create Quarto Document of Figures
 #'
 #' @inheritParams create_template
-#' @param year End year for assessment, for inclusion in plotting
 #' @param subdir Location of subdirectory storing the assessment report template
 #' @param include_all TRUE/FALSE; Option to include all default
 #' figures for a stock assessment report. Default is true.
@@ -12,13 +11,9 @@
 #' @export
 #'
 create_figures_doc <- function(resdir = NULL,
-                               model_results = NULL,
-                               model = c("SS3", "BAM", "ASAP", "AMAK", "WHAM"),
-                               year = NULL,
                                subdir = NULL,
                                include_all = TRUE,
                                rda_dir = NULL) {
-  model <- match.arg(model, several.ok = FALSE)
 
   if (include_all) {
     # add header

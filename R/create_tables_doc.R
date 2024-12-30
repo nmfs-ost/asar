@@ -2,8 +2,6 @@
 #'
 #' @inheritParams create_template
 #' @param resdir directory where the results file is located
-#' @param model_results name of the results file of assessment output
-#' @param model stock assessment model
 #' @param subdir subdirectory where the assessment report template is being stored
 #' @param include_all include all default tables for a stock assessment report
 #'
@@ -12,12 +10,9 @@
 #' @export
 #'
 create_tables_doc <- function(resdir = NULL,
-                              model_results = NULL,
-                              model = c("SS3", "BAM", "ASAP", "AMAK", "WHAM"),
                               subdir = NULL,
                               include_all = TRUE,
                               rda_dir = NULL) {
-  model <- match.arg(model, several.ok = FALSE)
 
   if (include_all) {
     # add header

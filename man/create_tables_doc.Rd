@@ -6,8 +6,6 @@
 \usage{
 create_tables_doc(
   resdir = NULL,
-  model_results = NULL,
-  model = c("SS3", "BAM", "ASAP", "AMAK", "WHAM"),
   subdir = NULL,
   include_all = TRUE,
   rda_dir = NULL
@@ -15,10 +13,6 @@ create_tables_doc(
 }
 \arguments{
 \item{resdir}{directory where the results file is located}
-
-\item{model_results}{name of the results file of assessment output}
-
-\item{model}{stock assessment model}
 
 \item{subdir}{subdirectory where the assessment report template is being stored}
 

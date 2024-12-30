@@ -497,8 +497,6 @@ create_template <- function(
           if(dir.exists(fs::path(rda_dir, "rda_files"))){
               create_tables_doc(
                 resdir = resdir,
-                model_results = model_results,
-                model = model,
                 subdir = subdir,
                 rda_dir = rda_dir
               )
@@ -507,8 +505,6 @@ create_template <- function(
           } else {
             create_tables_doc(
               resdir = resdir,
-              model_results = model_results,
-              model = model,
               subdir = subdir,
               rda_dir = subdir
             )
@@ -537,10 +533,7 @@ create_template <- function(
           if(dir.exists(fs::path(rda_dir, "rda_files"))){
               create_figures_doc(
                 resdir = resdir,
-                model_results = model_results,
-                model = model,
                 subdir = subdir,
-                year = year,
                 rda_dir = rda_dir
               )
             # if there isn't an existing folder with "rda_files" in the rda_dir,
@@ -548,10 +541,7 @@ create_template <- function(
           } else {
             create_figures_doc(
               resdir = resdir,
-              model_results = model_results,
-              model = model,
               subdir = subdir,
-              year = year,
               rda_dir = subdir
             )
           }
