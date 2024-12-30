@@ -354,7 +354,8 @@ if (file.exists(file.path(rda_dir, 'indices_figure.rda'))){\n
 
   } else {
     # add option for only adding specified figures
-  }
+    warning("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")
+    }
 
   # Save figures doc to template folder
   utils::capture.output(cat(figures_doc),

@@ -20,7 +20,7 @@ create_tables_doc <- function(subdir = NULL,
     tables_doc <- paste0(
       tables_doc,
       add_chunk(
-        paste0("library(flextable)
+        paste0("library(flextable)\n
 rda_dir <- '", rda_dir, "/rda_files'"),
         label = "set-rda-dir-tbls",
         eval = "true",
@@ -194,6 +194,7 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
 
     } else {
     # add option for only adding specified tables
+    warning("Functionality for adding specific tables is still in development. Please set 'include_all' to true and edit the 08_tables.qmd file to remove specific tables from the report.")
   }
 
   # Save tables doc to template folder
