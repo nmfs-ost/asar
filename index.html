@@ -172,25 +172,27 @@
 <span>  save_name <span class="op">=</span> <span class="st">"petrale_convert_output"</span><span class="op">)</span></span></code></pre></div>
 <p>In this function, the users have the option to convert output files to a standardized framework from either SS3 (Report.sso) or BAM (.rdat) output files. The converted output was saved as an Rdata file and can be found in the example folder in this repository. Typically, when saving converted output from the <code>convert_output</code> function, the resulting file is a csv.</p>
 <p>To proceed, the user should then run the following:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">asar</span><span class="fu">::</span><span class="fu"><a href="reference/create_template.html">create_template</a></span><span class="op">(</span></span>
-<span>  format <span class="op">=</span> <span class="st">"pdf"</span>,</span>
-<span>  office <span class="op">=</span> <span class="st">"NWFSC"</span>,</span>
-<span>  region <span class="op">=</span> <span class="st">"U.S. West Coast"</span>,</span>
-<span>  species <span class="op">=</span> <span class="st">"Petrale sole"</span>,</span>
-<span>  spp_latin <span class="op">=</span> <span class="st">"Eopsetta jordani"</span>,</span>
-<span>  year <span class="op">=</span> <span class="fl">2023</span>,</span>
-<span>  author <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Ian G. Taylor"</span>, <span class="st">"Vladlena Gertseva"</span>, <span class="st">"Nick Tolimieri"</span><span class="op">)</span>,</span>
-<span>  include_affiliation <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  simple_affiliation <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  param_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nf"</span>,<span class="st">"sf"</span><span class="op">)</span>,</span>
-<span>  param_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"North fleet"</span>, <span class="st">"South fleet"</span><span class="op">)</span>,</span>
-<span>  resdir <span class="op">=</span> <span class="st">"data"</span>,</span>
-<span>  model_results <span class="op">=</span> <span class="st">"Petrale_sole_std_res_2023.csv"</span>,</span>
-<span>  model <span class="op">=</span> <span class="st">"SS3"</span>,</span>
-<span>  rda_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"report"</span><span class="op">)</span>,</span>
-<span>  end_year <span class="op">=</span> <span class="fl">2022</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>asar<span class="sc">::</span><span class="fu">create_template</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="at">format =</span> <span class="st">"pdf"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">office =</span> <span class="st">"NWFSC"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="at">region =</span> <span class="st">"U.S. West Coast"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  <span class="at">species =</span> <span class="st">"Petrale sole"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  <span class="at">spp_latin =</span> <span class="st">"Eopsetta jordani"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  <span class="at">year =</span> <span class="dv">2023</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  <span class="at">author =</span> <span class="fu">c</span>(<span class="st">"Ian G. Taylor"</span>, <span class="st">"Vladlena Gertseva"</span>, <span class="st">"Nick Tolimieri"</span>),</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  <span class="at">include_affiliation =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  <span class="at">simple_affiliation =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="at">param_names =</span> <span class="fu">c</span>(<span class="st">"nf"</span>,<span class="st">"sf"</span>),</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  <span class="at">param_values =</span> <span class="fu">c</span>(<span class="st">"North fleet"</span>, <span class="st">"South fleet"</span>),</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>  <span class="at">resdir =</span> <span class="st">"data"</span>,</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>  <span class="at">model_results =</span> <span class="st">"Petrale_sole_std_res_2023.csv"</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>  <span class="at">model =</span> <span class="st">"SS3"</span>,</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>  <span class="at">rda_dir =</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(), <span class="st">"report"</span>),</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>  <span class="at">end_year =</span> <span class="dv">2022</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>  <span class="at">ref_line =</span> <span class="st">"msy"</span>,</span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>  <span class="at">ref_line_sb =</span> <span class="st">"msy"</span>,</span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>  <span class="at">indices_unit_label =</span> <span class="st">""</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>)</span></code></pre></div>
 <p>Note: The output of this report is an example based on a real stock assessment. Please refer to the link in the beginning of this section for the full assessment report.</p>
 </div>
 <div class="section level2">
