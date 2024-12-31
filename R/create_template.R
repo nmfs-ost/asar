@@ -112,7 +112,11 @@
 #' If an "rda_files" folder is detected within rda_dir, .rda files will not be
 #' regenerated.
 #' @param end_year The last year of assessment. The default is year - 1.
-#' @inheritParams satf::plot_recruitment
+#' @param n_projected_years Number of years spawning biomass is projected for.
+#' By default this number is set to 10
+#' @param relative A logical value specifying if the resulting figures should be
+#' relative spawning biomass. The default is 'FALSE'. 'ref_line' indicates which
+#' reference point to use.
 #' @param recruitment_unit_label Units for recruitment
 #' @param ref_line An argument inherited from `satf::plot_spawning_biomass.R`.
 #' A string specifying the type of reference you want to
@@ -276,7 +280,6 @@ create_template <- function(
     spp_image = NULL,
     bib_file = "asar_references.bib",
     rda_dir = getwd(),
-    unit_label = "metric tons",
     scale_amount = 1,
     end_year = NULL,
     n_projected_years = 10,
@@ -518,9 +521,6 @@ create_template <- function(
           # if there is an existing folder with "rda_files" in the rda_dir:
           if (dir.exists(fs::path(rda_dir, "rda_files"))) {
             create_tables_doc(
-              resdir = resdir,
-              model_results = model_results,
-              model = model,
               subdir = subdir,
               rda_dir = rda_dir
             )
@@ -528,9 +528,6 @@ create_template <- function(
             # and the rda_files will be placed in the subdir:
           } else {
             create_tables_doc(
-              resdir = resdir,
-              model_results = model_results,
-              model = model,
               subdir = subdir,
               rda_dir = subdir
             )
@@ -558,22 +555,14 @@ create_template <- function(
           # if there is an existing folder with "rda_files" in the rda_dir:
           if (dir.exists(fs::path(rda_dir, "rda_files"))) {
             create_figures_doc(
-              resdir = resdir,
-              model_results = model_results,
-              model = model,
               subdir = subdir,
-              year = year,
               rda_dir = rda_dir
             )
             # if there isn't an existing folder with "rda_files" in the rda_dir,
             # and the rda_files will be placed in the subdir:
           } else {
             create_figures_doc(
-              resdir = resdir,
-              model_results = model_results,
-              model = model,
               subdir = subdir,
-              year = year,
               rda_dir = subdir
             )
           }
@@ -841,7 +830,6 @@ create_template <- function(
           # run satf::exp_all_figs_tables() to make rda files
           satf::exp_all_figs_tables(
             dat = output,
-            unit_label = unit_label,
             scale_amount = scale_amount,
             end_year = end_year,
             n_projected_years = n_projected_years,
@@ -850,7 +838,7 @@ create_template <- function(
             rda_dir = subdir,
             ref_line = ref_line,
             spawning_biomass_label = spawning_biomass_label,
-            recruitment_label = recruitment_label,
+            recruitment_unit_label = recruitment_unit_label,
             ref_line_sb = ref_line_sb
           )
         }
