@@ -194,18 +194,7 @@ generate these .rda files, you can leave the arguments below blank. NOTE:
 If an "rda_files" folder is detected within rda_dir, .rda files will not be
 regenerated.}
 
-\item{unit_label}{units for recruitment}
-
-\item{scale_amount}{indicate the exact amount of scale (i.e. 1000)}
-
 \item{end_year}{The last year of assessment. The default is year - 1.}
-
-\item{n_projected_years}{Number of years spawning biomass is projected for.
-By default this number is set to 10}
-
-\item{relative}{A logical value specifying if the resulting figures should
-be relative spawning biomass. The default is `FALSE`. `ref_line` indicates
-which reference point to use.}
 
 \item{ref_line}{An argument inherited from \code{satf::plot_spawning_biomass.R}.
 A string specifying the type of reference you want to

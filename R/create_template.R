@@ -493,6 +493,8 @@ create_template <- function(
               warning("Failed to create rda files from satf package.")
               FALSE
             })
+        } else {
+          test_exp_all <- FALSE
         }
       }
 
