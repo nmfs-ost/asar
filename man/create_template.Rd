@@ -16,8 +16,8 @@ create_template(
   file_dir = getwd(),
   author = "",
   add_author = NULL,
-  include_affiliation = FALSE,
-  simple_affiliation = TRUE,
+  include_affiliation = TRUE,
+  simple_affiliation = FALSE,
   alt_title = FALSE,
   title = NULL,
   parameters = TRUE,
@@ -40,7 +40,6 @@ create_template(
   spp_image = NULL,
   bib_file = "asar_references.bib",
   rda_dir = getwd(),
-  unit_label = "metric tons",
   scale_amount = 1,
   end_year = NULL,
   n_projected_years = 10,
@@ -52,7 +51,7 @@ create_template(
   ref_point_sb = NULL,
   spawning_biomass_label = "metric tons",
   ref_line_sb = c("target", "MSY", "msy", "unfished"),
-  indices_unit_label = NULL,
+  indices_unit_label = "",
   biomass_unit_label = "mt",
   catch_unit_label = "mt"
 )
@@ -200,18 +199,14 @@ generate these .rda files, you can leave the arguments below blank. NOTE:
 If an "rda_files" folder is detected within rda_dir, .rda files will not be
 regenerated.}
 
-\item{unit_label}{units for recruitment}
-
-\item{scale_amount}{indicate the exact amount of scale (i.e. 1000)}
-
 \item{end_year}{The last year of assessment. The default is year - 1.}
 
 \item{n_projected_years}{Number of years spawning biomass is projected for.
 By default this number is set to 10}
 
-\item{relative}{A logical value specifying if the resulting figures should
-be relative spawning biomass. The default is `FALSE`. `ref_line` indicates
-which reference point to use.}
+\item{relative}{A logical value specifying if the resulting figures should be
+relative spawning biomass. The default is 'FALSE'. 'ref_line' indicates which
+reference point to use.}
 
 \item{recruitment_unit_label}{Units for recruitment}
 

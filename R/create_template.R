@@ -112,7 +112,11 @@
 #' If an "rda_files" folder is detected within rda_dir, .rda files will not be
 #' regenerated.
 #' @param end_year The last year of assessment. The default is year - 1.
-#' @inheritParams satf::plot_recruitment
+#' @param n_projected_years Number of years spawning biomass is projected for.
+#' By default this number is set to 10
+#' @param relative A logical value specifying if the resulting figures should be
+#' relative spawning biomass. The default is 'FALSE'. 'ref_line' indicates which
+#' reference point to use.
 #' @param recruitment_unit_label Units for recruitment
 #' @param ref_line An argument inherited from `satf::plot_spawning_biomass.R`.
 #' A string specifying the type of reference you want to
@@ -252,8 +256,8 @@ create_template <- function(
     file_dir = getwd(),
     author = "",
     add_author = NULL,
-    include_affiliation = FALSE,
-    simple_affiliation = TRUE,
+    include_affiliation = TRUE,
+    simple_affiliation = FALSE,
     alt_title = FALSE,
     title = NULL,
     parameters = TRUE,
@@ -276,7 +280,6 @@ create_template <- function(
     spp_image = NULL,
     bib_file = "asar_references.bib",
     rda_dir = getwd(),
-    unit_label = "metric tons",
     scale_amount = 1,
     end_year = NULL,
     n_projected_years = 10,
@@ -288,7 +291,7 @@ create_template <- function(
     ref_point_sb = NULL,
     spawning_biomass_label = "metric tons",
     ref_line_sb = c("target", "MSY", "msy", "unfished"),
-    indices_unit_label = NULL,
+    indices_unit_label = "",
     biomass_unit_label = "mt",
     catch_unit_label = "mt") {
   # If analyst forgets to add year, default will be the current year report is being produced
@@ -586,7 +589,7 @@ create_template <- function(
           } else {
             create_figures_doc(
               subdir = subdir,
-              rda_dir = rda_dir
+              rda_dir = subdir
             )
           }
       } else {
