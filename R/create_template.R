@@ -490,7 +490,8 @@ create_template <- function(
             output <- utils::read.csv(paste0(resdir, "/", model_results))
           }
           # run satf::exp_all_figs_tables() to make rda files
-          try(
+
+          test_exp_all <- tryCatch({
             satf::exp_all_figs_tables(
               dat = output,
               scale_amount = scale_amount,
@@ -509,14 +510,27 @@ create_template <- function(
               indices_unit_label = indices_unit_label,
               biomass_unit_label = biomass_unit_label,
               catch_unit_label = catch_unit_label
-            ),
-            silent = TRUE)
+            )
+            TRUE},
+            error = function(e) {
+              warning("Failed to create rda files from satf package.")
+              FALSE
+            })
+        } else {
+          test_exp_all <- FALSE
         }
       }
 
       # Create tables qmd
       if (include_tables) {
-        if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
+        if (!test_exp_all) {
+          tables_doc <- paste0(
+            "### Tables \n \n",
+            "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
+          )
+          utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
+          warning("Results file or model name not defined.")
+        } else if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
           # if there is an existing folder with "rda_files" in the rda_dir:
           if (dir.exists(fs::path(rda_dir, "rda_files"))) {
             create_tables_doc(
@@ -555,7 +569,14 @@ create_template <- function(
 
       # Create figures qmd
       if (include_figures) {
-        if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
+        if (!test_exp_all) {
+          figures_doc <- paste0(
+            "### Figures \n \n",
+            "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."
+          )
+          utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
+          warning("Results file or model name not defined.")
+        } else if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
           # if there is an existing folder with "rda_files" in the rda_dir:
           if (dir.exists(fs::path(rda_dir, "rda_files"))) {
             create_figures_doc(
