@@ -7,6 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 params:
   region: "NWFSC"
+bibliography: references.bib
 ---
 
 ```{r, include = FALSE}
@@ -23,13 +24,130 @@ knitr::opts_chunk$set(
 params$region <- "NWFSC"
 ```
 
-## Markdown Notation
+# Markdown Notation
 
-Efficiently using this package in the stock assessment workflow requires a basic understanding of markdown notation. Google docs easily recognizes these types of calls and formats it during writing. 
+Efficiently using this package in the stock assessment workflow requires a basic understanding of markdown notation. In this article, we are going to describe common notation and example using markdown language in which you might use for writing a stock assessment report.
 
-Any in-text markdown within google docs can be brought into the local template using the function `update_local()`. This reference is intended to help the user smoothly incorporate markdown language into plain text so the features of `ASAR` can easily incorporate into the workflow.
+## Summary
 
-In order to add a piece of code into the text directly encase R code within a pair of backticks (`). For example:
+### Basic Syntax 
+
+| Element | Markdown Syntax |
+|---------|-----------------|
+| Heading | # H1 <br> ## H2 <br> ### H3|
+| **Bold** | ```` **bold text** ```` |
+| *Italic* | ```` *italic* ```` |
+| ***Bold & italic*** | ```` *** bold italic*** ```` |
+| Blockquote | > blockquote |
+| Ordered list | 1. Item #1 <br> 2. Item #2 <br> 3. Item #3 |
+| Unordered list | - Item #1 <br> - Item #2 <br> - Item #3 |
+| Code | ```` `code` ```` |
+| R code chunk |```` ```{r} <br> ``` ```` |
+| Horizontal rule | --- |
+| Link | ```` [Text](https://www.example.com) ```` |
+| Image | ```` ![caption](path/image.jpg) ```` |
+| Image in code chunk | `knitr::include_graphics("path/image.png") |
+
+### Extended Syntax
+
+| Element | Markdown Syntax |
+|---------|-----------------|
+| Markdown table | \| Syntax \| Description \| <br>  \|----------\|-------\| <br> \| entry 1 \| description \| <br> \| entry 2 \| description \| |
+| Footnote | Sentence with a footnote. [^1] <br> [^1]: This is a footnote. |
+| Heading Labels | ### Heading A {#sec-nameA} |
+| Reference heading label | ````@sec-nameA ```` |
+| Strikethrough | ````~~Strikethrough~~```` |
+| Task list | - [x] Task a <br> - [ ] task b <br> - [ ] task c |
+| Subscript | ````F~msy~```` |
+| Superscript | ````X^2^```` |
+| Comment out text | ````<!--- text here ---```` |
+| in-text email or URLs | ````<www.example.com>```` <br> ````<example@noaa.gov>````` |
+
+### Math
+
+Two helpful things to know about writing mathematical expressions with R markdown:
+
+1. R markdown supports LaTex-style mathematical expressions.
+2. *In-line expressions* are surrounded by one set of dollar signs (\$) while equations that are on their own line (*"block" expressions*) are surrounded by two sets. For instance, \$1+1=2\$ is rendered as $1+1=2$ while ```$$1 + 1 = 2$$``` is rendered as: $$1+1=2$$
+
+#### Superscript
+
+To write a superscript, use a caret (\^) before a value. For instance, \$b^2\$ renders as $b^2$.
+
+#### Subscript
+
+To write a subscript, use an underscore (\_) before a value. For instance, \$b_2\$ renders as $b_2$. For longer subscripts, enclose the text in curly brackets (\$b_{12345}\$ renders as $b_{12345}$)
+
+#### Symbols
+
+Many symbols can be written by adding a backslash (\\) before a symbol name. For instance:
+
+- \$\\pi$ renders as $\pi$
+- \$\\beta$ renders as $\beta$
+- \$\\mu$ renders as $\mu$
+- \$\\sigma$ renders as $\sigma$
+- \$\\overline\{b\}$ renders as $\overline{b}$
+- \$|b|$ renders as $|b|$
+- \$\\sqrt\{4+i\}$ renders as $\sqrt{4+i}$
+
+##### Greek Letters
+
+Generalized notation - `$\alpha$`
+
+| Greek Letter Spelling | Lowercase  | Capital    |
+|-----------------------|------------|------------|
+| alpha                 | $\alpha$   | A          |
+| beta                  | $\beta$    | B          |
+| gamma                 | $\gamma$   | $\Gamma$   |
+| delta                 | $\delta$   | $\Delta$   |
+| epsilon               | $\epsilon$ | E          |
+| zeta                  | $\zeta$    | Z          |
+| eta                   | $\eta$     | H          |
+| theta                 | $\theta$   | $\Theta$   |
+| kappa                 | $\kappa$   | K          |
+| lambda                | $\lambda$  | $\Lambda$  |
+| mu                    | $\mu$      | M          |
+| nu                    | $\nu$      | N          |
+| omicron               | $\omicron$ | O          |
+| rho                   | $\rho$     | P          |
+| sigma                 | $\sigma$   | $\Sigma$   |
+| tau                   | $\tau$     | T          |
+| upsilon               | $\upsilon$ | $\Upsilon$ |
+| chi                   | $\chi$     | X          |
+| psi                   | $\psi$     | $\Psi$     |
+| iota                  | $\iota$    | I          |
+| xi                    | $\xi$      | $\Xi$      |
+| pi                    | $\pi$      | $\Pi$      |
+| phi                   | $\phi$     | $\Phi$     |
+| omega                 | $\omega$   | $\Omega$   |
+
+#### Fractions
+
+To make a fraction, write \\frac before your numerator and denominator, both of which are enclosed in curly brackets (\{ \}). For instance, \$\\frac{7}{8}$ renders as $\frac{7}{8}$.
+
+#### Equations and combinations
+
+Lots of these special symbols can be combined into complex terms and equations. For instance:
+
+- \$R^2_{adj}$ renders as $R^2_{adj}$
+
+- \$y = ax^2 + bx + c$ renders as $y = ax^2 + bx + c$
+
+- \$\\frac\{\\theta^\{10\}\}\{2a\} \\le \\frac\{5c^4\}\{b_\{min\}\}$ renders as $\frac{\theta^{10}}{2a} \le \frac{5c^4}{b_{min}}$
+
+- \$SBPR_f = \\sum_\{a\} N_a m_a w_a$ renders as $SBPR_f = \sum_{a} N_a m_a w_a$
+
+  - Note: when sums are rendered in-text, like the one above, the bounds will appear next to the summation. When rendered as a block equation, the bounds will appear as expected, like this: $$SBPR_f = \sum_{a} N_a m_a w_a$$
+
+#### Further guidance
+
+Check out [Overleaf's LaTeX reference guide to mathematical expressions](https://www.overleaf.com/learn/latex/Mathematical_expressions) for more guidance writing mathematical text.
+
+## Markdown Syntax
+
+## Code Chunks {#sec-codechunk}
+
+To add a piece of code into the text directly, encase R code within a pair of back ticks (\`). For example, \`params$region` will render like this:
 
 ```{r}
 #| code-fold: true
@@ -39,12 +157,64 @@ In order to add a piece of code into the text directly encase R code within a pa
 params$region
 ```
 
+The above example shows how one would incorporate the *region* parameter into a sentence in a markdown or quarto file. In google docs, this notation formatted to green and the font roboto mono.
 
-The above example shows how one would incorporate the *region* parameter into a sentence in a markdown or quarto file. In google docs, this notation formatted to green and the font roboto mono. 
-
-If we define the parameter of region as NWFSC, the result would render as `r params$region`
+If we define the parameter of region as NWFSC, the phrase "my region is  \`params\$region\` would render as  "my region is `r params$region`".
 
 Other ways to incorporate markdown notation include:
 
-  - in-line calculations: \`r 2+2` 
-  resulting in `r 2+2`
+#### In-line calculations
+
+  - `\r 2+2\` would render as `r 2+2`.
+  
+#### Code Chunk Options
+
+The following are some of the ways you can tell quarto to evaluate code:
+
+| Execute options | Actions              |
+|-----------------|----------------------|
+| echo            | true, false          |
+| warning         | true, false          |
+| eval            | true, false, \[...\] |
+| output          | true, false, asis    |
+| warning         | true, false          |
+| error           | true, false          |
+| include         | true, false          |
+| cache           | true, false, refresh |
+| freeze          | true, false, auto    |
+
+
+  
+## References
+
+`asar` comes with a default .bib file which contains example references, but users are encouraged to replace it or expand upon it with their own .bib files for references in their report. To references an article or other references from the file within the test use the following notation:
+
+> "The dynasty fell within the year 1206, leaving the Vikings in a state of unrest (````@Biddle_1992````)."
+
+renders as
+
+> "The dynasty fell within the year 1206, leaving the Vikings in a state of unrest (@Biddle_1992)."
+
+The citation will properly format according to APA standards and include the citation in `07_references.qmd`. A good rule of thumb to follow is that references are cited use the @ symbol followed by the first author's last name then the publication year. This is not always the case, so it is advised that users check their bib file for the proper citation or use the Visual editor that provides a convenient drop down with a list of suggested citations base on author name, year, or keyword from the title.
+  
+## Combinations
+
+A lot of the notation in this document can be combined for a highly customizable document. For example, you can bold or italicize a link by surrounding the notation to insert a link by asterisks (\*):
+
+#### Italicized link
+
+\*\[NOAA Fisheries]\(https://www.fisheries.noaa.gov)* renders as *[NOAA Fisheries](https://www.fisheries.noaa.gov/)*
+
+#### Bolded link
+
+\*\*\[NOAA Fisheries]\(https://www.fisheries.noaa.gov)** renders as **[NOAA Fisheries](https://www.fisheries.noaa.gov/)**
+
+
+## Acknowledgments
+
+This content was sourced and adapted from the Markdown Guide [Markdown Cheat Sheet](https://www.markdownguide.org/cheat-sheet/), a helpful resource for the markdown language. 
+
+# References
+
+::: {#refs} 
+:::

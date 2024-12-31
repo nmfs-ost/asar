@@ -40,6 +40,7 @@ create_template(
   spp_image = NULL,
   bib_file = "asar_references.bib",
   rda_dir = getwd(),
+  unit_label = "metric tons",
   scale_amount = 1,
   end_year = NULL,
   n_projected_years = 10,
@@ -198,6 +199,8 @@ made with \code{satf::exp_all_figs_tables()}, or by exporting files by running i
 generate these .rda files, you can leave the arguments below blank. NOTE:
 If an "rda_files" folder is detected within rda_dir, .rda files will not be
 regenerated.}
+
+\item{unit_label}{units for recruitment}
 
 \item{scale_amount}{indicate the exact amount of scale (i.e. 1000)}
 

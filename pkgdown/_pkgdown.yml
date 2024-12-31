@@ -1,18 +1,6 @@
 url: nmfs-ost.github.io/asar/
 
 navbar:
-  structure:
-    left:
-    - home
-    - reference
-    - sourcecode
-    - tutorial
-    - articles
-    - documents
-    - news
-    right:
-    - issue
-    - github
 
   components:
     home:
@@ -23,11 +11,6 @@ navbar:
       text: Functions
       icon: far fa-file-code fa-lg
       href: reference/index.html
-
-    sourcecode:
-      text: Source Code
-      icon: fab fa-github fa-lg
-      href: https://github.com/nmfs-ost/asar
 
     issue:
       text: Issues
@@ -59,3 +42,7 @@ navbar:
     tutorial:
       text: Tutorial
       href: https://connect.fisheries.noaa.gov/asar_tutorial/
+
+  structure:
+    left: [home, reference, sourcecode, tutorial, articles, documents, news]
+    right: [search, issue, github]

@@ -4,12 +4,12 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-This package is currently in development. For users interested in testing, please see [Testing](#-testing-section) section below. In its current form, this package builds a very simple template, but there are limited features including NOAA Fisheries formatting and included tables and figures.
+This package is currently in development. For users interested in testing, please see [Testing](#-testing-section) section below. In its current form, this package builds a  template to create a stock assessment report including NOAA Fisheries formatting and included tables and figures.
 
 Download using the directions below and fill in `create_template.R` function with the desired parameters (follow example below) to create a template quarto document to be rendered to create a stock assessment report.
 
 
-The goal of ASAR is to automate stock assessment reports for NOAA science centers so they are reproducible and cohesive across the nation. This project intends to create a streamlined workflow that allows the analyst to create a customized report tailored to their needs and requirements by the SSC, council, or other regional management organizations. 
+The goal of ASAR is to automate stock assessment reports for NOAA science centers so they are reproducible and cohesive across the agency. This project intends to create a streamlined workflow that allows the analyst to create a customized report tailored to their needs and requirements by the SSC, council, or other regional management organizations. 
 
 ## Installation
 
@@ -41,24 +41,24 @@ pak::pak("nmfs-ost/asar")
 install.packages("asar", repos = c("https://nmfs-ost.r-universe.dev", "https://cloud.r-project.org"))
 ```
 
-We also recommend to download the `satf` package. While it is listed as a dependency of the package, it sometimes does not load as intended. Use one of the previous download instructions to also install satf.
+We also recommend to download the `satf` package. While it is listed as a dependency of the package, it sometimes does not load as intended. Use one of the previous download instructions to also install `satf` by replacing 'asar' with 'satf'.
 
 ## Example
 
-The following code will allow the user to replicate the [2023 petrale sole stock assessment](https://www.pcouncil.org/documents/2024/02/status-of-petrale-sole-eopsetta-jordanialong-the-u-s-west-coast-in-2023.pdf/) produced by the NWFSC and made available by the Pacific Fisheries Management Council. The assessment model files are also available on the PFMC's website. A (DRAFT) tutorial for using `asar` can be found [here](https://connect.fisheries.noaa.gov/asar_tutorial/).
+The following code will allow the user to replicate the [2023 petrale sole stock assessment](https://www.pcouncil.org/documents/2024/02/status-of-petrale-sole-eopsetta-jordanialong-the-u-s-west-coast-in-2023.pdf/) produced by the NWFSC and made available by the Pacific Fisheries Management Council. The assessment model files are also available on the PFMC's website. A tutorial for using `asar` can be found [here](https://connect.fisheries.noaa.gov/asar_tutorial/).
 
 The SS3 Report.sso files was converted using the following code:
 
 ```r
 asar::convert_output(
   output_file = "Report.sso",
-  outdir = "data",
+  outdir = "~/data",
   model = "ss3",
   file_save = TRUE,
   save_name = "petrale_convert_output")
 ```
 
-In this function, the users have the option to convert output files to a standardized framework from either SS3 (Report.sso) or BAM (.rdat) output files. The converted output was saved as an Rdata file and can be found in the example folder in this repository.
+In this function, the users have the option to convert output files to a standardized framework from either SS3 (Report.sso) or BAM (.rdat) output files. The converted output was saved as an Rdata file and can be found in the example folder in this repository. Typically, when saving converted output from the `convert_output` function, the resulting file is a csv.
 
 To proceed, the user should then run the following:
 
@@ -77,7 +77,9 @@ asar::create_template(
   param_values = c("North fleet", "South fleet"),
   resdir = "data",
   model_results = "Petrale_sole_std_res_2023.csv",
-  model = "SS3"
+  model = "SS3",
+  rda_dir = file.path(getwd(), "report"),
+  end_year = 2022
 )
 ```
 
@@ -87,11 +89,11 @@ Note: The output of this report is an example based on a real stock assessment. 
 
 We encourage users to test `asar` throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. **Currently, `asar` is only setup to render to a pdf.** Once the user successfully executes `create_template()`, the template quarto file will open:
 
-![alt text](man/figures/example_pop-up.PNG)
+![](man/figures/example_pop-up.PNG)
 
 All other associated files will be created in a folder called `stock_assessment_reports` within the user's documents folder. From there, a file system following the user's associated science center > species name > region (if applicable) > year. The user will have to navigate to this folder to find additional files.
 
-![alt text](man/figures/example_file_system.PNG)
+![](man/figures/example_file_system.PNG)
 
 This is a modularized template, there is no need to make any edits to the skeleton file. To write the report, user should navigate and open each supporting section quarto document labeled:
 
@@ -106,11 +108,13 @@ This is a modularized template, there is no need to make any edits to the skelet
 -   Figures 
 -   Appendix
 
-Please leave an issue for any bugs or suggestions to improve the package during testing on the [Issues Page](https://github.com/Schiano-NOAA/ASAR/issues). Please remember that this package is currently in development and we do not project to release version 1.0 until December 2024. Thank you for helping us improve this package!
+Please leave an issue for any bugs or suggestions for improvement on the [Issues Page](https://github.com/Schiano-NOAA/ASAR/issues). Please remember that this package is currently in development and we do not project to release version 1.0 until December 2024. Thank you for helping us improve this package!
 
 ## Tips
 
 If there you receive an error creating your template due to authorship. Please submit requests to be added to the national archive for assessment scientists using [this issue](https://github.com/nmfs-ost/asar/issues/19). The developers will add you to the list as soon as possible. In the meantime, you can use the argument `create_template(add_author = "First Last")` to add yourself to the template. 
+
+If you have additional questions, there is a helpful Q&A guide available in the articles section of our GitHub Page located [here](https://nmfs-ost.github.io/asar/articles/faqs.html).
 
 ## User Community
 
