@@ -256,8 +256,8 @@ create_template <- function(
     file_dir = getwd(),
     author = "",
     add_author = NULL,
-    include_affiliation = FALSE,
-    simple_affiliation = TRUE,
+    include_affiliation = TRUE,
+    simple_affiliation = FALSE,
     alt_title = FALSE,
     title = NULL,
     parameters = TRUE,
@@ -291,7 +291,7 @@ create_template <- function(
     ref_point_sb = NULL,
     spawning_biomass_label = "metric tons",
     ref_line_sb = c("target", "MSY", "msy", "unfished"),
-    indices_unit_label = NULL,
+    indices_unit_label = "",
     biomass_unit_label = "mt",
     catch_unit_label = "mt") {
   # If analyst forgets to add year, default will be the current year report is being produced
