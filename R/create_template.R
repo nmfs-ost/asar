@@ -853,34 +853,6 @@ create_template <- function(
       # yaml_save <- capture.output(cat(yaml))
       # cat(yaml, file = here('template','yaml_header.qmd'))
 
-      # run satf::exp_all_figs_tables() if rda files not premade
-      # output folder: subdir
-      if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
-        if (!is.null(resdir) | !is.null(model_results)) {
-          # load converted output
-          output <- utils::read.csv(paste0(resdir, "/", model_results))
-
-          # run satf::exp_all_figs_tables() to make rda files
-          satf::exp_all_figs_tables(
-            dat = output,
-            unit_label = unit_label,
-            scale_amount = scale_amount,
-            end_year = end_year,
-            n_projected_years = n_projected_years,
-            relative = relative,
-            # make_rda = TRUE,
-            rda_dir = subdir,
-            ref_line = ref_line,
-            spawning_biomass_label = spawning_biomass_label,
-            recruitment_label = recruitment_label,
-            ref_line_sb = ref_line_sb
-          )
-        }
-      }
-
-
-      # print("_______Standardized output data________")
-
       # Add preamble
       # add in quantities and output data R chunk
       preamble <- add_chunk(
