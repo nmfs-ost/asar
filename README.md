@@ -80,6 +80,9 @@ asar::create_template(
   model = "SS3",
   rda_dir = file.path(getwd(), "report"),
   end_year = 2022
+  ref_line = "msy",
+  ref_line_sb = "msy",
+  indices_unit_label = ""
 )
 ```
 
