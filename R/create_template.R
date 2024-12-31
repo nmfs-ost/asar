@@ -491,7 +491,8 @@ create_template <- function(
           }
           # run satf::exp_all_figs_tables() to make rda files
 
-          test_exp_all <- tryCatch({
+          # test_exp_all <-
+          tryCatch({
             satf::exp_all_figs_tables(
               dat = output,
               scale_amount = scale_amount,
@@ -511,32 +512,31 @@ create_template <- function(
               biomass_unit_label = biomass_unit_label,
               catch_unit_label = catch_unit_label
             )
-            TRUE},
+            # TRUE
+            },
             error = function(e) {
-              warning("Failed to create rda files from satf package.")
-              FALSE
+              warning("Failed to create all rda files from satf package.")
+              # FALSE
             })
-        } else {
-          test_exp_all <- FALSE
-        }
+        } # else {
+          # test_exp_all <- FALSE
+        #}
       }
 
       # Create tables qmd
       if (include_tables) {
-        if (!test_exp_all) {
-          tables_doc <- paste0(
-            "### Tables \n \n",
-            "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
-          )
-          utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
-          warning("Results file or model name not defined.")
-        } else if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
+        # if (!test_exp_all) {
+        #   tables_doc <- paste0(
+        #     "### Tables \n \n",
+        #     "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
+        #   )
+        #   utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
+        #   warning("Results file or model name not defined.")
+        # } else
+        if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
           # if there is an existing folder with "rda_files" in the rda_dir:
           if (dir.exists(fs::path(rda_dir, "rda_files"))) {
             create_tables_doc(
-              resdir = resdir,
-              model_results = model_results,
-              model = model,
               subdir = subdir,
               rda_dir = rda_dir
             )
@@ -544,11 +544,8 @@ create_template <- function(
             # and the rda_files will be placed in the subdir:
           } else {
             create_tables_doc(
-              resdir = resdir,
-              model_results = model_results,
-              model = model,
               subdir = subdir,
-              rda_dir = subdir
+              rda_dir = rda_dir
             )
           }
         } else {
@@ -569,34 +566,27 @@ create_template <- function(
 
       # Create figures qmd
       if (include_figures) {
-        if (!test_exp_all) {
-          figures_doc <- paste0(
-            "### Figures \n \n",
-            "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."
-          )
-          utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
-          warning("Results file or model name not defined.")
-        } else if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
+        # if (!test_exp_all) {
+        #   figures_doc <- paste0(
+        #     "### Figures \n \n",
+        #     "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."
+        #   )
+        #   utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
+        #   warning("Results file or model name not defined.")
+        # } else
+        if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
           # if there is an existing folder with "rda_files" in the rda_dir:
           if (dir.exists(fs::path(rda_dir, "rda_files"))) {
             create_figures_doc(
-              resdir = resdir,
-              model_results = model_results,
-              model = model,
               subdir = subdir,
-              year = year,
               rda_dir = rda_dir
             )
             # if there isn't an existing folder with "rda_files" in the rda_dir,
             # and the rda_files will be placed in the subdir:
           } else {
             create_figures_doc(
-              resdir = resdir,
-              model_results = model_results,
-              model = model,
               subdir = subdir,
-              year = year,
-              rda_dir = subdir
+              rda_dir = rda_dir
             )
           }
       } else {
