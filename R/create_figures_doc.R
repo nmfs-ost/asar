@@ -130,7 +130,7 @@ if (file.exists(file.path(rda_dir, 'spawning.biomass_figure.rda'))){\n
     }
 
     # B figure
-    if (any(grepl("biomass_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
+    if (any(grepl("^biomass_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
     ## import plot, caption, alt text
     figures_doc <- paste0(
       figures_doc,
