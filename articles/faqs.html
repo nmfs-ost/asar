@@ -173,7 +173,7 @@ asar_references.bib file</em>):</p>
 <div class="section level3">
 <h3 id="how-do-i-reference-one-of-the-quantities-in-the-preamble-in-my-text">
 <strong>How do I reference one of the quantities in the preamble in
-my text? </strong><a class="anchor" aria-label="anchor" href="#how-do-i-reference-one-of-the-quantities-in-the-preamble-in-my-text"></a>
+my text?</strong><a class="anchor" aria-label="anchor" href="#how-do-i-reference-one-of-the-quantities-in-the-preamble-in-my-text"></a>
 </h3>
 <p>You can use the quantities in the preamble to make dynamic reports
 that can easily be changed within the text by changing the output file.
@@ -210,6 +210,35 @@ important components controlling the production of the document. We
 highly discourage making changes to the formatting or adding large
 additions of sections to the document that stray too far from the
 intended “NOAA” formatting.</p>
+</div>
+<div class="section level3">
+<h3 id="im-getting-an-error--how-do-i-fix-it">
+<strong>I’m getting an error. How do I fix it?</strong><a class="anchor" aria-label="anchor" href="#im-getting-an-error--how-do-i-fix-it"></a>
+</h3>
+<p>When getting to know <code>asar</code>, you’ll probably encounter
+some errors. We highly recommend checking out our <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">Issues page</a> to see if
+someone else has already asked (and maybe solved!) your question. We’ve
+also included some errors we’ve encountered, and what they mean/ideas
+for solving them.</p>
+<div class="section level4">
+<h4 id="error-1">Error #1<a class="anchor" aria-label="anchor" href="#error-1"></a>
+</h4>
+<div class="sourceCode" id="cb5"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>`Error in`dplyr::mutate()`:</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>ℹ In argument:`across(...)`.</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>Caused by error in`across()`:</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>! Can't compute column`label`.</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>Caused by error in`stringr::str_replace_all()`:</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>! Can't recycle`string`(size 46) to match`replacement`(size 0).</span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="solution-1">Solution #1<a class="anchor" aria-label="anchor" href="#solution-1"></a>
+</h4>
+<p>You may have encountered this error when running
+<code>create_template</code>. Check your arguments for
+<code>ref_line</code> and <code>ref_line_sb</code>; they aren’t being
+found in the dataset. This error should disappear once these arguments
+are accurate.</p>
+</div>
 </div>
   </div>
 
