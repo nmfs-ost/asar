@@ -30,11 +30,12 @@ create_figures_doc <- function(subdir = NULL,
     )
 
     # Recruitment ts figure
-    ## import plot, caption, alt text
-    figures_doc <- paste0(
-      figures_doc,
-      add_chunk(
-        paste0("# if the recruitment figure rda exists:
+    if (any(grepl("recruitment_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
+      ## import plot, caption, alt text
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("# if the recruitment figure rda exists:
 if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){\n
   # load rda
   load(file.path(rda_dir, 'recruitment_figure.rda'))\n
@@ -49,33 +50,37 @@ if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){\n
   eval_recruitment <- TRUE\n
 # if the recruitment figure rda does not exist, don't evaluate the next chunk
 } else {eval_recruitment <- FALSE}"),
-        label = "fig-recruitment-setup",
-        eval = "true"
-      ),
-      "\n"
-    )
+          label = "fig-recruitment-setup",
+          eval = "true"
+        ),
+        "\n"
+      )
 
-    ## add figure
-    figures_doc <- paste0(
-      figures_doc,
-      add_chunk(
-        paste0("recruitment_plot"),
-        label = "fig-recruitment-plot",
-        eval = "!expr eval_recruitment",
-        add_option = TRUE,
-        chunk_op = c(
-          glue::glue(
-            "fig-cap: !expr if(eval_recruitment) recruitment_cap"
-          ),
-          glue::glue(
-            "fig-alt: !expr if(eval_recruitment) recruitment_alt_text"
+      ## add figure
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("recruitment_plot"),
+          label = "fig-recruitment-plot",
+          eval = "!expr eval_recruitment",
+          add_option = TRUE,
+          chunk_op = c(
+            glue::glue(
+              "fig-cap: !expr if(eval_recruitment) recruitment_cap"
+            ),
+            glue::glue(
+              "fig-alt: !expr if(eval_recruitment) recruitment_alt_text"
+            )
           )
-        )
-      ),
-      "\n"
-    )
+        ),
+        "\n"
+      )
+    } else {
+      message("Recruitment time series figure not created.")
+    }
 
     # SB figure
+    if (any(grepl("spawning.biomass_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
     ## import plot, caption, alt text
     figures_doc <- paste0(
       figures_doc,
@@ -120,8 +125,12 @@ if (file.exists(file.path(rda_dir, 'spawning.biomass_figure.rda'))){\n
       ),
       "\n"
     )
+    } else {
+      message("Spawning biomass time series figure not created.")
+    }
 
     # B figure
+    if (any(grepl("^biomass_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
     ## import plot, caption, alt text
     figures_doc <- paste0(
       figures_doc,
@@ -166,9 +175,13 @@ if (file.exists(file.path(rda_dir, 'biomass_figure.rda'))){\n
       ),
       "\n"
     )
+    }  else {
+      message("Biomass time series figure not created.")
+    }
 
 
     # Landings figure
+    if (any(grepl("landings_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
     ## import plot, caption, alt text
     figures_doc <- paste0(
       figures_doc,
@@ -213,8 +226,12 @@ if (file.exists(file.path(rda_dir, 'landings_figure.rda'))){\n
       ),
       "\n"
     )
+    } else {
+      message("Landings time series figure not created.")
+    }
 
     # recruitment deviations figure
+    if (any(grepl("recruitment.deviations_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
     ## import plot, caption, alt text
     figures_doc <- paste0(
       figures_doc,
@@ -259,8 +276,12 @@ if (file.exists(file.path(rda_dir, 'recruitment.deviations_figure.rda'))){\n
       ),
       "\n"
     )
+    }  else {
+      message("Recruitment deviations figure not created.")
+    }
 
-    # spawning recruitment figure
+    # stock recruitment figure
+    if (any(grepl("sr_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
     ## import plot, caption, alt text
     figures_doc <- paste0(
       figures_doc,
@@ -305,8 +326,12 @@ if (file.exists(file.path(rda_dir, 'sr_figure.rda'))){\n
       ),
       "\n"
     )
+    }  else {
+      message("Stock-Recruitment figure not created.")
+    }
 
     # indices figure
+    if (any(grepl("indices_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
     ## import plot, caption, alt text
     figures_doc <- paste0(
       figures_doc,
@@ -351,6 +376,9 @@ if (file.exists(file.path(rda_dir, 'indices_figure.rda'))){\n
       ),
       "\n"
     )
+    }  else {
+      message("Indices of abundance figure not created.")
+    }
 
   } else {
     # add option for only adding specified figures

@@ -500,30 +500,49 @@ create_template <- function(
             output <- utils::read.csv(paste0(resdir, "/", model_results))
           }
           # run satf::exp_all_figs_tables() to make rda files
-          satf::exp_all_figs_tables(
-            dat = output,
-            scale_amount = scale_amount,
-            end_year = end_year,
-            n_projected_years = n_projected_years,
-            relative = relative,
-            # make_rda = TRUE,
-            rda_dir = subdir,
-            ref_line = ref_line,
-            ref_point = ref_point,
-            landings_unit_label = landings_unit_label,
-            spawning_biomass_label = spawning_biomass_label,
-            recruitment_unit_label = recruitment_unit_label,
-            ref_line_sb = ref_line_sb,
-            ref_point_sb = ref_point_sb,
-            indices_unit_label = indices_unit_label,
-            biomass_unit_label = biomass_unit_label,
-            catch_unit_label = catch_unit_label
-          )
-        }
+
+          # test_exp_all <-
+          tryCatch({
+            satf::exp_all_figs_tables(
+              dat = output,
+              scale_amount = scale_amount,
+              end_year = end_year,
+              n_projected_years = n_projected_years,
+              relative = relative,
+              # make_rda = TRUE,
+              rda_dir = subdir,
+              ref_line = ref_line,
+              ref_point = ref_point,
+              landings_unit_label = landings_unit_label,
+              spawning_biomass_label = spawning_biomass_label,
+              recruitment_unit_label = recruitment_unit_label,
+              ref_line_sb = ref_line_sb,
+              ref_point_sb = ref_point_sb,
+              indices_unit_label = indices_unit_label,
+              biomass_unit_label = biomass_unit_label,
+              catch_unit_label = catch_unit_label
+            )
+            # TRUE
+            },
+            error = function(e) {
+              warning("Failed to create all rda files from satf package.")
+              # FALSE
+            })
+        } # else {
+          # test_exp_all <- FALSE
+        #}
       }
 
       # Create tables qmd
       if (include_tables) {
+        # if (!test_exp_all) {
+        #   tables_doc <- paste0(
+        #     "### Tables \n \n",
+        #     "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
+        #   )
+        #   utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
+        #   warning("Results file or model name not defined.")
+        # } else
         if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
           # if there is an existing folder with "rda_files" in the rda_dir:
           if (dir.exists(fs::path(rda_dir, "rda_files"))) {
@@ -536,7 +555,7 @@ create_template <- function(
           } else {
             create_tables_doc(
               subdir = subdir,
-              rda_dir = subdir
+              rda_dir = rda_dir
             )
           }
         } else {
@@ -549,7 +568,6 @@ create_template <- function(
         }
       }
 
-
       # Rename model results for figures and tables files
       # TODO: check if this is needed once the tables and figures docs are reformatted
       # if (convert_output) {
@@ -558,6 +576,14 @@ create_template <- function(
 
       # Create figures qmd
       if (include_figures) {
+        # if (!test_exp_all) {
+        #   figures_doc <- paste0(
+        #     "### Figures \n \n",
+        #     "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."
+        #   )
+        #   utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
+        #   warning("Results file or model name not defined.")
+        # } else
         if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
           # if there is an existing folder with "rda_files" in the rda_dir:
           if (dir.exists(fs::path(rda_dir, "rda_files"))) {
@@ -826,33 +852,6 @@ create_template <- function(
       print("__________Built YAML Header______________")
       # yaml_save <- capture.output(cat(yaml))
       # cat(yaml, file = here('template','yaml_header.qmd'))
-
-      # run satf::exp_all_figs_tables() if rda files not premade
-      # output folder: subdir
-      if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
-        if (!is.null(resdir) | !is.null(model_results)) {
-          # load converted output
-          output <- utils::read.csv(paste0(resdir, "/", model_results))
-
-          # run satf::exp_all_figs_tables() to make rda files
-          satf::exp_all_figs_tables(
-            dat = output,
-            scale_amount = scale_amount,
-            end_year = end_year,
-            n_projected_years = n_projected_years,
-            relative = relative,
-            # make_rda = TRUE,
-            rda_dir = subdir,
-            ref_line = ref_line,
-            spawning_biomass_label = spawning_biomass_label,
-            recruitment_unit_label = recruitment_unit_label,
-            ref_line_sb = ref_line_sb
-          )
-        }
-      }
-
-
-      # print("_______Standardized output data________")
 
       # Add preamble
       # add in quantities and output data R chunk

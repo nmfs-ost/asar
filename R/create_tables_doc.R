@@ -36,6 +36,7 @@ rda_dir <- '", rda_dir, "/rda_files'"),
 
 
     # Bnc table
+    if (any(grepl("bnc_table.rda", list.files(file.path(rda_dir, "rda_files"))))) {
     ## import table, caption
     tables_doc <- paste0(
       tables_doc,
@@ -85,8 +86,10 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
       ),
       "\n"
     )
+    }
 
     # Indices table
+    if (any(grepl("indices.abundance_table.rda", list.files(file.path(rda_dir, "rda_files"))))) {
     ## import table, caption
     tables_doc <- paste0(
       tables_doc,
@@ -136,8 +139,10 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
       ),
       "\n"
     )
+    }
 
 #     # landings table
+#     if (any(grepl("landings_table.rda", list.files(file.path(rda_dir, "rda_files"))))) {
 #     ## import table, caption
 #     tables_doc <- paste0(
 #       tables_doc,
@@ -187,6 +192,7 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
 #       ),
 #       "\n"
 #     )
+#     }
 
     # Add other tables follow the same above format
 
