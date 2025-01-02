@@ -502,35 +502,37 @@ create_template <- function(
           # run satf::exp_all_figs_tables() to make rda files
 
           # test_exp_all <-
-          tryCatch({
-            satf::exp_all_figs_tables(
-              dat = output,
-              scale_amount = scale_amount,
-              end_year = end_year,
-              n_projected_years = n_projected_years,
-              relative = relative,
-              # make_rda = TRUE,
-              rda_dir = subdir,
-              ref_line = ref_line,
-              ref_point = ref_point,
-              landings_unit_label = landings_unit_label,
-              spawning_biomass_label = spawning_biomass_label,
-              recruitment_unit_label = recruitment_unit_label,
-              ref_line_sb = ref_line_sb,
-              ref_point_sb = ref_point_sb,
-              indices_unit_label = indices_unit_label,
-              biomass_unit_label = biomass_unit_label,
-              catch_unit_label = catch_unit_label
-            )
-            # TRUE
+          tryCatch(
+            {
+              satf::exp_all_figs_tables(
+                dat = output,
+                scale_amount = scale_amount,
+                end_year = end_year,
+                n_projected_years = n_projected_years,
+                relative = relative,
+                # make_rda = TRUE,
+                rda_dir = subdir,
+                ref_line = ref_line,
+                ref_point = ref_point,
+                landings_unit_label = landings_unit_label,
+                spawning_biomass_label = spawning_biomass_label,
+                recruitment_unit_label = recruitment_unit_label,
+                ref_line_sb = ref_line_sb,
+                ref_point_sb = ref_point_sb,
+                indices_unit_label = indices_unit_label,
+                biomass_unit_label = biomass_unit_label,
+                catch_unit_label = catch_unit_label
+              )
+              # TRUE
             },
             error = function(e) {
               warning("Failed to create all rda files from satf package.")
               # FALSE
-            })
+            }
+          )
         } # else {
-          # test_exp_all <- FALSE
-        #}
+        # test_exp_all <- FALSE
+        # }
       }
 
       # Create tables qmd
@@ -599,7 +601,7 @@ create_template <- function(
               rda_dir = subdir
             )
           }
-      } else {
+        } else {
           figures_doc <- paste0(
             "### Figures \n \n",
             "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."

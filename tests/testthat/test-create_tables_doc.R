@@ -1,9 +1,10 @@
 test_that("Creates expected start of tables doc", {
-
   # create tables doc
-  asar::create_tables_doc(subdir = getwd(),
-                    include_all = TRUE,
-                    rda_dir = getwd())
+  asar::create_tables_doc(
+    subdir = getwd(),
+    include_all = TRUE,
+    rda_dir = getwd()
+  )
 
   # read in tables doc
   table_content <- readLines("08_tables.qmd")
@@ -16,9 +17,8 @@ test_that("Creates expected start of tables doc", {
   expected_head_table_content <- "## Tables  ```{r} #| label: 'set-rda-dir-tbls'#| echo: false #| warning: false #| eval: true #| include: false"
 
   # test expectation of start of tables doc
-  testthat::expect_equal(tc_pasted,
-                         expected_head_table_content)
-
+  testthat::expect_equal(
+    tc_pasted,
+    expected_head_table_content
+  )
 })
-
-

@@ -13,7 +13,6 @@
 create_figures_doc <- function(subdir = NULL,
                                include_all = TRUE,
                                rda_dir = NULL) {
-
   if (include_all) {
     # add header
     figures_doc <- paste0("## Figures \n \n")
@@ -81,11 +80,11 @@ if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){\n
 
     # SB figure
     if (any(grepl("spawning.biomass_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
-    ## import plot, caption, alt text
-    figures_doc <- paste0(
-      figures_doc,
-      add_chunk(
-        paste0("# if the spawning biomass figure rda exists:
+      ## import plot, caption, alt text
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("# if the spawning biomass figure rda exists:
 if (file.exists(file.path(rda_dir, 'spawning.biomass_figure.rda'))){\n
   # load rda
   load(file.path(rda_dir, 'spawning.biomass_figure.rda'))\n
@@ -100,42 +99,42 @@ if (file.exists(file.path(rda_dir, 'spawning.biomass_figure.rda'))){\n
   eval_spawning_biomass <- TRUE\n
 # if the spawning biomass figure rda does not exist, don't evaluate the next chunk
 } else {eval_spawning_biomass <- FALSE}"),
-        label = "fig-spawning_biomass-setup",
-        eval = "true"
-      ),
-      "\n"
-    )
+          label = "fig-spawning_biomass-setup",
+          eval = "true"
+        ),
+        "\n"
+      )
 
-    ## add figure
-    figures_doc <- paste0(
-      figures_doc,
-      add_chunk(
-        paste0("spawning_biomass_plot"),
-        label = "fig-spawning_biomass-plot",
-        eval = "!expr eval_spawning_biomass",
-        add_option = TRUE,
-        chunk_op = c(
-          glue::glue(
-            "fig-cap: !expr if(eval_spawning_biomass) spawning_biomass_cap"
-          ),
-          glue::glue(
-            "fig-alt: !expr if(eval_spawning_biomass) spawning_biomass_alt_text"
+      ## add figure
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("spawning_biomass_plot"),
+          label = "fig-spawning_biomass-plot",
+          eval = "!expr eval_spawning_biomass",
+          add_option = TRUE,
+          chunk_op = c(
+            glue::glue(
+              "fig-cap: !expr if(eval_spawning_biomass) spawning_biomass_cap"
+            ),
+            glue::glue(
+              "fig-alt: !expr if(eval_spawning_biomass) spawning_biomass_alt_text"
+            )
           )
-        )
-      ),
-      "\n"
-    )
+        ),
+        "\n"
+      )
     } else {
       message("Spawning biomass time series figure not created.")
     }
 
     # B figure
     if (any(grepl("^biomass_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
-    ## import plot, caption, alt text
-    figures_doc <- paste0(
-      figures_doc,
-      add_chunk(
-        paste0("# if the biomass figure rda exists:
+      ## import plot, caption, alt text
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("# if the biomass figure rda exists:
 if (file.exists(file.path(rda_dir, 'biomass_figure.rda'))){\n
   # load rda
   load(file.path(rda_dir, 'biomass_figure.rda'))\n
@@ -150,43 +149,43 @@ if (file.exists(file.path(rda_dir, 'biomass_figure.rda'))){\n
   eval_biomass <- TRUE\n
 # if the biomass figure rda does not exist, don't evaluate the next chunk
 } else {eval_biomass <- FALSE}"),
-        label = "fig-biomass-setup",
-        eval = "true"
-      ),
-      "\n"
-    )
+          label = "fig-biomass-setup",
+          eval = "true"
+        ),
+        "\n"
+      )
 
-    ## add figure
-    figures_doc <- paste0(
-      figures_doc,
-      add_chunk(
-        paste0("biomass_plot"),
-        label = "fig-biomass-plot",
-        eval = "!expr eval_biomass",
-        add_option = TRUE,
-        chunk_op = c(
-          glue::glue(
-            "fig-cap: !expr if(eval_biomass) biomass_cap"
-          ),
-          glue::glue(
-            "fig-alt: !expr if(eval_biomass) biomass_alt_text"
+      ## add figure
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("biomass_plot"),
+          label = "fig-biomass-plot",
+          eval = "!expr eval_biomass",
+          add_option = TRUE,
+          chunk_op = c(
+            glue::glue(
+              "fig-cap: !expr if(eval_biomass) biomass_cap"
+            ),
+            glue::glue(
+              "fig-alt: !expr if(eval_biomass) biomass_alt_text"
+            )
           )
-        )
-      ),
-      "\n"
-    )
-    }  else {
+        ),
+        "\n"
+      )
+    } else {
       message("Biomass time series figure not created.")
     }
 
 
     # Landings figure
     if (any(grepl("landings_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
-    ## import plot, caption, alt text
-    figures_doc <- paste0(
-      figures_doc,
-      add_chunk(
-        paste0("# if the landings figure rda exists:
+      ## import plot, caption, alt text
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("# if the landings figure rda exists:
 if (file.exists(file.path(rda_dir, 'landings_figure.rda'))){\n
   # load rda
   load(file.path(rda_dir, 'landings_figure.rda'))\n
@@ -201,42 +200,42 @@ if (file.exists(file.path(rda_dir, 'landings_figure.rda'))){\n
   eval_landings <- TRUE\n
 # if the landings figure rda does not exist, don't evaluate the next chunk
 } else {eval_landings <- FALSE}"),
-        label = "fig-landings-setup",
-        eval = "true"
-      ),
-      "\n"
-    )
+          label = "fig-landings-setup",
+          eval = "true"
+        ),
+        "\n"
+      )
 
-    ## add figure
-    figures_doc <- paste0(
-      figures_doc,
-      add_chunk(
-        paste0("landings_plot"),
-        label = "fig-landings-plot",
-        eval = "!expr eval_landings",
-        add_option = TRUE,
-        chunk_op = c(
-          glue::glue(
-            "fig-cap: !expr if(eval_landings) landings_cap"
-          ),
-          glue::glue(
-            "fig-alt: !expr if(eval_landings) landings_alt_text"
+      ## add figure
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("landings_plot"),
+          label = "fig-landings-plot",
+          eval = "!expr eval_landings",
+          add_option = TRUE,
+          chunk_op = c(
+            glue::glue(
+              "fig-cap: !expr if(eval_landings) landings_cap"
+            ),
+            glue::glue(
+              "fig-alt: !expr if(eval_landings) landings_alt_text"
+            )
           )
-        )
-      ),
-      "\n"
-    )
+        ),
+        "\n"
+      )
     } else {
       message("Landings time series figure not created.")
     }
 
     # recruitment deviations figure
     if (any(grepl("recruitment.deviations_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
-    ## import plot, caption, alt text
-    figures_doc <- paste0(
-      figures_doc,
-      add_chunk(
-        paste0("# if the recruitment deviations figure rda exists:
+      ## import plot, caption, alt text
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("# if the recruitment deviations figure rda exists:
 if (file.exists(file.path(rda_dir, 'recruitment.deviations_figure.rda'))){\n
   # load rda
   load(file.path(rda_dir, 'recruitment.deviations_figure.rda'))\n
@@ -251,42 +250,42 @@ if (file.exists(file.path(rda_dir, 'recruitment.deviations_figure.rda'))){\n
   eval_recruitment_deviations <- TRUE\n
 # if the recruitment deviations figure rda does not exist, don't evaluate the next chunk
 } else {eval_recruitment_deviations <- FALSE}"),
-        label = "fig-recruitment_deviations-setup",
-        eval = "true"
-      ),
-      "\n"
-    )
+          label = "fig-recruitment_deviations-setup",
+          eval = "true"
+        ),
+        "\n"
+      )
 
-    ## add figure
-    figures_doc <- paste0(
-      figures_doc,
-      add_chunk(
-        paste0("recruitment_deviations_plot"),
-        label = "fig-recruitment_deviations-plot",
-        eval = "!expr eval_recruitment_deviations",
-        add_option = TRUE,
-        chunk_op = c(
-          glue::glue(
-            "fig-cap: !expr if(eval_recruitment_deviations) recruitment_deviations_cap"
-          ),
-          glue::glue(
-            "fig-alt: !expr if(eval_recruitment_deviations) recruitment_deviations_alt_text"
+      ## add figure
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("recruitment_deviations_plot"),
+          label = "fig-recruitment_deviations-plot",
+          eval = "!expr eval_recruitment_deviations",
+          add_option = TRUE,
+          chunk_op = c(
+            glue::glue(
+              "fig-cap: !expr if(eval_recruitment_deviations) recruitment_deviations_cap"
+            ),
+            glue::glue(
+              "fig-alt: !expr if(eval_recruitment_deviations) recruitment_deviations_alt_text"
+            )
           )
-        )
-      ),
-      "\n"
-    )
-    }  else {
+        ),
+        "\n"
+      )
+    } else {
       message("Recruitment deviations figure not created.")
     }
 
     # stock recruitment figure
     if (any(grepl("sr_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
-    ## import plot, caption, alt text
-    figures_doc <- paste0(
-      figures_doc,
-      add_chunk(
-        paste0("# if the spawning recruitment figure rda exists:
+      ## import plot, caption, alt text
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("# if the spawning recruitment figure rda exists:
 if (file.exists(file.path(rda_dir, 'sr_figure.rda'))){\n
   # load rda
   load(file.path(rda_dir, 'sr_figure.rda'))\n
@@ -301,42 +300,42 @@ if (file.exists(file.path(rda_dir, 'sr_figure.rda'))){\n
   eval_sr <- TRUE\n
 # if the spawning recruitment figure rda does not exist, don't evaluate the next chunk
 } else {eval_sr <- FALSE}"),
-        label = "fig-sr-setup",
-        eval = "true"
-      ),
-      "\n"
-    )
+          label = "fig-sr-setup",
+          eval = "true"
+        ),
+        "\n"
+      )
 
-    ## add figure
-    figures_doc <- paste0(
-      figures_doc,
-      add_chunk(
-        paste0("sr_plot"),
-        label = "fig-sr-plot",
-        eval = "!expr eval_sr",
-        add_option = TRUE,
-        chunk_op = c(
-          glue::glue(
-            "fig-cap: !expr if(eval_sr) sr_cap"
-          ),
-          glue::glue(
-            "fig-alt: !expr if(eval_sr) sr_alt_text"
+      ## add figure
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("sr_plot"),
+          label = "fig-sr-plot",
+          eval = "!expr eval_sr",
+          add_option = TRUE,
+          chunk_op = c(
+            glue::glue(
+              "fig-cap: !expr if(eval_sr) sr_cap"
+            ),
+            glue::glue(
+              "fig-alt: !expr if(eval_sr) sr_alt_text"
+            )
           )
-        )
-      ),
-      "\n"
-    )
-    }  else {
+        ),
+        "\n"
+      )
+    } else {
       message("Stock-Recruitment figure not created.")
     }
 
     # indices figure
     if (any(grepl("indices_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
-    ## import plot, caption, alt text
-    figures_doc <- paste0(
-      figures_doc,
-      add_chunk(
-        paste0("# if the indices figure rda exists:
+      ## import plot, caption, alt text
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("# if the indices figure rda exists:
 if (file.exists(file.path(rda_dir, 'indices_figure.rda'))){\n
   # load rda
   load(file.path(rda_dir, 'indices_figure.rda'))\n
@@ -351,39 +350,38 @@ if (file.exists(file.path(rda_dir, 'indices_figure.rda'))){\n
   eval_indices <- TRUE\n
 # if the indices figure rda does not exist, don't evaluate the next chunk
 } else {eval_indices <- FALSE}"),
-        label = "fig-indices-setup",
-        eval = "true"
-      ),
-      "\n"
-    )
+          label = "fig-indices-setup",
+          eval = "true"
+        ),
+        "\n"
+      )
 
-    ## add figure
-    figures_doc <- paste0(
-      figures_doc,
-      add_chunk(
-        paste0("indices_plot"),
-        label = "fig-indices-plot",
-        eval = "!expr eval_indices",
-        add_option = TRUE,
-        chunk_op = c(
-          glue::glue(
-            "fig-cap: !expr if(eval_indices) indices_cap"
-          ),
-          glue::glue(
-            "fig-alt: !expr if(eval_indices) indices_alt_text"
+      ## add figure
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("indices_plot"),
+          label = "fig-indices-plot",
+          eval = "!expr eval_indices",
+          add_option = TRUE,
+          chunk_op = c(
+            glue::glue(
+              "fig-cap: !expr if(eval_indices) indices_cap"
+            ),
+            glue::glue(
+              "fig-alt: !expr if(eval_indices) indices_alt_text"
+            )
           )
-        )
-      ),
-      "\n"
-    )
-    }  else {
+        ),
+        "\n"
+      )
+    } else {
       message("Indices of abundance figure not created.")
     }
-
   } else {
     # add option for only adding specified figures
     warning("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")
-    }
+  }
 
   # Save figures doc to template folder
   utils::capture.output(cat(figures_doc),

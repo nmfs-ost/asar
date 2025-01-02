@@ -121,40 +121,36 @@ create_citation <- function(
       title, ". ", off_title, ", ",
       "[CITY], [STATE]. "
     )
-
-    } else if (office == "AFSC") {
-      cit <- paste0(
-        "{{< pagebreak >}} \n",
-        "\n",
-        "Please cite this publication as: \n",
-        "\n",
-        author_list, ". ", year, ". ",
-        title,
-        ". North Pacific Fishery Management Council, Anchorage, AK. Available from ",
-        "https://www.npfmc.org/library/safe-reports/"
-      )
-
-    } else if (office == "NWFSC") {
-      cit <- paste0(
-        "{{< pagebreak >}} \n",
-        "\n",
-        "Please cite this publication as: \n",
-        "\n",
-        author_list, ". ", title, ".", year,
-         ". Prepared by [COMMITTEE]. [XX] p."
-      )
-
-    } else if (office == "PIFSC") {
-      cit <- paste0(
-        "{{< pagebreak >}} \n",
-        "\n",
-        "Please cite this publication as: \n",
-        "\n",
-        author_list, ". ", year, ". ",
-        title, ". NOAA Tech. Memo. [TECH MEMO NUMBER]",
-        ", ", "[XX] p."
-      )
-
+  } else if (office == "AFSC") {
+    cit <- paste0(
+      "{{< pagebreak >}} \n",
+      "\n",
+      "Please cite this publication as: \n",
+      "\n",
+      author_list, ". ", year, ". ",
+      title,
+      ". North Pacific Fishery Management Council, Anchorage, AK. Available from ",
+      "https://www.npfmc.org/library/safe-reports/"
+    )
+  } else if (office == "NWFSC") {
+    cit <- paste0(
+      "{{< pagebreak >}} \n",
+      "\n",
+      "Please cite this publication as: \n",
+      "\n",
+      author_list, ". ", title, ".", year,
+      ". Prepared by [COMMITTEE]. [XX] p."
+    )
+  } else if (office == "PIFSC") {
+    cit <- paste0(
+      "{{< pagebreak >}} \n",
+      "\n",
+      "Please cite this publication as: \n",
+      "\n",
+      author_list, ". ", year, ". ",
+      title, ". NOAA Tech. Memo. [TECH MEMO NUMBER]",
+      ", ", "[XX] p."
+    )
   } else if (office == "SEFSC") {
     cit <- paste0(
       "'{{< pagebreak >}}' \n",
@@ -165,17 +161,15 @@ create_citation <- function(
       "SEDAR, North Charleston SC. [XX] pp. ",
       "available online at: http://sedarweb.org/"
     )
-
-    } else if (office == "SWFSC") {
-      cit <- paste0(
-        "{{< pagebreak >}} \n",
-        "\n",
-        "Please cite this publication as: \n",
-        "\n",
-        author_list, ", ", year, ". ", title,
-        ". Pacific Fishery Management Council, Portland, OR. Available from https://www.pcouncil.org/stock-assessments-and-fishery-evaluation-safe-documents/."
-      )
-
+  } else if (office == "SWFSC") {
+    cit <- paste0(
+      "{{< pagebreak >}} \n",
+      "\n",
+      "Please cite this publication as: \n",
+      "\n",
+      author_list, ", ", year, ". ", title,
+      ". Pacific Fishery Management Council, Portland, OR. Available from https://www.pcouncil.org/stock-assessments-and-fishery-evaluation-safe-documents/."
+    )
   } else { # this includes NEFSC
     cit <- paste0(
       "{{< pagebreak >}} \n",
@@ -186,7 +180,6 @@ create_citation <- function(
       title, ". ", off_title, ", ",
       loc_city, ", ", loc_state, ". "
     )
-
   }
 
   # Add citation as .qmd to add into template
