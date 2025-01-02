@@ -112,7 +112,12 @@
 #' If an "rda_files" folder is detected within rda_dir, .rda files will not be
 #' regenerated.
 #' @param end_year The last year of assessment. The default is year - 1.
-#' @inheritParams satf::plot_recruitment
+#' @param n_projected_years Number of years spawning biomass is projected for.
+#' By default this number is set to 10
+#' @param relative A logical value specifying if the resulting figures should be
+#' relative spawning biomass. The default is 'FALSE'. 'ref_line' indicates which
+#' reference point to use.
+#' @param recruitment_unit_label Units for recruitment
 #' @param ref_line An argument inherited from `satf::plot_spawning_biomass.R`.
 #' A string specifying the type of reference you want to
 #' compare spawning biomass to. The default is `"target"`, which looks for
@@ -121,19 +126,25 @@
 #' lower-case letters but you must use one of the options specified in the
 #' default list to ensure that the label on the figure looks correct
 #' regardless of how it is specified in `dat`.
-#' @param spawning_biomass_label An argument inherited from
-#' `satf::plot_spawn_recruitment.R`. Units for spawning biomass.
-#' @param recruitment_label An argument inherited from
-#' `satf::plot_spawn_recruitment.R`. Units for recruitment.
-#' @param ref_line_sb An argument with inherited from `satf::plot_spawning_biomass.R`
-#' (under the parameter name `ref_line`, changed slightly to differentiate from
-#' the ref_line indicated for `satf::plot_biomass.`) A string specifying the type of
+#' @param ref_point An argument inherited from `satf::plot_biomass.R`. A known
+#' value of the reference point along with the label for the reference point as
+#' specified in the output file. Please use this option if the ref_line cannot
+#' find your desired point. Indicate the reference point in the form
+#' c("label" = value).
+#' @param landings_unit_label Units for landings
+#' @param spawning_biomass_label Units for spawning biomass
+#' @param ref_line_sb A string specifying the type of
 #' reference you want to compare spawning biomass to. The default is `"target"`,
 #' which looks for `"spawning_biomass_target"` in the `"label"` column of `dat`.
 #' The actual searching in `dat` is case agnostic and will work with either upper- or
 #' lower-case letters but you must use one of the options specified in the
 #' default list to ensure that the label on the figure looks correct
 #' regardless of how it is specified in `dat`.
+#' @param ref_point_sb Identical definition as `ref_point`, but this argument is
+#' applied to plot_spawning_biomass.
+#' @param indices_unit_label Units for index of abundance/CPUE
+#' @param biomass_unit_label Abbreviated units for biomass
+#' @param catch_unit_label Abbreviated units for catch
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
 #'         resources and workflows from different U.S. Fishery Science Centers.
@@ -217,15 +228,19 @@
 #'   add_image = TRUE,
 #'   spp_image = "dir/containing/spp_image",
 #'   rda_dir = "C:/Users/Documents",
-#'   unit_label = "metric tons",
 #'   scale_amount = 1,
 #'   end_year = 2022,
 #'   n_projected_years = 10,
 #'   relative = FALSE,
+#'   recruitment_unit_label = "metric tons",
 #'   ref_line = "target",
+#'   landings_unit_label = "metric tons",
 #'   spawning_biomass_label = "metric tons",
-#'   recruitment_label = "metric tons",
-#'   ref_line_sb = "target"
+#'   recruitment_unit_label = "metric tons",
+#'   ref_line_sb = "target",
+#'   indices_unit_label = "CPUE",
+#'   biomass_unit_label = "mt",
+#'   catch_unit_label = "mt"
 #' )
 #' }
 #'
@@ -241,8 +256,8 @@ create_template <- function(
     file_dir = getwd(),
     author = "",
     add_author = NULL,
-    include_affiliation = FALSE,
-    simple_affiliation = TRUE,
+    include_affiliation = TRUE,
+    simple_affiliation = FALSE,
     alt_title = FALSE,
     title = NULL,
     parameters = TRUE,
@@ -265,15 +280,20 @@ create_template <- function(
     spp_image = NULL,
     bib_file = "asar_references.bib",
     rda_dir = getwd(),
-    unit_label = "metric tons",
     scale_amount = 1,
     end_year = NULL,
     n_projected_years = 10,
     relative = FALSE,
+    recruitment_unit_label = "metric tons",
     ref_line = c("target", "MSY", "msy", "unfished"),
+    ref_point = NULL,
+    landings_unit_label = "metric tons",
+    ref_point_sb = NULL,
     spawning_biomass_label = "metric tons",
-    recruitment_label = "metric tons",
-    ref_line_sb = c("target", "MSY", "msy", "unfished")) {
+    ref_line_sb = c("target", "MSY", "msy", "unfished"),
+    indices_unit_label = "",
+    biomass_unit_label = "mt",
+    catch_unit_label = "mt") {
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -422,15 +442,111 @@ create_template <- function(
         }
       }
 
+      # Convert output file if TRUE
+      # Check if converted output already exists
+      if (convert_output) {
+        if (!file.exists(file.path(subdir, paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))) {
+          print("__________Converting output file__________")
+          if (tolower(model) == "bam" & is.null(fleet_names)) {
+            # warning("Fleet names not defined.")
+            convert_output(
+              output_file = model_results,
+              outdir = resdir,
+              file_save = TRUE,
+              model = model,
+              savedir = subdir,
+              save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
+            )
+            # } else if (tolower(model) == "bam") {
+            #   convert_output(
+            #     output_file = model_results,
+            #     outdir = resdir,
+            #     file_save = TRUE,
+            #     model = model,
+            #     fleet_names = fleet_names,
+            #     savedir = subdir,
+            #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+            #   )
+          } else {
+            convert_output(
+              output_file = model_results,
+              outdir = resdir,
+              file_save = TRUE,
+              model = model,
+              savedir = subdir,
+              save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
+            )
+          }
+          # Rename model results file and results file directory if the results are converted in this fxn
+          model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
+          resdir <- subdir
+        } else {
+          message("Output not converted: standard output already in path.")
+          model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
+          resdir <- subdir
+        }
+      }
+
+      # print("_______Standardized output data________")
+
+      # run satf::exp_all_figs_tables() if rda files not premade
+      # output folder: subdir
+      if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
+        if (!is.null(resdir) | !is.null(model_results)) {
+          # load converted output
+          if (convert_output) {
+            output <- utils::read.csv(paste0(subdir, "/", paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))
+          } else {
+            output <- utils::read.csv(paste0(resdir, "/", model_results))
+          }
+          # run satf::exp_all_figs_tables() to make rda files
+
+          # test_exp_all <-
+          tryCatch({
+            satf::exp_all_figs_tables(
+              dat = output,
+              scale_amount = scale_amount,
+              end_year = end_year,
+              n_projected_years = n_projected_years,
+              relative = relative,
+              # make_rda = TRUE,
+              rda_dir = subdir,
+              ref_line = ref_line,
+              ref_point = ref_point,
+              landings_unit_label = landings_unit_label,
+              spawning_biomass_label = spawning_biomass_label,
+              recruitment_unit_label = recruitment_unit_label,
+              ref_line_sb = ref_line_sb,
+              ref_point_sb = ref_point_sb,
+              indices_unit_label = indices_unit_label,
+              biomass_unit_label = biomass_unit_label,
+              catch_unit_label = catch_unit_label
+            )
+            # TRUE
+            },
+            error = function(e) {
+              warning("Failed to create all rda files from satf package.")
+              # FALSE
+            })
+        } # else {
+          # test_exp_all <- FALSE
+        #}
+      }
+
       # Create tables qmd
       if (include_tables) {
+        # if (!test_exp_all) {
+        #   tables_doc <- paste0(
+        #     "### Tables \n \n",
+        #     "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
+        #   )
+        #   utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
+        #   warning("Results file or model name not defined.")
+        # } else
         if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
           # if there is an existing folder with "rda_files" in the rda_dir:
           if (dir.exists(fs::path(rda_dir, "rda_files"))) {
             create_tables_doc(
-              resdir = resdir,
-              model_results = model_results,
-              model = model,
               subdir = subdir,
               rda_dir = rda_dir
             )
@@ -438,11 +554,8 @@ create_template <- function(
             # and the rda_files will be placed in the subdir:
           } else {
             create_tables_doc(
-              resdir = resdir,
-              model_results = model_results,
-              model = model,
               subdir = subdir,
-              rda_dir = subdir
+              rda_dir = rda_dir
             )
           }
         } else {
@@ -455,7 +568,6 @@ create_template <- function(
         }
       }
 
-
       # Rename model results for figures and tables files
       # TODO: check if this is needed once the tables and figures docs are reformatted
       # if (convert_output) {
@@ -464,30 +576,30 @@ create_template <- function(
 
       # Create figures qmd
       if (include_figures) {
+        # if (!test_exp_all) {
+        #   figures_doc <- paste0(
+        #     "### Figures \n \n",
+        #     "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."
+        #   )
+        #   utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
+        #   warning("Results file or model name not defined.")
+        # } else
         if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
           # if there is an existing folder with "rda_files" in the rda_dir:
           if (dir.exists(fs::path(rda_dir, "rda_files"))) {
             create_figures_doc(
-              resdir = resdir,
-              model_results = model_results,
-              model = model,
               subdir = subdir,
-              year = year,
               rda_dir = rda_dir
             )
             # if there isn't an existing folder with "rda_files" in the rda_dir,
             # and the rda_files will be placed in the subdir:
           } else {
             create_figures_doc(
-              resdir = resdir,
-              model_results = model_results,
-              model = model,
               subdir = subdir,
-              year = year,
               rda_dir = subdir
             )
           }
-        } else {
+      } else {
           figures_doc <- paste0(
             "### Figures \n \n",
             "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."
@@ -740,72 +852,6 @@ create_template <- function(
       print("__________Built YAML Header______________")
       # yaml_save <- capture.output(cat(yaml))
       # cat(yaml, file = here('template','yaml_header.qmd'))
-
-      # Convert output file if TRUE
-      if (convert_output) {
-        print("__________Converting output file__________")
-        if (tolower(model) == "bam" & is.null(fleet_names)) {
-          # warning("Fleet names not defined.")
-          convert_output(
-            output_file = model_results,
-            outdir = resdir,
-            file_save = TRUE,
-            model = model,
-            savedir = subdir,
-            save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
-          )
-          # } else if (tolower(model) == "bam") {
-          #   convert_output(
-          #     output_file = model_results,
-          #     outdir = resdir,
-          #     file_save = TRUE,
-          #     model = model,
-          #     fleet_names = fleet_names,
-          #     savedir = subdir,
-          #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
-          #   )
-        } else {
-          convert_output(
-            output_file = model_results,
-            outdir = resdir,
-            file_save = TRUE,
-            model = model,
-            savedir = subdir,
-            save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
-          )
-        }
-        # Rename model results file and results file directory if the results are converted in this fxn
-        model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
-        resdir <- subdir
-      }
-
-      # run satf::exp_all_figs_tables() if rda files not premade
-      # output folder: subdir
-      if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
-        if (!is.null(resdir) | !is.null(model_results)) {
-          # load converted output
-          output <- utils::read.csv(paste0(resdir, "/", model_results))
-
-          # run satf::exp_all_figs_tables() to make rda files
-          satf::exp_all_figs_tables(
-            dat = output,
-            unit_label = unit_label,
-            scale_amount = scale_amount,
-            end_year = end_year,
-            n_projected_years = n_projected_years,
-            relative = relative,
-            # make_rda = TRUE,
-            rda_dir = subdir,
-            ref_line = ref_line,
-            spawning_biomass_label = spawning_biomass_label,
-            recruitment_label = recruitment_label,
-            ref_line_sb = ref_line_sb
-          )
-        }
-      }
-
-
-      # print("_______Standardized output data________")
 
       # Add preamble
       # add in quantities and output data R chunk

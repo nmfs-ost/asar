@@ -4,33 +4,9 @@
 \alias{create_figures_doc}
 \title{Create Quarto Document of Figures}
 \usage{
-create_figures_doc(
-  resdir = NULL,
-  model_results = NULL,
-  model = c("SS3", "BAM", "ASAP", "AMAK", "WHAM"),
-  year = NULL,
-  subdir = NULL,
-  include_all = TRUE,
-  rda_dir = NULL
-)
+create_figures_doc(subdir = NULL, include_all = TRUE, rda_dir = NULL)
 }
 \arguments{
-\item{resdir}{Filepath of the directory storing the model
-results file(s). Examples where dover_sole_2024 is the project root
-for absolute and relative filepaths, respectively:
-"C:/Users/patrick.star/Documents/dover_sole_2024/models",
-"here::here("models")".}
-
-\item{model_results}{The model results file. Before the stock
-assessment output file has been converted to a standardized format
-with the function convert_output.R, the model results file may be
-a .sso or .rdata file. After conversion, this file will be a .csv file.}
-
-\item{model}{Type of assessment model that was used to assess
-the stock (e.g., "BAM", "SS3", "AMAK", "ASAP", etc.).}
-
-\item{year}{End year for assessment, for inclusion in plotting}
-
 \item{subdir}{Location of subdirectory storing the assessment report template}
 
 \item{include_all}{TRUE/FALSE; Option to include all default
