@@ -91,7 +91,7 @@ add_tagging <- function(
   # read all files in obj_files and put into list
   alt_text_list <- list()
   for (i in seq_along(obj_files)) {
-    load(file.path(getwd(), "report", "rda_files", obj_files[i]))
+    load(file.path(rda_dir, "rda_files", obj_files[i]))
     # extract name to add into the list for placement
     rda_name <- stringr::str_replace(obj_files[i], "_figure.rda", "")
     # if name is >1 word then replace the _ with - to follow naming convention for
