@@ -53,7 +53,7 @@ add_tagging <- function(
   #   "%", "\n"
   # )
   # Save accessibility partial
-  # utils::capture.output(cat(acceesibility), file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)), append = FALSE)
+  # utils::capture.output(cat(acceesibility), file = file.path(dir, "accessibility.tex"), append = FALSE)
 
   # Check: count instances of pattern
   # sub_count <- length(
