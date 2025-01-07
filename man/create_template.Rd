@@ -16,8 +16,8 @@ create_template(
   file_dir = getwd(),
   author = "",
   add_author = NULL,
-  include_affiliation = FALSE,
-  simple_affiliation = TRUE,
+  include_affiliation = TRUE,
+  simple_affiliation = FALSE,
   alt_title = FALSE,
   title = NULL,
   parameters = TRUE,
@@ -39,16 +39,21 @@ create_template(
   add_image = FALSE,
   spp_image = NULL,
   bib_file = "asar_references.bib",
-  rda_dir = NULL,
-  unit_label = "metric tons",
+  rda_dir = getwd(),
   scale_amount = 1,
   end_year = NULL,
   n_projected_years = 10,
   relative = FALSE,
+  recruitment_unit_label = "metric tons",
   ref_line = c("target", "MSY", "msy", "unfished"),
+  ref_point = NULL,
+  landings_unit_label = "metric tons",
+  ref_point_sb = NULL,
   spawning_biomass_label = "metric tons",
-  recruitment_label = "metric tons",
-  ref_line_sb = c("target", "MSY", "msy", "unfished")
+  ref_line_sb = c("target", "MSY", "msy", "unfished"),
+  indices_unit_label = "",
+  biomass_unit_label = "mt",
+  catch_unit_label = "mt"
 )
 }
 \arguments{
@@ -182,27 +187,28 @@ using the image included in the project's repository.}
 \item{bib_file}{File path to a .bib file used for citing references in
 the report}
 
-\item{rda_dir}{The location of the folder containing .rda files
-("rda_files") already made with \code{satf}, or, if the user has not used
-\code{satf} to make those .rda files already, rda_dir represents the location
-that will contain .rda files in an "rda_files" folder. The folder would have
-been made with \code{satf::exp_all_figs_tables()}, or by exporting files
-by running individual \code{satf} figure- and table-generating functions.
-If you have used \code{satf} to generate these .rda files, you can leave
-the arguments below blank.}
+\item{rda_dir}{If the user has already created .rda files containing
+figures, tables, alt text, and captions with \code{satf}, rda_dir represents
+the location of the folder containing these .rda files ("rda_files").
+Otherwise, if the user has not used \code{satf} to make those .rda files already,
+those files will be generated automatically and placed within the "report"
+folder within the \code{file_dir}. The "rda_files" folder would have been
+made with \code{satf::exp_all_figs_tables()}, or by exporting files by running individual
+\code{satf} figure- and table-generating functions. If you have used \code{satf} to
+generate these .rda files, you can leave the arguments below blank. NOTE:
+If an "rda_files" folder is detected within rda_dir, .rda files will not be
+regenerated.}
 
-\item{unit_label}{units for recruitment}
-
-\item{scale_amount}{indicate the exact amount of scale (i.e. 1000)}
-
-\item{end_year}{last year of assessment}
+\item{end_year}{The last year of assessment. The default is year - 1.}
 
 \item{n_projected_years}{Number of years spawning biomass is projected for.
 By default this number is set to 10}
 
-\item{relative}{A logical value specifying if the resulting figures should
-be relative spawning biomass. The default is `FALSE`. `ref_line` indicates
-which reference point to use.}
+\item{relative}{A logical value specifying if the resulting figures should be
+relative spawning biomass. The default is 'FALSE'. 'ref_line' indicates which
+reference point to use.}
+
+\item{recruitment_unit_label}{Units for recruitment}
 
 \item{ref_line}{An argument inherited from \code{satf::plot_spawning_biomass.R}.
 A string specifying the type of reference you want to
@@ -213,21 +219,32 @@ lower-case letters but you must use one of the options specified in the
 default list to ensure that the label on the figure looks correct
 regardless of how it is specified in \code{dat}.}
 
-\item{spawning_biomass_label}{An argument inherited from
-\code{satf::plot_spawn_recruitment.R}. Units for spawning biomass.}
+\item{ref_point}{An argument inherited from \code{satf::plot_biomass.R}. A known
+value of the reference point along with the label for the reference point as
+specified in the output file. Please use this option if the ref_line cannot
+find your desired point. Indicate the reference point in the form
+c("label" = value).}
 
-\item{recruitment_label}{An argument inherited from
-\code{satf::plot_spawn_recruitment.R}. Units for recruitment.}
+\item{landings_unit_label}{Units for landings}
 
-\item{ref_line_sb}{An argument with inherited from \code{satf::plot_spawning_biomass.R}
-(under the parameter name \code{ref_line}, changed slightly to differentiate from
-the ref_line indicated for \code{satf::plot_biomass.}) A string specifying the type of
+\item{ref_point_sb}{Identical definition as \code{ref_point}, but this argument is
+applied to plot_spawning_biomass.}
+
+\item{spawning_biomass_label}{Units for spawning biomass}
+
+\item{ref_line_sb}{A string specifying the type of
 reference you want to compare spawning biomass to. The default is \code{"target"},
 which looks for \code{"spawning_biomass_target"} in the \code{"label"} column of \code{dat}.
 The actual searching in \code{dat} is case agnostic and will work with either upper- or
 lower-case letters but you must use one of the options specified in the
 default list to ensure that the label on the figure looks correct
 regardless of how it is specified in \code{dat}.}
+
+\item{indices_unit_label}{Units for index of abundance/CPUE}
+
+\item{biomass_unit_label}{Abbreviated units for biomass}
+
+\item{catch_unit_label}{Abbreviated units for catch}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
@@ -246,6 +263,7 @@ in the console.
 create_template(
   new_section = "a_new_section",
   section_location = "before-introduction",
+  rda_dir = here::here()
 )
 
 
@@ -263,6 +281,7 @@ create_template(
   model = "SS3",
   new_section = "an_additional_section",
   section_location = "after-introduction",
+  rda_dir = here::here()
 )
 
 asar::create_template(
@@ -277,7 +296,8 @@ asar::create_template(
   new_section = c("a_new_section", "another_new_section"),
   section_location = c("before-introduction", "after-introduction"),
   custom = TRUE,
-  custom_sections = c("executive_summary", "introduction")
+  custom_sections = c("executive_summary", "introduction"),
+  rda_dir = here::here()
 )
 
 create_template(
@@ -314,15 +334,19 @@ create_template(
   add_image = TRUE,
   spp_image = "dir/containing/spp_image",
   rda_dir = "C:/Users/Documents",
-  unit_label = "metric tons",
   scale_amount = 1,
-  end_year = NULL,
+  end_year = 2022,
   n_projected_years = 10,
   relative = FALSE,
-  ref_line = c("target", "MSY", "msy", "unfished"),
+  recruitment_unit_label = "metric tons",
+  ref_line = "target",
+  landings_unit_label = "metric tons",
   spawning_biomass_label = "metric tons",
-  recruitment_label = "metric tons",
-  ref_line_sb = c("target", "MSY", "msy", "unfished")
+  recruitment_unit_label = "metric tons",
+  ref_line_sb = "target",
+  indices_unit_label = "CPUE",
+  biomass_unit_label = "mt",
+  catch_unit_label = "mt"
 )
 }
 
