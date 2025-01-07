@@ -31,8 +31,8 @@ add_tagging <- function(
   # line_to_add <- "\\input{accessibility.tex}"
   # # Add line into file
   # tex_file <- append(line_to_add, tex_file, after = line_after)
-  # DO NOT UNCOMMENT FOLLOWING LINES WHEN OPERATING FXN AS A WHOLE
-  # We want to keep tex_file open so we can make changes to figures later down the line
+  # # DO NOT UNCOMMENT FOLLOWING LINES WHEN OPERATING FXN AS A WHOLE
+  # # We want to keep tex_file open so we can make changes to figures later down the line
   # # Export file
   # # write(tex_file, file = paste(dir, x, sep = "/"))
   # 
@@ -86,9 +86,7 @@ add_tagging <- function(
   
   # Insert alt text for figures
   # Call alt text in list with names
-  obj_files <- list.files(file.path(
-    getwd(), "report", "rda_files"
-  ))
+  obj_files <- list.files(file.path(rda_dir, "rda_files"))
 
   # read all files in obj_files and put into list
   alt_text_list <- list()
