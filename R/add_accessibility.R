@@ -1,6 +1,6 @@
-#' Tagging .tex files
-#'
 #' Add Accessibility to .tex documents
+#'
+#' Altering latex file of report to increase accessibility of the document.
 #'
 #' @param x .tex file to add accessibility into
 #' @param dir directory where the tex file is located that will be edited
@@ -15,7 +15,7 @@
 #' tinytex::lualatex(...) afterwards in the console.
 #' @export
 #'
-add_tagging <- function(
+add_accessibility <- function(
   x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
   dir = getwd(),
   rda_dir = getwd(),
