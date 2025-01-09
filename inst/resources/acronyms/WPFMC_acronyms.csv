@@ -70,10 +70,6 @@ HSTT Hawaii-Southern California Training and Testing,HSTT,Hawaii-Southern Califo
 IATTC Inter-American Tropical Tuna Commission,IATTC,Inter-American Tropical Tuna Commission
 IFA Interjurisdictional Fisheries Act,IFA,Interjurisdictional Fisheries Act
 IFP International Fisheries Program,IFP,International Fisheries Program
-PELAGIC SAFE REPORT,PELAGIC,SAFE REPORT
-TERMS AND ACRONYMS,TERMS,AND ACRONYMS
-ix,#VALUE!,#VALUE!
-Acronym Meaning,Acronym,Meaning
 ISC International Scientific Committee,ISC,International Scientific Committee
 ITS Incidental Take Statement,ITS,Incidental Take Statement
 K-A Korean-American,K-A,Korean-American
@@ -111,20 +107,16 @@ NELHA Natural Energy Laboratory of Hawaii Authority,NELHA,Natural Energy Laborat
 NEPA National Environmental Policy Act,NEPA,National Environmental Policy Act
 "NESDIS National Environmental Satellite, Data, and Information Service",NESDIS,"National Environmental Satellite, Data, and Information Service"
 NLAA Not likely to adversely affect,NLAA,Not likely to adversely affect
-"NMFS National Marine Fisheries Service, National Oceanic and Atmospheric",NMFS,"National Marine Fisheries Service, National Oceanic and Atmospheric"
-"Administration, Department of Commerce. Also, NOAA Fisheries","Administration,","Department of Commerce. Also, NOAA Fisheries"
+"NMFS National Marine Fisheries Service, National Oceanic and Atmospheric Administration, Department of Commerce. Also, NOAA Fisheries",NMFS,"National Marine Fisheries Service, National Oceanic and Atmospheric Department of Commerce. Also, NOAA Fisheries"
+,,
 NMSAS National Marine Sanctuary of American Samoa,NMSAS,National Marine Sanctuary of American Samoa
-"NOAA National Oceanic and Atmospheric Administration, U.S. Department",NOAA,"National Oceanic and Atmospheric Administration, U.S. Department"
-of Commerce,of,Commerce
-PELAGIC SAFE REPORT,PELAGIC,SAFE REPORT
-TERMS AND ACRONYMS,TERMS,AND ACRONYMS
-x,#VALUE!,#VALUE!
-Acronym Meaning,Acronym,Meaning
+"NOAA National Oceanic and Atmospheric Administration, U.S. Department of Commerce",NOAA,"National Oceanic and Atmospheric Administration, U.S. Department of Commerce"
+,,
 NOI Notice of Intent,NOI,Notice of Intent
 NS2 National Standard 2,NS2,National Standard 2
 NS8 National Standard 8,NS8,National Standard 8
-NWHI Northwestern Hawaiian Islands. All islands in the Hawaiian,NWHI,Northwestern Hawaiian Islands. All islands in the Hawaiian
-"Archipelago, other than the Main Hawaiian Islands (MHI)","Archipelago,",other than the Main Hawaiian Islands (MHI)
+"NWHI Northwestern Hawaiian Islands. All islands in the Hawaiian Archipelago, other than the Main Hawaiian Islands (MHI)",NWHI,"Northwestern Hawaiian Islands. All islands in the Hawaiian Archipelago, other than the Main Hawaiian Islands (MHI)"
+,,
 NWR National Wildlife Refuge,NWR,National Wildlife Refuge
 OC-CCI Ocean Color Climate Change Initiative,OC-CCI,Ocean Color Climate Change Initiative
 OEIS Overseas Environmental Impact Statement,OEIS,Overseas Environmental Impact Statement
@@ -140,7 +132,7 @@ PDO Pacific Decadal Oscillation,PDO,Pacific Decadal Oscillation
 PICTs Pacific Island Countries and Territories,PICTs,Pacific Island Countries and Territories
 PIFSC Pacific Islands Fisheries Science Center,PIFSC,Pacific Islands Fisheries Science Center
 "PIRO Pacific Islands Regional Office, National Marine Fisheries Service.",PIRO,"Pacific Islands Regional Office, National Marine Fisheries Service."
-"Also, NMFS PIRO","Also,",NMFS PIRO
+,,
 PMUS Pacific Pelagic Management Unit Species. Species managed under the,PMUS,Pacific Pelagic Management Unit Species. Species managed under the
 Pelagic FEP,Pelagic,FEP
 POES Polar Operational Environmental Satellites,POES,Polar Operational Environmental Satellites
@@ -159,31 +151,27 @@ SAFE Stock Assessment and Fishery Evaluation,SAFE,Stock Assessment and Fishery E
 SAR Stock Assessment Report,SAR,Stock Assessment Report
 SB Spawning Biomass,SB,Spawning Biomass
 SBMSY Spawning Biomass at MSY,SBMSY,Spawning Biomass at MSY
-SC Standing Committee of the Western and Central Pacific Fisheries,SC,Standing Committee of the Western and Central Pacific Fisheries
-Commission,#VALUE!,#VALUE!
+SC Standing Committee of the Western and Central Pacific Fisheries Commission,SC,Standing Committee of the Western and Central Pacific Fisheries Commission
+,,
 SDC Status Determination Criteria,SDC,Status Determination Criteria
-PELAGIC SAFE REPORT,PELAGIC,SAFE REPORT
-TERMS AND ACRONYMS,TERMS,AND ACRONYMS
-xi,#VALUE!,#VALUE!
-Acronym Meaning,Acronym,Meaning
 SEIS Supplemental Environmental Impact Statement,SEIS,Supplemental Environmental Impact Statement
 "SEZ Southern Exclusion Zone, Hawaii",SEZ,"Southern Exclusion Zone, Hawaii"
 SFA Saipan Fishermen’s Association,SFA,Saipan Fishermen’s Association
 "SFD Sustainable Fisheries Division, NMFS PIRO",SFD,"Sustainable Fisheries Division, NMFS PIRO"
 SFM Shortfin Mako shark,SFM,Shortfin Mako shark
 "SHARKWG Shark Working Group, ISC",SHARKWG,"Shark Working Group, ISC"
-SPC Secretariat of the Pacific Community. A technical assistance,SPC,Secretariat of the Pacific Community. A technical assistance
-organization comprising the independent island states of the tropical,organization,comprising the independent island states of the tropical
-"Pacific Ocean, dependent territories and the metropolitan countries of",Pacific,"Ocean, dependent territories and the metropolitan countries of"
-"Australia, New Zealand, USA, and France; now Pacific Community","Australia,","New Zealand, USA, and France; now Pacific Community"
-SPR Spawning Potential Ratio. A term for a method to measure the effects,SPR,Spawning Potential Ratio. A term for a method to measure the effects
-of fishing pressure on a stock by expressing the spawning potential of,of,fishing pressure on a stock by expressing the spawning potential of
-the fished biomass as a percentage of the unfished virgin spawning,the,fished biomass as a percentage of the unfished virgin spawning
-biomass. Stocks are deemed to be overfished when the SPR<20%.,biomass.,Stocks are deemed to be overfished when the SPR<20%.
+"SPC Secretariat of the Pacific Community. A technical assistance organization comprising the independent island states of the tropical Pacific Ocean, dependent territories and the metropolitan countries of Australia, New Zealand, USA, and France; now Pacific Community",SPC,"Secretariat of the Pacific Community. A technical assistance organization comprising the independent island states of the tropical Pacific Ocean, dependent territories and the metropolitan countries of Australia, New Zealand, USA, and France; now Pacific Community"
+,,
+,,
+,,
+SPR Spawning Potential Ratio. A term for a method to measure the effects of fishing pressure on a stock by expressing the spawning potential of the fished biomass as a percentage of the unfished virgin spawning biomass. Stocks are deemed to be overfished when the SPR<20%.,SPR,Spawning Potential Ratio. A term for a method to measure the effects of fishing pressure on a stock by expressing the spawning potential of the fished biomass as a percentage of the unfished virgin spawning biomass. Stocks are deemed to be overfished when the SPR<20%.
+,,
+,,
+,,
 SSB Spawning Stock Biomass,SSB,Spawning Stock Biomass
 SSBMSY Spawning Stock Biomass at MSY,SSBMSY,Spawning Stock Biomass at MSY
-"SSC Scientific and Statistical Committee, an advisory body to the Council",SSC,"Scientific and Statistical Committee, an advisory body to the Council"
-"comprising experts in fisheries, marine biology, oceanography, etc.",comprising,"experts in fisheries, marine biology, oceanography, etc."
+"SSC Scientific and Statistical Committee, an advisory body to the Council comprising experts in fisheries, marine biology, oceanography, etc.",SSC,"Scientific and Statistical Committee, an advisory body to the Council comprising experts in fisheries, marine biology, oceanography, etc."
+,,
 SST Sea Surface Temperature,SST,Sea Surface Temperature
 STD Standard Deviation,STD,Standard Deviation
 STF Subtropical Front,STF,Subtropical Front
