@@ -1,4 +1,4 @@
-test_that("add_accessibility() creates .tex file", {
+test_that("add_alttext() creates .tex file", {
   path <- getwd()
   # run convert_output for example model
   simple_model <- file.path(test_path("fixtures", "ss3_models"), "models", "Simple")
@@ -47,10 +47,10 @@ test_that("add_accessibility() creates .tex file", {
   #   )
   # )
   # Extract file to compare to snapshot
-  compare_file <- readLines(file.path(getwd(), test_path(), "report", "Simple_SAR_2025_tagged.tex")) # test_path("_snaps"), 
+  compare_file <- readLines(file.path(getwd(), test_path(), "report", "Simple_SAR_2025_tagged.tex"))
   
   # Make wrapper for expect_snapshot_file
-  expect_snapshot_tex <- function(tex_file, tex_dir, rename) {
+  expect_snapshot_tex <- function(tex_file, tex_dir, rename, path) {
     # Other packages might affect results
     skip_if_not_installed("tinytex")
     # Or maybe the output is different on some operation systems
@@ -61,8 +61,8 @@ test_that("add_accessibility() creates .tex file", {
     announce_snapshot_file(name = tex_file)
 
     path <- withr::with_dir(
-      file.path(getwd(), "report"),
-      add_accessibility(
+      file.path(path, "report"),
+      add_alttext(
         x = tex_file,
         dir = tex_dir,
         rda_dir = path,
@@ -78,7 +78,8 @@ test_that("add_accessibility() creates .tex file", {
   expect_snapshot_tex(
     tex_file = "SAR_USWC_Simple_skeleton.tex",
     tex_dir = getwd(),
-    rename = "Simple_SAR_2025_tagged"
+    rename = "Simple_SAR_2025_tagged",
+    path = path
   )
 
   # expect_snapshot_file(
@@ -103,6 +104,6 @@ test_that("add_accessibility() creates .tex file", {
   ), add = TRUE)
 })
 
-# test_that("add_accessbility() renames altered tex file.", {
+# test_that("add_alttext() renames altered tex file.", {
 
 # })
