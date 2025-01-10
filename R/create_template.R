@@ -1254,7 +1254,7 @@ create_template <- function(
       "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
     )
     # Open file for analyst
-    file.show(file.path(subdir, report_name)) # this opens the new file, but also restarts the session
+    # file.show(file.path(subdir, report_name)) # this opens the new file, but also restarts the session
     # Open the file so path to other docs is clear
     # utils::browseURL(subdir)
   } else {
@@ -1271,7 +1271,7 @@ create_template <- function(
     # Edit skeleton to update year and results file
     skeleton <- list.files(subdir, pattern = "skeleton.qmd")
     # Open previous skeleton
-    file.show(file.path(subdir, report_name))
+    # file.show(file.path(subdir, report_name))
 
     svDialogs::dlg_message("Reminder: there are changes to be made when calling an old report. Please change the year in the citation and the location and name of the results file in the first chunk of the report.",
       type = "ok"
