@@ -8,7 +8,9 @@
 #' @return Add an additional section or subsection to the report template
 #' if it is not already present in the default template. This provides
 #' the option to add it as a section before or after an existing section,
-#' or within a section as a child document.
+#' or within a section as a child document. For developers: this function
+#' creates a list of sections that will be added to the skeleton file 
+#' made from create_template.
 #' @export
 #'
 #' @examples add_section(
@@ -56,7 +58,14 @@ add_section <- function(
         custom_sections <- append(custom_sections, section_i_name, after = max(which(grepl(local_section, custom_sections))))
       }
     } else if (locality == "in") {
-      stop("No available option for adding a new section 'in' another quarto document.", call. = FALSE)
+      # stop("No available option for adding a new section 'in' another quarto document.", call. = FALSE)
+      # recognize locality_prev file
+      file_for_subsection <- list.files(file.path(subdir, "report"))[grep(paste(local_section,".qmd", sep = ""), list.files(file.path(file_dir, "report")))]
+      # append that text to file
+      utils::capture.output(cat(section_i), file = fs::path(subdir, "report", file_for_subsection), append = TRUE)
+      # section does not need to be added to appended custom sections as stated above
+      # creating qmd is already done in line 48
+      
     } else {
       stop("Invalid selection for placement of section. Please name the follow the format 'placement-section_name' for adding a new section.")
     }
