@@ -43,9 +43,9 @@ add_theme <- function(x) {
         panel.border = ggplot2::element_rect(colour = "black", fill = NA, linewidth = 0.5)
         # text = ggplot2::element_text(size = 12, family = "Cambria")
       ) # +
-      # add default nmfs color palette (palette will be "ocean")
-      # nmfspalette::scale_color_nmfs() +
-      # nmfspalette::scale_fill_nmfs()
+    # add default nmfs color palette (palette will be "ocean")
+    # nmfspalette::scale_color_nmfs() +
+    # nmfspalette::scale_fill_nmfs()
     # Determining how to treat a legend if there is one
     # check if one is present
     # check_for_legend <- function(x) {
