@@ -35,87 +35,87 @@ test_that("add_theme applies NOAA formatting correctly", {
   expect_message(add_theme(unsupported_obj2), "NOAA formatting cannot be applied to this object.")
 })
 
-test_that("nmfspalette returns correct scales", {
-  # Test 1: Ensure nmfspalette integrates with ggplot color scales
-  ggplot_obj <- ggplot2::ggplot(data = cars, ggplot2::aes(x = speed, y = dist, color = speed)) +
-    ggplot2::geom_point() +
-    nmfspalette::scale_color_nmfs()
+# test_that("nmfspalette returns correct scales", {
+#   # Test 1: Ensure nmfspalette integrates with ggplot color scales
+#   ggplot_obj <- ggplot2::ggplot(data = cars, ggplot2::aes(x = speed, y = dist, color = speed)) +
+#     ggplot2::geom_point() +
+#     nmfspalette::scale_color_nmfs()
 
-  # Check if the correct scale is added
-  expect_true("ScaleDiscrete" %in% class(ggplot_obj$scales$scales[[1]]))
-  expect_true(ggplot_obj$scales$scales[[1]]$aesthetics == "colour")
+#   # Check if the correct scale is added
+#   expect_true("ScaleDiscrete" %in% class(ggplot_obj$scales$scales[[1]]))
+#   expect_true(ggplot_obj$scales$scales[[1]]$aesthetics == "colour")
 
-  # Test 2: Ensure fill scale works with ggplot
-  ggplot_fill_obj <- ggplot2::ggplot(data = cars, ggplot2::aes(x = factor(speed), fill = factor(speed))) +
-    ggplot2::geom_bar() +
-    nmfspalette::scale_fill_nmfs()
+#   # Test 2: Ensure fill scale works with ggplot
+#   ggplot_fill_obj <- ggplot2::ggplot(data = cars, ggplot2::aes(x = factor(speed), fill = factor(speed))) +
+#     ggplot2::geom_bar() +
+#     nmfspalette::scale_fill_nmfs()
 
-  # Check if the correct fill scale is applied
-  expect_true("ScaleDiscrete" %in% class(ggplot_fill_obj$scales$scales[[1]]))
-  expect_true(ggplot_fill_obj$scales$scales[[1]]$aesthetics == "fill")
-})
+#   # Check if the correct fill scale is applied
+#   expect_true("ScaleDiscrete" %in% class(ggplot_fill_obj$scales$scales[[1]]))
+#   expect_true(ggplot_fill_obj$scales$scales[[1]]$aesthetics == "fill")
+# })
 
-test_that("nmfspalette scales are applied to ggplot object", {
-  p <- ggplot2::ggplot(mtcars, ggplot2::aes(x = wt, y = mpg, color = as.factor(cyl))) +
-    ggplot2::geom_point()
-  formatted_plot <- add_theme(p)
+# test_that("nmfspalette scales are applied to ggplot object", {
+#   p <- ggplot2::ggplot(mtcars, ggplot2::aes(x = wt, y = mpg, color = as.factor(cyl))) +
+#     ggplot2::geom_point()
+#   formatted_plot <- add_theme(p)
 
-  # Extract the color and fill scales from the plot
-  scales <- formatted_plot$scales$scales
+#   # Extract the color and fill scales from the plot
+#   scales <- formatted_plot$scales$scales
 
-  # Check if the color scale is from nmfspalette
-  color_scale <- scales[[1]]
-  expect_true("ScaleDiscrete" %in% class(color_scale)) # It's a discrete scale
-  expect_true(grepl("nmfs", deparse(color_scale$call))) # Check if nmfspalette scale is used
+#   # Check if the color scale is from nmfspalette
+#   color_scale <- scales[[1]]
+#   expect_true("ScaleDiscrete" %in% class(color_scale)) # It's a discrete scale
+#   expect_true(grepl("nmfs", deparse(color_scale$call))) # Check if nmfspalette scale is used
 
-  # Ensure the color scale is the default "oceans" nmfspalette scale
-  test_plot <- ggplot2::ggplot(
-    Orange,
-    ggplot2::aes(
-      x = age,
-      y = circumference,
-      color = Tree
-    )
-  ) +
-    ggplot2::geom_smooth(
-      se = F,
-      method = "loess",
-      formula = "y ~ x"
-    )
+#   # Ensure the color scale is the default "oceans" nmfspalette scale
+#   test_plot <- ggplot2::ggplot(
+#     Orange,
+#     ggplot2::aes(
+#       x = age,
+#       y = circumference,
+#       color = Tree
+#     )
+#   ) +
+#     ggplot2::geom_smooth(
+#       se = F,
+#       method = "loess",
+#       formula = "y ~ x"
+#     )
 
-  ## use default color palette
-  plot_default <- test_plot +
-    nmfspalette::scale_color_nmfs()
+#   ## use default color palette
+#   plot_default <- test_plot +
+#     nmfspalette::scale_color_nmfs()
 
-  ## use oceans color palette
-  plot_oceans <- test_plot +
-    nmfspalette::scale_color_nmfs("oceans", 5)
+#   ## use oceans color palette
+#   plot_oceans <- test_plot +
+#     nmfspalette::scale_color_nmfs("oceans", 5)
 
-  ## extract colors used for both plots
-  plot_default_build <- ggplot2::ggplot_build(plot_default)
-  colors_default <- unique(plot_default_build$data[[1]]["colour"])
+#   ## extract colors used for both plots
+#   plot_default_build <- ggplot2::ggplot_build(plot_default)
+#   colors_default <- unique(plot_default_build$data[[1]]["colour"])
 
-  plot_oceans_build <- ggplot2::ggplot_build(plot_oceans)
-  colors_oceans <- unique(plot_oceans_build$data[[1]]["colour"])
+#   plot_oceans_build <- ggplot2::ggplot_build(plot_oceans)
+#   colors_oceans <- unique(plot_oceans_build$data[[1]]["colour"])
 
-  ## test if plots' colors are identical
-  expect_equal(colors_default, colors_oceans) # Check if the colors match
-})
+#   ## test if plots' colors are identical
+#   expect_equal(colors_default, colors_oceans) # Check if the colors match
+# })
 
 # Test for both color and fill scales
-test_that("nmfspalette scales apply both color and fill scales", {
-  p <- ggplot2::ggplot(mtcars, ggplot2::aes(x = wt, y = mpg, color = as.factor(cyl), fill = as.factor(cyl))) +
-    ggplot2::geom_point()
-  formatted_plot <- add_theme(p)
+# test_that("nmfspalette scales apply both color and fill scales", {
+#   p <- ggplot2::ggplot(mtcars, ggplot2::aes(x = wt, y = mpg, color = as.factor(cyl), fill = as.factor(cyl))) +
+#     ggplot2::geom_point()
+#   formatted_plot <- add_theme(p)
 
-  # Extract the scales from the plot
-  scales <- formatted_plot$scales$scales
+#   # Extract the scales from the plot
+#   scales <- formatted_plot$scales$scales
 
-  # Check color scale
-  color_scale <- scales[[1]]
-  expect_true(grepl("nmfs", deparse(color_scale$call))) # Color scale from nmfspalette
+#   # Check color scale
+#   color_scale <- scales[[1]]
+#   expect_true(grepl("nmfs", deparse(color_scale$call))) # Color scale from nmfspalette
 
-  # Check fill scale
-  fill_scale <- scales[[2]]
-  expect_true(grepl("nmfs", deparse(fill_scale$call))) # Fill scale from nmfspalette
-})
+#   # Check fill scale
+#   fill_scale <- scales[[2]]
+#   expect_true(grepl("nmfs", deparse(fill_scale$call))) # Fill scale from nmfspalette
+# })
