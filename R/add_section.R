@@ -43,7 +43,7 @@ add_section <- function(
     section_i <- paste0(
       "## ", stringr::str_to_title(sub("_", " ", tolower(new_section[i]))), "\n",
       "\n",
-      "[Insert text here]", "\n",
+      "<!--- \n [Insert text here] \n---> ", "\n",
       "\n",
       add_chunk("# Insert code", label = "example_chunk"), "\n"
     )
@@ -60,9 +60,14 @@ add_section <- function(
     } else if (locality == "in") {
       # stop("No available option for adding a new section 'in' another quarto document.", call. = FALSE)
       # recognize locality_prev file
-      file_for_subsection <- list.files(file.path(subdir, "report"))[grep(paste(local_section,".qmd", sep = ""), list.files(file.path(file_dir, "report")))]
+      file_for_subsection <- list.files(file.path(subdir))[grep(local_section, list.files(file.path(subdir)))]
+      # create code for reading in child doc
+      child_sec <- add_child(
+        section_i_name,
+        label = gsub(" ", "_", tolower(new_section[i]))
+      )
       # append that text to file
-      utils::capture.output(cat(section_i), file = fs::path(subdir, "report", file_for_subsection), append = TRUE)
+      utils::capture.output(cat(child_sec), file = fs::path(subdir, file_for_subsection), append = TRUE)
       # section does not need to be added to appended custom sections as stated above
       # creating qmd is already done in line 48
       
