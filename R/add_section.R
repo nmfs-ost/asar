@@ -22,13 +22,14 @@ add_section <- function(
     new_section = NULL,
     section_location = NULL,
     custom_sections = NULL,
+    custom = TRUE,
     subdir = NULL) {
   # Location options
   # before-section
   # after-section
   # in-section (will always append to the end of the section)
   for (i in 1:length(new_section)) {
-    if (is.null(custom_sections)) {
+    if (custom & is.null(custom_sections)) {
       # TODO: set an option where there can be locality for new sections
       # (i.e. please order sections in new_section and in locality only
       # put in-section when desired)
