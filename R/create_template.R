@@ -377,13 +377,11 @@ create_template <- function(
       # Pull skeleton for sections
       current_folder <- system.file("templates", "skeleton", package = "asar")
       new_folder <- subdir
-      if (custom & !is.null(custom_sections)) {
-        files_to_copy <- list.files(current_folder)[c(sapply(custom_sections, function(x) grep(x, list.files(current_folder))), 10, 11)]
-      } else if (custom & is.null(custom_sections)) {
-        files_to_copy <- NULL
-      } else {
+      # if (!is.null(custom_sections)) {
+      #   files_to_copy <- list.files(current_folder)[c(sapply(custom_sections, function(x) grep(x, list.files(current_folder))), 10, 11)]
+      # } else {
         files_to_copy <- list.files(current_folder)
-      }
+      # }
       before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "asar")
       # header_file <- system.file("resources", "formatting_files", "in-header.tex", package = "asar")
       # format_files <- list(before_body_file, header_file)
@@ -1027,21 +1025,21 @@ create_template <- function(
 
           if (is.null(custom_sections)) {
             sec_list1 <- list(
-              # "01_executive_summary.qmd",
-              # "02_introduction.qmd",
-              # "03_data.qmd",
-              # "04a_assessment-configuration.qmd",
-              # "04b_assessment-results.qmd",
-              # "04c_assessment-sensitivity.qmd",
-              # "04d_assessment-benchmarks.qmd",
-              # "04e_assessment-projections.qmd",
-              # "05_discussion.qmd",
-              # "06_acknowledgments.qmd",
-              # "07_references.qmd",
-              # "08_tables.qmd",
-              # "09_figures.qmd",
-              # "10_notes.qmd",
-              # "11_appendix.qmd"
+              "01_executive_summary.qmd",
+              "02_introduction.qmd",
+              "03_data.qmd",
+              "04a_assessment-configuration.qmd",
+              "04b_assessment-results.qmd",
+              "04c_assessment-sensitivity.qmd",
+              "04d_assessment-benchmarks.qmd",
+              "04e_assessment-projections.qmd",
+              "05_discussion.qmd",
+              "06_acknowledgments.qmd",
+              "07_references.qmd",
+              "08_tables.qmd",
+              "09_figures.qmd",
+              "10_notes.qmd",
+              "11_appendix.qmd"
             )
             sec_list2 <- add_section(
               new_section = new_section,
