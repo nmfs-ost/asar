@@ -28,6 +28,7 @@ Imports:
     glue,
     gridExtra,
     naniar,
+    nmfspalette,
     officer,
     openxlsx,
     prodlim,
@@ -51,6 +52,8 @@ Suggests:
 VignetteBuilder: 
     knitr
 Remotes:
+    nmfs-fish-tools/nmfspalette,
+    nmfs-fish-tools/nmfspalette,
     nmfs-ost/satf,
     r4ss/r4ss
 Config/testthat/edition: 3
