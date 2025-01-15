@@ -28,6 +28,7 @@ Imports:
     glue,
     gridExtra,
     naniar,
+    nmfspalette,
     officer,
     openxlsx,
     prodlim,
