@@ -1,31 +1,31 @@
 affiliation,office,name,address,city,state,country,postal-code
-AFSC-NOR,AFSC,Alaska Fisheries Science Center,2032 SE OSU Drive Building 955,Newport,OR,U.S.A.,97365-2097
-AFSC-SWA,AFSC,Alaska Fisheries Science Center,2725 Montlake Boulevard East,Seattle,WA,U.S.A.,98112-2097
-AFSC-JAK,AFSC,Alaska Fisheries Science Center,17109 Point Lena Loop Road,Juneau,AK,U.S.A.,99801
-AFSC,AFSC,Alaska Fisheries Science Center,17109 Point Lena Loop Road,Juneau,AK,U.S.A.,99801
-AFSC-WA,AFSC,Alaska Fisheries Science Center,7600 Sand Point Way N.E.,Seattle,WA,U.S.A.,98115
-AFSC-ABL,AFSC,Alaska Fisheries Science Center,17109 Point Lena Loop Road,Juneau,AK,U.S.A.,99801
+AFSC-NOR,AFSC,NOAA Fisheries Alaska Fisheries Science Center,2032 SE OSU Drive Building 955,Newport,OR,U.S.A.,97365-2097
+AFSC-SWA,AFSC,NOAA Fisheries Alaska Fisheries Science Center,2725 Montlake Boulevard East,Seattle,WA,U.S.A.,98112-2097
+AFSC-JAK,AFSC,NOAA Fisheries Alaska Fisheries Science Center,17109 Point Lena Loop Road,Juneau,AK,U.S.A.,99801
+AFSC,AFSC,NOAA Fisheries Alaska Fisheries Science Center,17109 Point Lena Loop Road,Juneau,AK,U.S.A.,99801
+AFSC-WA,AFSC,NOAA Fisheries Alaska Fisheries Science Center,7600 Sand Point Way N.E.,Seattle,WA,U.S.A.,98115
+AFSC-ABL,AFSC,NOAA Fisheries Alaska Fisheries Science Center,17109 Point Lena Loop Road,Juneau,AK,U.S.A.,99801
 CDFW,CDFW,California Department of Fish and Wildlife,"1123 Industrial Rd., Suite 300",San Carlos,CA,U.S.A.,94070
-NEFSC,NEFSC,Northeast Fisheries Science Center,166 Water Street,Woods Hole,MA,U.S.A.,2543
-NEFSC-WHMA,NEFSC,Northeast Fisheries Science Center,166 Water Street,Woods Hole,MA,U.S.A.,2543
-NEFSC-NRI,NEFSC,Northeast Fisheries Science Center,28 Tarzwell Drive,Narragansett,RI,U.S.A.,2882
-NEFSC-MCT,NEFSC,Northeast Fisheries Science Center,212 Rogers Avenue,Milford,CT,U.S.A.,6460
-NWFSC,NWFSC,Northwest Fisheries Science Center,2725 Montlake Boulevard East,Seattle,WA,U.S.A.,98112-2097
-NWFSC-NOR,NWFSC,Northwest Fisheries Science Center,2032 SE OSU Drive Building 955,Newport,OR,U.S.A.,97365-2097
-NWFSC-SWA,NWFSC,Northwest Fisheries Science Center,2725 Montlake Boulevard East,Seattle,WA,U.S.A.,98112-2097
+NEFSC,NEFSC,NOAA Fisheries Northeast Fisheries Science Center,166 Water Street,Woods Hole,MA,U.S.A.,2543
+NEFSC-WHMA,NEFSC,NOAA Fisheries Northeast Fisheries Science Center,166 Water Street,Woods Hole,MA,U.S.A.,2543
+NEFSC-NRI,NEFSC,NOAA Fisheries Northeast Fisheries Science Center,28 Tarzwell Drive,Narragansett,RI,U.S.A.,2882
+NEFSC-MCT,NEFSC,NOAA Fisheries Northeast Fisheries Science Center,212 Rogers Avenue,Milford,CT,U.S.A.,6460
+NWFSC,NWFSC,NOAA Fisheries Northwest Fisheries Science Center,2725 Montlake Boulevard East,Seattle,WA,U.S.A.,98112-2097
+NWFSC-NOR,NWFSC,NOAA Fisheries Northwest Fisheries Science Center,2032 SE OSU Drive Building 955,Newport,OR,U.S.A.,97365-2097
+NWFSC-SWA,NWFSC,NOAA Fisheries Northwest Fisheries Science Center,2725 Montlake Boulevard East,Seattle,WA,U.S.A.,98112-2097
 ODFW,ODFW,Oregon Department of Fish and Wildlife,2040 Southeast Marine Science Drive,Newport,OR,U.S.A.,97365
-OST-MD,OST,Office of Science and Technology,1315 East-West Highway,Silver Spring,MD,U.S.A.,20910
-PIFSC,PIFSC,Pacific Islands Fisheries Science Center,1845 Wasp Boulevard,Honolulu,HI,U.S.A.,96818
+OST-MD,OST,NOAA Fisheries Office of Science and Technology,1315 East-West Highway,Silver Spring,MD,U.S.A.,20910
+PIFSC,PIFSC,NOAA Fisheries Pacific Islands Fisheries Science Center,1845 Wasp Boulevard,Honolulu,HI,U.S.A.,96818
 PSMFC,NWFSC,Pacific States Marine Fisheries Commission,2725 Montlake Boulevard East,Seattle,WA,U.S.A.,98112-2097
-SEFSC,SEFSC,Southeast Fisheries Science Center,75 Virginia Beach Drive,Miami,FL,U.S.A.,33149
-SEFSC-MFL,SEFSC,Southeast Fisheries Science Center,75 Virginia Beach Drive,Miami,FL,U.S.A.,33149
-SEFSC-BNC,SEFSC,Southeast Fisheries Science Center,101 Pivers Island Road,Beaufort,NC,U.S.A.,28516
-SEFSC-PCFL,SEFSC,Southeast Fisheries Science Center,3500 Delwood Beach Road,Panama City,FL,U.S.A.,32408
-SEFSC-GTX,SEFSC,Southeast Fisheries Science Center,4700 Avenue U,Galveston,TX,U.S.A.,77551
-SEFSC-PMS,SEFSC,Southeast Fisheries Science Center,3209 Frederic Street,Pascagoula,MS,U.S.A.,39567
-SEFSC-LLA,SEFSC,Southeast Fisheries Science Center,646 Cajundome Boulevard,Lafayette,LA,U.S.A.,70506
-SWFSC-LJCA,SWFSC,Southwest Fisheries Science Center,8901 La Jolla Shores Drive,La Jolla,CA,U.S.A.,92037
-SWFSC-SC,SWFSC,Southwest Fisheries Science Center,110 McAllister Way,Santa Cruz,CA,U.S.A.,95060
+SEFSC,SEFSC,NOAA Fisheries Southeast Fisheries Science Center,75 Virginia Beach Drive,Miami,FL,U.S.A.,33149
+SEFSC-MFL,SEFSC,NOAA Fisheries Southeast Fisheries Science Center,75 Virginia Beach Drive,Miami,FL,U.S.A.,33149
+SEFSC-BNC,SEFSC,NOAA Fisheries Southeast Fisheries Science Center,101 Pivers Island Road,Beaufort,NC,U.S.A.,28516
+SEFSC-PCFL,SEFSC,NOAA Fisheries Southeast Fisheries Science Center,3500 Delwood Beach Road,Panama City,FL,U.S.A.,32408
+SEFSC-GTX,SEFSC,NOAA Fisheries Southeast Fisheries Science Center,4700 Avenue U,Galveston,TX,U.S.A.,77551
+SEFSC-PMS,SEFSC,NOAA Fisheries Southeast Fisheries Science Center,3209 Frederic Street,Pascagoula,MS,U.S.A.,39567
+SEFSC-LLA,SEFSC,NOAA Fisheries Southeast Fisheries Science Center,646 Cajundome Boulevard,Lafayette,LA,U.S.A.,70506
+SWFSC-LJCA,SWFSC,NOAA Fisheries Southwest Fisheries Science Center,8901 La Jolla Shores Drive,La Jolla,CA,U.S.A.,92037
+SWFSC-SC,SWFSC,NOAA Fisheries Southwest Fisheries Science Center,110 McAllister Way,Santa Cruz,CA,U.S.A.,95060
 UAF,UAF,University of Alaska Fairbanks,"Department of Fisheries at Lena Point, College of Fisheries and Ocean Sciences, University of Alaska Fairbanks, 17101 Point Lena Loop Rd",Juneau,AK,U.S.A.,99801
 WCR,WCR,West Coast Region,7600 Sand Point Way N.E.,Seattle,WA,U.S.A.,98115
 WDFW,WDFW,Washington Department of Fish and Wildlife,600 Capital Way North,Olympia,WA,U.S.A.,98501
