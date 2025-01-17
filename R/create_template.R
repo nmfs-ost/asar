@@ -670,7 +670,7 @@ create_template <- function(
               paste0(
                 "  ", "- name: ", "'", auth$name, "'", "\n",
                 "  ", "  ", "affiliations:", "\n",
-                "  ", "  ", "  ", "- name: ", "'",  aff$name, "'", "\n", # "NOAA Fisheries ",
+                "  ", "  ", "  ", "- name: ", "'", aff$name, "'", "\n", # "NOAA Fisheries ",
                 "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'", "\n",
                 "  ", "  ", "  ", "  ", "city: ", "'", aff$city, "'", "\n",
                 "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
