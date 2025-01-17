@@ -1,6 +1,8 @@
 ---
 title: "markdown"
-output: rmarkdown::html_vignette
+output:
+  html_document:
+    toc: true
 vignette: >
   %\VignetteIndexEntry{markdown}
   %\VignetteEngine{knitr::rmarkdown}
