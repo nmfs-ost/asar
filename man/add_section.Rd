@@ -8,6 +8,7 @@ add_section(
   new_section = NULL,
   section_location = NULL,
   custom_sections = NULL,
+  custom = TRUE,
   subdir = NULL
 )
 }
@@ -33,6 +34,10 @@ name of the file, can be used (e.g., 'abstract' rather than
 '00_abstract.qmd'). If adding a new section, also use
 parameters 'new_section' and 'section_location'.}
 
+\item{custom}{TRUE/FALSE; Build custom sectioning for the
+template, rather than the default for stock assessments in
+your region? Default is false.}
+
 \item{subdir}{Directory where the new sections will be saved. In the
 create_template function, this defaults to the location where the
 template is saved.}
@@ -41,7 +46,9 @@ template is saved.}
 Add an additional section or subsection to the report template
 if it is not already present in the default template. This provides
 the option to add it as a section before or after an existing section,
-or within a section as a child document.
+or within a section as a child document. For developers: this function
+creates a list of sections that will be added to the skeleton file
+made from create_template.
 }
 \description{
 Add New Section or Subsection to Template
