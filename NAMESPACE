@@ -6,7 +6,10 @@ export(add_base_section)
 export(add_child)
 export(add_chunk)
 export(add_section)
+<<<<<<< HEAD
 export(add_tagging)
+=======
+>>>>>>> b58e3d6 (Custom template fixes (#143))
 export(convert_output)
 export(create_citation)
 export(create_figures_doc)
