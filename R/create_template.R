@@ -380,6 +380,7 @@ create_template <- function(
       # Pull skeleton for sections
       current_folder <- system.file("templates", "skeleton", package = "asar")
       new_folder <- subdir
+<<<<<<< HEAD
 
       if (!is.null(custom_sections)) {
         files_to_copy <- unlist(list.files(current_folder))[c(unlist(sapply(custom_sections, function(x) grep(x, list.files(current_folder)))), 10, 11)]
@@ -387,6 +388,13 @@ create_template <- function(
         files_to_copy <- list.files(current_folder)
       }
 
+=======
+      # if (!is.null(custom_sections)) {
+      #   files_to_copy <- list.files(current_folder)[c(sapply(custom_sections, function(x) grep(x, list.files(current_folder))), 10, 11)]
+      # } else {
+        files_to_copy <- list.files(current_folder)
+      # }
+>>>>>>> b58e3d6 (Custom template fixes (#143))
       before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "asar")
       # header_file <- system.file("resources", "formatting_files", "in-header.tex", package = "asar")
       # format_files <- list(before_body_file, header_file)
