@@ -383,6 +383,7 @@ create_template <- function(
       } else {
         files_to_copy <- list.files(current_folder)
       }
+
       before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "asar")
       # header_file <- system.file("resources", "formatting_files", "in-header.tex", package = "asar")
       # format_files <- list(before_body_file, header_file)
