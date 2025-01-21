@@ -377,7 +377,11 @@ create_template <- function(
       # Pull skeleton for sections
       current_folder <- system.file("templates", "skeleton", package = "asar")
       new_folder <- subdir
-      files_to_copy <- list.files(current_folder)
+      # if (!is.null(custom_sections)) {
+      #   files_to_copy <- list.files(current_folder)[c(sapply(custom_sections, function(x) grep(x, list.files(current_folder))), 10, 11)]
+      # } else {
+        files_to_copy <- list.files(current_folder)
+      # }
       before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "asar")
       # header_file <- system.file("resources", "formatting_files", "in-header.tex", package = "asar")
       # format_files <- list(before_body_file, header_file)
@@ -666,7 +670,7 @@ create_template <- function(
               paste0(
                 "  ", "- name: ", "'", auth$name, "'", "\n",
                 "  ", "  ", "affiliations:", "\n",
-                "  ", "  ", "  ", "- name: ", "'",  aff$name, "'", "\n", # "NOAA Fisheries ",
+                "  ", "  ", "  ", "- name: ", "'", aff$name, "'", "\n", # "NOAA Fisheries ",
                 "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'", "\n",
                 "  ", "  ", "  ", "  ", "city: ", "'", aff$city, "'", "\n",
                 "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
@@ -1254,7 +1258,7 @@ create_template <- function(
       "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
     )
     # Open file for analyst
-    file.show(file.path(subdir, report_name)) # this opens the new file, but also restarts the session
+    # file.show(file.path(subdir, report_name)) # this opens the new file, but also restarts the session
     # Open the file so path to other docs is clear
     # utils::browseURL(subdir)
   } else {
@@ -1271,7 +1275,7 @@ create_template <- function(
     # Edit skeleton to update year and results file
     skeleton <- list.files(subdir, pattern = "skeleton.qmd")
     # Open previous skeleton
-    file.show(file.path(subdir, report_name))
+    # file.show(file.path(subdir, report_name))
 
     svDialogs::dlg_message("Reminder: there are changes to be made when calling an old report. Please change the year in the citation and the location and name of the results file in the first chunk of the report.",
       type = "ok"
