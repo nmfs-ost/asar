@@ -8,7 +8,7 @@
 #'
 #' @examples format_quarto(format = "pdf")
 format_quarto <- function(format = NULL) {
-  if (format == "pdf" | format == "html") {
+  if (tolower(format) == "pdf") {
     paste0(
       "format: ", "\n",
       "  ", format, ": \n",
@@ -28,7 +28,18 @@ format_quarto <- function(format = NULL) {
       "  ", "  ", "  ", "- right=1in", "\n",
       "  ", "  ", "  ", "- left=1in", "\n"
     )
-  } else if (format == "docx") {
+  } else if (tolower(format) == "html") {
+    paste0(
+      "format: ", "\n",
+      "  ", format, ": \n",
+      "  ", "  ", "theme: [cosmo, support_files/theme.scss]", "\n",
+      "  ", "  ", "mainfont: 'cambria'", "\n",
+      "  ", "  ", "number-sections: true", "\n",
+      "  ", "  ", "toc: true", "\n",
+      "  ", "  ", "toc-depth: 3", "\n",
+      "  ","  ", "citations-hover: true", "\n"
+    )
+  } else if (tolower(format) == "docx") {
     paste0(
       "format: \n",
       "  ", format, ": \n",

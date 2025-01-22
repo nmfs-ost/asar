@@ -418,6 +418,8 @@ create_template <- function(
         file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
         # Copy us doc logo
         file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+        # Copy html format file if applicable
+        if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
       } else {
         warning("There are files in this location.")
         question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
@@ -441,6 +443,8 @@ create_template <- function(
           file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
           # Copy us doc logo
           file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+          # Copy html format file if applicable
+          if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
           warning("Report template files were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder.")
         }
