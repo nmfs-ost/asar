@@ -1,0 +1,103 @@
+---
+title: "Standardizing Assessment Output"
+output:
+  html_document:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Standardizing Assessment Output}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Background
+
+This article describes the process behind developing convert_output and its setup so users who want to use `asar` or `satf` are still able until `convert_output.R` includes functionality for you model. 
+
+Additionally, after following this article, users who use it to manipulate their assessment output are encourages to submit a [pull request](https://github.com/nmfs-ost/asar/pulls) or [issue](https://github.com/nmfs-ost/asar/issues) to use as an example to include in the function. This collaboration will not only allow us to expand the converter to include many assessment models, but also do it *much faster*.
+
+## Set up and format
+
+The converter manipulates data sets by recognizing patterns based on the assessment model (SS3, BAM, ect) and organizes it by expanding all data as single columns. This makes the data frame more machine readable allowing users to plot the data or place it into tables. The format also helps us as developers create other standardized procedures and automation due to its ease of use. 
+
+
+The data frame is structured in following the convention of FIMS but removing the use of S4 or S3 data frame classes encouraging a more user friendly set up to start. The following format outlines the standard dataframe:
+
+| Column label | Description                                 |
+|--------------|---------------------------------------------|
+| label        | standard name for the estimate/parameter/quantity (cha) |
+| estimate     | the actual value for the estimate/parameter/quantity |
+| module_name  | describes the category of data found in the original data - allows us and familiar users to validate the converter is operating correctly and the correct data is being pulled |
+| year | year of the data point if applicable otherwise NA |
+| uncertainty | uncertainty *value* (for estimates) |
+| uncertainty_label | label for the uncertainty value (i.e. se, sd, cv...) |
+| {strata} | a series of additional columns when stratification of the stock is present (fleet, age, time, area, season, sex, growth pattern) |
+| likelihood | if present, the likelihood value for the label; typically NA |
+| initial | the initial estimate input into the model associated with the label, if applicable |
+
+There are a variety of ways to stratify the stock. The current converter is built to recognize the following:
+
+<!---
+The following code does NOT create separate columns when pkgdown site is built
+--->
+
+:::::::::::::: {.columns}
+::: {.column width="40%"}
+
+* month
+* fleet
+* fleet_name
+* age 
+* time (typically YYYY.##)
+* area
+* season
+* subseason
+* sex
+* sexes (only if indicating difference from above)
+* growth_pattern / gp
+
+:::
+::: {.column width="60%"}
+
+* len_bins (length bins for length-at-age models or related length series outputs)
+* birthseas
+* settlement
+* morph
+* type
+* platoon
+* part
+* bin
+* kind
+* nsim
+* age_a
+
+:::
+::::::::::::::
+
+**Notes:**
+
+  *NA is present in any of the above columns if there isn't an occurrence from the original assessment output*
+
+  *Era was removed as a factor from SS3 converted output files since this is something that could be assumed due to the set up of the data*
+
+## Naming Conventions
+
+Another hurdle to tackle is naming conventions. We have attempted to create a standard naming convention system so that the same values are called each time no matter the assessment model. Unfortunately, this can't be perfect, but there are approaches we took to standardize naming as best as we could. In terms of naming:
+
+1. Generally, labels and other strings are lowercase.
+
+2. Fleet names are inherited so they are easily called by the analyst familiar with the data
+
+3. Labels with more than one word use string case (i.e. spawning_biomass).
+
+4. The full name is used for the label, unless there is a common and *well known* acronym for it such as spr, cpue, R0, or it is a point relative to a reference point (i.e. b_msy = $B_{msy}$, b_b_msy = $B/B_{msy}$)
+
+5. For labels specific to a stock or assessment model, they were kept in the converted output, but expanded upon following the above naming conventions.
+
+6. In cases where a label could not be standardized, the same label was kept in the converted output. We hope that these remaining names can be standardized in the future through collaboration with the respective analysts using them.
+
+

@@ -29,6 +29,8 @@ navbar:
         href: articles/regional_workflows.html
       - text: Accessibility
         href: articles/accessibility_guide.html
+      - text: Standard Assessment Output
+        href: articles/convert_output_details.html
       - text: Frequently Asked Questions (FAQs)
         href: articles/faqs.html
 
