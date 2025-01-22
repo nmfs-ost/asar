@@ -377,7 +377,6 @@ create_template <- function(
       # Pull skeleton for sections
       current_folder <- system.file("templates", "skeleton", package = "asar")
       new_folder <- subdir
-
       if (!is.null(custom_sections)) {
         files_to_copy <- unlist(list.files(current_folder))[c(unlist(sapply(custom_sections, function(x) grep(x, list.files(current_folder)))), 10, 11)]
       } else {
