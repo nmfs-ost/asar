@@ -16,13 +16,30 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Background
 
-This article describes the process behind developing convert_output and its setup so users who want to use `asar` or `satf` are still able until `convert_output.R` includes functionality for you model. 
+This article describes the process behind developing convert_output and its setup so users who want to use `asar` or `satf` are still able until `convert_output.R` includes functionality for other models. 
 
-Additionally, after following this article, users who use it to manipulate their assessment output are encourages to submit a [pull request](https://github.com/nmfs-ost/asar/pulls) or [issue](https://github.com/nmfs-ost/asar/issues) to use as an example to include in the function. This collaboration will not only allow us to expand the converter to include many assessment models, but also do it *much faster*.
+Additionally, after following this article, users who use it to manipulate their assessment output are encouraged to submit a [pull request](https://github.com/nmfs-ost/asar/pulls) or [issue](https://github.com/nmfs-ost/asar/issues) to use as an example to include in the function. This collaboration will not only allow us to expand the converter to include many assessment models, but also do it *much faster*.
+
+The converter was designed so that it would manipulate the output file from the assessment (Report.sso for SS3, .rdat from BAM...). This means that we have only configured it to work with a singular output file so the converted data frame is limited to the data given to it from that file. We have plans to expand upon this format to include other data files associated with running the model, but this will not happen in the near future.
 
 ## Set up and format
 
-The converter manipulates data sets by recognizing patterns based on the assessment model (SS3, BAM, ect) and organizes it by expanding all data as single columns. This makes the data frame more machine readable allowing users to plot the data or place it into tables. The format also helps us as developers create other standardized procedures and automation due to its ease of use. 
+The converter manipulates data sets by recognizing patterns based on the assessment model (SS3, BAM, ect) and organizes it by expanding all data as single columns. This makes the data frame more machine readable allowing users to plot the data or place it into tables. The format also helps us as developers create other standardized procedures and automation due to its ease of use.
+
+```{css, echo=FALSE}
+pre, code {
+  white-space:pre !important; 
+  overflow-x:auto;
+  display: block;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+```
+
+```{r, echo=TRUE}
+load("example_conout.rda")
+print(hake_conout)
+```
 
 
 The data frame is structured in following the convention of FIMS but removing the use of S4 or S3 data frame classes encouraging a more user friendly set up to start. The following format outlines the standard dataframe:
