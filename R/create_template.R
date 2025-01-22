@@ -498,7 +498,7 @@ create_template <- function(
       # print("_______Standardized output data________")
 
       # run satf::exp_all_figs_tables() if rda files not premade
-      # output folder: subdir
+      # output folder: rda_dir
       if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
         if (!is.null(resdir) | !is.null(model_results)) {
           # load converted output
