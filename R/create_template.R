@@ -104,8 +104,8 @@
 #' figures, tables, alt text, and captions with `satf`, rda_dir represents
 #' the location of the folder containing these .rda files ("rda_files").
 #' Otherwise, if the user has not used `satf` to make those .rda files already,
-#' those files will be generated automatically and placed within the "report"
-#' folder within the `file_dir`. The "rda_files" folder would have been
+#' those files will be generated automatically and placed within an "rda_files"
+#' folder within rda_dir. The "rda_files" folder would have been
 #' made with `satf::exp_all_figs_tables()`, or by exporting files by running individual
 #' `satf` figure- and table-generating functions. If you have used `satf` to
 #' generate these .rda files, you can leave the arguments below blank. NOTE:
@@ -515,7 +515,7 @@ create_template <- function(
                 n_projected_years = n_projected_years,
                 relative = relative,
                 # make_rda = TRUE,
-                rda_dir = subdir,
+                rda_dir = rda_dir,
                 ref_line = ref_line,
                 ref_point = ref_point,
                 landings_unit_label = landings_unit_label,
@@ -556,13 +556,6 @@ create_template <- function(
               subdir = subdir,
               rda_dir = rda_dir
             )
-            # if there isn't an existing folder with "rda_files" in the rda_dir,
-            # and the rda_files will be placed in the subdir:
-          } else {
-            create_tables_doc(
-              subdir = subdir,
-              rda_dir = rda_dir
-            )
           }
         } else {
           tables_doc <- paste0(
@@ -596,13 +589,6 @@ create_template <- function(
             create_figures_doc(
               subdir = subdir,
               rda_dir = rda_dir
-            )
-            # if there isn't an existing folder with "rda_files" in the rda_dir,
-            # and the rda_files will be placed in the subdir:
-          } else {
-            create_figures_doc(
-              subdir = subdir,
-              rda_dir = subdir
             )
           }
         } else {

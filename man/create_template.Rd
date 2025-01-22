@@ -191,8 +191,8 @@ the report}
 figures, tables, alt text, and captions with \code{satf}, rda_dir represents
 the location of the folder containing these .rda files ("rda_files").
 Otherwise, if the user has not used \code{satf} to make those .rda files already,
-those files will be generated automatically and placed within the "report"
-folder within the \code{file_dir}. The "rda_files" folder would have been
+those files will be generated automatically and placed within an "rda_files"
+folder within rda_dir. The "rda_files" folder would have been
 made with \code{satf::exp_all_figs_tables()}, or by exporting files by running individual
 \code{satf} figure- and table-generating functions. If you have used \code{satf} to
 generate these .rda files, you can leave the arguments below blank. NOTE:
