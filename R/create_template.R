@@ -377,11 +377,11 @@ create_template <- function(
       # Pull skeleton for sections
       current_folder <- system.file("templates", "skeleton", package = "asar")
       new_folder <- subdir
-      # if (!is.null(custom_sections)) {
-      #   files_to_copy <- list.files(current_folder)[c(sapply(custom_sections, function(x) grep(x, list.files(current_folder))), 10, 11)]
-      # } else {
+      if (!is.null(custom_sections)) {
+        files_to_copy <- unlist(list.files(current_folder))[c(unlist(sapply(custom_sections, function(x) grep(x, list.files(current_folder)))), 10, 11)]
+      } else {
         files_to_copy <- list.files(current_folder)
-      # }
+      }
       before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "asar")
       # header_file <- system.file("resources", "formatting_files", "in-header.tex", package = "asar")
       # format_files <- list(before_body_file, header_file)
@@ -963,6 +963,10 @@ create_template <- function(
       print("_______Add Report Citation________")
 
       # Create report template
+      # Include tables and figures if desired into template
+      # at this point, files_to_copy is the most updated outline
+      # if (include_tables) files_to_copy <- c(files_to_copy, "08_tables.qmd")
+      # if (include_figures) files_to_copy <- c(files_to_copy, "09_figures.qmd")
 
       if (custom == FALSE) {
         sections <- add_child(
@@ -1005,9 +1009,9 @@ create_template <- function(
         # Option for building custom template
         # Create custom template from existing skeleton sections
         if (is.null(new_section)) {
-          section_list <- add_base_section(custom_sections)
-          sections <- add_child(section_list,
-            label = custom_sections
+          section_list <- add_base_section(files_to_copy)
+          sections <- add_child(c(section_list, "08_tables.qmd", "09_figures.qmd"),
+            label = custom_sections # this might need to be changed
           )
         } else { # custom = TRUE
           # Create custom template using existing sections and new sections from analyst
@@ -1045,7 +1049,7 @@ create_template <- function(
           } else { # custom_sections explicit
 
             # Add selected sections from base
-            sec_list1 <- add_base_section(custom_sections)
+            sec_list1 <- add_base_section(files_to_copy)
             # Create new sections as .qmd in folder
             # check if sections are in custom_sections list
             if (any(stringr::str_replace(section_location, "^[a-z]+-", "") %notin% custom_sections)) {
