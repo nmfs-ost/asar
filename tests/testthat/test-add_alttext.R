@@ -48,7 +48,10 @@ test_that("add_alttext() creates .tex file", {
   # )
   # Extract file to compare to snapshot
   compare_file <- readLines(file.path(getwd(), test_path(), "report", "Simple_SAR_2025_tagged.tex"))
-  
+
+  # TODO: make check to be expect equal by reading the latex as string
+  # and make an expectation to specific line
+
   # Make wrapper for expect_snapshot_file
   expect_snapshot_tex <- function(tex_file, tex_dir, rename, path) {
     # Other packages might affect results
