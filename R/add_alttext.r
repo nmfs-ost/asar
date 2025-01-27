@@ -1,5 +1,5 @@
 #' Add alternative text into latex
-#' 
+#'
 #' @inheritParams add_accessibility
 #'
 #' @return DRAFT: This function was made to help add in
@@ -11,13 +11,14 @@
 #' from satf plotting functions. If users want to use this
 #' function as a way to add alternative text to all
 #' figures, please leave an issue to request this function.
-#' 
+#'
 #' @export
 #'
 add_alttext <- function(
     x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
     dir = getwd(),
     rda_dir = getwd(),
+    alttext_csv_dir = file.path(getwd(), "captions_alt_text.csv"),
     compile = TRUE,
     rename = NULL
 ) {
@@ -26,17 +27,18 @@ add_alttext <- function(
 
   # Check: count instances of pattern
   # sub_count <- length(
-  #   grep("1", 
+  #   grep("1",
   #        stringr::str_count(
-  #          tex_file, 
+  #          tex_file,
   #          pattern = stringr::coll("\\pandocbounded{\\includegraphics["))
   #        )
   #   )
-  
+
   # Identify lines with figures
   # this approach allows us to not mistake the replacement for other figures
   fig_lines <- grep("fig-([a-z]+|[a-z]+_[a-z]+)-plot-1.pdf", tex_file)
-  # TODO: 
+
+  # TODO:
   # create check to see if there are any instances where the suffix is not plot-1
   # Replace instances of macro in the tex file
   # replace_macro <- gsub(
@@ -44,7 +46,7 @@ add_alttext <- function(
   #   "\\pdftooltip",
   #   tex_file
   # )
-  
+
   # Replace pandocbounded with pdftooltip so alt text can be added
   tex_file[fig_lines] <- lapply(
     tex_file[fig_lines],
@@ -52,7 +54,34 @@ add_alttext <- function(
       gsub("\\pandocbounded", "\\pdftooltip", line)
     }
   )
-  
+
+  # Check instance of pandocbounded that haven't been replaced
+  # these are the additional images
+  addl_figs <- grep("\\pandocbounded", tex_file)[-1]
+  # ignore line 82 - this is the department of commerce logo
+  # replace as above
+  tex_file[addl_figs] <- lapply(
+    tex_file[addl_figs],
+    function(line) {
+      gsub("\\pandocbounded", "\\pdftooltip", line)
+    }
+  )
+  # Add alt text to custom images
+  # read in alt text csv file to match with labels
+  alttext <- utils::read.csv(alttext_csv_dir)
+  for (i in addl_figs) {
+    # Find line label
+    line <- tex_file[line]
+    # line_label <- stringr::str_extract(
+    #   line,
+    #   "{\\centering \\pdftooltip{\\includegraphics[keepaspectratio]{data-plot.png}}"
+    # )
+    # Match label name to label in csv and extract alttext
+
+    # Add selected alttext onto end of the line
+    tex_file[fig_line] <- paste(tex_file[fig_line], "{", alt_text_list[[i]], "}", sep = "")
+  }
+
   # Insert alt text for figures
   # Call alt text in list with names
   obj_files <- list.files(file.path(rda_dir, "rda_files"))
@@ -103,7 +132,7 @@ add_alttext <- function(
   # add check if there are more plots that did not have alt text added
   # if (length(obj_files) != length(fig_lines)) {
   #   # Find which ones were not changed
-  #   # figs_miss_alt <- 
+  #   # figs_miss_alt <-
   #   warning("Missing alternative text for the followiing figures:")
   # }
   # TODO: test case where additional figure is added into the .tex file that is not included in the rda files
