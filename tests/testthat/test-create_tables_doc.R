@@ -14,7 +14,7 @@ test_that("Creates expected start of tables doc", {
   tc_pasted <- paste(head_table_content, collapse = "")
 
   # expected tables doc head
-  expected_head_table_content <- "## Tables  ```{r} #| label: 'set-rda-dir-tbls'#| echo: false #| warning: false #| eval: true #| include: false"
+  expected_head_table_content <- "## Tables {#sec-tables} ```{r} #| label: 'set-rda-dir-tbls'#| echo: false #| warning: false #| eval: true #| include: false"
 
   # test expectation of start of tables doc
   testthat::expect_equal(

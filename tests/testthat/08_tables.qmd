@@ -1,0 +1,13 @@
+## Tables {#sec-tables}
+ 
+```{r} 
+#| label: 'set-rda-dir-tbls'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| include: false
+library(flextable)
+
+rda_dir <- 'C:/Users/sophie.breitbart/Documents/R_projects/asar/tests/testthat/rda_files'
+``` 
+

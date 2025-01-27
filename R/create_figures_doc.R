@@ -15,7 +15,7 @@ create_figures_doc <- function(subdir = NULL,
                                rda_dir = NULL) {
   if (include_all) {
     # add header
-    figures_doc <- paste0("## Figures \n \n")
+    figures_doc <- paste0("## Figures {#sec-figures}\n \n")
 
     # add chunk that creates object as the directory of all rdas
     figures_doc <- paste0(
