@@ -64,11 +64,14 @@ acronyms <- all_entries |>
                 Acronym != "") |>
   dplyr::mutate(Shared_ac = duplicated(Acronym),
                 Shared_mean = duplicated(Meaning),
-                Definition = stringr::str_to_sentence(Definition))
+                Definition = stringr::str_to_sentence(Definition),
+                Meaning = gsub("<92>", "'", Meaning),
+                Meaning = gsub("<f1>", "ñ", Meaning))
 
-
-
-
+# if there is >1 acronym with NA as the definition, keep only one row
+acronyms_fil <- acronyms |>
+  dplyr::group_by(Acronym, tolower(Meaning), Definition) |>
+  dplyr::summarise(count = dplyr::n())
 
 
 
