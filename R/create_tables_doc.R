@@ -249,7 +249,38 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
       )
     }
 
-    #     # landings table-----
+    # # landings table-----
+    # # identify table width
+    # rda_path_landings <- file.path(
+    #   paste0(rda_dir, "/rda_files", "/landings_table.rda")
+    # )
+    #
+    # if (file.exists(rda_path_landings))
+    # {
+    #   # load rda
+    #   load(rda_path_landings)
+    #   # save rda with plot-specific name
+    #   landings_table_rda <- rda
+    #   # remove generic rda object
+    #   rm(rda)
+    #   # identify width of table
+    #   table_width_landings <- flextable::flextable_dim(landings_table_rda$table)[["widths"]] |>
+    #     as.numeric()
+    #
+    #   # determine page orientation based on table width
+    #   ifelse(table_width_landings > portrait_pg_width,
+    #          orient_landscape_landings <- TRUE,
+    #          orient_landscape_landings <- FALSE)
+    # }
+    #
+    # # add landscape braces before R chunk depending on table width
+    # if(orient_landscape_landings == TRUE){
+    #   tables_doc <- paste0(
+    #     tables_doc,
+    #     "::: {.landscape}\n\n"
+    #   )
+    # }
+    #
     #     if (any(grepl("landings_table.rda", list.files(file.path(rda_dir, "rda_files"))))) {
     #     ## import table, caption
     #     tables_doc <- paste0(
@@ -286,7 +317,20 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
     #     tables_doc <- paste0(
     #       tables_doc,
     #       add_chunk(
-    #         paste0("landings_table"),
+    #         if (orient_landscape_landings == TRUE){
+    #           paste0(
+    #             "landings_table |>
+    #             flextable::fit_to_width(max_width = 7.5) |>
+    #             flextable::set_table_properties(
+    #               opts_pdf = list(
+    #                 arraystretch = 0.85
+    #               )
+    #             )"
+    #           )
+    #         } else {
+    #           paste0("landings_table")
+    #         }
+    #         ,
     #         label = "tbl-landings-plot",
     #         eval = "!expr eval_landings",
     #         add_option = TRUE,
@@ -301,6 +345,14 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
     #       "\n"
     #     )
     #     }
+    #
+    # # add landscape braces after R chunk depending on table width
+    # if(orient_landscape_landings == TRUE){
+    #   tables_doc <- paste0(
+    #     tables_doc,
+    #     ":::\n"
+    #   )
+    # }
 
     # Add other tables follow the same above format
   } else {
