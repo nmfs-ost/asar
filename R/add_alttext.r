@@ -71,15 +71,24 @@ add_alttext <- function(
   alttext <- utils::read.csv(alttext_csv_dir)
   for (i in addl_figs) {
     # Find line label
-    line <- tex_file[line]
-    # line_label <- stringr::str_extract(
-    #   line,
-    #   "{\\centering \\pdftooltip{\\includegraphics[keepaspectratio]{data-plot.png}}"
-    # )
+    line <- tex_file[i]
+    # Find line following target to extract label
+    matches <- grep("\\label", tex_file)
+    label_line <- matches[matches > i][1]
+    line_label <- stringr::str_extract(tex_file[label_line], "\\\\label\\{([^}]*)\\}") |>
+      stringr::str_remove_all("^\\\\label\\{|\\}$")
     # Match label name to label in csv and extract alttext
-
+    alttext_i <- alttext |>
+      dplyr::filter(label == line_label) |>
+      dplyr::pull(alt_text)
+    if (is.na(label_line)) {
+      alttext_i <- ""
+      warning(glue::glue(
+        "No alternative text found for {line_label}."
+      ))
+    }
     # Add selected alttext onto end of the line
-    tex_file[fig_line] <- paste(tex_file[fig_line], "{", alt_text_list[[i]], "}", sep = "")
+    tex_file[i] <- paste(tex_file[i], "{", alttext_i, "}", sep = "")
   }
 
   # Insert alt text for figures
