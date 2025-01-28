@@ -11,6 +11,13 @@
 create_tables_doc <- function(subdir = NULL,
                               include_all = TRUE,
                               rda_dir = NULL) {
+
+  # set portrait page width (in)
+  portrait_pg_width <- 5
+
+  # set landscape page width (in)
+  landscape_pg_width <- 7.5
+
   if (include_all) {
     # add header
     tables_doc <- paste0("## Tables {#sec-tables}\n \n")
@@ -28,7 +35,8 @@ create_tables_doc <- function(subdir = NULL,
       "\n"
     )
 
-    # Bnc table
+
+    # Bnc table-----
     if (any(grepl("bnc_table.rda", list.files(file.path(rda_dir, "rda_files"))))) {
       ## import table, caption
       tables_doc <- paste0(
@@ -60,11 +68,55 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
         "\n"
       )
 
+      # identify table width
+      rda_path_bnc <- file.path(
+        paste0(rda_dir, "/rda_files", "/bnc_table.rda")
+      )
+
+      if (file.exists(rda_path_bnc))
+      {
+        # load rda
+        load(rda_path_bnc)
+        # save rda with plot-specific name
+        bnc_table_rda <- rda
+        # remove generic rda object
+        rm(rda)
+        # identify width of table
+        table_width_bnc <- flextable::flextable_dim(bnc_table_rda$table)[["widths"]] |>
+          as.numeric()
+
+        # determine page orientation based on table width
+        ifelse(table_width_bnc > portrait_pg_width,
+               orient_landscape_bnc <- TRUE,
+               orient_landscape_bnc <- FALSE)
+      }
+
+      # add landscape braces before R chunk depending on table width
+      if(orient_landscape_bnc == TRUE){
+        tables_doc <- paste0(
+          tables_doc,
+          "::: {.landscape}\n\n"
+        )
+      }
+
       ## add table
       tables_doc <- paste0(
         tables_doc,
         add_chunk(
-          paste0("bnc_table"),
+          if (orient_landscape_bnc == TRUE){
+            paste0(
+              "bnc_table |>
+                flextable::fit_to_width(max_width = 7.5) |>
+                flextable::set_table_properties(
+                  opts_pdf = list(
+                    arraystretch = 0.85
+                  )
+                )"
+            )
+          } else {
+            paste0("bnc_table")
+          }
+          ,
           label = "tbl-bnc-plot",
           eval = "!expr eval_bnc",
           add_option = TRUE,
@@ -81,7 +133,18 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
       )
     }
 
-    # Indices table
+    # add landscape braces after R chunk depending on table width
+    if(orient_landscape_bnc == TRUE){
+      tables_doc <- paste0(
+        tables_doc,
+        ":::\n"
+      )
+    }
+
+
+
+
+    # Indices table-----
     if (any(grepl("indices.abundance_table.rda", list.files(file.path(rda_dir, "rda_files"))))) {
       ## import table, caption
       tables_doc <- paste0(
@@ -113,11 +176,55 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
         "\n"
       )
 
+      # identify table width
+      rda_path_indices <- file.path(
+        paste0(rda_dir, "/rda_files", "/indices.abundance_table.rda")
+      )
+
+      if (file.exists(rda_path_indices))
+        {
+        # load rda
+        load(rda_path_indices)
+        # save rda with plot-specific name
+        indices_table_rda <- rda
+        # remove generic rda object
+        rm(rda)
+        # identify width of table
+        table_width_indices <- flextable::flextable_dim(indices_table_rda$table)[["widths"]] |>
+          as.numeric()
+
+        # determine page orientation based on table width
+        ifelse(table_width_indices > portrait_pg_width,
+               orient_landscape_indices <- TRUE,
+               orient_landscape_indices <- FALSE)
+      }
+
+      # add landscape braces before R chunk depending on table width
+      if(orient_landscape_indices == TRUE){
+        tables_doc <- paste0(
+          tables_doc,
+          "::: {.landscape}\n\n"
+        )
+      }
+
       ## add table
       tables_doc <- paste0(
         tables_doc,
         add_chunk(
-          paste0("indices_table"),
+          if (orient_landscape_indices == TRUE){
+            paste0(
+              "indices_table |>
+                flextable::fit_to_width(max_width = 7.5) |>
+                flextable::set_table_properties(
+                  opts_pdf = list(
+                    arraystretch = 0.85
+                  )
+                )"
+            )
+          } else {
+            paste0("indices_table")
+          }
+          ,
           label = "tbl-indices-plot",
           eval = "!expr eval_indices",
           add_option = TRUE,
@@ -134,7 +241,15 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
       )
     }
 
-    #     # landings table
+    # add landscape braces after R chunk depending on table width
+    if(orient_landscape_indices == TRUE){
+      tables_doc <- paste0(
+        tables_doc,
+        ":::\n"
+      )
+    }
+
+    #     # landings table-----
     #     if (any(grepl("landings_table.rda", list.files(file.path(rda_dir, "rda_files"))))) {
     #     ## import table, caption
     #     tables_doc <- paste0(
