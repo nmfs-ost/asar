@@ -18,7 +18,7 @@
 #' columns containing "label" and "alt_text".
 #'
 #' @export
-#' @example
+#' @examples
 #' \dontrun {
 #'   create_template(
 #'   new_template = TRUE,

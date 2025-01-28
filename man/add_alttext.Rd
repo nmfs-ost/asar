@@ -8,6 +8,7 @@ add_alttext(
   x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
   dir = getwd(),
   rda_dir = getwd(),
+  alttext_csv_dir = file.path(getwd(), "captions_alt_text.csv"),
   compile = TRUE,
   rename = NULL
 )
@@ -19,21 +20,61 @@ add_alttext(
 
 \item{rda_dir}{folder where rda files containing alternative text is located}
 
-\item{compile}{TRUE/FALSE - indicate whether the document (X) should be rendered after these files are changed}
+\item{alttext_csv_dir}{Directory for the csv file containing alternative
+text and captions generated when running satf::exp_all_figs_tables}
 
-\item{rename}{change the name of the latex file for final compilation or saving}
+\item{compile}{Default set to true so the report compiles once the
+alternative text is added to the latex file}
+
+\item{rename}{description}
 }
 \value{
-DRAFT: This function was made to help add in
+This function was made to help add in
 alternative text to latex documents generated from
 quarto. Quarto does not currently contain a way to
 add alternative text to PDF documents, so this function
 was developed as a work around. The addition of alternative
-text needs to be in the form found in rda files made
-from satf plotting functions. If users want to use this
-function as a way to add alternative text to all
-figures, please leave an issue to request this function.
+text needs to be found in either the rda files produced from
+satf::exp_all_figs_tables or in the captions_alt_text.csv also produced from
+the same function. Users not using this format should create a csv file with
+columns containing "label" and "alt_text".
 }
 \description{
 Add alternative text into latex
+}
+\examples{
+\dontrun {
+  create_template(
+  new_template = TRUE,
+  format = "pdf",
+  office = "NWFSC",
+  region = "U.S. West Coast",
+  species = "Dover sole",
+  spp_latin = "Microstomus pacificus",
+  year = 2010,
+  author = c("John Snow", "Danny Phantom", "Patrick Star"),
+  include_affiliation = TRUE,
+  convert_output = TRUE,
+  resdir = "C:/Users/Documents/Example_Files",
+  model_results = "Report.sso",
+  model = "SS3",
+  new_section = "an_additional_section",
+  section_location = "after-introduction",
+  rda_dir = getwd()
+  )
+
+  path <- getwd()
+
+  quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
+
+  withr::with_dir(
+  file.path(path, "report"),
+   add_alttext(
+     x = "SAR_USWC_Dover_sole_skeleton.tex",
+     dir = getwd(),
+     rda_dir = path,
+     compile = TRUE)
+   )
+}
+
 }
