@@ -16,7 +16,7 @@ create_tables_doc <- function(subdir = NULL,
   portrait_pg_width <- 5
 
   # set landscape page width (in)
-  landscape_pg_width <- 7.5
+  landscape_pg_width <- 8.5
 
   if (include_all) {
     # add header
@@ -106,7 +106,7 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
           if (orient_landscape_bnc == TRUE){
             paste0(
               "bnc_table |>
-                flextable::fit_to_width(max_width = 7.5) |>
+                flextable::fit_to_width(max_width = 8.5) |>
                 flextable::set_table_properties(
                   opts_pdf = list(
                     arraystretch = 0.85
@@ -141,7 +141,11 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
       )
     }
 
-
+    # add page break after table plotted
+    tables_doc <- paste0(
+      tables_doc,
+      "\n{{< pagebreak >}}\n"
+    )
 
 
     # Indices table-----
@@ -214,7 +218,7 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
           if (orient_landscape_indices == TRUE){
             paste0(
               "indices_table |>
-                flextable::fit_to_width(max_width = 7.5) |>
+                flextable::fit_to_width(max_width = 8.5) |>
                 flextable::set_table_properties(
                   opts_pdf = list(
                     arraystretch = 0.85
@@ -248,6 +252,12 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
         ":::\n"
       )
     }
+
+    # add page break after table plotted
+    tables_doc <- paste0(
+      tables_doc,
+      "\n{{< pagebreak >}}\n"
+    )
 
     # # landings table-----
     # # identify table width
@@ -320,7 +330,7 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
     #         if (orient_landscape_landings == TRUE){
     #           paste0(
     #             "landings_table |>
-    #             flextable::fit_to_width(max_width = 7.5) |>
+    #             flextable::fit_to_width(max_width = 8.5) |>
     #             flextable::set_table_properties(
     #               opts_pdf = list(
     #                 arraystretch = 0.85
@@ -353,6 +363,12 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
     #     ":::\n"
     #   )
     # }
+    #
+    # # add page break after table plotted
+    # tables_doc <- paste0(
+    #   tables_doc,
+    #   "\n{{< pagebreak >}}\n"
+    # )
 
     # Add other tables follow the same above format
   } else {
