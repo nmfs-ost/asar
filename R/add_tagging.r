@@ -1,12 +1,47 @@
 #' Add tagging structure to latex documents produced from quarto
-#' 
+#'
 #' @inheritParams add_accessibility
 #'
-#' @return DRAFT: This function was made to help add in 
-#' latex packages and content associated with PDF 
+#' @return DRAFT: This function was made to help add in
+#' latex packages and content associated with PDF
 #' tagging. Quarto does not allow the user to edit anything
 #' before documentclass, so this function alters the rendered .tex file.
 #' @export
+#'
+#' @examples
+#' \dontrun {
+#'   create_template(
+#'   new_template = TRUE,
+#'   format = "pdf",
+#'   office = "NWFSC",
+#'   region = "U.S. West Coast",
+#'   species = "Dover sole",
+#'   spp_latin = "Microstomus pacificus",
+#'   year = 2010,
+#'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
+#'   include_affiliation = TRUE,
+#'   convert_output = TRUE,
+#'   resdir = "C:/Users/Documents/Example_Files",
+#'   model_results = "Report.sso",
+#'   model = "SS3",
+#'   new_section = "an_additional_section",
+#'   section_location = "after-introduction",
+#'   rda_dir = getwd()
+#'   )
+#'
+#'   path <- getwd()
+#'
+#'   quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
+#'
+#'   withr::with_dir(
+#'   file.path(path, "report"),
+#'    add_tagging(
+#'      x = "SAR_USWC_Dover_sole_skeleton.tex",
+#'      dir = getwd(),
+#'      rda_dir = path,
+#'      compile = TRUE)
+#'    )
+#' }
 #'
 add_tagging <- function(
     x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
@@ -16,7 +51,7 @@ add_tagging <- function(
 ) {
     # Read latex file
   tex_file <- readLines(file.path(dir, x))
-  
+
   # Identify line where the new accessibility content should be added after
   line_after <- grep("\\PassOptionsToPackage\\{dvipsnames\\,svgnames\\,x11names\\}\\{xcolor\\}", tex_file)
   # Acessibility additions before /documentclass
@@ -27,7 +62,7 @@ add_tagging <- function(
   # We want to keep tex_file open so we can make changes to figures later down the line
   # Export file
   write(tex_file, file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)))
-  
+
   # Add accessibility.tex to directory
   accessibility <- paste0(
     "\\DocumentMetadata{%", "\n",

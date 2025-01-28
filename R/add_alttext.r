@@ -1,11 +1,6 @@
 #' Add alternative text into latex
 #'
 #' @inheritParams add_accessibility
-#' @param alttext_csv_dir Directory for the csv file containing alternative
-#' text and captions generated when running satf::exp_all_figs_tables
-#' @param compile Default set to true so the report compiles once the
-#' alternative text is added to the latex file
-#' @param rename description
 #'
 #' @return This function was made to help add in
 #' alternative text to latex documents generated from
@@ -18,6 +13,7 @@
 #' columns containing "label" and "alt_text".
 #'
 #' @export
+#'
 #' @examples
 #' \dontrun {
 #'   create_template(

@@ -29,3 +29,39 @@ before documentclass, so this function alters the rendered .tex file.
 \description{
 Add tagging structure to latex documents produced from quarto
 }
+\examples{
+\dontrun {
+  create_template(
+  new_template = TRUE,
+  format = "pdf",
+  office = "NWFSC",
+  region = "U.S. West Coast",
+  species = "Dover sole",
+  spp_latin = "Microstomus pacificus",
+  year = 2010,
+  author = c("John Snow", "Danny Phantom", "Patrick Star"),
+  include_affiliation = TRUE,
+  convert_output = TRUE,
+  resdir = "C:/Users/Documents/Example_Files",
+  model_results = "Report.sso",
+  model = "SS3",
+  new_section = "an_additional_section",
+  section_location = "after-introduction",
+  rda_dir = getwd()
+  )
+
+  path <- getwd()
+
+  quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
+
+  withr::with_dir(
+  file.path(path, "report"),
+   add_tagging(
+     x = "SAR_USWC_Dover_sole_skeleton.tex",
+     dir = getwd(),
+     rda_dir = path,
+     compile = TRUE)
+   )
+}
+
+}

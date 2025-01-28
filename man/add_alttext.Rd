@@ -23,10 +23,9 @@ add_alttext(
 \item{alttext_csv_dir}{Directory for the csv file containing alternative
 text and captions generated when running satf::exp_all_figs_tables}
 
-\item{compile}{Default set to true so the report compiles once the
-alternative text is added to the latex file}
+\item{compile}{TRUE/FALSE - indicate whether the document (X) should be rendered after these files are changed}
 
-\item{rename}{description}
+\item{rename}{change the name of the latex file for final compilation or saving}
 }
 \value{
 This function was made to help add in

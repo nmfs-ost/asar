@@ -9,7 +9,8 @@ add_accessibility(
   dir = getwd(),
   rda_dir = getwd(),
   compile = TRUE,
-  rename = NULL
+  rename = NULL,
+  alttext_csv_dir = getwd()
 )
 }
 \arguments{
@@ -22,6 +23,9 @@ add_accessibility(
 \item{compile}{TRUE/FALSE - indicate whether the document (X) should be rendered after these files are changed}
 
 \item{rename}{change the name of the latex file for final compilation or saving}
+
+\item{alttext_csv_dir}{Directory for the csv file containing alternative
+text and captions generated when running satf::exp_all_figs_tables}
 }
 \value{
 DRAFT: This function was made to help add in
@@ -32,4 +36,40 @@ before documentclass, so this function alters the rendered .tex file.
 }
 \description{
 Altering latex file of report to increase accessibility of the document.
+}
+\examples{
+\dontrun {
+  create_template(
+  new_template = TRUE,
+  format = "pdf",
+  office = "NWFSC",
+  region = "U.S. West Coast",
+  species = "Dover sole",
+  spp_latin = "Microstomus pacificus",
+  year = 2010,
+  author = c("John Snow", "Danny Phantom", "Patrick Star"),
+  include_affiliation = TRUE,
+  convert_output = TRUE,
+  resdir = "C:/Users/Documents/Example_Files",
+  model_results = "Report.sso",
+  model = "SS3",
+  new_section = "an_additional_section",
+  section_location = "after-introduction",
+  rda_dir = getwd()
+  )
+
+  path <- getwd()
+
+  quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
+
+  withr::with_dir(
+  file.path(path, "report"),
+   add_accessibility(
+     x = "SAR_USWC_Dover_sole_skeleton.tex",
+     dir = getwd(),
+     rda_dir = path,
+     compile = TRUE)
+   )
+}
+
 }
