@@ -1,4 +1,4 @@
-## Introduction
+## Introduction {#sec-intro}
 
 Testing adding in an introduction for `r params$species`. There is currently no read of parameters for child documents.
 

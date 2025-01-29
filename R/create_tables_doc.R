@@ -13,7 +13,7 @@ create_tables_doc <- function(subdir = NULL,
                               rda_dir = NULL) {
   if (include_all) {
     # add header
-    tables_doc <- paste0("## Tables \n \n")
+    tables_doc <- paste0("## Tables {#sec-tables}\n \n")
 
     # add chunk that creates object as the directory of all rdas
     tables_doc <- paste0(
