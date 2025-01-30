@@ -45,8 +45,10 @@ SS3_extract_df <- function(dat, label) {
 `%notin%` <- Negate(`%in%`)
 
 #---- Render really wide tables ----
-# TODO: Put this code into a fxn, then insert into create_tables_doc
-render_lg_table <- function(report_flextable) {
+# TODO: insert into create_tables_doc
+render_lg_table <- function(report_flextable,
+                            essential_columns # sequence, like 1:2
+                            ) {
   total_cols <- flextable::ncol_keys(report_flextable)
   total_width <- flextable::flextable_dim(report_flextable)[["widths"]]
   goal_width <- 8
@@ -65,7 +67,7 @@ render_lg_table <- function(report_flextable) {
                   "end_col" = 4)
 
   i = 1
-  essential_cols = 1:2
+  essential_cols = essential_columns
   for (i in 1:num_tables){
 
     # set table number to i
