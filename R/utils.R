@@ -46,86 +46,107 @@ SS3_extract_df <- function(dat, label) {
 
 #---- Render really wide tables ----
 # TODO: Put this code into a fxn, then insert into create_tables_doc
-total_cols <- ncol_keys(indices_table)
-total_width <- flextable::flextable_dim(indices_table)[["widths"]]
-goal_width <- 9
-approx_col_width <- total_width / total_cols
-goal_cols_per_table <- ceiling(goal_width / approx_col_width)
-num_tables <- ceiling(total_cols / goal_cols_per_table)
+render_lg_table <- function(report_flextable) {
+  total_cols <- flextable::ncol_keys(report_flextable)
+  total_width <- flextable::flextable_dim(report_flextable)[["widths"]]
+  goal_width <- 8
+  approx_col_width <- total_width / total_cols
+  goal_cols_per_table <- ceiling(goal_width / approx_col_width)
+  num_tables <- ceiling(total_cols / goal_cols_per_table)
 
 
-table_cols <- matrix(NA,
-                     nrow = num_tables,
-                     ncol = 2) |>
-  as.data.frame() |>
-  dplyr::rename("table" = 1,
-                "rows" = 2)
+  table_cols <- matrix(NA,
+                       nrow = num_tables,
+                       ncol = 4) |>
+    as.data.frame() |>
+    dplyr::rename("table" = 1,
+                  "cols_to_keep" = 2,
+                  "start_col" = 3,
+                  "end_col" = 4)
 
-i = 1
-essential_cols = 1
-for (i in 1:num_tables){
+  i = 1
+  essential_cols = 1:2
+  for (i in 1:num_tables){
 
-  # set table number to i
-  table_num <- i
+    # set table number to i
+    table_num <- i
 
-  # add table number to df
-  table_cols$table[i] <- i
+    # add table number to df
+    table_cols$table[i] <- i
 
-  # get first and last columns of new table
-  if(i == 1) {
+    # get first and last columns of new table
+    if(i == 1) {
 
-    init_col <- 1
-    end_col <- init_col + goal_cols_per_table
+      init_col <- 1
+      end_col <- init_col + goal_cols_per_table
 
-  } else if ((i > 1) &
-             i < num_tables &
-             ((init_col + goal_cols_per_table) <= total_cols)){
+    } else if ((i > 1) &
+               i < num_tables &
+               ((init_col + goal_cols_per_table) <= total_cols)){
 
-    # subtracting essential_cols so the first cols will be the essential ones
-    # and the total cols will still = goal_cols_per_table
-    end_col <- init_col + goal_cols_per_table - essential_cols
+      # subtracting essential_cols so the first cols will be the essential ones
+      # and the total cols will still = goal_cols_per_table
+      end_col <- init_col + goal_cols_per_table - length(essential_cols)
 
-  } else if (i == num_tables){
+    } else if (i == num_tables){
 
-    end_col <- total_cols
+      end_col <- total_cols
 
-  } else {
+    } else {
 
-    print("Error")
+      print("Error")
+
+    }
+
+    table_cols$cols_to_keep[i] <- paste0(init_col, ":", end_col)
+
+    table_cols$start_col[i] <- init_col
+    table_cols$end_col[i] <- end_col
+
+
+    # add goal_cols_per_table for next table
+    init_col <- end_col + 1
+
+    # add 1 for next table
+    i = i + 1
 
   }
 
-  table_cols$rows[i] <- paste0(init_col, ":", end_col)
+  # add col with essential cols
+  table_cols <- table_cols |>
+    dplyr::mutate(essential_cols = paste(essential_cols, collapse = ", "))
 
-  # add goal_cols_per_table for next table
-  init_col <- end_col + 1
+  # find cols to delete
+  table_cols$cols_to_del <- apply(table_cols, 1, function(row){
+    curr_range <- row["start_col"]:row["end_col"]
+    miss_nums <- setdiff(1:total_cols, curr_range)
+    paste(miss_nums, collapse = ", ")
+  })
 
-  # add 1 for next table
-  i = i + 1
+  table_cols <- table_cols |>
+    dplyr::mutate(
+      ctd_num = lapply(cols_to_del, function(x) as.numeric(unlist(strsplit(x, ",")))),
+      ec_num = lapply(essential_cols, function(x) as.numeric(unlist(strsplit(x, ",")))),
 
+      final_cols_to_del = mapply(function(seq1, seq2) {
+        result <- setdiff(seq1, seq2)
+        paste(result, collapse = ", ")
+      }, ctd_num, ec_num)
+    )
+
+  for (i in 1:num_tables) {
+    report_flextable |>
+      flextable::delete_columns(j = c(
+        as.numeric(
+          unlist(
+            strsplit(
+              table_cols[i,"final_cols_to_del"], ",")
+            )
+          )
+        )
+      ) |>
+        print()
+  }
 }
 
-essential_cols_full <- paste0("1:",
-                              essential_cols)
-
-if (essential_cols_full == "1:1"){
-  essential_cols_full <- 1
-}
-
-table_cols <- table_cols |>
-  dplyr::mutate(final_cols = paste0("c(",
-                                    essential_cols_full,
-                                    ",",
-                                    rows,
-                                    ")"))
-
-
-
-
-
-indices_table[[table_cols[[1,"final_cols"]]]]
-indices_table |>
-  flextable::delete_columns(j = c(1,1:8))
-
-indices_table |>
-  flextable::delete_columns(j = c(1:10, 20:ncol_keys(indices_table)))
+render_lg_table(indices_table)
