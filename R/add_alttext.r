@@ -53,7 +53,7 @@ add_alttext <- function(
     x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
     dir = getwd(),
     rda_dir = getwd(),
-    alttext_csv_dir = file.path(getwd(), "captions_alt_text.csv"),
+    alttext_csv_dir = getwd(),
     compile = TRUE,
     rename = NULL
 ) {
@@ -103,7 +103,7 @@ add_alttext <- function(
   )
   # Add alt text to custom images
   # read in alt text csv file to match with labels
-  alttext <- utils::read.csv(alttext_csv_dir)
+  alttext <- utils::read.csv(file.path(alttext_csv_dir, "captions_alt_text.csv"))
   for (i in addl_figs) {
     # Find line label
     line <- tex_file[i]

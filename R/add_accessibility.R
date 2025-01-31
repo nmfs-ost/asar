@@ -2,11 +2,15 @@
 #'
 #' Altering latex file of report to increase accessibility of the document.
 #'
-#' @param x .tex file to add accessibility into
+#' @param x .tex file containing report. Typically produced after initially
+#' rendering the skeleton made from create_template.
 #' @param dir directory where the tex file is located that will be edited
 #' @param rda_dir folder where rda files containing alternative text is located
-#' @param compile TRUE/FALSE - indicate whether the document (X) should be rendered after these files are changed
-#' @param rename change the name of the latex file for final compilation or saving
+#' @param compile Indicate whether the document (X) should be
+#' rendered after these files are changed. Default TRUE.
+#' @param rename Indicate a name for the new tex file produced from this
+#' function. There is no need to include ".tex" in the name. Defaults to current
+#' name and overwrites the current tex file.
 #' @param alttext_csv_dir Directory for the csv file containing alternative
 #' text and captions generated when running satf::exp_all_figs_tables
 #'
