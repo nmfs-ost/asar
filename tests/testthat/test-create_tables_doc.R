@@ -21,4 +21,7 @@ test_that("Creates expected start of tables doc", {
     tc_pasted,
     expected_head_table_content
   )
+
+  # erase temporary testing files
+  file.remove(fs::path(getwd(), "08_tables.qmd"))
 })
