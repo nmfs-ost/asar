@@ -14,15 +14,19 @@ add_accessibility(
 )
 }
 \arguments{
-\item{x}{.tex file to add accessibility into}
+\item{x}{.tex file containing report. Typically produced after initially
+rendering the skeleton made from create_template.}
 
 \item{dir}{directory where the tex file is located that will be edited}
 
 \item{rda_dir}{folder where rda files containing alternative text is located}
 
-\item{compile}{TRUE/FALSE - indicate whether the document (X) should be rendered after these files are changed}
+\item{compile}{Indicate whether the document (X) should be
+rendered after these files are changed. Default TRUE.}
 
-\item{rename}{change the name of the latex file for final compilation or saving}
+\item{rename}{Indicate a name for the new tex file produced from this
+function. There is no need to include ".tex" in the name. Defaults to current
+name and overwrites the current tex file.}
 
 \item{alttext_csv_dir}{Directory for the csv file containing alternative
 text and captions generated when running satf::exp_all_figs_tables}
