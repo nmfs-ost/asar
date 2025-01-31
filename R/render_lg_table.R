@@ -4,6 +4,7 @@
 #' @param essential_columns The columns that will be retained between the split
 #' tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
 #' column. Example: for the indices table, this could be the year column.
+#' @param j A number identifying which split table to return, from the list of split tables.
 #'
 #' @return A list of the split tables.
 #'
@@ -19,8 +20,10 @@
 #' report_flextable = important_table,
 #' essential_columns = 1:3)
 #' }
-render_lg_table <- function(report_flextable,
-                            essential_columns) {
+render_lg_table <- function(report_flextable = NULL,
+                            essential_columns = NULL,
+                            j = NULL #table number
+                            ) {
   # calculate key numbers
 
   # total columns, width of table
@@ -147,7 +150,7 @@ render_lg_table <- function(report_flextable,
     table_list[[i]] <- split_table
 
     if(i == num_tables){
-      return(table_list)
+      return(table_list[[j]])
     }
   }
 }

@@ -46,8 +46,9 @@ SS3_extract_df <- function(dat, label) {
 
 #---- Identify page orientation for tables ----
 ID_pg_orientation <- function(
-    plot_name # e.g., "/bnc_table.rda"
-    ) {
+    plot_name, # e.g., "/bnc_table.rda"
+    rda_dir,
+    portrait_pg_width) {
   rda_path <- file.path(paste0(rda_dir, "/rda_files", plot_name))
 
   if (file.exists(rda_path)) {

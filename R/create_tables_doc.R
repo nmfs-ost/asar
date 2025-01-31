@@ -70,7 +70,9 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
 
 
       # identify table orientation
-     bnc_orient <- ID_pg_orientation("/bnc_table.rda")
+     bnc_orient <- ID_pg_orientation("/bnc_table.rda",
+                                     rda_dir,
+                                     portrait_pg_width)
 
       # add landscape braces before R chunk depending on table width
       if(bnc_orient == TRUE){
@@ -161,7 +163,9 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
       )
 
     # identify table orientation
-    indices_orient <- ID_pg_orientation("/indices.abundance_table.rda")
+    indices_orient <- ID_pg_orientation("/indices.abundance_table.rda",
+                                        rda_dir,
+                                        portrait_pg_width)
 
     # add landscape braces before R chunk depending on table width
       if(indices_orient == TRUE){
