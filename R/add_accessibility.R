@@ -72,7 +72,6 @@ add_accessibility <- function(
     compile = FALSE,
     rename = rename
   )
-  message("______Tagging structure added to tex file.______")
   # add alternative text to template
   add_alttext(
     x = ifelse(is.null(rename), x, glue::glue("{rename}.tex")),
@@ -82,9 +81,9 @@ add_accessibility <- function(
     rename = rename,
     alttext_csv_dir = rda_dir
   )
-  message("______Alternative text added to tex file.______")
  # Render the .tex file after edits
   if (compile) {
+    # message("______Tagging structure added to tex file.______")
     # test if this can be done when skeleton is in different folder than the wd
     tinytex::lualatex(file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)))
   }

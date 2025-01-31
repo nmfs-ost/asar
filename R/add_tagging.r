@@ -20,13 +20,8 @@
 #'   year = 2010,
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
 #'   include_affiliation = TRUE,
-#'   convert_output = TRUE,
-#'   resdir = "C:/Users/Documents/Example_Files",
-#'   model_results = "Report.sso",
-#'   model = "SS3",
 #'   new_section = "an_additional_section",
-#'   section_location = "after-introduction",
-#'   rda_dir = getwd()
+#'   section_location = "after-introduction"
 #'   )
 #'
 #'   path <- getwd()
@@ -38,7 +33,6 @@
 #'    add_tagging(
 #'      x = "SAR_USWC_Dover_sole_skeleton.tex",
 #'      dir = getwd(),
-#'      rda_dir = path,
 #'      compile = TRUE)
 #'    )
 #' }
@@ -58,27 +52,38 @@ add_tagging <- function(
   line_to_add <- "\\input{accessibility.tex}"
   # Add line into file
   tex_file <- append(line_to_add, tex_file, after = line_after)
-  # DO NOT UNCOMMENT FOLLOWING LINES WHEN OPERATING FXN AS A WHOLE
-  # We want to keep tex_file open so we can make changes to figures later down the line
+  # Add in . from default quarto issue
+  # \hypersetup{linkcolor=}
+  issue_color <- grep("\\hypersetup\\{linkcolor=\\}", tex_file)
+  if (length(issue_color) > 1) {
+    warning("Failed to solve ~ ! LaTeX Error: Unknown color ''.")
+  } else {
+    tex_file[issue_color] <- gsub("(linkcolor=)",
+                                  "\\1.",
+                                  tex_file[issue_color])
+  }
   # Export file
   write(tex_file, file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)))
 
   # Add accessibility.tex to directory
   accessibility <- paste0(
     "\\DocumentMetadata{%", "\n",
-    "  ", "%  uncompress, %only for debugging!!", "\n",
+    "  ", "testphase={phase-III,math,table,title},", "\n",
     "  ", "pdfversion=2.0,", "\n",
-    "  ", "testphase={phase-II, tabular, graphic}%", "\n",
+    "  ", "pdfstandard=ua-2,","\n",
+    "  ", "pdfstandard=a-4f", "\n",
+    "  ", "% testphase={phase-II, tabular, graphic}%", "\n",
     "  ", "% testphase={phase-II,math, tabular, graphic}% TOC Does not work", "\n",
     "  ", "% testphase={phase-III,math}% TOC works", "\n",
     "}", "\n",
     "\\tagpdfsetup{activate, tabsorder=structure}", "\n",
     "% Use the following to fix bug in November 2023 download of LaTeX", "\n",
-    "\\ExplSyntaxOn", "\n",
-    "\\cs_generate_variant:Nn__tag_prop_gput:Nnn{cnx}", "\n",
-    "\\ExplSyntaxOff", "\n",
+    "% \\ExplSyntaxOn", "\n",
+    "% \\cs_generate_variant:Nn__tag_prop_gput:Nnn{cnx}", "\n",
+    "% \\ExplSyntaxOff", "\n",
     "%", "\n"
   )
+
   # Save accessibility partial
   utils::capture.output(cat(accessibility), file = file.path(dir, "accessibility.tex"), append = FALSE)
   message("______Tagging structure added to tex file.______")
