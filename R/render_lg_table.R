@@ -4,7 +4,6 @@
 #' @param essential_columns The columns that will be retained between the split
 #' tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
 #' column. Example: for the indices table, this could be the year column.
-#' @param j A number identifying which split table to return, from the list of split tables.
 #'
 #' @return A list of the split tables.
 #'
@@ -21,8 +20,7 @@
 #' essential_columns = 1:3)
 #' }
 render_lg_table <- function(report_flextable = NULL,
-                            essential_columns = NULL,
-                            j = NULL #table number
+                            essential_columns = NULL
                             ) {
   # calculate key numbers
 
@@ -31,7 +29,7 @@ render_lg_table <- function(report_flextable = NULL,
   total_width <- flextable::flextable_dim(report_flextable)[["widths"]]
 
   # goal width of each table split from report_flextable, in inches
-  goal_width <- 8
+  goal_width <- 7.5 # max is 8"
 
   # approx width of each column in report_flextable
   approx_col_width <- total_width / total_cols
@@ -119,19 +117,19 @@ render_lg_table <- function(report_flextable = NULL,
     )
 
   # print all split tables by removing final_cols_to_del from report_flextable
-  # for (i in 1:num_tables) {
-  #   report_flextable |>
-  #     flextable::delete_columns(j = c(
-  #       as.numeric(
-  #         unlist(
-  #           strsplit(
-  #             table_cols[i,"final_cols_to_del"], ",")
-  #           )
-  #         )
-  #       )
-  #     ) |>
-  #       print()
-  # }
+  for (i in 1:num_tables) {
+    report_flextable |>
+      flextable::delete_columns(j = c(
+        as.numeric(
+          unlist(
+            strsplit(
+              table_cols[i,"final_cols_to_del"], ",")
+            )
+          )
+        )
+      ) |>
+        print()
+  }
 
   # save all tables to a list
   table_list <- list()
@@ -145,13 +143,16 @@ render_lg_table <- function(report_flextable = NULL,
           )
         )
       )
-      )
+      )|>
+        flextable::fit_to_width(max_width = goal_width)
 
     table_list[[i]] <- split_table
 
-    if(i == num_tables){
-      return(table_list[[j]])
-    }
+    # if(i == num_tables){
+    #   single_tab <- table_list[[returned_tab]]
+    #   return(single_tab)
+    # }
   }
+  return(table_list)
 }
 

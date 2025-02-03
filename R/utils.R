@@ -44,8 +44,8 @@ SS3_extract_df <- function(dat, label) {
 # create notin operator
 `%notin%` <- Negate(`%in%`)
 
-#---- Identify page orientation for tables ----
-ID_pg_orientation <- function(
+#---- Identify table width class ----
+ID_tbl_width_class <- function(
     plot_name, # e.g., "/bnc_table.rda"
     rda_dir,
     portrait_pg_width) {
@@ -58,15 +58,40 @@ ID_pg_orientation <- function(
     table_width <- flextable::flextable_dim(table_rda$table)[["widths"]] |>
       as.numeric()
 
-    # determine page orientation based on table width
-    ifelse(
-      table_width > portrait_pg_width,
-      orient_landscape <- TRUE,
-      orient_landscape <- FALSE
-    )
+    # determine table width class
+    if (table_width > portrait_pg_width){
+      if (table_width > 12) {
+        width_class <- "extra-wide"
+      } else {
+        width_class <- "wide"
+      }
+    } else {
+      width_class <- "regular"
+    }
+
   } else {
-    orient_landscape <- FALSE
+    width_class <- "regular"
   }
 
-  return(orient_landscape)
+  return(width_class)
+}
+
+#---- Identify table width class ----
+ID_split_tbls <- function(
+    rda_dir,
+    plot_name # e.g., "/bnc_table.rda"
+    ) {
+  rda_path <- file.path(paste0(rda_dir, "/rda_files", plot_name))
+
+  load(rda_path)
+  table_rda <- rda
+  rm(rda)
+  # table_width <- flextable::flextable_dim(table_rda$table)[["widths"]] |>
+  #   as.numeric()
+
+  # find number of split tables
+  split_tables <- render_lg_table(table_rda$table) |>
+    length()
+
+  return(split_tables)
 }

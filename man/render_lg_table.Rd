@@ -4,7 +4,7 @@
 \alias{render_lg_table}
 \title{Split an extra-wide table into mulitple tables}
 \usage{
-render_lg_table(report_flextable = NULL, essential_columns = NULL, j = NULL)
+render_lg_table(report_flextable = NULL, essential_columns = NULL)
 }
 \arguments{
 \item{report_flextable}{The extra-wide flextable.}
@@ -12,8 +12,6 @@ render_lg_table(report_flextable = NULL, essential_columns = NULL, j = NULL)
 \item{essential_columns}{The columns that will be retained between the split
 tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
 column. Example: for the indices table, this could be the year column.}
-
-\item{j}{A number identifying which split table to return, from the list of split tables.}
 }
 \value{
 A list of the split tables.

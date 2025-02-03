@@ -16,7 +16,7 @@ create_tables_doc <- function(subdir = NULL,
   portrait_pg_width <- 5
 
   # set landscape page width (in)
-  landscape_pg_width <- 8.5
+  landscape_pg_width <- 8
 
   if (include_all) {
     # add header
@@ -70,32 +70,51 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
 
 
       # identify table orientation
-     bnc_orient <- ID_pg_orientation("/bnc_table.rda",
+     bnc_orient <- ID_tbl_width_class("/bnc_table.rda",
                                      rda_dir,
                                      portrait_pg_width)
 
       # add landscape braces before R chunk depending on table width
-      if(bnc_orient == TRUE){
+      if(bnc_orient != "regular"){
         tables_doc <- paste0(
           tables_doc,
           "::: {.landscape}\n\n"
         )
       }
 
+     # identify number of split tables if extra-wide
+     if(bnc_orient == "extra-wide"){
+       split_tables <- ID_split_tbls("/bnc_table.rda",
+                                     rda_dir)
+     }
+
+
       ## add table
       tables_doc <- paste0(
         tables_doc,
         add_chunk(
-          if (bnc_orient == TRUE){
+          if (bnc_orient == "wide"){
             paste0(
               "bnc_table |>
-                flextable::fit_to_width(max_width = 8.5) |>
+                flextable::fit_to_width(max_width = 8) |>
                 flextable::set_table_properties(
                   opts_pdf = list(
                     arraystretch = 0.85
                   )
                 )"
             )
+          } else if (bnc_orient == "extra-wide") {
+            paste0(
+              "split_tables <- render_lg_table(report_flextable = bnc_table,
+                essential_columns = 1)\n"
+            )
+            for (i in 1:length(split_tables)){
+                paste0(
+                  "split_tables[[",
+                  i,
+                  "]] |> flextable::fit_to_width(max_width = 8)"
+              )
+            }
           } else {
             paste0("bnc_table")
           }
@@ -116,7 +135,7 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
       )
 
       # add landscape braces after R chunk depending on table width
-    if(bnc_orient == TRUE){
+    if(bnc_orient != "regular"){
       tables_doc <- paste0(
         tables_doc,
         ":::\n"
@@ -163,35 +182,54 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
       )
 
     # identify table orientation
-    indices_orient <- ID_pg_orientation("/indices.abundance_table.rda",
+    indices_orient <- ID_tbl_width_class("/indices.abundance_table.rda",
                                         rda_dir,
                                         portrait_pg_width)
 
     # add landscape braces before R chunk depending on table width
-      if(indices_orient == TRUE){
+      if(indices_orient != "regular"){
         tables_doc <- paste0(
           tables_doc,
           "::: {.landscape}\n\n"
         )
       }
 
+    # identify number of split tables if extra-wide
+    if(indices_orient == "extra-wide"){
+      split_tables <- ID_split_tbls(rda_dir,
+                                    "/indices.abundance_table.rda")
+      table_text <- c()
+      for (i in 1:as.numeric(split_tables)){
+        table_text <- c(table_text,
+                        paste0(
+                          "split_tables[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
+                        ))}
+      table_text <- paste0(table_text, collapse = "")
+
+    }
       ## add table
       tables_doc <- paste0(
         tables_doc,
         add_chunk(
-          if (indices_orient == TRUE){
+          if (indices_orient == "wide"){
             paste0(
               "indices_table |>
-                flextable::fit_to_width(max_width = 8.5) |>
+                flextable::fit_to_width(max_width = 8) |>
                 flextable::set_table_properties(
                   opts_pdf = list(
                     arraystretch = 0.85
                   )
                 )"
             )
-          } else {
+          } else if (indices_orient == "extra-wide") {
+            paste0(
+              "split_tables <- render_lg_table(report_flextable = indices_table,
+                essential_columns = 1)\n",
+              table_text
+            )
+            } else {
             paste0("indices_table")
-          }
+              }
           ,
           label = "tbl-indices-plot",
           eval = "!expr eval_indices",
@@ -210,7 +248,7 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
 
 
     # add landscape braces after R chunk depending on table width
-    if(indices_orient == TRUE){
+    if(indices_orient != "regular"){
       tables_doc <- paste0(
         tables_doc,
         ":::\n"
@@ -298,7 +336,7 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
     #         if (orient_landscape_landings == TRUE){
     #           paste0(
     #             "landings_table |>
-    #             flextable::fit_to_width(max_width = 8.5) |>
+    #             flextable::fit_to_width(max_width = 8) |>
     #             flextable::set_table_properties(
     #               opts_pdf = list(
     #                 arraystretch = 0.85
