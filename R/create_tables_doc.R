@@ -84,8 +84,15 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
 
      # identify number of split tables if extra-wide
      if(bnc_orient == "extra-wide"){
-       split_tables <- ID_split_tbls("/bnc_table.rda",
-                                     rda_dir)
+       split_tables <- ID_split_tbls(rda_dir,
+                                     "/bnc_table.rda")
+       table_text <- c()
+       for (i in 1:as.numeric(split_tables)){
+         table_text <- c(table_text,
+                         paste0(
+                           "split_tables[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
+                         ))}
+       table_text <- paste0(table_text, collapse = "")
      }
 
 
@@ -106,15 +113,9 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
           } else if (bnc_orient == "extra-wide") {
             paste0(
               "split_tables <- render_lg_table(report_flextable = bnc_table,
-                essential_columns = 1)\n"
+                essential_columns = 1)\n",
+              table_text
             )
-            for (i in 1:length(split_tables)){
-                paste0(
-                  "split_tables[[",
-                  i,
-                  "]] |> flextable::fit_to_width(max_width = 8)"
-              )
-            }
           } else {
             paste0("bnc_table")
           }
@@ -262,7 +263,7 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
       )
     }
 
-    # # landings table-----
+    # # landings table----- **UPDATE with above code format when functional**
     # # identify table width
     # rda_path_landings <- file.path(
     #   paste0(rda_dir, "/rda_files", "/landings_table.rda")

@@ -66,8 +66,7 @@ render_lg_table <- function(report_flextable = NULL,
       init_col <- 1
       end_col <- init_col + goal_cols_per_table
 
-    } else if ((i > 1) &
-               i < num_tables &
+    } else if ((i < num_tables) &
                ((init_col + goal_cols_per_table) <= total_cols)){
 
       # subtracting essential_cols so the first cols will be the essential ones
@@ -77,10 +76,6 @@ render_lg_table <- function(report_flextable = NULL,
     } else if (i == num_tables){
 
       end_col <- total_cols
-
-    } else {
-
-      print("Error")
 
     }
 
@@ -117,19 +112,19 @@ render_lg_table <- function(report_flextable = NULL,
     )
 
   # print all split tables by removing final_cols_to_del from report_flextable
-  for (i in 1:num_tables) {
-    report_flextable |>
-      flextable::delete_columns(j = c(
-        as.numeric(
-          unlist(
-            strsplit(
-              table_cols[i,"final_cols_to_del"], ",")
-            )
-          )
-        )
-      ) |>
-        print()
-  }
+  # for (i in 1:num_tables) {
+  #   report_flextable |>
+  #     flextable::delete_columns(j = c(
+  #       as.numeric(
+  #         unlist(
+  #           strsplit(
+  #             table_cols[i,"final_cols_to_del"], ",")
+  #           )
+  #         )
+  #       )
+  #     ) |>
+  #       print()
+  # }
 
   # save all tables to a list
   table_list <- list()
