@@ -377,12 +377,12 @@ create_template <- function(
       # Pull skeleton for sections
       current_folder <- system.file("templates", "skeleton", package = "asar")
       new_folder <- subdir
-
       if (!is.null(custom_sections)) {
         files_to_copy <- unlist(list.files(current_folder))[c(unlist(sapply(custom_sections, function(x) grep(x, list.files(current_folder)))), 10, 11)]
       } else {
         files_to_copy <- list.files(current_folder)
       }
+
       before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "asar")
       # header_file <- system.file("resources", "formatting_files", "in-header.tex", package = "asar")
       # format_files <- list(before_body_file, header_file)

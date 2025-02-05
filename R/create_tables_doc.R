@@ -22,17 +22,10 @@ create_tables_doc <- function(subdir = NULL,
         paste0("library(flextable)\n
 rda_dir <- '", rda_dir, "/rda_files'"),
         label = "set-rda-dir-tbls",
-        eval = "true",
-        add_option = TRUE,
-        chunk_op = c(
-          glue::glue(
-            "include: false"
-          )
-        )
-      ),
+        eval = "true"
+        ),
       "\n"
     )
-
 
     # Bnc table
     if (any(grepl("bnc_table.rda", list.files(file.path(rda_dir, "rda_files"))))) {

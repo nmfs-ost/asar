@@ -1,0 +1,37 @@
+\Documentmetadata{
+   %  uncompress, %only for debugging!!
+   pdfversion=2.0,
+   testphase={phase-II, tabular, graphic}%
+   % testphase={phase-II,math, tabular, graphic}% TOC Does not work
+   % testphase={phase-III,math}% TOC works
+   }
+   \tagpdfsetup{activate, tabsorder=structure}
+   % Use the following to fix bug in November 2023 download of LaTeX
+   \ExplSyntaxOn
+   \cs_generate_variant:Nn__tag_prop_gput:Nnn{cnx}
+   \ExplSyntaxOff
+}
+
+\documentclass[
+$if(fontsize)$
+  $fontsize$,
+$endif$
+$if(papersize)$
+  $papersize$paper,
+$endif$
+$if(beamer)$
+  ignorenonframetext,
+$if(handout)$
+  handout,
+$endif$
+$if(aspectratio)$
+  aspectratio=$aspectratio$,
+$endif$
+$if(babel-lang)$
+  $babel-lang$,
+$endif$
+$endif$
+$for(classoption)$
+  $classoption$$sep$,
+$endfor$
+]{$documentclass$}
