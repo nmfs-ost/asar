@@ -76,26 +76,8 @@ ID_tbl_width_class <- function(
   return(width_class)
 }
 
-#---- Identify how many tables to split extra-wide tables into ----
-ID_split_tbls <- function(
-    rda_dir,
-    plot_name # e.g., "bnc_table.rda"
-    ) {
-  rda_path <- file.path(paste0(rda_dir, "/rda_files/", plot_name))
-
-  load(rda_path)
-  table_rda <- rda
-  rm(rda)
-
-  # find number of split tables
-  split_tables <- render_lg_table(report_flextable = table_rda$table,
-                                  essential_columns = 1,
-                                  rda_dir = rda_dir,
-                                  plot_name = plot_name)
-
-  return(split_tables)
-}
 #---- # split extra-wide tables into smaller tables and export ----
+# the function returns the number of split tables
 export_split_tbls <- function(
     rda_dir,
     plot_name, # e.g., "bnc_table.rda"

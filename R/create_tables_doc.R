@@ -37,7 +37,8 @@ create_tables_doc <- function(subdir = NULL,
 
 
     # Bnc table-----
-    if (any(grepl("bnc_table.rda", list.files(file.path(rda_dir, "rda_files"))))) {
+    plot_name.bnc <- "bnc_table.rda"
+    if (any(grepl(plot_name.bnc, list.files(file.path(rda_dir, "rda_files"))))) {
       ## import table, caption
       tables_doc <- paste0(
         tables_doc,
@@ -70,9 +71,9 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
 
 
       # identify table orientation
-     bnc_orient <- ID_tbl_width_class("bnc_table.rda",
-                                     rda_dir,
-                                     portrait_pg_width)
+     bnc_orient <- ID_tbl_width_class(plot_name = plot_name.bnc,
+                                     rda_dir = rda_dir,
+                                     portrait_pg_width = portrait_pg_width)
 
       # add landscape braces before R chunk depending on table width
       if(bnc_orient != "regular"){
@@ -83,14 +84,11 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
       }
 
      if(bnc_orient == "extra-wide"){
-       # split extra-wide tables into smaller tables and export
-       export_split_tbls(rda_dir = rda_dir,
-                  plot_name = "bnc_table.rda",
-                  essential_columns = 1)
-
+       # split extra-wide tables into smaller tables and export AND
        # identify number of split tables
-       split_tables <- ID_split_tbls(rda_dir = rda_dir,
-                                     "bnc_table.rda")
+       split_tables <- export_split_tbls(rda_dir = rda_dir,
+                                         plot_name = plot_name.bnc,
+                                         essential_columns = 1)
 
        # prepare text for chunk that will display split tables
        table_text <- c()
@@ -120,10 +118,11 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
           } else if (bnc_orient == "extra-wide") {
             paste0(
               "load(file.path(rda_dir, 'bnc_table_split.rda'))\n
-              # save rda with plot-specific name
-              bnc_table_rda <- rda\n
-              # remove generic rda object
-              rm(rda)\n",
+# save rda with plot-specific name
+bnc_table_rda <- table_list\n
+# remove generic rda object
+rm(table_list)\n
+# plot split tables\n",
               table_text
             )
           } else {
@@ -161,7 +160,8 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
     }
 
     # Indices table-----
-    if (any(grepl("indices.abundance_table.rda", list.files(file.path(rda_dir, "rda_files"))))) {
+    plot_name.indices <- "indices.abundance_table.rda"
+    if (any(grepl(plot_name.indices, list.files(file.path(rda_dir, "rda_files"))))) {
       ## import table, caption
       tables_doc <- paste0(
         tables_doc,
@@ -193,9 +193,9 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
       )
 
     # identify table orientation
-    indices_orient <- ID_tbl_width_class("indices.abundance_table.rda",
-                                        rda_dir,
-                                        portrait_pg_width)
+    indices_orient <- ID_tbl_width_class(plot_name = plot_name.indices,
+                                        rda_dir = rda_dir,
+                                        portrait_pg_width = portrait_pg_width)
 
     # add landscape braces before R chunk depending on table width
       if(indices_orient != "regular"){
@@ -209,7 +209,7 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
       # split extra-wide tables into smaller tables and export AND
       # identify number of split tables
       split_tables <- export_split_tbls(rda_dir = rda_dir,
-                        plot_name = "indices.abundance_table.rda",
+                        plot_name = plot_name.indices,
                         essential_columns = 1)
 
       # prepare text for chunk that will display split tables
