@@ -413,9 +413,14 @@ create_template <- function(
       # Check if this is a rerender of the skeleton file
       if (rerender_skeleton) {
         # read format in skeleton & check if format is identified in the rerender call
-        prev_skeleton <- readLines(list.files(file_dir, pattern = "skeleton.qmd"))
+        prev_skeleton <- readLines(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))
+        # extract previous format
+        prev_format <- stringr::str_extract(
+          prev_skeleton[grep("format:", prev_skeleton)+1],
+          "[a-z]+"
+          )
         # if it is previously html and the rerender species html then need to copy over html formatting
-        if (format_prev == "pdf" & format == "html") {
+        if (prev_format == "pdf" & format == "html") {
           file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         }
       } else {
