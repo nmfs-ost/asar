@@ -20,7 +20,9 @@
 #' essential_columns = 1:3)
 #' }
 render_lg_table <- function(report_flextable = NULL,
-                            essential_columns = NULL
+                            essential_columns = NULL,
+                            rda_dir = NULL,
+                            plot_name = NULL
                             ) {
   # calculate key numbers
 
@@ -148,6 +150,12 @@ render_lg_table <- function(report_flextable = NULL,
     #   return(single_tab)
     # }
   }
-  return(table_list)
+  # save table_list as rda
+  save(table_list,
+       file = fs::path(rda_dir,
+                       "rda_files",
+                       paste0(stringr::str_remove(plot_name, ".rda"), "_split.rda")))
+
+  return(num_tables)
 }
 

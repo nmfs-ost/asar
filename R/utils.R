@@ -46,10 +46,10 @@ SS3_extract_df <- function(dat, label) {
 
 #---- Identify table width class ----
 ID_tbl_width_class <- function(
-    plot_name, # e.g., "/bnc_table.rda"
+    plot_name, # e.g., "bnc_table.rda"
     rda_dir,
     portrait_pg_width) {
-  rda_path <- file.path(paste0(rda_dir, "/rda_files", plot_name))
+  rda_path <- file.path(paste0(rda_dir, "/rda_files/", plot_name))
 
   if (file.exists(rda_path)) {
     load(rda_path)
@@ -76,22 +76,42 @@ ID_tbl_width_class <- function(
   return(width_class)
 }
 
-#---- Identify table width class ----
+#---- Identify how many tables to split extra-wide tables into ----
 ID_split_tbls <- function(
     rda_dir,
-    plot_name # e.g., "/bnc_table.rda"
+    plot_name # e.g., "bnc_table.rda"
     ) {
-  rda_path <- file.path(paste0(rda_dir, "/rda_files", plot_name))
+  rda_path <- file.path(paste0(rda_dir, "/rda_files/", plot_name))
 
   load(rda_path)
   table_rda <- rda
   rm(rda)
-  # table_width <- flextable::flextable_dim(table_rda$table)[["widths"]] |>
-  #   as.numeric()
 
   # find number of split tables
-  split_tables <- render_lg_table(table_rda$table) |>
-    length()
+  split_tables <- render_lg_table(report_flextable = table_rda$table,
+                                  essential_columns = 1,
+                                  rda_dir = rda_dir,
+                                  plot_name = plot_name)
 
   return(split_tables)
+}
+#---- # split extra-wide tables into smaller tables and export ----
+export_split_tbls <- function(
+    rda_dir,
+    plot_name, # e.g., "bnc_table.rda"
+    essential_columns
+    ) {
+  rda_path <- file.path(paste0(rda_dir, "/rda_files/", plot_name))
+
+  load(rda_path)
+  table_rda <- rda
+  rm(rda)
+
+  # split tables and export
+  render_lg_table(report_flextable = table_rda$table,
+                  essential_columns = essential_columns,
+                  rda_dir = rda_dir,
+                  plot_name = plot_name)
+
+ # return(split_tables)
 }
