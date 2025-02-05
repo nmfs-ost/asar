@@ -44,6 +44,7 @@
 #'    add_alttext(
 #'      x = "SAR_USWC_Dover_sole_skeleton.tex",
 #'      dir = getwd(),
+#'      alttext_csv_dir = getwd(),
 #'      rda_dir = path,
 #'      compile = TRUE)
 #'    )
