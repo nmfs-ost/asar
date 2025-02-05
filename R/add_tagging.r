@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun {
+#' \dontrun{
 #'   create_template(
 #'   new_template = TRUE,
 #'   format = "pdf",

@@ -42,7 +42,7 @@ before documentclass, so this function alters the rendered .tex file.
 Altering latex file of report to increase accessibility of the document.
 }
 \examples{
-\dontrun {
+\dontrun{
   create_template(
   new_template = TRUE,
   format = "pdf",
