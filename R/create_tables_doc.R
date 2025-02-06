@@ -19,11 +19,12 @@ create_tables_doc <- function(subdir = NULL,
     tables_doc <- paste0(
       tables_doc,
       add_chunk(
-        paste0("library(flextable)\n
-rda_dir <- '", rda_dir, "/rda_files'"),
+        paste0("library(flextable)\nrda_dir <- '", rda_dir, "/rda_files'"),
         label = "set-rda-dir-tbls",
-        eval = "true"
-        ),
+        eval = "true",
+        add_option = TRUE,
+        chunk_op = "include: false"
+      ),
       "\n"
     )
 

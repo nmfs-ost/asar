@@ -75,8 +75,10 @@ Add alternative text into latex
    add_alttext(
      x = "SAR_USWC_Dover_sole_skeleton.tex",
      dir = getwd(),
+     alttext_csv_dir = getwd(),
      rda_dir = path,
-     compile = TRUE)
+     compile = TRUE,
+     rename = "SAR_Dover_sole_tagged")
    )
 }
 

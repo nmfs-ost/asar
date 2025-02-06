@@ -1,6 +1,6 @@
 test_that("Creates expected start of tables doc", {
   # create tables doc
-  asar::create_tables_doc(
+  create_tables_doc(
     subdir = getwd(),
     include_all = TRUE,
     rda_dir = getwd()

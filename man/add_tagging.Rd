@@ -25,7 +25,7 @@ function. There is no need to include ".tex" in the name. Defaults to current
 name and overwrites the current tex file.}
 }
 \value{
-DRAFT: This function was made to help add in
+This function was made to help add in
 latex packages and content associated with PDF
 tagging. Quarto does not allow the user to edit anything
 before documentclass, so this function alters the rendered .tex file.
