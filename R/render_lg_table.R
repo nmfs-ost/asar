@@ -1,4 +1,4 @@
-#' Split an extra-wide table into mulitple tables
+#' Split an extra-wide table into multiple tables
 #'
 #' @param report_flextable The extra-wide flextable.
 #' @param essential_columns The columns that will be retained between the split
@@ -68,14 +68,13 @@ render_lg_table <- function(report_flextable = NULL,
       init_col <- 1
       end_col <- init_col + goal_cols_per_table
 
-    } else if ((i < num_tables) &
-               ((init_col + goal_cols_per_table) <= total_cols)){
+    } else if ((i < num_tables) & (init_col < total_cols)){
 
       # subtracting essential_cols so the first cols will be the essential ones
       # and the total cols will still = goal_cols_per_table
       end_col <- init_col + goal_cols_per_table - length(essential_cols)
 
-    } else if (i == num_tables){
+    } else {
 
       end_col <- total_cols
 

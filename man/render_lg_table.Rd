@@ -2,7 +2,7 @@
 % Please edit documentation in R/render_lg_table.R
 \name{render_lg_table}
 \alias{render_lg_table}
-\title{Split an extra-wide table into mulitple tables}
+\title{Split an extra-wide table into multiple tables}
 \usage{
 render_lg_table(
   report_flextable = NULL,
@@ -22,7 +22,7 @@ column. Example: for the indices table, this could be the year column.}
 A list of the split tables.
 }
 \description{
-Split an extra-wide table into mulitple tables
+Split an extra-wide table into multiple tables
 }
 \examples{
 \dontrun{
