@@ -107,7 +107,7 @@ rm(table_list)\n
 bnc_table_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
               )
               ,
-              label = paste0("tbl-bnc-plot", i),
+              label = paste0("tbl-bnc", i),
               eval = "!expr eval_bnc",
               add_option = TRUE,
               chunk_op = c(
@@ -142,7 +142,7 @@ bnc_table_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
               paste0("bnc_table")
             }
             ,
-            label = "tbl-bnc-plot",
+            label = "tbl-bnc",
             eval = "!expr eval_bnc",
             add_option = TRUE,
             chunk_op = c(
@@ -243,7 +243,7 @@ rm(table_list)\n
 indices_table_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
               )
               ,
-              label = paste0("tbl-indices-plot", i),
+              label = paste0("tbl-indices", i),
               eval = "!expr eval_indices",
               add_option = TRUE,
               chunk_op = c(
@@ -278,7 +278,7 @@ indices_table_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
               paste0("indices_table")
             }
             ,
-            label = "tbl-indices-plot",
+            label = "tbl-indices",
             eval = "!expr eval_indices",
             add_option = TRUE,
             chunk_op = c(
@@ -380,7 +380,7 @@ indices_table_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
 # landings_table_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
 #               )
 #               ,
-#               label = paste0("tbl-landings-plot", i),
+#               label = paste0("tbl-landings", i),
 #               eval = "!expr eval_landings",
 #               add_option = TRUE,
 #               chunk_op = c(
@@ -415,7 +415,7 @@ indices_table_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
 #               paste0("landings_table")
 #             }
 #             ,
-#             label = "tbl-landings-plot",
+#             label = "tbl-landings",
 #             eval = "!expr eval_landings",
 #             add_option = TRUE,
 #             chunk_op = c(
