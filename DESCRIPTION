@@ -32,13 +32,16 @@ Imports:
     officer,
     openxlsx,
     prodlim,
+    quarto,
     stats,
     stringr,
     svDialogs,
     tibble,
     tidyr,
     tidyselect,
-    utils
+    tinytex,
+    utils,
+    withr
 Suggests: 
     gt,
     kableExtra,
