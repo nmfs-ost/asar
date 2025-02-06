@@ -137,12 +137,7 @@ bnc_table_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
             if (bnc_orient == "wide"){
               paste0(
                 "bnc_table |>
-                flextable::fit_to_width(max_width = 8) |>
-                flextable::set_table_properties(
-                  opts_pdf = list(
-                    arraystretch = 0.85
-                  )
-                )"
+                flextable::fit_to_width(max_width = 8)"
               )
             } else if (bnc_orient == "regular"){
               paste0("bnc_table")
@@ -273,12 +268,7 @@ indices_table_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
             if (indices_orient == "wide"){
               paste0(
                 "indices_table |>
-                flextable::fit_to_width(max_width = 8) |>
-                flextable::set_table_properties(
-                  opts_pdf = list(
-                    arraystretch = 0.85
-                  )
-                )"
+                flextable::fit_to_width(max_width = 8)"
               )
             } else if (indices_orient == "regular"){
               paste0("indices_table")
@@ -410,12 +400,7 @@ indices_table_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
 #             if (landings_orient == "wide"){
 #               paste0(
 #                 "landings_table |>
-#                 flextable::fit_to_width(max_width = 8) |>
-#                 flextable::set_table_properties(
-#                   opts_pdf = list(
-#                     arraystretch = 0.85
-#                   )
-#                 )"
+#                 flextable::fit_to_width(max_width = 8)"
 #               )
 #             } else if (landings_orient == "regular"){
 #               paste0("landings_table")
