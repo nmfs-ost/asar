@@ -42,7 +42,7 @@ print(hake_conout)
 ```
 
 
-The data frame is structured in following the convention of FIMS but removing the use of S4 or S3 data frame classes encouraging a more user friendly set up to start. The following format outlines the standard dataframe:
+The data frame is structured in following the convention of FIMS but removing the use of S4 or S3 data frame classes encouraging a more user friendly set up to start. The following format outlines the standard data frame:
 
 | Column label | Description                                 |
 |--------------|---------------------------------------------|
@@ -105,16 +105,30 @@ The following code does NOT create separate columns when pkgdown site is built
 
 Another hurdle to tackle is naming conventions. We have attempted to create a standard naming convention system so that the same values are called each time no matter the assessment model. Unfortunately, this can't be perfect, but there are approaches we took to standardize naming as best as we could. In terms of naming:
 
-1. Generally, labels and other strings are lowercase.
+1. Generally, labels and other strings are lowercase. Exceptions to this case only include commonly referred to fisheries acronyms such as biomass (B), R0, ect...
 
-2. Fleet names are inherited so they are easily called by the analyst familiar with the data
+- This does not apply to catch and fishing mortality since C and F are used in the R language (a common language used in fisheries). In these two cases, the terms are spelled out in lowercase.
+
+2. Fleet names are inherited so they are easily called by the analyst familiar with the data.
 
 3. Labels with more than one word use string case (i.e. spawning_biomass).
 
 4. The full name is used for the label, unless there is a common and *well known* acronym for it such as spr, cpue, R0, or it is a point relative to a reference point (i.e. b_msy = $B_{msy}$, b_b_msy = $B/B_{msy}$)
 
-5. For labels specific to a stock or assessment model, they were kept in the converted output, but expanded upon following the above naming conventions.
+5. For labels specific to a stock or assessment model, they were kept in the converted output, but edited/expanded upon following the above conventions.
 
 6. In cases where a label could not be standardized, the same label was kept in the converted output. We hope that these remaining names can be standardized in the future through collaboration with the respective analysts using them.
 
+## Final Formatting
+
+`convert_output()` exports data frames as a csv. While this is not necessary to the function of {asar} and {satf} packages as a whole due to their setup, we recommend continuing this practice to remain consistent with the function.
+
+The final data frame does not manipulate column typing (character, numeric, ect). We have left that to the analyst or other functions since there can be conflicts within the estimates due to NAs. Ideally, all columns beside the following with remain as characters or factors and the following will be converted to numeric:
+
+  - estimate
+  - uncertainty
+  - initial
+  - likelihood
+  
+In conclusion, the final dataframe should be very long with repeating years and factors to represent each point of data from the output file. Some metrics such as estimated stock-recruitment curve, weight-length relationship or other similar parameters are not currently 
 
