@@ -144,6 +144,23 @@ render_lg_table <- function(report_flextable = NULL,
 
     table_list[[i]] <- split_table
 
+    # get rownames of split table
+    all_vals <- split_table$header$dataset
+    shown_vals <- c(split_table[["header"]][["content"]][["keys"]])
+    split_tbl_vals <- all_vals |>
+      dplyr::select(dplyr::intersect(names(all_vals),
+                                     shown_vals)) |>
+      dplyr::slice(1) |>
+      dplyr::select_if(~!(all(is.na(.)) | all(. == ""))) |>
+      as.character() |>
+      unique() |>
+      stringr::str_squish() |>
+      paste(collapse=', ')
+
+    # add rownames to table_list
+    names(table_list)[[i]] <- split_tbl_vals
+
+
     # if(i == num_tables){
     #   single_tab <- table_list[[returned_tab]]
     #   return(single_tab)
