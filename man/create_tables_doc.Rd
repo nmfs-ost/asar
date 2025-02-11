@@ -25,7 +25,13 @@ regenerated.}
 }
 \value{
 Create a quarto document as part of a stock assessment outline with
-pre-loaded R chunk adding the stock assessment tables from the nmfs-ost/satf R package
+pre-loaded R chunk adding the stock assessment tables from the nmfs-ost/satf
+R package. NOTE: If your table is too wide to print on a portrait-oriented page,
+the page will be rotated to landscape view. If if is too wide to print in
+landscape view, it will be split into multiple tables. In this case, a new rda
+will be created and is identifiable by the phrase "split" in the filename (e.g.,
+indices.abundance_table.rda will generate a new indices.abundance_table_split.rda
+file). These tables will share the same caption.
 }
 \description{
 Create Quarto Document of Tables
