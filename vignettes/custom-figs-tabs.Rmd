@@ -1,0 +1,227 @@
+---
+title: "Adding Custom Tables and Figures"
+output:
+  html_document:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Adding Custom Tables and Figures}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+You may wish to add custom tables or figures to your report. Here, we break down the recommended workflow for doing so.
+
+# Code your custom tables and figures
+
+First, write the code to produce (but not export; that's a future step!) your custom tables and figures. Save each figure and table as an object (e.g., in the examples below, `your_figure` and `your_table`). Save the script somewhere safe.
+
+```{r eval=F}
+# Example dataframe
+your_df <- data.frame("x" = c(1,2,3),
+                      "y" = c(4,5,6))
+
+# Example table
+your_table <- flextable::flextable(your_df)
+
+# Example figure
+your_figure <- ggplot2::ggplot(your_df,
+                               aes(x = x,
+                                   y = y)) +
+  ggplot2::geom_point()
+```
+
+# Write captions and alternative text
+
+Next, once you know what your tables and figures look like, write your own captions and alternative text. Custom tables will require captions only.
+
+## Step 1: Writing text
+
+Check out the `satf` ['captions_alt_text_template.csv' file](https://github.com/nmfs-ost/satf/blob/master/inst/resources/captions_alt_text_template.csv), which contains the templates for each table or figure's caption/alt text, to get a sense of how each description is structured. Then, refer to [the accessibility vignette's guide](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) to learn how to write clear and comprehensive alt text.
+
+Write your captions as you wish.
+
+We recommend adding in key quantities, like max and min values, to ensure your captions and alt text clearly describe your plots. For example, if you're showing how a value X changed over time, we recommend providing the max and min values of X and years shown. Check out the code within [the `satf::write_captions()` function](https://github.com/nmfs-ost/satf/blob/master/R/write_captions.R) to see how we extract certain key quantities from the model results files.
+
+## Step 2: Saving text
+
+Once written, you'll have to save your captions and alt text. While you could save it in the captions_alt_text.csv file (created if you've already generated a figure or table rda), we recommend saving these in a separate file to avoid loss if the captions_alt_text.csv file is overwritten.
+
+Open a blank csv file and save it in your working directory. You may wish to title it something like "custom_captions_alt_text.csv". Add your text in this format (identical to the `satf` ['captions_alt_text_template.csv' file](https://github.com/nmfs-ost/satf/blob/master/inst/resources/captions_alt_text_template.csv):
+
+| label       | type   | caption                     | alt_text                     |
+|----------------|----------------|--------------------|---------------------|
+| example_fig | figure | Example caption for figure. | Example alt text for figure. |
+| example_tab | table  | Example caption for table.  | Example alt text for table.  |
+
+: Format for csv containing custom tables and figures.
+
+-   Column 1 ("label") is a shorthand label for your figure or table. Labels should be somewhat short and exclude spaces. Examples include "kobe", "relative.biomass", and "fishing.mortality".
+-   Column 2 ("type") contains "figure" or "table".
+-   Column 3 ("caption") contains your caption.
+-   Column 4 ("alt_text") contains alt text for figures. For tables, this column will be blank.
+
+# Export your custom tables/figures
+
+Next, export your tables/figures to rda files. This code was adapted from functions like `satf::plot_biomass`.
+
+## Import pre-written captions and alt text
+
+Import your csv containing your captions and alt text and save it as an object. Then, save the captions and alt text as separate objects. For example:
+
+```{r eval=F}
+# Import captions and alt text
+my_text <- read.csv(file = "custom_captions_alt_text.csv")
+
+# Extract table caption
+my_table_cap <- my_text |>
+  dplyr::filter(label == "example_table",
+                type == "table") |>
+    dplyr::select(caption) |>
+    as.character()
+
+# Extract figure caption
+my_figure_cap <- my_text |>
+  dplyr::filter(label == "example_fig",
+                type == "figure") |>
+    dplyr::select(caption) |>
+    as.character()
+
+# Extract figure alt text
+my_figure_alt_text <- my_text |>
+  dplyr::filter(label == "example_fig",
+                type == "figure") |>
+    dplyr::select(alt_text) |>
+    as.character()
+
+```
+
+## Make rda for tables
+
+```{r eval=F}
+rda_table <- list("table" = your_table, # your table object
+            "cap" = my_table_cap # your table caption
+            )
+```
+
+## Make rda for figures
+
+```{r eval=F}
+rda_fig <- list("figure" = your_figure, # your figure object
+            "cap" = my_figure_cap, # your figure caption
+            "alt_text" = my_figure_alt_text # your figure alt text
+            )
+```
+
+## Make an rda_files folder (if needed)
+
+Do you already have an rda_files folder? *Hint: it should be in your working directory.* If yes: Great! You can skip this step. If not, simply enter the code below to make an rda_files folder.
+
+```{r}
+dir.create(fs::path(getwd(), "rda_files"))
+```
+
+## Export your rdas
+
+### Table example
+
+This will produce an rda called "example_tab_table.rda" and save it in your rda_files folder.
+
+```{r eval=FALSE}
+save(rda,
+     file = fs::path(getwd(), # this is your rda_files directory
+                     "rda_files",
+                     paste0(
+                       "example_tab", # your table's label
+                       "_",
+                       "table", # indicate rda contains a table
+                       ".rda")
+                     )
+     )
+```
+
+### Figure example
+
+This will produce an rda called "example_fig_figure.rda" and save it in your rda_files folder.
+
+```{r eval=FALSE}
+save(rda,
+     file = fs::path(getwd(), # this is your rda_files directory
+                     "rda_files",
+                     paste0(
+                       "example_fig", # your figure's label
+                       "_",
+                       "figure", # indicate rda contains a figure
+                       ".rda")
+                     )
+     )
+```
+
+# Set up .qmd files to display custom tables and figures
+
+You will create one .qmd file for your tables and one .qmd file for your figures. We include separate workflows for tables and figures, below.
+
+## Tables
+
+### Identify table orientation and if splitting (if necessary)
+
+Your next step is to get a sense of your table dimensions. You'll ask:
+
+-   Will each fit neatly into a portrait orientation, or should the page be rotated 90 degrees into landscape view? - Even in landscape view, is the table too wide to be shown properly, and must be split into smaller tables?
+
+Here are the steps to answer these questions.
+
+#### Table orientation
+
+Run this code:
+
+```{r eval=F}
+my_plot_name <- "example_tab_table.rda" # this is the filename of your table rda
+rda_dir <- getwd() # this is the location of your rda_files folder
+
+ID_tbl_width_class(plot_name = my_plot_name,
+                   rda_dir = rda_dir,
+                   portrait_pg_width = 5 # 5 inches = the threshold for maximum table width before it needs to be resized, rotated, and/or split
+                   )
+```
+
+You will see one of three outputs: regular, wide, or extra-wide.
+
+|                    |         |                           |            |
+|--------------------|:-------:|:-------------------------:|:----------:|
+| **Classification** | Regular |           Wide            | Extra-wide |
+| **Table width**    |  \< 5"  | at least 5" and up to 12" |   \>12"    |
+
+: Table width classification system coded in the `ID_tbl_width_class` function.
+
+*If your output is regular*, this means that you can display your table in a .qmd chunk without any additional steps. Skip the next section ("Table splitting") and proceed.
+
+*If your output is wide*, this means that you will place your table's .qmd chunk in special braces that change the page orientation to landscape. Skip the next section ("Table splitting") and proceed.
+
+*If your output is extra-wide*, this means that you will place your table's .qmd chunk in special braces that change the page orientation to landscape _and_ split it into narrower tables, each of which are displayed on separate pages. Proceed to the next section.
+
+#### Table splitting
+
+Extra-wide tables will need to be split among multiple pages. 
+
+## Figures
+
+# Insert calls to new .qmd files into skeleton
+
+<!-- 1. Copy existing 08_tables.qmd (with tables in it, preferably), save as 08_tables_custom.qmd or whatever name they want. I'd keep it in the same report folder -->
+
+<!-- 2. Remove the top header: -->
+
+<!-- ## Tables {#sec-tables} -->
+
+<!-- 3. Keep the first chunk but change the label (must be unique). Could adopt a system to add "-custom" to all existing labels, or "2", or something else. Need this chunk because ... -->
+
+<!-- 4. Add chunk that imports rda and saves fig/table, cap, and alt text -->
+
+<!-- 5. Add chunk that shows the plot -->
