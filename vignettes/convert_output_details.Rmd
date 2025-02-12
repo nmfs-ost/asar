@@ -7,8 +7,17 @@ vignette: >
   %\VignetteIndexEntry{Standardizing Assessment Output}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-bibliography: references.bib
 ---
+```{css, echo=FALSE}
+pre {
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+pre[class] {
+  max-height: 100px;
+}
+```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -31,19 +40,12 @@ The converter manipulates data sets by recognizing patterns based on the assessm
 The data is manipulated to follow the format in @tbl-cols. The majority of the code in the function is specific for how one would manipulate the output with some minor exceptions. The code in the converter creates an empty data frame with the columns referenced in @tbl-cols (See [code](https://github.com/nmfs-ost/asar/blob/c8db61f325e9926461c70ef2d62349eb8d2bf2dd/R/convert_output.R#L45-L81)). At the end of the function, standard naming conventions are applied to rename labels of parameters or quantities as followed in @sec-namecon. Currently, we have files to use as examples to change the names of labels following our convention. One of the example files can be downloaded [here](https://github.com/nmfs-ost/asar/blob/main/inst/resources/ss3_var_names.xlsx). The final data frame is saved as a csv or exported to the users environment if assigned.
 
 
-```{css, echo=FALSE}
-pre, code {
-  white-space:pre !important; 
-  overflow-x:auto;
-  display: block;
-  overflow-x: auto;
-  overflow-y: auto;
-}
-```
+
+
 
 ```{r, echo=TRUE}
 load("example_conout.rda")
-print(hake_conout)
+head(hake_conout)
 ```
 
 
