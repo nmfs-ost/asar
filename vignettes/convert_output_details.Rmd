@@ -22,6 +22,8 @@ Additionally, after following this article, users who use it to manipulate their
 
 The converter was designed so that it would manipulate the output file from the assessment (Report.sso for SS3, .rdat from BAM...). This means that we have only configured it to work with a singular output file so the converted data frame is limited to the data given to it from that file. We have plans to expand upon this format to include other data files associated with running the model, but this will not happen in the near future.
 
+![A visual showing the process of the convert_output function in asar.](convert_output_flow.png){height="50%}
+
 ## Set up and format
 
 The converter manipulates data sets by recognizing patterns based on the assessment model (SS3, BAM, ect) and organizes it by expanding all data as single columns. This makes the data frame more machine readable allowing users to plot the data or place it into tables. The format also helps us as developers create other standardized procedures and automation due to its ease of use.
