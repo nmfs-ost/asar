@@ -16,11 +16,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-You may wish to add custom tables or figures to your report. Here, we break down the recommended workflow for doing so.
+You may wish to add custom tables or figures to your report. Here, we provide the recommended workflow for doing so.
 
 # Code your custom tables and figures
 
-First, write the code to produce (but not export; that's a future step!) your custom tables and figures. Save each figure and table as an object (e.g., in the examples below, `your_figure` and `your_table`). Save the script somewhere safe.
+First, write the code to produce (but not export; that's a future step!) your custom tables and figures. Save each table and figure as an object (e.g., in the examples below, `your_table` and `your_figure`). Save the script somewhere safe.
 
 ```{r eval=F}
 # Example dataframe
@@ -45,9 +45,7 @@ Next, once you know what your tables and figures look like, write your own capti
 
 Check out the `satf` ['captions_alt_text_template.csv' file](https://github.com/nmfs-ost/satf/blob/master/inst/resources/captions_alt_text_template.csv), which contains the templates for each table or figure's caption/alt text, to get a sense of how each description is structured. Then, refer to [the accessibility vignette's guide](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) to learn how to write clear and comprehensive alt text.
 
-Write your captions as you wish.
-
-We recommend adding in key quantities, like max and min values, to ensure your captions and alt text clearly describe your plots. For example, if you're showing how a value X changed over time, we recommend providing the max and min values of X and years shown. Check out the code within [the `satf::write_captions()` function](https://github.com/nmfs-ost/satf/blob/master/R/write_captions.R) to see how we extract certain key quantities from the model results files.
+We recommend adding in key quantities, like maximum and minimum values, to ensure your captions and alt text clearly describe your plots. For example, if you're showing how a value X changed over time, we recommend providing the maximum and minimum values of X and years shown. Check out the code within [the `satf::write_captions()` function](https://github.com/nmfs-ost/satf/blob/master/R/write_captions.R) to see how we extract certain key quantities from the model results files.
 
 ## Saving text
 
@@ -102,18 +100,22 @@ my_figure_alt_text <- my_text |>
 
 ```
 
-## Make rda for tables
+## Make rdas
+
+Your rdas will contain your table or figure, caption, and alt text (if it's a figure).
+
+### Tables
 
 ```{r eval=F}
-rda_table <- list("table" = your_table, # your table object
+rda <- list("table" = your_table, # your table object
             "cap" = my_table_cap # your table caption
             )
 ```
 
-## Make rda for figures
+### Figures
 
 ```{r eval=F}
-rda_fig <- list("figure" = your_figure, # your figure object
+rda <- list("figure" = your_figure, # your figure object
             "cap" = my_figure_cap, # your figure caption
             "alt_text" = my_figure_alt_text # your figure alt text
             )
@@ -123,13 +125,13 @@ rda_fig <- list("figure" = your_figure, # your figure object
 
 Do you already have an rda_files folder? *Hint: it should be in your working directory.* If yes: Great! You can skip this step. If not, simply enter the code below to make an rda_files folder.
 
-```{r}
+```{r eval=FALSE}
 dir.create(fs::path(getwd(), "rda_files"))
 ```
 
 ## Export your rdas
 
-### Table example
+### Tables
 
 This will produce an rda called "example_tab_table.rda" and save it in your rda_files folder.
 
@@ -146,7 +148,7 @@ save(rda,
      )
 ```
 
-### Figure example
+### Figures
 
 This will produce an rda called "example_fig_figure.rda" and save it in your rda_files folder.
 
@@ -169,12 +171,13 @@ save(rda,
 
 Your next step is to get a sense of your table dimensions. You'll ask:
 
--   Will each fit neatly into a portrait orientation, or should the page be rotated 90 degrees into landscape view? - Even in landscape view, is the table too wide to be shown properly, and must be split into smaller tables?
+-   Will each fit neatly into a portrait orientation, or should the page be rotated 90 degrees into landscape view?
+-   Even in landscape view, is the table too wide to be shown properly, and must be split into smaller tables?
 
-Here are the steps to answer these questions.
+This section contains the steps to answer these questions.
 
-::: {.callout-note}
-This workflow is reflected in the create_tables_doc.R file and its associated functions (such as `render_lg_table()`, which has its own synonymous R file, and `ID_tbl_width_class()` and `export_split_tbls()`, which are found in the utils.R file).
+::: callout-note
+This workflow is reflected in the create_tables_doc.R file and its associated functions (such as `render_lg_table()`, which has its own synonymous R file, and `ID_tbl_width_class()` and `export_split_tbls()`, which are found in the [utils.R](https://github.com/nmfs-ost/asar/blob/main/R/utils.R) file).
 :::
 
 ## Table width and orientation
@@ -206,7 +209,7 @@ You will see one of three outputs: regular, wide, or extra-wide.
 
 *If your output is extra-wide*, this means that you will place your table's .qmd chunk in special braces that change the page orientation to landscape *and* split it into narrower tables, each of which are displayed on separate pages. Proceed to the next section (@sec-table-splitting).
 
-## Table splitting {#sec-table-splitting}
+## Table splitting (for extra-wide tables only) {#sec-table-splitting}
 
 Extra-wide tables will need to be split among multiple pages. Run this code to learn the number of tables into which your original table will be split *and* export the split tables (as a list) into a new rda:
 
@@ -220,9 +223,9 @@ export_split_tbls(rda_dir = rda_dir,
                   essential_columns = essential_cols)
 ```
 
-If the number returned was, say, 5, then since each split table must be in its own chunk, you will need 5 chunks to show your split tables.
+If the number returned was, say, 5, then since each split table must be in its own chunk, you will need 5 chunks to show your split tables. You will also need an additional chunk to load in the data. Each table needs its own chunk, and therefore label, so that it can be cross-referenced in text.
 
-You can check out your split tables in your new rda, saved in your rda_dir folder. It will have the same filename as your original rda except that it will contain "\_split" in the filename. For instance, split tables created from "example_tab_table.rda" will be saved in "example_tab_table_split.rda".
+You can check out your split tables in the new rda saved in your rda_dir folder. It will have the same filename as your original rda except that it will contain "\_split" in the filename. For instance, split tables created from "example_tab_table.rda" will be saved in "example_tab_table_split.rda".
 
 # Set up Quarto markdown (.qmd) files to display custom tables and figures
 
@@ -238,7 +241,7 @@ Remove all text from the new document.
 
 Switch from Visual to Source mode ([instructions here](https://quarto.org/docs/visual-editor/#switching-modes)).
 
-Save this new file with a clear name in a logical location. We recommend a filename like 08_tables_custom.qmd and saving it in the same report folder as the rest of your files.
+Save this new file with a clear name in a logical location. We recommend a filename like 08_tables_custom.qmd and saving it in the same report folder as the rest of your report files.
 
 Now, add your first R chunk (shown below). This chunk is used to establish your rda_dir folder and load the library needed to plot your tables (`flextable`).
 
@@ -254,6 +257,7 @@ library(flextable)
 rda_dir <- 'C:/path/to/your/rda_files' # set the path to your rda_dir
 ``` 
 ````
+
 Now, follow the instructions in the appropriate section depending on your table width: regular, wide, or extra wide.
 
 ### Regular table
@@ -276,6 +280,7 @@ example_table <- example_table_rda$table
 example_cap <- example_table_rda$cap
 ``` 
 ````
+
 Then, add this chunk to display the table in your .qmd when it's rendered:
 
 ````{verbatim}
@@ -287,11 +292,12 @@ Then, add this chunk to display the table in your .qmd when it's rendered:
 example_table
 ``` 
 ````
+
 If you are adding another table, regardless of size, add a page break first:
 
-````{verbatim}
+```{verbatim}
 {{< pagebreak >}}
-````
+```
 
 Keep adding as many tables as you'd like. Keep in mind that each table must have a chunk that imports it, and another chunk that displays it, as shown above.
 
@@ -320,9 +326,9 @@ example_cap <- example_table_rda$cap
 
 Before you add your next chunk, add [landscape braces](https://quarto.org/docs/authoring/article-layout.html#landscape-mode) to ensure your table will be displayed on a landscape-oriented page:
 
-````{verbatim}
+```{verbatim}
 ::: {.landscape}
-````
+```
 
 Then, add this chunk to display the table in your .qmd when it's rendered:
 
@@ -339,15 +345,15 @@ example_table |>
 
 And add three colons to close the landscape braces:
 
-````{verbatim}
+```{verbatim}
 :::
-````
+```
 
 If you are adding another table, regardless of size, add a page break first:
 
-````{verbatim}
+```{verbatim}
 {{< pagebreak >}}
-````
+```
 
 Keep adding as many tables as you'd like. Keep in mind that each table must have a chunk that imports it, and another chunk that displays it, as shown above.
 
@@ -357,10 +363,10 @@ You're almost done! Proceed to the last section (@sec-update-skeleton) to finish
 
 Add the following chunk to your script to:
 
-- import your original table's rda
-- save original table's caption as a separate object
-- import your split tables' rda
-- save split tables' caption specifiers as a separate object
+-   import your *original table's* rda
+-   save original table's caption as a separate object
+-   import your *split tables'* rda
+-   save split tables' caption specifiers as a separate object
 
 ````{verbatim}
 ```{r} 
@@ -385,13 +391,14 @@ rm(table_list)
 example_cap_split <- names(example_table_rda_split)
 ``` 
 ````
+
 Example caption specifiers could include fleets only shown in specific tables.
 
 Before you add your next chunk, add [landscape braces](https://quarto.org/docs/authoring/article-layout.html#landscape-mode) to ensure your table will be displayed on a landscape-oriented page:
 
-````{verbatim}
+```{verbatim}
 ::: {.landscape}
-````
+```
 
 Now, you'll add as many chunks as you have split tables. Here's what the first one will look like:
 
@@ -408,13 +415,13 @@ example_table_rda_split[[1]] |>
 ``` 
 ````
 
-Copy and paste this chunk for as many split tables as you have. Then, replace the instances of "1" with the split table number (e.g., 2,3,4, etc.). In the example above, "1" occurs in the chunk options (label, tbl-cap) and the code itself.
+Copy and paste this chunk for as many split tables as you have. Then, replace the instances of "1" with the split table number (e.g., 2,3,4, etc.). In the example above, "1" occurs in the chunk options (label, tbl-cap) and the table-plotting code itself.
 
 Now, add three colons to close the landscape braces:
 
-````{verbatim}
+```{verbatim}
 :::
-````
+```
 
 Keep adding as many tables as you'd like. Keep in mind that each table must have a chunk that imports it, and another chunk that displays it, as shown above.
 
@@ -434,6 +441,8 @@ Switch from Visual to Source mode ([instructions here](https://quarto.org/docs/v
 
 Save this new file with a clear name in a logical location. We recommend a filename like 09_figures_custom.qmd and saving it in the same report folder as the rest of your files.
 
+### Add figure
+
 Now, add your first R chunk (shown below). This chunk is used to establish your rda_dir folder.
 
 Click the following links to learn more about [cross-references](https://quarto.org/docs/computations/execution-options.html) (label) and [chunk options](https://quarto.org/docs/computations/execution-options.html) (echo, warning, etc.).
@@ -446,6 +455,7 @@ Click the following links to learn more about [cross-references](https://quarto.
 rda_dir <- 'C:/path/to/your/rda_files' # set the path to your rda_dir
 ``` 
 ````
+
 Add the following chunk to your script to import your figure's rda and save objects containing the figure, caption, and alt text:
 
 ````{verbatim}
@@ -465,6 +475,7 @@ example_cap <- example_figure_rda$cap
 example_alt_text <- example_figure_rda$alt_text
 ``` 
 ````
+
 Then, add this chunk to display the figure in your .qmd when it's rendered:
 
 ````{verbatim}
@@ -477,11 +488,12 @@ Then, add this chunk to display the figure in your .qmd when it's rendered:
 example_plot
 ``` 
 ````
+
 If you are adding another figure, add a page break first:
 
-````{verbatim}
+```{verbatim}
 {{< pagebreak >}}
-````
+```
 
 You're almost done! Proceed to the last section (@sec-update-skeleton) to finish adding your custom figures to your report.
 
@@ -491,7 +503,7 @@ Finally, the last step is to update the report skeleton so that it imports your 
 
 Open your skeleton .qmd file. Scroll down to the chunks that contain tables and figures (their labels are "tables" and "figures", respectively).
 
-Your "tables" chunk will look like this:
+Your "tables" chunk will look similar, if not identical, to this:
 
 ````{verbatim}
 ```{r, results='asis'}
@@ -504,10 +516,10 @@ cat(a, sep = '\n')
 ```
 ````
 
-Copy the two lines of code that start with "a <- knitr::" and "cat". Paste them below the original two lines of code in the same chunk. Then, in those two new lines, make the following changes:
+If you are adding custom tables, copy the two lines of code that start with "a \<- knitr::" and "cat". Paste them below the original two lines of code in the same chunk. Then, in those two new lines, make the following changes:
 
-1. Change "a" to "b"
-2. Replace '08_tables.qmd' with the name of your new custom .qmd
+1.  Change "a" to "b"
+2.  Replace '08_tables.qmd' with the name of your new custom .qmd
 
 For example:
 
@@ -523,6 +535,7 @@ b <- knitr::knit_child('08_tables_custom.qmd', quiet = TRUE)
 cat(b, sep = '\n')
 ```
 ````
-If you're adding custom figures, do the same with the figures chunk.
+
+If you're adding custom figures, follow the same steps with the figures chunk.
 
 Save the changes to your skeleton, and you're done! Your custom tables and figures will be included in your report.
