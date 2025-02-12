@@ -103,11 +103,11 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
             paste0(
               "load(file.path(rda_dir, 'bnc_table_split.rda'))\n
 # save rda with plot-specific name
-bnc_table_rda <- table_list\n
+bnc_table_split_rda <- table_list\n
 # remove generic rda object
 rm(table_list)\n
-# extract table captions
-bnc_cap_split <- names(bnc_table_rda)"
+# extract table caption specifiers
+bnc_cap_split <- names(bnc_table_split_rda)"
             )
             ,
             label = "tbl-bnc-labels",
@@ -130,13 +130,8 @@ bnc_cap_split <- names(bnc_table_rda)"
             tables_doc,
             add_chunk(
               paste0(
-                "load(file.path(rda_dir, 'bnc_table_split.rda'))\n
-# save rda with plot-specific name
-bnc_table_rda <- table_list\n
-# remove generic rda object
-rm(table_list)\n
-# plot split table ", i, "
-bnc_table_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
+                "# plot split table ", i, "
+bnc_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
               )
               ,
               label = paste0("tbl-bnc", i),
@@ -260,11 +255,11 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
             paste0(
               "load(file.path(rda_dir, 'indices.abundance_table_split.rda'))\n
 # save rda with plot-specific name
-indices_table_rda <- table_list\n
+indices_table_split_rda <- table_list\n
 # remove generic rda object
 rm(table_list)\n
-# extract table captions
-indices_cap_split <- names(indices_table_rda)"
+# extract table caption specifiers
+indices_cap_split <- names(indices_table_split_rda)"
             )
             ,
             label = "tbl-indices-labels",
@@ -287,13 +282,8 @@ indices_cap_split <- names(indices_table_rda)"
             tables_doc,
             add_chunk(
               paste0(
-                "load(file.path(rda_dir, 'indices.abundance_table_split.rda'))\n
-# save rda with plot-specific name
-indices_table_rda <- table_list\n
-# remove generic rda object
-rm(table_list)\n
-# plot split table ", i, "
-indices_table_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
+                "# plot split table ", i, "
+indices_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
               )
               ,
               label = paste0("tbl-indices", i),
