@@ -112,7 +112,7 @@ The following code does NOT create separate columns when pkgdown site is built
 
 Another hurdle to tackle is naming conventions. We have attempted to create a standard naming convention system so that the same values are called each time no matter the assessment model. Unfortunately, this can't be perfect, but there are approaches we took to standardize naming as best as we could. In terms of naming:
 
-1. Generally, labels and other strings are lowercase. Exceptions to this case only include commonly referred to fisheries acronyms such as biomass (B), R0, ect...
+1. Generally, labels and other strings are lowercase. Exceptions to this case only include commonly referred to fisheries acronyms such as biomass (B), R0, etc...
 
 - This does not apply to catch and fishing mortality since C and F are used in the R language (a common language used in fisheries). In these two cases, the terms are spelled out in lowercase.
 
