@@ -25,7 +25,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Background
 
-This article describes the process behind developing convert_output and its setup so users who want to use `asar` or `satf` are still able until [`convert_output.R`](https://github.com/nmfs-ost/asar/blob/main/R/convert_output.R) includes functionality for other models.
+This article describes the process behind developing the `asar::convert_output` function and its setup so users who want to use `asar` or `satf` are still able until [`convert_output.R`](https://github.com/nmfs-ost/asar/blob/main/R/convert_output.R) includes functionality for other models.
 
 Additionally, after following this article, users who use it to manipulate their assessment output are encouraged to submit a [pull request](https://github.com/nmfs-ost/asar/pulls) or [issue](https://github.com/nmfs-ost/asar/issues) to use as an example to include in the function. This collaboration will not only allow us to expand the converter to include many assessment models, but also do it *much faster*.
 
