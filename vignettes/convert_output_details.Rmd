@@ -3,6 +3,7 @@ title: "Standardizing Assessment Model Output"
 output:
   html_document:
     toc: true
+    toc_float: true
 vignette: >
   %\VignetteIndexEntry{Standardizing Assessment Model Output}
   %\VignetteEngine{knitr::rmarkdown}
@@ -27,11 +28,17 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This article describes the process behind developing the `asar::convert_output` function and its setup so users who want to use `asar` or `satf` are still able until [`convert_output.R`](https://github.com/nmfs-ost/asar/blob/main/R/convert_output.R) includes functionality for other models.
 
+<!--- 
+::: {.callout-tip, title: "Goal"}
+The converter is designed to manipulate data to a long format with many rows and NAs. Essentially, the "estimate" column should contain all of the values in a model output while the rest of the columns make distinctions on what the number indicates.
+:::
+--->
+
 Additionally, after following this article, users who use it to manipulate their assessment model output are encouraged to submit a [pull request](https://github.com/nmfs-ost/asar/pulls) or [issue](https://github.com/nmfs-ost/asar/issues) to use as an example to include in the function. This collaboration will not only allow us to expand the converter to include many assessment models, but also do it *much faster*.
 
 The converter was designed so that it would manipulate the output file from the assessment (Report.sso for SS3, .rdat from BAM...). This means that we have only configured it to work with a singular output file so the converted data frame is limited to the data given to it from that file. We have plans to expand upon this format to include other data files associated with running the model, but this will not happen in the near future.
 
-![A visual showing the process of the convert_output function in asar.](convert_output_flow.png){height="50%}
+![A visual showing the process of the convert_output function in asar.](man/figures/convert_output_flow.png){height="50%}
 
 ## Set up and format
 
