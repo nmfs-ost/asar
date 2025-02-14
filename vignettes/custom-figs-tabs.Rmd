@@ -3,8 +3,10 @@ title: "Adding Custom Tables and Figures"
 output:
   html_document:
     toc: true
+    toc-expand: 2
   pdf_document:
     toc: true
+    toc-expand: 2
 vignette: "%\\VignetteIndexEntry{Adding Custom Tables and Figures} %\\VignetteEngine{knitr::rmarkdown}
   %\\VignetteEncoding{UTF-8}\n"
 ---
@@ -16,9 +18,27 @@ knitr::opts_chunk$set(
 )
 ```
 
-You may wish to add custom tables or figures to your report. Here, we provide the recommended workflow for doing so.
+The main way to create tables and figures for your `asar` report is by using functions within the `satf` package. However, if `satf` doesn't contain the functions to make tables or figures you need, you may wish to add custom tables or figures to your report. Here, we provide multiple workflow options for doing so.
+
++---------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+----------------------------------------------------------------------------------------------------------------+
+| Option                                | Appropriate if...                                                                                                                                                                      | Pros               | Cons                                                                                                           |
++=======================================+========================================================================================================================================================================================+====================+================================================================================================================+
+| 1 ("direct image insertion workflow") | -   You don't need to package your table/figure, caption, and alternative text in a single file                                                                                        | -   Faster process | -   Less reproducible                                                                                          |
+|                                       |                                                                                                                                                                                        |                    |                                                                                                                |
+|                                       | -   Each table is at most 12" wide                                                                                                                                                     |                    | -   Files aren't saved in a consistent and predictable system                                                  |
+|                                       |                                                                                                                                                                                        |                    |                                                                                                                |
+|                                       |                                                                                                                                                                                        |                    | -   Captions and alternative text aren't saved with other figures'/tables' texts                               |
++---------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+----------------------------------------------------------------------------------------------------------------+
+| 2 ("rda-based workflow")              | -   You'd like to create and save your custom tables/figures in a manner that's most consistent with your other tables/figures generated with `asar`'s complementary R package, `satf` | -   Slower process | -   More reproducible                                                                                          |
+|                                       |                                                                                                                                                                                        |                    |                                                                                                                |
+|                                       |                                                                                                                                                                                        |                    | -   Saves and stores custom tables/figures in a way that mirrors existing tables/figures generated with `satf` |
++---------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+----------------------------------------------------------------------------------------------------------------+
+
+: Workflow options for adding custom tables and figures to your report.
 
 # Code your custom tables and figures
+
+*Using the direct image insertion workflow (option 1)? Skip this step and proceed to @sec-write-caps-alttext .*
 
 First, write the code to produce (but not export; that's a future step!) your custom tables and figures. Save each table and figure as an object (e.g., in the examples below, `your_table` and `your_figure`). Save the script somewhere safe.
 
@@ -37,45 +57,52 @@ your_figure <- ggplot2::ggplot(your_df,
   ggplot2::geom_point()
 ```
 
-# Write captions and alternative text
+# Write captions and alternative text {#sec-write-caps-alttext}
 
 Next, once you know what your tables and figures look like, write your own captions and alternative text. Custom tables will require captions only.
 
 ## Writing text
 
-Check out the `satf` ['captions_alt_text_template.csv' file](https://github.com/nmfs-ost/satf/blob/master/inst/resources/captions_alt_text_template.csv), which contains the templates for each table or figure's caption/alt text, to get a sense of how each description is structured. Then, refer to [the accessibility vignette's guide](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) to learn how to write clear and comprehensive alt text.
+Check out the `satf` ['captions_alt_text_template.csv' file](https://github.com/nmfs-ost/satf/blob/master/inst/resources/captions_alt_text_template.csv), which contains the templates for each table or figure's caption/alternative text, to get a sense of how each description is structured. Then, refer to [the accessibility vignette's guide](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) to learn how to write clear and comprehensive alternative text.
 
-We recommend adding in key quantities, like maximum and minimum values, to ensure your captions and alt text clearly describe your plots. For example, if you're showing how a value X changed over time, we recommend providing the maximum and minimum values of X and years shown. Check out the code within [the `satf::write_captions()` function](https://github.com/nmfs-ost/satf/blob/master/R/write_captions.R) to see how we extract certain key quantities from the model results files.
+We recommend adding in key quantities, like maximum and minimum values, to ensure your captions and alternative text clearly describe your plots. For example, if you're showing how biomass changed over time, we recommend providing the maximum and minimum values of biomass and years shown, instead of simply stating that a figure shows biomass changing over time. Check out the code within [the `satf::write_captions()` function](https://github.com/nmfs-ost/satf/blob/master/R/write_captions.R) to see how we extract certain key quantities from the model results files. You are welcome to use and adapt that code to your own results to calculate key quantities, or calculate the quantities with your own code.
 
 ## Saving text
 
-Once written, you'll have to save your captions and alt text. While you could save it in the captions_alt_text.csv file (created if you've already generated a figure or table rda), we recommend saving these in a separate file to avoid loss if the captions_alt_text.csv file is overwritten.
+*Using the direct image insertion workflow (option 1)? Skip this step and proceed to @sec-set-up-qmd .*
 
-Open a blank csv file and save it in your working directory. You may wish to title it something like "custom_captions_alt_text.csv". Add your text in this format (identical to the `satf` ['captions_alt_text_template.csv' file](https://github.com/nmfs-ost/satf/blob/master/inst/resources/captions_alt_text_template.csv):
+Once written, you'll have to save your captions and alternative text.
 
-| label       | type   | caption                     | alt_text                     |
-|------------------|------------------|------------------|-------------------|
-| example_fig | figure | Example caption for figure. | Example alt text for figure. |
-| example_tab | table  | Example caption for table.  | Example alt text for table.  |
+Do you have an existing captions_alt_text.csv file? If you've already generated a figure or table rda, this file should exist, most likely in your working directory. If you don't have one, run `satf::write_captions()` or another `satf` plotting function (e.g., `plot_biomass()`, `table_bnc()`) to generate the file.
 
-: Format for csv containing custom tables and figures.
+Open captions_alt_text.csv file, then add your text. The file is set up like this:
 
 -   Column 1 ("label") is a shorthand label for your figure or table. Labels should be somewhat short and exclude spaces. Examples include "kobe", "relative.biomass", and "fishing.mortality".
 -   Column 2 ("type") contains "figure" or "table".
 -   Column 3 ("caption") contains your caption.
--   Column 4 ("alt_text") contains alt text for figures. For tables, this column will be blank.
+-   Column 4 ("alt_text") contains alternative text for figures. For tables, this column will be blank.
 
-# Export your custom tables/figures
++-------------+-------------+-----------------------------+--------------------------------------+
+| label       | type        | caption                     | alt_text                             |
++=============+=============+=============================+======================================+
+| example_fig | figure      | Example caption for figure. | Example alternative text for figure. |
++-------------+-------------+-----------------------------+--------------------------------------+
+| example_tab | table       | Example caption for table.  |                                      |
++-------------+-------------+-----------------------------+--------------------------------------+
 
-Next, export your tables/figures to rda files. This code was adapted from functions like `satf::plot_biomass`.
+: Format for csv containing table and figure captions and alternative text.
 
-## Import pre-written captions and alt text
+# Export your custom tables and figures
 
-Import your csv containing your captions and alt text and save it as an object. Then, save the captions and alt text as separate objects. For example:
+Next, export your tables and figures to rda files. This code was adapted from functions like `satf::plot_biomass`.
+
+## Import pre-written captions and alternative text
+
+Import your csv containing your captions and alternative text and save it as an object. Then, save the captions and alternative text as separate objects. For example:
 
 ```{r eval=F}
-# Import captions and alt text
-my_text <- read.csv(file = "custom_captions_alt_text.csv")
+# Import captions and alternative text
+my_text <- read.csv(file = "captions_alt_text.csv")
 
 # Extract table caption
 my_table_cap <- my_text |>
@@ -91,7 +118,7 @@ my_figure_cap <- my_text |>
     dplyr::select(caption) |>
     as.character()
 
-# Extract figure alt text
+# Extract figure alternative text
 my_figure_alt_text <- my_text |>
   dplyr::filter(label == "example_fig",
                 type == "figure") |>
@@ -100,9 +127,13 @@ my_figure_alt_text <- my_text |>
 
 ```
 
+::: callout-warning
+Your label must match the label associated with your table or figure in your csv containing the captions and alternative text. If it does not match, the label will not be extracted properly and added to your rdas.
+:::
+
 ## Make rdas
 
-Your rdas will contain your table or figure, caption, and alt text (if it's a figure).
+Your rdas will contain your table or figure, caption, and alternative text (if it's a figure).
 
 ### Tables
 
@@ -117,7 +148,7 @@ rda <- list("table" = your_table, # your table object
 ```{r eval=F}
 rda <- list("figure" = your_figure, # your figure object
             "cap" = my_figure_cap, # your figure caption
-            "alt_text" = my_figure_alt_text # your figure alt text
+            "alt_text" = my_figure_alt_text # your figure alternative text
             )
 ```
 
@@ -196,10 +227,11 @@ ID_tbl_width_class(plot_name = my_plot_name,
 
 You will see one of three outputs: regular, wide, or extra-wide.
 
-|                    |         |                           |            |
-|--------------------|:-------:|:-------------------------:|:----------:|
-| **Classification** | Regular |           Wide            | Extra-wide |
-| **Table width**    |  \< 5"  | at least 5" and up to 12" |   \>12"    |
++--------------------+:------------:+:-------------------------:+:------------:+
+| **Classification** | Regular      | Wide                      | Extra-wide   |
++--------------------+--------------+---------------------------+--------------+
+| **Table width**    | \< 5"        | at least 5" and up to 12" | \>12"        |
++--------------------+--------------+---------------------------+--------------+
 
 : Table width classification system coded in the `ID_tbl_width_class` function.
 
@@ -227,13 +259,11 @@ If the number returned was, say, 5, then since each split table must be in its o
 
 You can check out your split tables in the new rda saved in your rda_dir folder. It will have the same filename as your original rda except that it will contain "\_split" in the filename. For instance, split tables created from "example_tab_table.rda" will be saved in "example_tab_table_split.rda".
 
-# Set up Quarto markdown (.qmd) files to display custom tables and figures
+# Set up Quarto markdown (.qmd) files to display custom tables and figures {#sec-set-up-qmd}
 
-You will create one .qmd file for your tables and one .qmd file for your figures. We include separate workflows for tables and figures, below.
+You will create one .qmd file for your tables and one .qmd file for your figures.
 
-## Tables
-
-### Set up template
+## Set up templates
 
 Open a blank .qmd script (in RStudio, click File -\> New File -\> Quarto Document -\> Create Empty Document (button in the bottom left corner of the popup)).
 
@@ -241,9 +271,27 @@ Remove all text from the new document.
 
 Switch from Visual to Source mode ([instructions here](https://quarto.org/docs/visual-editor/#switching-modes)).
 
-Save this new file with a clear name in a logical location. We recommend a filename like 08_tables_custom.qmd and saving it in the same report folder as the rest of your report files.
+Save this new file with a clear name in a logical location. We recommend filenames like 08_tables_custom.qmd and 09_figures_custom.qmd, then saving these files in the same report folder as the rest of your report files. We include separate workflows for tables and figures, below.
 
-Now, add your first R chunk (shown below). This chunk is used to establish your rda_dir folder and load the library needed to plot your tables (`flextable`).
+### Direct image insertion workflow (option 1)
+
+<!-- # talk about how to add a file with this link as a resource: -->
+<!-- https://quarto.org/docs/authoring/figures.html -->
+<!-- # and explain how to measure plot size and make landscape for large plots -->
+
+If you are including more than one custom table or figure in a file, we suggest adding a page break to separate the tables/figures:
+
+```{verbatim}
+{{< pagebreak >}}
+```
+
+You're almost done! Proceed to the last section (@sec-update-skeleton) to finish adding your custom tables to your report.
+
+### rda-based workflow (option 2)
+
+#### Tables
+
+In your tables doc, add your first R chunk (shown below). This chunk is used to establish your rda_dir folder and load the library needed to plot your tables (`flextable`).
 
 Click the following links to learn more about [cross-references](https://quarto.org/docs/computations/execution-options.html) (label) and [chunk options](https://quarto.org/docs/computations/execution-options.html) (echo, warning, etc.).
 
@@ -260,7 +308,7 @@ rda_dir <- 'C:/path/to/your/rda_files' # set the path to your rda_dir
 
 Now, follow the instructions in the appropriate section depending on your table width: regular, wide, or extra wide.
 
-### Regular table
+##### Regular table
 
 Add the following chunk to your script to import your table's rda and save objects containing the table and caption:
 
@@ -303,7 +351,7 @@ Keep adding as many tables as you'd like. Keep in mind that each table must have
 
 You're almost done! Proceed to the last section (@sec-update-skeleton) to finish adding your custom tables to your report.
 
-### Wide table
+##### Wide table
 
 Add the following chunk to your script to import your table's rda and save objects containing the table and caption:
 
@@ -359,7 +407,7 @@ Keep adding as many tables as you'd like. Keep in mind that each table must have
 
 You're almost done! Proceed to the last section (@sec-update-skeleton) to finish adding your custom tables to your report.
 
-### Extra-wide table
+##### Extra-wide table
 
 Add the following chunk to your script to:
 
@@ -427,23 +475,11 @@ Keep adding as many tables as you'd like. Keep in mind that each table must have
 
 You're almost done! Proceed to the last section (@sec-update-skeleton) to finish adding your custom tables to your report.
 
-## Figures
+#### Figures
 
 The workflow for figures is very similar to the workflow for regular tables.
 
-### Set up template
-
-Open a blank .qmd script (in RStudio, click File -\> New File -\> Quarto Document -\> Create Empty Document (button in the bottom left corner of the popup)).
-
-Remove all text from the new document.
-
-Switch from Visual to Source mode ([instructions here](https://quarto.org/docs/visual-editor/#switching-modes)).
-
-Save this new file with a clear name in a logical location. We recommend a filename like 09_figures_custom.qmd and saving it in the same report folder as the rest of your files.
-
-### Add figure
-
-Now, add your first R chunk (shown below). This chunk is used to establish your rda_dir folder.
+In your figures doc, add your first R chunk (shown below). This chunk is used to establish your rda_dir folder.
 
 Click the following links to learn more about [cross-references](https://quarto.org/docs/computations/execution-options.html) (label) and [chunk options](https://quarto.org/docs/computations/execution-options.html) (echo, warning, etc.).
 
@@ -456,7 +492,7 @@ rda_dir <- 'C:/path/to/your/rda_files' # set the path to your rda_dir
 ``` 
 ````
 
-Add the following chunk to your script to import your figure's rda and save objects containing the figure, caption, and alt text:
+Add the following chunk to your script to import your figure's rda and save objects containing the figure, caption, and alternative text:
 
 ````{verbatim}
 ```{r} 
@@ -469,7 +505,7 @@ load(file.path(rda_dir, "example_fig_figure.rda"))
 example_figure_rda <- rda 
 rm(rda)
 
-# save figure, caption, and alt text as separate objects
+# save figure, caption, and alternative text as separate objects
 example_plot <- example_figure_rda$figure
 example_cap <- example_figure_rda$cap
 example_alt_text <- example_figure_rda$alt_text
