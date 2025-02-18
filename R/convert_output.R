@@ -846,7 +846,7 @@ convert_output <- function(
                 dplyr::mutate(module_name = names(extract))
             }
             if (any(grepl(paste(fleet_names, collapse = "|"), unique(df2$label)))) {
-              df3 <- df2 |>
+              df2 <- df2 |>
                 dplyr::mutate(
                   fleet = dplyr::case_when(
                     grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(label, paste(fleet_names, collapse = "|")),
