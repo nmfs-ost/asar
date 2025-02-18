@@ -1185,7 +1185,7 @@ convert_output <- function(
     var_names_sheet <- openxlsx::read.xlsx(con_file)
   }
   if (file.exists(con_file)) {
-    out_new2 <- dplyr::left_join(out_new, var_names_sheet, by = c("module_name", "label")) |>
+    out_new <- dplyr::left_join(out_new, var_names_sheet, by = c("module_name", "label")) |>
       dplyr::mutate(label = dplyr::case_when(
         !is.na(alt_label) ~ alt_label,
         TRUE ~ label
