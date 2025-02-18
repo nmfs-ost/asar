@@ -706,8 +706,8 @@ convert_output <- function(
     }
     out_new <- Reduce(rbind, out_list)
 
-    #### BAM ####
   } else if (model %in% c("bam", "BAM")) {
+    #### BAM ####
     # Extract values from BAM output - model file after following ADMB2R
     dat <- dget(output_file)
 
@@ -846,7 +846,7 @@ convert_output <- function(
                 dplyr::mutate(module_name = names(extract))
             }
             if (any(grepl(paste(fleet_names, collapse = "|"), unique(df2$label)))) {
-              df2 <- df2 |>
+              df3 <- df2 |>
                 dplyr::mutate(
                   fleet = dplyr::case_when(
                     grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(label, paste(fleet_names, collapse = "|")),
@@ -855,11 +855,13 @@ convert_output <- function(
                   ),
                   # Number after fleet name is what? variable among df?
                   age = dplyr::case_when(
-                    grepl(".Age[0-9]+.", label) ~ stringr::str_extract(label, "(?<=.Age?)[0-9]+"),
-                    grepl("[0-9]+$", label) & as.numeric(stringr::str_extract(label, "[0-9]+$")) < 30 ~ stringr::str_extract(label, "[0-9]+$"),
+                    module_name != "parms" & grepl(".Age[0-9]+.", label) ~ stringr::str_extract(label, "(?<=.Age?)[0-9]+"),
+                    module_name != "parms" & grepl("[0-9]+$", label) & as.numeric(stringr::str_extract(label, "[0-9]+$")) < 30 ~ stringr::str_extract(label, "[0-9]+$"),
                     TRUE ~ NA
                   ),
                   label = dplyr::case_when(
+                    # below will only work properly if there are age varying parameters without fleet names in it
+                    module_name == "parms" & !grepl(paste(".", fleet_names, sep = "", collapse = "|"), label) ~ label,
                     grepl(paste(".", fleet_names, "d[0-9]+", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "d[0-9]+", sep = "", collapse = "|"), ".d"),
                     grepl(paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "[0-9]+", sep = "", collapse = "|"), ""),
                     grepl(paste(".", fleet_names, "$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, sep = "", collapse = "|"), ""),
@@ -1183,7 +1185,7 @@ convert_output <- function(
     var_names_sheet <- openxlsx::read.xlsx(con_file)
   }
   if (file.exists(con_file)) {
-    out_new <- dplyr::inner_join(out_new, var_names_sheet, by = c("module_name", "label")) |>
+    out_new2 <- dplyr::left_join(out_new, var_names_sheet, by = c("module_name", "label")) |>
       dplyr::mutate(label = dplyr::case_when(
         !is.na(alt_label) ~ alt_label,
         TRUE ~ label
