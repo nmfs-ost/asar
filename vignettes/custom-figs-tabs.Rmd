@@ -18,27 +18,46 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Introduction
+
 The main way to create tables and figures for your `asar` report is by using functions within the `satf` package. However, if `satf` doesn't contain the functions to make tables or figures you need, you may wish to add custom tables or figures to your report. Here, we provide multiple workflow options for doing so.
 
-+---------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+----------------------------------------------------------------------------------------------------------------+
-| Option                                | Appropriate if...                                                                                                                                                                      | Pros               | Cons                                                                                                           |
-+=======================================+========================================================================================================================================================================================+====================+================================================================================================================+
-| 1 ("direct image insertion workflow") | -   You don't need to package your table/figure, caption, and alternative text in a single file                                                                                        | -   Faster process | -   Less reproducible                                                                                          |
-|                                       |                                                                                                                                                                                        |                    |                                                                                                                |
-|                                       | -   Each table is at most 12" wide                                                                                                                                                     |                    | -   Files aren't saved in a consistent and predictable system                                                  |
-|                                       |                                                                                                                                                                                        |                    |                                                                                                                |
-|                                       |                                                                                                                                                                                        |                    | -   Captions and alternative text aren't saved with other figures'/tables' texts                               |
-+---------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+----------------------------------------------------------------------------------------------------------------+
-| 2 ("rda-based workflow")              | -   You'd like to create and save your custom tables/figures in a manner that's most consistent with your other tables/figures generated with `asar`'s complementary R package, `satf` | -   Slower process | -   More reproducible                                                                                          |
-|                                       |                                                                                                                                                                                        |                    |                                                                                                                |
-|                                       |                                                                                                                                                                                        |                    | -   Saves and stores custom tables/figures in a way that mirrors existing tables/figures generated with `satf` |
-+---------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+----------------------------------------------------------------------------------------------------------------+
+## Choose your workflow
+
+### Comparing workflows
+
++---------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------+
+| **Option**                            | **Appropriate if...**                                                                                                                                                                  | **Pros**                                                                                                       | **Cons**                                                                         |
++---------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------+
+| 1 ("direct image insertion workflow") | -   You don't need to package your table/figure, caption, and alternative text in a single file                                                                                        | -   Faster process                                                                                             | -   Less reproducible                                                            |
+|                                       | -   Your table/figure is already saved as an external file (e.g., a png)                                                                                                               |                                                                                                                | -   Files aren't saved in a consistent and predictable system                    |
+|                                       | -   Each table/figure is at most 8" wide, or can be shrunken to 8" wide and still be legible                                                                                           |                                                                                                                | -   Captions and alternative text aren't saved with other figures'/tables' texts |
++---------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------+
+| 2 ("rda-based workflow")              | -   You'd like to create and save your custom tables/figures in a manner that's most consistent with your other tables/figures generated with `asar`'s complementary R package, `satf` | -   More reproducible                                                                                          | -   Slower process                                                               |
+|                                       |                                                                                                                                                                                        | -   Saves and stores custom tables/figures in a way that mirrors existing tables/figures generated with `satf` |                                                                                  |
++---------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------+
 
 : Workflow options for adding custom tables and figures to your report.
 
+### Main steps in each workflow
+
+#### Direct image insertion workflow
+
+1.  [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd)
+2.  [Update report skeleton](#sec-update-skeleton)
+
+#### rda-based workflow
+
+1.  [Code your custom tables and figures]
+2.  [Write captions and alternative text](#sec-write-caps-alttext)
+3.  [Export your custom tables and figures]
+4.  [Identify table width, orientation, and if splitting is necessary]
+5.  [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd)
+6.  [Update report skeleton](#sec-update-skeleton)
+
 # Code your custom tables and figures
 
-*Using the direct image insertion workflow (option 1)? Skip this step and proceed to @sec-write-caps-alttext .*
+*Using the direct image insertion workflow (option 1)? Skip this step and proceed to the* [Write captions and alternative text](#sec-write-caps-alttext) *section.*
 
 First, write the code to produce (but not export; that's a future step!) your custom tables and figures. Save each table and figure as an object (e.g., in the examples below, `your_table` and `your_figure`). Save the script somewhere safe.
 
@@ -82,13 +101,13 @@ Open captions_alt_text.csv file, then add your text. The file is set up like thi
 -   Column 3 ("caption") contains your caption.
 -   Column 4 ("alt_text") contains alternative text for figures. For tables, this column will be blank.
 
-+-------------+-------------+-----------------------------+--------------------------------------+
-| label       | type        | caption                     | alt_text                             |
-+=============+=============+=============================+======================================+
-| example_fig | figure      | Example caption for figure. | Example alternative text for figure. |
-+-------------+-------------+-----------------------------+--------------------------------------+
-| example_tab | table       | Example caption for table.  |                                      |
-+-------------+-------------+-----------------------------+--------------------------------------+
++-------------+------------+-----------------------------+--------------------------------------+
+| label       | type       | caption                     | alt_text                             |
++=============+============+=============================+======================================+
+| example_fig | figure     | Example caption for figure. | Example alternative text for figure. |
++-------------+------------+-----------------------------+--------------------------------------+
+| example_tab | table      | Example caption for table.  |                                      |
++-------------+------------+-----------------------------+--------------------------------------+
 
 : Format for csv containing table and figure captions and alternative text.
 
@@ -127,9 +146,7 @@ my_figure_alt_text <- my_text |>
 
 ```
 
-::: callout-warning
-Your label must match the label associated with your table or figure in your csv containing the captions and alternative text. If it does not match, the label will not be extracted properly and added to your rdas.
-:::
+**NOTE**: Your label must match the label associated with your table or figure in your csv containing the captions and alternative text. If it does not match, the label will not be extracted properly and added to your rdas.
 
 ## Make rdas
 
@@ -207,9 +224,7 @@ Your next step is to get a sense of your table dimensions. You'll ask:
 
 This section contains the steps to answer these questions.
 
-::: callout-note
-This workflow is reflected in the create_tables_doc.R file and its associated functions (such as `render_lg_table()`, which has its own synonymous R file, and `ID_tbl_width_class()` and `export_split_tbls()`, which are found in the [utils.R](https://github.com/nmfs-ost/asar/blob/main/R/utils.R) file).
-:::
+> **NOTE**: This workflow is reflected in the create_tables_doc.R file and its associated functions (such as `render_lg_table()`, which has its own synonymous R file, and `ID_tbl_width_class()` and `export_split_tbls()`, which are found in the [utils.R](https://github.com/nmfs-ost/asar/blob/main/R/utils.R) file).
 
 ## Table width and orientation
 
@@ -275,9 +290,67 @@ Save this new file with a clear name in a logical location. We recommend filenam
 
 ### Direct image insertion workflow (option 1)
 
-<!-- # talk about how to add a file with this link as a resource: -->
-<!-- https://quarto.org/docs/authoring/figures.html -->
-<!-- # and explain how to measure plot size and make landscape for large plots -->
+#### Identify page orientation
+
+If you're using this workflow, your table/figure should be at most 8" wide or can be shrunken to 8" wide and still be legible. Find the width of your image file. Would you prefer to show it on a page with a portrait orientation (can fit 5" width) or landscape orientation (can fit 8" width)?
+
+Identify the preferred width of your image. Keep it in mind for when you add your image in the next section.
+
+#### Add image
+
+Next, add your image in this format ([see this Quarto documentation for more information](https://quarto.org/docs/authoring/figures.html)):
+
+``` markdown
+![Your caption here](your_image.png){fig-alt="Your alternative text here" width=___in #fig-your_image_label_name}
+```
+
+**NOTE**: It can be a headache to specify the correct image path. We recommend placing your files in either of these places:
+
+1.  Your report folder (path = the image name, like *image.png*)
+2.  A folder within your report folder (path = the relative filepath, like *images/image.png* if there's an images folder within report)
+
+Here are some examples, using the following example folder structure setup:
+
+``` markdown
+stock_assessments_2025/
+├── captions_alt_text.csv
+├── report/
+│   ├── 01_executive_summary.qmd
+│   ├── 02_introduction.qmd
+│   ├── my_custom_figure.png
+│   ├── images/
+│   │   ├── my_custom_table.png
+```
+
+``` markdown
+# Example 1
+![Here is my caption to my example figure.](my_custom_figure.png){fig-alt="This alternative text explains my figure well." width=3in #fig-custom_figure1}
+```
+
+``` markdown
+# Example 2
+![Here is my caption to my example table.](images/my_custom_table.png){fig-alt="This alternative text explains my table well." width=5in #fig-custom_table1}
+```
+
+#### Add landscape braces (optional)
+
+If you'd like to place your image on a landscape-oriented page, you'll add [landscape braces](https://quarto.org/docs/authoring/article-layout.html#landscape-mode) before and after your table/figure to ensure it will be displayed properly, like this:
+
+```{verbatim}
+::: {.landscape}
+```
+
+``` rmd
+![Your caption here](your_image.png){fig-alt="Your alternative text here" width=___in #fig-your_image_label_name}
+```
+
+Then, add three colons to close the braces:
+
+```{verbatim}
+:::
+```
+
+#### Page break
 
 If you are including more than one custom table or figure in a file, we suggest adding a page break to separate the tables/figures:
 
@@ -285,7 +358,7 @@ If you are including more than one custom table or figure in a file, we suggest 
 {{< pagebreak >}}
 ```
 
-You're almost done! Proceed to the last section (@sec-update-skeleton) to finish adding your custom tables to your report.
+You're almost done! Proceed to the last section ([Update report skeleton](#sec-update-skeleton)) to finish adding your custom tables to your report.
 
 ### rda-based workflow (option 2)
 
@@ -349,7 +422,7 @@ If you are adding another table, regardless of size, add a page break first:
 
 Keep adding as many tables as you'd like. Keep in mind that each table must have a chunk that imports it, and another chunk that displays it, as shown above.
 
-You're almost done! Proceed to the last section (@sec-update-skeleton) to finish adding your custom tables to your report.
+You're almost done! Proceed to the last section ([Update report skeleton](#sec-update-skeleton)) to finish adding your custom tables to your report.
 
 ##### Wide table
 
@@ -405,7 +478,7 @@ If you are adding another table, regardless of size, add a page break first:
 
 Keep adding as many tables as you'd like. Keep in mind that each table must have a chunk that imports it, and another chunk that displays it, as shown above.
 
-You're almost done! Proceed to the last section (@sec-update-skeleton) to finish adding your custom tables to your report.
+You're almost done! Proceed to the last section ([Update report skeleton](#sec-update-skeleton)) to finish adding your custom tables to your report.
 
 ##### Extra-wide table
 
@@ -473,7 +546,7 @@ Now, add three colons to close the landscape braces:
 
 Keep adding as many tables as you'd like. Keep in mind that each table must have a chunk that imports it, and another chunk that displays it, as shown above.
 
-You're almost done! Proceed to the last section (@sec-update-skeleton) to finish adding your custom tables to your report.
+You're almost done! Proceed to the last section ([Update report skeleton](#sec-update-skeleton)) to finish adding your custom tables to your report.
 
 #### Figures
 
@@ -531,7 +604,7 @@ If you are adding another figure, add a page break first:
 {{< pagebreak >}}
 ```
 
-You're almost done! Proceed to the last section (@sec-update-skeleton) to finish adding your custom figures to your report.
+You're almost done! Proceed to the last section ([Update report skeleton](#sec-update-skeleton)) to finish adding your custom figures to your report.
 
 # Update report skeleton {#sec-update-skeleton}
 
