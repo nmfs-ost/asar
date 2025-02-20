@@ -1,6 +1,16 @@
 #' Add alternative text into latex
 #'
-#' @inheritParams add_accessibility
+#' @param x .tex file containing report. Typically produced after initially
+#' rendering the skeleton made from create_template.
+#' @param dir directory where the tex file is located that will be edited
+#' @param rda_dir folder where rda files containing alternative text is located
+#' @param compile Indicate whether the document (X) should be
+#' rendered after these files are changed. Default TRUE.
+#' @param rename Indicate a name for the new tex file produced from this
+#' function. There is no need to include ".tex" in the name. Defaults to current
+#' name and overwrites the current tex file.
+#' @param alttext_csv_dir Directory for the csv file containing alternative
+#' text and captions generated when running satf::exp_all_figs_tables
 #'
 #' @return This function was made to help add in
 #' alternative text to latex documents generated from
