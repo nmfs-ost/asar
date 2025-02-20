@@ -50,12 +50,13 @@ The main way to create tables and figures for your `asar` report is by using fun
 
 ### Main steps in each workflow
 
-#### Direct image insertion workflow
+#### Direct image insertion workflow (option 1)
 
-1.  [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd)
-2.  [Update report skeleton](#sec-update-skeleton)
+1.  [Write captions and alternative text](#sec-write-caps-alttext)
+2.  [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd)
+3.  [Update report skeleton](#sec-update-skeleton)
 
-#### rda-based workflow
+#### rda-based workflow (option 2)
 
 1.  [Code your custom tables and figures]
 2.  [Write captions and alternative text](#sec-write-caps-alttext)
@@ -64,7 +65,7 @@ The main way to create tables and figures for your `asar` report is by using fun
 5.  [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd)
 6.  [Update report skeleton](#sec-update-skeleton)
 
-#### Direct coding-in-qmd workflow
+#### Direct coding-in-qmd workflow (option 3)
 
 1.  [Code your custom tables and figures]
 2.  [Write captions and alternative text](#sec-write-caps-alttext)
@@ -105,9 +106,9 @@ We recommend adding in key quantities, like maximum and minimum values, to ensur
 
 ## Saving text
 
-*Using the direct image insertion workflow (option 1)? Skip this step and proceed to @sec-set-up-qmd .*
+*Using the direct image insertion workflow (option 1)? Skip this step and proceed to [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd).*
 
-*Using the direct coding-in-qmd workflow (option 3)? Skip this step and proceed to @sec-id_width .*
+*Using the direct coding-in-qmd workflow (option 3)? Skip this step and proceed to [Identify table width, orientation, and if splitting is necessary].*
 
 Once written, you'll have to save your captions and alternative text.
 
@@ -165,7 +166,7 @@ my_figure_alt_text <- my_text |>
 
 ```
 
-**NOTE**: Your label must match the label associated with your table or figure in your csv containing the captions and alternative text. If it does not match, the label will not be extracted properly and added to your rdas.
+> **NOTE**: Your label must match the label associated with your table or figure in your csv containing the captions and alternative text. If it does not match, the label will not be extracted properly and added to your rdas.
 
 ## Make rdas
 
@@ -271,11 +272,11 @@ You will see one of three outputs: regular, wide, or extra-wide.
 
 : Table width classification system coded in the `ID_tbl_width_class` function.
 
-*If your output is regular*, this means that you can display your table in a .qmd chunk without any additional steps. Jump to section [\@sec-set-up-qmd](#sec-set-up-qmd) and proceed.
+*If your output is regular*, this means that you can display your table in a .qmd chunk without any additional steps. Jump to section [Set up Quarto markdown (.qmd) files to display custom tables and figures] and proceed.
 
-*If your output is wide*, this means that you will place your table's .qmd chunk in special braces that change the page orientation to landscape. Jump to section [\@sec-set-up-qmd](#sec-set-up-qmd) and proceed.
+*If your output is wide*, this means that you will place your table's .qmd chunk in special braces that change the page orientation to landscape. Jump to section [Set up Quarto markdown (.qmd) files to display custom tables and figures] and proceed.
 
-*If your output is extra-wide*, this means that you will place your table's .qmd chunk in special braces that change the page orientation to landscape *and* split it into narrower tables, each of which are displayed on separate pages. Proceed to the section @sec-table-splitting.
+*If your output is extra-wide*, this means that you will place your table's .qmd chunk in special braces that change the page orientation to landscape *and* split it into narrower tables, each of which are displayed on separate pages. Proceed to the section [Table splitting (for extra-wide tables only)].
 
 ### Direct coding-in-qmd workflow (option 3)
 
@@ -288,7 +289,7 @@ flextable::flextable_dim(my_flextable)[["widths"]] |>
       as.numeric()
 ```
 
-Refer to the table above in section @sec-tbl-width-op2 to find out which category best describes your table width: regular, wide, or extra-wide.
+Refer to the table above in above section ([rda-based workflow (option 2)]) to find out which category best describes your table width: regular, wide, or extra-wide.
 
 *If your table is regular or wide*, read the text below the table and jump to the appropriate section.
 
@@ -342,7 +343,7 @@ Next, add your image in this format ([see this Quarto documentation for more inf
 ![Your caption here](your_image.png){fig-alt="Your alternative text here" width=___in #fig-your_image_label_name}
 ```
 
-**NOTE**: It can be a headache to specify the correct image path. We recommend placing your files in either of these places:
+> **NOTE**: It can be a headache to specify the correct image path. We recommend placing your files in either of these places:
 
 1.  Your report folder (path = the image name, like *image.png*)
 2.  A folder within your report folder (path = the relative filepath, like *images/image.png* if there's an images folder within report)
