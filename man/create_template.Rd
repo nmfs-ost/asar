@@ -199,6 +199,10 @@ generate these .rda files, you can leave the arguments below blank. NOTE:
 If an "rda_files" folder is detected within rda_dir, .rda files will not be
 regenerated.}
 
+\item{scale_amount}{Indicate the number at which the value should be scaled
+down. For example, for high catch, scale amount can be set to 1000 to scale
+numbers down and the respective labels will change to indicate the scaling.}
+
 \item{end_year}{The last year of assessment. The default is year - 1.}
 
 \item{n_projected_years}{Number of years spawning biomass is projected for.

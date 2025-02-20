@@ -4,6 +4,8 @@
 #' @param essential_columns The columns that will be retained between the split
 #' tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
 #' column. Example: for the indices table, this could be the year column.
+#' @param rda_dir folder where rda files containing alternative text is located
+#' @param plot_name name of the .rda file that the table is located from
 #'
 #' @return A list of the split tables.
 #'

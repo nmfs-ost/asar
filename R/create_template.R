@@ -144,6 +144,9 @@
 #' applied to plot_spawning_biomass.
 #' @param indices_unit_label Units for index of abundance/CPUE
 #' @param biomass_unit_label Abbreviated units for biomass
+#' @param scale_amount Indicate the number at which the value should be scaled
+#' down. For example, for high catch, scale amount can be set to 1000 to scale
+#' numbers down and the respective labels will change to indicate the scaling.
 #' @param catch_unit_label Abbreviated units for catch
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
