@@ -1,6 +1,8 @@
 ---
 title: "Regional Workflows"
-output: rmarkdown::html_vignette
+output:
+  html_document:
+    toc: true
 vignette: >
   %\VignetteIndexEntry{Regional Workflows}
   %\VignetteEngine{knitr::rmarkdown}

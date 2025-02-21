@@ -1,0 +1,13 @@
+\DocumentMetadata{%
+  %  uncompress, %only for debugging!!
+  pdfversion=2.0,
+  testphase={phase-II, tabular, graphic}%
+  % testphase={phase-II,math, tabular, graphic}% TOC Does not work
+  % testphase={phase-III,math}% TOC works
+}
+\tagpdfsetup{activate, tabsorder=structure}
+% Use the following to fix bug in November 2023 download of LaTeX
+\ExplSyntaxOn
+\cs_generate_variant:Nn__tag_prop_gput:Nnn{cnx}
+\ExplSyntaxOff
+%

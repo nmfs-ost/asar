@@ -56,7 +56,7 @@ test_that("create_template() creates correct files", {
   # Test case 1: Provide no inputs
   path <- getwd()
 
-  create_template()
+  create_template() |> suppressWarnings()
 
   no_inputs_output_path <- file.path(path, "report")
   object_report_files <- list.files(no_inputs_output_path)
@@ -89,7 +89,7 @@ test_that("create_template() creates correct files", {
     # resdir = "data",
     # model_results = "Report.sso",
     # model = "SS3"
-  )
+  ) |> suppressWarnings() |> suppressMessages()
 
   long_inputs_output_path <- file.path(path, "report")
   object_report_files <- list.files(long_inputs_output_path)

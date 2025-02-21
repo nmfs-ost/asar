@@ -1,6 +1,8 @@
 ---
 title: "Frequently Asked Questions (FAQs)"
-output: rmarkdown::html_vignette
+output:
+  html_document:
+    toc: true
 vignette: >
   %\VignetteIndexEntry{Frequently Asked Questions (FAQs)}
   %\VignetteEngine{knitr::rmarkdown}
@@ -66,6 +68,16 @@ This could mean a lot of things. Most of the time, when create_template is not w
 ### **What should I do if I have a species complex/multispecies assessment?**
 
 `asar` was not developed with the intention to use it for multiple species in one go. While in testing, users have simply combined the species using "and" in the species argument of create_template. The report can be written as desired after the fact. The beauty of asar is that it is still a template and highly customizable. User's familiar with Quarto can make edits to the YAML, chunk options, and other important components controlling the production of the document. We highly discourage making changes to the formatting or adding large additions of sections to the document that stray too far from the intended "NOAA" formatting.
+
+### **How can I edit my report's alt text and captions?**
+
+Please refer to [the accessibility vignette's guide ](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#how-to-edit-your-reports-alt-text-and-captions) on editing alt text and captions.
+
+
+### **My figure and table references aren't in chronological order in the report. How do I fix this?**
+
+As far as we know, a fix isn't possible with Quarto. The order of your figures and tables in their respective 08_tables.qmd and 09_figures.qmd docs will determine their numbers in the report. This might result in Table 2 being referenced before Table 1, for instance, in your report. You *can* try manually changing the order of the figure and table chunks in the 08_tables.qmd and 09_figures.qmd docs, but this isn't a reproducible or permanent solution. If you know of a long-term solution, [please let us know](https://github.com/nmfs-ost/asar/issues) or submit a pull request!
+
 
 ### **I'm getting an error. How do I fix it?**
 

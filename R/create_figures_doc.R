@@ -60,7 +60,7 @@ if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){\n
         figures_doc,
         add_chunk(
           paste0("recruitment_plot"),
-          label = "fig-recruitment-plot",
+          label = "fig-recruitment",
           eval = "!expr eval_recruitment",
           add_option = TRUE,
           chunk_op = c(
@@ -110,7 +110,7 @@ if (file.exists(file.path(rda_dir, 'spawning.biomass_figure.rda'))){\n
         figures_doc,
         add_chunk(
           paste0("spawning_biomass_plot"),
-          label = "fig-spawning_biomass-plot",
+          label = "fig-spawning_biomass",
           eval = "!expr eval_spawning_biomass",
           add_option = TRUE,
           chunk_op = c(
@@ -160,7 +160,7 @@ if (file.exists(file.path(rda_dir, 'biomass_figure.rda'))){\n
         figures_doc,
         add_chunk(
           paste0("biomass_plot"),
-          label = "fig-biomass-plot",
+          label = "fig-biomass",
           eval = "!expr eval_biomass",
           add_option = TRUE,
           chunk_op = c(
@@ -211,7 +211,7 @@ if (file.exists(file.path(rda_dir, 'landings_figure.rda'))){\n
         figures_doc,
         add_chunk(
           paste0("landings_plot"),
-          label = "fig-landings-plot",
+          label = "fig-landings",
           eval = "!expr eval_landings",
           add_option = TRUE,
           chunk_op = c(
@@ -261,7 +261,7 @@ if (file.exists(file.path(rda_dir, 'recruitment.deviations_figure.rda'))){\n
         figures_doc,
         add_chunk(
           paste0("recruitment_deviations_plot"),
-          label = "fig-recruitment_deviations-plot",
+          label = "fig-recruitment_deviations",
           eval = "!expr eval_recruitment_deviations",
           add_option = TRUE,
           chunk_op = c(
@@ -311,7 +311,7 @@ if (file.exists(file.path(rda_dir, 'sr_figure.rda'))){\n
         figures_doc,
         add_chunk(
           paste0("sr_plot"),
-          label = "fig-sr-plot",
+          label = "fig-sr",
           eval = "!expr eval_sr",
           add_option = TRUE,
           chunk_op = c(
@@ -361,7 +361,7 @@ if (file.exists(file.path(rda_dir, 'indices_figure.rda'))){\n
         figures_doc,
         add_chunk(
           paste0("indices_plot"),
-          label = "fig-indices-plot",
+          label = "fig-indices",
           eval = "!expr eval_indices",
           add_option = TRUE,
           chunk_op = c(
