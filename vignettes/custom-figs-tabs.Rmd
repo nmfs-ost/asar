@@ -17,6 +17,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
+library(flextable)
 ```
 
 # Introduction
@@ -27,26 +29,76 @@ The main way to create tables and figures for your `asar` report is by using fun
 
 ### Comparing workflows
 
-+------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| **Option**                         | **Summary**                                                                                                                                                                                                 | **Appropriate if...**                                                                                                                                                                  | **Pros**                                                                                                       | **Cons**                                                                                                                                      |
-+------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| 1: direct image insertion workflow | In this workflow, you will take minimal steps to add an external file to your report in this format ([see this Quarto documentation for more information](https://quarto.org/docs/authoring/figures.html)): | -   You don't need to package your table/figure, caption, and alternative text in a single file                                                                                        | -   Faster process than option 2                                                                               | -   Less reproducible                                                                                                                         |
-|                                    |                                                                                                                                                                                                             | -   Your table/figure is already saved as an external file (e.g., a png)                                                                                                               |                                                                                                                | -   Files (i.e., table/figure, caption, and alternative text) aren't saved in a consistent and predictable system                             |
-|                                    | ``` markdown                                                                                                                                                                                                | -   Each table/figure is at most 8" wide, or can be shrunken to 8" wide and still be legible                                                                                           |                                                                                                                | -   Captions and alternative text aren't saved with other figures'/tables' texts                                                              |
-|                                    | ![Your caption here](your_image.png){fig-alt="Your alternative text here" width=___in #fig-your_image_label_name}                                                                                           |                                                                                                                                                                                        |                                                                                                                |                                                                                                                                               |
-|                                    | ```                                                                                                                                                                                                         |                                                                                                                                                                                        |                                                                                                                |                                                                                                                                               |
-+------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| 2: rda-based workflow              | In this workflow, you will make an rda containing your table/figure, caption, and alternative text, then add each into your report in the same way that non-custom tables/figures are added.                | -   You'd like to create and save your custom tables/figures in a manner that's most consistent with your other tables/figures generated with `asar`'s complementary R package, `satf` | -   More reproducible                                                                                          | -   Slower process than options 1 & 3                                                                                                         |
-|                                    |                                                                                                                                                                                                             |                                                                                                                                                                                        | -   Saves and stores custom tables/figures in a way that mirrors existing tables/figures generated with `satf` |                                                                                                                                               |
-+------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
-| 3: direct coding-in-qmd workflow   | In this workflow, you will code, and plot, your table or figure directly in a Quarto document.                                                                                                              | -   You don't need to package your table/figure, caption, and alternative text in a single file                                                                                        | -   Faster process than option 2                                                                               | -   Less reproducible                                                                                                                         |
-|                                    |                                                                                                                                                                                                             |                                                                                                                                                                                        |                                                                                                                | -   Files (i.e., table/figure, caption, and alternative text) aren't exported, and therefore not saved in a consistent and predictable system |
-|                                    |                                                                                                                                                                                                             | -   You don't need to export your table/figure                                                                                                                                         | -   Not necessary to import any files to display a table/figure                                                | -   Captions and alternative text aren't saved with other figures'/tables' texts                                                              |
-|                                    |                                                                                                                                                                                                             |                                                                                                                                                                                        |                                                                                                                |                                                                                                                                               |
-|                                    |                                                                                                                                                                                                             | -   Each table/figure is at most 8" wide, or can be shrunken to 8" wide and still be legible                                                                                           |                                                                                                                |                                                                                                                                               |
-+------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+```{r echo=F}
+data.frame(
+  Option = c("1: direct image insertion workflow",
+             "2: rda-based workflow",
+             "3: direct coding-in-qmd workflow"),
+  Summary = c("In this workflow, you will take minimal steps to add an external file to your report in this format:
+    
+    ![Your caption here](your_image.png){fig-alt='Your alternative text here' width=___in #fig-your_image_label_name}",
+    
+    "In this workflow, you will make an rda containing your table/figure, caption, and alternative text, then add each into your report in the same way that non-custom tables/figures are added.",
+    
+    "In this workflow, you will code, and plot, your table or figure directly in a Quarto document."
+  ),
+  
+  
+  Appropriate_if = c(
+  
+  "- You don't need to package your table/figure, caption, and alternative text in a single file\n
 
-: Workflow options for adding custom tables and figures to your report.
+- Your table/figure is already saved as an external file (e.g., a png)\n
+
+- Each table/figure is at most 8\" wide, or can be shrunken to 8\" wide and still be legible",
+
+"- You'd like to create and save your custom tables/figures in a manner that's most consistent with your other tables/figures generated with asar's complementary R package, satf",
+  
+"- You don't need to package your table/figure, caption, and alternative text in a single file\n
+
+- You don't need to export your table/figure\n
+  
+- Each table/figure is at most 8\" wide, or can be shrunken to 8\" wide and still be legible)"
+),
+
+Pros = c(
+
+"- Faster process than option 2",
+
+"- More reproducible\n
+
+- Saves and stores custom tables/figures in a way that mirrors existing tables/figures generated with satf",
+
+"- Faster process than option 2\n
+
+- Not necessary to import any files to display a table/figure"),
+
+Cons = c(
+
+"- Less reproducible\n
+
+- Files (i.e., table/figure, caption, and alternative text) aren't saved in a consistent and predictable system\n
+
+- Captions and alternative text aren't saved with other figures'/tables' texts",
+
+"- Slower process than options 1 & 3",
+
+"- Less reproducible\n
+
+- Files (i.e., table/figure, caption, and alternative text) aren't exported, and therefore not saved in a consistent and predictable system\n
+
+- Captions and alternative text aren't saved with other figures'/tables' texts"
+
+)) |>
+  flextable::flextable() |>
+  flextable::border_inner(part = "all") |>
+  flextable::align(part = "header",
+                   align = "center") |>
+  flextable::set_header_labels("Appropriate_if" = "Appropriate if...") |>
+  flextable::bold(part = "header") |>
+  flextable::set_caption(caption = "Workflow options for adding custom tables and figures to your report.") |>
+  flextable::autofit()
+```
 
 ### Main steps in each workflow
 
@@ -56,7 +108,7 @@ The main way to create tables and figures for your `asar` report is by using fun
 2.  [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd)
 3.  [Update report skeleton](#sec-update-skeleton)
 
-#### rda-based workflow (option 2)
+#### rda-based workflow (option 2) {#rda-based-workflow-option-2}
 
 1.  [Code your custom tables and figures]
 2.  [Write captions and alternative text](#sec-write-caps-alttext)
@@ -108,7 +160,7 @@ We recommend adding in key quantities, like maximum and minimum values, to ensur
 
 *Using the direct image insertion workflow (option 1)? Skip this step and proceed to [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd).*
 
-*Using the direct coding-in-qmd workflow (option 3)? Skip this step and proceed to [Identify table width, orientation, and if splitting is necessary].*
+*Using the direct coding-in-qmd workflow (option 3)? Skip this step and proceed to [Identify table width, orientation, and if splitting is necessary](#sec-id_width).*
 
 Once written, you'll have to save your captions and alternative text.
 
@@ -272,11 +324,11 @@ You will see one of three outputs: regular, wide, or extra-wide.
 
 : Table width classification system coded in the `ID_tbl_width_class` function.
 
-*If your output is regular*, this means that you can display your table in a .qmd chunk without any additional steps. Jump to section [Set up Quarto markdown (.qmd) files to display custom tables and figures] and proceed.
+*If your output is regular*, this means that you can display your table in a .qmd chunk without any additional steps. Jump to section [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd) and proceed.
 
-*If your output is wide*, this means that you will place your table's .qmd chunk in special braces that change the page orientation to landscape. Jump to section [Set up Quarto markdown (.qmd) files to display custom tables and figures] and proceed.
+*If your output is wide*, this means that you will place your table's .qmd chunk in special braces that change the page orientation to landscape. Jump to section [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd) and proceed.
 
-*If your output is extra-wide*, this means that you will place your table's .qmd chunk in special braces that change the page orientation to landscape *and* split it into narrower tables, each of which are displayed on separate pages. Proceed to the section [Table splitting (for extra-wide tables only)].
+*If your output is extra-wide*, this means that you will place your table's .qmd chunk in special braces that change the page orientation to landscape *and* split it into narrower tables, each of which are displayed on separate pages. Proceed to the section [Table splitting (for extra-wide tables only)](#sec-table-splitting).
 
 ### Direct coding-in-qmd workflow (option 3)
 
@@ -289,7 +341,7 @@ flextable::flextable_dim(my_flextable)[["widths"]] |>
       as.numeric()
 ```
 
-Refer to the table above in above section ([rda-based workflow (option 2)]) to find out which category best describes your table width: regular, wide, or extra-wide.
+Refer to the table above in above section ([rda-based workflow (option 2)](#rda-based-workflow-option-2)) to find out which category best describes your table width: regular, wide, or extra-wide.
 
 *If your table is regular or wide*, read the text below the table and jump to the appropriate section.
 
