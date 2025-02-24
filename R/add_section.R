@@ -31,25 +31,31 @@ add_section <- function(
   for (i in 1:length(new_section)) {
     section_i_name <- paste0(gsub(" ", "_", tolower(new_section[i])), ".qmd")
     local_section <- forstringr::str_extract_part(
-      section_location[i], "-", before = FALSE
+      section_location[i], "-",
+      before = FALSE
     )
     local_section_prev <- forstringr::str_extract_part(
-      section_location[i - 1], "-", before = FALSE
+      section_location[i - 1], "-",
+      before = FALSE
     )
 
     if (any("TRUE" %in% grepl("-", section_location))) {
       locality <- forstringr::str_extract_part(
-        section_location[i], "-", before = TRUE
+        section_location[i], "-",
+        before = TRUE
       )
       locality_prev <- forstringr::str_extract_part(
-        section_location[i - 1], "-", before = TRUE
+        section_location[i - 1], "-",
+        before = TRUE
       )
     } else if (any("TRUE" %in% grepl(" ", section_location))) {
       locality <- forstringr::str_extract_part(
-        section_location[i], " ", before = TRUE
+        section_location[i], " ",
+        before = TRUE
       )
       locality_prev <- forstringr::str_extract_part(
-        section_location[i - 1], "-", before = TRUE
+        section_location[i - 1], "-",
+        before = TRUE
       )
     }
 
@@ -79,8 +85,8 @@ add_section <- function(
           section_i_name,
           after = which(grepl(
             gsub(" ", "_", tolower(new_section[i - 1])),
-            custom_sections)
-          )
+            custom_sections
+          ))
         )
       } else {
         custom_sections <- append(
@@ -90,19 +96,18 @@ add_section <- function(
         )
       }
     } else if (locality == "in") {
-       # stop("No available option for adding a new section 'in' another quarto document.", call. = FALSE)
-        # recognize locality_prev file
-        file_for_subsection <- list.files(file.path(subdir))[grep(local_section, list.files(file.path(subdir)))]
-        # create code for reading in child doc
-        child_sec <- add_child(
-          section_i_name,
-          label = gsub(" ", "_", tolower(new_section[i]))
-        )
-        # append that text to file
-        utils::capture.output(cat(child_sec), file = fs::path(subdir, file_for_subsection), append = TRUE)
-        # section does not need to be added to appended custom sections as stated above
-        # creating qmd is already done in line 48
-      
+      # stop("No available option for adding a new section 'in' another quarto document.", call. = FALSE)
+      # recognize locality_prev file
+      file_for_subsection <- list.files(file.path(subdir))[grep(local_section, list.files(file.path(subdir)))]
+      # create code for reading in child doc
+      child_sec <- add_child(
+        section_i_name,
+        label = gsub(" ", "_", tolower(new_section[i]))
+      )
+      # append that text to file
+      utils::capture.output(cat(child_sec), file = fs::path(subdir, file_for_subsection), append = TRUE)
+      # section does not need to be added to appended custom sections as stated above
+      # creating qmd is already done in line 48
     } else {
       stop("Invalid selection for placement of section. Please name the follow the format 'placement-section_name' for adding a new section.")
     }

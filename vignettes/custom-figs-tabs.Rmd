@@ -31,69 +31,60 @@ The main way to create tables and figures for your `asar` report is by using fun
 
 ```{r echo=F}
 data.frame(
-  Option = c("1: direct image insertion workflow",
-             "2: rda-based workflow",
-             "3: direct coding-in-qmd workflow"),
-  Summary = c("In this workflow, you will take minimal steps to add an external file to your report in this format:
-    
+  Option = c(
+    "1: direct image insertion workflow",
+    "2: rda-based workflow",
+    "3: direct coding-in-qmd workflow"
+  ),
+  Summary = c(
+    "In this workflow, you will take minimal steps to add an external file to your report in this format:
+
     ![Your caption here](your_image.png){fig-alt='Your alternative text here' width=___in #fig-your_image_label_name}",
-    
     "In this workflow, you will make an rda containing your table/figure, caption, and alternative text, then add each into your report in the same way that non-custom tables/figures are added.",
-    
     "In this workflow, you will code, and plot, your table or figure directly in a Quarto document."
   ),
-  
-  
   Appropriate_if = c(
-  
-  "- You don't need to package your table/figure, caption, and alternative text in a single file\n
+    "- You don't need to package your table/figure, caption, and alternative text in a single file\n
 
 - Your table/figure is already saved as an external file (e.g., a png)\n
 
 - Each table/figure is at most 8\" wide, or can be shrunken to 8\" wide and still be legible",
-
-"- You'd like to create and save your custom tables/figures in a manner that's most consistent with your other tables/figures generated with asar's complementary R package, satf",
-  
-"- You don't need to package your table/figure, caption, and alternative text in a single file\n
+    "- You'd like to create and save your custom tables/figures in a manner that's most consistent with your other tables/figures generated with asar's complementary R package, satf",
+    "- You don't need to package your table/figure, caption, and alternative text in a single file\n
 
 - You don't need to export your table/figure\n
-  
+
 - Each table/figure is at most 8\" wide, or can be shrunken to 8\" wide and still be legible)"
-),
-
-Pros = c(
-
-"- Faster process than option 2",
-
-"- More reproducible\n
+  ),
+  Pros = c(
+    "- Faster process than option 2",
+    "- More reproducible\n
 
 - Saves and stores custom tables/figures in a way that mirrors existing tables/figures generated with satf",
+    "- Faster process than option 2\n
 
-"- Faster process than option 2\n
-
-- Not necessary to import any files to display a table/figure"),
-
-Cons = c(
-
-"- Less reproducible\n
+- Not necessary to import any files to display a table/figure"
+  ),
+  Cons = c(
+    "- Less reproducible\n
 
 - Files (i.e., table/figure, caption, and alternative text) aren't saved in a consistent and predictable system\n
 
 - Captions and alternative text aren't saved with other figures'/tables' texts",
-
-"- Slower process than options 1 & 3",
-
-"- Less reproducible\n
+    "- Slower process than options 1 & 3",
+    "- Less reproducible\n
 
 - Files (i.e., table/figure, caption, and alternative text) aren't exported, and therefore not saved in a consistent and predictable system\n
 
 - Captions and alternative text aren't saved with other figures'/tables' texts"
-
-)) |>
+  )
+) |>
   flextable::flextable() |>
   flextable::border_inner(part = "all") |>
-  flextable::align(part = "header",
-                   align = "center") |>
+  flextable::align(
+    part = "header",
+    align = "center"
+  ) |>
   flextable::set_header_labels("Appropriate_if" = "Appropriate if...") |>
   flextable::bold(part = "header") |>
   flextable::set_caption(caption = "Workflow options for adding custom tables and figures to your report.") |>
@@ -133,16 +124,22 @@ First, write the code to produce (but not export; that's a future step!) your cu
 
 ```{r eval=F}
 # Example dataframe
-your_df <- data.frame("x" = c(1,2,3),
-                      "y" = c(4,5,6))
+your_df <- data.frame(
+  "x" = c(1, 2, 3),
+  "y" = c(4, 5, 6)
+)
 
 # Example table
 your_table <- flextable::flextable(your_df)
 
 # Example figure
-your_figure <- ggplot2::ggplot(your_df,
-                               aes(x = x,
-                                   y = y)) +
+your_figure <- ggplot2::ggplot(
+  your_df,
+  aes(
+    x = x,
+    y = y
+  )
+) +
   ggplot2::geom_point()
 ```
 
@@ -197,25 +194,30 @@ my_text <- read.csv(file = "captions_alt_text.csv")
 
 # Extract table caption
 my_table_cap <- my_text |>
-  dplyr::filter(label == "example_table",
-                type == "table") |>
-    dplyr::select(caption) |>
-    as.character()
+  dplyr::filter(
+    label == "example_table",
+    type == "table"
+  ) |>
+  dplyr::select(caption) |>
+  as.character()
 
 # Extract figure caption
 my_figure_cap <- my_text |>
-  dplyr::filter(label == "example_fig",
-                type == "figure") |>
-    dplyr::select(caption) |>
-    as.character()
+  dplyr::filter(
+    label == "example_fig",
+    type == "figure"
+  ) |>
+  dplyr::select(caption) |>
+  as.character()
 
 # Extract figure alternative text
 my_figure_alt_text <- my_text |>
-  dplyr::filter(label == "example_fig",
-                type == "figure") |>
-    dplyr::select(alt_text) |>
-    as.character()
-
+  dplyr::filter(
+    label == "example_fig",
+    type == "figure"
+  ) |>
+  dplyr::select(alt_text) |>
+  as.character()
 ```
 
 > **NOTE**: Your label must match the label associated with your table or figure in your csv containing the captions and alternative text. If it does not match, the label will not be extracted properly and added to your rdas.
@@ -227,18 +229,20 @@ Your rdas will contain your table or figure, caption, and alternative text (if i
 ### Tables
 
 ```{r eval=F}
-rda <- list("table" = your_table, # your table object
-            "cap" = my_table_cap # your table caption
-            )
+rda <- list(
+  "table" = your_table, # your table object
+  "cap" = my_table_cap # your table caption
+)
 ```
 
 ### Figures
 
 ```{r eval=F}
-rda <- list("figure" = your_figure, # your figure object
-            "cap" = my_figure_cap, # your figure caption
-            "alt_text" = my_figure_alt_text # your figure alternative text
-            )
+rda <- list(
+  "figure" = your_figure, # your figure object
+  "cap" = my_figure_cap, # your figure caption
+  "alt_text" = my_figure_alt_text # your figure alternative text
+)
 ```
 
 ## Make an rda_files folder (if needed)
@@ -257,15 +261,17 @@ This will produce an rda called "example_tab_table.rda" and save it in your rda_
 
 ```{r eval=FALSE}
 save(rda,
-     file = fs::path(getwd(), # this is your rda_files directory
-                     "rda_files",
-                     paste0(
-                       "example_tab", # your table's label
-                       "_",
-                       "table", # indicate rda contains a table
-                       ".rda")
-                     )
-     )
+  file = fs::path(
+    getwd(), # this is your rda_files directory
+    "rda_files",
+    paste0(
+      "example_tab", # your table's label
+      "_",
+      "table", # indicate rda contains a table
+      ".rda"
+    )
+  )
+)
 ```
 
 ### Figures
@@ -274,15 +280,17 @@ This will produce an rda called "example_fig_figure.rda" and save it in your rda
 
 ```{r eval=FALSE}
 save(rda,
-     file = fs::path(getwd(), # this is your rda_files directory
-                     "rda_files",
-                     paste0(
-                       "example_fig", # your figure's label
-                       "_",
-                       "figure", # indicate rda contains a figure
-                       ".rda")
-                     )
-     )
+  file = fs::path(
+    getwd(), # this is your rda_files directory
+    "rda_files",
+    paste0(
+      "example_fig", # your figure's label
+      "_",
+      "figure", # indicate rda contains a figure
+      ".rda"
+    )
+  )
+)
 ```
 
 # Identify table width, orientation, and if splitting is necessary {#sec-id_width}
@@ -308,10 +316,11 @@ Run this code:
 my_plot_name <- "example_tab_table.rda" # replace this with the filename of your table rda
 rda_dir <- getwd() # replace this with the location of your rda_files folder
 
-ID_tbl_width_class(plot_name = my_plot_name,
-                   rda_dir = rda_dir,
-                   portrait_pg_width = 5 # 5 inches = the threshold for maximum table width before it needs to be resized, rotated, and/or split
-                   )
+ID_tbl_width_class(
+  plot_name = my_plot_name,
+  rda_dir = rda_dir,
+  portrait_pg_width = 5 # 5 inches = the threshold for maximum table width before it needs to be resized, rotated, and/or split
+)
 ```
 
 You will see one of three outputs: regular, wide, or extra-wide.
@@ -338,7 +347,7 @@ Assuming your table is saved as a flextable, run this code:
 # assuming your flextable object is called my_flextable
 
 flextable::flextable_dim(my_flextable)[["widths"]] |>
-      as.numeric()
+  as.numeric()
 ```
 
 Refer to the table above in above section ([rda-based workflow (option 2)](#rda-based-workflow-option-2)) to find out which category best describes your table width: regular, wide, or extra-wide.
@@ -356,9 +365,11 @@ my_plot_name <- "example_tab_table.rda" # replace this with the filename of your
 rda_dir <- getwd() # replace this with the location of your rda_files folder
 essential_cols <- 1:2 # replace this with the columns that will be retained between the split tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single column)
 
-export_split_tbls(rda_dir = rda_dir,
-                  plot_name = my_plot_name,
-                  essential_columns = essential_cols)
+export_split_tbls(
+  rda_dir = rda_dir,
+  plot_name = my_plot_name,
+  essential_columns = essential_cols
+)
 ```
 
 If the number returned was, say, 5, then since each split table must be in its own chunk, you will need 5 chunks to show your split tables. You will also need an additional chunk to load in the data. Each table needs its own chunk, and therefore label, so that it can be cross-referenced in text.
@@ -462,11 +473,11 @@ Click the following links to learn more about [cross-references](https://quarto.
 ````{verbatim}
 ```{r} 
 #| label: 'set-rda-dir-tbls-custom' # you can set this label as you wish, as long as it's not repeated in any other R chunk in, for instance, the 08_tables.qmd or 09_figures.qmd files. Labels are used for cross-referencing in your report text.
-#| echo: false 
-#| warning: false 
+#| echo: false
+#| warning: false
 #| include: false
 library(flextable)
-rda_dir <- 'C:/path/to/your/rda_files' # set the path to your rda_dir
+rda_dir <- "C:/path/to/your/rda_files" # set the path to your rda_dir
 ``` 
 ````
 
@@ -478,13 +489,13 @@ Add the following chunk to your script to import your table's rda and save objec
 
 ````{verbatim}
 ```{r} 
-#| label: 'tbl-setup-custom1' # choose a label 
-#| echo: false 
-#| warning: false 
+#| label: 'tbl-setup-custom1' # choose a label
+#| echo: false
+#| warning: false
 #| include: false
 # load your rda and save with a table-specific name, then delete "rda"
 load(file.path(rda_dir, "example_tab_table.rda"))
-example_table_rda <- rda 
+example_table_rda <- rda
 rm(rda)
 
 # save table, caption as separate objects
@@ -497,10 +508,10 @@ Then, add this chunk to display the table in your .qmd when it's rendered:
 
 ````{verbatim}
 ```{r} 
-#| label: 'tbl-custom1' # choose a label 
-#| echo: false 
-#| warning: false 
-#| tbl-cap: example_cap 
+#| label: 'tbl-custom1' # choose a label
+#| echo: false
+#| warning: false
+#| tbl-cap: example_cap
 example_table
 ``` 
 ````
@@ -521,13 +532,13 @@ Add the following chunk to your script to import your table's rda and save objec
 
 ````{verbatim}
 ```{r} 
-#| label: 'tbl-setup-custom1' # choose a label 
-#| echo: false 
-#| warning: false 
+#| label: 'tbl-setup-custom1' # choose a label
+#| echo: false
+#| warning: false
 #| include: false
 # load your rda and save with a table-specific name, then delete "rda"
 load(file.path(rda_dir, "example_tab_table.rda"))
-example_table_rda <- rda 
+example_table_rda <- rda
 rm(rda)
 
 # save table, caption as separate objects
@@ -546,10 +557,10 @@ Then, add this chunk to display the table in your .qmd when it's rendered:
 
 ````{verbatim}
 ```{r} 
-#| label: 'tbl-custom1' # choose a label 
-#| echo: false 
-#| warning: false 
-#| tbl-cap: example_cap 
+#| label: 'tbl-custom1' # choose a label
+#| echo: false
+#| warning: false
+#| tbl-cap: example_cap
 example_table |>
   flextable::fit_to_width(max_width = 8) # this extra line ensures the table will be resized to a maximum of 8" wide
 ``` 
@@ -582,20 +593,20 @@ Add the following chunk to your script to:
 
 ````{verbatim}
 ```{r} 
-#| label: 'tbl-labels-custom1' # choose a label 
-#| echo: false 
-#| warning: false 
+#| label: 'tbl-labels-custom1' # choose a label
+#| echo: false
+#| warning: false
 #| include: false
 # load your original table rda and save with a table-specific name, then delete "rda"
 load(file.path(rda_dir, "example_tab_table.rda"))
-example_table_rda <- rda 
+example_table_rda <- rda
 rm(rda)
 
 # save caption as separate object
 example_cap <- example_table_rda$cap
 
 # load split table rda and save with a table-specific name, then delete "table_list"
-load(file.path(rda_dir, 'example_table_split.rda'))
+load(file.path(rda_dir, "example_table_split.rda"))
 example_table_rda_split <- table_list
 rm(table_list)
 
@@ -616,10 +627,10 @@ Now, you'll add as many chunks as you have split tables. Here's what the first o
 
 ````{verbatim}
 ```{r} 
-#| label: 'tbl-custom1' # choose a label 
-#| echo: false 
-#| warning: false 
-#| tbl-cap: paste0(example_cap, '(', example_cap_split[[1]], ')') # this pastes the original table caption with the specifiers associated with table 1 
+#| label: 'tbl-custom1' # choose a label
+#| echo: false
+#| warning: false
+#| tbl-cap: paste0(example_cap, '(', example_cap_split[[1]], ')') # this pastes the original table caption with the specifiers associated with table 1
 
 # plot split table 1
 example_table_rda_split[[1]] |>
@@ -650,9 +661,9 @@ Click the following links to learn more about [cross-references](https://quarto.
 ````{verbatim}
 ```{r} 
 #| label: 'set-rda-dir-figs-custom' # you can set this label as you wish, as long as it's not repeated in any other R chunk in, for instance, the 08_tables.qmd or 09_figures.qmd files. Labels are used for cross-referencing in your report text.
-#| echo: false 
+#| echo: false
 #| warning: false
-rda_dir <- 'C:/path/to/your/rda_files' # set the path to your rda_dir
+rda_dir <- "C:/path/to/your/rda_files" # set the path to your rda_dir
 ``` 
 ````
 
@@ -660,13 +671,13 @@ Add the following chunk to your script to import your figure's rda and save obje
 
 ````{verbatim}
 ```{r} 
-#| label: 'fig-setup-custom1' # choose a label 
-#| echo: false 
-#| warning: false 
+#| label: 'fig-setup-custom1' # choose a label
+#| echo: false
+#| warning: false
 #| include: false
 # load your rda and save with a figure-specific name, then delete "rda"
 load(file.path(rda_dir, "example_fig_figure.rda"))
-example_figure_rda <- rda 
+example_figure_rda <- rda
 rm(rda)
 
 # save figure, caption, and alternative text as separate objects
@@ -680,10 +691,10 @@ Then, add this chunk to display the figure in your .qmd when it's rendered:
 
 ````{verbatim}
 ```{r} 
-#| label: 'fig-custom1' # choose a label 
-#| echo: false 
-#| warning: false 
-#| fig-cap: example_cap 
+#| label: 'fig-custom1' # choose a label
+#| echo: false
+#| warning: false
+#| fig-cap: example_cap
 #| fig-alt: example_alt_text
 example_plot
 ``` 
@@ -709,14 +720,16 @@ Add the following chunk to display the table in your .qmd when it's rendered:
 
 ````{verbatim}
 ```{r} 
-#| label: 'tbl-custom1' # choose a label 
-#| echo: false 
-#| warning: false 
-#| tbl-cap: This is your table caption. 
+#| label: 'tbl-custom1' # choose a label
+#| echo: false
+#| warning: false
+#| tbl-cap: This is your table caption.
 
 # Import your data
-your_df <- data.frame("x" = c(1,2,3),
-                      "y" = c(4,5,6))
+your_df <- data.frame(
+  "x" = c(1, 2, 3),
+  "y" = c(4, 5, 6)
+)
 
 # Make your table
 your_table <- flextable::flextable(your_df)
@@ -748,14 +761,16 @@ Then, add the following chunk to display the table in your .qmd when it's render
 
 ````{verbatim}
 ```{r} 
-#| label: 'tbl-custom1' # choose a label 
-#| echo: false 
-#| warning: false 
-#| tbl-cap: This is your table caption. 
+#| label: 'tbl-custom1' # choose a label
+#| echo: false
+#| warning: false
+#| tbl-cap: This is your table caption.
 
 # Import your data
-your_df <- data.frame("x" = c(1,2,3),
-                      "y" = c(4,5,6))
+your_df <- data.frame(
+  "x" = c(1, 2, 3),
+  "y" = c(4, 5, 6)
+)
 
 # Make your table
 your_table <- flextable::flextable(your_df) |>
@@ -790,19 +805,25 @@ In your figures doc, add the following chunk to display the figure in your .qmd 
 
 ````{verbatim}
 ```{r} 
-#| label: 'fig-custom1' # choose a label 
-#| echo: false 
-#| warning: false 
-#| fig-cap: This is your figure caption. 
+#| label: 'fig-custom1' # choose a label
+#| echo: false
+#| warning: false
+#| fig-cap: This is your figure caption.
 #| fig-alt: This is your figure alternative text.
 # Import your data
-your_df <- data.frame("x" = c(1,2,3),
-                      "y" = c(4,5,6))
+your_df <- data.frame(
+  "x" = c(1, 2, 3),
+  "y" = c(4, 5, 6)
+)
 
 # Make your figure
-your_figure <- ggplot2::ggplot(your_df,
-                               aes(x = x,
-                                   y = y)) +
+your_figure <- ggplot2::ggplot(
+  your_df,
+  aes(
+    x = x,
+    y = y
+  )
+) +
   ggplot2::geom_point()
 
 # Show your figure
@@ -832,8 +853,8 @@ Your "tables" chunk will look similar, if not identical, to this:
 #| eval: true
 #| echo: false
 #| warning: false
-a <- knitr::knit_child('08_tables.qmd', quiet = TRUE)
-cat(a, sep = '\n')
+a <- knitr::knit_child("08_tables.qmd", quiet = TRUE)
+cat(a, sep = "\n")
 ```
 ````
 
@@ -850,10 +871,10 @@ For example:
 #| eval: true
 #| echo: false
 #| warning: false
-a <- knitr::knit_child('08_tables.qmd', quiet = TRUE)
-cat(a, sep = '\n')
-b <- knitr::knit_child('08_tables_custom.qmd', quiet = TRUE)
-cat(b, sep = '\n')
+a <- knitr::knit_child("08_tables.qmd", quiet = TRUE)
+cat(a, sep = "\n")
+b <- knitr::knit_child("08_tables_custom.qmd", quiet = TRUE)
+cat(b, sep = "\n")
 ```
 ````
 

@@ -26,7 +26,7 @@
 #'
 #' @examples
 #' \dontrun{
-#'   create_template(
+#' create_template(
 #'   new_template = TRUE,
 #'   format = "pdf",
 #'   office = "NWFSC",
@@ -43,22 +43,23 @@
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction",
 #'   rda_dir = getwd()
-#'   )
+#' )
 #'
-#'   path <- getwd()
+#' path <- getwd()
 #'
-#'   quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
+#' quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
 #'
-#'   withr::with_dir(
+#' withr::with_dir(
 #'   file.path(path, "report"),
-#'    add_alttext(
-#'      x = "SAR_USWC_Dover_sole_skeleton.tex",
-#'      dir = getwd(),
-#'      alttext_csv_dir = getwd(),
-#'      rda_dir = path,
-#'      compile = TRUE,
-#'      rename = "SAR_Dover_sole_tagged")
-#'    )
+#'   add_alttext(
+#'     x = "SAR_USWC_Dover_sole_skeleton.tex",
+#'     dir = getwd(),
+#'     alttext_csv_dir = getwd(),
+#'     rda_dir = path,
+#'     compile = TRUE,
+#'     rename = "SAR_Dover_sole_tagged"
+#'   )
+#' )
 #' }
 #'
 add_alttext <- function(
@@ -67,8 +68,7 @@ add_alttext <- function(
     rda_dir = getwd(),
     alttext_csv_dir = getwd(),
     compile = TRUE,
-    rename = NULL
-) {
+    rename = NULL) {
   # Read latex file
   tex_file <- readLines(file.path(dir, x))
 
@@ -163,8 +163,8 @@ add_alttext <- function(
     # names(alt_text) <- tex_name
     # place obj into list
     alt_text_list[[tex_name]] <- alt_text
-      # call tex obj name using names()
-      # call alt text using list[[i]]
+    # call tex obj name using names()
+    # call alt text using list[[i]]
     # remove rda file to declutter
     rm(rda)
   }
