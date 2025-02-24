@@ -49,14 +49,14 @@ Suggests:
     parallel,
     r4ss,
     rmarkdown,
-    satf,
+    stockplotr,
     snowfall,
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
 Remotes:
     nmfs-fish-tools/nmfspalette,
-    nmfs-ost/satf,
+    nmfs-ost/stockplotr,
     r4ss/r4ss
 Config/testthat/edition: 3
 Config/testthat/parallel: false

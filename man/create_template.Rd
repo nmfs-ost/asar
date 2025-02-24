@@ -40,16 +40,18 @@ create_template(
   spp_image = NULL,
   bib_file = "asar_references.bib",
   rda_dir = getwd(),
-  scale_amount = 1,
   end_year = NULL,
   n_projected_years = 10,
   relative = FALSE,
+  recruitment_scale_amount = 1,
   recruitment_unit_label = "metric tons",
   ref_line = c("target", "MSY", "msy", "unfished"),
   ref_point = NULL,
+  biomass_scale_amount = 1,
   landings_unit_label = "metric tons",
   ref_point_sb = NULL,
   spawning_biomass_label = "metric tons",
+  spawning_biomass_scale_amount = 1,
   ref_line_sb = c("target", "MSY", "msy", "unfished"),
   indices_unit_label = "",
   biomass_unit_label = "mt",
@@ -188,20 +190,16 @@ using the image included in the project's repository.}
 the report}
 
 \item{rda_dir}{If the user has already created .rda files containing
-figures, tables, alt text, and captions with \code{satf}, rda_dir represents
+figures, tables, alt text, and captions with \code{stockplotr}, rda_dir represents
 the location of the folder containing these .rda files ("rda_files").
-Otherwise, if the user has not used \code{satf} to make those .rda files already,
+Otherwise, if the user has not used \code{stockplotr} to make those .rda files already,
 those files will be generated automatically and placed within an "rda_files"
 folder within rda_dir. The "rda_files" folder would have been
-made with \code{satf::exp_all_figs_tables()}, or by exporting files by running individual
-\code{satf} figure- and table-generating functions. If you have used \code{satf} to
+made with \code{stockplotr::exp_all_figs_tables()}, or by exporting files by running individual
+\code{stockplotr} figure- and table-generating functions. If you have used \code{stockplotr} to
 generate these .rda files, you can leave the arguments below blank. NOTE:
 If an "rda_files" folder is detected within rda_dir, .rda files will not be
 regenerated.}
-
-\item{scale_amount}{Indicate the number at which the value should be scaled
-down. For example, for high catch, scale amount can be set to 1000 to scale
-numbers down and the respective labels will change to indicate the scaling.}
 
 \item{end_year}{The last year of assessment. The default is year - 1.}
 
@@ -212,9 +210,14 @@ By default this number is set to 10}
 relative spawning biomass. The default is 'FALSE'. 'ref_line' indicates which
 reference point to use.}
 
+\item{recruitment_scale_amount}{A number describing how much to scale down
+the recruitment quantities shown on the y axis. For example,
+recruitment_scale_amount = 100 would scale down a value from 500,000 -->
+5,000. This scale will be reflected in the y axis label.}
+
 \item{recruitment_unit_label}{Units for recruitment}
 
-\item{ref_line}{An argument inherited from \code{satf::plot_spawning_biomass.R}.
+\item{ref_line}{An argument inherited from \code{stockplotr::plot_spawning_biomass.R}.
 A string specifying the type of reference you want to
 compare spawning biomass to. The default is \code{"target"}, which looks for
 \code{"spawning_biomass_target"} in the \code{"label"} column of \code{dat}. The actual
@@ -223,11 +226,14 @@ lower-case letters but you must use one of the options specified in the
 default list to ensure that the label on the figure looks correct
 regardless of how it is specified in \code{dat}.}
 
-\item{ref_point}{An argument inherited from \code{satf::plot_biomass.R}. A known
+\item{ref_point}{An argument inherited from \code{stockplotr::plot_biomass.R}. A known
 value of the reference point along with the label for the reference point as
 specified in the output file. Please use this option if the ref_line cannot
 find your desired point. Indicate the reference point in the form
 c("label" = value).}
+
+\item{biomass_scale_amount}{A number describing how much to scale down the
+biomass quantities shown on the y axis. See \code{recruitment_scale_amount}.}
 
 \item{landings_unit_label}{Units for landings}
 
@@ -235,6 +241,9 @@ c("label" = value).}
 applied to plot_spawning_biomass.}
 
 \item{spawning_biomass_label}{Units for spawning biomass}
+
+\item{spawning_biomass_scale_amount}{A number describing how much to scale down the
+spawning biomass quantities shown on the y axis. See \code{recruitment_scale_amount}.}
 
 \item{ref_line_sb}{A string specifying the type of
 reference you want to compare spawning biomass to. The default is \code{"target"},
@@ -338,14 +347,16 @@ create_template(
   add_image = TRUE,
   spp_image = "dir/containing/spp_image",
   rda_dir = "C:/Users/Documents",
-  scale_amount = 1,
   end_year = 2022,
   n_projected_years = 10,
   relative = FALSE,
+  recruitment_scale_amount = 10,
   recruitment_unit_label = "metric tons",
   ref_line = "target",
+  biomass_scale_amount = 100,
   landings_unit_label = "metric tons",
   spawning_biomass_label = "metric tons",
+  spawning_biomass_scale_amount = 1000,
   recruitment_unit_label = "metric tons",
   ref_line_sb = "target",
   indices_unit_label = "CPUE",

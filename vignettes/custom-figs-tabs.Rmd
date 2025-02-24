@@ -23,7 +23,7 @@ library(flextable)
 
 # Introduction
 
-The main way to create tables and figures for your `asar` report is by using functions within the `satf` package. However, if `satf` doesn't contain the functions to make tables or figures you need, you may wish to add custom tables or figures to your report. Here, we provide multiple workflow options for doing so.
+The main way to create tables and figures for your `asar` report is by using functions within the `stockplotr` package. However, if `stockplotr` doesn't contain the functions to make tables or figures you need, you may wish to add custom tables or figures to your report. Here, we provide multiple workflow options for doing so.
 
 ## Choose your workflow
 
@@ -49,7 +49,7 @@ data.frame(
 - Your table/figure is already saved as an external file (e.g., a png)\n
 
 - Each table/figure is at most 8\" wide, or can be shrunken to 8\" wide and still be legible",
-    "- You'd like to create and save your custom tables/figures in a manner that's most consistent with your other tables/figures generated with asar's complementary R package, satf",
+    "- You'd like to create and save your custom tables/figures in a manner that's most consistent with your other tables/figures generated with asar's complementary R package, stockplotr",
     "- You don't need to package your table/figure, caption, and alternative text in a single file\n
 
 - You don't need to export your table/figure\n
@@ -60,7 +60,7 @@ data.frame(
     "- Faster process than option 2",
     "- More reproducible\n
 
-- Saves and stores custom tables/figures in a way that mirrors existing tables/figures generated with satf",
+- Saves and stores custom tables/figures in a way that mirrors existing tables/figures generated with stockplotr",
     "- Faster process than option 2\n
 
 - Not necessary to import any files to display a table/figure"
@@ -149,9 +149,9 @@ Next, once you know what your tables and figures look like, write your own capti
 
 ## Writing text
 
-Check out the `satf` ['captions_alt_text_template.csv' file](https://github.com/nmfs-ost/satf/blob/master/inst/resources/captions_alt_text_template.csv), which contains the templates for each table or figure's caption/alternative text, to get a sense of how each description is structured. Then, refer to [the accessibility vignette's guide](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) to learn how to write clear and comprehensive alternative text.
+Check out the `stockplotr` ['captions_alt_text_template.csv' file](https://github.com/nmfs-ost/stockplotr/blob/master/inst/resources/captions_alt_text_template.csv), which contains the templates for each table or figure's caption/alternative text, to get a sense of how each description is structured. Then, refer to [the accessibility vignette's guide](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) to learn how to write clear and comprehensive alternative text.
 
-We recommend adding in key quantities, like maximum and minimum values, to ensure your captions and alternative text clearly describe your plots. For example, if you're showing how biomass changed over time, we recommend providing the maximum and minimum values of biomass and years shown, instead of simply stating that a figure shows biomass changing over time. Check out the code within [the `satf::write_captions()` function](https://github.com/nmfs-ost/satf/blob/master/R/write_captions.R) to see how we extract certain key quantities from the model results files. You are welcome to use and adapt that code to your own results to calculate key quantities, or calculate the quantities with your own code.
+We recommend adding in key quantities, like maximum and minimum values, to ensure your captions and alternative text clearly describe your plots. For example, if you're showing how biomass changed over time, we recommend providing the maximum and minimum values of biomass and years shown, instead of simply stating that a figure shows biomass changing over time. Check out the code within [the `stockplotr::write_captions()` function](https://github.com/nmfs-ost/stockplotr/blob/master/R/write_captions.R) to see how we extract certain key quantities from the model results files. You are welcome to use and adapt that code to your own results to calculate key quantities, or calculate the quantities with your own code.
 
 ## Saving text
 
@@ -161,7 +161,7 @@ We recommend adding in key quantities, like maximum and minimum values, to ensur
 
 Once written, you'll have to save your captions and alternative text.
 
-Do you have an existing captions_alt_text.csv file? If you've already generated a figure or table rda, this file should exist, most likely in your working directory. If you don't have one, run `satf::write_captions()` or another `satf` plotting function (e.g., `plot_biomass()`, `table_bnc()`) to generate the file.
+Do you have an existing captions_alt_text.csv file? If you've already generated a figure or table rda, this file should exist, most likely in your working directory. If you don't have one, run `stockplotr::write_captions()` or another `stockplotr` plotting function (e.g., `plot_biomass()`, `table_bnc()`) to generate the file.
 
 Open captions_alt_text.csv file, then add your text. The file is set up like this:
 
@@ -182,7 +182,7 @@ Open captions_alt_text.csv file, then add your text. The file is set up like thi
 
 # Export your custom tables and figures
 
-Next, export your tables and figures to rda files. This code was adapted from functions like `satf::plot_biomass`.
+Next, export your tables and figures to rda files. This code was adapted from functions like `stockplotr::plot_biomass`.
 
 ## Import pre-written captions and alternative text
 
