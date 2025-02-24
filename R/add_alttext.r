@@ -96,6 +96,9 @@ add_alttext <- function(
   #   tex_file
   # )
 
+  # TODO:
+  # Create alternative options for render to html or docx
+
   # Replace pandocbounded with pdftooltip so alt text can be added
   tex_file[fig_lines] <- lapply(
     tex_file[fig_lines],
