@@ -104,8 +104,8 @@
 #' figures, tables, alt text, and captions with `satf`, rda_dir represents
 #' the location of the folder containing these .rda files ("rda_files").
 #' Otherwise, if the user has not used `satf` to make those .rda files already,
-#' those files will be generated automatically and placed within the "report"
-#' folder within the `file_dir`. The "rda_files" folder would have been
+#' those files will be generated automatically and placed within an "rda_files"
+#' folder within rda_dir. The "rda_files" folder would have been
 #' made with `satf::exp_all_figs_tables()`, or by exporting files by running individual
 #' `satf` figure- and table-generating functions. If you have used `satf` to
 #' generate these .rda files, you can leave the arguments below blank. NOTE:
@@ -144,6 +144,9 @@
 #' applied to plot_spawning_biomass.
 #' @param indices_unit_label Units for index of abundance/CPUE
 #' @param biomass_unit_label Abbreviated units for biomass
+#' @param scale_amount Indicate the number at which the value should be scaled
+#' down. For example, for high catch, scale amount can be set to 1000 to scale
+#' numbers down and the respective labels will change to indicate the scaling.
 #' @param catch_unit_label Abbreviated units for catch
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
@@ -377,7 +380,13 @@ create_template <- function(
       # Pull skeleton for sections
       current_folder <- system.file("templates", "skeleton", package = "asar")
       new_folder <- subdir
-      files_to_copy <- list.files(current_folder)
+
+      if (!is.null(custom_sections)) {
+        files_to_copy <- unlist(list.files(current_folder))[c(unlist(sapply(custom_sections, function(x) grep(x, list.files(current_folder)))), 10, 11)]
+      } else {
+        files_to_copy <- list.files(current_folder)
+      }
+
       before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "asar")
       # header_file <- system.file("resources", "formatting_files", "in-header.tex", package = "asar")
       # format_files <- list(before_body_file, header_file)
@@ -414,6 +423,8 @@ create_template <- function(
         file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
         # Copy us doc logo
         file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+        # Copy html format file if applicable
+        if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
       } else {
         warning("There are files in this location.")
         question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
@@ -437,6 +448,8 @@ create_template <- function(
           file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
           # Copy us doc logo
           file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+          # Copy html format file if applicable
+          if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
           warning("Report template files were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder.")
         }
@@ -490,7 +503,7 @@ create_template <- function(
       # print("_______Standardized output data________")
 
       # run satf::exp_all_figs_tables() if rda files not premade
-      # output folder: subdir
+      # output folder: rda_dir
       if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
         if (!is.null(resdir) | !is.null(model_results)) {
           # load converted output
@@ -511,7 +524,7 @@ create_template <- function(
                 n_projected_years = n_projected_years,
                 relative = relative,
                 # make_rda = TRUE,
-                rda_dir = subdir,
+                rda_dir = rda_dir,
                 ref_line = ref_line,
                 ref_point = ref_point,
                 landings_unit_label = landings_unit_label,
@@ -552,13 +565,6 @@ create_template <- function(
               subdir = subdir,
               rda_dir = rda_dir
             )
-            # if there isn't an existing folder with "rda_files" in the rda_dir,
-            # and the rda_files will be placed in the subdir:
-          } else {
-            create_tables_doc(
-              subdir = subdir,
-              rda_dir = rda_dir
-            )
           }
         } else {
           tables_doc <- paste0(
@@ -592,13 +598,6 @@ create_template <- function(
             create_figures_doc(
               subdir = subdir,
               rda_dir = rda_dir
-            )
-            # if there isn't an existing folder with "rda_files" in the rda_dir,
-            # and the rda_files will be placed in the subdir:
-          } else {
-            create_figures_doc(
-              subdir = subdir,
-              rda_dir = subdir
             )
           }
         } else {
@@ -927,7 +926,7 @@ create_template <- function(
           "  ", "  ", "is.na(age)) |>", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
           "# spawning biomass in the last year\n",
-          "sbend <- output2 |>", "\n",
+          "SBend <- output2 |>", "\n",
           "  ", "dplyr::filter(grepl('spawning_biomass', label), year == end_year) |>", "\n",
           "  ", "dplyr::pull(estimate) |>", "\n",
           "  ", "  ", "unique()", "\n",
@@ -969,6 +968,10 @@ create_template <- function(
       print("_______Add Report Citation________")
 
       # Create report template
+      # Include tables and figures if desired into template
+      # at this point, files_to_copy is the most updated outline
+      # if (include_tables) files_to_copy <- c(files_to_copy, "08_tables.qmd")
+      # if (include_figures) files_to_copy <- c(files_to_copy, "09_figures.qmd")
 
       if (custom == FALSE) {
         sections <- add_child(
@@ -1011,9 +1014,9 @@ create_template <- function(
         # Option for building custom template
         # Create custom template from existing skeleton sections
         if (is.null(new_section)) {
-          section_list <- add_base_section(custom_sections)
-          sections <- add_child(section_list,
-            label = custom_sections
+          section_list <- add_base_section(files_to_copy)
+          sections <- add_child(c(section_list, "08_tables.qmd", "09_figures.qmd"),
+            label = custom_sections # this might need to be changed
           )
         } else { # custom = TRUE
           # Create custom template using existing sections and new sections from analyst
@@ -1051,7 +1054,7 @@ create_template <- function(
           } else { # custom_sections explicit
 
             # Add selected sections from base
-            sec_list1 <- add_base_section(custom_sections)
+            sec_list1 <- add_base_section(files_to_copy)
             # Create new sections as .qmd in folder
             # check if sections are in custom_sections list
             if (any(stringr::str_replace(section_location, "^[a-z]+-", "") %notin% custom_sections)) {
@@ -1254,7 +1257,7 @@ create_template <- function(
       "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
     )
     # Open file for analyst
-    file.show(file.path(subdir, report_name)) # this opens the new file, but also restarts the session
+    # file.show(file.path(subdir, report_name)) # this opens the new file, but also restarts the session
     # Open the file so path to other docs is clear
     # utils::browseURL(subdir)
   } else {
@@ -1271,7 +1274,7 @@ create_template <- function(
     # Edit skeleton to update year and results file
     skeleton <- list.files(subdir, pattern = "skeleton.qmd")
     # Open previous skeleton
-    file.show(file.path(subdir, report_name))
+    # file.show(file.path(subdir, report_name))
 
     svDialogs::dlg_message("Reminder: there are changes to be made when calling an old report. Please change the year in the citation and the location and name of the results file in the first chunk of the report.",
       type = "ok"

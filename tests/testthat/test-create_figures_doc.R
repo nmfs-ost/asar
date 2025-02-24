@@ -1,6 +1,6 @@
 test_that("Creates expected start of figures doc", {
   # create tables doc
-  asar::create_figures_doc(
+  create_figures_doc(
     subdir = getwd(),
     rda_dir = getwd()
   )
@@ -20,4 +20,7 @@ test_that("Creates expected start of figures doc", {
     fc_pasted,
     expected_head_figure_content
   )
+
+  # erase temporary testing files
+  file.remove(fs::path(getwd(), "09_figures.qmd"))
 })

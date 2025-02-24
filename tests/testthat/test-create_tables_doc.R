@@ -1,6 +1,6 @@
 test_that("Creates expected start of tables doc", {
   # create tables doc
-  asar::create_tables_doc(
+  create_tables_doc(
     subdir = getwd(),
     include_all = TRUE,
     rda_dir = getwd()
@@ -21,4 +21,7 @@ test_that("Creates expected start of tables doc", {
     tc_pasted,
     expected_head_table_content
   )
+
+  # erase temporary testing files
+  file.remove(fs::path(getwd(), "08_tables.qmd"))
 })

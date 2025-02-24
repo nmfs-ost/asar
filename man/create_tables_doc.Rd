@@ -15,8 +15,8 @@ create_tables_doc(subdir = NULL, include_all = TRUE, rda_dir = NULL)
 figures, tables, alt text, and captions with \code{satf}, rda_dir represents
 the location of the folder containing these .rda files ("rda_files").
 Otherwise, if the user has not used \code{satf} to make those .rda files already,
-those files will be generated automatically and placed within the "report"
-folder within the \code{file_dir}. The "rda_files" folder would have been
+those files will be generated automatically and placed within an "rda_files"
+folder within rda_dir. The "rda_files" folder would have been
 made with \code{satf::exp_all_figs_tables()}, or by exporting files by running individual
 \code{satf} figure- and table-generating functions. If you have used \code{satf} to
 generate these .rda files, you can leave the arguments below blank. NOTE:
@@ -25,7 +25,13 @@ regenerated.}
 }
 \value{
 Create a quarto document as part of a stock assessment outline with
-pre-loaded R chunk adding the stock assessment tables from the nmfs-ost/satf R package
+pre-loaded R chunk adding the stock assessment tables from the nmfs-ost/satf
+R package. NOTE: If your table is too wide to print on a portrait-oriented page,
+the page will be rotated to landscape view. If if is too wide to print in
+landscape view, it will be split into multiple tables. In this case, a new rda
+will be created and is identifiable by the phrase "split" in the filename (e.g.,
+indices.abundance_table.rda will generate a new indices.abundance_table_split.rda
+file). These tables will share the same caption.
 }
 \description{
 Create Quarto Document of Tables
