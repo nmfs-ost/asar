@@ -3,11 +3,13 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   accessibility_guide: accessibility_guide.html
+  convert_output_details: convert_output_details.html
+  custom-figs-tabs: custom-figs-tabs.html
   faqs: faqs.html
   manual: manual.html
   markdown_notation: markdown_notation.html
   regional_workflows: regional_workflows.html
-last_built: 2025-02-05T21:26Z
+last_built: 2025-02-24T16:11Z
 urls:
   reference: nmfs-ost.github.io/asar/reference
   article: nmfs-ost.github.io/asar/articles

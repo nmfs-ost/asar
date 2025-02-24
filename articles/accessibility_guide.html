@@ -77,6 +77,12 @@
       <a href="../articles/accessibility_guide.html">Accessibility</a>
     </li>
     <li>
+      <a href="../articles/convert_output_details.html">Standardizing Assessment Model Output</a>
+    </li>
+    <li>
+      <a href="../articles/custom-figs-tabs.html">Custom Tables and Figures</a>
+    </li>
+    <li>
       <a href="../articles/faqs.html">Frequently Asked Questions (FAQs)</a>
     </li>
   </ul>
@@ -374,14 +380,23 @@ alt text object as your new text object. For example:</li>
 <span><span class="va">recruitment_alt_text</span> <span class="op">&lt;-</span> <span class="va">new_alt_text</span></span></code></pre></div>
 <p><strong>NOTES</strong>:</p>
 <ol style="list-style-type: decimal">
-<li>Changes to your alt text will be saved within your 09_figures.qmd
-file, but not within the rda file itself.</li>
-<li>Edit figure and table captions with the same process. Just
+<li><p>Changes to your alt text will be saved within your 09_figures.qmd
+file, but not within the rda file itself. To directly edit the rda
+file’s alt text or caption, assign a new value to the text you wish to
+change. For example, if your rda is called <code>rda</code> and you want
+to change the caption to “my new caption”, you’d enter the following
+command: <code>rda[["cap"]] &lt;- "my new caption"</code>. To change the
+alt text, you’d change “cap” to “alt_text” (e.g.,
+<code>rda[["alt_text"]] &lt;- "my new alt text"</code>.). Save the
+changes to the rda’s file by entering the following command (in this
+example, our rda is called “biomass_figure.rda”):
+<code>save(rda, file = 'biomass_figure.rda')</code>.</p></li>
+<li><p>Edit figure and table captions with the same process. Just
 substitute mentions of alt text with caption or cap, depending on the
-context.</li>
-<li>As stated earlier, if you see text that looks like a placeholder
-(e.g., “The x axis, showing the year, spans from B_start_year to
-B_end_year…”), that means that there was at least one instance where our
+context.</p></li>
+<li><p>As stated earlier, if you see text that looks like a placeholder
+(e.g., “The x axis, showing the year, spans from B.start.year to
+B.end.year…”), that means that there was at least one instance where our
 tool failed to extract a specific value from the model results and
 substitute it into the placeholder. Please make sure that your alt text
 and captions contain the expected values before moving forward with your
@@ -389,7 +404,7 @@ report. Check out the inst/resources/captions_alt_text_template.csv file
 in the <code>satf</code> package to view the template with placeholders.
 The same package’s <code>write_captions()</code> function shows how
 values are extracted from the model results and substituted into the
-placeholders.</li>
+placeholders.</p></li>
 </ol>
 </div>
 <div class="section level4">

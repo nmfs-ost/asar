@@ -78,6 +78,12 @@
       <a href="articles/accessibility_guide.html">Accessibility</a>
     </li>
     <li>
+      <a href="articles/convert_output_details.html">Standardizing Assessment Model Output</a>
+    </li>
+    <li>
+      <a href="articles/custom-figs-tabs.html">Custom Tables and Figures</a>
+    </li>
+    <li>
       <a href="articles/faqs.html">Frequently Asked Questions (FAQs)</a>
     </li>
   </ul>
@@ -129,7 +135,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 <p>This package is currently in development. For users interested in testing, please see <a href="#id_-testing-section">Testing</a> section below. In its current form, this package builds a template to create a stock assessment report including NOAA Fisheries formatting and included tables and figures.</p>
-<p>Download using the directions below and fill in <code>create_template.R</code> function with the desired parameters (follow example below) to create a template quarto document to be rendered to create a stock assessment report.</p>
+<p>Download using the directions below and fill in <code>create_template.R</code> function with the desired parameters (follow example below) to create a template Quarto document to be rendered to create a stock assessment report.</p>
 <p>The goal of ASAR is to automate stock assessment reports for NOAA science centers so they are reproducible and cohesive across the agency. This project intends to create a streamlined workflow that allows the analyst to create a customized report tailored to their needs and requirements by the SSC, council, or other regional management organizations.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -144,7 +150,7 @@
 </ol>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"nmfs-ost/asar"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"nmfs-ost/asar"</span><span class="op">)</span></span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Occasionally, the package can not be installed using the <code>remotes</code> package. If this is the case for you, please try:</li>
 </ol>
@@ -198,11 +204,11 @@
 <div class="section level2">
 <h2 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a>
 </h2>
-<p>We encourage users to test <code>asar</code> throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. <strong>Currently, <code>asar</code> is only setup to render to a pdf.</strong> Once the user successfully executes <code><a href="reference/create_template.html">create_template()</a></code>, the template quarto file will open:</p>
+<p>We encourage users to test <code>asar</code> throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. <strong>Currently, <code>asar</code> is only setup to render to a pdf.</strong> Once the user successfully executes <code><a href="reference/create_template.html">create_template()</a></code>, the template Quarto file will open:</p>
 <p><img src="reference/figures/example_pop-up.PNG"></p>
 <p>All other associated files will be created in a folder called <code>stock_assessment_reports</code> within the user’s documents folder. From there, a file system following the user’s associated science center &gt; species name &gt; region (if applicable) &gt; year. The user will have to navigate to this folder to find additional files.</p>
 <p><img src="reference/figures/example_file_system.PNG"></p>
-<p>This is a modularized template, there is no need to make any edits to the skeleton file. To write the report, user should navigate and open each supporting section quarto document labeled:</p>
+<p>This is a modularized template, there is no need to make any edits to the skeleton file. To write the report, user should navigate and open each supporting section Quarto document labeled:</p>
 <ul>
 <li>Executive Summary</li>
 <li>Introduction</li>

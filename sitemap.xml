@@ -3,6 +3,8 @@
 <url><loc>nmfs-ost.github.io/asar/LICENSE-text.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/LICENSE.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/articles/accessibility_guide.html</loc></url>
+<url><loc>nmfs-ost.github.io/asar/articles/convert_output_details.html</loc></url>
+<url><loc>nmfs-ost.github.io/asar/articles/custom-figs-tabs.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/articles/faqs.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/articles/index.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/articles/manual.html</loc></url>
@@ -10,11 +12,11 @@
 <url><loc>nmfs-ost.github.io/asar/articles/regional_workflows.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/authors.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/index.html</loc></url>
+<url><loc>nmfs-ost.github.io/asar/reference/add_alttext.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/add_base_section.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/add_child.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/add_chunk.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/add_section.html</loc></url>
-<url><loc>nmfs-ost.github.io/asar/reference/add_theme.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/asar-package.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/convert_output.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/create_citation.html</loc></url>
@@ -27,5 +29,6 @@
 <url><loc>nmfs-ost.github.io/asar/reference/export_object.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/format_quarto.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/index.html</loc></url>
+<url><loc>nmfs-ost.github.io/asar/reference/render_lg_table.html</loc></url>
 </urlset>
 
