@@ -59,7 +59,7 @@ ID_tbl_width_class <- function(
       as.numeric()
 
     # determine table width class
-    if (table_width > portrait_pg_width){
+    if (table_width > portrait_pg_width) {
       if (table_width > 12) {
         width_class <- "extra-wide"
       } else {
@@ -68,7 +68,6 @@ ID_tbl_width_class <- function(
     } else {
       width_class <- "regular"
     }
-
   } else {
     width_class <- "regular"
   }
@@ -81,8 +80,7 @@ ID_tbl_width_class <- function(
 export_split_tbls <- function(
     rda_dir,
     plot_name, # e.g., "bnc_table.rda"
-    essential_columns
-    ) {
+    essential_columns) {
   rda_path <- file.path(paste0(rda_dir, "/rda_files/", plot_name))
 
   load(rda_path)
@@ -90,10 +88,12 @@ export_split_tbls <- function(
   rm(rda)
 
   # split tables and export
-  render_lg_table(report_flextable = table_rda$table,
-                  essential_columns = essential_columns,
-                  rda_dir = rda_dir,
-                  plot_name = plot_name)
+  render_lg_table(
+    report_flextable = table_rda$table,
+    essential_columns = essential_columns,
+    rda_dir = rda_dir,
+    plot_name = plot_name
+  )
 
- # return(split_tables)
+  # return(split_tables)
 }
