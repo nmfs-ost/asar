@@ -1,4 +1,4 @@
-### Start up messages and actions to run for use of satf
+### Start up messages and actions to run for use of stockplotr
 # Start up message
 
 .onAttach <- function(libname, pkgname) {
@@ -7,7 +7,7 @@
 
 # Things to load on start up
 # .onLoad <- function(libname, pkgname){
-#   # install satf
+#   # install stockplotr
 #   install.packages('remotes')
-#   remotes::install_github("nmfs-ost/satf")
+#   remotes::install_github("nmfs-ost/stockplotr")
 # }

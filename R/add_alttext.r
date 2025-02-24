@@ -10,7 +10,7 @@
 #' function. There is no need to include ".tex" in the name. Defaults to current
 #' name and overwrites the current tex file.
 #' @param alttext_csv_dir Directory for the csv file containing alternative
-#' text and captions generated when running satf::exp_all_figs_tables
+#' text and captions generated when running stockplotr::exp_all_figs_tables
 #'
 #' @return This function was made to help add in
 #' alternative text to latex documents generated from
@@ -18,7 +18,7 @@
 #' add alternative text to PDF documents, so this function
 #' was developed as a work around. The addition of alternative
 #' text needs to be found in either the rda files produced from
-#' satf::exp_all_figs_tables or in the captions_alt_text.csv also produced from
+#' stockplotr::exp_all_figs_tables or in the captions_alt_text.csv also produced from
 #' the same function. Users not using this format should create a csv file with
 #' columns containing "label" and "alt_text".
 #'
