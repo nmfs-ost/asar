@@ -83,7 +83,7 @@ add_alttext <- function(
 
   # Identify lines with figures
   # this approach allows us to not mistake the replacement for other figures
-  fig_lines <- grep("fig-([a-z]+|[a-z]+_[a-z]+)-plot-1.pdf", tex_file)
+  fig_lines <- grep("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file) # -plot
 
   # TODO:
   # create check to see if there are any instances where the suffix is not plot-1
