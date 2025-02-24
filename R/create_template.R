@@ -117,6 +117,10 @@
 #' @param relative A logical value specifying if the resulting figures should be
 #' relative spawning biomass. The default is 'FALSE'. 'ref_line' indicates which
 #' reference point to use.
+#' @param recruitment_scale_amount A number describing how much to scale down
+#' the recruitment quantities shown on the y axis. For example,
+#' recruitment_scale_amount = 100 would scale down a value from 500,000 -->
+#' 5,000. This scale will be reflected in the y axis label.
 #' @param recruitment_unit_label Units for recruitment
 #' @param ref_line An argument inherited from `satf::plot_spawning_biomass.R`.
 #' A string specifying the type of reference you want to
@@ -131,8 +135,12 @@
 #' specified in the output file. Please use this option if the ref_line cannot
 #' find your desired point. Indicate the reference point in the form
 #' c("label" = value).
+#' @param biomass_scale_amount A number describing how much to scale down the
+#' biomass quantities shown on the y axis. See `recruitment_scale_amount`.
 #' @param landings_unit_label Units for landings
 #' @param spawning_biomass_label Units for spawning biomass
+#' @param spawning_biomass_scale_amount  A number describing how much to scale down the
+#' spawning biomass quantities shown on the y axis. See `recruitment_scale_amount`.
 #' @param ref_line_sb A string specifying the type of
 #' reference you want to compare spawning biomass to. The default is `"target"`,
 #' which looks for `"spawning_biomass_target"` in the `"label"` column of `dat`.
@@ -144,9 +152,6 @@
 #' applied to plot_spawning_biomass.
 #' @param indices_unit_label Units for index of abundance/CPUE
 #' @param biomass_unit_label Abbreviated units for biomass
-#' @param scale_amount Indicate the number at which the value should be scaled
-#' down. For example, for high catch, scale amount can be set to 1000 to scale
-#' numbers down and the respective labels will change to indicate the scaling.
 #' @param catch_unit_label Abbreviated units for catch
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
@@ -231,14 +236,16 @@
 #'   add_image = TRUE,
 #'   spp_image = "dir/containing/spp_image",
 #'   rda_dir = "C:/Users/Documents",
-#'   scale_amount = 1,
 #'   end_year = 2022,
 #'   n_projected_years = 10,
 #'   relative = FALSE,
+#'   recruitment_scale_amount = 10,
 #'   recruitment_unit_label = "metric tons",
 #'   ref_line = "target",
+#'   biomass_scale_amount = 100,
 #'   landings_unit_label = "metric tons",
 #'   spawning_biomass_label = "metric tons",
+#'   spawning_biomass_scale_amount = 1000,
 #'   recruitment_unit_label = "metric tons",
 #'   ref_line_sb = "target",
 #'   indices_unit_label = "CPUE",
@@ -283,16 +290,18 @@ create_template <- function(
     spp_image = NULL,
     bib_file = "asar_references.bib",
     rda_dir = getwd(),
-    scale_amount = 1,
     end_year = NULL,
     n_projected_years = 10,
     relative = FALSE,
+    recruitment_scale_amount = 1,
     recruitment_unit_label = "metric tons",
     ref_line = c("target", "MSY", "msy", "unfished"),
     ref_point = NULL,
+    biomass_scale_amount = 1,
     landings_unit_label = "metric tons",
     ref_point_sb = NULL,
     spawning_biomass_label = "metric tons",
+    spawning_biomass_scale_amount = 1,
     ref_line_sb = c("target", "MSY", "msy", "unfished"),
     indices_unit_label = "",
     biomass_unit_label = "mt",
@@ -519,7 +528,7 @@ create_template <- function(
             {
               satf::exp_all_figs_tables(
                 dat = output,
-                scale_amount = scale_amount,
+                recruitment_scale_amount = recruitment_scale_amount,
                 end_year = end_year,
                 n_projected_years = n_projected_years,
                 relative = relative,
@@ -527,8 +536,10 @@ create_template <- function(
                 rda_dir = rda_dir,
                 ref_line = ref_line,
                 ref_point = ref_point,
+                biomass_scale_amount = biomass_scale_amount,
                 landings_unit_label = landings_unit_label,
                 spawning_biomass_label = spawning_biomass_label,
+                spawning_biomass_scale_amount = spawning_biomass_scale_amount,
                 recruitment_unit_label = recruitment_unit_label,
                 ref_line_sb = ref_line_sb,
                 ref_point_sb = ref_point_sb,
