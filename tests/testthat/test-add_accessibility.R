@@ -10,8 +10,8 @@
 #     save_name = "spp_conout"
 #   ) |> suppressMessages() |> suppressWarnings()
 #
-#   # run satf::exp_all_figs_tables()
-#   satf::exp_all_figs_tables(
+#   # run stockplotr::exp_all_figs_tables()
+#   stockplotr::exp_all_figs_tables(
 #     dat = utils::read.csv(file.path(path, "spp_conout.csv")),
 #     end_year = 2023,
 #     ref_line = "msy",
