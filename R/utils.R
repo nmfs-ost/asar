@@ -115,13 +115,46 @@ acronyms <- all_entries |>
   dplyr::select(-c(All, X)) |>
   dplyr::filter(!is.na(Acronym),
                 Acronym != "") |>
-  dplyr::mutate(Shared_ac = duplicated(Acronym),
-                Shared_mean = duplicated(Meaning),
+  dplyr::mutate_all(dplyr::na_if,"") |>
+  dplyr::mutate(Definition = trimws(Definition),
                 Definition = stringr::str_to_sentence(Definition),
+                Meaning = trimws(Meaning),
                 Meaning = gsub("<92>", "'", Meaning),
-                Meaning = gsub("<f1>", "ñ", Meaning))
+                Meaning = gsub("<f1>", "ñ", Meaning),
+                Meaning = gsub("�", "'", Meaning),
+                meaning_lower = tolower(Meaning),
+                Shared_ac = duplicated(Acronym),
+                Shared_mean = duplicated(meaning_lower)
+                )
+
+# min length of consolidated acronyms: ~818
+length(unique(acronyms$Acronym))
+
+# for a given acronym: if there is a row with an identical acronym,
+# and there is a row with an identical meaning_lower, and at least one
+# row has a definition, then keep the row with the definition
+has_definitions_unique <- acronyms |>
+  dplyr::group_by(Acronym, meaning_lower) |>
+  dplyr::filter(dplyr::if_any(Definition, ~!is.na(.))) |>
+  dplyr::slice_max(order_by = !is.na(Definition), n = 1) |>
+  dplyr::ungroup()
+
+# anti-join above with main list (grouped by acronym) to find acronyms
+# that have no definitions
+test <- acronyms |>
+  dplyr::group_by(Acronym, meaning_lower) |>
+  dplyr::summarise(n = n()) |>
+  dplyr::anti_join(has_definitions_unique)
+
+
+test2 <- acronyms |>
+  dplyr::group_by(Shared_ac, Shared_mean, meaning_lower, Acronym, Definition, Meaning) |>
+  dplyr::summarise(test = dplyr::n_distinct(Shared_ac, Shared_mean))
+
+test <- acronyms |>
+  dplyr::distinct(meaning_lower, .keep_all = T)
 
 # if there is >1 acronym with NA as the definition, keep only one row
 acronyms_fil <- acronyms |>
-  dplyr::group_by(Acronym, tolower(Meaning), Definition) |>
+  dplyr::group_by(Acronym, meaning_lower, Definition, Meaning) |>
   dplyr::summarise(count = dplyr::n())
