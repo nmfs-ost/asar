@@ -97,3 +97,63 @@ export_split_tbls <- function(
 
   # return(split_tables)
 }
+
+#---- consolidate and organize acronyms ----
+# TODO: make this into a function
+ac_dir <- fs::path("inst", "resources", "acronyms")
+
+# import all acronyms, meanings, and definitions
+# (later, the definitions may go in a glossary)
+all_entries <- ac_dir |>
+  fs::dir_ls(regexp = "\\.csv$") |>
+  purrr::map_dfr(read.csv, .id = "source") |>
+  dplyr::mutate(source = gsub(".*acronyms/","",source),
+                source = gsub("_.*","",source))
+
+
+acronyms <- all_entries |>
+  dplyr::select(-c(All, X)) |>
+  dplyr::filter(!is.na(Acronym),
+                Acronym != "") |>
+  dplyr::mutate_all(dplyr::na_if,"") |>
+  dplyr::mutate_all(trimws) |>
+  dplyr::mutate(Meaning = gsub("<92>", "'", Meaning),
+                Meaning = gsub("<f1>", "ñ", Meaning),
+                meaning_lower = tolower(Meaning),
+                Shared_ac = duplicated(Acronym),
+                Shared_mean = duplicated(meaning_lower)
+                )
+
+# min length of consolidated acronyms: ~818
+# length(unique(acronyms$Acronym))
+
+# for a given acronym: if there is a row with an identical acronym,
+# and there is a row with an identical meaning_lower, and at least one
+# row has a definition, then keep the row with the definition
+has_definitions_unique <- acronyms |>
+  dplyr::group_by(Acronym, meaning_lower) |>
+  dplyr::filter(dplyr::if_any(Definition, ~!is.na(.))) |>
+  dplyr::slice_max(order_by = !is.na(Definition), n = 1) |>
+  dplyr::ungroup()
+
+# anti-join above with main list (grouped by acronym) to find acronyms
+# that have no definitions
+no_definitions_unique <- acronyms |>
+  dplyr::group_by(Acronym, meaning_lower) |>
+  dplyr::summarise(n = n()) |>
+  dplyr::anti_join(has_definitions_unique) |>
+  dplyr::left_join(acronyms[c(2:3, 5)]) |>
+  dplyr::distinct(Acronym, meaning_lower, n, .keep_all = T)
+
+# join the two dfs
+unique_all <- dplyr::full_join(has_definitions_unique,
+                               no_definitions_unique) |>
+  dplyr::arrange(Acronym) |>
+  dplyr::select(source:meaning_lower) |>
+
+# manually clean rows to make some extremely similar rows identical
+  dplyr::filter(Acronym != "?")
+
+
+# then, filter out duplicates again
+
