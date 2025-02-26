@@ -6,7 +6,7 @@
 #' figures for a stock assessment report. Default is true.
 #'
 #' @return A quarto document with pre-loaded R chunk that adds the
-#' stock assessment tables from the nmfs-ost/satf R package. The
+#' stock assessment tables from the nmfs-ost/stockplotr R package. The
 #' quarto document will become part of the stock assessment outline.
 #' @export
 #'

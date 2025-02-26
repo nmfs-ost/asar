@@ -101,13 +101,13 @@
 #' @param bib_file File path to a .bib file used for citing references in
 #' the report
 #' @param rda_dir If the user has already created .rda files containing
-#' figures, tables, alt text, and captions with `satf`, rda_dir represents
+#' figures, tables, alt text, and captions with `stockplotr`, rda_dir represents
 #' the location of the folder containing these .rda files ("rda_files").
-#' Otherwise, if the user has not used `satf` to make those .rda files already,
+#' Otherwise, if the user has not used `stockplotr` to make those .rda files already,
 #' those files will be generated automatically and placed within an "rda_files"
 #' folder within rda_dir. The "rda_files" folder would have been
-#' made with `satf::exp_all_figs_tables()`, or by exporting files by running individual
-#' `satf` figure- and table-generating functions. If you have used `satf` to
+#' made with `stockplotr::exp_all_figs_tables()`, or by exporting files by running individual
+#' `stockplotr` figure- and table-generating functions. If you have used `stockplotr` to
 #' generate these .rda files, you can leave the arguments below blank. NOTE:
 #' If an "rda_files" folder is detected within rda_dir, .rda files will not be
 #' regenerated.
@@ -117,8 +117,12 @@
 #' @param relative A logical value specifying if the resulting figures should be
 #' relative spawning biomass. The default is 'FALSE'. 'ref_line' indicates which
 #' reference point to use.
+#' @param recruitment_scale_amount A number describing how much to scale down
+#' the recruitment quantities shown on the y axis. For example,
+#' recruitment_scale_amount = 100 would scale down a value from 500,000 -->
+#' 5,000. This scale will be reflected in the y axis label.
 #' @param recruitment_unit_label Units for recruitment
-#' @param ref_line An argument inherited from `satf::plot_spawning_biomass.R`.
+#' @param ref_line An argument inherited from `stockplotr::plot_spawning_biomass.R`.
 #' A string specifying the type of reference you want to
 #' compare spawning biomass to. The default is `"target"`, which looks for
 #' `"spawning_biomass_target"` in the `"label"` column of `dat`. The actual
@@ -126,13 +130,17 @@
 #' lower-case letters but you must use one of the options specified in the
 #' default list to ensure that the label on the figure looks correct
 #' regardless of how it is specified in `dat`.
-#' @param ref_point An argument inherited from `satf::plot_biomass.R`. A known
+#' @param ref_point An argument inherited from `stockplotr::plot_biomass.R`. A known
 #' value of the reference point along with the label for the reference point as
 #' specified in the output file. Please use this option if the ref_line cannot
 #' find your desired point. Indicate the reference point in the form
 #' c("label" = value).
+#' @param biomass_scale_amount A number describing how much to scale down the
+#' biomass quantities shown on the y axis. See `recruitment_scale_amount`.
 #' @param landings_unit_label Units for landings
 #' @param spawning_biomass_label Units for spawning biomass
+#' @param spawning_biomass_scale_amount  A number describing how much to scale down the
+#' spawning biomass quantities shown on the y axis. See `recruitment_scale_amount`.
 #' @param ref_line_sb A string specifying the type of
 #' reference you want to compare spawning biomass to. The default is `"target"`,
 #' which looks for `"spawning_biomass_target"` in the `"label"` column of `dat`.
@@ -144,9 +152,6 @@
 #' applied to plot_spawning_biomass.
 #' @param indices_unit_label Units for index of abundance/CPUE
 #' @param biomass_unit_label Abbreviated units for biomass
-#' @param scale_amount Indicate the number at which the value should be scaled
-#' down. For example, for high catch, scale amount can be set to 1000 to scale
-#' numbers down and the respective labels will change to indicate the scaling.
 #' @param catch_unit_label Abbreviated units for catch
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
@@ -231,14 +236,16 @@
 #'   add_image = TRUE,
 #'   spp_image = "dir/containing/spp_image",
 #'   rda_dir = "C:/Users/Documents",
-#'   scale_amount = 1,
 #'   end_year = 2022,
 #'   n_projected_years = 10,
 #'   relative = FALSE,
+#'   recruitment_scale_amount = 10,
 #'   recruitment_unit_label = "metric tons",
 #'   ref_line = "target",
+#'   biomass_scale_amount = 100,
 #'   landings_unit_label = "metric tons",
 #'   spawning_biomass_label = "metric tons",
+#'   spawning_biomass_scale_amount = 1000,
 #'   recruitment_unit_label = "metric tons",
 #'   ref_line_sb = "target",
 #'   indices_unit_label = "CPUE",
@@ -283,16 +290,18 @@ create_template <- function(
     spp_image = NULL,
     bib_file = "asar_references.bib",
     rda_dir = getwd(),
-    scale_amount = 1,
     end_year = NULL,
     n_projected_years = 10,
     relative = FALSE,
+    recruitment_scale_amount = 1,
     recruitment_unit_label = "metric tons",
     ref_line = c("target", "MSY", "msy", "unfished"),
     ref_point = NULL,
+    biomass_scale_amount = 1,
     landings_unit_label = "metric tons",
     ref_point_sb = NULL,
     spawning_biomass_label = "metric tons",
+    spawning_biomass_scale_amount = 1,
     ref_line_sb = c("target", "MSY", "msy", "unfished"),
     indices_unit_label = "",
     biomass_unit_label = "mt",
@@ -502,7 +511,7 @@ create_template <- function(
 
       # print("_______Standardized output data________")
 
-      # run satf::exp_all_figs_tables() if rda files not premade
+      # run stockplotr::exp_all_figs_tables() if rda files not premade
       # output folder: rda_dir
       if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
         if (!is.null(resdir) | !is.null(model_results)) {
@@ -512,14 +521,14 @@ create_template <- function(
           } else {
             output <- utils::read.csv(paste0(resdir, "/", model_results))
           }
-          # run satf::exp_all_figs_tables() to make rda files
+          # run stockplotr::exp_all_figs_tables() to make rda files
 
           # test_exp_all <-
           tryCatch(
             {
-              satf::exp_all_figs_tables(
+              stockplotr::exp_all_figs_tables(
                 dat = output,
-                scale_amount = scale_amount,
+                recruitment_scale_amount = recruitment_scale_amount,
                 end_year = end_year,
                 n_projected_years = n_projected_years,
                 relative = relative,
@@ -527,7 +536,9 @@ create_template <- function(
                 rda_dir = rda_dir,
                 ref_line = ref_line,
                 ref_point = ref_point,
+                biomass_scale_amount = biomass_scale_amount,
                 landings_unit_label = landings_unit_label,
+                spawning_biomass_scale_amount = spawning_biomass_scale_amount,
                 spawning_biomass_label = spawning_biomass_label,
                 recruitment_unit_label = recruitment_unit_label,
                 ref_line_sb = ref_line_sb,
@@ -539,7 +550,7 @@ create_template <- function(
               # TRUE
             },
             error = function(e) {
-              warning("Failed to create all rda files from satf package.")
+              warning("Failed to create all rda files from stockplotr package.")
               # FALSE
             }
           )
@@ -553,7 +564,7 @@ create_template <- function(
         # if (!test_exp_all) {
         #   tables_doc <- paste0(
         #     "### Tables \n \n",
-        #     "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
+        #     "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
         #   )
         #   utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
         #   warning("Results file or model name not defined.")
@@ -569,7 +580,7 @@ create_template <- function(
         } else {
           tables_doc <- paste0(
             "### Tables \n \n",
-            "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
+            "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
           )
           utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
           warning("Results file or model name not defined.")
@@ -587,7 +598,7 @@ create_template <- function(
         # if (!test_exp_all) {
         #   figures_doc <- paste0(
         #     "### Figures \n \n",
-        #     "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."
+        #     "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
         #   )
         #   utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
         #   warning("Results file or model name not defined.")
@@ -603,7 +614,7 @@ create_template <- function(
         } else {
           figures_doc <- paste0(
             "### Figures \n \n",
-            "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."
+            "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
           )
           utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
           warning("Results file or model name not defined.")
