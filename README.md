@@ -4,8 +4,6 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-Test change for PR
-
 This package is currently in development. For users interested in testing, please see [Testing](#-testing-section) section below. In its current form, this package builds a  template to create a stock assessment report including NOAA Fisheries formatting and included tables and figures.
 
 Download using the directions below and fill in `create_template.R` function with the desired parameters (follow example below) to create a template Quarto document to be rendered to create a stock assessment report.
