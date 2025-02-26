@@ -130,13 +130,13 @@ figures for a stock assessment report. Default is true.</p></dd>
 
 <dt id="arg-rda-dir">rda_dir<a class="anchor" aria-label="anchor" href="#arg-rda-dir"></a></dt>
 <dd><p>If the user has already created .rda files containing
-figures, tables, alt text, and captions with <code>satf</code>, rda_dir represents
+figures, tables, alt text, and captions with <code>stockplotr</code>, rda_dir represents
 the location of the folder containing these .rda files ("rda_files").
-Otherwise, if the user has not used <code>satf</code> to make those .rda files already,
+Otherwise, if the user has not used <code>stockplotr</code> to make those .rda files already,
 those files will be generated automatically and placed within an "rda_files"
 folder within rda_dir. The "rda_files" folder would have been
-made with <code><a href="https://rdrr.io/pkg/satf/man/exp_all_figs_tables.html" class="external-link">satf::exp_all_figs_tables()</a></code>, or by exporting files by running individual
-<code>satf</code> figure- and table-generating functions. If you have used <code>satf</code> to
+made with <code><a href="https://rdrr.io/pkg/stockplotr/man/exp_all_figs_tables.html" class="external-link">stockplotr::exp_all_figs_tables()</a></code>, or by exporting files by running individual
+<code>stockplotr</code> figure- and table-generating functions. If you have used <code>stockplotr</code> to
 generate these .rda files, you can leave the arguments below blank. NOTE:
 If an "rda_files" folder is detected within rda_dir, .rda files will not be
 regenerated.</p></dd>
@@ -145,7 +145,7 @@ regenerated.</p></dd>
     <div id="value">
     <h2>Value</h2>
     <p>A quarto document with pre-loaded R chunk that adds the
-stock assessment tables from the nmfs-ost/satf R package. The
+stock assessment tables from the nmfs-ost/stockplotr R package. The
 quarto document will become part of the stock assessment outline.</p>
     </div>
 

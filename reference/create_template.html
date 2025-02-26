@@ -152,16 +152,18 @@ in the console.</p>
 <span>  spp_image <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  bib_file <span class="op">=</span> <span class="st">"asar_references.bib"</span>,</span>
 <span>  rda_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  scale_amount <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  end_year <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  n_projected_years <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  relative <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  recruitment_scale_amount <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  recruitment_unit_label <span class="op">=</span> <span class="st">"metric tons"</span>,</span>
 <span>  ref_line <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"target"</span>, <span class="st">"MSY"</span>, <span class="st">"msy"</span>, <span class="st">"unfished"</span><span class="op">)</span>,</span>
 <span>  ref_point <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  biomass_scale_amount <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  landings_unit_label <span class="op">=</span> <span class="st">"metric tons"</span>,</span>
 <span>  ref_point_sb <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  spawning_biomass_label <span class="op">=</span> <span class="st">"metric tons"</span>,</span>
+<span>  spawning_biomass_scale_amount <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  ref_line_sb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"target"</span>, <span class="st">"MSY"</span>, <span class="st">"msy"</span>, <span class="st">"unfished"</span><span class="op">)</span>,</span>
 <span>  indices_unit_label <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  biomass_unit_label <span class="op">=</span> <span class="st">"mt"</span>,</span>
@@ -373,22 +375,16 @@ the report</p></dd>
 
 <dt id="arg-rda-dir">rda_dir<a class="anchor" aria-label="anchor" href="#arg-rda-dir"></a></dt>
 <dd><p>If the user has already created .rda files containing
-figures, tables, alt text, and captions with <code>satf</code>, rda_dir represents
+figures, tables, alt text, and captions with <code>stockplotr</code>, rda_dir represents
 the location of the folder containing these .rda files ("rda_files").
-Otherwise, if the user has not used <code>satf</code> to make those .rda files already,
+Otherwise, if the user has not used <code>stockplotr</code> to make those .rda files already,
 those files will be generated automatically and placed within an "rda_files"
 folder within rda_dir. The "rda_files" folder would have been
-made with <code><a href="https://rdrr.io/pkg/satf/man/exp_all_figs_tables.html" class="external-link">satf::exp_all_figs_tables()</a></code>, or by exporting files by running individual
-<code>satf</code> figure- and table-generating functions. If you have used <code>satf</code> to
+made with <code><a href="https://rdrr.io/pkg/stockplotr/man/exp_all_figs_tables.html" class="external-link">stockplotr::exp_all_figs_tables()</a></code>, or by exporting files by running individual
+<code>stockplotr</code> figure- and table-generating functions. If you have used <code>stockplotr</code> to
 generate these .rda files, you can leave the arguments below blank. NOTE:
 If an "rda_files" folder is detected within rda_dir, .rda files will not be
 regenerated.</p></dd>
-
-
-<dt id="arg-scale-amount">scale_amount<a class="anchor" aria-label="anchor" href="#arg-scale-amount"></a></dt>
-<dd><p>Indicate the number at which the value should be scaled
-down. For example, for high catch, scale amount can be set to 1000 to scale
-numbers down and the respective labels will change to indicate the scaling.</p></dd>
 
 
 <dt id="arg-end-year">end_year<a class="anchor" aria-label="anchor" href="#arg-end-year"></a></dt>
@@ -406,12 +402,19 @@ relative spawning biomass. The default is 'FALSE'. 'ref_line' indicates which
 reference point to use.</p></dd>
 
 
+<dt id="arg-recruitment-scale-amount">recruitment_scale_amount<a class="anchor" aria-label="anchor" href="#arg-recruitment-scale-amount"></a></dt>
+<dd><p>A number describing how much to scale down
+the recruitment quantities shown on the y axis. For example,
+recruitment_scale_amount = 100 would scale down a value from 500,000 –&gt;
+5,000. This scale will be reflected in the y axis label.</p></dd>
+
+
 <dt id="arg-recruitment-unit-label">recruitment_unit_label<a class="anchor" aria-label="anchor" href="#arg-recruitment-unit-label"></a></dt>
 <dd><p>Units for recruitment</p></dd>
 
 
 <dt id="arg-ref-line">ref_line<a class="anchor" aria-label="anchor" href="#arg-ref-line"></a></dt>
-<dd><p>An argument inherited from <code>satf::plot_spawning_biomass.R</code>.
+<dd><p>An argument inherited from <code>stockplotr::plot_spawning_biomass.R</code>.
 A string specifying the type of reference you want to
 compare spawning biomass to. The default is <code>"target"</code>, which looks for
 <code>"spawning_biomass_target"</code> in the <code>"label"</code> column of <code>dat</code>. The actual
@@ -422,11 +425,16 @@ regardless of how it is specified in <code>dat</code>.</p></dd>
 
 
 <dt id="arg-ref-point">ref_point<a class="anchor" aria-label="anchor" href="#arg-ref-point"></a></dt>
-<dd><p>An argument inherited from <code>satf::plot_biomass.R</code>. A known
+<dd><p>An argument inherited from <code>stockplotr::plot_biomass.R</code>. A known
 value of the reference point along with the label for the reference point as
 specified in the output file. Please use this option if the ref_line cannot
 find your desired point. Indicate the reference point in the form
 c("label" = value).</p></dd>
+
+
+<dt id="arg-biomass-scale-amount">biomass_scale_amount<a class="anchor" aria-label="anchor" href="#arg-biomass-scale-amount"></a></dt>
+<dd><p>A number describing how much to scale down the
+biomass quantities shown on the y axis. See <code>recruitment_scale_amount</code>.</p></dd>
 
 
 <dt id="arg-landings-unit-label">landings_unit_label<a class="anchor" aria-label="anchor" href="#arg-landings-unit-label"></a></dt>
@@ -440,6 +448,11 @@ applied to plot_spawning_biomass.</p></dd>
 
 <dt id="arg-spawning-biomass-label">spawning_biomass_label<a class="anchor" aria-label="anchor" href="#arg-spawning-biomass-label"></a></dt>
 <dd><p>Units for spawning biomass</p></dd>
+
+
+<dt id="arg-spawning-biomass-scale-amount">spawning_biomass_scale_amount<a class="anchor" aria-label="anchor" href="#arg-spawning-biomass-scale-amount"></a></dt>
+<dd><p>A number describing how much to scale down the
+spawning biomass quantities shown on the y axis. See <code>recruitment_scale_amount</code>.</p></dd>
 
 
 <dt id="arg-ref-line-sb">ref_line_sb<a class="anchor" aria-label="anchor" href="#arg-ref-line-sb"></a></dt>
@@ -550,14 +563,16 @@ each of the child documents should be edited separately.</p>
 <span class="r-in"><span>  add_image <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  spp_image <span class="op">=</span> <span class="st">"dir/containing/spp_image"</span>,</span></span>
 <span class="r-in"><span>  rda_dir <span class="op">=</span> <span class="st">"C:/Users/Documents"</span>,</span></span>
-<span class="r-in"><span>  scale_amount <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>  end_year <span class="op">=</span> <span class="fl">2022</span>,</span></span>
 <span class="r-in"><span>  n_projected_years <span class="op">=</span> <span class="fl">10</span>,</span></span>
 <span class="r-in"><span>  relative <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  recruitment_scale_amount <span class="op">=</span> <span class="fl">10</span>,</span></span>
 <span class="r-in"><span>  recruitment_unit_label <span class="op">=</span> <span class="st">"metric tons"</span>,</span></span>
 <span class="r-in"><span>  ref_line <span class="op">=</span> <span class="st">"target"</span>,</span></span>
+<span class="r-in"><span>  biomass_scale_amount <span class="op">=</span> <span class="fl">100</span>,</span></span>
 <span class="r-in"><span>  landings_unit_label <span class="op">=</span> <span class="st">"metric tons"</span>,</span></span>
 <span class="r-in"><span>  spawning_biomass_label <span class="op">=</span> <span class="st">"metric tons"</span>,</span></span>
+<span class="r-in"><span>  spawning_biomass_scale_amount <span class="op">=</span> <span class="fl">1000</span>,</span></span>
 <span class="r-in"><span>  recruitment_unit_label <span class="op">=</span> <span class="st">"metric tons"</span>,</span></span>
 <span class="r-in"><span>  ref_line_sb <span class="op">=</span> <span class="st">"target"</span>,</span></span>
 <span class="r-in"><span>  indices_unit_label <span class="op">=</span> <span class="st">"CPUE"</span>,</span></span>

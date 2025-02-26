@@ -154,8 +154,8 @@ pre[class] {
 </h2>
 <p>This article describes the process behind developing the
 <code><a href="../reference/convert_output.html">asar::convert_output</a></code> function and its setup so users who
-want to use <code>asar</code> or <code>satf</code> are still able until
-<a href="https://github.com/nmfs-ost/asar/blob/main/R/convert_output.R" class="external-link"><code>convert_output.R</code></a>
+want to use <code>asar</code> or <code>stockplotr</code> are still able
+until <a href="https://github.com/nmfs-ost/asar/blob/main/R/convert_output.R" class="external-link"><code>convert_output.R</code></a>
 includes functionality for other models.</p>
 <!--- 
 ::: {.callout-tip, title: "Goal"}
@@ -377,9 +377,9 @@ analysts using them.</p></li>
 </h2>
 <p><a href="https://github.com/nmfs-ost/asar/blob/main/R/convert_output.R" class="external-link"><code>convert_output()</code></a>
 exports data frames as a csv. While this is not necessary to the
-function of {asar} and {satf} packages as a whole due to their setup, we
-recommend continuing this practice to remain consistent with the
-function.</p>
+function of {asar} and {stockplotr} packages as a whole due to their
+setup, we recommend continuing this practice to remain consistent with
+the function.</p>
 <p>The final data frame does not manipulate column typing (character,
 numeric, etc.). We have left that to the analyst or other functions
 since there can be conflicts within the estimates due to NAs. Ideally,
