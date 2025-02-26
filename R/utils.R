@@ -124,7 +124,7 @@ acronyms <- all_entries |>
                 Shared_mean = duplicated(meaning_lower)
                 )
 
-# min length of consolidated acronyms: ~818
+# min length of consolidated acronyms: ~816
 # length(unique(acronyms$Acronym))
 
 # for a given acronym: if there is a row with an identical acronym,
