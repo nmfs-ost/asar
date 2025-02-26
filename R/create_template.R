@@ -474,100 +474,106 @@ create_template <- function(
       } # close if rerender
 
       # Convert output file if TRUE
-      # Check if converted output already exists
-      if (convert_output) {
-        if (!file.exists(file.path(subdir, paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))) {
-          print("__________Converting output file__________")
-          if (tolower(model) == "bam" & is.null(fleet_names)) {
-            # warning("Fleet names not defined.")
-            convert_output(
-              output_file = model_results,
-              outdir = resdir,
-              file_save = TRUE,
-              model = model,
-              savedir = subdir,
-              save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
-            )
-            # } else if (tolower(model) == "bam") {
-            #   convert_output(
-            #     output_file = model_results,
-            #     outdir = resdir,
-            #     file_save = TRUE,
-            #     model = model,
-            #     fleet_names = fleet_names,
-            #     savedir = subdir,
-            #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
-            #   )
+      # Make sure not asking to rerender
+      if (!rerender_skeleton) {
+        # Check if converted output already exists
+        if (convert_output) {
+          if (!file.exists(file.path(subdir, paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))) {
+            print("__________Converting output file__________")
+            if (tolower(model) == "bam" & is.null(fleet_names)) {
+              # warning("Fleet names not defined.")
+              convert_output(
+                output_file = model_results,
+                outdir = resdir,
+                file_save = TRUE,
+                model = model,
+                savedir = subdir,
+                save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
+              )
+              # } else if (tolower(model) == "bam") {
+              #   convert_output(
+              #     output_file = model_results,
+              #     outdir = resdir,
+              #     file_save = TRUE,
+              #     model = model,
+              #     fleet_names = fleet_names,
+              #     savedir = subdir,
+              #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+              #   )
+            } else {
+              convert_output(
+                output_file = model_results,
+                outdir = resdir,
+                file_save = TRUE,
+                model = model,
+                savedir = subdir,
+                save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
+              )
+            }
+            # Rename model results file and results file directory if the results are converted in this fxn
+            model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
+            resdir <- subdir
           } else {
-            convert_output(
-              output_file = model_results,
-              outdir = resdir,
-              file_save = TRUE,
-              model = model,
-              savedir = subdir,
-              save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
-            )
+            message("Output not converted: standard output already in path.")
+            model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
+            resdir <- subdir
           }
-          # Rename model results file and results file directory if the results are converted in this fxn
-          model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
-          resdir <- subdir
-        } else {
-          message("Output not converted: standard output already in path.")
-          model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
-          resdir <- subdir
-        }
-      }
+        } # close check for converted output already
+      } # close rerender if
 
       # print("_______Standardized output data________")
 
       # run satf::exp_all_figs_tables() if rda files not premade
       # output folder: rda_dir
-      if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
-        if (!is.null(resdir) | !is.null(model_results)) {
-          # load converted output
-          if (convert_output) {
-            output <- utils::read.csv(paste0(subdir, "/", paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))
-          } else {
-            output <- utils::read.csv(paste0(resdir, "/", model_results))
-          }
-          # run satf::exp_all_figs_tables() to make rda files
-
-          # test_exp_all <-
-          tryCatch(
-            {
-              satf::exp_all_figs_tables(
-                dat = output,
-                scale_amount = scale_amount,
-                end_year = end_year,
-                n_projected_years = n_projected_years,
-                relative = relative,
-                # make_rda = TRUE,
-                rda_dir = rda_dir,
-                ref_line = ref_line,
-                ref_point = ref_point,
-                landings_unit_label = landings_unit_label,
-                spawning_biomass_label = spawning_biomass_label,
-                recruitment_unit_label = recruitment_unit_label,
-                ref_line_sb = ref_line_sb,
-                ref_point_sb = ref_point_sb,
-                indices_unit_label = indices_unit_label,
-                biomass_unit_label = biomass_unit_label,
-                catch_unit_label = catch_unit_label
-              )
-              # TRUE
-            },
-            error = function(e) {
-              warning("Failed to create all rda files from satf package.")
-              # FALSE
+      # Don't run on rerender
+      if (!rerender_skeleton) {
+        if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
+          if (!is.null(resdir) | !is.null(model_results)) {
+            # load converted output
+            if (convert_output) {
+              output <- utils::read.csv(paste0(subdir, "/", paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))
+            } else {
+              output <- utils::read.csv(paste0(resdir, "/", model_results))
             }
-          )
-        } # else {
-        # test_exp_all <- FALSE
-        # }
+            # run satf::exp_all_figs_tables() to make rda files
+
+            # test_exp_all <-
+            tryCatch(
+              {
+                satf::exp_all_figs_tables(
+                  dat = output,
+                  scale_amount = scale_amount,
+                  end_year = end_year,
+                  n_projected_years = n_projected_years,
+                  relative = relative,
+                  # make_rda = TRUE,
+                  rda_dir = rda_dir,
+                  ref_line = ref_line,
+                  ref_point = ref_point,
+                  landings_unit_label = landings_unit_label,
+                  spawning_biomass_label = spawning_biomass_label,
+                  recruitment_unit_label = recruitment_unit_label,
+                  ref_line_sb = ref_line_sb,
+                  ref_point_sb = ref_point_sb,
+                  indices_unit_label = indices_unit_label,
+                  biomass_unit_label = biomass_unit_label,
+                  catch_unit_label = catch_unit_label
+                )
+                # TRUE
+              },
+              error = function(e) {
+                warning("Failed to create all rda files from satf package.")
+                # FALSE
+              }
+            )
+          } # else {
+          # test_exp_all <- FALSE
+          # }
+        }
       }
 
       # Create tables qmd
-      if (include_tables) {
+      if (include_tables & !rerender_skeleton) {
         # if (!test_exp_all) {
         #   tables_doc <- paste0(
         #     "### Tables \n \n",
@@ -601,7 +607,7 @@ create_template <- function(
       # }
 
       # Create figures qmd
-      if (include_figures) {
+      if (include_figures & !rerender_skeleton) {
         # if (!test_exp_all) {
         #   figures_doc <- paste0(
         #     "### Figures \n \n",
@@ -740,18 +746,33 @@ create_template <- function(
       }
 
       # Create yaml
-      yaml <- create_yaml(
-        title = title,
-        author_list = author_list,
-        spp_image = spp_image,
-        species = species,
-        spp_latin = spp_latin,
-        region = region,
-        format = format,
-        param_names = param_names,
-        param_values = param_values,
-        bib_name = bib_name
-      )
+      if (rerender_skeleton) {
+        # Extract yaml from current template
+        yaml_lines <- grep("---", prev_skeleton)
+        yaml <- prev_skeleton[1:55]
+        # Change format if different
+        # find format line
+        if (prev_format == "pdf" & format == "html") {
+          new_format <- format_quarto("html")
+        }
+        # add authors
+        # replace title with custom
+        # add add'l param names
+        # replace bib file name
+      } else {
+        yaml <- create_yaml(
+          title = title,
+          author_list = author_list,
+          spp_image = spp_image,
+          species = species,
+          spp_latin = spp_latin,
+          region = region,
+          format = format,
+          param_names = param_names,
+          param_values = param_values,
+          bib_name = bib_name
+        )
+      }
 
       # yaml_save <- capture.output(cat(yaml))
       # cat(yaml, file = here('template','yaml_header.qmd'))
