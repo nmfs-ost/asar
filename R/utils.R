@@ -140,7 +140,7 @@ has_definitions_unique <- acronyms |>
 # that have no definitions
 no_definitions_unique <- acronyms |>
   dplyr::group_by(Acronym, meaning_lower) |>
-  dplyr::summarise(n = n()) |>
+  dplyr::summarise(n = dplyr::n()) |>
   dplyr::anti_join(has_definitions_unique) |>
   dplyr::left_join(acronyms[c(2:3, 5)]) |>
   dplyr::distinct(Acronym, meaning_lower, n, .keep_all = T)
@@ -152,8 +152,18 @@ unique_all <- dplyr::full_join(has_definitions_unique,
   dplyr::select(source:meaning_lower) |>
 
 # manually clean rows to make some extremely similar rows identical
-  dplyr::filter(Acronym != "?")
-
+  dplyr::filter(Acronym != "?",
+                # ACE is already used for multiple acronyms; will use ACOE
+                !(Acronym == "ACE" & Meaning == "Army Corps of Engineers"),
+                # Longer duplicate of AFSC
+                !Meaning %in% "Alaska Fisheries Science Center (National Marine Fisheries Service)",
+                # Duplicate without a definition
+                !Meaning %in% "Administrative Procedure Act") |>
+  dplyr::mutate(Meaning = stringr::str_replace_all(Meaning,
+                                          "Administrative Procedures Act",
+                                          "Administrative Procedure Act")) |>
+  # another duplicate without a definition
+  dplyr::filter(!Meaning %in% "Biomass (in either weight or other appropriate unit)")
 
 # then, filter out duplicates again
 

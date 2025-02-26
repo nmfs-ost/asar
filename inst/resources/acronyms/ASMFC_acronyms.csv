@@ -6,7 +6,7 @@ ACL,Annual Catch Limits ," The level of annual catch of a stock or stock complex
 AP,Advisory Panel , A group of interested and knowledgeable persons (generally recreational and commercial fishermen) convened under the ASMFC's Advisory Committee Charter to assist in development of an FMP or amendment.
 ARM,Adaptive Resource Management Framework ," A mechanism, established through Addendum VII to the Horseshoe Crab FMP, which incorporates both shorebird and horseshoe crab abundance levels to set optimized harvest levels for horseshoe crabs of Delaware Bay origin."
 ASC,Assessment Science Committee , An ASMFC committee that coordinates the scheduling of species-specific stock assessments and assists the ISFMP Policy Board in setting priorities and timelines in relation to current workloads.
-ASMFC,Atlantic States Marine Fisheries Commission , An interstate compact of the 15 Atlantic coastal states with the vision of “Sustainably managing Atlantic Coastal Fisheries”
+ASMFC,Atlantic States Marine Fisheries Commission ," An interstate compact of the 15 Atlantic coastal states with the vision of ""Sustainably managing Atlantic Coastal Fisheries"""
 ACCSP,Atlantic Coastal Cooperative Statistics Program ," A cooperative state- federal program to design, implement, and conduct marine fisheries statistics data collection programs and to integrate those data into a single data management system that will meet the needs of fishery managers, scientists, and fishermen."
 AM,Accountability Measures , Measures taken to prevent ACLs from being exceeded and to rectify the harm that may result if catch does exceed ACL.
 B,Biomass , The total weight of a stock of fish.
@@ -75,7 +75,7 @@ TAC,Total Allowable Catch , The annual recommended catch by a management authori
 TAL,Total Allowable Landings , The annual recommended catch by a management authority to preserve or rebuild a stock.
 TC,Technical Committee , A group of persons who are expert in the scientific and technical matters relating to a specific fish stock and who are appointed and convened by a Management Board to provide scientific and technical advice in the process of developing and monitoring FMPs and amendments.
 TRAC,Transboundary Resource Assessment Committee , The percent of a fish population removed by fishing over the course of a year.
-USFWS,U.S. Fish and Wildlife Service ," a bureau within the Department of the Interior with the mission of “working with others to conserve, protect and enhance fish, wildlife and plants and their habitats for the continuing benefit of the American people.”"
-VPA,Virtual Population Analysis ," A method of estimating stock size through examination of the sizes, growth, and mortality rates of individual age groups and using that information to “back calculate” the virtual populations that must have existed previously to produce the catches currently observed in a fishery."
+USFWS,U.S. Fish and Wildlife Service ," a bureau within the Department of the Interior with the mission of ""working with others to conserve, protect and enhance fish, wildlife and plants and their habitats for the continuing benefit of the American people."""
+VPA,Virtual Population Analysis ," A method of estimating stock size through examination of the sizes, growth, and mortality rates of individual age groups and using that information to ""back calculate"" the virtual populations that must have existed previously to produce the catches currently observed in a fishery."
 YPR,Yield per recruit , The expected yield in weight for a single fish or year class over the life of the fish or year class.
 Z,Total Mortality , The instantaneous rate at which fish die from both natural and fishing related causes. Z = F + M.
