@@ -749,13 +749,25 @@ create_template <- function(
       if (rerender_skeleton) {
         # Extract yaml from current template
         yaml_lines <- grep("---", prev_skeleton)
-        yaml <- prev_skeleton[1:55]
+        yaml <- unlist(prev_skeleton[1:55])
         # Change format if different
         # find format line
         if (prev_format == "pdf" & format == "html") {
-          new_format <- format_quarto("html")
+          new_format <- unlist(stringr::str_split(format_quarto("html"), "\n"))
+          # cat(new_format)
+          yaml <- yaml[-(grep("pdf-engine:", yaml):(grep("output-file:", yaml) - 1))]
+          yaml <- append(yaml, new_format[-length(new_format)], after = grep("cover:", yaml))
         }
         # add authors
+        if (author != "" | !is.null(add_author)) {
+          # add_authors <- NULL
+          # for (i in 1:length(author_list)) {
+          #   toad <- paste(author_list[[i]], sep = ",")
+          #   add_authors <- paste0(add_authors, toad) # -> add_authors
+          # }
+          add_authors <- unlist(stringr::str_split(author_list, "\n "))
+          yaml2 <- append(yaml, add_authors, after = tail(grep("postal-code:", yaml), n = 1))
+        }
         # replace title with custom
         # add add'l param names
         # replace bib file name
