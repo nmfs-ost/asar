@@ -49,8 +49,8 @@ Suggests:
     parallel,
     r4ss,
     rmarkdown,
-    stockplotr,
     snowfall,
+    stockplotr,
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
