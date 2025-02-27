@@ -90,7 +90,7 @@ Note: The output of this report is an example based on a real stock assessment. 
 
 ## Testing
 
-We encourage users to test `asar` throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. **Currently, `asar` is only setup to render to a pdf.** Once the user successfully executes `create_template()`, the template Quarto file will open:
+We encourage users to test `asar` throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. **Currently, `asar` is only set up to render to a pdf.** Once the user successfully executes `create_template()`, the template Quarto file will open:
 
 ![](man/figures/example_pop-up.PNG)
 
