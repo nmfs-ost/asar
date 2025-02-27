@@ -766,11 +766,19 @@ create_template <- function(
           #   add_authors <- paste0(add_authors, toad) # -> add_authors
           # }
           add_authors <- unlist(stringr::str_split(author_list, "\n "))
-          yaml2 <- append(yaml, add_authors, after = tail(grep("postal-code:", yaml), n = 1))
+          yaml <- append(yaml, add_authors, after = tail(grep("postal-code:", yaml), n = 1))
         }
         # replace title with custom
+        if (alt_title) {
+          yaml <- stringr::str_replace(yaml, yaml[grep("title:", yaml)], paste("title: ", title, sep = ""))
+        }
         # add add'l param names
+        if (!is.null(param_names) & !is.null(param_values)) {
+          add_params <- paste("  ", " ", param_names, ": ", "'", param_values, "'", sep = "")
+          yaml <- append(yaml, add_params, after = grep("bibliography:", yaml) - 1)
+        }
         # replace bib file name
+
       } else {
         yaml <- create_yaml(
           title = title,
