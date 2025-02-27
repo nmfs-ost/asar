@@ -75,11 +75,11 @@ kg/tow kilograms per tow 64,kg/tow,kilograms per tow,
 "Loess loess curve fitting (local polynomial regression) viii, 11, 15",,Loess,loess curve fitting (local polynomial regression)
 "log-normal probability distribution whose logarithm is normally distributed 25, 27, 28, 30, 39, 41, 42, 44,",,log-normal,probability distribution whose logarithm is normally distributed
 "M (instantaneous) natural mortality rate 2, 7, 19, 20, 24, 36, 50, 53",M,(instantaneous) natural mortality rate,
-"? Mohn’s rho parameter: the average relative bias of retrospective estimates 5, 23, 33, 45",?,Mohn’s rho parameter,The average relative bias of retrospective estimates
+"? Mohn's rho parameter: the average relative bias of retrospective estimates 5, 23, 33, 45",?,Mohn's rho parameter,The average relative bias of retrospective estimates
 "MSY maximum sustainable yield 22, 31, 38, 46, 61",MSY,maximum sustainable yield,
 "mt metric ton 1, 2, 14, 22, 23, 31, 32, 35–38, 45–47, 50, 54, 61, 63",mt,metric ton,
 NA not applicable 61,NA,not applicable,
-"PlanBsmooth ‘Plan B’ model using log-linear regression and Loess smoothing 11, 14, 15",PlanBsmooth,‘Plan B’ model using log-linear regression and Loess smoothing,
+"PlanBsmooth ‘Plan B' model using log-linear regression and Loess smoothing 11, 14, 15",PlanBsmooth,‘Plan B' model using log-linear regression and Loess smoothing,
 "q catchability coefficient 23, 36",q,catchability coefficient,
 "QA/QC quality assurance and quality control 4, 11",QA/QC,quality assurance and quality control,
 R expected recruitment numbers 55,,R,expected recruitment numbers
