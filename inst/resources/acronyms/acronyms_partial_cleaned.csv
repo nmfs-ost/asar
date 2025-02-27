@@ -1,0 +1,866 @@
+"","source","Acronym","Meaning","Definition","meaning_lower","n","duplicated_ac","duplicated_mean"
+"1",NA,"AA","Annual Allocation",NA,"annual allocation",2,"Y",NA
+"2",NA,"AA","Assistant Administrator",NA,"assistant administrator",2,"Y",NA
+"3",NA,"AAC","Alaska Administrative Code",NA,"alaska administrative code",NA,NA,NA
+"4","ASMFC","ABC","Acceptable Biological Catch","An annual catch level recommended by a Council's SSC. The Council's ACL for a stock may not exceed the ABC recommendation of the SSC for that stock. The SSC's ABC recommendation should incorporate consideration of the stock's life history and reproductive potential, vulnerability to overfishing, and the degree of uncertainty in the science upon which the ABC recommendation is based.","acceptable biological catch",2,"Y","Y"
+"5","PFMC","ABC","acceptable biological catch","The ABC is a scientific calculation of the sustainable harvest level of a fishery and is used to set the upper limit of the annual total allowable catch. It is calculated by applying the estimated (or proxy) harvest rate that produces maximum sustainable yield to the estimated exploitable stock biomass (the portion of the fish population that can be harvested).","acceptable biological catch",2,"Y","Y"
+"6",NA,"ABM","Abundance-Based Management",NA,"abundance-based management",NA,NA,NA
+"7","ASMFC","ACCSP","Atlantic Coastal Cooperative Statistics Program","A cooperative state- federal program to design, implement, and conduct marine fisheries statistics data collection programs and to integrate those data into a single data management system that will meet the needs of fishery managers, scientists, and fishermen.","atlantic coastal cooperative statistics program",NA,NA,NA
+"8",NA,"ACE","Accumulated Cyclone Energy",NA,"accumulated cyclone energy",2,"Y",NA
+"9",NA,"ACE","Annual Catch Entitlement",NA,"annual catch entitlement",2,"Y",NA
+"10","ASMFC","ACFCMA","Atlantic Coastal Fisheries Cooperative Management Act","Federal legislation, passed in December 1993 that provides a mechanism to ensure Atlantic coastal state compliance with mandated conservation measures in Commission-approved fishery management plans.","atlantic coastal fisheries cooperative management act",NA,NA,NA
+"11","ASMFC","ACFHP","Atlantic Coastal Fish Habitat Partnership","A partnership of state, federal, local, and non-governmental entities aimed at protecting, restoring, and enhancing fish and aquatic communities along the Atlantic coast.","atlantic coastal fish habitat partnership",NA,NA,NA
+"12","GMFMC","ACL","annual catch limit","the level of catch, set equal to or below the OFL, to prevent overfishing from occurring","annual catch limit",2,"Y",NA
+"13","ASMFC","ACL","Annual Catch Limits","The level of annual catch of a stock or stock complex that serves as the basis for invoking [accountability measures]. ACL cannot exceed the ABC, but may be divided into sector-ACLs.","annual catch limits",2,"Y",NA
+"14",NA,"ACLG","Annual Catch Limit Working Group",NA,"annual catch limit working group",NA,NA,NA
+"15","GMFMC","ACT","annual catch target","set below the ACL at a level to ensure the ACL is not exceeded and to account for management uncertainty","annual catch target",NA,NA,NA
+"16","GMFMC","ADCNR","Alabama Department of Conservation and Natural Resources","Alabama's state agency for the management and conservation of wildlife and aquatic resources","alabama department of conservation and natural resources",NA,NA,NA
+"17",NA,"ADFG","Alaska Department of Fish and Game",NA,"alaska department of fish and game",NA,NA,NA
+"18",NA,"ADP","Annual Deployment Plan",NA,"annual deployment plan",NA,NA,NA
+"19",NA,"AEQ","Adult equivalent",NA,"adult equivalent",NA,NA,NA
+"20",NA,"AFA","American Fisheries Act",NA,"american fisheries act",NA,NA,NA
+"21",NA,"AFSC","Alaska Fisheries Science Center",NA,"alaska fisheries science center",NA,NA,NA
+"22",NA,"AI","Aleutian Islands",NA,"aleutian islands",NA,NA,NA
+"23",NA,"AIS","Aquatic invasive species",NA,"aquatic invasive species",NA,NA,NA
+"24",NA,"AK BOF","Alaska Board of Fisheries",NA,"alaska board of fisheries",NA,NA,NA
+"25",NA,"AKFIN","Alaska Fisheries Information Network",NA,"alaska fisheries information network",NA,NA,NA
+"26",NA,"AKR","Alaska Region",NA,"alaska region",NA,NA,NA
+"27",NA,"AKRO","Alaska Regional Office",NA,"alaska regional office",NA,NA,NA
+"28",NA,"ALJ","Administrative Law Judge",NA,"administrative law judge",NA,NA,NA
+"29",NA,"ALK","age-length-key",NA,"age-length-key",NA,NA,NA
+"30","SAFMC","ALS","Accumulated Landings System","Commercial fishing statistics","accumulated landings system",2,"Y",NA
+"31","GMFMC","ALS","Accumulated Landings System (commercial fishing statistics)","data system housed by the SEFSC includes all commercial fishery data from the SE region of the U.S., commercial landings information usually reported by dealers on ""trip tickets"" to state agencies that go to regional commission databases then to this system","accumulated landings system (commercial fishing statistics)",2,"Y",NA
+"32","GMFMC","AM","accountability measure","management controls to prevent annual catch limits from being exceeded and to correct or mitigate overages of the annual catch limit if they occur","accountability measure",2,"Y",NA
+"33","ASMFC","AM","Accountability Measures","Measures taken to prevent ACLs from being exceeded and to rectify the harm that may result if catch does exceed ACL.","accountability measures",2,"Y",NA
+"34",NA,"AMP","Adaptive Management Program",NA,"adaptive management program",NA,NA,NA
+"35",NA,"ANILCA","Alaska National Interest Lands Conservation Act",NA,"alaska national interest lands conservation act",NA,NA,NA
+"36",NA,"AOP","Assessment Oversight Panel",NA,"assessment oversight panel",NA,NA,NA
+"37","ASMFC","AP","Advisory Panel","A group of interested and knowledgeable persons (generally recreational and commercial fishermen) convened under the ASMFC's Advisory Committee Charter to assist in development of an FMP or amendment.","advisory panel",2,"Y","Y"
+"38","GMFMC","AP","Advisory Panel","panel of members made up of individuals with knowledge and first-hand experience of harvesting Gulf of Mexico managed species and are interested in the conservation and best practices for management of these fishery resources","advisory panel",2,"Y","Y"
+"39","GMFMC","APA","Administrative Procedure Act","the governing process by which federal agencies develop and issue regulations. This process includes publishing in the Federal Register and the ability for the public to comment on proposed regulations","administrative procedure act",NA,NA,NA
+"40","GMFMC","APAIS","Access Point Angler Intercept Survey","the dockside intercept portion of the federal recreational angler survey commonly known as MRIP","access point angler intercept survey",NA,NA,NA
+"41","NEFMC","AR","Autoregressive","An autoregressive model specifies that the output variable depends linearly on its own previous value(s) and a stochastic term","autoregressive",NA,NA,NA
+"42","ASMFC","ARM","Adaptive Resource Management Framework","A mechanism, established through Addendum VII to the Horseshoe Crab FMP, which incorporates both shorebird and horseshoe crab abundance levels to set optimized harvest levels for horseshoe crabs of Delaware Bay origin.","adaptive resource management framework",NA,NA,NA
+"43","WPFMC","AS","American Samoa","Includes the islands of Tutuila, Manua, Rose and Swains Atolls","american samoa",NA,NA,NA
+"44","GMFMC","ASAP","age-structured assessment program","an age-structured stock assessment model that uses various components to estimate population sizes based on observed catches, catch-at-age and indices of abundance","age-structured assessment program",NA,NA,NA
+"45","ASMFC","ASC","Assessment Science Committee","An ASMFC committee that coordinates the scheduling of species-specific stock assessments and assists the ISFMP Policy Board in setting priorities and timelines in relation to current workloads.","assessment science committee",NA,NA,NA
+"46",NA,"ASG","American Samoa Government",NA,"american samoa government",NA,NA,NA
+"47","ASMFC","ASMFC","Atlantic States Marine Fisheries Commission","An interstate compact of the 15 Atlantic coastal states with the vision of ""Sustainably managing Atlantic Coastal Fisheries""","atlantic states marine fisheries commission",2,"Y","Y"
+"48","GMFMC","ASMFC","Atlantic States Marine Fisheries Commission","a commission comprising the Atlantic states formed to coordinate and manage fishery resources along the Atlantic coast","atlantic states marine fisheries commission",2,"Y","Y"
+"49",NA,"ATM","Acoustic trawl method",NA,"acoustic trawl method",NA,NA,NA
+"50",NA,"AVHRR","Advanced Very High Resolution Radiometer",NA,"advanced very high resolution radiometer",NA,NA,NA
+"51","ASMFC","B","Biomass","The total weight of a stock of fish.","biomass",3,"Y",NA
+"52","SAFMC","B","Biomass","In either weight or other appropriate unit","biomass",3,"Y",NA
+"53","GMFMC","B","stock biomass level","the total weight or volume of a stock of fish; often used in conjunction with other management acronyms such as MSY","stock biomass level",3,"Y",NA
+"54","GMFMC","B MAX","#VALUE!","#VALUE!","#value!",NA,NA,NA
+"55","GMFMC","B MSY","Biomass at Max Sustainable Yield","stock biomass level capable of producing an equilibrium yield at maximum sustainable yield","biomass at max sustainable yield",NA,NA,NA
+"56",NA,"B-CURR","Current biomass",NA,"current biomass",NA,NA,NA
+"57",NA,"B-OY","Biomass at optimum yield",NA,"biomass at optimum yield",NA,NA,NA
+"58",NA,"B1","Fish Filleted or Used for Bait but Identified by Interviewer",NA,"fish filleted or used for bait but identified by interviewer",NA,NA,NA
+"59",NA,"B2","Fish Identified but Released Alive",NA,"fish identified but released alive",NA,NA,NA
+"60","PFMC","B25%","25% of unfished biomass (size of fish stock without fishing)","For groundfish, this is the threshold for being designated as overfished.","25% of unfished biomass (size of fish stock without fishing)",NA,NA,NA
+"61","PFMC","B40%","40% of unfished biomass (size of fish stock without fishing)","This is the Council's threshold for declaring a stock rebuilt, or the size of the stock estimated to produce maximum sustainable yield. This is also referred to as BMSY.","40% of unfished biomass (size of fish stock without fishing)",NA,NA,NA
+"62","PFMC","BA","Biological assessment","An assessment conducted as part of the Endangered Species Act process.","biological assessment",NA,NA,NA
+"63","SAFMC","BAM","Beaufort Assessment Model","Stock assessment model for South Atlantic","beaufort assessment model",NA,NA,NA
+"64",NA,"BASIS","Bering Sea-Aleutian Salmon International Survey",NA,"bering sea-aleutian salmon international survey",NA,NA,NA
+"65","GMFMC","BB","Briefing Book","the group of materials, including documents and presentations, prepared in advance of a Council meeting to provide background information on topics that will be discussed during the meeting","briefing book",NA,NA,NA
+"66",NA,"BBRKC","Bristol Bay Red King Crab",NA,"bristol bay red king crab",NA,NA,NA
+"67",NA,"BC","Budget Committee",NA,"budget committee",NA,NA,NA
+"68",NA,"BCURRENT","Current Biomass of Stock",NA,"current biomass of stock",NA,NA,NA
+"69",NA,"BDCP","Bay Delta Conservation Plan",NA,"bay delta conservation plan",NA,NA,NA
+"70",NA,"BEG","Biological escapement goal",NA,"biological escapement goal",NA,NA,NA
+"71",NA,"BET","Bigeye Tuna",NA,"bigeye tuna",NA,NA,NA
+"72","WPFMC","BFLAG","Warning Reference Point","Set equal to BMSY","warning reference point",NA,NA,NA
+"73",NA,"BKC","Blue King Crab",NA,"blue king crab",NA,NA,NA
+"74","PFMC","BLM","Bureau of Land Management","Administers 261 million acres of public lands, mainly in the West.","bureau of land management",NA,NA,NA
+"75","GMFMC","BM","base model","the assessment model used to perform an assessment of a stock to determine status and appropriate management measures; remains consistent with previous models used in SEDAR assessments; other supplemental analyses and models are often used in conjunction with the base model","base model",NA,NA,NA
+"76",NA,"BOEM","Bureau of Ocean Energy Management",NA,"bureau of ocean energy management",NA,NA,NA
+"77",NA,"BOF","Board of Fish",NA,"board of fish",NA,NA,NA
+"78","PFMC","BOR","U.S. Bureau of Reclamation","Responsible for managing water distribution in the West.","u.s. bureau of reclamation",NA,NA,NA
+"79","PFMC","BPA","Bonneville Power Administration","BPA markets electricity from 31 federally-owned dams in the Columbia River basin.","bonneville power administration",NA,NA,NA
+"80","GMFMC","BRD","bycatch reduction device","a piece of equipment designed with the specific purpose of minimizing unintended capture of marine mammals","bycatch reduction device",2,"Y","Y"
+"81","ASMFC","BRD","Bycatch reduction device","An opening in the shrimp trawl net that allows finfish or other accidentally captured aquatic animals to escape while the target species is directed towards the tail bag or cod end of the net.","bycatch reduction device",2,"Y","Y"
+"82","ASMFC","BRP","Biological reference point","A particular value of stock size, catch, fishing effort, or fishing mortality that may be used as a measure of stock status or management plan effectiveness. BRP's can be categorized as limits, targets, or thresholds depending on their intended use.","biological reference point",2,"Y","Y"
+"83","GMFMC","BRP","biological reference point","benchmarks against which actual status of a fish stock can be measured, usually maximum or target fishing mortality rates or minimum stock biomass levels","biological reference point",2,"Y","Y"
+"84",NA,"BSAI","Bering Sea and Aleutian Islands",NA,"bering sea and aleutian islands",NA,NA,NA
+"85",NA,"BSFRF","Bering Sea Fisheries Research Foundation",NA,"bering sea fisheries research foundation",NA,NA,NA
+"86",NA,"BSIA","Best Scientific Information Available",NA,"best scientific information available",NA,NA,NA
+"87",NA,"BSIERP","Bering Sea Integrated Ecosystem Research Program",NA,"bering sea integrated ecosystem research program",NA,NA,NA
+"88",NA,"BTS","Bottom trawl survey",NA,"bottom trawl survey",NA,NA,NA
+"89","GMFMC","BiOp","biological opinion","issued by various NOAA regional offices on a range of topics such as fisheries, dredging and offshore winds, these opinions essentially specify the conditions by which federal agencies must comply in order to minimize impacts from federal actions, usually for any actions that may affect ESA-listed species","biological opinion",2,"Y","Y"
+"90","PFMC","BiOp","Biological opinion","A scientific assessment issued by the National Marine Fisheries Service or U.S. Fish and Wildlife Service, as required by the Endangered Species Act for listed species. Determines the likelihood of an action to jeopardize the existence of a species listed under the Endangered Species Act.","biological opinion",2,"Y","Y"
+"91","PFMC","Bo (B sub zero)",NA,"Unfished biomass; the estimated size of a fish stock in the absence of fishing.",NA,NA,NA,NA
+"92",NA,"Board","ASMFC Summer Flounder, Scup, and Black Sea Bass Board",NA,"asmfc summer flounder, scup, and black sea bass board",NA,NA,NA
+"93",NA,"C","Average Catch",NA,"average catch",2,"Y",NA
+"94",NA,"C","Recent Average Catch",NA,"recent average catch",2,"Y",NA
+"95","PFMC","C&S","ceremonial and subsistence","A harvest category specific to native American tribes.","ceremonial and subsistence",NA,NA,NA
+"96",NA,"CA","California",NA,"california",2,"Y",NA
+"97",NA,"CA","Canada",NA,"canada",2,"Y",NA
+"98",NA,"CAMS","Catch Accounting and Monitoring System",NA,"catch accounting and monitoring system",NA,NA,NA
+"99",NA,"CAS","Catch Accounting System",NA,"catch accounting system",NA,NA,NA
+"100",NA,"CBNMS","Cordell Bank National Marine Sanctuary",NA,"cordell bank national marine sanctuary",NA,NA,NA
+"101",NA,"CC","Connecticut",NA,"connecticut",NA,NA,NA
+"102","PFMC","CCA","Cowcod Conservation Area(s)","Two areas located in the Southern California Bight southwest of Santa Monica to the California/Mexico border that encompass roughly 4,300 square nautical miles of habitat where the highest densities of cowcod occur. These areas are closed to bottom fishing in order to rebuild the cowcod stock.","cowcod conservation area(s)",2,"Y",NA
+"103",NA,"CCA","Crustose Coralline Algae",NA,"crustose coralline algae",2,"Y",NA
+"104","GMFMC","CCC","Council Coordination Committee","committee made up of chairs, vice chairs, and regional directors of each regional fishery management council. The committee meets twice each year to discuss issues pertinent to all the councils","council coordination committee",NA,NA,NA
+"105",NA,"CCCT","Ad Hoc Climate and Communities Core Team",NA,"ad hoc climate and communities core team",NA,NA,NA
+"106",NA,"CCE","California Current Ecosystem",NA,"california current ecosystem",NA,NA,NA
+"107",NA,"CCI","Climate and Commununities Initiative",NA,"climate and commununities initiative",NA,NA,NA
+"108",NA,"CCIEA","California Current Integrated Ecosystem Assessment",NA,"california current integrated ecosystem assessment",NA,NA,NA
+"109",NA,"CDF","cumulative distribution function",NA,"cumulative distribution function",NA,NA,NA
+"110",NA,"CDFW","California Department of Fish and Wildlife (formerly CDFG, Fish and Game)",NA,"california department of fish and wildlife (formerly cdfg, fish and game)",NA,NA,NA
+"111",NA,"CDQ","Community Development Quota",NA,"community development quota",NA,NA,NA
+"112",NA,"CEA","Cumulative Effects Analysis",NA,"cumulative effects analysis",NA,NA,NA
+"113",NA,"CEC","Community Engagement Committee",NA,"community engagement committee",NA,NA,NA
+"114","GMFMC","CEQ","Council on Environmental Quality","a division of the Executive Branch that coordinates federal environmental efforts and oversees NEPA implementation","council on environmental quality",NA,NA,NA
+"115",NA,"CEQA","California Environmental Quality Act",NA,"california environmental quality act",NA,NA,NA
+"116","ASMFC","CESS","Committee on Economics and Social Sciences","An ASMFC committee focusing on social and economic considerations in fisheries management.","committee on economics and social sciences",NA,NA,NA
+"117",NA,"CFA","Community fishing association",NA,"community fishing association",NA,NA,NA
+"118",NA,"CFDBS","Commercial Fisheries Data Base System",NA,"commercial fisheries data base system",NA,NA,NA
+"119",NA,"CFEAI","Commercial Fishing Economic Assessment Index",NA,"commercial fishing economic assessment index",NA,NA,NA
+"120",NA,"CFL","Coastal Fisheries Logbook",NA,"coastal fisheries logbook",NA,NA,NA
+"121",NA,"CFLP","Commercial Fisheries Logbook Program",NA,"commercial fisheries logbook program",NA,NA,NA
+"122","GMFMC","CFMC","Caribbean Fishery Management Council","one of eight regional councils, responsible for managing fishery resources in the Caribbean Exclusive Economic Zone off Puerto Rico and the U.S. Virgin Islands","caribbean fishery management council",NA,NA,NA
+"123","GMFMC","CFR","Code of Federal Regulations","the codification of the general and permanent rules published in the Federal Register","code of federal regulations",2,"Y","Y"
+"124","PFMC","CFR","Code of Federal Regulations","A codification of the regulations published in the Federal Register by the executive departments and agencies of the federal government. The CFR is divided into 50 titles that represent broad areas subject to federal regulation. Title 50 contains wildlife and fisheries regulations.","code of federal regulations",2,"Y","Y"
+"125",NA,"CGOA","Central Gulf of Alaska",NA,"central gulf of alaska",NA,NA,NA
+"126",NA,"CH","Critical Habitat",NA,"critical habitat",NA,NA,NA
+"127",NA,"CHAPC","Coral Habitat Area of Particular Concern",NA,"coral habitat area of particular concern",NA,NA,NA
+"128","GMFMC","CHTS","Coastal Household Telephone Survey","survey used to collect recreational fishing effort information through random-digit dialing of residential households. Replaced by the FES survey in 2018.","coastal household telephone survey",NA,NA,NA
+"129","GMFMC","CI","confidence interval","upper and lower limits that bound a plausible range of values or a specified probability that a parameter value lies within this range","confidence interval",NA,NA,NA
+"130",NA,"CIE","Center for Independent Experts",NA,"center for independent experts",NA,NA,NA
+"131","PFMC","CINMS","Channel Islands National Marine Sanctuary","A 1,252-square-nautical-mile area of the Santa Barbara Channel designated as a marine sanctuary in 1980. It encompasses an area out to six nautical miles around the islands of San Miguel, Santa Rosa, Santa Cruz, Anacapa, and Santa Barbara. CINMS is one of 13 National Marine Sanctuaries around the country.","channel islands national marine sanctuary",NA,NA,NA
+"132",NA,"CITES","Convention of International Trade in Endangered Species",NA,"convention of international trade in endangered species",NA,NA,NA
+"133",NA,"CJFAS","Canadian Journal of Fisheries and Aquatic Sciences",NA,"canadian journal of fisheries and aquatic sciences",NA,NA,NA
+"134",NA,"CLF","Conservation Law Foundation",NA,"conservation law foundation",NA,NA,NA
+"135",NA,"CLM","commercial landings monitoring",NA,"commercial landings monitoring",NA,NA,NA
+"136",NA,"CM","continuity model",NA,"continuity model",NA,NA,NA
+"137",NA,"CML","Commercial Marine License data",NA,"commercial marine license data",NA,NA,NA
+"138",NA,"CMM","Conservation and Management Measures",NA,"conservation and management measures",NA,NA,NA
+"139",NA,"CMP","coastal migratory pelagics",NA,"coastal migratory pelagics",NA,NA,NA
+"140","WPFMC","CNMI","Commonwealth of the Northern Mariana Islands","Includes the islands of Saipan, Tinian, Rota, and many others in the Marianas Archipelago","commonwealth of the northern mariana islands",NA,NA,NA
+"141",NA,"CO2","Carbon Dioxide",NA,"carbon dioxide",NA,NA,NA
+"142",NA,"COAR","Commercial Operators Annual Report",NA,"commercial operators annual report",NA,NA,NA
+"143",NA,"COBLZ","C. opilio Bycatch Limitation Zone",NA,"c. opilio bycatch limitation zone",NA,NA,NA
+"144","PFMC","ACOE","(U.S. Army) Corps of Engineers","Among other things, the COE manages hydropower facilities, conducts dredging operations, and builds breakwaters and jetties.","(u.s. army) corps of engineers",NA,NA,NA
+"145",NA,"COI","certificate of inspection",NA,"certificate of inspection",NA,NA,NA
+"146",NA,"COP","Council Operating Procedures",NA,"council operating procedures",NA,NA,NA
+"147",NA,"CP","Catcher/processor",NA,"catcher/processor",NA,NA,NA
+"148",NA,"CPC","Climate Prediction Center, NOAA",NA,"climate prediction center, noaa",NA,NA,NA
+"149",NA,"CPDF","Catch-Per-Day-Fished",NA,"catch-per-day-fished",NA,NA,NA
+"150","PFMC","CPFV","Commercial passenger fishing vessel","(Charter boat)","commercial passenger fishing vessel",NA,NA,NA
+"151",NA,"CPI","Consumer Price Index",NA,"consumer price index",NA,NA,NA
+"152","PFMC","CPS","coastal pelagic species","Coastal pelagic species are schooling fish, not associated with the ocean bottom, that migrate in coastal waters. They usually eat plankton and are the main food source for higher level predators such as tuna, salmon, most groundfish, and humans. Examples are herring, squid, anchovy, sardine, and mackerel.","coastal pelagic species",NA,NA,NA
+"153",NA,"CPSAS","Coastal Pelagic Species Advisory Subpanel",NA,"coastal pelagic species advisory subpanel",NA,NA,NA
+"154",NA,"CPSMT","Coastal Pelagic Species Management Team",NA,"coastal pelagic species management team",NA,NA,NA
+"155","PFMC","CPUE","catch per unit of effort","The quantity of fish caught (in number or weight) with one standard unit of fishing effort. For example, the number of fish taken per 1,000 hooks per day, or the weight of fish, in tons, taken per hour of trawling. CPUE is often considered an index of fish biomass (or abundance). Sometimes referred to as catch rate. CPUE may be used as a measure of economic efficiency of fishing as well as an index of fish abundance.","catch per unit of effort",3,"Y",NA
+"156","ASMFC","CPUE","Catch-per-unit-effort","The number or weight of fish caught by a given amount of fishing effort, measured frequently by time, gear type, horsepower, etc.","catch-per-unit-effort",3,"Y",NA
+"157","WPFMC","CPUE","Catch-Per-Unit-Effort","A standard fisheries index usually expressed as numbers of fish caught per unit of gear per unit of time, e.g., number of fish per hook per line-hour or number of fish per 1,000 hooks","catch-per-unit-effort",3,"Y",NA
+"158",NA,"CQE","Community Quota Entity",NA,"community quota entity",NA,NA,NA
+"159",NA,"CR","Columbia River",NA,"columbia river",NA,NA,NA
+"160","PFMC","CRCA","California Rockfish Conservation Area","The California Rockfish Conservation Area (CRCA) is defined as (1) ocean waters 20 fm to 250 fm between Cape Mendocino and Point Reyes and 20 fm to 150 fm between Point Reyes and the U.S./Mexico Border, and (2) the Cowcod Conservation Areas. The purpose of the CRCA is to regulate all gear types that have a potentially significant affect on rebuilding of overfished rockfish species south of Cape Mendocino.","california rockfish conservation area",NA,NA,NA
+"161",NA,"CRD","Center Reference Document",NA,"center reference document",NA,NA,NA
+"162",NA,"CRITFC","Columbia River Inter-Tribal Fish Commission",NA,"columbia river inter-tribal fish commission",NA,NA,NA
+"163",NA,"CS","Consumer surplus",NA,"consumer surplus",NA,NA,NA
+"164",NA,"CSE","Council of Science Editors",NA,"council of science editors",NA,NA,NA
+"165",NA,"CSP","Halibut Catch Sharing Plan",NA,"halibut catch sharing plan",NA,NA,NA
+"166",NA,"CT LISTS","Connecticut Long Island Sound Trawl Survey",NA,"connecticut long island sound trawl survey",NA,NA,NA
+"167",NA,"CV","Catcher vessel",NA,"catcher vessel",2,"Y",NA
+"168",NA,"CV","coefficient of variation",NA,"coefficient of variation",2,"Y",NA
+"169",NA,"CVOA","Catcher vessel operational area",NA,"catcher vessel operational area",NA,NA,NA
+"170",NA,"CVPIA","Central Valley Project Improvement Act",NA,"central valley project improvement act",NA,NA,NA
+"171","PFMC","CWT","coded-wire tag","Coded-wire tags are small pieces of stainless steel wire that are injected into the snouts of juvenile salmon and steelhead. Each tag is etched with a binary code that identifies its release group.","coded-wire tag",NA,NA,NA
+"172",NA,"CY","Calendar Year",NA,"calendar year",NA,NA,NA
+"173","PFMC","CZMA","Coastal Zone Management Act","The main objective of the CZMA is to encourage and assist states in developing coastal zone management programs, to coordinate state activities, and to safeguard the regional and national interests in the coastal zone. It requires that any federal activity (including fishery management regulations) directly affecting the coastal zone of a state be consistent with that state's approved coastal zone management program, since activities that take place beyond the territorial sea may affect the coastal zone.","coastal zone management act",NA,NA,NA
+"174",NA,"CalCOFI","California Cooperative Oceanic Fisheries Investigations",NA,"california cooperative oceanic fisheries investigations",NA,NA,NA
+"175",NA,"Council","Gulf of Mexico Fishery Management Council",NA,"gulf of mexico fishery management council",4,"Y",NA
+"176",NA,"Council","Mid-Atlantic Fishery Management Council (MAFMC)",NA,"mid-atlantic fishery management council (mafmc)",4,"Y",NA
+"177",NA,"Council","North Pacific Fishery Management Council",NA,"north pacific fishery management council",4,"Y",NA
+"178",NA,"Council","Pacific Fishery Management Council",NA,"pacific fishery management council",4,"Y",NA
+"179",NA,"Covid","refers to coronavirus pandemic years",NA,"refers to coronavirus pandemic years",NA,NA,NA
+"180",NA,"DAS","Days-At-Sea",NA,"days-at-sea",NA,NA,NA
+"181",NA,"DAWR","Division of Aquatic and Wildlife Resources, Guam",NA,"division of aquatic and wildlife resources, guam",NA,NA,NA
+"182",NA,"DEA","Draft Environmental Assessment",NA,"draft environmental assessment",NA,NA,NA
+"183",NA,"DEIS","Draft Environmental Impact Statement",NA,"draft environmental impact statement",NA,NA,NA
+"184",NA,"DFO","(Canada) Department of Fisheries and Oceans",NA,"(canada) department of fisheries and oceans",NA,NA,NA
+"185",NA,"DFW","Department of Fish and Wildlife",NA,"department of fish and wildlife",NA,NA,NA
+"186",NA,"DGN","Drift gillnet",NA,"drift gillnet",NA,NA,NA
+"187",NA,"DIC","Dissolved Inorganic Carbon",NA,"dissolved inorganic carbon",NA,NA,NA
+"188",NA,"DMF","Division of Marine Fisheries",NA,"division of marine fisheries",NA,NA,NA
+"189",NA,"DMIS","Database",NA,"database",NA,NA,NA
+"190",NA,"DMWR","Department of Marine and Wildlife Resources, American Samoa",NA,"department of marine and wildlife resources, american samoa",NA,NA,NA
+"191","PFMC","DOC","Department of Commerce","Parent organization of the National Marine Fisheries Service.","department of commerce",NA,NA,NA
+"192",NA,"DOD","Department of Defense",NA,"department of defense",NA,NA,NA
+"193",NA,"DOI","Department of Interior",NA,"department of interior",NA,NA,NA
+"194","PFMC","DOJ","Department of Justice","DOJ attorneys represent the Secretary of Commerce in litigation on fishery management plans.","department of justice",NA,NA,NA
+"195",NA,"DOS","Department of State",NA,"department of state",NA,NA,NA
+"196",NA,"DPNR","Department of Planning and Natural Resources of the USVI",NA,"department of planning and natural resources of the usvi",NA,NA,NA
+"197","ASMFC","DPS","Distinct population segment","A population or group of populations that is discrete from other populations of the species and significant in relation to the entire species. The Endangered Species Act provides for listing species, subspecies, or distinct population segments of vertebrate species. Atlantic sturgeon is characterized as having 3 DPSs throughout its US Atlantic coast range.","distinct population segment",NA,NA,NA
+"198",NA,"DQA","Data Quality Act",NA,"data quality act",NA,NA,NA
+"199",NA,"DTL","Daily trip limit",NA,"daily trip limit",NA,NA,NA
+"200",NA,"DTS","Dover sole, thornyhead, and trawl-caught sablefish complex",NA,"dover sole, thornyhead, and trawl-caught sablefish complex",NA,NA,NA
+"201",NA,"DWFN","Distant Water Fishing Nation",NA,"distant water fishing nation",NA,NA,NA
+"202",NA,"DWG","deep-water grouper",NA,"deep-water grouper",NA,NA,NA
+"203",NA,"DWH","Deepwater Horizon",NA,"deepwater horizon",NA,NA,NA
+"204",NA,"E-A","Euro-American",NA,"euro-american",NA,NA,NA
+"205","PFMC","EA","environmental assessment","As part of the National Environmental Policy Act (NEPA) process, an EA is a concise public document that provides evidence and analysis for determining whether to prepare an environmental impact statement (EIS) or a Finding of No Significant Impact.","environmental assessment",NA,NA,NA
+"206",NA,"EAM","Ecosystem approach to management",NA,"ecosystem approach to management",NA,NA,NA
+"207",NA,"EAS","Ecosystem Advisory Subpanel",NA,"ecosystem advisory subpanel",NA,NA,NA
+"208",NA,"EBFM","Ecosystem Based Fisheries Management",NA,"ecosystem based fisheries management",NA,NA,NA
+"209",NA,"EBM","Ecosystem-based management",NA,"ecosystem-based management",NA,NA,NA
+"210",NA,"EC","ecosystem component species",NA,"ecosystem component species",2,"Y",NA
+"211",NA,"EC","Enforcement Consultants, or ecosystem component.",NA,"enforcement consultants, or ecosystem component.",2,"Y",NA
+"212",NA,"ECO","Ecosystem Committee",NA,"ecosystem committee",NA,NA,NA
+"213",NA,"ED","Executive Director",NA,"executive director",NA,NA,NA
+"214",NA,"EDF","Environmental Defense Fund",NA,"environmental defense fund",NA,NA,NA
+"215",NA,"EDR","Economic Data Reporting",NA,"economic data reporting",NA,NA,NA
+"216",NA,"EEJ","Equity and environmental justice",NA,"equity and environmental justice",NA,NA,NA
+"217","ASMFC","EEZ","Exclusive Economic Zone","U.S. federal waters that extend from 3 to 200 miles from shore. The U.S. has sole management authority of the natural resources found therein.","exclusive economic zone",3,"Y","Y"
+"218","PFMC","EEZ","Exclusive Economic Zone","A zone under national jurisdiction (up to 200 nautical miles wide) declared in line with the provisions of the 1982 United Nations Convention of the Law of the Sea, within which the coastal State has the right to explore and exploit, and the responsibility to conserve and manage, the living and non-living resources.","exclusive economic zone",3,"Y","Y"
+"219","WPFMC","EEZ","Exclusive Economic Zone","Waters of a nation, recognized internationally under the United Nations Convention on the Law of the Sea as extending 200 nautical miles from shore. Within the U.S., the EEZ is typically between three and 200 nautical miles from shore","exclusive economic zone",3,"Y","Y"
+"220",NA,"EF","Expansion Factor",NA,"expansion factor",NA,NA,NA
+"221","PFMC","EFH","essential fish habitat","Those waters and substrate necessary to fish for spawning, breeding, feeding or growth to maturity.","essential fish habitat",NA,NA,NA
+"222",NA,"EFH-HAPC","Essential Fish Habitat- Habitat Area of Particular Concern",NA,"essential fish habitat- habitat area of particular concern",NA,NA,NA
+"223",NA,"EFHCA","Essential fish habitat conservation area",NA,"essential fish habitat conservation area",NA,NA,NA
+"224",NA,"EFHRC","Essential Fish Habitat Review Committee",NA,"essential fish habitat review committee",NA,NA,NA
+"225","PFMC","EFIN","Economic Fishery Information Network","Administered by the Pacific States Marine Fisheries Commission.","economic fishery information network",NA,NA,NA
+"226",NA,"EFMP","Ecosystem Fishery Management Plan",NA,"ecosystem fishery management plan",NA,NA,NA
+"227","PFMC","EFP","exempted fishing permit","A permit issued by National Marine Fisheries Service that allows exemptions from some regulations in order to study the effectiveness, bycatch rate, or other aspects of an experimental fishing gear. Previously known as an ""experimental fishing permit.""","exempted fishing permit",NA,NA,NA
+"228",NA,"EIR","Environmental impact review",NA,"environmental impact review",NA,NA,NA
+"229","PFMC","EIS","Environmental impact statement","As part of the National Environmental Policy Act (NEPA) process, an EIS is an analysis of the expected impacts resulting from the implementation of a fisheries management or development plan (or some other proposed action) on the environment. EISs are required for all fishery management plans as well as significant amendments to existing plans. The purpose of an EIS is to ensure the fishery management plan gives appropriate consideration to environmental values in order to prevent harm to the environment.","environmental impact statement",NA,NA,NA
+"230",NA,"EJ","environmental justice",NA,"environmental justice",NA,NA,NA
+"231",NA,"ELAPS","Effort Limit Area for Purse Seine",NA,"effort limit area for purse seine",NA,NA,NA
+"232",NA,"ELB","electronic logbook",NA,"electronic logbook",NA,NA,NA
+"233",NA,"ELMR","Estuarine Living Marine Resources",NA,"estuarine living marine resources",NA,NA,NA
+"234",NA,"EM","Electronic monitoring",NA,"electronic monitoring",NA,NA,NA
+"235",NA,"EMC","Electronic Monitoring Committee",NA,"electronic monitoring committee",NA,NA,NA
+"236","PFMC","ENSO","El Niño Southern Oscillation","Abnormally warm ocean climate conditions, which in some years affect the eastern coast of Latin America (centered on Peru) often around Christmas time. The anomaly is accompanied by dramatic changes in species abundance and distribution, higher local rainfall and flooding, and massive deaths of fish and their predators. Many other climactic anomalies around the world are attributed to consequences of El Ni�o.","el niño southern oscillation",NA,NA,NA
+"237",NA,"EO","Executive Order",NA,"executive order",NA,NA,NA
+"238",NA,"EPA","Environmental Protection Agency",NA,"environmental protection agency",NA,NA,NA
+"239",NA,"EPDT","Ecosystem Plan Development Team",NA,"ecosystem plan development team",NA,NA,NA
+"240",NA,"EPO","Eastern Pacific Ocean",NA,"eastern pacific ocean",NA,NA,NA
+"241","ASMFC","EPR","Eggs per recruit","The expected egg production from a female in her lifetime, usually expressed as a percentage of the egg production that would otherwise occur in an unfished stock.","eggs per recruit",NA,NA,NA
+"242",NA,"ER","ecological reserve",NA,"ecological reserve",NA,NA,NA
+"243","PFMC","ESA","Endangered Species Act","An act of Federal law that provides for the conservation of endangered and threatened species of fish, wildlife, and plants. When preparing fishery management plans, councils are required to consult with the National Marine Fisheries Service and the U.S. Fish and Wildlife Service to determine whether the fishing under a fishery management plan is likely to jeopardize the continued existence of an ESA-listed species or to result in harm to its critical habitat.","endangered species act",2,"Y","Y"
+"244","WPFMC","ESA","Endangered Species Act","An Act of Congress passed in 1966 that establishes a federal program to protect species of animals whose survival is threatened by habitat destruction, overutilization, disease, etc.","endangered species act",2,"Y","Y"
+"245",NA,"ESD","Equivalent Spherical Diameter",NA,"equivalent spherical diameter",NA,NA,NA
+"246",NA,"ESP","Ecological and Socioeconomic Profile",NA,"ecological and socioeconomic profile",NA,NA,NA
+"247",NA,"ESRL","Earth System Research Laboratory, NOAA",NA,"earth system research laboratory, noaa",NA,NA,NA
+"248","PFMC","ESU","evolutionarily significant unit","An Evolutionarily Significant Unit or ""ESU"" is a distinctive group of Pacific salmon, steelhead, or sea-run cutthroat trout that is uniquely adapted to a particular area or environment and cannot be replaced.","evolutionarily significant unit",NA,NA,NA
+"249",NA,"EWG","Ecosystem Workgroup",NA,"ecosystem workgroup",NA,NA,NA
+"250","ASMFC","F","Fishing mortality","The instantaneous rate at which fish in a stock die because of fishing. Typically includes measured bycatch, if data are available.","fishing mortality",3,"Y",NA
+"251","PFMC","F",NA,"The instantaneous rate of fishing mortality. The term ""fishing mortality rate"" is a technical fishery science term that is often misunderstood. It refers to the rate at which animals are removed from the stock by fishing. The fishing mortality rate can be confusing because it is an ""instantaneous"" rate that is useful in mathematical calculations, but is not easily translated into the more easily understood concept of ""percent annual removal.""",NA,3,"Y",NA
+"252",NA,"F","Instantaneous Fishing Mortality Rate",NA,"instantaneous fishing mortality rate",3,"Y",NA
+"253","GMFMC","F MAX","F MAX","fishing mortality rate corresponding to maximum yield-per-recruit","f max",NA,NA,NA
+"254",NA,"F-30% SPR","Fishing mortality at spawning potential ratio (SPR) = 30%",NA,"fishing mortality at spawning potential ratio (spr) = 30%",NA,NA,NA
+"255",NA,"F-CURR","Current instantaneous rate of fishing mortality",NA,"current instantaneous rate of fishing mortality",NA,NA,NA
+"256",NA,"F-MSY","The rate of fishing mortality expected to achieve MSY under equilibrium",NA,"the rate of fishing mortality expected to achieve msy under equilibrium",NA,NA,NA
+"257",NA,"F-OY","The rate of fishing mortality expected to achieve MSY under an equilibrium",NA,"the rate of fishing mortality expected to achieve msy under an equilibrium",NA,NA,NA
+"258",NA,"F/V","Fishing vessel",NA,"fishing vessel",NA,NA,NA
+"259",NA,"F30% SPR","fishing mortality corresponding to 30% spawning potential ratio",NA,"fishing mortality corresponding to 30% spawning potential ratio",NA,NA,NA
+"260","PFMC","F=0",NA,"No fishing.",NA,NA,NA,NA
+"261",NA,"FAC","Fisheries Advisory Committee",NA,"fisheries advisory committee",2,"Y",NA
+"262",NA,"FAC","Florida Administrative Code",NA,"florida administrative code",2,"Y",NA
+"263","PFMC","FAD","Fish aggregating device","Artificial or natural floating objects placed on the ocean surface, often anchored to the bottom, to attract several schooling fish species underneath, thus increasing their catchability.","fish aggregating device",2,"Y","Y"
+"264","WPFMC","FAD","Fish Aggregating Device","A raft or buoy, drifting or anchored to the sea floor, and under which, pelagic fish will concentrate","fish aggregating device",2,"Y","Y"
+"265",NA,"FAO","Food & Agriculture Organization of the United Nations",NA,"food & agriculture organization of the united nations",NA,NA,NA
+"266",NA,"FATE","Fisheries and the Environment",NA,"fisheries and the environment",NA,NA,NA
+"267",NA,"FCURR","Current Fishing Mortality Rate",NA,"current fishing mortality rate",NA,NA,NA
+"268",NA,"FDA","Food and Drug Administration",NA,"food and drug administration",NA,NA,NA
+"269",NA,"FDM","Farallon de Medinilla, CNMI",NA,"farallon de medinilla, cnmi",NA,NA,NA
+"270",NA,"FEIS","Final Environmental Impact Statement",NA,"final environmental impact statement",NA,NA,NA
+"271",NA,"FEP","Fishery Ecosystem Plan",NA,"fishery ecosystem plan",NA,NA,NA
+"272","PFMC","FERC","Federal Energy Regulatory Commission","Regulates hydropower operations and offshore wave energy.","federal energy regulatory commission",NA,NA,NA
+"273","SAFMC","FES","Fishing Effort Survey","Recreational fishing statistics","fishing effort survey",NA,NA,NA
+"274","ASMFC","FGTWG","Fishing Gear Technology Work Group","An ASMFC committee focusing on fishing gear technology and bycatch reduction.","fishing gear technology work group",NA,NA,NA
+"275",NA,"FHS","for-hire-survey",NA,"for-hire-survey",NA,NA,NA
+"276",NA,"FIN","Fisheries Information Network",NA,"fisheries information network",NA,NA,NA
+"277",NA,"FIS","Fishery Impact Statement",NA,"fishery impact statement",NA,NA,NA
+"278",NA,"FKNMS","Florida Keys National Marine Sanctuary",NA,"florida keys national marine sanctuary",NA,NA,NA
+"279","PFMC","FL","Fork length","A measurement used frequently for fish length when the tail has a fork shape. Projected straight distance between the tip of the fish and the fork of the tail.","fork length",NA,NA,NA
+"280",NA,"FLEC","Florida East Coast",NA,"florida east coast",NA,NA,NA
+"281",NA,"FLL","Freezer longliner",NA,"freezer longliner",NA,NA,NA
+"282",NA,"FMA","AFSC Fisheries Monitoring and Analysis Division (aka the Observer Program)",NA,"afsc fisheries monitoring and analysis division (aka the observer program)",NA,NA,NA
+"283",NA,"FMAC","Fishery Monitoring Advisory Committee",NA,"fishery monitoring advisory committee",NA,NA,NA
+"284","PFMC","FMC","Fishery management council","A fisheries management body established by the Magnuson-Stevens Act to manage fishery resources in designated regions of the United States. Membership varies in size depending on the number of states involved. There are eight regional Councils, including the Pacific Council.","fishery management council",NA,NA,NA
+"285","ASMFC","FMP","Fishery Management Plan","A plan to achieve specified management goals for a fishery, typically including data, analysis, and management measures. ASMFC, Regional Management Councils, and NMFS have the authority to develop FMPs for Atlantic coast fish stocks.","fishery management plan",2,"Y","Y"
+"286","PFMC","FMP","Fishery management plan","A plan, and its amendments, that contains measures for conserving and managing specific fisheries and fish stocks.","fishery management plan",2,"Y","Y"
+"287","GMFMC","FMSY","FMSY","fishing mortality rate corresponding to an equilibrium yield at maximum sustainable yield","fmsy",3,"Y",NA
+"288","PFMC","FMSY",NA,"The fishing mortality rate that maximizes catch biomass in the long term.",NA,3,"Y",NA
+"289",NA,"FMSY","Fishing Mortality at MSY",NA,"fishing mortality at msy",3,"Y",NA
+"290",NA,"FMU","Fishery Management Unit",NA,"fishery management unit",NA,NA,NA
+"291",NA,"FOIA","Freedom of Information Act",NA,"freedom of information act",NA,NA,NA
+"292","PFMC","FONSI","Finding of no significant impact","As part of the National Environmental Policy Act (NEPA) process, a finding of no significant impact (FONSI) is a document that explains why an action that is not otherwise excluded from the NEPA process, and for which an environmental impact statement (EIS) will not be prepared, will not have a significant effect on the human environment.","finding of no significant impact",NA,NA,NA
+"293","GMFMC","FOY","FOY","fishing mortality rate corresponding to an equilibrium yield at optimum","foy",2,"Y",NA
+"294",NA,"FOY","Fishing Mortality Rate Yielding OY",NA,"fishing mortality rate yielding oy",2,"Y",NA
+"295",NA,"FPR","Fishery performance reports",NA,"fishery performance reports",NA,NA,NA
+"296","PFMC","FR","Federal Register","The Federal Register is the official daily publication for Rules, Proposed Rules, and Notices of Federal agencies and organizations, as well as Executive Orders and other Presidential documents. Fisheries regulations are not considered final until they are published in the Federal Register.","federal register",2,"Y",NA
+"297",NA,"FR","Federal Regulations",NA,"federal regulations",2,"Y",NA
+"298","PFMC","FRAM","Fishery Regulation Assessment Model","Typically used for salmon.","fishery regulation assessment model",NA,NA,NA
+"299",NA,"FRFA","Final Regulatory Flexibility Analysis",NA,"final regulatory flexibility analysis",NA,NA,NA
+"300",NA,"FTE","Full time employee",NA,"full time employee",NA,NA,NA
+"301",NA,"FWC","Florida Fish and Wildlife Conservation Commission",NA,"florida fish and wildlife conservation commission",NA,NA,NA
+"302","GMFMC","FWRI","Fish and Wildlife Research Institute","Integrates research activities with management efforts of other FWC divisions to provide information to protect, conserve and manage Florida's fish and wildlife resources","fish and wildlife research institute",NA,NA,NA
+"303","GMFMC","FWS","United States Fish and Wildlife Service","United States Fish and Wildlife Service","united states fish and wildlife service",NA,NA,NA
+"304","PFMC","FX%",NA,"The rate of fishing mortality that will reduce female spawning biomass per recruit to x percent of its unfished level. F100% is zero, and F35% is a reasonable proxy for FMSY. (All figures after ""F"" should be subscript.)",NA,NA,NA,NA
+"305","PFMC","Fm","Fathom","Six feet.","fathom",NA,NA,NA
+"306",NA,"GAC","Global Area Coverage",NA,"global area coverage",NA,NA,NA
+"307",NA,"GAM","General Additive Models",NA,"general additive models",NA,NA,NA
+"308",NA,"GAO","General Accounting Office",NA,"general accounting office",NA,NA,NA
+"309","PFMC","GAP","Groundfish Advisory Subpanel","The Council established the GAP to obtain the input of the people most affected by, or interested in, the management of the groundfish fishery. This advisory body is made up of representatives with recreational, trawl, fixed gear, open access, tribal, environmental, and processor interests. Their advice is solicited when preparing fishery management plans, reviewing plans before sending them to the Secretary, reviewing the effectiveness of plans once they are in operation, and developing annual and inseason management.","groundfish advisory subpanel",NA,NA,NA
+"310",NA,"GARFO","Greater Atlantic Regional Fisheries Office",NA,"greater atlantic regional fisheries office",NA,NA,NA
+"311","ASMFC","GARM","Groundfish Assessment Review Committee","The federal stock assessment review committee that evaluates groundfish assessements, such as winter flounder.","groundfish assessment review committee",NA,NA,NA
+"312",NA,"GB","Georges Bank",NA,"georges bank",NA,NA,NA
+"313","ASMFC","GBK","Georges Bank","A region used to describe a population segment of the American lobster resource.","georges bank",NA,NA,NA
+"314",NA,"GDP","Gross Domestic Product",NA,"gross domestic product",NA,NA,NA
+"315",NA,"GEMPAC","Ad Hoc Groundfish Electronic Monitoring Policy Advisory Committee",NA,"ad hoc groundfish electronic monitoring policy advisory committee",NA,NA,NA
+"316",NA,"GEMTAC","Ad hoc Groundfish Electronic Monitoring Technical Advisory Committee",NA,"ad hoc groundfish electronic monitoring technical advisory committee",NA,NA,NA
+"317",NA,"GESW","Groundfish Endangered Species Workgroup",NA,"groundfish endangered species workgroup",NA,NA,NA
+"318",NA,"GF","Groundfish",NA,"groundfish",NA,NA,NA
+"319",NA,"GFCA","Guam Fishermen's Cooperative Association",NA,"guam fishermen's cooperative association",NA,NA,NA
+"320",NA,"GFNMS","Gulf of the Farallones National Marine Sanctuary",NA,"gulf of the farallones national marine sanctuary",NA,NA,NA
+"321",NA,"GHL","Guideline Harvest Level",NA,"guideline harvest level",NA,NA,NA
+"322",NA,"GIS","Geographic Information System",NA,"geographic information system",NA,NA,NA
+"323",NA,"GKC","Golden King Crab",NA,"golden king crab",NA,NA,NA
+"324","ASMFC","GLFC","Great Lakes Fishery Commission","Established in 1955 by the Canadian/U.S. Convention on Great Lakes Fisheries, the Commission coordinates fisheries research, controls the invasive sea lamprey, and facilitates cooperative fishery management among the state, provincial, tribal, and federal management agencies.","great lakes fishery commission",NA,NA,NA
+"325",NA,"GM","Genetically Modified",NA,"genetically modified",NA,NA,NA
+"326",NA,"GMFMC","Gulf of Mexico Fishery Management Council",NA,"gulf of mexico fishery management council",NA,NA,NA
+"327","PFMC","GMT","Groundfish Management Team","Groundfish management plans and annual and inseason management recommendations are prepared by the Council's GMT, which consists of scientists and managers with specific technical knowledge of the groundfish fishery.","groundfish management team",NA,NA,NA
+"328",NA,"GNI","Gross National Income",NA,"gross national income",NA,NA,NA
+"329",NA,"GNP","Gross National Product",NA,"gross national product",NA,NA,NA
+"330",NA,"GOA","Gulf of Alaska",NA,"gulf of alaska",NA,NA,NA
+"331",NA,"GODAS","Global Ocean Data Assimilation System",NA,"global ocean data assimilation system",NA,NA,NA
+"332",NA,"GOES","Geostationary Operational Environmental Satellites",NA,"geostationary operational environmental satellites",NA,NA,NA
+"333","ASMFC","GOM","Gulf of Maine","Used to describe population segments for both American lobster and winter flounder.","gulf of maine",NA,NA,NA
+"334",NA,"GPS","global positioning system",NA,"global positioning system",NA,NA,NA
+"335","GMFMC","GRFS","Gulf Reef Fish Survey","Florida's supplemental state survey for certain species of reef fish from 2015 to June of 2020. Replaced by SRFS","gulf reef fish survey",NA,NA,NA
+"336",NA,"GRSC","Great Red Snapper Count",NA,"great red snapper count",NA,NA,NA
+"337",NA,"GRT","Gross Registered Tonnes",NA,"gross registered tonnes",NA,NA,NA
+"338",NA,"GSMFC","Gulf States Marine Fisheries Commission",NA,"gulf states marine fisheries commission",NA,NA,NA
+"339",NA,"Gulf","Gulf of Mexico",NA,"gulf of mexico",NA,NA,NA
+"340",NA,"Gulf Council","Gulf of Mexico Fishery Management Council",NA,"gulf of mexico fishery management council",NA,NA,NA
+"341",NA,"GulfFIN","Gulf of Mexico Fisheries Information Network",NA,"gulf of mexico fisheries information network",NA,NA,NA
+"342",NA,"HACCP","Hazard Analysis and Critical Control Points",NA,"hazard analysis and critical control points",NA,NA,NA
+"343","PFMC","HAPC","Habitat areas of particular concern","Subsets of essential fish habitat (see EFH) containing particularly sensitive or vulnerable habitats that serve an important ecological function, are particularly sensitive to human-induced environmental degradation, are particularly stressed by human development activities, or comprise a rare habitat type.","habitat areas of particular concern",NA,NA,NA
+"344",NA,"HBS","Headboat Survey",NA,"headboat survey",NA,NA,NA
+"345","ASMFC","HC","Habitat Committee","An ASMFC committee that provides advice on issues related to habitat, habitat management, habitat requirements by the managed species, enforceability of proposed habitat management measures.","habitat committee",NA,NA,NA
+"346",NA,"HCR","Harvest control rule",NA,"harvest control rule",NA,NA,NA
+"347",NA,"HDAR","Hawaii Division of Aquatic Resources",NA,"hawaii division of aquatic resources",NA,NA,NA
+"348","PFMC","HG","Harvest guideline(s)","A numerical harvest level that is a general objective, but not a quota. Attainment of a harvest guideline does not require a management response, but it does prompt review of the fishery.","harvest guideline(s)",NA,NA,NA
+"349",NA,"HLF","Hawaii Longline Fishery",NA,"hawaii longline fishery",NA,NA,NA
+"350",NA,"HMRFS","Hawaii Marine Recreational Fishing Survey",NA,"hawaii marine recreational fishing survey",NA,NA,NA
+"351","PFMC","HMS","Highly migratory species","In the Council context, highly migratory species in the Pacific Ocean include species managed under the HMS Fishery Management Plan: tunas, sharks, billfish/swordfish, and dorado or dolphinfish.","highly migratory species",NA,NA,NA
+"352","PFMC","HMS FMP","Highly Migratory Species Fishery Management Plan","This is the fishery management plan (and its subsequent revisions) for the Washington, Oregon, and California Highly Migratory Species Fisheries developed by the PFMC and approved by the Secretary of Commerce.","highly migratory species fishery management plan",NA,NA,NA
+"353",NA,"HMSAS","Highly Migratory Species Advisory Subpanel",NA,"highly migratory species advisory subpanel",NA,NA,NA
+"354",NA,"HMSMT","Highly Migratory Species Management Team",NA,"highly migratory species management team",NA,NA,NA
+"355",NA,"HMSPDT","Highly Migratory Species Plan Development Team",NA,"highly migratory species plan development team",NA,NA,NA
+"356",NA,"HOT","Hawaii Ocean Time Series",NA,"hawaii ocean time series",NA,NA,NA
+"357",NA,"HP","Horsepower",NA,"horsepower",NA,NA,NA
+"358",NA,"HSTT","Hawaii-Southern California Training and Testing",NA,"hawaii-southern california training and testing",NA,NA,NA
+"359",NA,"IA","interim analysis",NA,"interim analysis",NA,NA,NA
+"360",NA,"IATTC","Inter-American Tropical Tuna Commission",NA,"inter-american tropical tuna commission",NA,NA,NA
+"361",NA,"IBA","Individual Bycatch Accounting",NA,"individual bycatch accounting",NA,NA,NA
+"362","PFMC","IBQ","Individual bycatch quota","IBQs are used to control the catch of prohibited species.","individual bycatch quota",NA,NA,NA
+"363",NA,"ICA","Inter-cooperative Agreements",NA,"inter-cooperative agreements",NA,NA,NA
+"364",NA,"ICC","Intergovernmental Consultive Committee",NA,"intergovernmental consultive committee",NA,NA,NA
+"365",NA,"ID","Identification",NA,"identification",2,"Y",NA
+"366",NA,"ID","Stock identification process",NA,"stock identification process",2,"Y",NA
+"367",NA,"IDFG","Idaho Department of Fish and Game",NA,"idaho department of fish and game",NA,NA,NA
+"368",NA,"IEA","Integrated Ecosystem Assessment",NA,"integrated ecosystem assessment",NA,NA,NA
+"369","ASMFC","IFA","Interjurisdictional Fisheries Act","Federal legislation that provides funding to the three Interstate Fisheries Commissions to support management of interjurisdictional fishery resources.","interjurisdictional fisheries act",NA,NA,NA
+"370",NA,"IFP","International Fisheries Program",NA,"international fisheries program",NA,NA,NA
+"371",NA,"IFQ","individual fishing quota",NA,"individual fishing quota",NA,NA,NA
+"372",NA,"INPFC","International North Pacific Fishery Commission",NA,"international north pacific fishery commission",NA,NA,NA
+"373",NA,"IOOS","Integrated Ocean Observing System",NA,"integrated ocean observing system",NA,NA,NA
+"374",NA,"IPA","Incentive Plan (Program) Agreements",NA,"incentive plan (program) agreements",NA,NA,NA
+"375",NA,"IPCC","International Panel on Climate Change",NA,"international panel on climate change",NA,NA,NA
+"376","PFMC","IPHC","International Pacific Halibut Commission","A Commission responsible for studying Pacific halibut stocks and the halibut fishery. The IPHC makes proposals to the U.S. and Canada concerning the regulation of the halibut fishery.","international pacific halibut commission",NA,NA,NA
+"377",NA,"IPQ","Individual Processor Quotas",NA,"individual processor quotas",NA,NA,NA
+"378",NA,"IPT","Interdisciplinary Plan Team",NA,"interdisciplinary plan team",NA,NA,NA
+"379",NA,"IQ","Individual quota",NA,"individual quota",NA,NA,NA
+"380",NA,"IQF","Individually quick frozen",NA,"individually quick frozen",NA,NA,NA
+"381",NA,"IRFA","Initial Regulatory Flexibility Analysis",NA,"initial regulatory flexibility analysis",NA,NA,NA
+"382",NA,"IRIU","Improved retention/improved utilization",NA,"improved retention/improved utilization",NA,NA,NA
+"383",NA,"ISC","International Scientific Committee",NA,"international scientific committee",2,"Y",NA
+"384",NA,"ISC","International Scientific Committee for Tuna and Tuna-like Species in the North Pacific Ocean",NA,"international scientific committee for tuna and tuna-like species in the north pacific ocean",2,"Y",NA
+"385","ASMFC","ISFMP","Interstate Fisheries Management Program","An ASMFC program dedicated to the development and maintenance of interstate fisheries management plans for 22 species groups.","interstate fisheries management program",NA,NA,NA
+"386","ASMFC","ISTC","Interstate Shellfish Transport Committee","An ASMFC committee, composed of shellfish technical representatives from each of the 15 states, District of Columbia, Potomac River Fisheries Commission, National Marine Fisheries Service, and U.S. Fish and Wildlife Service, that is tasked with evaluating issues related to the introduction of non-native shellfish to support new commercial fisheries in Atlantic coastal waters.","interstate shellfish transport committee",NA,NA,NA
+"387","ASMFC","ITC","Interstate Tagging Committee","An ASMFC committee that focuses on improving the quality and utility of data collected by scientific and angler- based tagging programs.","interstate tagging committee",NA,NA,NA
+"388",NA,"ITCZ","Inter-Tropical Convergence Zone",NA,"inter-tropical convergence zone",NA,NA,NA
+"389","PFMC","ITQ","Individual transferable (or tradeable) quota","A type of quota (a part of a total allowable catch) allocated to individual fishermen or vessel owners and which can be transferred (sold, leased) to others.","individual transferable (or tradeable) quota",2,"Y",NA
+"390",NA,"ITQ","Individual transferable quota",NA,"individual transferable quota",2,"Y",NA
+"391",NA,"ITS","incidental take statement",NA,"incidental take statement",NA,NA,NA
+"392",NA,"IUCN","International Union for the Conservation of Nature",NA,"international union for the conservation of nature",NA,NA,NA
+"393",NA,"IUU","Illegal, unregulated, and unreported",NA,"illegal, unregulated, and unreported",NA,NA,NA
+"394",NA,"Int","International landings",NA,"international landings",NA,NA,NA
+"395","ASMFC","JAI","Juvenile abundance index","A measure of the relative abundance of juveniles in a stock that may serve as an indication of reproductive success. For some species, the JAI may predict future adult abundance.","juvenile abundance index",NA,NA,NA
+"396",NA,"JAM","Jeopardy or adverse modification",NA,"jeopardy or adverse modification",NA,NA,NA
+"397",NA,"K","time constant",NA,"time constant",NA,NA,NA
+"398",NA,"K-A","Korean-American",NA,"korean-american",NA,NA,NA
+"399",NA,"KBRA","Klamath Basin Restoration Agreement",NA,"klamath basin restoration agreement",NA,NA,NA
+"400","PFMC","KMZ","Klamath management zone","Ocean zone between Humbug Mountain and Horse Mountain where management emphasis is on Klamath River fall Chinook.","klamath management zone",NA,NA,NA
+"401",NA,"KRFC","Klamath River fall Chinook",NA,"klamath river fall chinook",NA,NA,NA
+"402",NA,"L MAX","maximum length",NA,"maximum length",NA,NA,NA
+"403",NA,"LAA","Likely to adversely affect",NA,"likely to adversely affect",NA,NA,NA
+"404",NA,"LAMP","Local Area Management Plan",NA,"local area management plan",NA,NA,NA
+"405",NA,"LAPP","limited access privilege program",NA,"limited access privilege program",NA,NA,NA
+"406",NA,"LC","Legislative Committee",NA,"legislative committee",NA,NA,NA
+"407",NA,"LCN","Lingcod - North",NA,"lingcod - north",2,"Y",NA
+"408",NA,"LCN","Lower Columbia natural",NA,"lower columbia natural",2,"Y",NA
+"409",NA,"LCR","Lower Columbia River",NA,"lower columbia river",NA,NA,NA
+"410",NA,"LCS","Lingcod - South",NA,"lingcod - south",NA,NA,NA
+"411","GMFMC","LDWF","Louisiana Department of Wildlife and Fisheries","Louisiana's state agency for freshwater and saltwater resources","louisiana department of wildlife and fisheries",NA,NA,NA
+"412","PFMC","LE","Limited entry fishery","A fishery for which a fixed number of permits have been issued in order to limit participation.","limited entry fishery",NA,NA,NA
+"413",NA,"LEAP","Law Enforcement Advisory Panel",NA,"law enforcement advisory panel",NA,NA,NA
+"414","ASMFC","LEC","Law Enforcement Committee","An ASMFC committee which provides advice on issues related to law enforcement and enforceability of potential management measures, comprised of representatives of each member state, Washington, D.C., National Marine Fisheries Service, U.S. Fish and Wildlife Service, and the U.S. Coast Guard.","law enforcement committee",NA,NA,NA
+"415",NA,"LEI","Long-term effect index",NA,"long-term effect index",NA,NA,NA
+"416",NA,"LK","Local Knowledge",NA,"local knowledge",NA,NA,NA
+"417",NA,"LLP","License limitation program",NA,"license limitation program",NA,NA,NA
+"418",NA,"LNG","Liquified natural gas",NA,"liquified natural gas",NA,NA,NA
+"419",NA,"LOA","Length overall",NA,"length overall",NA,NA,NA
+"420",NA,"LOC","Letter of Concurrence",NA,"letter of concurrence",NA,NA,NA
+"421",NA,"LOF","List of Fisheries",NA,"list of fisheries",NA,NA,NA
+"422","GMFMC","LPS","Large Pelagics Survey","a specialized survey conducted from Maine to Virginia that collects catch and effort data for tuna, sharks, billfishes, swordfish and other offshore recreational species","large pelagics survey",NA,NA,NA
+"423","GMFMC","LRP","limit reference point","a type of biological reference point; point at which status of fishery will decline or collapse","limit reference point",NA,NA,NA
+"424",NA,"LVPA","Large Vessel Protected Area",NA,"large vessel protected area",NA,NA,NA
+"425","ASMFC","M","Natural Mortality","The instantaneous rate at which fish die from all causes other than harvest. Typically includes unmeasured bycatch. M is very difficult to measure.","natural mortality",3,"Y",NA
+"426",NA,"M","instantaneous natural mortality rate",NA,"instantaneous natural mortality rate",3,"Y",NA
+"427",NA,"M","Natural mortality rate",NA,"natural mortality rate",3,"Y",NA
+"428",NA,"M&SI","Mortality and Serious Injury",NA,"mortality and serious injury",NA,NA,NA
+"429",NA,"MA","Massachusetts",NA,"massachusetts",2,"Y",NA
+"430",NA,"MA","Massachusetts Division of Marine Fisheries",NA,"massachusetts division of marine fisheries",2,"Y",NA
+"431",NA,"MAB","Mid-Atlantic Bight",NA,"mid-atlantic bight",NA,NA,NA
+"432","ASMFC","MAFMC","Mid-Atlantic Fishery Management Council","One of eight regional fishery management councils established by the Magnuson Act that are responsible for management of fisheries in federal waters (3-200 miles from shore).","mid-atlantic fishery management council",NA,NA,NA
+"433",NA,"MARMAP","Marine Resources Monitoring Assessment and Prediction Program",NA,"marine resources monitoring assessment and prediction program",NA,NA,NA
+"434",NA,"MBNMS","Monterey Bay National Marine Sanctuary",NA,"monterey bay national marine sanctuary",NA,NA,NA
+"435",NA,"MBTA","Migratory Bird Treaty Act",NA,"migratory bird treaty act",NA,NA,NA
+"436",NA,"MC","Monitoring Committee",NA,"monitoring committee",NA,NA,NA
+"437",NA,"MCA","Maximum Commerce Amount",NA,"maximum commerce amount",NA,NA,NA
+"438",NA,"MCD","Marine Conservation District",NA,"marine conservation district",NA,NA,NA
+"439",NA,"MD","Maryland",NA,"maryland",NA,NA,NA
+"440","GMFMC","MDMR","Mississippi Department of Marine Resources","state of Mississippi's marine resources agency","mississippi department of marine resources",NA,NA,NA
+"441",NA,"ME","DMR Maine Department of Marine Resources",NA,"dmr maine department of marine resources",3,"Y",NA
+"442",NA,"ME","Maine",NA,"maine",3,"Y",NA
+"443",NA,"ME","McCracken Estimates",NA,"mccracken estimates",3,"Y",NA
+"444",NA,"MEI","Multivariate ENSO Index",NA,"multivariate enso index",NA,NA,NA
+"445",NA,"MEW","Model Evaluation Workgroup (for salmon)",NA,"model evaluation workgroup (for salmon)",NA,NA,NA
+"446",NA,"MEY","maximum economic yield",NA,"maximum economic yield",NA,NA,NA
+"447","PFMC","MFCMA","Magnuson Fishery Conservation and Management Act","The Fishery Conservation and Management Act was renamed the ""Magnuson Fishery Conservation and Management Act"" in 1980. The MFCMA established the 200-mile fishery conservation zone and the regional fishery management council system.","magnuson fishery conservation and management act",NA,NA,NA
+"448","PFMC","MFMT","Maximum fishing mortality threshold","A limit identified in the National Standard Guidelines. A fishing mortality rate above this threshold constitutes overfishing.","maximum fishing mortality threshold",NA,NA,NA
+"449",NA,"MHHW","Mean higher high water level (high tide line)",NA,"mean higher high water level (high tide line)",NA,NA,NA
+"450",NA,"MHI","Main Hawaiian Islands",NA,"main hawaiian islands",NA,NA,NA
+"451",NA,"MITT","Mariana Islands Training and Testing",NA,"mariana islands training and testing",NA,NA,NA
+"452",NA,"MMA","Marine Managed Area",NA,"marine managed area",NA,NA,NA
+"453","PFMC","MMPA","Marine Mammal Protection Act","The MMPA prohibits the harvest or harassment of marine mammals, although permits for incidental take of marine mammals while commercial fishing may be issued subject to regulation. (See ""incidental take"" for a definition of ""take"").","marine mammal protection act",NA,NA,NA
+"454","ASMFC","MOA","Memorandum of Agreement","A document written between parties to cooperatively work together on an agreed upon project or meet an agreed upon objective. The purpose of an MOA is to have a written understanding of the agreement between parties. The MOA can also be a legal document that is binding and hold the parties responsible to their commitment or just a partnership agreement.","memorandum of agreement",NA,NA,NA
+"455",NA,"MODIS","Moderate Resolution Imaging Spectroradiometer",NA,"moderate resolution imaging spectroradiometer",NA,NA,NA
+"456","ASMFC","MOU","Memorandum of Understanding","A document describing a bilateral or multilateral agreement between parties. It expresses a convergence of will between the parties, indicating an intended common line of action. It most often is used in cases where parties do not intend to imply a legal commitment. It is a more formal alternative to a gentlemen's agreement.","memorandum of understanding",NA,NA,NA
+"457",NA,"MPA","marine protected area",NA,"marine protected area",NA,NA,NA
+"458",NA,"MPCC","Marine Planning and Climate Change",NA,"marine planning and climate change",NA,NA,NA
+"459",NA,"MPCCC","Marine Planning and Climate Change Committee",NA,"marine planning and climate change committee",NA,NA,NA
+"460",NA,"MRA","Maximum retainable allowance",NA,"maximum retainable allowance",NA,NA,NA
+"461",NA,"MREP","Marine Resource Education Program",NA,"marine resource education program",NA,NA,NA
+"462","PFMC","MRFSS","Marine Recreational Fisheries Statistics Survey","A national survey conducted by National Marine Fisheries Service to estimate the impact of recreational fishing on marine resources.","marine recreational fisheries statistics survey",NA,NA,NA
+"463","ASMFC","MRIP","Marine Recreational Information Program","An ongoing recreational data collection and reporting effort that replaces the MRFSS program that began in the 1970s. MRIP was initiated in 2007 by NOAA Fisheries and a broad collection of scientists, managers, fishermen and others with a stake in sustainable, abundant ocean resources (estimates the number, catch, and effort of recreational fishermen).","marine recreational information program",2,"Y","Y"
+"464","GMFMC","MRIP","Marine Recreational Information Program","federal program by which NOAA Fisheries collects, analyzes and reports fishery-dependent information, or data gathered from recreational anglers","marine recreational information program",2,"Y","Y"
+"465",NA,"MS","Mothership",NA,"mothership",NA,NA,NA
+"466","PFMC","MSA","Magnuson-Stevens Act","This act, also known as the ""Magnuson-Stevens Fishery Conservation and Management Act,"" established the 200-mile fishery conservation zone, the regional fishery management council system, and other provisions of U.S. marine fishery law.","magnuson-stevens act",NA,NA,NA
+"467","ASMFC","MSC","Management and Science Committee","The principal scientific advisory body of the ASMFC, comprised of representatives from member states, NMFS, and USFWS.","management and science committee",NA,NA,NA
+"468",NA,"MSE","Management strategy evaluation",NA,"management strategy evaluation",NA,NA,NA
+"469",NA,"MSRA","Magnuson-Stevens Fishery Conservation and Management Reauthorization Act",NA,"magnuson-stevens fishery conservation and management reauthorization act",NA,NA,NA
+"470","PFMC","MSST","Minimum stock size threshold","A threshold biomass used to determine if a stock is overfished. The Council proxy for MSST is B25%.","minimum stock size threshold",2,"Y",NA
+"471",NA,"MSST","Maximum Stock Size Threshold",NA,"maximum stock size threshold",2,"Y",NA
+"472","ASMFC","MSTC","Multispecies Technical Committee","An ASMFC committee tasked with assisting the ISFMP Policy Board on multispecies modeling efforts and facilitating movement towards the use of multispecies model results in management decisions.","multispecies technical committee",NA,NA,NA
+"473","ASMFC","MSVPA","Multispecies virtual population analysis","A series of single-species age- structured stock assessment models (VPAs) linked by a simple feeding model and used to calculate natural mortality rates. The goal of the MSVPA is to evaluate fisheries management decisions at the ecosystem level.","multispecies virtual population analysis",NA,NA,NA
+"474","ASMFC","MSVPA-X","Expanded multispecies virtual population analysis","An enhanced version of the MSVPA that includes more complex predator-prey interactions and more flexible options for building single-species VPAs.","expanded multispecies virtual population analysis",NA,NA,NA
+"475","ASMFC","MSY","Maximum Sustainable Yield","The largest catch that can be taken from a stock over time under existing environmental conditions without curtailing the ability of the stock to replace itself.","maximum sustainable yield",2,"Y","Y"
+"476","PFMC","MSY","Maximum sustainable yield","An estimate of the largest average annual catch or yield that can be continuously taken over a long period from a stock under prevailing ecological and environmental conditions. Since MSY is a long-term average, it need not be specified annually, but may be reassessed periodically based on the best scientific information available.","maximum sustainable yield",2,"Y","Y"
+"477",NA,"MUS","Management Unit Species",NA,"management unit species",NA,NA,NA
+"478",NA,"MW","Megawatt",NA,"megawatt",NA,NA,NA
+"479",NA,"Mid-Atlantic Council","Mid-Atlantic Fishery Management Council",NA,"mid-atlantic fishery management council",NA,NA,NA
+"480",NA,"NAFO","Northwest Atlantic Fisheries Organization viii",NA,"northwest atlantic fisheries organization viii",NA,NA,NA
+"481",NA,"NAO","NOAA Administrative Order",NA,"noaa administrative order",NA,NA,NA
+"482",NA,"NBBTA","Northern Bristol Bay Trawl Area",NA,"northern bristol bay trawl area",NA,NA,NA
+"483",NA,"NBSRA","Norther Bering Sea Research Area",NA,"norther bering sea research area",NA,NA,NA
+"484",NA,"NC","North Carolina",NA,"north carolina",NA,NA,NA
+"485",NA,"NCADAC","National Climate Assessment and Development Advisory Committee",NA,"national climate assessment and development advisory committee",NA,NA,NA
+"486",NA,"NCDC","National Climatic Data Center",NA,"national climatic data center",NA,NA,NA
+"487",NA,"NCDENR","North Carolina Department of Environment and Natural Resources",NA,"north carolina department of environment and natural resources",NA,NA,NA
+"488",NA,"NCDMF","North Carolina Division of Marine Fisheries",NA,"north carolina division of marine fisheries",NA,NA,NA
+"489",NA,"NCEI","National Centers for Environmental Information, NOAA",NA,"national centers for environmental information, noaa",NA,NA,NA
+"490",NA,"NCRMP","National Coral Reef Monitoring Program",NA,"national coral reef monitoring program",NA,NA,NA
+"491",NA,"NE","Northeast",NA,"northeast",NA,NA,NA
+"492","ASMFC","NEAMAP","Northeast Area Monitoring and Assessment Program","A cooperative state/federal fisheries independent research and data collection program implemented between the Gulf of Maine and Cape Hatteras, NC.","northeast area monitoring and assessment program",NA,NA,NA
+"493","ASMFC","NEFMC","New England Fishery Management Council","One of eight regional fishery management councils established by the Magnuson Act that are responsible for management of fisheries in federal waters (3-200 miles from shore).","new england fishery management council",NA,NA,NA
+"494","ASMFC","NEFSC","Northeast Fisheries Science Center","NMFS' fisheries research and science arms.","northeast fisheries science center",NA,NA,NA
+"495",NA,"NELHA","Natural Energy Laboratory of Hawaii Authority",NA,"natural energy laboratory of hawaii authority",NA,NA,NA
+"496","PFMC","NEPA","National Environmental Policy Act","Passed by Congress in 1969, NEPA requires Federal agencies to consider the environment when making decisions regarding their programs. Section 102(2)(C) requires Federal agencies to prepare an Environmental Impact Statement (EIS) before taking major Federal actions that may significantly affect the quality of the human environment. The EIS includes: the environmental impact of the proposed action, any adverse environmental effects which cannot be avoided should the proposed action be implemented, alternatives to the proposed action, the relationship between local short-term uses of the environment and long-term productivity, and any irreversible commitments of resources which would be involved in the proposed action should it be implemented.","national environmental policy act",NA,NA,NA
+"497",NA,"NESDIS","National Environmental Satellite, Data, and Information Service",NA,"national environmental satellite, data, and information service",NA,NA,NA
+"498","ASMFC","NFWF","National Fish and Wildlife Foundation","One of the world's largest conservation grant-makers, providing funding to support both the public and private sectors to protect and restore the nation's fish, wildlife, plants and habitats.","national fish and wildlife foundation",NA,NA,NA
+"499",NA,"NGO","Non-Governmental Organization",NA,"non-governmental organization",NA,NA,NA
+"500",NA,"NH","New Hampshire",NA,"new hampshire",NA,NA,NA
+"501",NA,"NIDP","Notice of Intent to Deny Permit",NA,"notice of intent to deny permit",NA,NA,NA
+"502",NA,"NJ","New Jersey",NA,"new jersey",NA,NA,NA
+"503",NA,"NLAA","Not likely to adversely affect",NA,"not likely to adversely affect",NA,NA,NA
+"504","ASMFC","NMFS","National Marine Fisheries Service","The service within NOAA dedicated to the stewardship of living marine resources through science-based conservation and management, and the promotion of healthy ecosystems; also known as NOAA Fisheries Service.","national marine fisheries service",2,"Y","Y"
+"505","PFMC","NMFS","National Marine Fisheries Service","A division of the U.S. Department of Commerce, National Oceanic and Atmospheric Administration (NOAA). NMFS is responsible for conservation and management of offshore fisheries (and inland salmon). The NMFS Regional Director is a voting member of the Council.","national marine fisheries service",2,"Y","Y"
+"506",NA,"NMFS NWFSC","National Marine Fisheries Service Northwest Fisheries Science Center",NA,"national marine fisheries service northwest fisheries science center",NA,NA,NA
+"507",NA,"NMFS NWR","National Marine Fisheries Service Northwest Region",NA,"national marine fisheries service northwest region",NA,NA,NA
+"508",NA,"NMFS SWR","National Marine Fisheries Service Southwest Region",NA,"national marine fisheries service southwest region",NA,NA,NA
+"509",NA,"NMFS WCR","National Marine Fisheries Service West Coast Region",NA,"national marine fisheries service west coast region",NA,NA,NA
+"510",NA,"NMS","National Marine Sanctuary",NA,"national marine sanctuary",NA,NA,NA
+"511",NA,"NMSA","National Marine Sanctuaries Act",NA,"national marine sanctuaries act",NA,NA,NA
+"512",NA,"NMSAS","National Marine Sanctuary of American Samoa",NA,"national marine sanctuary of american samoa",NA,NA,NA
+"513",NA,"NMSP","National Marine Sanctuaries Program",NA,"national marine sanctuaries program",NA,NA,NA
+"514","PFMC","NOAA","National Oceanic & Atmospheric Administration","The parent agency of National Marine Fisheries Service.","national oceanic & atmospheric administration",2,"Y",NA
+"515","ASMFC","NOAA","National Oceanic and Atmospheric Administration","A federal agency within the Department of Commerce focused on the condition of the oceans and the atmosphere.","national oceanic and atmospheric administration",2,"Y",NA
+"516",NA,"NOAA GC","NOAA General Counsel",NA,"noaa general counsel",NA,NA,NA
+"517",NA,"NOAAS","NOAA ship",NA,"noaa ship",NA,NA,NA
+"518",NA,"NOI","Notice of Intent",NA,"notice of intent",NA,NA,NA
+"519",NA,"NOPS","Notice Of Permit Sanctions",NA,"notice of permit sanctions",NA,NA,NA
+"520",NA,"NOR","net operating revenue",NA,"net operating revenue",NA,NA,NA
+"521",NA,"NORPAC","North Pacific Database Program",NA,"north pacific database program",NA,NA,NA
+"522",NA,"NOS","National Ocean Service",NA,"national ocean service",NA,NA,NA
+"523",NA,"NOVA","Notice Of Violation and Assessment",NA,"notice of violation and assessment",NA,NA,NA
+"524",NA,"NPAFC","North Pacific Anadromous Fish Commission",NA,"north pacific anadromous fish commission",NA,NA,NA
+"525",NA,"NPCC","Northwest Power and Conservation Council (formerly known as the Northwest Power Planning Council)",NA,"northwest power and conservation council (formerly known as the northwest power planning council)",NA,NA,NA
+"526",NA,"NPDES","National Pollutant Discharge Elimination System",NA,"national pollutant discharge elimination system",NA,NA,NA
+"527","PFMC","NPFMC","North Pacific Fishery Management Council","The NPFMC consists of the state of Alaska, with representation by Washington and Oregon.","north pacific fishery management council",NA,NA,NA
+"528",NA,"NPOA","National Plan of Action",NA,"national plan of action",NA,NA,NA
+"529",NA,"NPPSD","North Pacific Pelagic Seabird Database",NA,"north pacific pelagic seabird database",NA,NA,NA
+"530",NA,"NRC","National Research Council",NA,"national research council",NA,NA,NA
+"531",NA,"NRCC","Northeast Regional Coordinating Council",NA,"northeast regional coordinating council",NA,NA,NA
+"532",NA,"NRDC","Natural Resources Defense Council",NA,"natural resources defense council",NA,NA,NA
+"533",NA,"NS","National Standard",NA,"national standard",NA,NA,NA
+"534",NA,"NSAR","National Saltwater Angler Registry",NA,"national saltwater angler registry",NA,NA,NA
+"535",NA,"NSF","National Science Foundation",NA,"national science foundation",NA,NA,NA
+"536","PFMC","NSG","National Standard Guidelines","Guidelines issued by National Marine Fisheries Service to provide comprehensive guidance for the development of fishery management plans and amendments that comply with the national standards of the Magnuson-Stevens Act. These guidelines are found in Title 50, Code of Federal Regulations, part 600.","national standard guidelines",NA,NA,NA
+"537",NA,"NSRKC","Norton Sound Red King Crab",NA,"norton sound red king crab",NA,NA,NA
+"538","PFMC","NWFSC","Northwest Fisheries Science Center","In Seattle; a division of NMFS","northwest fisheries science center",NA,NA,NA
+"539","WPFMC","NWHI","Northwestern Hawaiian Islands","All islands in the Hawaiian Archipelago, other than the Main Hawaiian Islands (MHI)","northwestern hawaiian islands",NA,NA,NA
+"540",NA,"NWIFC","Northwest Indian Fisheries Commission",NA,"northwest indian fisheries commission",NA,NA,NA
+"541",NA,"NWR","National Wildlife Refuge",NA,"national wildlife refuge",2,"Y",NA
+"542",NA,"NWR","Northwest Region",NA,"northwest region",2,"Y",NA
+"543",NA,"NY","New York",NA,"new york",NA,NA,NA
+"544","PFMC","OA","Open-access fishery","The segment of the groundfish fishery or any other fishery for which entry is not controlled by a limited entry permitting program.","open-access fishery",2,"Y",NA
+"545",NA,"OA","operational assessment",NA,"operational assessment",2,"Y",NA
+"546",NA,"OC-CCI","Ocean Color Climate Change Initiative",NA,"ocean color climate change initiative",NA,NA,NA
+"547","ASMFC","OCC","Outer Cape Cod","A management area designated under Amendment 3 to the American Lobster FMP.","outer cape cod",NA,NA,NA
+"548",NA,"OCN","Oregon coastal natural (coho)",NA,"oregon coastal natural (coho)",NA,NA,NA
+"549",NA,"OCNMS","Olympic Coast National Marine Sanctuary",NA,"olympic coast national marine sanctuary",NA,NA,NA
+"550",NA,"OCZMA","Oregon Coast Zone Management Act",NA,"oregon coast zone management act",NA,NA,NA
+"551",NA,"ODFW","Oregon Department of Fish and Wildlife",NA,"oregon department of fish and wildlife",NA,NA,NA
+"552",NA,"OECA","Oculina Experimental Closed Area",NA,"oculina experimental closed area",NA,NA,NA
+"553",NA,"OEG","Optimal escapement goal",NA,"optimal escapement goal",NA,NA,NA
+"554",NA,"OEIS","Overseas Environmental Impact Statement",NA,"overseas environmental impact statement",NA,NA,NA
+"555","ASMFC","OFL","Overfishing Limit","The estimate of the catch level above which overfishing is occurring.","overfishing limit",NA,NA,NA
+"556",NA,"OFP-SPC","Oceanic Fisheries Program of the Secretariat of the Pacific Community",NA,"oceanic fisheries program of the secretariat of the pacific community",NA,NA,NA
+"557",NA,"OHAPC","Oculina Habitat Area of Particular Concern",NA,"oculina habitat area of particular concern",NA,NA,NA
+"558",NA,"OLE","Office of Law Enforcement",NA,"office of law enforcement",NA,NA,NA
+"559",NA,"OMB","Office of Management and Budget",NA,"office of management and budget",NA,NA,NA
+"560",NA,"ONI","Oceanic Niño Index",NA,"oceanic niño index",NA,NA,NA
+"561",NA,"OR","Oregon",NA,"oregon",NA,NA,NA
+"562",NA,"OSP","Optimum sustainable production, Oregon State Police",NA,"optimum sustainable production, oregon state police",NA,NA,NA
+"563",NA,"OST","Office of Science and Technology",NA,"office of science and technology",NA,NA,NA
+"564",NA,"OSU","Oregon State University",NA,"oregon state university",NA,NA,NA
+"565",NA,"OSWAG","Other Shallow-water Grouper",NA,"other shallow-water grouper",NA,NA,NA
+"566",NA,"OTEC","Ocean Thermal Energy Conversion",NA,"ocean thermal energy conversion",NA,NA,NA
+"567","ASMFC","OY","Optimum Yield","The long-term average amount of desired yield (greatest overall benefit to the nation) from a stock, stock complex, or fishery. Because the population size of fish stock fluctuates every year, the amount of fish that is available to the fishery in any given year may be above or below.","optimum yield",2,"Y","Y"
+"568","PFMC","OY","Optimum yield","The amount of fish that will provide the greatest overall benefit to the Nation, particularly with respect to food production and recreational opportunities, and taking into account the protection of marine ecosystems. The OY is developed on the basis of the Maximum Sustained Yield from the fishery, taking into account relevant economic, social, and ecological factors. In the case of overfished fisheries, the OY provides for rebuilding to a level that is consistent with producing the Maximum Sustained Yield for the fishery.","optimum yield",2,"Y","Y"
+"569",NA,"Observer Program","North Pacific Groundfish Observer Program",NA,"north pacific groundfish observer program",NA,NA,NA
+"570","SAFMC","P*","P-star","Probability of overfishing","p-star",NA,NA,NA
+"571",NA,"PBF","Pacific Bluefin Tuna",NA,"pacific bluefin tuna",NA,NA,NA
+"572","PFMC","PBR","Potential biological removal","The maximum number of animals, not including natural mortalities, that may be removed from a marine mammal stock while allowing that stock to reach or maintain its optimum sustainable population.","potential biological removal",NA,NA,NA
+"573",NA,"PCE","Primary Constituent Element",NA,"primary constituent element",NA,NA,NA
+"574",NA,"PCFFA","Pacific Coast Federation of Fishermen's Associations",NA,"pacific coast federation of fishermen's associations",NA,NA,NA
+"575","GMFMC","PDF","probability density function","used to generate the P*","probability density function",NA,NA,NA
+"576","PFMC","PDO","Pacific decadal oscillation","A long-term, El Nino-like pattern of Pacific Ocean climate variability.","pacific decadal oscillation",NA,NA,NA
+"577","ASMFC","PDT","Plan Development Team","group of individuals who are knowledgeable concerning the scientific facts and fishery management issues concerning a designated fish stock and who are appointed and convened by a Management Board to prepare an FMP or amendment and its supporting Source Document.","plan development team",NA,NA,NA
+"578",NA,"PEEC","Preview of Economic and Ecological Conditions",NA,"preview of economic and ecological conditions",NA,NA,NA
+"579","PFMC","PEIS","Programmatic Environmental Impact Statement","An EIS that applies to an entire program or management regime, rather than a specific action.","programmatic environmental impact statement",NA,NA,NA
+"580",NA,"PFMC","Pacific Fishery Management Council",NA,"pacific fishery management council",NA,NA,NA
+"581",NA,"PIBKC","Pribilof Island Blue King Crab",NA,"pribilof island blue king crab",NA,NA,NA
+"582",NA,"PICTs","Pacific Island Countries and Territories",NA,"pacific island countries and territories",NA,NA,NA
+"583","ASMFC","PID","Public Information Document","A document of the ASMFC which contains preliminary discussions of biological, environmental, social, and economic information, fishery issues, and potential management options for a proposed FMP or amendment.","public information document",NA,NA,NA
+"584",NA,"PIE rule","Program Improvements and Enhancements rule",NA,"program improvements and enhancements rule",NA,NA,NA
+"585",NA,"PIFSC","Pacific Islands Fisheries Science Center",NA,"pacific islands fisheries science center",NA,NA,NA
+"586",NA,"PIGKC","Pribilof Island Golden King Crab",NA,"pribilof island golden king crab",NA,NA,NA
+"587",NA,"PIHCZ","Pribilof Islands Habitat Conservation Zone",NA,"pribilof islands habitat conservation zone",NA,NA,NA
+"588",NA,"PIMS","Permits Information Management Systems",NA,"permits information management systems",NA,NA,NA
+"589",NA,"PIRKC","Pribilof Islands Red King Crab",NA,"pribilof islands red king crab",NA,NA,NA
+"590",NA,"PIRO","Pacific Islands Regional Office, National Marine Fisheries Service",NA,"pacific islands regional office, national marine fisheries service",NA,NA,NA
+"591","PFMC","PMAX",NA,"The estimated probability of reaching TMAX. May not be less than 50%.",NA,NA,NA,NA
+"592","WPFMC","PMUS","Pacific Pelagic Management Unit Species","Species managed under the Pelagic FEP","pacific pelagic management unit species",NA,NA,NA
+"593",NA,"PNW","Pacific Northwest",NA,"pacific northwest",NA,NA,NA
+"594",NA,"POC","point of contact",NA,"point of contact",NA,NA,NA
+"595",NA,"POES","Polar Operational Environmental Satellites",NA,"polar operational environmental satellites",NA,NA,NA
+"596",NA,"POP","Pacific ocean perch",NA,"pacific ocean perch",NA,NA,NA
+"597",NA,"PPA","Preliminary preferred alternative",NA,"preliminary preferred alternative",NA,NA,NA
+"598",NA,"PPGFA","Pago Pago Game Fishing Association",NA,"pago pago game fishing association",NA,NA,NA
+"599",NA,"PPS","proportional probability sampling",NA,"proportional probability sampling",NA,NA,NA
+"600",NA,"PPT","Pelagic Fishery Ecosystem Plan Team",NA,"pelagic fishery ecosystem plan team",NA,NA,NA
+"601",NA,"PR","Puerto Rico",NA,"puerto rico",NA,NA,NA
+"602",NA,"PRA","Paperwork Reduction Act",NA,"paperwork reduction act",NA,NA,NA
+"603",NA,"PRD","Protected Resources Division",NA,"protected resources division",2,"Y",NA
+"604",NA,"PRD","Protected Resources Division of Southeast Regional Office",NA,"protected resources division of southeast regional office",2,"Y",NA
+"605",NA,"PRDNER","Puerto Rico Department of Natural and Environmental Resources",NA,"puerto rico department of natural and environmental resources",NA,NA,NA
+"606","ASMFC","PRFC","Potomac River Fisheries Commission","An interstate compact of the states of Maryland and Virginia charged with coordinating the regulation of the fisheries of the main stem of the tidal Potomac River.","potomac river fisheries commission",NA,NA,NA
+"607",NA,"PRIA","Pacific Remote Island Areas",NA,"pacific remote island areas",NA,NA,NA
+"608","ASMFC","PRT","Plan Review Team","The portion of a stock caught by a single unit of fishing effort.","plan review team",NA,NA,NA
+"609",NA,"PS","producer surplus",NA,"producer surplus",NA,NA,NA
+"610",NA,"PSA","productivity-susceptibility analyses",NA,"productivity-susceptibility analyses",NA,NA,NA
+"611",NA,"PSC","Pacific Salmon Commission",NA,"pacific salmon commission",2,"Y",NA
+"612",NA,"PSC","Prohibited Species Catch",NA,"prohibited species catch",2,"Y",NA
+"613",NA,"PSE","Proportional Standard Error",NA,"proportional standard error",NA,NA,NA
+"614",NA,"PSEIS","Programmatic Supplemental Environmental Impact Statement",NA,"programmatic supplemental environmental impact statement",NA,NA,NA
+"615","PFMC","PSMFC","Pacific States Marine Fisheries Commission","The PSMFC is a non-regulatory agency that serves Alaska, California, Idaho, Oregon and Washington. PSMFC (headquartered in Portland) provides a communication exchange between the Pacific Fishery Management Council and the North Pacific Fishery Management Council, and a mechanism for Federal funding of regional fishery projects. The PSMFC provides information in the form of data services for various fisheries.","pacific states marine fisheries commission",NA,NA,NA
+"616","PFMC","PST","Pacific Salmon Treaty","Created in 1985 through cooperative efforts of tribes, state governments, U.S. and Canadian governments, and sport and commercial fishing interests. The Pacific Salmon Commission (PSC) was created to implement the treaty. The PSC establishes fishery and allocation regimes, develops management recommendations and is a forum for working on fishery issues.","pacific salmon treaty",NA,NA,NA
+"617",NA,"PT","Plan Team",NA,"plan team",NA,NA,NA
+"618",NA,"PWS","Prince William Sound",NA,"prince william sound",NA,NA,NA
+"619","PFMC","PacFIN","Pacific Coast Fisheries Information Network","Provides commercial fishery information for Washington, Oregon, and California. Maintained by the Pacific States Marine Fisheries Commission.","pacific coast fisheries information network",NA,NA,NA
+"620",NA,"PlanBsmooth","Plan B' model using log-linear regression and Loess smoothing",NA,"plan b' model using log-linear regression and loess smoothing",NA,NA,NA
+"621",NA,"PopDy","Population Dynamics Branch of NEFSC",NA,"population dynamics branch of nefsc",NA,NA,NA
+"622",NA,"QA/QC","Quality Assurance/Quality Control",NA,"quality assurance/quality control",NA,NA,NA
+"623",NA,"QP","Quota pounds",NA,"quota pounds",NA,NA,NA
+"624","PFMC","QS","Quota share","A share of the Total Allowable Catch (TAC) allocated to an operating unit such as a vessel, a company or an individual fisherman (individual quota) depending on the system of allocation. Quotas may or may not be transferable, inheritable, and tradable. While generally used to allocate total allowable catch, quotas could be used also to allocate fishing effort or biomass.","quota share",NA,NA,NA
+"625",NA,"QUEST","Quantitative Ecology and Socioeconomics Training, NOAA program",NA,"quantitative ecology and socioeconomics training, noaa program",NA,NA,NA
+"626","NEFMC","R",NA,"programming environment for statistical processing and presentation",NA,NA,NA,NA
+"627",NA,"R/S","recruits-per-spawner",NA,"recruits-per-spawner",NA,NA,NA
+"628",NA,"R/V","Research vessel",NA,"research vessel",NA,NA,NA
+"629",NA,"RA","Regional Administrator of NMFS",NA,"regional administrator of nmfs",NA,NA,NA
+"630",NA,"RCA","Rockfish Conservation Area, riparian conservation area",NA,"rockfish conservation area, riparian conservation area",NA,NA,NA
+"631",NA,"REFM","Resource Ecology Fisheries Management",NA,"resource ecology fisheries management",NA,NA,NA
+"632",NA,"RER","Recovery Exploitation Rates",NA,"recovery exploitation rates",NA,NA,NA
+"633",NA,"RF","Reef Fish",NA,"reef fish",2,"Y",NA
+"634",NA,"RF","Rockfish",NA,"rockfish",2,"Y",NA
+"635","PFMC","RFA","Regulatory Flexibility Analysis (or Act)","Regulatory Flexibility Act. The Regulatory Flexibility Act (5 U.S.C. 601-612) requires federal agencies to consider the effects of their regulatory actions on small businesses and other small entities and to minimize any undue disproportionate burden.","regulatory flexibility analysis (or act)",NA,NA,NA
+"636",NA,"RFAA","Regulatory Flexibility Act Analysis",NA,"regulatory flexibility act analysis",NA,NA,NA
+"637",NA,"RFFA","Reasonably foreseeable future action",NA,"reasonably foreseeable future action",NA,NA,NA
+"638",NA,"RFMA","Regional Fishery Management Agreements",NA,"regional fishery management agreements",NA,NA,NA
+"639",NA,"RFMO","Regional Fishery Management Organization",NA,"regional fishery management organization",NA,NA,NA
+"640","ASMFC","RHL","Recreational harvest limit","A measure that sets an upper limit for annual recreational harvest for species that are jointly managed by the ASMFC and Regional Management Councils.","recreational harvest limit",NA,NA,NA
+"641",NA,"RI","Rhode Island",NA,"rhode island",NA,NA,NA
+"642",NA,"RI DFW","Rhode Island Department of Fish and Wildlife",NA,"rhode island department of fish and wildlife",NA,NA,NA
+"643",NA,"RIMPAC","Rim of the Pacific",NA,"rim of the pacific",NA,NA,NA
+"644","PFMC","RIR","Regulatory Impact Review","RIRs are prepared to determine whether a proposed regulatory action is ""major."" The RIR examines alternative management measures and their economic impacts.","regulatory impact review",NA,NA,NA
+"645",NA,"RKC","Red King Crab",NA,"red king crab",NA,NA,NA
+"646",NA,"ROA","Range of alternatives",NA,"range of alternatives",NA,NA,NA
+"647",NA,"ROD","Record of Decision",NA,"record of decision",NA,NA,NA
+"648",NA,"ROFR","Right of First Refusal",NA,"right of first refusal",NA,NA,NA
+"649","PFMC","ROV","Remotely operated vehicle","E.g., a submarine","remotely operated vehicle",NA,NA,NA
+"650",NA,"RPA","Reasonable and prudent alternative",NA,"reasonable and prudent alternative",NA,NA,NA
+"651",NA,"RPB","Regional Planning Body",NA,"regional planning body",NA,NA,NA
+"652",NA,"RPM","reasonable and prudent measures",NA,"reasonable and prudent measures",NA,NA,NA
+"653",NA,"RQ","regional quotient",NA,"regional quotient",NA,NA,NA
+"654",NA,"RQE","Recreational Quota Entity",NA,"recreational quota entity",NA,NA,NA
+"655",NA,"RSW","Refrigerated seawater",NA,"refrigerated seawater",NA,NA,NA
+"656",NA,"RTA","Research Track Assessment",NA,"research track assessment",NA,NA,NA
+"657","GMFMC","RVC","Reef Visual Census","Fishery independent study that collects data on both juvenile and adult life stages","reef visual census",NA,NA,NA
+"658","PFMC","RecFin","Recreational Fishery Information Network","A database managed by the Pacific States Marine Fisheries Commission that provides recreational fishery information for Washington, Oregon, and California.","recreational fishery information network",NA,NA,NA
+"659","PFMC","S-K","Saltonstall-Kennedy Act","The Saltonstall-Kennedy Act allocates 30% of the duties for imported fishery products to technological, biological, marketing, and other research and services in order to promote the free flow of domestically-produced fishery products and to develop markets for domestic fishery products.","saltonstall-kennedy act",NA,NA,NA
+"660","ASMFC","S-R","Stock-recruitment curve","A classic discrete population model which gives the expected number of individuals in generation (e.g., recruitment) as a function of the number of individuals in the previous generation (e.g., spawning stock biomass.","stock-recruitment curve",NA,NA,NA
+"661",NA,"SA","Spawning Abundance",NA,"spawning abundance",2,"Y",NA
+"662",NA,"SA","Subarea as specified by NAFO",NA,"subarea as specified by nafo",2,"Y",NA
+"663",NA,"SADL","South Atlantic Deepwater Longline Survey",NA,"south atlantic deepwater longline survey",NA,NA,NA
+"664","PFMC","SAFE","Stock Assessment and Fishery Evaluation","A SAFE document is a document prepared by the Council that provides a summary of the most recent biological condition of species in the fishery management unit, and the social and economic condition of the recreational and commercial fishing industries, including the fish processing sector. It summarizes, on a periodic basis, the best available information concerning the past, present, and possible future condition of the stocks and fisheries managed in the FMP.","stock assessment and fishery evaluation",NA,NA,NA
+"665",NA,"SAFIS","Standard Atlantic Fisheries Information System",NA,"standard atlantic fisheries information system",NA,NA,NA
+"666","ASMFC","SAFMC","South Atlantic Fishery Management Council","One of eight regional fishery management councils established by the Magnuson Act that are responsible for management of fisheries in federal waters (3-200 miles from shore).","south atlantic fishery management council",NA,NA,NA
+"667",NA,"SAMSY","Spawning Abundance at MSY",NA,"spawning abundance at msy",NA,NA,NA
+"668",NA,"SAP","Stock Assessment Panel",NA,"stock assessment panel",NA,NA,NA
+"669",NA,"SAR","Stock Assessment Report",NA,"stock assessment report",NA,NA,NA
+"670",NA,"SAS","Salmon Advisory Subpanel",NA,"salmon advisory subpanel",2,"Y",NA
+"671",NA,"SAS","Statistical Analysis Software application viii",NA,"statistical analysis software application viii",2,"Y",NA
+"672","ASMFC","SASC","Stock Assessment Subcommittee","A group of persons who are expert in stock assessment methodologies and scientific/technical matters relating to a specific fish stock. The SASC is jointly appointed by the ASC and the species technical committee, with membership consisting of a combination of SAC members and technical committee members. The Subcommittee is responsible for conducting the species assessment and reports directly to the species technical committee.","stock assessment subcommittee",NA,NA,NA
+"673",NA,"SAW","Stock Assessment Workshop",NA,"stock assessment workshop",NA,NA,NA
+"674","ASMFC","SAW/SARC","The Northeast Regional Stock Assessment Workshop and Stock Assessment Review Committee, respectively","The SAW is a formal scientific peer-review process for evaluating and presenting stock assessment results to managers for fish stocks of the Northwest Atlantic. Assessments are prepared by SAW working groups and reviewed by an independent panel of stock assessment experts called the SARC.","the northeast regional stock assessment workshop and stock assessment review committee, respectively",NA,NA,NA
+"675",NA,"SB","Spawning Biomass",NA,"spawning biomass",NA,NA,NA
+"676",NA,"SBA","Small Business Act",NA,"small business act",2,"Y",NA
+"677",NA,"SBA","Small Business Administration",NA,"small business administration",2,"Y",NA
+"678",NA,"SBMSY","Spawning Biomass at MSY",NA,"spawning biomass at msy",NA,NA,NA
+"679",NA,"SBRM","Standard Bycatch Reporting Methodology",NA,"standard bycatch reporting methodology",NA,NA,NA
+"680",NA,"SC","Standing Committee of the Western and Central Pacific Fisheries Commission",NA,"standing committee of the western and central pacific fisheries commission",NA,NA,NA
+"681","ASMFC","SCA","Statistical catch at age","Age-based stock assessment methods utilizing catch-at-age data to derive estimates of population size and fishing mortality. However, unlike VPA, SCAA model parameters are estimated by working forward in time, rather than backwards as is done in VPA analysis.","statistical catch at age",NA,NA,NA
+"682",NA,"SCDNR","South Carolina Department of Natural Resources",NA,"south carolina department of natural resources",NA,NA,NA
+"683","ASMFC","SCS","Small coastal shark complex","A shark species grouping that includes Atlantic sharpnose, finetooth and bonnethead sharks.","small coastal shark complex",NA,NA,NA
+"684",NA,"SDC","status determination criteria",NA,"status determination criteria",NA,NA,NA
+"685","ASMFC","SEAMAP","Southeast Area Monitoring and Assessment Program","A cooperative state, federal, and university program for the collection, management, and dissemination of fishery-independent data and information in the Southeastern US and Caribbean.","southeast area monitoring and assessment program",NA,NA,NA
+"686",NA,"SECOORA","Southeast Coastal Ocean Observing Regional Association",NA,"southeast coastal ocean observing regional association",NA,NA,NA
+"687","ASMFC","SEDAR","Southeast Data, Assessment, and Review","The stock assessment peer- review process used by the South Atlantic, Gulf of Mexico, and Caribbean Fishery Management Councils, and the ASMFC to improve the quality and reliability of fishery stock assessments in the US Southeast.","southeast data, assessment, and review",2,"Y","Y"
+"688","GMFMC","SEDAR","Southeast Data, Assessment, and Review","a cooperative process among the Southeast Regional Fishery Management Councils, NOAA Fisheries and the Interstate Fisheries Commissions with the goal to improve the quality and reliability of fishery resource assessments within the southeastern U.S.","southeast data, assessment, and review",2,"Y","Y"
+"689","ASMFC","SEFSC","Southeast Fisheries Science Center","NMFS' fisheries research and science arms.","southeast fisheries science center",2,"Y","Y"
+"690","GMFMC","SEFSC","Southeast Fisheries Science Center","headquartered in Miami, the Center conducts a variety of research to inform marine resource management in the Gulf of Mexico, Caribbean and South Atlantic.","southeast fisheries science center",2,"Y","Y"
+"691",NA,"SEG","Sustainable escapement goal",NA,"sustainable escapement goal",NA,NA,NA
+"692","GMFMC","SEIS","supplemental environmental impact statement","reviews the results of an existing environmental impact statement by considering new or additional environmental impacts","supplemental environmental impact statement",NA,NA,NA
+"693","GMFMC","SEP","Socioeconomic Panel","panel of members within the scientific and statistical committees who are knowledgeable about the social and economic aspects of Gulf of Mexico fisheries","socioeconomic panel",NA,NA,NA
+"694",NA,"SERFS","Southeast Reef Fish Survey",NA,"southeast reef fish survey",NA,NA,NA
+"695","GMFMC","SERO","Southeast Regional Office","Office located in St. Petersburg, Florida, operating under NOAA Fisheries, works with scientists and fisheries managers to safeguard sustainable fishing practices, protect endangered species and marine mammals and conserve marine habitats","southeast regional office",NA,NA,NA
+"696","GMFMC","SESSC","Socioeconomic Scientific and Statistical Committee","panel of members within the scientific and statistical committees who are knowledgeable about the social and economic aspects of Gulf of Mexico fisheries","socioeconomic scientific and statistical committee",NA,NA,NA
+"697",NA,"SET","Sustainable escapement threshold",NA,"sustainable escapement threshold",NA,NA,NA
+"698",NA,"SEZ","Southern Exclusion Zone, Hawaii",NA,"southern exclusion zone, hawaii",NA,NA,NA
+"699","GMFMC","SFA","Sustainable Fisheries Act","amendment to the Magnuson-Stevens Fishery Conservation and Management Act to bolster requirements to prevent overfishing, set standards for fishery management plans to specify measures for stock status determinations, added three new national standards to address fishery concerns, and introduced habitat as integral to fisheries management","sustainable fisheries act",2,"Y",NA
+"700",NA,"SFA","Saipan Fishermen's Association",NA,"saipan fishermen's association",2,"Y",NA
+"701",NA,"SFD","Sustainable Fisheries Division, NMFS PIRO",NA,"sustainable fisheries division, nmfs piro",NA,NA,NA
+"702",NA,"SFM","Shortfin Mako shark",NA,"shortfin mako shark",NA,NA,NA
+"703",NA,"SFO","Sustainable Fisheries Office (NMFS)",NA,"sustainable fisheries office (nmfs)",NA,NA,NA
+"704",NA,"SFTFA","St. Thomas Fishermen's Association",NA,"st. thomas fishermen's association",NA,NA,NA
+"705",NA,"SG","Snapper grouper",NA,"snapper grouper",NA,NA,NA
+"706",NA,"SHARKWG","Shark Working Group, ISC",NA,"shark working group, isc",NA,NA,NA
+"707","GMFMC","SIA","Social Impact Assessment","similar to environmental impact assessments, it is a method of assessing cultural and social impacts from alternative fishery management actions or policies","social impact assessment",2,"Y",NA
+"708",NA,"SIA","Social impact analysis",NA,"social impact analysis",2,"Y",NA
+"709",NA,"SIR","Supplemental Information Report",NA,"supplemental information report",NA,NA,NA
+"710",NA,"SMAST","School for Marine Science and Technology (New Bedford, Maine)",NA,"school for marine science and technology (new bedford, maine)",NA,NA,NA
+"711",NA,"SMBKC","St. Matthews Blue King Crab",NA,"st. matthews blue king crab",NA,NA,NA
+"712",NA,"SMP","System Management Plan (for protected areas)",NA,"system management plan (for protected areas)",NA,NA,NA
+"713","GMFMC","SMZ","special management zone","designation of an area within artificial reef sites that prohibits the use of some fishing gear to prevent overexploitation of species but acts as an incentive to increase fish populations in an area and/or fishing opportunities that did not previously exist","special management zone",NA,NA,NA
+"714","ASMFC","SNE","Southern New England","Used to describe a population segment of the American lobster resource.","southern new england",NA,NA,NA
+"715","ASMFC","SNE/MA","Southern New England/Mid-Atlantic","Used to describe a population segment of the winter flounder resource.","southern new england/mid-atlantic",NA,NA,NA
+"716",NA,"SNEMA","Southern New England and Mid-Atlantic Bight",NA,"southern new england and mid-atlantic bight",NA,NA,NA
+"717",NA,"SNP","Single nucleotide polymorphism",NA,"single nucleotide polymorphism",NA,NA,NA
+"718","GMFMC","SOFI","Statement of Financial Interest","a form asking questions pertaining to financial interests and disclosures given to voting members of regional fishery management councils, SSC members and Council staff as required by the Magnuson-Stevens Act. The purpose of the report is to assist the involved parties with avoiding conflicts between official duties and private financial interests or affiliations","statement of financial interest",NA,NA,NA
+"719","GMFMC","SOI","#VALUE!","Statistics of income","#value!",NA,NA,NA
+"720",NA,"SONCC","Southern Oregon Northern California coastal coho (an evolutionarily significant unit)",NA,"southern oregon northern california coastal coho (an evolutionarily significant unit)",NA,NA,NA
+"721",NA,"SONCCWG","Ad Hoc Southern Oregon Northern California Coast Coho Workgroup",NA,"ad hoc southern oregon northern california coast coho workgroup",NA,NA,NA
+"722",NA,"SOPP","Statement of Organization, Practices, and Procedures",NA,"statement of organization, practices, and procedures",NA,NA,NA
+"723","GMFMC","SOW","statement of work","a project management document that describes step-wise, the project's work requirements including deliverables, methods and timelines","statement of work",NA,NA,NA
+"724","GMFMC","SPA","sanctuary preservation area","a distinct biologically important area that helps sustain critical marine species and habitats.","sanctuary preservation area",NA,NA,NA
+"725","WPFMC","SPC","Secretariat of the Pacific Community","A technical assistance organization comprising the independent island states of the tropical Pacific Ocean, dependent territories and the metropolitan countries of Australia, New Zealand, USA, and France; now Pacific Community","secretariat of the pacific community",NA,NA,NA
+"726",NA,"SPLASH","Structure of Populations, Levels of Abundance, and Status of Humpbacks",NA,"structure of populations, levels of abundance, and status of humpbacks",NA,NA,NA
+"727","ASMFC","SPR","Spawning potential ratio","A biological index used to assess red drum stock status.","spawning potential ratio",5,"Y",NA
+"728","GMFMC","SPR","spawning potential ratio","the ratio of the number of eggs that could be produced by a fish over its lifetime that has recruited to a fishery, over the number of eggs that could be produced by an average fish in a stock that is unfished","spawning potential ratio",5,"Y",NA
+"729","PFMC","SPR","Spawning potential ratio","The ratio of spawning potential per recruit under a given fishing regime, relative to the spawning potential per recruit with no fishing.","spawning potential ratio",5,"Y",NA
+"730","WPFMC","SPR","Spawning Potential Ratio","A method to measure the effects of fishing pressure on a stock by expressing the spawning potential of the fished biomass as a percentage of the unfished virgin spawning biomass. Stocks are deemed to be overfished when the SPR<20%.","spawning potential ratio",5,"Y",NA
+"731",NA,"SPR","Spawning biomass per recruit",NA,"spawning biomass per recruit",5,"Y",NA
+"732","GMFMC","SRD","Science and Research Director","the director of NOAA's different regional Fisheries Science Centers","science and research director",NA,NA,NA
+"733",NA,"SRFC","Sacramento River fall Chinook",NA,"sacramento river fall chinook",NA,NA,NA
+"734","GMFMC","SRFS","State Reef Fish Survey","Florida's supplemental reef fish survey for certain species that replaced the GRFS survey in July of 2020","state reef fish survey",NA,NA,NA
+"735","GMFMC","SRHS","Southeast Region Headboat Survey","a federal data collection program that collects fisheries dependent data such as lengths, weights and sex from fish caught on headboat trips. The survey collects data from vessels throughout the southeast region.","southeast region headboat survey",NA,NA,NA
+"736",NA,"SRI","Sacramento River index",NA,"sacramento river index",NA,NA,NA
+"737",NA,"SRKW","Southern resident killer whales",NA,"southern resident killer whales",NA,NA,NA
+"738",NA,"SRKWWG","Ad Hoc Southern Resident Killer Whale Workgroup",NA,"ad hoc southern resident killer whale workgroup",NA,NA,NA
+"739","ASMFC","SRT","Status Review Team","Used as part of the Endangered Species Act listing process.","status review team",NA,NA,NA
+"740","GMFMC","SS","stock synthesis","an age-structured population dynamics model that is used to assess the impacts of fisheries on stocks while also accounting for environmental impacts or stressors.","stock synthesis",NA,NA,NA
+"741","ASMFC","SSB","Spawning stock biomass","The total weight of the mature females within a stock of fish; frequently used instead of total biomass as a better measure of the ability of a stock to replenish itself.","spawning stock biomass",2,"Y","Y"
+"742","GMFMC","SSB","spawning stock biomass","the total weight of all the fish in a stock that are old enough to reproduce, usually considered to be all fish beyond a certain age or size in which 50% of the individuals are sexually mature.","spawning stock biomass",2,"Y","Y"
+"743",NA,"SSBMSY","Spawning Stock Biomass at MSY",NA,"spawning stock biomass at msy",NA,NA,NA
+"744",NA,"SSBMSY proxy","proxy value for spawning stock biomass estimation for maximum sustainable yield",NA,"proxy value for spawning stock biomass estimation for maximum sustainable yield",NA,NA,NA
+"745","GMFMC","SSBR","spawning stock biomass per recruit","an estimate of the lifetime reproductive potential of an average recruit. Important for examining the population growth potential of a stock","spawning stock biomass per recruit",NA,NA,NA
+"746",NA,"SSBTarget","theoretically ideal spawning stock biomass level",NA,"theoretically ideal spawning stock biomass level",NA,NA,NA
+"747",NA,"SSBThreshold","threshold for spawning stock biomass that indicates overfished status",NA,"threshold for spawning stock biomass that indicates overfished status",NA,NA,NA
+"748",NA,"SSBproxy","proxy value for spawning stock biomass estimate",NA,"proxy value for spawning stock biomass estimate",NA,NA,NA
+"749","ASMFC","SSC","Scientific and Statistical Committee","An advisory committee of a regional fishery management council composed of scientists, economists, and other technical experts that assist in gathering and analyzing statistical, biological, ecological, economic, social, and other scientific information that is relevant to the management of council fisheries.","scientific and statistical committee",3,"Y","Y"
+"750","GMFMC","SSC","Scientific and Statistical Committee","a committee composed of scientists in the fields of biology, statistics, economics, the environment and social science. The committee makes recommendations to the Regional Councils on assessments and other technical matters leading to more informed fishery management decisions.","scientific and statistical committee",3,"Y","Y"
+"751","WPFMC","SSC","Scientific and Statistical Committee","An advisory body to the Council comprising experts in fisheries, marine biology, oceanography, etc.","scientific and statistical committee",3,"Y","Y"
+"752",NA,"SSFP","Sustainable Salmon Fisheries Policy",NA,"sustainable salmon fisheries policy",NA,NA,NA
+"753",NA,"SSL","Steller sea lion",NA,"steller sea lion",NA,NA,NA
+"754",NA,"SSMZ","Spawning Special Management Zones",NA,"spawning special management zones",NA,NA,NA
+"755",NA,"SST","Sea surface temperature",NA,"sea surface temperature",NA,NA,NA
+"756",NA,"STAR","Stock assessment review",NA,"stock assessment review",NA,NA,NA
+"757","PFMC","STAR Panel","Stock Assessment Review Panel","A panel set up to review stock assessments for particular fisheries. In the past there have been STAR panels for sablefish, rockfish, squid, and other species.","stock assessment review panel",NA,NA,NA
+"758",NA,"STD","Standard Deviation",NA,"standard deviation",NA,NA,NA
+"759",NA,"STDN","Sea Turtle Disentanglement Network",NA,"sea turtle disentanglement network",NA,NA,NA
+"760",NA,"STF","Subtropical Front",NA,"subtropical front",NA,NA,NA
+"761",NA,"STJ","St. Johns, U.S. Virgin Islands",NA,"st. johns, u.s. virgin islands",NA,NA,NA
+"762",NA,"STT","Salmon Technical Team",NA,"salmon technical team",2,"Y",NA
+"763",NA,"STT","St. Thomas, U.S. Virgin Islands",NA,"st. thomas, u.s. virgin islands",2,"Y",NA
+"764",NA,"STX","St. Croix, U.S. Virgin Islands",NA,"st. croix, u.s. virgin islands",NA,NA,NA
+"765",NA,"SUNY","State University of New York",NA,"state university of new york",NA,NA,NA
+"766",NA,"SURVEYMEANS","SAS procedure for estimating characteristics of a survey population using statistics computed from a survey sample",NA,"sas procedure for estimating characteristics of a survey population using statistics computed from a survey sample",NA,NA,NA
+"767",NA,"SW","Southwest",NA,"southwest",NA,NA,NA
+"768",NA,"SWAC","Seawater Air Conditioning",NA,"seawater air conditioning",NA,NA,NA
+"769",NA,"SWFSC","Southwest Fisheries Science Center (NMFS)",NA,"southwest fisheries science center (nmfs)",NA,NA,NA
+"770","GMFMC","SWG","shallow-water grouper","complex of grouper species managed in the Gulf of Mexico by the Gulf Council and NOAA Fisheries. Includes red grouper, black grouper, gag, scamp, yellowfin grouper, yellowmouth grouper, rock hind and red hind","shallow-water grouper",2,"Y",NA
+"771",NA,"SWG","Spatial Working Group",NA,"spatial working group",2,"Y",NA
+"772",NA,"SWO","Swordfish",NA,"swordfish",NA,NA,NA
+"773",NA,"SWR","Southwest Region",NA,"southwest region",NA,NA,NA
+"774",NA,"Secretary","U.S. Secretary of Commerce",NA,"u.s. secretary of commerce",NA,NA,NA
+"775","GMFMC","SoVI","social vulnerability index","14 indices that measure a coastal community's ability to respond to social, economic and environmental conditions, a useful tool for policy makers, fishery managers and interested stakeholders","social vulnerability index",NA,NA,NA
+"776",NA,"TA","Total Alkalinity",NA,"total alkalinity",NA,NA,NA
+"777","ASMFC","TAC","Total Allowable Catch","The annual recommended catch by a management authority to preserve or rebuild a stock.","total allowable catch",3,"Y","Y"
+"778","GMFMC","TAC","total allowable catch","a catch limit set for a specific fishery within a set period of time, usually a year or a fishing season","total allowable catch",3,"Y","Y"
+"779","PFMC","TAC","Total allowable catch","The total regulated catch from a stock in a given time period, usually a year. (NMFS)","total allowable catch",3,"Y","Y"
+"780","ASMFC","TAL","Total Allowable Landings","The annual recommended catch by a management authority to preserve or rebuild a stock.","total allowable landings",NA,NA,NA
+"781","ASMFC","TC","Technical Committee","A group of persons who are expert in the scientific and technical matters relating to a specific fish stock and who are appointed and convened by a Management Board to provide scientific and technical advice in the process of developing and monitoring FMPs and amendments.","technical committee",NA,NA,NA
+"782","GMFMC","TED","turtle excluder device","a specialized device, often used in the shrimp fishery, applied to trawl nets that allows a captured sea turtle to escape when caught.","turtle excluder device",NA,NA,NA
+"783","GMFMC","TIP","Trip Interview Program","data collected by port samplers from commercial fishermen, includes length, weight, number of fish landed, gear used and trip identifiers such as date and location","trip interview program",NA,NA,NA
+"784",NA,"TK","Traditional Knowledge",NA,"traditional knowledge",NA,NA,NA
+"785","GMFMC","TL","total length","the maximum length from mouth to tail. For example, when measuring a fish, thetotal length extends from the front of the snout with the mouth closed to the end of the longest portionof the tail fin. Some agencies compress or squeeze the tail to get this measurement.","total length",NA,NA,NA
+"786",NA,"TLA","Trawl Limited Access",NA,"trawl limited access",NA,NA,NA
+"787",NA,"TLAS","Trawl Limited Access Sector",NA,"trawl limited access sector",NA,NA,NA
+"788","GMFMC","TLR","trip limit reduction","a reduction in the number or pounds of a species that can be harvested per trip","trip limit reduction",NA,NA,NA
+"789","PFMC","TMAX",NA,"The maximum time period to rebuild an overfished stock, according to National Standard Guidelines. Depends on biological, environmental, and legal/policy factors.",NA,NA,NA,NA
+"790",NA,"TMCT","Technical Monitoring and Compliance Team",NA,"technical monitoring and compliance team",NA,NA,NA
+"791","PFMC","TMIN",NA,"The minimum time period to rebuild an overfished stock, according to National Standard Guidelines. Technically, this is the minimum amount of time in which a fish stock will have a 50% chance of rebuilding if no fishing occurs (depends on biological and environmental factors).",NA,NA,NA,NA
+"792",NA,"TNC","The Nature Conservancy",NA,"the nature conservancy",NA,NA,NA
+"793","GMFMC","TOR","Terms of Reference","a list of terms that define certain aspects of a project: what has to be achieved, how and when it will be achieved and who will take part to ensure project completion","terms of reference",NA,NA,NA
+"794","GMFMC","TPWD","Texas Parks and Wildlife Department","state agency that oversees and works to conserve Texas wildlife and their habitats as well as state parks, historical areas and aquatic resources.","texas parks and wildlife department",NA,NA,NA
+"795","ASMFC","TRAC","Transboundary Resource Assessment Committee","The percent of a fish population removed by fishing over the course of a year.","transboundary resource assessment committee",NA,NA,NA
+"796","GMFMC","TRP","target reference point","a type of biological reference point, desired status of the fishery","target reference point",NA,NA,NA
+"797","PFMC","TTARGET",NA,"The target year, set by policy, for a fish stock to be completely rebuilt.",NA,NA,NA,NA
+"798","GMFMC","TWG","topical working group","an interdisciplinary group made of up individuals with expertise that is relevant to a certain topic","topical working group",NA,NA,NA
+"799",NA,"TZCF","Transition Zone Chlorophyll Front",NA,"transition zone chlorophyll front",NA,NA,NA
+"800","GMFMC","TnS/TNS","Tails n' Scales","Mississippi's mandatory red snapper electronic reporting program. Voluntary reporting for other reef fish species is available","tails n' scales",NA,NA,NA
+"801","PFMC","Total catch OY","Total catch optimum yield","The landed catch plus discard mortality.","total catch optimum yield",NA,NA,NA
+"802",NA,"U.S.","United States of America",NA,"united states of america",NA,NA,NA
+"803","GMFMC","U.S. Caribbean","U.S. Caribbean","Caribbean islands of Puerto Rico, St. Thomas, St. John, and St. Croix","u.s. caribbean",NA,NA,NA
+"804","PFMC","U/A","Usual and accustomed","Usually used when referring to tribal fishing, hunting or gathering areas.","usual and accustomed",NA,NA,NA
+"805",NA,"URI","Graduate School of Oceanography",NA,"graduate school of oceanography",NA,NA,NA
+"806",NA,"US","United States",NA,"united states",NA,NA,NA
+"807",NA,"USACE","United States Army Corps of Engineers",NA,"united states army corps of engineers",NA,NA,NA
+"808",NA,"USAF","United States Air Force",NA,"united states air force",NA,NA,NA
+"809","PFMC","USCG","U.S. Coast Guard","A representative of the USCG is a non-voting member of the Council.","u.s. coast guard",NA,NA,NA
+"810",NA,"USFS","U.S. Forest Service",NA,"u.s. forest service",NA,NA,NA
+"811",NA,"USFWS","United States Fish and Wildlife Service",NA,"united states fish and wildlife service",NA,NA,NA
+"812",NA,"USGS","U.S. Geological Survey",NA,"u.s. geological survey",NA,NA,NA
+"813","GMFMC","USVI","U.S. Virgin Islands","group of Caribbean Islands consisting of the main islands of St. Croix, St. John and St. Thomas","u.s. virgin islands",NA,NA,NA
+"814",NA,"V-A","Vietnamese-American",NA,"vietnamese-american",NA,NA,NA
+"815",NA,"VA","Virginia",NA,"virginia",NA,NA,NA
+"816","GMFMC","VEC","valued environmental component","the fundamental elements that comprise the physical, biological or socio-economic environment including air, water, vegetation, and wildlife, among other components that may be affected by a proposed project.","valued environmental component",NA,NA,NA
+"817","GMFMC","VIDPNR","Virgin Islands Department of Planning and Natural Resources","department mandated to protect, manage and maintain the natural and cultural resources of the Virgin Islands through economic development and inter-agency collaboration.","virgin islands department of planning and natural resources",NA,NA,NA
+"818","GMFMC","VMS","vessel monitoring system","a general term used for equipment that is used to track a vessel's geographic position through a satellite communication system.","vessel monitoring system",2,"Y","Y"
+"819","PFMC","VMS","Vessel Monitoring System","A satellite communications system used to monitor fishing activities. For example, to ensure that vessels stay out of prohibited areas. The system is based on electronic devices (transceivers), which are installed on board vessels. These devices automatically send data to shore-based ""satellite"" monitoring system.","vessel monitoring system",2,"Y","Y"
+"820","GMFMC","VOC","volatile organic compound","compounds that have a high vapor pressure and are not very soluble in water. They are emitted as gases from certain solids and liquids.","volatile organic compound",NA,NA,NA
+"821","ASMFC","VPA","Virtual Population Analysis","A method of estimating stock size through examination of the sizes, growth, and mortality rates of individual age groups and using that information to ""back calculate"" the virtual populations that must have existed previously to produce the catches currently observed in a fishery.","virtual population analysis",2,"Y","Y"
+"822","GMFMC","VPA","virtual population analysis","simulation to reconstruct a population by taking a year class (a group of fish born in the same year) using the number of fish caught each year from a year class and the mortality rate for the size of that year class","virtual population analysis",2,"Y","Y"
+"823",NA,"VT","Vermont",NA,"vermont",NA,NA,NA
+"824",NA,"VTR","Vessel Trip Report",NA,"vessel trip report",NA,NA,NA
+"825",NA,"W","West",NA,"west",NA,NA,NA
+"826",NA,"WA","Washington",NA,"washington",NA,NA,NA
+"827",NA,"WCNPO","Western and Central North Pacific Ocean",NA,"western and central north pacific ocean",NA,NA,NA
+"828",NA,"WCP","West Coast Pelagic Conservation Group",NA,"west coast pelagic conservation group",NA,NA,NA
+"829",NA,"WCPFC","Western and Central Pacific Fisheries Commission",NA,"western and central pacific fisheries commission",NA,NA,NA
+"830",NA,"WCPFCA","Western and Central Pacific Fisheries Commission Convention Area",NA,"western and central pacific fisheries commission convention area",NA,NA,NA
+"831",NA,"WCPO","Western and Central Pacific Ocean",NA,"western and central pacific ocean",NA,NA,NA
+"832",NA,"WCSPA","West Coast Seafood Processors Association",NA,"west coast seafood processors association",NA,NA,NA
+"833",NA,"WCVI","West Coast Vancouver Island",NA,"west coast vancouver island",NA,NA,NA
+"834","PFMC","WDFW","Washington Department of Fish and Wildlife","A representative of WDFW sits on the Council.","washington department of fish and wildlife",NA,NA,NA
+"835",NA,"WETS","Wave Energy Test Site",NA,"wave energy test site",NA,NA,NA
+"836",NA,"WFOA","Western Fishboat Owners Association",NA,"western fishboat owners association",NA,NA,NA
+"837",NA,"WGOA","Western Gulf of Alaska",NA,"western gulf of alaska",NA,NA,NA
+"838",NA,"WHAM","Woods Hole Assessment Model",NA,"woods hole assessment model",NA,NA,NA
+"839",NA,"WHOI","Woods Hole Oceanographic Institute, MA",NA,"woods hole oceanographic institute, ma",NA,NA,NA
+"840",NA,"WPFMC","Western Pacific Regional Fishery Management Council",NA,"western pacific regional fishery management council",NA,NA,NA
+"841",NA,"WPUE","Weight per Unit Effort",NA,"weight per unit effort",NA,NA,NA
+"842",NA,"WPacFIN","Western Pacific Fishery Information Network, NMFS",NA,"western pacific fishery information network, nmfs",NA,NA,NA
+"843",NA,"WSEP","Weapon Systems Evaluation Program",NA,"weapon systems evaluation program",NA,NA,NA
+"844",NA,"XBT","Expendable Bathythermographs",NA,"expendable bathythermographs",NA,NA,NA
+"845",NA,"YFS","Yellowfin sole",NA,"yellowfin sole",NA,NA,NA
+"846","ASMFC","YPR","Yield per recruit","The expected yield in weight for a single fish or year class over the life of the fish or year class.","yield per recruit",NA,NA,NA
+"847",NA,"YoY","young of the year or age",NA,"young of the year or age",NA,NA,NA
+"848","ASMFC","Z","Total Mortality","The instantaneous rate at which fish die from both natural and fishing related causes. Z = F + M.","total mortality",NA,NA,NA
+"849","PFMC","cfs","Cubic feet per second","A measure of running water in a stream or river.","cubic feet per second",NA,NA,NA
+"850",NA,"cm","Centimeter",NA,"centimeter",NA,NA,NA
+"851",NA,"gw","gutted weight",NA,"gutted weight",NA,NA,NA
+"852",NA,"kg","kilogram",NA,"kilogram",NA,NA,NA
+"853",NA,"kg/tow","kilograms per tow",NA,"kilograms per tow",NA,NA,NA
+"854",NA,"lbs","pounds",NA,"pounds",NA,NA,NA
+"855",NA,"m","Meter(s)",NA,"meter(s)",NA,NA,NA
+"856",NA,"mm","Millimeter",NA,"millimeter",NA,NA,NA
+"857",NA,"mp","million pounds",NA,"million pounds",NA,NA,NA
+"858","PFMC","mt","Metric ton","1000 kilos or 2,204.62 pounds. (A ""short ton"" is 2000 lbs.)","metric ton",2,"Y",NA
+"859","GMFMC","mt","metric tons","unit of weight often used with commercial fisheries data, equal to 1,000 kg or approximately 2,204.6 pounds","metric tons",2,"Y",NA
+"860",NA,"nm","nautical mile",NA,"nautical mile",NA,NA,NA
+"861",NA,"ppm","Parts per Million",NA,"parts per million",NA,NA,NA
+"862",NA,"ppt","parts per thousand",NA,"parts per thousand",NA,NA,NA
+"863",NA,"q","catchability coefficient",NA,"catchability coefficient",NA,NA,NA
+"864",NA,"rkm","River-kilometer",NA,"river-kilometer",NA,NA,NA
+"865",NA,"ww","whole weight",NA,"whole weight",NA,NA,NA

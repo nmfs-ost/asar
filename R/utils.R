@@ -285,5 +285,36 @@ unique_all <- dplyr::full_join(has_definitions_unique,
   # recreate meaning_lower after updates
   dplyr::mutate(meaning_lower = tolower(Meaning))
 
+dup_acs <- unique_all |>
+  dplyr::count(Acronym) |>
+  dplyr::filter(n > 1) |>
+  dplyr::mutate(duplicated_ac = "Y")
+
+dup_means <- unique_all |>
+  dplyr::count(meaning_lower) |>
+  dplyr::filter(n > 1) |>
+  dplyr::mutate(duplicated_mean = "Y")
+
+unique_all <- unique_all |>
+  dplyr::left_join(dup_acs) |>
+  dplyr::left_join(dup_means)
+
+redundants <- unique_all |>
+  dplyr::filter(!dplyr::if_all(c(duplicated_ac, duplicated_mean), is.na))
+
 # export to csv
-# standardize U.S. vs. US
+# all acronyms
+write.csv(unique_all,
+          file = here::here("inst/resources/acronyms/acronyms_partial_cleaned.csv"))
+# acronyms with identical acronyms and/or meanings
+write.csv(redundants |>
+            dplyr::select(-meaning_lower),
+          file = here::here("inst/resources/acronyms/acronyms_duplicates.csv"))
+
+
+# keep cleaning once we collectively decide which duplicated acronym to use,
+# and resolve other questions
+# also, keep cleaning by:
+# -standardizing U.S. vs. US
+# -remove "council"; ensure each council's full ac is present
+# -
