@@ -8,8 +8,10 @@ output:
   pdf_document:
     toc: true
     toc-depth: 3
-vignette: "%\\VignetteIndexEntry{Adding Custom Tables and Figures} %\\VignetteEngine{knitr::rmarkdown}
-  %\\VignetteEncoding{UTF-8}\n"
+vignette: >
+  %\VignetteIndexEntry{Adding Custom Tables and Figures}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
