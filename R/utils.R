@@ -116,10 +116,8 @@ acronyms <- all_entries |>
   dplyr::filter(!is.na(Acronym),
                 Acronym != "") |>
   dplyr::mutate_all(dplyr::na_if,"") |>
-  dplyr::mutate(across(.cols = everything(), trimws)) |>
-  dplyr::mutate(Meaning = gsub("<91>", "'", Meaning),
-                Meaning = gsub("<92>", "'", Meaning),
-                Meaning = gsub("<f1>", "ñ", Meaning),
+  dplyr::mutate(Meaning = gsub("<f1>", "ñ", Meaning),
+                across(.cols = everything(), trimws),
                 meaning_lower = tolower(Meaning),
                 Shared_ac = duplicated(Acronym),
                 Shared_mean = duplicated(meaning_lower)
@@ -287,5 +285,5 @@ unique_all <- dplyr::full_join(has_definitions_unique,
   # recreate meaning_lower after updates
   dplyr::mutate(meaning_lower = tolower(Meaning))
 
-
+# export to csv
 # standardize U.S. vs. US

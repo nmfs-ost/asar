@@ -79,7 +79,7 @@ kg/tow kilograms per tow 64,kg/tow,kilograms per tow,
 "MSY maximum sustainable yield 22, 31, 38, 46, 61",MSY,maximum sustainable yield,
 "mt metric ton 1, 2, 14, 22, 23, 31, 32, 35–38, 45–47, 50, 54, 61, 63",mt,metric ton,
 NA not applicable 61,NA,not applicable,
-"PlanBsmooth ‘Plan B' model using log-linear regression and Loess smoothing 11, 14, 15",PlanBsmooth,‘Plan B' model using log-linear regression and Loess smoothing,
+"PlanBsmooth 'Plan B' model using log-linear regression and Loess smoothing 11, 14, 15",PlanBsmooth,Plan B' model using log-linear regression and Loess smoothing,
 "q catchability coefficient 23, 36",q,catchability coefficient,
 "QA/QC quality assurance and quality control 4, 11",QA/QC,quality assurance and quality control,
 R expected recruitment numbers 55,,R,expected recruitment numbers
