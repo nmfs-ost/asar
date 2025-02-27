@@ -116,8 +116,8 @@ acronyms <- all_entries |>
   dplyr::filter(!is.na(Acronym),
                 Acronym != "") |>
   dplyr::mutate_all(dplyr::na_if,"") |>
-  dplyr::mutate(Meaning = gsub("<f1>", "ñ", Meaning),
-                across(.cols = everything(), trimws),
+  dplyr::mutate(across(.cols = everything(), trimws),
+                Meaning = gsub("Nino", "Niño", Meaning),
                 meaning_lower = tolower(Meaning),
                 Shared_ac = duplicated(Acronym),
                 Shared_mean = duplicated(meaning_lower)
