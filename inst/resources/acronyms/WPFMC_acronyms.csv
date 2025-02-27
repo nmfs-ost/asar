@@ -16,9 +16,6 @@ CFEAI Commercial Fishing Economic Assessment Index,CFEAI,Commercial Fishing Econ
 CFR Code of Federal Regulations,CFR,Code of Federal Regulations,
 CML Commercial Marine License data,CML,Commercial Marine License data,
 "CNMI Commonwealth of the Northern Mariana Islands. Also, Northern Mariana Islands, Northern Marianas, and NMI. Includes the islands of Saipan, Tinian, Rota, and many others in the Marianas Archipelago",CNMI,Commonwealth of the Northern Mariana Islands,"Includes the islands of Saipan, Tinian, Rota, and many others in the Marianas Archipelago"
-"CNMI Commonwealth of the Northern Mariana Islands. Also, Northern Mariana Islands, Northern Marianas, and NMI. Includes the islands of Saipan, Tinian, Rota, and many others in the Marianas Archipelago",CNMI,Northern Mariana Island,"Includes the islands of Saipan, Tinian, Rota, and many others in the Marianas Archipelago"
-"CNMI Commonwealth of the Northern Mariana Islands. Also, Northern Mariana Islands, Northern Marianas, and NMI. Includes the islands of Saipan, Tinian, Rota, and many others in the Marianas Archipelago",CNMI,Northern Marianas,"Includes the islands of Saipan, Tinian, Rota, and many others in the Marianas Archipelago"
-"CNMI Commonwealth of the Northern Mariana Islands. Also, Northern Mariana Islands, Northern Marianas, and NMI. Includes the islands of Saipan, Tinian, Rota, and many others in the Marianas Archipelago",NMI,Commonwealth of the Northern Mariana Islands,"Includes the islands of Saipan, Tinian, Rota, and many others in the Marianas Archipelago"
 CO2 Carbon Dioxide,CO2,Carbon Dioxide,
 CMM Conservation and Management Measures,CMM,Conservation and Management Measures,
 "CPC Climate Prediction Center, NOAA",CPC,"Climate Prediction Center, NOAA",
@@ -136,7 +133,7 @@ PICTs Pacific Island Countries and Territories,PICTs,Pacific Island Countries an
 PIFSC Pacific Islands Fisheries Science Center,PIFSC,Pacific Islands Fisheries Science Center,
 "PIRO Pacific Islands Regional Office, National Marine Fisheries Service.",PIRO,"Pacific Islands Regional Office, National Marine Fisheries Service",
 ,,,
-PMUS Pacific Pelagic Management Unit Species. Species managed under the,PMUS,Pacific Pelagic Management Unit Species. Species managed under the Pelagic FEP,
+PMUS Pacific Pelagic Management Unit Species. Species managed under the,PMUS,Pacific Pelagic Management Unit Species,Species managed under the Pelagic FEP
 ,,,
 POES Polar Operational Environmental Satellites,POES,Polar Operational Environmental Satellites,
 PPGFA Pago Pago Game Fishing Association,PPGFA,Pago Pago Game Fishing Association,

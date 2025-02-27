@@ -116,15 +116,16 @@ acronyms <- all_entries |>
   dplyr::filter(!is.na(Acronym),
                 Acronym != "") |>
   dplyr::mutate_all(dplyr::na_if,"") |>
-  dplyr::mutate_all(trimws) |>
-  dplyr::mutate(Meaning = gsub("<92>", "'", Meaning),
+  dplyr::mutate(across(.cols = everything(), trimws)) |>
+  dplyr::mutate(Meaning = gsub("<91>", "'", Meaning),
+                Meaning = gsub("<92>", "'", Meaning),
                 Meaning = gsub("<f1>", "ñ", Meaning),
                 meaning_lower = tolower(Meaning),
                 Shared_ac = duplicated(Acronym),
                 Shared_mean = duplicated(meaning_lower)
                 )
 
-# min length of consolidated acronyms: ~816
+# min length of consolidated acronyms: ~815
 # length(unique(acronyms$Acronym))
 
 # for a given acronym: if there is a row with an identical acronym,
@@ -161,9 +162,130 @@ unique_all <- dplyr::full_join(has_definitions_unique,
                 !Meaning %in% "Administrative Procedure Act") |>
   dplyr::mutate(Meaning = stringr::str_replace_all(Meaning,
                                           "Administrative Procedures Act",
-                                          "Administrative Procedure Act")) |>
-  # another duplicate without a definition
-  dplyr::filter(!Meaning %in% "Biomass (in either weight or other appropriate unit)")
+                                          "Administrative Procedure Act"),
+                Acronym = stringr::str_replace_all(Acronym,
+                                                   "BRDs",
+                                                   "BRD"),
+                Meaning = stringr::str_replace_all(Meaning,
+                                                   "Bycatch reduction devices",
+                                                   "Bycatch reduction device"),
+                Acronym = stringr::str_replace_all(Acronym,
+                                                   "Bi Op",
+                                                   "BiOp")) |>
+  # duplicates without a definition or with nearly identical definitions
+  dplyr::filter(!Meaning %in% c("Biomass (in either weight or other appropriate unit)",
+                                "Biomass at maximum sustainable yield",
+                                "Biomass at MSY"),
+                !Acronym %in% "BMSY (B sub MSY)") |>
+  # remove ACOE ac without definition, and make entry with def ("COE" --> ACOE)
+  dplyr::filter(Acronym != "ACOE") |>
+  dplyr::mutate(Acronym = stringr::str_replace(Acronym,
+                                                   "COE",
+                                                   "ACOE")) |>
+  # near-duplicate
+  dplyr::filter(
+    !Meaning %in% c(
+      # duplicates without definitions, near-duplicates, or duplicates that are too specific
+      "Catcher-processor",
+      "Catch per Unit Effort",
+      "Catch Per Unit Effort, sometimes C/E",
+      "Code of Federal Regulations 1",
+      "Department of Fisheries and Oceans, Canadian",
+      "El Niño-Southern Oscillation Index",
+      "Evolutionary Significant Unit",
+      "Ecosystem-based fishery management",
+      "East Pacific Ocean",
+      "Division of Fish and Wildlife, Northern Mariana Islands",
+      "A measure of the instantaneous rate of fishing mortality",
+      "instantaneous rate of fishing mortality",
+      "Mortality due to fishing",
+      "Food and Agriculture Organization (United Nations)",
+      "Fisheries Ecosystem Plan",
+      "Fishing Mortality Rate Yielding MSY",
+      "Fishing mortality rate to result in the Maximum Sustainable Yield",
+      "Finding of No Significant Impact ,",
+      "Fish and Wildlife Service",
+      "U.S. Fish and Wildlife Service",
+      "habitat area of particular concern",
+      "(instantaneous) natural mortality rate",
+      "Mid-Atlantic Fisheries Management Council",
+      "Marine protected areas",
+      "Marine Resources Education Program",
+      "Marine Recreational Fisheries Survey and Statistics",
+      "Marine Recreational Fisheries Statistics Survey",
+      "Magnuson-Steven Fishery Conservation and Management Act (Magnuson-Stevens Act)",
+      "Magnuson-Stevens Fishery Conservation and Management Act",
+      "management strategy evaluations",
+      "Magnuson-Stevens Fishery Conservation and Management Reauthorization Act of 2006",
+      "New England Fisheries Management Council",
+      "Northeast Fisheries Science Centre",
+      "Nongovernmental organization",
+      "National Marine Fisheries Service, National Oceanic and Atmospheric Department of Commerce. Also, NOAA Fisheries",
+      "National Marine Fisheries Service (also known as NOAA Fisheries)",
+      "National Oceanic and Atmospheric Administration, U.S. Department of Commerce",
+      "National Oceanographic and Atmospheric Administration",
+      "National Resource Defense Council",
+      "Over Fishing Limit",
+      "Overfishing Level",
+      "Office of Law Enforcement (NOAA Fisheries)",
+      "Office of Law Enforcement, NOAA",
+      "Puerto Rico Department of Natural and Environmental",
+      "Pacific States Marines Fisheries Commission",
+      "quality assurance and quality control",
+      "Regional Administrator",
+      "reasonably foreseeable future actions",
+      "Regional Fishery Management Organizations",
+      "Reasonable and prudent alternatives",
+      "Stock Assessment and Fishery Evaluation [report]",
+      "Stock Assessment and Fishery Evaluation Reports",
+      "Small Business Association",
+      "standardized bycatch reporting methodology",
+      "Southeast Data Assessment and Review",
+      "Southeast Data Assessment Review (Stock Assessment)",
+      "Sustainable Fisheries Act of 1996",
+      "spawning stock biomass consistent with maximum sustainable yield",
+      "Spawning Stock Biomass at Maximum Sustainable Yield",
+      "Secretary of Commerce",
+      "Term of Reference",
+      "Caribbean Islands of Puerto Rico, St. Thomas, St. John, and St. Croix",
+      "United States Coast Guard",
+      "United States Fish and Wildlife Service, Department of Interior",
+      "US Fish and Wildlife Service",
+      "United States Virgin Islands",
+      "Valued Ecosystem Component",
+      "Western Pacific Fishery Management Council",
+      "yield-per-recruit",
+      "kilograms",
+      "Meter or meters",
+      "Nautical miles",
+      "Atlantic States Marine Fisheries Commission (ASMFC)",
+      "Distinct Population Segment",
+      "Socioeconomic Panel (of the Scientific and Statistical Committee)"),
+    !Acronym %in% c("E.O.",
+                    "FAG",
+                    "NS #",
+                    "NS1",
+                    "NS2",
+                    "NS8",
+                    "NSGs",
+                    "BO",
+                    "DAR",
+                    "ITA",
+                    "NS#"),
+    !(is.na(Definition) & Meaning == "Marine Recreational Fishing Statistical Survey"),
+    !(is.na(Definition) & Acronym == "P*"),
+    !(source == "GMFMC" & Acronym == "P*"),
+    !(is.na(Definition) & Acronym == "RFA")
+    ) |> # correct meaning
+  dplyr::mutate(Meaning = stringr::str_replace(Meaning,
+                                               "Marine Recreational Fisheries Statistical Survey",
+                                               "Marine Recreational Fisheries Statistics Survey"),
+                Meaning = stringr::str_replace(Meaning,
+                                               "National Standards Guidelines",
+                                               "National Standard Guidelines")) |>
+  dplyr::filter(!Definition %in% "An advisory committee of the PFMC made up of scientists and economists. The Magnuson-Stevens Act requires that each council maintain an SSC to assist in gathering and analyzing statistical, biological, ecological, economic, social, and other scientific information that is relevant to the management of Council fisheries.") |>
+  # recreate meaning_lower after updates
+  dplyr::mutate(meaning_lower = tolower(Meaning))
 
-# then, filter out duplicates again
 
+# standardize U.S. vs. US
