@@ -749,7 +749,7 @@ create_template <- function(
       if (rerender_skeleton) {
         # Extract yaml from current template
         yaml_lines <- grep("---", prev_skeleton)
-        yaml <- unlist(prev_skeleton[1:55])
+        yaml <- unlist(prev_skeleton[yaml_lines[1]:yaml_lines[2]])
         # Change format if different
         # find format line
         if (prev_format == "pdf" & format == "html") {
@@ -777,7 +777,19 @@ create_template <- function(
           add_params <- paste("  ", " ", param_names, ": ", "'", param_values, "'", sep = "")
           yaml <- append(yaml, add_params, after = grep("bibliography:", yaml) - 1)
         }
-        # replace bib file name
+        # add bib file name
+        if (bib_file != "asar_references.bib") {
+          # check if input bib file contains a path
+          if (file.exists(bib_file)) {
+            message("Copying bibliography file to report folder...")
+            file.copy(bib_file, file_dir)
+            bib_file_only <- stringr::str_extract(bib_file, "[^/]+$")
+            bib_format <- paste("-  ", bib_file_only, sep = "")
+          } else if (!file.exists(file.path(file_dir, bib_file))) {
+            warning(glue::glue("Bibliography file {bib_file} is not in the report directory. The file will not be read in on render if it is not in the same path as the skeleton file."))
+            bib_format <- paste("-  ", bib_file, sep = "")
+          }
+        }
 
       } else {
         yaml <- create_yaml(
