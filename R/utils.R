@@ -304,12 +304,12 @@ redundants <- unique_all |>
 
 # export to csv
 # all acronyms
-write.csv(unique_all,
-          file = here::here("inst/resources/acronyms/intermediary_files/acronyms_partial_cleaned.csv"))
-# acronyms with identical acronyms and/or meanings
-write.csv(redundants |>
-            dplyr::select(-meaning_lower),
-          file = here::here("inst/resources/acronyms/intermediary_files/acronyms_duplicates.csv"))
+# write.csv(unique_all,
+#           file = fs::path("inst/resources/acronyms/intermediary_files/acronyms_partial_cleaned.csv"))
+# # acronyms with identical acronyms and/or meanings
+# write.csv(redundants |>
+#             dplyr::select(-meaning_lower),
+#           file = fs::path("inst/resources/acronyms/intermediary_files/acronyms_duplicates.csv"))
 
 
 # keep cleaning once we collectively decide which duplicated acronym to use,
