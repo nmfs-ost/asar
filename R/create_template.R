@@ -314,7 +314,7 @@ create_template <- function(
   }
 
   if (rerender_skeleton) {
-    report_name <- gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
+    report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
   } else {
     # Name report
     if (!is.null(type)) {
@@ -357,6 +357,7 @@ create_template <- function(
   } else {
     format <- match.arg(format, several.ok = FALSE)
   }
+
   if (!is.null(office) & length(office) == 1) {
     office <- match.arg(office, several.ok = FALSE)
   } else if (length(office) > 1) {
@@ -364,7 +365,11 @@ create_template <- function(
   }
 
   # Create subdirectory for files
-  subdir <- fs::path(file_dir, "report")
+  subdir <- ifelse(
+    grepl("/report", file_dir),
+    fs::path(file_dir),
+    fs::path(file_dir, "report")
+    )
 
   # Supporting files folder
   supdir <- file.path(subdir, "support_files")
@@ -405,23 +410,44 @@ create_template <- function(
         bib_name <- bib_file
       } else {
         # check if enter file exists
-        if (!file.exists(bib_file)) stop(".bib file not found.")
+        # if (!file.exists(bib_file)) stop(".bib file not found.")
+        warning(glue::glue("Bibliography file {bib_file} is not in the report directory. The file will not be read in on render if it is not in the same path as the skeleton file."))
+
         bib_loc <- bib_file # dirname(bib_file)
-        bib_name <- utils::tail(stringr::str_split(bib_file, "/")[[1]], n = 1)
+        bib_name <- stringr::str_extract(bib_file, "[^/]+$") # utils::tail(stringr::str_split(bib_file, "/")[[1]], n = 1)
       }
 
       # Check if this is a rerender of the skeleton file
       if (rerender_skeleton) {
         # read format in skeleton & check if format is identified in the rerender call
+        if (!file.exists(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))) stop("No skeleton quarto file found in the working directory.")
         prev_skeleton <- readLines(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))
         # extract previous format
         prev_format <- stringr::str_extract(
-          prev_skeleton[grep("format:", prev_skeleton)+1],
+          prev_skeleton[grep("format:", prev_skeleton) + 1],
           "[a-z]+"
           )
         # if it is previously html and the rerender species html then need to copy over html formatting
-        if (prev_format == "pdf" & format == "html") {
+        if (tolower(prev_format) != "html" & tolower(format) == "html") {
           file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+        }
+        if (tolower(prev_format != "pdf" & tolower(format) == "pdf")) {
+          species <- tolower(stringr::str_extract(
+            prev_skeleton[grep("species: ", prev_skeleton)],
+            "(?<=')[^']+(?=')"
+            ))
+          office <- stringr::str_extract(
+            prev_skeleton[grep("office: ", prev_skeleton)],
+            "(?<=')[^']+(?=')"
+          )
+          # year - default to current year
+
+          # copy before-body tex
+          file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
+          # customize titlepage tex
+          create_titlepage_tex(office = office, subdir = supdir, species = species)
+          # customize in-header tex
+          create_inheader_tex(species = species, year = year, subdir = supdir)
         }
       } else {
         # Check if there are already files in the folder
@@ -471,6 +497,7 @@ create_template <- function(
             warning("Report template files were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder.")
           }
         } # close check for previous files & respective copying
+        prev_skeleton <- NULL
       } # close if rerender
 
       # Convert output file if TRUE
@@ -638,14 +665,12 @@ create_template <- function(
       # Create a report template file to render for the region and species
       # Create YAML header for document
       # Write title based on report type and region
-      if (alt_title == FALSE) {
-        title <- create_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type, year = year)
-      } else if (alt_title == TRUE) {
+      if (alt_title) {
         if (!exists(title)) {
           stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
-        } else {
-          title <- paste(alt_title)
         }
+      } else {
+        title <- create_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type, year = year)
       }
 
       # Pull authors and affiliations from national db
@@ -746,71 +771,35 @@ create_template <- function(
       }
 
       # Create yaml
-      if (rerender_skeleton) {
-        # Extract yaml from current template
-        yaml_lines <- grep("---", prev_skeleton)
-        yaml <- unlist(prev_skeleton[yaml_lines[1]:yaml_lines[2]])
-        # Change format if different
-        # find format line
-        if (prev_format == "pdf" & format == "html") {
-          new_format <- unlist(stringr::str_split(format_quarto("html"), "\n"))
-          # cat(new_format)
-          yaml <- yaml[-(grep("pdf-engine:", yaml):(grep("output-file:", yaml) - 1))]
-          yaml <- append(yaml, new_format[-length(new_format)], after = grep("cover:", yaml))
-        }
-        # add authors
-        if (author != "" | !is.null(add_author)) {
-          # add_authors <- NULL
-          # for (i in 1:length(author_list)) {
-          #   toad <- paste(author_list[[i]], sep = ",")
-          #   add_authors <- paste0(add_authors, toad) # -> add_authors
-          # }
-          add_authors <- unlist(stringr::str_split(author_list, "\n "))
-          yaml <- append(yaml, add_authors, after = tail(grep("postal-code:", yaml), n = 1))
-        }
-        # replace title with custom
-        if (alt_title) {
-          yaml <- stringr::str_replace(yaml, yaml[grep("title:", yaml)], paste("title: ", title, sep = ""))
-        }
-        # add add'l param names
-        if (!is.null(param_names) & !is.null(param_values)) {
-          add_params <- paste("  ", " ", param_names, ": ", "'", param_values, "'", sep = "")
-          yaml <- append(yaml, add_params, after = grep("bibliography:", yaml) - 1)
-        }
-        # add bib file name
-        if (bib_file != "asar_references.bib") {
-          # check if input bib file contains a path
-          if (file.exists(bib_file)) {
-            message("Copying bibliography file to report folder...")
-            file.copy(bib_file, file_dir)
-            bib_file_only <- stringr::str_extract(bib_file, "[^/]+$")
-            bib_format <- paste("-  ", bib_file_only, sep = "")
-          } else if (!file.exists(file.path(file_dir, bib_file))) {
-            warning(glue::glue("Bibliography file {bib_file} is not in the report directory. The file will not be read in on render if it is not in the same path as the skeleton file."))
-            bib_format <- paste("-  ", bib_file, sep = "")
-          }
-        }
+      yaml <- create_yaml(
+        rerender_skeleton = rerender_skeleton,
+        prev_skeleton = prev_skeleton,
+        prev_format = prev_format,
+        title = title,
+        alt_title = alt_title,
+        author_list = author_list,
+        author = author,
+        add_author = add_author,
+        spp_image = spp_image,
+        species = species,
+        spp_latin = spp_latin,
+        region = region,
+        format = format,
+        param_names = param_names,
+        param_values = param_values,
+        bib_file = bib_file,
+        bib_name = bib_name
+      )
 
-      } else {
-        yaml <- create_yaml(
-          title = title,
-          author_list = author_list,
-          spp_image = spp_image,
-          species = species,
-          spp_latin = spp_latin,
-          region = region,
-          format = format,
-          param_names = param_names,
-          param_values = param_values,
-          bib_name = bib_name
-        )
-      }
+      if (!rerender_skeleton) print("__________Built YAML Header______________")
 
       # yaml_save <- capture.output(cat(yaml))
       # cat(yaml, file = here('template','yaml_header.qmd'))
 
       # Add preamble
       # add in quantities and output data R chunk
+      # Indicate model output path
+
       preamble <- add_chunk(
         paste0(
           "# load converted output from asar::convert_output() \n",
@@ -913,14 +902,19 @@ create_template <- function(
         eval = ifelse(is.null(model_results), "false", "true")
       )
       # Add page for citation of assessment report
-      citation <- create_citation(
-        author = author,
-        title = title,
-        year = year,
-        office = office
-      )
+      if (rerender_skeleton) {
+        citation_line <- grep("Please cite this publication as:", prev_skeleton) + 2
+        citation <- prev_skeleton[citation_line]
+      } else {
+        citation <- create_citation(
+          author = author,
+          title = title,
+          year = year,
+          office = office
+        )
+        print("_______Add Report Citation________")
+      }
 
-      print("_______Add Report Citation________")
 
       # Create report template
       # Include tables and figures if desired into template

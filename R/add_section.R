@@ -105,7 +105,7 @@ add_section <- function(
         label = gsub(" ", "_", tolower(new_section[i]))
       )
       # append that text to file
-      utils::capture.output(cat(child_sec), file = fs::path(subdir, file_for_subsection), append = TRUE)
+      if (!file.exists(fs::path(subdir, file_for_subsection))) utils::capture.output(cat(child_sec), file = fs::path(subdir, file_for_subsection), append = TRUE)
       # section does not need to be added to appended custom sections as stated above
       # creating qmd is already done in line 48
     } else {
