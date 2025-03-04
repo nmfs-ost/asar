@@ -441,13 +441,13 @@ create_template <- function(
             "(?<=')[^']+(?=')"
           )
           # year - default to current year
-
+          message("Please identify year in your arguments or manually change it in the skeleton if value is incorrect.")
           # copy before-body tex
-          file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
+          if(!file.exists(file_dir, "support_files", "before-body.tex")) file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
           # customize titlepage tex
-          create_titlepage_tex(office = office, subdir = supdir, species = species)
+          if(!file.exists(file_dir, "support_files", "_titlepage.tex")) create_titlepage_tex(office = office, subdir = supdir, species = species)
           # customize in-header tex
-          create_inheader_tex(species = species, year = year, subdir = supdir)
+          if(!file.exists(file_dir, "support_files", "in-header.tex")) create_inheader_tex(species = species, year = year, subdir = supdir)
         }
       } else {
         # Check if there are already files in the folder
@@ -666,9 +666,10 @@ create_template <- function(
       # Create YAML header for document
       # Write title based on report type and region
       if (alt_title) {
-        if (!exists(title)) {
+        if (is.null(title)) {
           stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
         }
+        title <- title
       } else {
         title <- create_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type, year = year)
       }
@@ -904,7 +905,7 @@ create_template <- function(
       # Add page for citation of assessment report
       if (rerender_skeleton) {
         citation_line <- grep("Please cite this publication as:", prev_skeleton) + 2
-        citation <- prev_skeleton[citation_line]
+        citation <- paste("{{< pagebreak >}} \n\n Please cite this publication as: \n\n", prev_skeleton[citation_line], sep = "")
       } else {
         citation <- create_citation(
           author = author,
@@ -922,7 +923,15 @@ create_template <- function(
       # if (include_tables) files_to_copy <- c(files_to_copy, "08_tables.qmd")
       # if (include_figures) files_to_copy <- c(files_to_copy, "09_figures.qmd")
 
-      if (custom == FALSE) {
+      if (rerender_skeleton & custom == FALSE) {
+        # identify all previous sections
+        sections <- stringr::str_extract_all(
+          prev_skeleton,
+          "(?<=['`])[^']+\\.qmd(?=['`])"
+        ) |>
+        unlist() |>
+        purrr::discard(~ .x == "")
+      } else if (custom == FALSE) {
         sections <- add_child(
           c(
             "01_executive_summary.qmd",
