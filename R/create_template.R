@@ -152,7 +152,7 @@
 #'        changes to the main skeleton need to be made. This reproduces the
 #'        yaml, output (if changed), preamble quantities restructures your
 #'        sectioning in the skeleton if indicated. All files in your folder
-#'        will remain as is.
+#'        will remain as is. Users can update any of the following components in the skeleton:
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
 #'         resources and workflows from different U.S. Fishery Science Centers.
@@ -429,7 +429,7 @@ create_template <- function(
           )
         # if it is previously html and the rerender species html then need to copy over html formatting
         if (tolower(prev_format) != "html" & tolower(format) == "html") {
-          file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+         if (!file.exists(file.path(file_dir, "support_files", "theme.scss"))) file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         }
         if (tolower(prev_format != "pdf" & tolower(format) == "pdf")) {
           species <- tolower(stringr::str_extract(
@@ -780,16 +780,20 @@ create_template <- function(
         alt_title = alt_title,
         author_list = author_list,
         author = author,
+        office = office,
         add_author = add_author,
+        add_image = add_image,
         spp_image = spp_image,
         species = species,
         spp_latin = spp_latin,
         region = region,
         format = format,
+        parameters = parameters,
         param_names = param_names,
         param_values = param_values,
         bib_file = bib_file,
-        bib_name = bib_name
+        bib_name = bib_name,
+        year = year
       )
 
       if (!rerender_skeleton) print("__________Built YAML Header______________")

@@ -6,6 +6,7 @@
 \usage{
 create_yaml(
   rerender_skeleton = FALSE,
+  office = NULL,
   prev_skeleton = NULL,
   prev_format = NULL,
   title = NULL,
@@ -13,15 +14,18 @@ create_yaml(
   author_list = NULL,
   author = NULL,
   add_author = NULL,
+  add_image = FALSE,
   spp_image = NULL,
   species = NULL,
   spp_latin = NULL,
   region = NULL,
   format = "pdf",
+  parameters = TRUE,
   param_names = NULL,
   param_values = NULL,
   bib_name = NULL,
-  bib_file
+  bib_file,
+  year = NULL
 )
 }
 \arguments{
@@ -29,7 +33,10 @@ create_yaml(
 changes to the main skeleton need to be made. This reproduces the
 yaml, output (if changed), preamble quantities restructures your
 sectioning in the skeleton if indicated. All files in your folder
-will remain as is.}
+will remain as is. Users can update any of the following components in the skeleton:}
+
+\item{office}{Regional Fisheries Science Center producing the
+report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
 
 \item{title}{The alternative title. Example:
 "Management Track Assessments Spring 2024".}
@@ -43,6 +50,10 @@ default title (i.e., an alternative title)? Default is false.}
 and who should be temporarily added to the author list. Format
 as "First MI Last".
 Please leave a comment on the GitHub issues page to be added.}
+
+\item{add_image}{TRUE/FALSE; Add image of species to the
+template that is not already included in the project's
+inst/resources/spp_img folder? Default is false.}
 
 \item{spp_image}{File path to the species' image if not
 using the image included in the project's repository.}
@@ -60,6 +71,9 @@ your center or species, do not use this variable.}
 
 \item{format}{Rendering format (pdf, html, or docx).}
 
+\item{parameters}{TRUE/FALSE; For
+parameterization of the script. Default is true.}
+
 \item{param_names}{List of parameter names that will be called
 in the document. Parameters automatically included:
 office, region, species (each of which are listed as
@@ -72,6 +86,9 @@ individual parameters for this function, above).}
 
 \item{bib_file}{File path to a .bib file used for citing references in
 the report}
+
+\item{year}{Year the assessment is being conducted. Default
+is the year in which the report is rendered.}
 }
 \value{
 Create a string indicating the important formatting pieces for a

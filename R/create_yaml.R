@@ -8,6 +8,7 @@
 #'
 create_yaml <- function(
     rerender_skeleton = FALSE,
+    office = NULL,
     prev_skeleton = NULL,
     prev_format = NULL,
     title = NULL,
@@ -15,15 +16,18 @@ create_yaml <- function(
     author_list = NULL,
     author = NULL,
     add_author = NULL,
+    add_image = FALSE,
     spp_image = NULL,
     species = NULL,
     spp_latin = NULL,
     region = NULL,
     format = "pdf",
+    parameters = TRUE,
     param_names = NULL,
     param_values = NULL,
     bib_name = NULL,
-    bib_file
+    bib_file,
+    year = NULL
     ){
   # check first if want to rerender current skeleton
   if (rerender_skeleton) {
@@ -47,7 +51,7 @@ create_yaml <- function(
       #   add_authors <- paste0(add_authors, toad) # -> add_authors
       # }
       add_authors <- unlist(stringr::str_split(author_list, "\n "))
-      yaml <- append(yaml, add_authors, after = tail(grep("postal-code:", yaml), n = 1))
+      yaml <- append(yaml, add_authors, after = utils::tail(grep("postal-code:", yaml), n = 1))
     }
 
     # replace title with custom

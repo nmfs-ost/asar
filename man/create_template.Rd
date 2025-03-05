@@ -255,7 +255,7 @@ regardless of how it is specified in \code{dat}.}
 changes to the main skeleton need to be made. This reproduces the
 yaml, output (if changed), preamble quantities restructures your
 sectioning in the skeleton if indicated. All files in your folder
-will remain as is.}
+will remain as is. Users can update any of the following components in the skeleton:}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
