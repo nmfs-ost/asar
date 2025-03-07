@@ -4,4 +4,4 @@
 
 <!--- Please leave in the following: --->
 
-This document was produced using the @asar_2025 R package freely available on GitHub. The tool was built as a contribution to open science and the developers actively encourage modifications and suggestions to it.
+This document was produced using the @asar_2025 R package, which is free to use and publicly available on GitHub.
