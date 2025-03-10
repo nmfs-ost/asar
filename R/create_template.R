@@ -614,7 +614,7 @@ create_template <- function(
       }
 
       # Create tables qmd
-      if (include_tables & !rerender_skeleton) {
+      if ((include_tables & !rerender_skeleton) | (skeleton_rerender & !is.null(model_results))) {
         # if (!test_exp_all) {
         #   tables_doc <- paste0(
         #     "### Tables \n \n",
@@ -648,7 +648,7 @@ create_template <- function(
       # }
 
       # Create figures qmd
-      if (include_figures & !rerender_skeleton) {
+      if ((include_figures & !rerender_skeleton) | (skeleton_rerender & !is.null(model_results))) {
         # if (!test_exp_all) {
         #   figures_doc <- paste0(
         #     "### Figures \n \n",
@@ -928,6 +928,17 @@ create_template <- function(
           # find next trailing "```"` in case it was edited at the end
           end_line <- grep("```", prev_skeleton)[grep("```", prev_skeleton) > start_line][1]
           preamble <- prev_skeleton[start_line:end_line]
+
+          # TODO: add option to update results in preamble when model_results is added
+          # if (!is.null(model_results) & !is.null(resdir)) {
+          #   prev_results_line <- grep("output <- utils::read.csv", prev_skeleton)
+          #   prev_results <- stringr::str_extract(
+          #     prev_skeleton[prev_results_line],
+          #     "(?<=['])[^']+(?=['])")
+          #
+          # } else {
+          #   message("Preamble maintained - model results not updated.")
+          # }
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
           preamble <- preamble
         }
