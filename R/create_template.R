@@ -314,7 +314,15 @@ create_template <- function(
   }
 
   if (rerender_skeleton) {
+    # TODO: set up situation where species, region can be changed
     report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
+
+    new_report_name <- paste0(
+      type, "_",
+      ifelse(is.null(region), "", paste(gsub("(\\b[A-Z])[^A-Z]+", "\\1", region), "_", sep = "")),
+      ifelse(is.null(species), "species", stringr::str_replace_all(species, " ", "_")), "_",
+      "skeleton.qmd"
+    )
   } else {
     # Name report
     if (!is.null(type)) {
@@ -432,22 +440,28 @@ create_template <- function(
          if (!file.exists(file.path(file_dir, "support_files", "theme.scss"))) file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         }
         if (tolower(prev_format != "pdf" & tolower(format) == "pdf")) {
-          species <- tolower(stringr::str_extract(
-            prev_skeleton[grep("species: ", prev_skeleton)],
-            "(?<=')[^']+(?=')"
-            ))
-          office <- stringr::str_extract(
-            prev_skeleton[grep("office: ", prev_skeleton)],
-            "(?<=')[^']+(?=')"
-          )
+          if (is.null(species)) {
+            species <- tolower(stringr::str_extract(
+              prev_skeleton[grep("species: ", prev_skeleton)],
+              "(?<=')[^']+(?=')"
+              ))
+          }
+          if (is.null(office)) {
+            office <- stringr::str_extract(
+              prev_skeleton[grep("office: ", prev_skeleton)],
+              "(?<=')[^']+(?=')"
+            )
+          }
           # year - default to current year
-          message("Please identify year in your arguments or manually change it in the skeleton if value is incorrect.")
+          message("Undefined year:\nPlease identify year in your arguments or manually change it in the skeleton if value is incorrect.")
           # copy before-body tex
-          if(!file.exists(file_dir, "support_files", "before-body.tex")) file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
+          if (!file.exists(file_dir, "support_files", "before-body.tex")) file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
           # customize titlepage tex
-          if(!file.exists(file_dir, "support_files", "_titlepage.tex")) create_titlepage_tex(office = office, subdir = supdir, species = species)
+          if (!file.exists(file_dir, "support_files", "_titlepage.tex") | !is.null(species)) create_titlepage_tex(office = office, subdir = supdir, species = species)
           # customize in-header tex
-          if(!file.exists(file_dir, "support_files", "in-header.tex")) create_inheader_tex(species = species, year = year, subdir = supdir)
+          if (!file.exists(file_dir, "support_files", "in-header.tex") | !is.null(species)) create_inheader_tex(species = species, year = year, subdir = supdir)
+          # copy new spp image if updated
+          if (!is.null(species)) file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
         }
       } else {
         # Check if there are already files in the folder
@@ -906,6 +920,19 @@ create_template <- function(
         label = "output_and_quantities",
         eval = ifelse(is.null(model_results), "false", "true")
       )
+      # extract old preamble if don't want to change
+      if (rerender_skeleton) {
+        question1 <- readline("Do you want to keep the current preamble? (Y/N)")
+        if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+          start_line <- grep("output_and_quantities", prev_skeleton) - 1
+          # find next trailing "```"` in case it was edited at the end
+          end_line <- which(apply(prev_skeleton, 1, function(row) row == "```")) & (seq_len(length(prev_skeleton)) > start_line)[1]
+
+          preamble <- prev_skeleton[start_line:end_line]
+        } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+          preamble <- preamble
+        }
+      }
       # Add page for citation of assessment report
       if (rerender_skeleton) {
         citation_line <- grep("Please cite this publication as:", prev_skeleton) + 2

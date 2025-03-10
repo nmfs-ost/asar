@@ -44,14 +44,21 @@ create_yaml <- function(
     }
 
     # add authors
-    if (author != "" | !is.null(add_author)) {
+    if (any(author != "" | !is.null(add_author))) {
       # add_authors <- NULL
       # for (i in 1:length(author_list)) {
       #   toad <- paste(author_list[[i]], sep = ",")
       #   add_authors <- paste0(add_authors, toad) # -> add_authors
       # }
       add_authors <- unlist(stringr::str_split(author_list, "\n "))
-      yaml <- append(yaml, add_authors, after = utils::tail(grep("postal-code:", yaml), n = 1))
+      # check if the template was blank before
+      author_line <- grep("author:", yaml)
+      if (grepl("- name: 'NA'", yaml[author_line + 1])) {
+        yaml <- yaml[-((author_line + 1):(author_line + 2))]
+        yaml <- append(yaml, add_authors, after = utils::tail(grep("author:", yaml), n = 1))
+      } else {
+        yaml <- append(yaml, add_authors, after = utils::tail(grep("postal-code:", yaml), n = 1))
+      }
     }
 
     # replace title with custom
