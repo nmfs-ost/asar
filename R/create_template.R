@@ -926,8 +926,7 @@ create_template <- function(
         if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
           start_line <- grep("output_and_quantities", prev_skeleton) - 1
           # find next trailing "```"` in case it was edited at the end
-          end_line <- which(apply(prev_skeleton, 1, function(row) row == "```")) & (seq_len(length(prev_skeleton)) > start_line)[1]
-
+          end_line <- grep("```", prev_skeleton)[grep("```", prev_skeleton) > start_line][1]
           preamble <- prev_skeleton[start_line:end_line]
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
           preamble <- preamble
@@ -936,7 +935,7 @@ create_template <- function(
       # Add page for citation of assessment report
       if (rerender_skeleton) {
         citation_line <- grep("Please cite this publication as:", prev_skeleton) + 2
-        citation <- paste("{{< pagebreak >}} \n\n Please cite this publication as: \n\n", prev_skeleton[citation_line], sep = "")
+        citation <- glue::glue("{{< pagebreak >}} \n\n Please cite this publication as: \n\n {prev_skeleton[citation_line]}")
       } else {
         citation <- create_citation(
           author = author,
@@ -946,7 +945,6 @@ create_template <- function(
         )
         print("_______Add Report Citation________")
       }
-
 
       # Create report template
       # Include tables and figures if desired into template
@@ -1085,11 +1083,11 @@ create_template <- function(
       ##### NEFSC MT Template####
       ######## |###############################################################
     } else if (type == "NEMT") {
-      stop("Tempalte not available.")
+      stop("Template not available.")
     }
 
     # Save template as .qmd to render
-    utils::capture.output(cat(report_template), file = file.path(subdir, report_name), append = FALSE)
+    utils::capture.output(cat(report_template), file = file.path(subdir, ifelse(rerender_skeleton, new_report_name, report_name)), append = FALSE)
     # Print message
     message(
       "Saved report template in directory: ", subdir, "\n",
