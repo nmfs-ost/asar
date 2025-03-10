@@ -311,10 +311,84 @@ redundants <- unique_all |>
 #             dplyr::select(-meaning_lower),
 #           file = fs::path("inst/resources/acronyms/intermediary_files/acronyms_duplicates.csv"))
 
+# remove duplicated acronyms as per discussions with Sam, Steve
+unique_all_cleaned <- unique_all |>
+  dplyr::filter(
+    !Meaning %in% c(
+      "Assistant Administrator",
+      "Accumulated Cyclone Energy",
+      "annual catch limit",
+      "Catch-per-unit-effort",
+      "Catch-Per-Unit-Effort",
+      "Catcher vessel",
+      "Enforcement Consultants, or ecosystem component.",
+      "Instantaneous Fishing Mortality Rate",
+      "Florida Administrative Code",
+      "Fish Aggregating Device",
+      "Fishery Management Plan"
+      ),
+    !Acronym %in% c(
+      "CA",
+      "CCA",
+      "Council"
+    ),
+    !(source == "PFMC" & Acronym == "ABC"),
+    !(source == "SAFMC" & Acronym == "ALS"),
+    !(source == "ASMFC" & Meaning == "Accountability Measures"),
+    !(source == "ASMFC" & Meaning == "Advisory Panel"),
+    !(source == "GMFMC" & Acronym == "ASMFC"),
+    !(Acronym == "B" & Meaning == "Biomass"),
+    !(source == "ASMFC" & Acronym == "BRD"),
+    !(source == "GMFMC" & Acronym == "BRP"),
+    !(source == "PFMC" & Acronym == "BiOp"),
+    !(Acronym == "C" & Meaning == "Recent Average Catch"),
+    !(source == "GMFMC" & Acronym == "CFR"),
+    !(source %in% c("PFMC", "WPFMC") & Acronym == "EEZ"),
+    !(source == "WPFMC" & Acronym == "ESA"),
+    !(source == "PFMC" & Acronym == "F")
+
+    ) |>
+  dplyr::mutate(Definition = stringr::str_replace_all(Definition,
+                                                      "An annual catch level recommended by a Council's SSC. The Council's ACL for a stock may not exceed the ABC recommendation of the SSC for that stock. The SSC's ABC recommendation should incorporate consideration of the stock's life history and reproductive potential, vulnerability to overfishing, and the degree of uncertainty in the science upon which the ABC recommendation is based.",
+                                                      "A scientific calculation of the annual catch level recommended by a Council's SSC and is used to set the upper limit of the annual total allowable catch. It is calculated by applying the estimated (or proxy) harvest rate that produces maximum sustainable yield to the estimated exploitable stock biomass (the portion of the fish population that can be harvested)."),
+                Definition = stringr::str_replace_all(Definition,
+                                                      "The level of annual catch of a stock or stock complex that serves as the basis for invoking [accountability measures]. ACL cannot exceed the ABC, but may be divided into sector-ACLs.",
+                                                      "The level of annual catch, set equal to or below the OFL, of a stock or stock complex that serves as the basis for invoking accountability measures. ACL cannot exceed the ABC, but may be divided into sector-ACLs."),
+                Meaning = stringr::str_replace(Meaning,
+                                               "\\(commercial fishing statistics\\)",
+                                               ""),
+                Definition = stringr::str_replace_all(Definition,
+                                                      "panel of members made up of individuals with knowledge and first-hand experience of harvesting Gulf of Mexico managed species and are interested in the conservation and best practices for management of these fishery resources",
+                                                      "A group of stakeholders with experience and knowledge of the regional fisheries who provide input into the management process."),
+                Meaning = stringr::str_replace(Meaning,
+                                               "stock biomass level",
+                                               "Biomass"),
+                Definition = stringr::str_replace(Definition,
+                                                  "unintended capture of marine mammals",
+                                                  "unintended capture of non-target species"),
+                Definition = stringr::str_replace(Definition,
+                                                  "issued by various NOAA regional offices",
+                                                  "A scientific assessment issued by various NOAA regional offices"),
+                Meaning = stringr::str_replace(Meaning,
+                                               "Average Catch",
+                                               "Catch"),
+                Meaning = stringr::str_replace(Meaning,
+                                               "ecosystem component species",
+                                               "Ecosystem component"),
+                Definition = stringr::str_replace(Definition,
+                                                  "U.S. federal waters that extend from 3 to 200 miles from shore. The U.S. has sole management authority of the natural resources found therein.",
+                                                  "An area of the ocean, generally extending 200 nautical miles (230 miles) beyond a nation's territorial sea, within which a coastal nation has jurisdiction over both living and nonliving resources."),
+                Definition = stringr::str_replace(Definition,
+                                                  "The instantaneous rate at which fish in a stock die because of fishing. Typically includes measured bycatch, if data are available.",
+                                                  "The rate at which fish die due to fishing activities."),
+  )
+
+# last ac cleaned: FMP
 
 # keep cleaning once we collectively decide which duplicated acronym to use,
 # and resolve other questions
 # also, keep cleaning by:
 # -standardizing U.S. vs. US
-# -remove "council"; ensure each council's full ac is present
-# -
+# -ensure each council's full ac is present
+# -capitalize first letters of definitions
+# -remove (or add) periods at end of definitions
