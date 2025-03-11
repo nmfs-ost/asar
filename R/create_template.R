@@ -614,7 +614,7 @@ create_template <- function(
       }
 
       # Create tables qmd
-      if ((include_tables & !rerender_skeleton) | (skeleton_rerender & !is.null(model_results))) {
+      if ((include_tables & !rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
         # if (!test_exp_all) {
         #   tables_doc <- paste0(
         #     "### Tables \n \n",
@@ -648,7 +648,7 @@ create_template <- function(
       # }
 
       # Create figures qmd
-      if ((include_figures & !rerender_skeleton) | (skeleton_rerender & !is.null(model_results))) {
+      if ((include_figures & !rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
         # if (!test_exp_all) {
         #   figures_doc <- paste0(
         #     "### Figures \n \n",
