@@ -633,7 +633,7 @@ create_template <- function(
           }
         } else {
           tables_doc <- paste0(
-            "### Tables \n \n",
+            "## Tables \n \n",
             "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade tables."
           )
           utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
@@ -667,7 +667,7 @@ create_template <- function(
           }
         } else {
           figures_doc <- paste0(
-            "### Figures \n \n",
+            "## Figures \n \n",
             "Please refer to the `satf` package downloaded from remotes::install_github('nmfs-ost/satf') to add premade figures."
           )
           utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
@@ -819,6 +819,15 @@ create_template <- function(
       # add in quantities and output data R chunk
       # Indicate model output path
 
+      # in case where rerndering skeleton and they want to update the model results
+      if (rerender_skeleton) {
+        if (!is.null(model_results) & !is.null(resdir)) {
+          prev_conout <- convert_output
+          convert_output <- FALSE
+        }
+      }
+
+      # standard preamble
       preamble <- add_chunk(
         paste0(
           "# load converted output from asar::convert_output() \n",
@@ -920,6 +929,12 @@ create_template <- function(
         label = "output_and_quantities",
         eval = ifelse(is.null(model_results), "false", "true")
       )
+      # bring back the initial call of convert_output
+      if (rerender_skeleton) {
+        if (!is.null(model_results)) {
+          convert_output <- prev_conout
+        }
+      }
       # extract old preamble if don't want to change
       if (rerender_skeleton) {
         question1 <- readline("Do you want to keep the current preamble? (Y/N)")
@@ -929,16 +944,17 @@ create_template <- function(
           end_line <- grep("```", prev_skeleton)[grep("```", prev_skeleton) > start_line][1]
           preamble <- prev_skeleton[start_line:end_line]
 
-          # TODO: add option to update results in preamble when model_results is added
-          # if (!is.null(model_results) & !is.null(resdir)) {
-          #   prev_results_line <- grep("output <- utils::read.csv", prev_skeleton)
-          #   prev_results <- stringr::str_extract(
-          #     prev_skeleton[prev_results_line],
-          #     "(?<=['])[^']+(?=['])")
-          #
-          # } else {
-          #   message("Preamble maintained - model results not updated.")
-          # }
+          if (!is.null(model_results) & !is.null(resdir)) {
+            prev_results_line <- grep("output <- utils::read.csv", prev_skeleton)
+            prev_results <- stringr::str_replace(
+              prev_skeleton,
+              "(?<=read\\.csv\\().*?(?=\\))",
+              glue::glue("'{resdir}/{model_results}'")
+              )
+            if (!grepl(".csv", model_results)) warning("Model results are not in csv format - Will not work on render")
+          } else {
+            message("Preamble maintained - model results not updated.")
+          }
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
           preamble <- preamble
         }
@@ -1099,6 +1115,15 @@ create_template <- function(
 
     # Save template as .qmd to render
     utils::capture.output(cat(report_template), file = file.path(subdir, ifelse(rerender_skeleton, new_report_name, report_name)), append = FALSE)
+    # Delete old skeleton
+    question1 <- readline("Deleting previous skeleton file...Do you want to proceed? (Y/N)")
+    if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+      file.remove(file.path(file_dir, report_name))
+    } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+      message("Skeleton file retained.")
+      next
+    }
+
     # Print message
     message(
       "Saved report template in directory: ", subdir, "\n",
