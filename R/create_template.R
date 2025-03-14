@@ -516,7 +516,7 @@ create_template <- function(
 
       # Convert output file if TRUE
       # Make sure not asking to rerender
-      if (!rerender_skeleton) {
+      # if (!rerender_skeleton) {
         # Check if converted output already exists
         if (convert_output) {
           if (!file.exists(file.path(subdir, paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))) {
@@ -560,7 +560,7 @@ create_template <- function(
             resdir <- subdir
           }
         } # close check for converted output already
-      } # close rerender if
+      # } # close rerender if
 
       # print("_______Standardized output data________")
 
@@ -791,7 +791,7 @@ create_template <- function(
         prev_skeleton = prev_skeleton,
         prev_format = prev_format,
         title = title,
-        alt_title = alt_title,
+        # alt_title = alt_title,
         author_list = author_list,
         author = author,
         office = office,
@@ -1116,12 +1116,14 @@ create_template <- function(
     # Save template as .qmd to render
     utils::capture.output(cat(report_template), file = file.path(subdir, ifelse(rerender_skeleton, new_report_name, report_name)), append = FALSE)
     # Delete old skeleton
-    question1 <- readline("Deleting previous skeleton file...Do you want to proceed? (Y/N)")
-    if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-      file.remove(file.path(file_dir, report_name))
-    } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-      message("Skeleton file retained.")
-      next
+    if (rerender_skeleton & length(grep("skeleton.qmd", list.files(file_dir, pattern = "skeleton.qmd"))) > 1) {
+      question1 <- readline("Deleting previous skeleton file...Do you want to proceed? (Y/N)")
+      if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+        file.remove(file.path(file_dir, report_name))
+      } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+        message("Skeleton file retained.")
+        next
+      }
     }
 
     # Print message
