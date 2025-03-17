@@ -91,6 +91,7 @@ create_yaml <- function(
           yaml <- stringr::str_replace(yaml, yaml[grep("spp_latin: ''", yaml)], paste("  ", " ", "spp_latin: ", "'", spp_latin, "'", sep = ""))
         }
         #if params are not entered - use previous ones else change
+        # TODO: review this part - params are not added when the previous ones are empty
         if (!is.null(param_names) | !is.null(param_values)) {
           if (length(param_names) != length(param_values)) {
             print("Please define ALL parameter names (param_names) and values (param_values).")

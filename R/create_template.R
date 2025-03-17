@@ -316,6 +316,7 @@ create_template <- function(
   if (rerender_skeleton) {
     # TODO: set up situation where species, region can be changed
     report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
+    if (length(report_name) == 0) stop("No skeleton quarto file found in the working directory.")
 
     new_report_name <- paste0(
       type, "_",
@@ -942,27 +943,42 @@ create_template <- function(
           start_line <- grep("output_and_quantities", prev_skeleton) - 1
           # find next trailing "```"` in case it was edited at the end
           end_line <- grep("```", prev_skeleton)[grep("```", prev_skeleton) > start_line][1]
-          preamble <- prev_skeleton[start_line:end_line]
+          preamble <- paste(prev_skeleton[start_line:end_line], collapse = "\n")
 
           if (!is.null(model_results) & !is.null(resdir)) {
-            prev_results_line <- grep("output <- utils::read.csv", prev_skeleton)
+            prev_results_line <- grep("output <- utils::read.csv", preamble)
             prev_results <- stringr::str_replace(
-              prev_skeleton,
+              preamble[prev_results_line],
               "(?<=read\\.csv\\().*?(?=\\))",
               glue::glue("'{resdir}/{model_results}'")
               )
+            preamble <- append(
+              preamble,
+              prev_results,
+              after = prev_results_line)[-prev_results_line]
             if (!grepl(".csv", model_results)) warning("Model results are not in csv format - Will not work on render")
           } else {
             message("Preamble maintained - model results not updated.")
           }
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
           preamble <- preamble
-        }
-      }
+        } # close if updating preamble
+      } # close if rerendering skeleton
+
       # Add page for citation of assessment report
       if (rerender_skeleton) {
-        citation_line <- grep("Please cite this publication as:", prev_skeleton) + 2
-        citation <- glue::glue("{{< pagebreak >}} \n\n Please cite this publication as: \n\n {prev_skeleton[citation_line]}")
+        if (!is.null(title) | !is.null(species) | !is.null(year) | !is.null(author)) {
+          citation_line <- grep("Please cite this publication as:", prev_skeleton) + 2
+          citation <- glue::glue("{{< pagebreak >}} \n\n Please cite this publication as: \n\n {prev_skeleton[citation_line]}\n\n")
+        } else {
+          author <- grep("  - name: ", prev_skeleton)
+          citation <- create_citation(
+            author = author,
+            title = title,
+            year = year,
+            office = office
+          )
+        }
       } else {
         citation <- create_citation(
           author = author,
@@ -987,6 +1003,11 @@ create_template <- function(
         ) |>
         unlist() |>
         purrr::discard(~ .x == "")
+        # add sections as list
+        sections <- add_child(
+          sections,
+          label = gsub(".qmd", "", unlist(sections))
+        )
       } else if (custom == FALSE) {
         sections <- add_child(
           c(
@@ -1031,6 +1052,11 @@ create_template <- function(
           section_list <- add_base_section(files_to_copy)
           sections <- add_child(c(section_list, "08_tables.qmd", "09_figures.qmd"),
             label = custom_sections # this might need to be changed
+          )
+          # Create sections object to add into template
+          sections <- add_child(
+            sections,
+            label = gsub(".qmd", "", unlist(sections))
           )
         } else { # custom = TRUE
           # Create custom template using existing sections and new sections from analyst
@@ -1098,7 +1124,7 @@ create_template <- function(
       # Combine template sections
       report_template <- paste(
         yaml,
-        preamble,
+        preamble, "\n",
         citation,
         sections,
         sep = "\n"
@@ -1116,7 +1142,7 @@ create_template <- function(
     # Save template as .qmd to render
     utils::capture.output(cat(report_template), file = file.path(subdir, ifelse(rerender_skeleton, new_report_name, report_name)), append = FALSE)
     # Delete old skeleton
-    if (rerender_skeleton & length(grep("skeleton.qmd", list.files(file_dir, pattern = "skeleton.qmd"))) > 1) {
+    if (length(grep("skeleton.qmd", list.files(file_dir, pattern = "skeleton.qmd"))) > 1) {
       question1 <- readline("Deleting previous skeleton file...Do you want to proceed? (Y/N)")
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         file.remove(file.path(file_dir, report_name))

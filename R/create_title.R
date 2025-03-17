@@ -42,7 +42,7 @@ create_title <- function(
       season <- "Winter"
     }
     if (type == "SAR" | is.null(type)) {
-      title <- paste0("Management Track Assessment of ", species, " (", spp_latin, ") ", season, " ", year)
+      title <- paste0("Management Track Assessment of ", species, ifelse(is.null(spp_latin), " ", glue::glue(" ({spp_latin}) ")), season, " ", year)
     }
   } else if (office == "NWFSC") {
     if (is.null(region)) {
@@ -55,15 +55,15 @@ create_title <- function(
     }
   } else if (office == "PIFSC") {
     if (is.null(region)) {
-      title <- paste0("Stock Assessment for ", species, " (", spp_latin, ") along the main Hawaiian Islands in ", year)
+      title <- paste0("Stock Assessment for ", species, ifelse(is.null(spp_latin), " ", glue::glue(" ({spp_latin}) ")), "along the main Hawaiian Islands in ", year)
     } else {
-      title <- paste0("Stock Assessment for ", species, " (", spp_latin, ") on ", region, " in ", year)
+      title <- paste0("Stock Assessment for ", species, ifelse(is.null(spp_latin), " ", glue::glue(" ({spp_latin}) ")), "on ", region, " in ", year)
     }
   } else if (office == "SEFSC") {
     if (is.null(region)) {
-      title <- paste0("SEDAR XX Assessment Report for ", species, " (", spp_latin, ") in ", year)
+      title <- paste0("SEDAR XX Assessment Report for ", species, ifelse(is.null(spp_latin), " ", glue::glue(" ({spp_latin}) ")), "in ", year)
     } else {
-      title <- paste0("SEDAR XX Assessment Report for ", species, " (", spp_latin, ") in the ", region, " in ", year)
+      title <- paste0("SEDAR XX Assessment Report for ", species, ifelse(is.null(spp_latin), " ", glue::glue(" ({spp_latin}) ")), "in the ", region, " in ", year)
     }
   } else if (office == "SWFSC") {
     if (is.null(region)) {
@@ -73,7 +73,11 @@ create_title <- function(
       title <- paste0("Status of the ", species, " stock in U.S. waters off the coast of ", region, " in ", year)
     }
   } else {
-    title <- "Stock Assessment Report Template"
+    if (is.null(species) | is.null(region)) {
+      title <- "Stock Assessment Report Template"
+    } else {
+      title <- paste0("Stock Assessment Report for the ", species, " Stock in ", year)
+    }
     # warning("office (FSC) is not defined. Please define which office you are associated with.")
   }
 

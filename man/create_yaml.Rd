@@ -10,7 +10,6 @@ create_yaml(
   prev_skeleton = NULL,
   prev_format = NULL,
   title = NULL,
-  alt_title = FALSE,
   author_list = NULL,
   author = NULL,
   add_author = NULL,
@@ -40,9 +39,6 @@ report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
 
 \item{title}{The alternative title. Example:
 "Management Track Assessments Spring 2024".}
-
-\item{alt_title}{TRUE/FALSE; Use a title that is not the
-default title (i.e., an alternative title)? Default is false.}
 
 \item{author}{Ordered list of authors included in the assessment.}
 
