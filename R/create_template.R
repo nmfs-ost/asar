@@ -423,6 +423,8 @@ create_template <- function(
         file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
         # Copy us doc logo
         file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+        # Copy acronyms csv
+        file.copy(system.file("resources", "acronyms", "final_files", "cleaned_acronyms.csv", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         # Copy html format file if applicable
         if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
       } else {
