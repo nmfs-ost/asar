@@ -50,7 +50,8 @@ test_that("create_template() creates correct files", {
     "_titlepage.tex",
     "before-body.tex",
     "in-header.tex",
-    "us_doc_logo.png"
+    "us_doc_logo.png",
+    "cleaned_acronyms.csv"
   )
 
   # Test case 1: Provide no inputs
@@ -124,7 +125,8 @@ test_that("create_template() creates correct files", {
     "before-body.tex",
     "Dover_sole.png",
     "in-header.tex",
-    "us_doc_logo.png"
+    "us_doc_logo.png",
+    "cleaned_acronyms.csv"
   )
 
   # Check if all expected report files are created for Dover sole

@@ -402,3 +402,13 @@ create_acronym_table <- function(){
   }
 
 # create_acronym_table()
+
+# acronyms that need definitions written
+# need_defs <- unique_all_cleaned |>
+#   dplyr::filter(is.na(duplicated_ac),
+#                 is.na(duplicated_mean),
+#                 is.na(Definition)) |>
+#   dplyr::select(Acronym, Meaning, Definition)
+#
+# write.csv(need_defs,
+#           "acronyms_need_definitions.csv")
