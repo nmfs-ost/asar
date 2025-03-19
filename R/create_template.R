@@ -715,7 +715,7 @@ create_template <- function(
       }
 
       author_list <- list()
-      if (include_affiliation == TRUE & simple_affiliation == FALSE) {
+      if (include_affiliation & !simple_affiliation) {
         if (nrow(authors) > 0) {
           for (i in 1:nrow(authors)) {
             auth <- authors[i, ]

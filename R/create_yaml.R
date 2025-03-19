@@ -51,6 +51,8 @@ create_yaml <- function(
       #   add_authors <- paste0(add_authors, toad) # -> add_authors
       # }
       add_authors <- unlist(stringr::str_split(author_list, "\n "))
+      # remove trailing \n from each author entry
+      add_authors <- gsub("\n", "", add_authors)
       # check if the template was blank before
       author_line <- grep("author:", yaml)
       if (grepl("- name: 'NA'", yaml[author_line + 1])) {
@@ -84,23 +86,25 @@ create_yaml <- function(
         if (!is.null(species)) {
           yaml <- stringr::str_replace(yaml, yaml[grep("species: ''", yaml)], paste("  ", " ", "species: ", "'", species, "'", sep = ""))
         }
-        if (!is.null(office)) {
+        if (length(office) == 1) {
           yaml <- stringr::str_replace(yaml, yaml[grep("office: ''", yaml)], paste("  ", " ", "office: ", "'", office, "'", sep = ""))
         }
         if (!is.null(spp_latin)) {
           yaml <- stringr::str_replace(yaml, yaml[grep("spp_latin: ''", yaml)], paste("  ", " ", "spp_latin: ", "'", spp_latin, "'", sep = ""))
         }
-        #if params are not entered - use previous ones else change
-        # TODO: review this part - params are not added when the previous ones are empty
+        # if params are not entered - use previous ones else change
+        # TODO: add check for params not being replicated of default
         if (!is.null(param_names) | !is.null(param_values)) {
           if (length(param_names) != length(param_values)) {
             print("Please define ALL parameter names (param_names) and values (param_values).")
           } else {
             add_params <- NULL
             for (i in 1:length(param_names)) {
-              toad <- paste("  ", " ", param_names[i], ": ", "'", param_values[i], "'", "\n", sep = "")
-              add_params <- paste0(add_params, toad)
+              toad <- paste("  ", " ", param_names[i], ": ", "'", param_values[i], "'", sep = "")
+              add_params <- c(add_params, toad)
             } # close loop
+            # add params into yaml
+            yaml <- append(yaml, add_params, after = grep("params: ", yaml))
           } # close check
         } # close if adding add'l params
       } # close if params to be included in template
