@@ -11,10 +11,10 @@
 #' stockplotr::exp_all_figs_tables or in the captions_alt_text.csv also produced from
 #' the same function. Users not using this format should create a csv file with
 #' columns containing "label" and "alt_text" where the label column contains the
-#'  exact label name when referencing the image/figure in text. The label is 
-#'  very important as it provides a way for the function to match where the 
-#'  alternative text gets placed. When compile is set to TRUE, the alternative 
-#'  text using this format will not be available and must be used in conjunction 
+#'  exact label name when referencing the image/figure in text. The label is
+#'  very important as it provides a way for the function to match where the
+#'  alternative text gets placed. When compile is set to TRUE, the alternative
+#'  text using this format will not be available and must be used in conjunction
 #'  with `asar::add_tagging()`.
 #'
 #' @export
@@ -62,7 +62,8 @@ add_alttext <- function(
     rda_dir = getwd(),
     alttext_csv_dir = getwd(),
     compile = TRUE,
-    rename = NULL) {
+    rename = NULL
+) {
   # Read latex file
   if (!file.exists(file.path(dir, x))) stop(glue::glue("File {dir}/{x} does not exist!"))
   tex_file <- readLines(file.path(dir, x))
@@ -78,7 +79,7 @@ add_alttext <- function(
 
   # Check if alt text csv is where indicated
   if (!file.exists(file.path(alttext_csv_dir, "captions_alt_text.csv"))) stop(glue:glue("'captions_alt_text.csv' not found in {alttext_csv_dir}."))
-  
+
   # Identify lines with figures
   # check if any lines have figures added
   if (!any(grepl("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file))) stop ("No images/figures present in file.")
@@ -100,9 +101,6 @@ add_alttext <- function(
   #   "\\pdftooltip",
   #   tex_file
   # )
-
-  # TODO:
-  # Create alternative options for render to html or docx
 
   # Replace pandocbounded with pdftooltip so alt text can be added
   # No longer using tooltip - pandocbounded will work fine with the next adjustments
@@ -179,8 +177,8 @@ add_alttext <- function(
     # names(alt_text) <- tex_name
     # place obj into list
     alt_text_list[[tex_name]] <- alt_text
-    # call tex obj name using names()
-    # call alt text using list[[i]]
+      # call tex obj name using names()
+      # call alt text using list[[i]]
     # remove rda file to declutter
     rm(rda)
   }
