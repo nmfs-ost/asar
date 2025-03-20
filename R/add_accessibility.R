@@ -63,7 +63,7 @@ add_accessibility <- function(
     rename = NULL,
     alttext_csv_dir = getwd()
 ) {
-  
+
   # Add tagpdf pkg to template and create accessibility.tex
   add_tagging(
     x = x,
