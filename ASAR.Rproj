@@ -1,5 +1,9 @@
 Version: 1.0
+<<<<<<< HEAD
 ProjectId: 19ecc9da-8c5f-42fa-a722-b862b7d83df5
+=======
+ProjectId: 175e40f4-694d-4ad6-8580-3677c164daa3
+>>>>>>> 6863f39 (reset branch to dev)
 
 RestoreWorkspace: No
 SaveWorkspace: No
