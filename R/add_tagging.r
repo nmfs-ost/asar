@@ -2,11 +2,18 @@
 #'
 #' @inheritParams add_accessibility
 #'
+<<<<<<< HEAD
 #' @return This function was made to help add in
 #' latex packages and content associated with PDF
 #' tagging. Quarto does not allow the user to edit anything
 #' before documentclass, so this function alters the rendered .tex file.
 #' 
+=======
+#' @return DRAFT: This function was made to help add in
+#' latex packages and content associated with PDF
+#' tagging. Quarto does not allow the user to edit anything
+#' before documentclass, so this function alters the rendered .tex file.
+>>>>>>> 6b58bb4 (reset branch to dev)
 #' @export
 #'
 #' @examples
@@ -44,7 +51,11 @@ add_tagging <- function(
     compile = TRUE,
     rename = NULL
 ) {
+<<<<<<< HEAD
   # Read latex file
+=======
+    # Read latex file
+>>>>>>> 6b58bb4 (reset branch to dev)
   tex_file <- readLines(file.path(dir, x))
 
   # Identify line where the new accessibility content should be added after

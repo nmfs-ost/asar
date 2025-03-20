@@ -51,7 +51,11 @@
 #'      dir = getwd(),
 #'      alttext_csv_dir = getwd(),
 #'      rda_dir = path,
+<<<<<<< HEAD
 #'      compile = FALSE,
+=======
+#'      compile = TRUE,
+>>>>>>> 6b58bb4 (reset branch to dev)
 #'      rename = "SAR_Dover_sole_tagged")
 #'    )
 #' }
@@ -62,7 +66,8 @@ add_alttext <- function(
     rda_dir = getwd(),
     alttext_csv_dir = getwd(),
     compile = TRUE,
-    rename = NULL) {
+    rename = NULL
+) {
   # Read latex file
   if (!file.exists(file.path(dir, x))) stop(glue::glue("File {dir}/{x} does not exist!"))
   tex_file <- readLines(file.path(dir, x))
@@ -83,6 +88,7 @@ add_alttext <- function(
   # check if any lines have figures added
   if (!any(grepl("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file))) stop ("No images/figures present in file.")
   # this approach allows us to not mistake the replacement for other figures
+<<<<<<< HEAD
   # For render to pdf
   fig_lines <- grep("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file) # -plot
   # Find images from previous naming conventions after quarto render
@@ -91,6 +97,9 @@ add_alttext <- function(
   # for html render or external images
   fig_lines <- c(fig_lines,
                  grep("fig-([a-z]+|[a-z]+_[a-z]+)-1.png", tex_file))
+=======
+  fig_lines <- grep("fig-([a-z]+|[a-z]+_[a-z]+)-plot-1.pdf", tex_file)
+>>>>>>> 6b58bb4 (reset branch to dev)
 
   # TODO:
   # create check to see if there are any instances where the suffix is not plot-1
@@ -100,9 +109,6 @@ add_alttext <- function(
   #   "\\pdftooltip",
   #   tex_file
   # )
-
-  # TODO:
-  # Create alternative options for render to html or docx
 
   # Replace pandocbounded with pdftooltip so alt text can be added
   # No longer using tooltip - pandocbounded will work fine with the next adjustments
@@ -179,8 +185,8 @@ add_alttext <- function(
     # names(alt_text) <- tex_name
     # place obj into list
     alt_text_list[[tex_name]] <- alt_text
-    # call tex obj name using names()
-    # call alt text using list[[i]]
+      # call tex obj name using names()
+      # call alt text using list[[i]]
     # remove rda file to declutter
     rm(rda)
   }

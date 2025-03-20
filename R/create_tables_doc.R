@@ -334,6 +334,7 @@ indices_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
 
       # add landscape braces after R chunk depending on table width
       if(indices_orient != "regular"){
+<<<<<<< HEAD
         tables_doc <- paste0(
           tables_doc,
           ":::\n"
@@ -486,6 +487,8 @@ landings_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
 
       # add landscape braces after R chunk depending on table width
       if(landings_orient != "regular"){
+=======
+>>>>>>> 6b58bb4 (reset branch to dev)
         tables_doc <- paste0(
           tables_doc,
           ":::\n"
