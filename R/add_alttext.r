@@ -62,7 +62,8 @@ add_alttext <- function(
     rda_dir = getwd(),
     alttext_csv_dir = getwd(),
     compile = TRUE,
-    rename = NULL) {
+    rename = NULL
+) {
   # Read latex file
   if (!file.exists(file.path(dir, x))) stop(glue::glue("File {dir}/{x} does not exist!"))
   tex_file <- readLines(file.path(dir, x))
@@ -100,9 +101,6 @@ add_alttext <- function(
   #   "\\pdftooltip",
   #   tex_file
   # )
-
-  # TODO:
-  # Create alternative options for render to html or docx
 
   # Replace pandocbounded with pdftooltip so alt text can be added
   # No longer using tooltip - pandocbounded will work fine with the next adjustments
@@ -179,8 +177,8 @@ add_alttext <- function(
     # names(alt_text) <- tex_name
     # place obj into list
     alt_text_list[[tex_name]] <- alt_text
-    # call tex obj name using names()
-    # call alt text using list[[i]]
+      # call tex obj name using names()
+      # call alt text using list[[i]]
     # remove rda file to declutter
     rm(rda)
   }
