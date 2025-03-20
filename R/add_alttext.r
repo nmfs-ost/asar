@@ -1,16 +1,6 @@
 #' Add alternative text into latex
 #'
-#' @param x .tex file containing report. Typically produced after initially
-#' rendering the skeleton made from create_template.
-#' @param dir directory where the tex file is located that will be edited
-#' @param rda_dir folder where rda files containing alternative text is located
-#' @param compile Indicate whether the document (X) should be
-#' rendered after these files are changed. Default TRUE.
-#' @param rename Indicate a name for the new tex file produced from this
-#' function. There is no need to include ".tex" in the name. Defaults to current
-#' name and overwrites the current tex file.
-#' @param alttext_csv_dir Directory for the csv file containing alternative
-#' text and captions generated when running stockplotr::exp_all_figs_tables
+#' @inheritParams add_accessibility
 #'
 #' @return This function was made to help add in
 #' alternative text to latex documents generated from
@@ -26,7 +16,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' create_template(
+#'   create_template(
 #'   new_template = TRUE,
 #'   format = "pdf",
 #'   office = "NWFSC",
@@ -43,23 +33,22 @@
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction",
 #'   rda_dir = getwd()
-#' )
-#'
-#' path <- getwd()
-#'
-#' quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
-#'
-#' withr::with_dir(
-#'   file.path(path, "report"),
-#'   add_alttext(
-#'     x = "SAR_USWC_Dover_sole_skeleton.tex",
-#'     dir = getwd(),
-#'     alttext_csv_dir = getwd(),
-#'     rda_dir = path,
-#'     compile = TRUE,
-#'     rename = "SAR_Dover_sole_tagged"
 #'   )
-#' )
+#'
+#'   path <- getwd()
+#'
+#'   quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
+#'
+#'   withr::with_dir(
+#'   file.path(path, "report"),
+#'    add_alttext(
+#'      x = "SAR_USWC_Dover_sole_skeleton.tex",
+#'      dir = getwd(),
+#'      alttext_csv_dir = getwd(),
+#'      rda_dir = path,
+#'      compile = TRUE,
+#'      rename = "SAR_Dover_sole_tagged")
+#'    )
 #' }
 #'
 add_alttext <- function(
@@ -68,7 +57,8 @@ add_alttext <- function(
     rda_dir = getwd(),
     alttext_csv_dir = getwd(),
     compile = TRUE,
-    rename = NULL) {
+    rename = NULL
+) {
   # Read latex file
   tex_file <- readLines(file.path(dir, x))
 
@@ -83,9 +73,7 @@ add_alttext <- function(
 
   # Identify lines with figures
   # this approach allows us to not mistake the replacement for other figures
-  fig_lines <- grep("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file) # -plot
-  # Find images from previous naming conventions after quarto render
-  fig_lines <- c(fig_lines, grep("fig-([a-z]+|[a-z]+_[a-z]+)-plot-1.pdf", tex_file))
+  fig_lines <- grep("fig-([a-z]+|[a-z]+_[a-z]+)-plot-1.pdf", tex_file)
 
   # TODO:
   # create check to see if there are any instances where the suffix is not plot-1
@@ -95,9 +83,6 @@ add_alttext <- function(
   #   "\\pdftooltip",
   #   tex_file
   # )
-
-  # TODO:
-  # Create alternative options for render to html or docx
 
   # Replace pandocbounded with pdftooltip so alt text can be added
   tex_file[fig_lines] <- lapply(
@@ -163,8 +148,8 @@ add_alttext <- function(
     # names(alt_text) <- tex_name
     # place obj into list
     alt_text_list[[tex_name]] <- alt_text
-    # call tex obj name using names()
-    # call alt text using list[[i]]
+      # call tex obj name using names()
+      # call alt text using list[[i]]
     # remove rda file to declutter
     rm(rda)
   }

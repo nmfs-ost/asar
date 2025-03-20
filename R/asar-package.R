@@ -10,7 +10,11 @@ globvar <- c(
   "yr", "value", "estimate", "seas", "subseas", "age_bins", "morph",
   "age", "year", "nsim", "fleet", "uncertainty", "initial", "alt_label",
   "last", "affiliation", "label", "type", "caption", "alt_text", "caption",
+<<<<<<< HEAD
   "name", ".", "rda", "cols_to_del", "cols_to_del_seq", "essential_cols_seq",
   "file_dir", "prev_skeleton", "prev_format", "author_list", "bib_name"
+=======
+  "name", ".", "rda"
+>>>>>>> 6863f39 (reset branch to dev)
 )
 if (getRversion() >= "2.15.1") utils::globalVariables(globvar)
