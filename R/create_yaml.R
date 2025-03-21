@@ -44,7 +44,7 @@ create_yaml <- function(
     }
 
     # add authors
-    if (any(author != "" | !is.null(add_author))) {
+    if (any(author != "") | !is.null(add_author)) {
       # add_authors <- NULL
       # for (i in 1:length(author_list)) {
       #   toad <- paste(author_list[[i]], sep = ",")

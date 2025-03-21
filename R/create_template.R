@@ -152,7 +152,7 @@
 #'        changes to the main skeleton need to be made. This reproduces the
 #'        yaml, output (if changed), preamble quantities restructures your
 #'        sectioning in the skeleton if indicated. All files in your folder
-#'        will remain as is. Users can update any of the following components in the skeleton:
+#'        will remain as is.
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
 #'         resources and workflows from different U.S. Fishery Science Centers.
