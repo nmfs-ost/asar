@@ -717,6 +717,22 @@ create_template <- function(
       author_list <- list()
       if (include_affiliation & !simple_affiliation) {
         if (nrow(authors) > 0) {
+          if (rerender_skeleton) {
+            author_lines <- grep(
+              "\\- name:\\s*'",
+              prev_skeleton,
+              value = TRUE
+            )
+            authors_prev <- sub(
+              ".*\\- name:\\s*'([^']+)'.*",
+              "\\1",
+              author_lines
+            )
+            # remove authors previously in skeleton and keep new additions either from author or add_author
+            author_to_add <- setdiff(authors$name, authors_prev)
+            authors <- authors |>
+              dplyr::filter(name %in% author_to_add)
+          }
           for (i in 1:nrow(authors)) {
             auth <- authors[i, ]
             aff <- affil |>
