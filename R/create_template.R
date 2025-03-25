@@ -451,6 +451,10 @@ create_template <- function(
           prev_skeleton[grep("format:", prev_skeleton) + 1],
           "[a-z]+"
           )
+        year <- as.numeric(stringr::str_extract(
+          prev_skeleton[grep("title:", prev_skeleton)],
+          "[0-9]+"
+          ))
         # if it is previously html and the rerender species html then need to copy over html formatting
         if (tolower(prev_format) != "html" & tolower(format) == "html") {
          if (!file.exists(file.path(file_dir, "support_files", "theme.scss"))) file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
@@ -1183,10 +1187,16 @@ create_template <- function(
     }
 
     # Print message
-    message(
-      "Saved report template in directory: ", subdir, "\n",
-      "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
-    )
+    if (rerender_skeleton) {
+      message(
+        "Updated report skeleton in directory: ", subdir, "."
+      )
+    } else {
+      message(
+        "Saved report template in directory: ", subdir, "\n",
+        "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
+      )
+    }
     # Open file for analyst
     # file.show(file.path(subdir, report_name)) # this opens the new file, but also restarts the session
     # Open the file so path to other docs is clear
