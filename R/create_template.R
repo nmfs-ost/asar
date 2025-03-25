@@ -317,6 +317,21 @@ create_template <- function(
     # TODO: set up situation where species, region can be changed
     report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
     if (length(report_name) == 0) stop("No skeleton quarto file found in the working directory.")
+    if (length(report_name) > 1) stop("Multiple skeleton quarto files found in the working directory.")
+
+    prev_report_name <- gsub("_skeleton.qmd", "", report_name)
+    # Extract type
+    type <- stringr::str_extract(prev_report_name, "^[A-Z]+")
+    # Extract region
+    region <- stringr::str_extract(prev_report_name, "(?<=_)[A-Z]+(?=_)")
+    # report name without type and region
+    report_name_1 <- gsub(glue::glue("{type}_"), "", prev_report_name)
+    # Extract species
+    species <- gsub("_",
+                    " ",
+                    gsub(glue::glue("{region}_"), "", report_name_1)
+                    )
+
 
     new_report_name <- paste0(
       type, "_",
@@ -1164,7 +1179,6 @@ create_template <- function(
         file.remove(file.path(file_dir, report_name))
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
         message("Skeleton file retained.")
-        next
       }
     }
 
