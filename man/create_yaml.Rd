@@ -32,7 +32,7 @@ create_yaml(
 changes to the main skeleton need to be made. This reproduces the
 yaml, output (if changed), preamble quantities restructures your
 sectioning in the skeleton if indicated. All files in your folder
-will remain as is. Users can update any of the following components in the skeleton:}
+will remain as is.}
 
 \item{office}{Regional Fisheries Science Center producing the
 report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
