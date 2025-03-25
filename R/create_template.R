@@ -150,7 +150,7 @@
 #' @param catch_unit_label Abbreviated units for catch
 #' @param rerender_skeleton Re-create the "skeleton.qmd" in your outline when
 #'        changes to the main skeleton need to be made. This reproduces the
-#'        yaml, output (if changed), preamble quantities restructures your
+#'        yaml, output (if changed), preamble quantities, and restructures your
 #'        sectioning in the skeleton if indicated. All files in your folder
 #'        will remain as is.
 #' @return Create template and pull skeleton for a stock assessment report.
