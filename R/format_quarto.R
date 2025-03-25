@@ -20,7 +20,7 @@ format_quarto <- function(format = NULL) {
       "  ", "  ", "include-in-header:", "\n",
       "  ", "  ", "  ", "- 'support_files/in-header.tex'", "\n",
       "  ", "  ", "header-includes:", "\n",
-      "  ", "  ", "  ", "\\usepackage[{draftwatermark}", "\n",
+      "  ", "  ", "  ", "\\usepackage{draftwatermark}", "\n",
       "  ", "  ", "  ", "\\SetWatermarkText{DRAFT}", "\n",
       "  ", "  ", "toc: true", "\n",
       "  ", "  ", "lof: true", "\n",

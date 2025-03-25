@@ -1,5 +1,5 @@
 remove_draft <- function(
-    x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
+    x = list.files(getwd())[grep("skeleton.qmd", list.files(getwd()))],
     dir = getwd()) {
   # Read in skeleton
   skeleton <- readLines(file.path(dir, x))
