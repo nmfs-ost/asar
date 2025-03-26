@@ -153,6 +153,11 @@
 #' @param indices_unit_label Units for index of abundance/CPUE
 #' @param biomass_unit_label Abbreviated units for biomass
 #' @param catch_unit_label Abbreviated units for catch
+#' @param rerender_skeleton Re-create the "skeleton.qmd" in your outline when
+#'        changes to the main skeleton need to be made. This reproduces the
+#'        yaml, output (if changed), preamble quantities, and restructures your
+#'        sectioning in the skeleton if indicated. All files in your folder
+#'        will remain as is.
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
 #'         resources and workflows from different U.S. Fishery Science Centers.
@@ -305,7 +310,8 @@ create_template <- function(
     ref_line_sb = c("target", "MSY", "msy", "unfished"),
     indices_unit_label = "",
     biomass_unit_label = "mt",
-    catch_unit_label = "mt") {
+    catch_unit_label = "mt",
+    rerender_skeleton = FALSE) {
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -316,39 +322,67 @@ create_template <- function(
     end_year <- as.numeric(year) - 1
   }
 
-  # Name report
-  if (!is.null(type)) {
-    report_name <- paste0(
-      type,
-      "_"
+  if (rerender_skeleton) {
+    # TODO: set up situation where species, region can be changed
+    report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
+    if (length(report_name) == 0) stop("No skeleton quarto file found in the working directory.")
+    if (length(report_name) > 1) stop("Multiple skeleton quarto files found in the working directory.")
+
+    prev_report_name <- gsub("_skeleton.qmd", "", report_name)
+    # Extract type
+    type <- stringr::str_extract(prev_report_name, "^[A-Z]+")
+    # Extract region
+    region <- stringr::str_extract(prev_report_name, "(?<=_)[A-Z]+(?=_)")
+    # report name without type and region
+    report_name_1 <- gsub(glue::glue("{type}_"), "", prev_report_name)
+    # Extract species
+    species <- gsub("_",
+                    " ",
+                    gsub(glue::glue("{region}_"), "", report_name_1)
+                    )
+
+
+    new_report_name <- paste0(
+      type, "_",
+      ifelse(is.null(region), "", paste(gsub("(\\b[A-Z])[^A-Z]+", "\\1", region), "_", sep = "")),
+      ifelse(is.null(species), "species", stringr::str_replace_all(species, " ", "_")), "_",
+      "skeleton.qmd"
     )
   } else {
-    report_name <- paste0(
-      "type_"
-    )
-  }
-  # Add region to name
-  if (!is.null(region)) {
-    report_name <- paste0(
-      report_name,
-      gsub("(\\b[A-Z])[^A-Z]+", "\\1", region),
-      "_"
-    )
-  } else {
-    report_name <- report_name
-  }
-  # Add species to name
-  if (!is.null(species)) {
-    report_name <- paste0(
-      report_name,
-      gsub(" ", "_", species),
-      "_skeleton.qmd"
-    )
-  } else {
-    report_name <- paste0(
-      report_name, "species_skeleton.qmd"
-    )
-  }
+    # Name report
+    if (!is.null(type)) {
+      report_name <- paste0(
+        type,
+        "_"
+      )
+    } else {
+      report_name <- paste0(
+        "type_"
+      )
+    }
+    # Add region to name
+    if (!is.null(region)) {
+      report_name <- paste0(
+        report_name,
+        gsub("(\\b[A-Z])[^A-Z]+", "\\1", region),
+        "_"
+      )
+    } else {
+      report_name <- report_name
+    }
+    # Add species to name
+    if (!is.null(species)) {
+      report_name <- paste0(
+        report_name,
+        gsub(" ", "_", species),
+        "_skeleton.qmd"
+      )
+    } else {
+      report_name <- paste0(
+        report_name, "species_skeleton.qmd"
+      )
+    }
+  } # close if rerender skeleton for naming
 
   # Select parameter from list
   if (length(format) > 1) {
@@ -356,6 +390,7 @@ create_template <- function(
   } else {
     format <- match.arg(format, several.ok = FALSE)
   }
+
   if (!is.null(office) & length(office) == 1) {
     office <- match.arg(office, several.ok = FALSE)
   } else if (length(office) > 1) {
@@ -363,14 +398,11 @@ create_template <- function(
   }
 
   # Create subdirectory for files
-  subdir <- fs::path(file_dir, "report")
-  # if (is.null(office) | office == "") {
-  #   subdir <- fs::path(file_dir, "stock_assessment_reports", "report")
-  # } else if (!is.null(region)) {
-  #   subdir <- fs::path(file_dir, "stock_assessment_reports", office, species, region, year)
-  # } else {
-  #   subdir <- fs::path(file_dir, "stock_assessment_reports", office, species, year)
-  # }
+  subdir <- ifelse(
+    grepl("/report", file_dir),
+    fs::path(file_dir),
+    fs::path(file_dir, "report")
+    )
 
   # Supporting files folder
   supdir <- file.path(subdir, "support_files")
@@ -411,40 +443,60 @@ create_template <- function(
         bib_name <- bib_file
       } else {
         # check if enter file exists
-        if (!file.exists(bib_file)) stop(".bib file not found.")
+        # if (!file.exists(bib_file)) stop(".bib file not found.")
+        warning(glue::glue("Bibliography file {bib_file} is not in the report directory. The file will not be read in on render if it is not in the same path as the skeleton file."))
+
         bib_loc <- bib_file # dirname(bib_file)
-        bib_name <- utils::tail(stringr::str_split(bib_file, "/")[[1]], n = 1)
+        bib_name <- stringr::str_extract(bib_file, "[^/]+$") # utils::tail(stringr::str_split(bib_file, "/")[[1]], n = 1)
       }
 
-      # Check if there are already files in the folder
-      if (length(list.files(subdir)) < 2) {
-        # copy quarto files
-        file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
-        # copy before-body tex
-        file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
-        # customize titlepage tex
-        create_titlepage_tex(office = office, subdir = supdir, species = species)
-        # customize in-header tex
-        create_inheader_tex(species = species, year = year, subdir = supdir)
-        # Copy species image from package
-        file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
-        # Copy bib file
-        file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
-        # Copy us doc logo
-        file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
-        # Copy html format file if applicable
-        if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
-      } else {
-        warning("There are files in this location.")
-        question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
-
-        if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-          # remove old skeleton if present
-          if (any(grepl("_skeleton.qmd", list.files(subdir)))) {
-            file.remove(file.path(subdir, (list.files(subdir)[grep("_skeleton.qmd", list.files(subdir))])))
+      # Check if this is a rerender of the skeleton file
+      if (rerender_skeleton) {
+        # read format in skeleton & check if format is identified in the rerender call
+        if (!file.exists(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))) stop("No skeleton quarto file found in the working directory.")
+        prev_skeleton <- readLines(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))
+        # extract previous format
+        prev_format <- stringr::str_extract(
+          prev_skeleton[grep("format:", prev_skeleton) + 1],
+          "[a-z]+"
+          )
+        year <- as.numeric(stringr::str_extract(
+          prev_skeleton[grep("title:", prev_skeleton)],
+          "[0-9]+"
+          ))
+        # if it is previously html and the rerender species html then need to copy over html formatting
+        if (tolower(prev_format) != "html" & tolower(format) == "html") {
+         if (!file.exists(file.path(file_dir, "support_files", "theme.scss"))) file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+        }
+        if (tolower(prev_format != "pdf" & tolower(format) == "pdf")) {
+          if (is.null(species)) {
+            species <- tolower(stringr::str_extract(
+              prev_skeleton[grep("species: ", prev_skeleton)],
+              "(?<=')[^']+(?=')"
+              ))
           }
+          if (is.null(office)) {
+            office <- stringr::str_extract(
+              prev_skeleton[grep("office: ", prev_skeleton)],
+              "(?<=')[^']+(?=')"
+            )
+          }
+          # year - default to current year
+          message("Undefined year:\nPlease identify year in your arguments or manually change it in the skeleton if value is incorrect.")
+          # copy before-body tex
+          if (!file.exists(file_dir, "support_files", "before-body.tex")) file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
+          # customize titlepage tex
+          if (!file.exists(file_dir, "support_files", "_titlepage.tex") | !is.null(species)) create_titlepage_tex(office = office, subdir = supdir, species = species)
+          # customize in-header tex
+          if (!file.exists(file_dir, "support_files", "in-header.tex") | !is.null(species)) create_inheader_tex(species = species, year = year, subdir = supdir)
+          # copy new spp image if updated
+          if (!is.null(species)) file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
+        }
+      } else {
+        # Check if there are already files in the folder
+        if (length(list.files(subdir)) < 2) {
           # copy quarto files
-          file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = TRUE) |> suppressWarnings()
+          file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
           # copy before-body tex
           file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
           # customize titlepage tex
@@ -459,108 +511,141 @@ create_template <- function(
           file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
           # Copy html format file if applicable
           if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
-        } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-          warning("Report template files were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder.")
-        }
-      }
+        } else {
+          warning("There are files in this location.")
+          question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
+
+          if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+            # remove old skeleton if present
+            if (any(grepl("_skeleton.qmd", list.files(subdir)))) {
+              file.remove(file.path(subdir, (list.files(subdir)[grep("_skeleton.qmd", list.files(subdir))])))
+            }
+            # copy quarto files
+            file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = TRUE) |> suppressWarnings()
+            # copy before-body tex
+            file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
+            # customize titlepage tex
+            create_titlepage_tex(office = office, subdir = supdir, species = species)
+            # customize in-header tex
+            create_inheader_tex(species = species, year = year, subdir = supdir)
+            # Copy species image from package
+            file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
+            # Copy bib file
+            file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
+            # Copy us doc logo
+            file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+            # Copy html format file if applicable
+            if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+          } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+            warning("Report template files were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder.")
+          }
+        } # close check for previous files & respective copying
+        prev_skeleton <- NULL
+      } # close if rerender
 
       # Convert output file if TRUE
-      # Check if converted output already exists
-      if (convert_output) {
-        if (!file.exists(file.path(subdir, paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))) {
-          print("__________Converting output file__________")
-          if (tolower(model) == "bam" & is.null(fleet_names)) {
-            # warning("Fleet names not defined.")
-            convert_output(
-              output_file = model_results,
-              outdir = resdir,
-              file_save = TRUE,
-              model = model,
-              savedir = subdir,
-              save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
-            )
-            # } else if (tolower(model) == "bam") {
-            #   convert_output(
-            #     output_file = model_results,
-            #     outdir = resdir,
-            #     file_save = TRUE,
-            #     model = model,
-            #     fleet_names = fleet_names,
-            #     savedir = subdir,
-            #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
-            #   )
+      # Make sure not asking to rerender
+      # if (!rerender_skeleton) {
+        # Check if converted output already exists
+        if (convert_output) {
+          if (!file.exists(file.path(subdir, paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))) {
+            print("__________Converting output file__________")
+            if (tolower(model) == "bam" & is.null(fleet_names)) {
+              # warning("Fleet names not defined.")
+              convert_output(
+                output_file = model_results,
+                outdir = resdir,
+                file_save = TRUE,
+                model = model,
+                savedir = subdir,
+                save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
+              )
+              # } else if (tolower(model) == "bam") {
+              #   convert_output(
+              #     output_file = model_results,
+              #     outdir = resdir,
+              #     file_save = TRUE,
+              #     model = model,
+              #     fleet_names = fleet_names,
+              #     savedir = subdir,
+              #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+              #   )
+            } else {
+              convert_output(
+                output_file = model_results,
+                outdir = resdir,
+                file_save = TRUE,
+                model = model,
+                savedir = subdir,
+                save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
+              )
+            }
+            # Rename model results file and results file directory if the results are converted in this fxn
+            model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
+            resdir <- subdir
           } else {
-            convert_output(
-              output_file = model_results,
-              outdir = resdir,
-              file_save = TRUE,
-              model = model,
-              savedir = subdir,
-              save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
-            )
+            message("Output not converted: standard output already in path.")
+            model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
+            resdir <- subdir
           }
-          # Rename model results file and results file directory if the results are converted in this fxn
-          model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
-          resdir <- subdir
-        } else {
-          message("Output not converted: standard output already in path.")
-          model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
-          resdir <- subdir
-        }
-      }
+        } # close check for converted output already
+      # } # close rerender if
 
       # print("_______Standardized output data________")
 
       # run stockplotr::exp_all_figs_tables() if rda files not premade
       # output folder: rda_dir
-      if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
-        if (!is.null(resdir) | !is.null(model_results)) {
-          # load converted output
-          if (convert_output) {
-            output <- utils::read.csv(paste0(subdir, "/", paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))
-          } else {
-            output <- utils::read.csv(paste0(resdir, "/", model_results))
-          }
-          # run stockplotr::exp_all_figs_tables() to make rda files
-
-          # test_exp_all <-
-          tryCatch(
-            {
-              stockplotr::exp_all_figs_tables(
-                dat = output,
-                recruitment_scale_amount = recruitment_scale_amount,
-                end_year = end_year,
-                n_projected_years = n_projected_years,
-                relative = relative,
-                # make_rda = TRUE,
-                rda_dir = rda_dir,
-                ref_line = ref_line,
-                ref_point = ref_point,
-                biomass_scale_amount = biomass_scale_amount,
-                landings_unit_label = landings_unit_label,
-                spawning_biomass_scale_amount = spawning_biomass_scale_amount,
-                spawning_biomass_label = spawning_biomass_label,
-                recruitment_unit_label = recruitment_unit_label,
-                ref_line_sb = ref_line_sb,
-                ref_point_sb = ref_point_sb,
-                indices_unit_label = indices_unit_label,
-                biomass_unit_label = biomass_unit_label,
-                catch_unit_label = catch_unit_label
-              )
-              # TRUE
-            },
-            error = function(e) {
-              warning("Failed to create all rda files from stockplotr package.")
-              # FALSE
+      # Don't run on rerender
+      if (!rerender_skeleton) {
+        if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
+          if (!is.null(resdir) | !is.null(model_results)) {
+            # load converted output
+            if (convert_output) {
+              output <- utils::read.csv(paste0(subdir, "/", paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))
+            } else {
+              output <- utils::read.csv(paste0(resdir, "/", model_results))
             }
-          )
-        } # else {
-        # test_exp_all <- FALSE
-        # }
+            # run stockplotr::exp_all_figs_tables() to make rda files
+
+            # test_exp_all <-
+            tryCatch(
+              {
+                stockplotr::exp_all_figs_tables(
+                  dat = output,
+                  recruitment_scale_amount = recruitment_scale_amount,
+                  end_year = end_year,
+                  n_projected_years = n_projected_years,
+                  relative = relative,
+                  # make_rda = TRUE,
+                  rda_dir = rda_dir,
+                  ref_line = ref_line,
+                  ref_point = ref_point,
+                  biomass_scale_amount = biomass_scale_amount,
+                  landings_unit_label = landings_unit_label,
+                  spawning_biomass_scale_amount = spawning_biomass_scale_amount,
+                  spawning_biomass_label = spawning_biomass_label,
+                  recruitment_unit_label = recruitment_unit_label,
+                  ref_line_sb = ref_line_sb,
+                  ref_point_sb = ref_point_sb,
+                  indices_unit_label = indices_unit_label,
+                  biomass_unit_label = biomass_unit_label,
+                  catch_unit_label = catch_unit_label
+                )
+                # TRUE
+              },
+              error = function(e) {
+                warning("Failed to create all rda files from stockplotr package.")
+                # FALSE
+              }
+            )
+          } # else {
+          # test_exp_all <- FALSE
+          # }
+        }
       }
 
       # Create tables qmd
-      if (include_tables) {
+      if ((include_tables & !rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
         # if (!test_exp_all) {
         #   tables_doc <- paste0(
         #     "### Tables \n \n",
@@ -594,7 +679,7 @@ create_template <- function(
       # }
 
       # Create figures qmd
-      if (include_figures) {
+      if ((include_figures & !rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
         # if (!test_exp_all) {
         #   figures_doc <- paste0(
         #     "### Figures \n \n",
@@ -625,14 +710,13 @@ create_template <- function(
       # Create a report template file to render for the region and species
       # Create YAML header for document
       # Write title based on report type and region
-      if (alt_title == FALSE) {
-        title <- create_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type, year = year)
-      } else if (alt_title == TRUE) {
-        if (!exists(title)) {
+      if (alt_title) {
+        if (is.null(title)) {
           stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
-        } else {
-          title <- paste(alt_title)
         }
+        title <- title
+      } else {
+        title <- create_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type, year = year)
       }
 
       # Pull authors and affiliations from national db
@@ -661,8 +745,24 @@ create_template <- function(
       }
 
       author_list <- list()
-      if (include_affiliation == TRUE & simple_affiliation == FALSE) {
+      if (include_affiliation & !simple_affiliation) {
         if (nrow(authors) > 0) {
+          if (rerender_skeleton) {
+            author_lines <- grep(
+              "\\- name:\\s*'",
+              prev_skeleton,
+              value = TRUE
+            )
+            authors_prev <- sub(
+              ".*\\- name:\\s*'([^']+)'.*",
+              "\\1",
+              author_lines
+            )
+            # remove authors previously in skeleton and keep new additions either from author or add_author
+            author_to_add <- setdiff(authors$name, authors_prev)
+            authors <- authors |>
+              dplyr::filter(name %in% author_to_add)
+          }
           for (i in 1:nrow(authors)) {
             auth <- authors[i, ]
             aff <- affil |>
@@ -732,141 +832,59 @@ create_template <- function(
         }
       }
 
-      # Creating YAML
-      yaml <- paste0(
-        # start YAML notation
-        "---", "\n",
-
-        # Tile
-        "title: ", "'", title, "'", "\n",
-
-        # Author
-        "author:", "\n"
-      )
-      # Add authors
-      add_authors <- NULL
-      for (i in 1:length(author_list)) {
-        toad <- paste(author_list[[i]], sep = ",")
-        add_authors <- paste0(add_authors, toad) # -> add_authors
-      }
-      yaml <- paste0(yaml, add_authors)
-
-      # Add other parts
-      yaml <- paste0(
-        yaml,
-        # Date
-        "date: today", "\n",
-        "lang: en \n",
-        "keep-tex: true \n"
+      # Create yaml
+      yaml <- create_yaml(
+        rerender_skeleton = rerender_skeleton,
+        prev_skeleton = prev_skeleton,
+        prev_format = prev_format,
+        title = title,
+        # alt_title = alt_title,
+        author_list = author_list,
+        author = author,
+        office = office,
+        add_author = add_author,
+        add_image = add_image,
+        spp_image = spp_image,
+        species = species,
+        spp_latin = spp_latin,
+        region = region,
+        format = format,
+        parameters = parameters,
+        param_names = param_names,
+        param_values = param_values,
+        bib_file = bib_file,
+        bib_name = bib_name,
+        year = year
       )
 
-      # Add species image on title page
-      if (add_image) {
-        # extract image name
-        new_img <- sapply(strsplit(spp_image, "/"), utils::tail, 1)
-        yaml <- paste0(
-          yaml,
-          # image as pulled in from above
-          "cover: support_files/", new_img, "\n"
-        )
-      } else if (spp_image == "") {
-        yaml <- paste0(
-          yaml,
-          # image as pulled in from above
-          "cover: ", spp_image, "\n"
-        )
-      } else {
-        yaml <- paste0(
-          yaml,
-          # image as pulled in from above
-          "cover: support_files/", gsub(" ", "_", species), ".png", "\n"
-        )
-      }
+      if (!rerender_skeleton) print("__________Built YAML Header______________")
 
-      # Add lualatex engine
-      if (format == "pdf") {
-        yaml <- paste0(
-          yaml,
-          "pdf-engine: lualatex", "\n"
-        )
-      }
-
-      # Formatting
-      yaml <- paste0(
-        yaml,
-        format_quarto(format = format),
-        # Add in output file name (Rendered name of pdf)
-        "output-file: '", stringr::str_replace_all(species, " ", "_"), ifelse(is.null(species), "SAR_", "_SAR_"), year, "'", " \n"
-      )
-
-      # Add lua filters for compliance
-      # PLACEHOLDER: Uncomment once .lua text is built
-
-      # yaml <- paste0(yaml,
-      #                # "contributes:", "\n",
-      #                "filters:", "\n",
-      #                "  ", "  ", "- acronyms.lua", "\n",
-      #                "  ", "  ", "- accessibility.lua", "\n")
-
-      # Parameters
-      # office, region, and species are default parameters
-      if (parameters) {
-        yaml <- paste0(
-          yaml, "params:", "\n",
-          "  ", " ", "office: ", "'", office, "'", "\n",
-          "  ", " ", "species: ", "'", species, "'", "\n",
-          "  ", " ", "spp_latin: ", "'", spp_latin, "'", "\n"
-        )
-        if (!is.null(region)) {
-          yaml <- paste0(yaml, "  ", " ", "region: ", "'", region, "'", "\n")
-        }
-        # Add more parameters if indicated
-        if (!is.null(param_names) & !is.null(param_values)) {
-          # check there are the same number of names and values
-          if (length(param_names) != length(param_values)) {
-            print("Please define ALL parameter names (param_names) and values (param_values).")
-          } else {
-            add_params <- NULL
-            for (i in 1:length(param_names)) {
-              toad <- paste("  ", " ", param_names[i], ": ", "'", param_values[i], "'", "\n", sep = "")
-              add_params <- paste0(add_params, toad)
-            } # close loop
-          } # close check
-          yaml <- paste0(yaml, add_params)
-        } # close if adding add'l params
-      } # close if params to be included in template
-
-      # Add style guide
-      # create_style_css(species = species, savedir = subdir)
-
-      # yaml <- paste0(
-      #   yaml,
-      #   "css: styles.css", "\n"
-      # )
-
-      # Add option for bib file
-      # if (!is.null(bib_file)) {
-      bib <- glue::glue(
-        "bibliography: ", "\n"
-      )
-      bib_all <- paste("  ", "- ", bib_name, "\n", collapse = "")
-      bib <- glue::glue(
-        bib, "\n",
-        bib_all, "\n"
-      )
-      yaml <- paste0(yaml, bib)
-      # }
-      # add in else statement once a national .bib file is made
-
-      # Close yaml
-      yaml <- paste0(yaml, "---")
-
-      print("__________Built YAML Header______________")
       # yaml_save <- capture.output(cat(yaml))
       # cat(yaml, file = here('template','yaml_header.qmd'))
 
+      # add in html for draft watermark if in that format - otherwise pdf draft is in format_quarto fxn
+      if (format == "html") {
+        html_draft <- paste(
+          "\n ```{=html} \n",
+          "<div style='position: fixed; margin-top: 10%; margin-left:5%; font-size: xx-large; font-weight: 900; color: #CCCCCC; rotate: -45deg; z-index:-999;'>DRAFT</div>", "\n",
+          "``` \n",
+          sep = ""
+        )
+      }
+
       # Add preamble
       # add in quantities and output data R chunk
+      # Indicate model output path
+
+      # in case where rerndering skeleton and they want to update the model results
+      if (rerender_skeleton) {
+        if (!is.null(model_results) & !is.null(resdir)) {
+          prev_conout <- convert_output
+          convert_output <- FALSE
+        }
+      }
+
+      # standard preamble
       preamble <- add_chunk(
         paste0(
           "# load converted output from asar::convert_output() \n",
@@ -968,15 +986,64 @@ create_template <- function(
         label = "output_and_quantities",
         eval = ifelse(is.null(model_results), "false", "true")
       )
-      # Add page for citation of assessment report
-      citation <- create_citation(
-        author = author,
-        title = title,
-        year = year,
-        office = office
-      )
+      # bring back the initial call of convert_output
+      if (rerender_skeleton) {
+        if (!is.null(model_results)) {
+          convert_output <- prev_conout
+        }
+      }
+      # extract old preamble if don't want to change
+      if (rerender_skeleton) {
+        question1 <- readline("Do you want to keep the current preamble? (Y/N)")
+        if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+          start_line <- grep("output_and_quantities", prev_skeleton) - 1
+          # find next trailing "```"` in case it was edited at the end
+          end_line <- grep("```", prev_skeleton)[grep("```", prev_skeleton) > start_line][1]
+          preamble <- paste(prev_skeleton[start_line:end_line], collapse = "\n")
 
-      print("_______Add Report Citation________")
+          if (!is.null(model_results) & !is.null(resdir)) {
+            prev_results_line <- grep("output <- utils::read.csv", preamble)
+            prev_results <- stringr::str_replace(
+              preamble[prev_results_line],
+              "(?<=read\\.csv\\().*?(?=\\))",
+              glue::glue("'{resdir}/{model_results}'")
+              )
+            preamble <- append(
+              preamble,
+              prev_results,
+              after = prev_results_line)[-prev_results_line]
+            if (!grepl(".csv", model_results)) warning("Model results are not in csv format - Will not work on render")
+          } else {
+            message("Preamble maintained - model results not updated.")
+          }
+        } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+          preamble <- preamble
+        } # close if updating preamble
+      } # close if rerendering skeleton
+
+      # Add page for citation of assessment report
+      if (rerender_skeleton) {
+        if (!is.null(title) | !is.null(species) | !is.null(year) | !is.null(author)) {
+          citation_line <- grep("Please cite this publication as:", prev_skeleton) + 2
+          citation <- glue::glue("{{< pagebreak >}} \n\n Please cite this publication as: \n\n {prev_skeleton[citation_line]}\n\n")
+        } else {
+          author <- grep("  - name: ", prev_skeleton)
+          citation <- create_citation(
+            author = author,
+            title = title,
+            year = year,
+            office = office
+          )
+        }
+      } else {
+        citation <- create_citation(
+          author = author,
+          title = title,
+          year = year,
+          office = office
+        )
+        print("_______Add Report Citation________")
+      }
 
       # Create report template
       # Include tables and figures if desired into template
@@ -984,7 +1051,20 @@ create_template <- function(
       # if (include_tables) files_to_copy <- c(files_to_copy, "08_tables.qmd")
       # if (include_figures) files_to_copy <- c(files_to_copy, "09_figures.qmd")
 
-      if (custom == FALSE) {
+      if (rerender_skeleton & custom == FALSE) {
+        # identify all previous sections
+        sections <- stringr::str_extract_all(
+          prev_skeleton,
+          "(?<=['`])[^']+\\.qmd(?=['`])"
+        ) |>
+        unlist() |>
+        purrr::discard(~ .x == "")
+        # add sections as list
+        sections <- add_child(
+          sections,
+          label = gsub(".qmd", "", unlist(sections))
+        )
+      } else if (custom == FALSE) {
         sections <- add_child(
           c(
             "01_executive_summary.qmd",
@@ -1028,6 +1108,11 @@ create_template <- function(
           section_list <- add_base_section(files_to_copy)
           sections <- add_child(c(section_list, "08_tables.qmd", "09_figures.qmd"),
             label = custom_sections # this might need to be changed
+          )
+          # Create sections object to add into template
+          sections <- add_child(
+            sections,
+            label = gsub(".qmd", "", unlist(sections))
           )
         } else { # custom = TRUE
           # Create custom template using existing sections and new sections from analyst
@@ -1095,7 +1180,8 @@ create_template <- function(
       # Combine template sections
       report_template <- paste(
         yaml,
-        preamble,
+        if (format == "html") html_draft,
+        preamble, "\n",
         citation,
         sections,
         sep = "\n"
@@ -1107,166 +1193,32 @@ create_template <- function(
       ##### NEFSC MT Template####
       ######## |###############################################################
     } else if (type == "NEMT") {
-      # Pull skeleton for sections
-      current_folder <- system.file("templates", "NEMT", package = "asar")
-      new_folder <- subdir
-      files_to_copy <- list.files(current_folder)
-
-      # Check if there are already files in the folder
-      if (length(list.files(subdir)) > 0) {
-        warning("There are files in this location.")
-        question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
-
-        if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-          file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE) |> suppressWarnings()
-        } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-          message("Blank files for template sections were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder.")
-        }
-      } else if (length(list.files(subdir)) == 0) {
-        file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
-      } else {
-        stop("None of the arugments match statement commands. Needs developer fix.")
-      }
-
-      # Part I
-      # Create a report template file to render for the region and species
-      # Create YAML header for document
-      # yaml <- write_yaml(office = "NEFSC")
-
-      print("__________Built YAML Header______________")
-      # yaml_save <- capture.output(cat(yaml))
-      # cat(yaml, file = here('template','yaml_header.qmd'))
-
-      # print("_______Standardized output data________")
-
-      # Add page for citation of assessment report
-      citation <- create_citation(
-        author = author,
-        title = title,
-        year = year,
-        office = office
-      )
-
-      print("_______Add Report Citation________")
-
-      # Create report template
-
-      if (custom == FALSE) {
-        sections <- add_child(
-          c(
-            "01_executive_summary.qmd",
-            "02_introduction.qmd",
-            "03_data.qmd",
-            "04a_assessment-configuration.qmd",
-            "04b_assessment-results.qmd",
-            "04c_assessment-sensitivity.qmd",
-            "04d_assessment-benchmarks.qmd",
-            "04e_assessment-projections.qmd",
-            "05_discussion.qmd",
-            "06_acknowledgments.qmd",
-            "07_references.qmd",
-            "08_tables.qmd",
-            "09_figures.qmd",
-            "10_notes.qmd",
-            "11_appendix.qmd"
-          ),
-          label = c(
-            "executive_summary",
-            "introduction",
-            "data",
-            "assessment-configuration",
-            "assessment-results",
-            "assessment-sensitivity",
-            "assessment-benchmarks",
-            "assessment-projections",
-            "discussion",
-            "acknowledgments",
-            "references",
-            "tables",
-            "figures",
-            "notes",
-            "appendix"
-          )
-        )
-      } else {
-        # Option for building custom template
-        # Create custom template from existing skeleton sections
-        if (is.null(new_section)) {
-          section_list <- add_base_section(custom_sections)
-          sections <- add_child(section_list,
-            label = custom_sections
-          )
-        } else { # custom = TRUE
-          # Create custom template using existing sections and new sections from analyst
-          # Add sections from package options
-
-          if (is.null(custom_sections)) {
-            sec_list1 <- list(
-              "01_executive_summary.qmd",
-              "02_introduction.qmd",
-              "03_data.qmd",
-              "04a_assessment-configuration.qmd",
-              "04b_assessment-results.qmd",
-              "04c_assessment-sensitivity.qmd",
-              "04d_assessment-benchmarks.qmd",
-              "04e_assessment-projections.qmd",
-              "05_discussion.qmd",
-              "06_acknowledgments.qmd",
-              "07_references.qmd",
-              "08_tables.qmd",
-              "09_figures.qmd",
-              "10_notes.qmd",
-              "11_appendix.qmd"
-            )
-            sec_list2 <- add_section(
-              new_section = new_section,
-              section_location = section_location,
-              custom_sections = sec_list1,
-              subdir = subdir
-            )
-            # Create sections object to add into template
-            sections <- add_child(
-              sec_list2,
-              label = gsub(".qmd", "", unlist(sec_list2))
-            )
-          } else { # custom_sections explicit
-            # Add selected sections from base
-            sec_list1 <- add_base_section(custom_sections)
-            # Create new sections as .qmd in folder
-            sec_list2 <- add_section(
-              new_section = new_section,
-              section_location = section_location,
-              custom_sections = sec_list1,
-              subdir = subdir
-            )
-            # Create sections object to add into template
-            sections <- add_child(
-              sec_list2,
-              label = gsub(".qmd", "", unlist(sec_list2))
-            )
-          }
-        }
-      }
-
-      # Combine template sections
-      report_template <- paste(
-        yaml,
-        # preamble,
-        citation,
-        sections,
-        sep = "\n"
-      )
-
-      print("___Created report template______")
+      stop("Template not available.")
     }
 
     # Save template as .qmd to render
-    utils::capture.output(cat(report_template), file = file.path(subdir, report_name), append = FALSE)
+    utils::capture.output(cat(report_template), file = file.path(subdir, ifelse(rerender_skeleton, new_report_name, report_name)), append = FALSE)
+    # Delete old skeleton
+    if (length(grep("skeleton.qmd", list.files(file_dir, pattern = "skeleton.qmd"))) > 1) {
+      question1 <- readline("Deleting previous skeleton file...Do you want to proceed? (Y/N)")
+      if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+        file.remove(file.path(file_dir, report_name))
+      } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+        message("Skeleton file retained.")
+      }
+    }
+
     # Print message
-    message(
-      "Saved report template in directory: ", subdir, "\n",
-      "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
-    )
+    if (rerender_skeleton) {
+      message(
+        "Updated report skeleton in directory: ", subdir, "."
+      )
+    } else {
+      message(
+        "Saved report template in directory: ", subdir, "\n",
+        "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
+      )
+    }
     # Open file for analyst
     # file.show(file.path(subdir, report_name)) # this opens the new file, but also restarts the session
     # Open the file so path to other docs is clear
@@ -1275,10 +1227,10 @@ create_template <- function(
     # Copy old template and rename for new year
     # Create copy of previous assessment
     if (!is.null(region)) {
-      olddir <- fs::path(file_dir, "stock_assessment_reports", office, species, region, prev_year)
+      olddir <- fs::path(file_dir, "report")
       invisible(file.copy(file.path(olddir, list.files(olddir)), subdir, recursive = FALSE))
     } else {
-      olddir <- fs::path(file_dir, "stock_assessment_reports", office, species, prev_year)
+      olddir <- fs::path(file_dir, "report")
       invisible(file.copy(file.path(olddir, list.files(olddir)), subdir, recursive = FALSE))
     }
 
