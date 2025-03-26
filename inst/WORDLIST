@@ -43,6 +43,7 @@ csv
 customizable
 cv
 dir
+documentclass
 docx
 dover
 dplyr
@@ -56,6 +57,7 @@ gp
 img
 is’
 knitr
+kobe
 le
 len
 modularized
@@ -83,6 +85,7 @@ readLines
 roboto
 rowid
 saltatrix
+satf
 sd
 se
 snakecase
@@ -95,6 +98,7 @@ str
 stringr
 subfiles
 subseason
+tbl
 tex
 tibble
 tidyr
