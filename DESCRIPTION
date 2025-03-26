@@ -31,7 +31,6 @@ Imports:
     openxlsx,
     prodlim,
     purrr,
-    quarto,
     stats,
     stringr,
     svDialogs,
