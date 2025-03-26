@@ -1,7 +1,35 @@
+#' Remove draft watermark
+#'
+#' @param x Quarto file containing the draft watermark notation.
+#' @param dir Path to folder where the quarto containing the draft watermark
+#' notation is located. Defaults to the working directory.
+#'
+#' @return Remove the notation adding a watermark "DRAFT" from the skeleton.qmd
+#' file produced from `create_template()`. The function requires the user to
+#' either be in the working directory where the skeleton is located or use the
+#' `dir` argument to direct the function to where to file is located. The user
+#'  must use this before rendering the final report for the watermark to be
+#'  removed.
+#' @export
+#'
+#' @examples {
+#' create_template()
+#' remove_draft(x = "SAR_species_skeleton.qmd", dir = file.path(getwd(), "report"))
+#' }
 remove_draft <- function(
     x = list.files(getwd())[grep("skeleton.qmd", list.files(getwd()))],
     dir = getwd()) {
   # Read in skeleton
+  if (any(grepl("skeleton.qmd", list.files(dir)))) {
+    # case where user only identifies the dir and not x
+    x <- list.files(dir)[grep("skeleton.qmd", list.files(dir))]
+    skeleton <- readLines(file.path(dir, x))
+  } else if (file.exists(file.path(dir, x))) {
+    # case if user is in wd and does not identify any args
+    skeleton <- readLines(file.path(dir, x))
+  } else {
+    stop("Skeleton file not found.")
+  }
   skeleton <- readLines(file.path(dir, x))
   # Remove draft watermark lines
   # Find format

@@ -855,7 +855,7 @@ create_template <- function(
       if (format == "html") {
         html_draft <- paste(
           "\n ```{=html} \n",
-          "<div style='position: fixed; margin-top: 10%; margin-left:5%; font-size: xx-large; font-weight: 900; color: #CCCCCC; rotate: -45deg; z-index:-999;'>DRAFT -- PLEASE DO NOT DISTRIBUTE</div>", "\n",
+          "<div style='position: fixed; margin-top: 10%; margin-left:5%; font-size: xx-large; font-weight: 900; color: #CCCCCC; rotate: -45deg; z-index:-999;'>DRAFT</div>", "\n",
           "``` \n",
           sep = ""
         )

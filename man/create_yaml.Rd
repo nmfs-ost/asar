@@ -37,8 +37,19 @@ will remain as is.}
 \item{office}{Regional Fisheries Science Center producing the
 report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
 
+\item{prev_skeleton}{Vector of strings containing all the lines of the
+previous skeleton file. File is read in using the function readLines from
+base R.}
+
+\item{prev_format}{The format that the previous skeleton was directed to
+render to. Parameter is inherited from create_template.}
+
 \item{title}{The alternative title. Example:
 "Management Track Assessments Spring 2024".}
+
+\item{author_list}{A vector of strings containing pre-formatted author names
+and affiliations that would be found in the format in a yaml of a quarto
+file when using cat(author_list).}
 
 \item{author}{Ordered list of authors included in the assessment.}
 
@@ -79,6 +90,9 @@ individual parameters for this function, above).}
 of parameter names. Parameters automatically included:
 office, region, species (each of which are listed as
 individual parameters for this function, above).}
+
+\item{bib_name}{Name of a bib file being added into the yaml. For example,
+"asar.bib".}
 
 \item{bib_file}{File path to a .bib file used for citing references in
 the report}
