@@ -21,6 +21,7 @@ PIFSC
 Pomatomus
 README
 REPO
+RStudio
 Rdata
 Rmarkdown
 SAR
@@ -42,7 +43,6 @@ csv
 customizable
 cv
 dir
-documentclass
 docx
 dover
 dplyr
@@ -76,12 +76,13 @@ prewritten
 qmd
 rda
 rda's
+rdas
 rdat
 rdata
 rda’s
+readLines
 roboto
 rowid
-RStudio
 saltatrix
 sd
 se
@@ -102,3 +103,5 @@ tidyr
 tidyselect
 titlepage
 xlsx
+yaml
+yml
