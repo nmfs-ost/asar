@@ -55,7 +55,8 @@ create_template(
   ref_line_sb = c("target", "MSY", "msy", "unfished"),
   indices_unit_label = "",
   biomass_unit_label = "mt",
-  catch_unit_label = "mt"
+  catch_unit_label = "mt",
+  rerender_skeleton = FALSE
 )
 }
 \arguments{
@@ -258,6 +259,12 @@ regardless of how it is specified in \code{dat}.}
 \item{biomass_unit_label}{Abbreviated units for biomass}
 
 \item{catch_unit_label}{Abbreviated units for catch}
+
+\item{rerender_skeleton}{Re-create the "skeleton.qmd" in your outline when
+changes to the main skeleton need to be made. This reproduces the
+yaml, output (if changed), preamble quantities, and restructures your
+sectioning in the skeleton if indicated. All files in your folder
+will remain as is.}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
