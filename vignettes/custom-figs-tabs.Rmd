@@ -6,7 +6,7 @@ output:
     toc_float: true
     toc-depth: 3
 vignette: >
-  %\VignetteIndexEntry{Achieve Greater Accessibility}
+  %\VignetteIndexEntry{Adding Custom Tables and Figures}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
