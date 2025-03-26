@@ -326,12 +326,30 @@ create_acronym_table <- function(){
         "Instantaneous Fishing Mortality Rate",
         "Florida Administrative Code",
         "Fish Aggregating Device",
-        "Fishery Management Plan"
+        "Fishery Management Plan",
+        "Individual transferable quota",
+        "instantaneous natural mortality rate",
+        "Natural mortality rate",
+        "Massachusetts Division of Marine Fisheries",
+        "DMR Maine Department of Marine Resources",
+        "McCracken Estimates",
+        "Northwest Region",
+        "operational assessment",
+        "Pacific Salmon Commission",
+        "Subarea as specified by NAFO",
+        "Saipan Fishermen's Association",
+        "Social impact analysis",
+        "Spawning biomass per recruit"
         ),
       !Acronym %in% c(
         "CA",
         "CCA",
-        "Council"
+        "Council",
+        "LCN",
+        "PRD",
+        "RF",
+        "SAS",
+        "SBA"
       ),
       !(source == "PFMC" & Acronym == "ABC"),
       !(source == "SAFMC" & Acronym == "ALS"),
@@ -346,8 +364,21 @@ create_acronym_table <- function(){
       !(source == "GMFMC" & Acronym == "CFR"),
       !(source %in% c("PFMC", "WPFMC") & Acronym == "EEZ"),
       !(source == "WPFMC" & Acronym == "ESA"),
-      !(source == "PFMC" & Acronym == "F")
-
+      !(source == "PFMC" & Acronym == "F"),
+      !(source == "PFMC" & Acronym == "FMSY"),
+      !(is.na(source) & Acronym == "FOY"),
+      !(is.na(source) & Acronym == "FR"),
+      !(Meaning == "Identification" & Acronym == "ID"),
+      !(Acronym == "ISC" & Meaning == "International Scientific Committee for Tuna and Tuna-like Species in the North Pacific Ocean"),
+      !(Acronym == "MRIP" & source == "ASMFC"),
+      !(is.na(source) & Acronym == "MSST"),
+      !(source == "PFMC" & Acronym == "MSY"),
+      !(source == "ASMFC" & Acronym == "NMFS"),
+      !(source == "PFMC" & Acronym == "NOAA"),
+      !(source == "ASMFC" & Acronym == "OY"),
+      !(source == "GMFMC" & Acronym == "SEDAR"),
+      !(source == "ASMFC" & Acronym == "SEFSC"),
+      !(source %in% c("PFMC", "WPFMC", "ASMFC") & Acronym == "SPR")
       ) |>
     dplyr::mutate(Definition = stringr::str_replace_all(Definition,
                                                         "An annual catch level recommended by a Council's SSC. The Council's ACL for a stock may not exceed the ABC recommendation of the SSC for that stock. The SSC's ABC recommendation should incorporate consideration of the stock's life history and reproductive potential, vulnerability to overfishing, and the degree of uncertainty in the science upon which the ABC recommendation is based.",
@@ -382,19 +413,70 @@ create_acronym_table <- function(){
                   Definition = stringr::str_replace(Definition,
                                                     "The instantaneous rate at which fish in a stock die because of fishing. Typically includes measured bycatch, if data are available.",
                                                     "The rate at which fish die due to fishing activities."),
-    ) #|>
+                  Meaning = stringr::str_replace(Meaning,
+                                                 "FMSY",
+                                                 "Fishing Mortality at MSY"),
+                  Meaning = stringr::str_replace(Meaning,
+                                                 "FOY",
+                                                 "Fishing Mortality Rate Yielding OY"),
+                  Definition = stringr::str_replace(Definition,
+                                                    "fishing mortality rate corresponding to an equilibrium yield at optimum",
+                                                    "fishing mortality rate corresponding to an equilibrium yield that balances ecological, economic, and social goals."),
+                  Definition = ifelse(Acronym == "ID",
+                                      "Process defining the spatial and temporal extent of a fish population that will be assessed.",
+                                      Definition),
+                  Definition = ifelse(Acronym == "MSST",
+                                      "A threshold biomass used to determine if a stock is overfished.",
+                                      Definition),
+                  Definition = ifelse(Acronym == "NMFS",
+                                      "A division of the U.S. Department of Commerce, National Oceanic and Atmospheric Administration (NOAA). NMFS is responsible for conservation and management of offshore fisheries (and inland salmon) and ecosystems. The NMFS Regional Director is a voting member of the Council.",
+                                      Definition),
+                  Definition = ifelse(Acronym == "NOAA",
+                                      "A federal agency within the Department of Commerce focused on the condition of the oceans and the atmosphere.",
+                                      Definition),
+                  Definition = ifelse(Acronym == "NWR",
+                                      "A network of protected areas in the United States, managed by the U.S. Fish and Wildlife Service, dedicated to the conservation, management, and restoration of fish, wildlife, and plant resources and their habitats.",
+                                      Definition),
+                  Definition = ifelse(Acronym == "OA",
+                                      "A fishery for which entry is not controlled by a limited entry permitting program.",
+                                      Definition),
+                  Definition = ifelse(Acronym == "PSC",
+                                      "The incidental capture of species that must be returned to the sea by law, and cannot be retained for sale or personal use.",
+                                      Definition),
+                  Definition = ifelse(Acronym == "SA",
+                                      "The number of mature fish contributing to the estimate of recruitment.",
+                                      Definition),
+                  Definition = ifelse(Acronym == "SEDAR",
+                                      "The cooperative peer-reviewed process by which stock assessment projects are conducted in NOAA Fisheries’ Southeast Region.",
+                                      Definition),
+                  Definition = ifelse(Acronym == "SEFSC",
+                                      "The center that provides the scientific advice and data needed to effectively manage the living resources of the Southeast Region and Atlantic high seas.",
+                                      Definition),
+                  Definition = ifelse(Acronym == "SPR",
+                                      "The ratio of the number of eggs that could be produced by a fish over its lifetime that has recruited to a fishery, over the number of eggs that could be produced by an average fish in a stock that is unfished. It can be used to measure the effects of fishing pressure on a stock by expressing the spawning potential of the fished biomass as a percentage of the unfished virgin spawning biomass.",
+                                       Definition)
+    ) |>
+    # add periods to end of Definition
+    dplyr::mutate(
+      Definition = ifelse(
+        stringr::str_sub(Definition, -1) == ".",
+        Definition,
+        paste0(Definition, ".")
+      )
+    ) |>
+    dplyr::select(1:4) #|>
   #  dplyr::mutate(Definition = toupper(Definition))
 
-  # last ac cleaned: FMP
+  # last ac cleaned: SPR
 
   # keep cleaning once we collectively decide which duplicated acronym to use,
   # and resolve other questions
   # also, keep cleaning by:
   # -standardizing U.S. vs. US
   # -capitalize first letters of definitions
-  # -remove (or add) periods at end of definitions
   # -Change SS to SS3 (like GMFMC)
-  # -remove irrelevant columns
+  # -remove source column when done
+  # -change GOM to GOA ?
 
   write.csv(unique_all_cleaned |>
   dplyr::select(Acronym, Meaning, Definition),
