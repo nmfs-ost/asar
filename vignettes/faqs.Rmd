@@ -73,19 +73,10 @@ This could mean a lot of things. Most of the time, when create_template is not w
 
 Please refer to [the accessibility vignette's guide ](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#how-to-edit-your-reports-alt-text-and-captions) on editing alt text and captions.
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> f39ba13 (Move two utils fxns to individual R files (#188))
 ### **Why aren't my tables and/or figures displaying on landscape-oriented pages when the landscape braces are present?**
 
 You may be using a version of Quarto [older than v1.6](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion post](https://github.com/nmfs-ost/asar/discussions/186) detailing how to check which version you have and update it.
 
-<<<<<<< HEAD
-=======
->>>>>>> d7b6cfc (Reproduce skeleton and add default draft watermark to reports (#160))
-=======
->>>>>>> f39ba13 (Move two utils fxns to individual R files (#188))
 ### **My figure and table references aren't in chronological order in the report. How do I fix this?**
 
 As far as we know, a fix isn't possible with Quarto. The order of your figures and tables in their respective 08_tables.qmd and 09_figures.qmd docs will determine their numbers in the report. This might result in Table 2 being referenced before Table 1, for instance, in your report. You *can* try manually changing the order of the figure and table chunks in the 08_tables.qmd and 09_figures.qmd docs, but this isn't a reproducible or permanent solution. If you know of a long-term solution, [please let us know](https://github.com/nmfs-ost/asar/issues) or submit a pull request!
