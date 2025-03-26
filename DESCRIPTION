@@ -32,7 +32,6 @@ Imports:
     pdftools,
     prodlim,
     purrr,
-    quarto,
     stats,
     stringr,
     svDialogs,
