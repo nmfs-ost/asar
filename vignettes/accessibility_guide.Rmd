@@ -25,7 +25,11 @@ We have built `asar` so that the produced documents uphold several [federal acce
 
 1.  **Check the accuracy** of each figure's alternative text ("alt text" for short).
 
-    -   `asar`'s figures already contains some prewritten alt text that includes data from the model results file. This means that most of the work has been done for you! However, it is crucial that you check this information for accuracy and update it where necessary. This is especially true if the default figures have been modified. If you see text that looks like a placeholder (e.g., "The x axis, showing the year, spans from B_start_year to B_end_year..."), that means that there was at least one instance where our tool failed to extract a specific value from the model results and substitute it into the placeholder. Learn how to manually add the right values in section "How to edit your report's alt text and captions", below.
+    -   `asar`'s figures already contains some prewritten alt text that includes data from the model results file. This means that most of the work has been done for you! However, it is crucial that you check this information for accuracy and update it where necessary. This is especially true if the default figures have been modified.
+
+    -   If you see text that looks like a placeholder (e.g., "The x axis, showing the year, spans from B.start.year to B.end.year..."), that means that there was at least one instance where our tool failed to extract a specific value from the model results, calculate a key quantity (like the start year of a biomass plot- aka "B.start.year"), and substitute it into the placeholder. Learn how to manually add the right values in section "How to edit your report's alt text and captions", below.
+
+    -   Again, we stress that while we have extracted key quantities as accurately as possible, **we cannot guarantee that each quantity will have been calculated perfectly. Input data varies widely. It’s always your responsibility to check the accuracy of your figures' alt text.**
 
 2.  **Write the final component** of each figure's alt text.
 
