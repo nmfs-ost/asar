@@ -89,9 +89,7 @@ test_that("create_template() creates correct files", {
     # resdir = "data",
     # model_results = "Report.sso",
     # model = "SS3"
-  ) |>
-    suppressWarnings() |>
-    suppressMessages()
+  ) |> suppressWarnings() |> suppressMessages()
 
   long_inputs_output_path <- file.path(path, "report")
   object_report_files <- list.files(long_inputs_output_path)

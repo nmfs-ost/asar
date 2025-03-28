@@ -17,6 +17,7 @@
 create_tables_doc <- function(subdir = NULL,
                               include_all = TRUE,
                               rda_dir = NULL) {
+
   # set portrait page width (in)
   portrait_pg_width <- 5
 
@@ -76,28 +77,24 @@ if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
 
 
       # identify table orientation
-      bnc_orient <- ID_tbl_width_class(
-        plot_name = plot_name.bnc,
-        rda_dir = rda_dir,
-        portrait_pg_width = portrait_pg_width
-      )
+      bnc_orient <- ID_tbl_width_class(plot_name = plot_name.bnc,
+                                       rda_dir = rda_dir,
+                                       portrait_pg_width = portrait_pg_width)
 
       # add landscape braces before R chunk depending on table width
-      if (bnc_orient != "regular") {
+      if(bnc_orient != "regular"){
         tables_doc <- paste0(
           tables_doc,
           "::: {.landscape}\n\n"
         )
       }
 
-      if (bnc_orient == "extra-wide") {
+      if(bnc_orient == "extra-wide"){
         # split extra-wide tables into smaller tables and export AND
         # identify number of split tables
-        split_tables <- export_split_tbls(
-          rda_dir = rda_dir,
-          plot_name = plot_name.bnc,
-          essential_columns = 1
-        )
+        split_tables <- export_split_tbls(rda_dir = rda_dir,
+                                          plot_name = plot_name.bnc,
+                                          essential_columns = 1)
 
         # add a chunk to import new captions
         tables_doc <- paste0(
@@ -111,7 +108,8 @@ bnc_table_split_rda <- table_list\n
 rm(table_list)\n
 # extract table caption specifiers
 bnc_cap_split <- names(bnc_table_split_rda)"
-            ),
+            )
+            ,
             label = "tbl-bnc-labels",
             eval = "!expr eval_bnc",
             add_option = TRUE,
@@ -125,7 +123,8 @@ bnc_cap_split <- names(bnc_table_split_rda)"
         )
 
         # prepare text for chunk that will display split tables
-        for (i in 1:as.numeric(split_tables)) {
+        for (i in 1:as.numeric(split_tables)){
+
           # add a chunk for each table
           tables_doc <- paste0(
             tables_doc,
@@ -133,7 +132,8 @@ bnc_cap_split <- names(bnc_table_split_rda)"
               paste0(
                 "# plot split table ", i, "
 bnc_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
-              ),
+              )
+              ,
               label = paste0("tbl-bnc", i),
               eval = "!expr eval_bnc",
               add_option = TRUE,
@@ -150,18 +150,20 @@ bnc_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
           )
         }
       } else {
+
         ## add table if it only requires one chunk
         tables_doc <- paste0(
           tables_doc,
           add_chunk(
-            if (bnc_orient == "wide") {
+            if (bnc_orient == "wide"){
               paste0(
                 "bnc_table |>
                 flextable::fit_to_width(max_width = 8)"
               )
-            } else if (bnc_orient == "regular") {
+            } else if (bnc_orient == "regular"){
               paste0("bnc_table")
-            },
+            }
+            ,
             label = "tbl-bnc",
             eval = "!expr eval_bnc",
             add_option = TRUE,
@@ -179,7 +181,7 @@ bnc_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
       }
 
       # add landscape braces after R chunk depending on table width
-      if (bnc_orient != "regular") {
+      if(bnc_orient != "regular"){
         tables_doc <- paste0(
           tables_doc,
           ":::\n"
@@ -227,28 +229,24 @@ if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
       )
 
       # identify table orientation
-      indices_orient <- ID_tbl_width_class(
-        plot_name = plot_name.indices,
-        rda_dir = rda_dir,
-        portrait_pg_width = portrait_pg_width
-      )
+      indices_orient <- ID_tbl_width_class(plot_name = plot_name.indices,
+                                           rda_dir = rda_dir,
+                                           portrait_pg_width = portrait_pg_width)
 
       # add landscape braces before R chunk depending on table width
-      if (indices_orient != "regular") {
+      if(indices_orient != "regular"){
         tables_doc <- paste0(
           tables_doc,
           "::: {.landscape}\n\n"
         )
       }
 
-      if (indices_orient == "extra-wide") {
+      if(indices_orient == "extra-wide"){
         # split extra-wide tables into smaller tables and export AND
         # identify number of split tables
-        split_tables <- export_split_tbls(
-          rda_dir = rda_dir,
-          plot_name = plot_name.indices,
-          essential_columns = 1
-        )
+        split_tables <- export_split_tbls(rda_dir = rda_dir,
+                                          plot_name = plot_name.indices,
+                                          essential_columns = 1)
 
         # add a chunk to import new captions
         tables_doc <- paste0(
@@ -262,7 +260,8 @@ indices_table_split_rda <- table_list\n
 rm(table_list)\n
 # extract table caption specifiers
 indices_cap_split <- names(indices_table_split_rda)"
-            ),
+            )
+            ,
             label = "tbl-indices-labels",
             eval = "!expr eval_indices",
             add_option = TRUE,
@@ -276,7 +275,8 @@ indices_cap_split <- names(indices_table_split_rda)"
         )
 
         # prepare text for chunk that will display split tables
-        for (i in 1:as.numeric(split_tables)) {
+        for (i in 1:as.numeric(split_tables)){
+
           # add a chunk for each table
           tables_doc <- paste0(
             tables_doc,
@@ -284,7 +284,8 @@ indices_cap_split <- names(indices_table_split_rda)"
               paste0(
                 "# plot split table ", i, "
 indices_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
-              ),
+              )
+              ,
               label = paste0("tbl-indices", i),
               eval = "!expr eval_indices",
               add_option = TRUE,
@@ -301,18 +302,20 @@ indices_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
           )
         }
       } else {
+
         ## add table if it only requires one chunk
         tables_doc <- paste0(
           tables_doc,
           add_chunk(
-            if (indices_orient == "wide") {
+            if (indices_orient == "wide"){
               paste0(
                 "indices_table |>
                 flextable::fit_to_width(max_width = 8)"
               )
-            } else if (indices_orient == "regular") {
+            } else if (indices_orient == "regular"){
               paste0("indices_table")
-            },
+            }
+            ,
             label = "tbl-indices",
             eval = "!expr eval_indices",
             add_option = TRUE,
@@ -330,7 +333,7 @@ indices_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
       }
 
       # add landscape braces after R chunk depending on table width
-      if (indices_orient != "regular") {
+      if(indices_orient != "regular"){
         tables_doc <- paste0(
           tables_doc,
           ":::\n"
@@ -354,7 +357,7 @@ indices_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
 
   # Save tables doc to template folder
   utils::capture.output(cat(tables_doc),
-    file = paste0(subdir, "/", "08_tables.qmd"),
-    append = FALSE
+                        file = paste0(subdir, "/", "08_tables.qmd"),
+                        append = FALSE
   )
 }

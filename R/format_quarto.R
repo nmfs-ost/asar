@@ -40,7 +40,7 @@ format_quarto <- function(format = NULL) {
       "  ", "  ", "number-sections: true", "\n",
       "  ", "  ", "toc: true", "\n",
       "  ", "  ", "toc-depth: 3", "\n",
-      "  ", "  ", "citations-hover: true", "\n"
+      "  ","  ", "citations-hover: true", "\n"
     )
   } else if (tolower(format) == "docx") {
     paste0(

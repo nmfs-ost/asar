@@ -31,31 +31,25 @@ add_section <- function(
   for (i in 1:length(new_section)) {
     section_i_name <- paste0(gsub(" ", "_", tolower(new_section[i])), ".qmd")
     local_section <- forstringr::str_extract_part(
-      section_location[i], "-",
-      before = FALSE
+      section_location[i], "-", before = FALSE
     )
     local_section_prev <- forstringr::str_extract_part(
-      section_location[i - 1], "-",
-      before = FALSE
+      section_location[i - 1], "-", before = FALSE
     )
 
     if (any("TRUE" %in% grepl("-", section_location))) {
       locality <- forstringr::str_extract_part(
-        section_location[i], "-",
-        before = TRUE
+        section_location[i], "-", before = TRUE
       )
       locality_prev <- forstringr::str_extract_part(
-        section_location[i - 1], "-",
-        before = TRUE
+        section_location[i - 1], "-", before = TRUE
       )
     } else if (any("TRUE" %in% grepl(" ", section_location))) {
       locality <- forstringr::str_extract_part(
-        section_location[i], " ",
-        before = TRUE
+        section_location[i], " ", before = TRUE
       )
       locality_prev <- forstringr::str_extract_part(
-        section_location[i - 1], "-",
-        before = TRUE
+        section_location[i - 1], "-", before = TRUE
       )
     }
 
@@ -85,8 +79,8 @@ add_section <- function(
           section_i_name,
           after = which(grepl(
             gsub(" ", "_", tolower(new_section[i - 1])),
-            custom_sections
-          ))
+            custom_sections)
+          )
         )
       } else {
         custom_sections <- append(
