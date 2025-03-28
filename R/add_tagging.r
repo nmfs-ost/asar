@@ -43,7 +43,7 @@ add_tagging <- function(
     compile = TRUE,
     rename = NULL
 ) {
-    # Read latex file
+  # Read latex file
   tex_file <- readLines(file.path(dir, x))
 
   # Identify line where the new accessibility content should be added after
