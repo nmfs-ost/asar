@@ -52,10 +52,14 @@ add_tagging <- function(
     rename = NULL
 ) {
 <<<<<<< HEAD
+<<<<<<< HEAD
   # Read latex file
 =======
     # Read latex file
 >>>>>>> 6b58bb4 (reset branch to dev)
+=======
+  # Read latex file
+>>>>>>> a1a1141 (update(a11y fxns): adjust way alt text is added and the tagging function per work done in quarto-accessibility-reprex repo)
   tex_file <- readLines(file.path(dir, x))
 
   # Identify line where the new accessibility content should be added after
