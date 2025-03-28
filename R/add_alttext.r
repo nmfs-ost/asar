@@ -57,8 +57,7 @@ add_alttext <- function(
     rda_dir = getwd(),
     alttext_csv_dir = getwd(),
     compile = TRUE,
-    rename = NULL
-) {
+    rename = NULL) {
   # Read latex file
   tex_file <- readLines(file.path(dir, x))
 
@@ -73,7 +72,14 @@ add_alttext <- function(
 
   # Identify lines with figures
   # this approach allows us to not mistake the replacement for other figures
-  fig_lines <- grep("fig-([a-z]+|[a-z]+_[a-z]+)-plot-1.pdf", tex_file)
+  # For render to pdf
+  fig_lines <- grep("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file) # -plot
+  # Find images from previous naming conventions after quarto render
+  # TODO: this might need to be take out in the future - aka not needed
+  fig_lines <- c(fig_lines, grep("fig-([a-z]+|[a-z]+_[a-z]+)-plot-1.pdf", tex_file))
+  # for html render or external images
+  fig_lines <- c(fig_lines,
+                 grep("fig-([a-z]+|[a-z]+_[a-z]+)-1.png", tex_file))
 
   # TODO:
   # create check to see if there are any instances where the suffix is not plot-1
@@ -84,48 +90,62 @@ add_alttext <- function(
   #   tex_file
   # )
 
+  # TODO:
+  # Create alternative options for render to html or docx
+
   # Replace pandocbounded with pdftooltip so alt text can be added
-  tex_file[fig_lines] <- lapply(
-    tex_file[fig_lines],
-    function(line) {
-      gsub("\\pandocbounded", "\\pdftooltip", line)
-    }
-  )
+  # No longer using tooltip - pandocbounded will work fine with the next adjustments
+  # tex_file[fig_lines] <- lapply(
+  #   tex_file[fig_lines],
+  #   function(line) {
+  #     gsub("\\pandocbounded", "\\pdftooltip", line)
+  #   }
+  # )
 
   # Check instance of pandocbounded that haven't been replaced
   # these are the additional images
-  addl_figs <- grep("\\pandocbounded", tex_file)[-1]
+  addl_figs <- setdiff(grep("\\pandocbounded", tex_file)[-1], fig_lines)
+
   # ignore line 82 - this is the department of commerce logo
   # replace as above
-  tex_file[addl_figs] <- lapply(
-    tex_file[addl_figs],
-    function(line) {
-      gsub("\\pandocbounded", "\\pdftooltip", line)
-    }
-  )
+  # Again don't want to replace pandocbounded anymore
+  # tex_file[addl_figs] <- lapply(
+  #   tex_file[addl_figs],
+  #   function(line) {
+  #     gsub("\\pandocbounded", "\\pdftooltip", line)
+  #   }
+  # )
+
   # Add alt text to custom images
   # read in alt text csv file to match with labels
   alttext <- utils::read.csv(file.path(alttext_csv_dir, "captions_alt_text.csv"))
-  for (i in addl_figs) {
-    # Find line label
-    line <- tex_file[i]
-    # Find line following target to extract label
-    matches <- grep("\\label", tex_file)
-    label_line <- matches[matches > i][1]
-    line_label <- stringr::str_extract(tex_file[label_line], "\\\\label\\{([^}]*)\\}") |>
-      stringr::str_remove_all("^\\\\label\\{|\\}$")
-    # Match label name to label in csv and extract alttext
-    alttext_i <- alttext |>
-      dplyr::filter(label == line_label) |>
-      dplyr::pull(alt_text)
-    if (is.na(label_line)) {
-      alttext_i <- ""
-      warning(glue::glue(
-        "No alternative text found for {line_label}."
-      ))
+  if (length(addl_figs) > 0) {
+    for (i in addl_figs) {
+      # Find line label
+      line <- tex_file[i]
+      # Find line following target to extract label
+      matches <- grep("\\label", tex_file)
+      label_line <- matches[matches > i][1]
+      line_label <- stringr::str_extract(tex_file[label_line], "\\\\label\\{([^}]*)\\}") |>
+        stringr::str_remove_all("^\\\\label\\{|\\}$")
+      # Match label name to label in csv and extract alttext
+      alttext_i <- alttext |>
+        dplyr::filter(label == line_label) |>
+        dplyr::pull(alt_text)
+      if (is.na(label_line)) {
+        alttext_i <- ""
+        warning(glue::glue(
+          "No alternative text found for {line_label}."
+        ))
+      }
+      # Add selected alttext onto end of the line
+      tex_file[i] <- gsub(
+        "keepaspectratio",
+        paste0("keepaspectratio,alt={'", alttext_i,"'}"),
+        tex_file[i]
+      )
+      # tex_file[i] <- paste(tex_file[i], "{", alttext_i, "}", sep = "")
     }
-    # Add selected alttext onto end of the line
-    tex_file[i] <- paste(tex_file[i], "{", alttext_i, "}", sep = "")
   }
 
   # Insert alt text for figures
@@ -142,19 +162,42 @@ add_alttext <- function(
     # figures in tex file
     if (grepl("_", rda_name)) rda_name <- stringr::str_replace(rda_name, "_", "-")
     # convert to name in tex file to find where the line is located
-    tex_name <- glue::glue("fig-{rda_name}-plot-1.pdf")
+    tex_name <- glue::glue("fig-{rda_name}-1.png") # replacing pdf - img ext are changed in next step
     # extract alt. text with figure
     alt_text <- rda$alt_text
     # names(alt_text) <- tex_name
     # place obj into list
     alt_text_list[[tex_name]] <- alt_text
-      # call tex obj name using names()
-      # call alt text using list[[i]]
+    # call tex obj name using names()
+    # call alt text using list[[i]]
     # remove rda file to declutter
     rm(rda)
   }
 
+  # Convert all pdf images to png if render was to pdf
+  # extract all files from render folder
+  # TODO: add check if this has already been done then move to next img in the folder
+  img_path <- file.path(dir, gsub(".tex", "_files/figure-pdf", x))
+  if (dir.exists(img_path)) {
+    imgs <- list.files(img_path)
+    for (i in length(imgs)) {
+      img_file <- imgs[i]
+      img_file_con <- gsub(".pdf", ".png", img_file)
+      if (!file.exists(file.path(img_path, img_file_con))) {
+        pdftools::pdf_convert(
+          file.path(img_path, img_file),
+          format = "png",
+          dpi = 300,
+          filenames = file.path(img_path, img_file_con)
+        ) |> suppressWarnings() |> suppressMessages()
+      }
+      # Replace names in the tex file
+      tex_file <- gsub(img_file, img_file_con, tex_file)
+    }
+  }
+
   # Find where figure is located and append the alt. text
+  # TODO: make checks so only adds to images that don't already have alt text included in them
   for (i in seq_along(alt_text_list)) {
     fig_line <- grep(names(alt_text_list[i]), tex_file)
     # Check that line we are adding the alt text to is for correct fig
@@ -168,11 +211,14 @@ add_alttext <- function(
       warning(glue::glue("Improper line for appendment: \n Skipped adding alternative text for {names(alt_text_list[i])}"))
       next
     }
-    tex_file[fig_line] <- paste(tex_file[fig_line], "{", alt_text_list[[i]], "}", sep = "")
+    tex_file[fig_line] <- gsub(
+      "keepaspectratio",
+      paste0("keepaspectratio,alt={'",alt_text_list[[i]],"'}"),
+      tex_file[fig_line]
+    )
+    # tex_file[fig_line] <- paste(tex_file[fig_line], "{", alt_text_list[[i]], "}", sep = "")
     # tex_file[fig_line] <- strwrap(paste(tex_file[fig_line], "{", alt_text_list[[1]], "}", sep = ""))  # remove strwrap if does not render
   }
-  # tex_file[430] <- paste(tex_file[fig_line], "{", alt_text_list[[1]], "}", sep = "")
-  # strwrap(paste(tex_file[fig_line], "{", alt_text_list[[1]], "}", sep = ""), width = 80)
 
   # Checks
   # add check if there are more plots that did not have alt text added
