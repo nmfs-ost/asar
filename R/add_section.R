@@ -44,18 +44,34 @@ add_section <- function(
         section_location[i], "-",
         before = TRUE
       )
+      # run again in case there are double -
+      if (grepl("-", locality)) {
+        locality <- forstringr::str_extract_part(
+          locality, "-",
+          before = TRUE
+        )
+      }
+
       locality_prev <- forstringr::str_extract_part(
-        section_location[i - 1], "-",
-        before = TRUE
+        section_location[i], "-",
+        before = FALSE
       )
     } else if (any("TRUE" %in% grepl(" ", section_location))) {
       locality <- forstringr::str_extract_part(
         section_location[i], " ",
         before = TRUE
       )
+      # run again in case there are double -
+      if (grepl("-", locality)) {
+        locality <- forstringr::str_extract_part(
+          locality, "-",
+          before = TRUE
+        )
+      }
+      
       locality_prev <- forstringr::str_extract_part(
-        section_location[i - 1], "-",
-        before = TRUE
+        section_location[i], "-",
+        before = FALSE
       )
     }
 
