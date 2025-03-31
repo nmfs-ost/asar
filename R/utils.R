@@ -101,6 +101,12 @@ export_split_tbls <- function(
 #---- consolidate and organize acronyms ----
 create_acronym_table <- function(){
 
+  # set up fxn that capitalizes first letter of string
+  first_capitalize <- function(x) {
+    substr(x, 1, 1) <- toupper(substr(x, 1, 1))
+    x
+  }
+
   ac_dir <- fs::path("inst", "resources", "acronyms")
 
   # import all acronyms, meanings, and definitions
@@ -339,7 +345,8 @@ create_acronym_table <- function(){
         "Subarea as specified by NAFO",
         "Saipan Fishermen's Association",
         "Social impact analysis",
-        "Spawning biomass per recruit"
+        "Spawning biomass per recruit",
+        "Spatial Working Group"
         ),
       !Acronym %in% c(
         "CA",
@@ -349,7 +356,9 @@ create_acronym_table <- function(){
         "PRD",
         "RF",
         "SAS",
-        "SBA"
+        "SBA",
+        "SSB",
+        "STT"
       ),
       !(source == "PFMC" & Acronym == "ABC"),
       !(source == "SAFMC" & Acronym == "ALS"),
@@ -378,8 +387,13 @@ create_acronym_table <- function(){
       !(source == "ASMFC" & Acronym == "OY"),
       !(source == "GMFMC" & Acronym == "SEDAR"),
       !(source == "ASMFC" & Acronym == "SEFSC"),
-      !(source %in% c("PFMC", "WPFMC", "ASMFC") & Acronym == "SPR")
-      ) |>
+      !(source %in% c("PFMC", "WPFMC", "ASMFC") & Acronym == "SPR"),
+      !(source %in% c("WPFMC", "GMFMC") & Acronym == "SSC"),
+      !(source %in% c("PFMC", "GMFMC") & Acronym == "TAC"),
+      !(source == "PFMC" & Acronym == "VMS"),
+      !(source == "GMFMC" & Acronym == "VPA"),
+      !(source == "PFMC" & Acronym == "mt")
+    ) |>
     dplyr::mutate(Definition = stringr::str_replace_all(Definition,
                                                         "An annual catch level recommended by a Council's SSC. The Council's ACL for a stock may not exceed the ABC recommendation of the SSC for that stock. The SSC's ABC recommendation should incorporate consideration of the stock's life history and reproductive potential, vulnerability to overfishing, and the degree of uncertainty in the science upon which the ABC recommendation is based.",
                                                         "A scientific calculation of the annual catch level recommended by a Council's SSC and is used to set the upper limit of the annual total allowable catch. It is calculated by applying the estimated (or proxy) harvest rate that produces maximum sustainable yield to the estimated exploitable stock biomass (the portion of the fish population that can be harvested)."),
@@ -454,7 +468,22 @@ create_acronym_table <- function(){
                                       Definition),
                   Definition = ifelse(Acronym == "SPR",
                                       "The ratio of the number of eggs that could be produced by a fish over its lifetime that has recruited to a fishery, over the number of eggs that could be produced by an average fish in a stock that is unfished. It can be used to measure the effects of fishing pressure on a stock by expressing the spawning potential of the fished biomass as a percentage of the unfished virgin spawning biomass.",
-                                       Definition)
+                                       Definition),
+                  Definition = ifelse(Acronym == "SB",
+                                      "The total weight of the mature females, or mature females and males, depending on the species, that are reproducing in a given season (sometimes measured in egg production).",
+                                      Definition),
+                  Definition = ifelse(Acronym == "SSC",
+                                      "An advisory committee of a regional fishery management council composed of scientists, economists, and other technical experts that peer review statistical, biological, ecological, economic, social, and other scientific information that is relevant to the management of council fisheries, and provides preliminary policy language to the full council for consideration.",
+                                      Definition),
+                  Meaning = ifelse(Acronym == "mt",
+                                   "Metric ton",
+                                   Meaning),
+                  Acronym = ifelse(Acronym == "SS",
+                                   "SS3",
+                                   Acronym),
+                  Definition = ifelse(Acronym == "VPA",
+                                      "A fisheries stock assessment cohort modeling method that reconstructs historical fish population structure by analyzing catch data and mortality rates to estimate past population sizes and fishing mortality rates.",
+                                      Definition)
     ) |>
     # add periods to end of Definition
     dplyr::mutate(
@@ -464,18 +493,14 @@ create_acronym_table <- function(){
         paste0(Definition, ".")
       )
     ) |>
-    dplyr::select(1:4) #|>
-  #  dplyr::mutate(Definition = toupper(Definition))
+    dplyr::mutate(Meaning = first_capitalize(Meaning),
+                  Definition = first_capitalize(Definition)) |>
+    dplyr::mutate_if(is.character, ~stringr::str_replace(., "U.S.", "US")) |>
+    # instance in LEC won't update unless done twice
+    dplyr::mutate_if(is.character, ~stringr::str_replace(., "U.S.", "US")) |>
+    dplyr::select(2:4)
 
-  # last ac cleaned: SPR
-
-  # keep cleaning once we collectively decide which duplicated acronym to use,
-  # and resolve other questions
-  # also, keep cleaning by:
-  # -standardizing U.S. vs. US
-  # -capitalize first letters of definitions
-  # -Change SS to SS3 (like GMFMC)
-  # -remove source column when done
+  # keep cleaning by:
   # -change GOM to GOA ?
 
   write.csv(unique_all_cleaned |>
