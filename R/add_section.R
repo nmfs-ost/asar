@@ -34,11 +34,13 @@ add_section <- function(
       section_location[i], "-",
       before = FALSE
     )
+    # looking at the section identified for the previous entry
     local_section_prev <- forstringr::str_extract_part(
       section_location[i - 1], "-",
       before = FALSE
     )
 
+    # Extracting where the new section should be place in relation to a base section
     if (any("TRUE" %in% grepl("-", section_location))) {
       locality <- forstringr::str_extract_part(
         section_location[i], "-",
@@ -90,14 +92,14 @@ add_section <- function(
 
     if (locality == "before") {
       custom_sections <- append(
-        custom_sections,
+        unlist(custom_sections),
         section_i_name,
-        after = (which(grepl(local_section, custom_sections)) - 1)
+        after = (which(grepl(local_section, custom_sections))[1] - 1)
       )
     } else if (locality == "after") {
       if (locality %in% locality_prev & local_section %in% local_section_prev) {
         custom_sections <- append(
-          custom_sections,
+          unlist(custom_sections),
           section_i_name,
           after = which(grepl(
             gsub(" ", "_", tolower(new_section[i - 1])),
@@ -106,7 +108,7 @@ add_section <- function(
         )
       } else {
         custom_sections <- append(
-          custom_sections,
+          unlist(custom_sections),
           section_i_name,
           after = max(which(grepl(local_section, custom_sections)))
         )

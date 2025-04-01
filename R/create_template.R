@@ -391,7 +391,15 @@ create_template <- function(
       new_folder <- subdir
 
       if (!is.null(custom_sections)) {
-        files_to_copy <- unlist(list.files(current_folder))[c(unlist(sapply(custom_sections, function(x) grep(x, list.files(current_folder)))), 10, 11)]
+        files_to_copy <- unlist(list.files(current_folder))[c(unlist(sapply(custom_sections, function(x) grep(x, list.files(current_folder)))))]
+        # add acknowledgments sections if not selected manually
+        if (!any(grepl("acknowledgments", files_to_copy))) {
+          files_to_copy <- c(files_to_copy, unlist(list.files(current_folder))[10])
+        }
+        # add references sections if not selected manually
+        if (!any(grepl("references", files_to_copy))) {
+          files_to_copy <- c(files_to_copy, unlist(list.files(current_folder))[11])
+        }
       } else {
         files_to_copy <- list.files(current_folder)
       }
