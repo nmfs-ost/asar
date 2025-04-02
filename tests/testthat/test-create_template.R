@@ -137,8 +137,7 @@ test_that("create_template() creates correct files", {
 
   # erase temporary testing files
   unlink(fs::path(path, "report"), recursive = T)
-
-  })
+})
 
 test_that("warning is triggered for missing models", {
   # Test if warning is triggered when resdir is NULL and results or model name is not defined
@@ -210,7 +209,7 @@ test_that("warning is triggered for existing files", {
 
   # erase temporary testing files
   unlink(fs::path(path, "report"), recursive = T)
-  })
+})
 
 test_that("file_dir works", {
   dir <- tempdir()
@@ -247,4 +246,4 @@ test_that("file_dir works", {
 
   # erase temporary testing files
   unlink(file_path, recursive = T)
-  })
+})

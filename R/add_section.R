@@ -70,7 +70,7 @@ add_section <- function(
           before = TRUE
         )
       }
-      
+
       locality_prev <- forstringr::str_extract_part(
         section_location[i], "-",
         before = FALSE
