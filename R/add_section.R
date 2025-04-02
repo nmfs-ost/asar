@@ -82,7 +82,7 @@ add_section <- function(
       "\n",
       "[Insert text here]", "\n",
       "\n",
-      add_chunk("# Insert code", label = "example_chunk"), "\n"
+      add_chunk("# Insert code", label = paste0("example_chunk_", i)), "\n"
     )
     utils::capture.output(
       cat(section_i),
