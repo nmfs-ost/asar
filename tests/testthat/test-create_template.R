@@ -62,14 +62,16 @@ test_that("create_template() creates correct files", {
   object_report_files <- list.files(no_inputs_output_path)
   object_support_files <- list.files(file.path(no_inputs_output_path, "support_files"))
 
-  on.exit(unlink(file.path(path, "report"),
-    recursive = TRUE
-  ), add = TRUE)
+
   # Check if all expected report files are created
   expect_true(all(sort(expect_report_files) == sort(object_report_files)))
 
   # Check if all expected support files are created
   expect_true(all(sort(expect_support_files) == sort(object_support_files)))
+
+  # erase temporary testing files
+  unlink(fs::path(path, "report"), recursive = T)
+
 
   # Test case 2: Provide multiple inputs
 
@@ -97,7 +99,6 @@ test_that("create_template() creates correct files", {
   object_report_files <- list.files(long_inputs_output_path)
   object_support_files <- list.files(file.path(long_inputs_output_path, "support_files"))
 
-  on.exit(unlink(file.path(path, "report"), recursive = TRUE), add = TRUE)
   # Define expected report files for Dover sole
   expect_report_files <- c(
     "01_executive_summary.qmd",
@@ -133,7 +134,11 @@ test_that("create_template() creates correct files", {
 
   # Check if all expected support files are created for Dover sole
   expect_true(all(sort(expect_dover_sole_support_files) == sort(object_support_files)))
-})
+
+  # erase temporary testing files
+  unlink(fs::path(path, "report"), recursive = T)
+
+  })
 
 test_that("warning is triggered for missing models", {
   # Test if warning is triggered when resdir is NULL and results or model name is not defined
@@ -154,9 +159,10 @@ test_that("warning is triggered for missing models", {
     ),
     regexp = "Results file or model name not defined."
   )
-  on.exit(unlink(file.path(getwd(), "report"),
-    recursive = TRUE
-  ), add = TRUE)
+  path <- getwd()
+
+  # erase temporary testing files
+  unlink(fs::path(path, "report"), recursive = T)
 })
 
 test_that("warning is triggered for existing files", {
@@ -199,8 +205,12 @@ test_that("warning is triggered for existing files", {
     ),
     regexp = "There are files in this location."
   )
-  on.exit(unlink(file.path(getwd(), "report"), recursive = TRUE), add = TRUE)
-})
+
+  path <- getwd()
+
+  # erase temporary testing files
+  unlink(fs::path(path, "report"), recursive = T)
+  })
 
 test_that("file_dir works", {
   dir <- tempdir()
@@ -235,5 +245,6 @@ test_that("file_dir works", {
 
   expect_gte(length(list.files(dir)), 1)
 
-  on.exit(unlink(dir, recursive = TRUE), add = TRUE)
-})
+  # erase temporary testing files
+  unlink(file_path, recursive = T)
+  })
