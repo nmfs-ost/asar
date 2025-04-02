@@ -401,7 +401,7 @@ create_template <- function(
         if (!any(grepl("references", files_to_copy))) {
           files_to_copy <- c(files_to_copy, unlist(list.files(current_folder))[11])
           custom_sections <- c(custom_sections, "references")
-          }
+        }
       } else {
         files_to_copy <- list.files(current_folder)
       }
@@ -1076,7 +1076,7 @@ create_template <- function(
 
             # Add selected sections from base
             sec_list1 <- add_base_section(files_to_copy)
-             # Create new sections as .qmd in folder
+            # Create new sections as .qmd in folder
             # check if sections are in custom_sections list
             if (any(stringr::str_replace(section_location, "^[a-z]+-", "") %notin% custom_sections)) {
               stop("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
