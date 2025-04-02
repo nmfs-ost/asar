@@ -536,6 +536,9 @@ create_template <- function(
           # test_exp_all <-
           tryCatch(
             {
+              message("Creating .rda files by running stockplotr::exp_all_figs_tables().")
+              message("This function calls two stockplotr functions- write_captions() & add_more_key_quants()- which produce the following messages about key quantities.")
+              message("-------------------")
               stockplotr::exp_all_figs_tables(
                 dat = output,
                 recruitment_scale_amount = recruitment_scale_amount,
