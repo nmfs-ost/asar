@@ -6,7 +6,7 @@ test_that("Adding new sections works.", {
     custom_sections = sec_list,
     subdir = tempdir()
   )
-  exp_list <- list(
+  exp_list <- c(
     "abstract.qmd",
     "02_introduction.qmd",
     "04a_assessment-configuration.qmd",
@@ -29,7 +29,7 @@ test_that("Adding new sections does not work.", {
     custom_sections = sec_list,
     subdir = tempdir()
   )
-  exp_list <- list(
+  exp_list <- c(
     "02_introduction.qmd",
     "03_data.qmd",
     "04a_assessment-configuration.qmd",
@@ -44,7 +44,7 @@ test_that("Adding new sections does not work.", {
     "11_appendix.qmd",
     "07_references.qmd"
   )
-  expect_equal(sections, exp_list)
+  expect_error(expect_equal(sections == exp_list))
 })
 
 

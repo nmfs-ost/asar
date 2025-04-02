@@ -391,7 +391,17 @@ create_template <- function(
       new_folder <- subdir
 
       if (!is.null(custom_sections)) {
-        files_to_copy <- unlist(list.files(current_folder))[c(unlist(sapply(custom_sections, function(x) grep(x, list.files(current_folder)))), 10, 11)]
+        files_to_copy <- unlist(list.files(current_folder))[c(unlist(sapply(custom_sections, function(x) grep(x, list.files(current_folder)))))]
+        # add acknowledgments sections if not selected manually
+        if (!any(grepl("acknowledgments", files_to_copy))) {
+          files_to_copy <- c(files_to_copy, unlist(list.files(current_folder))[10])
+          custom_sections <- c(custom_sections, "acknowledgments")
+        }
+        # add references sections if not selected manually
+        if (!any(grepl("references", files_to_copy))) {
+          files_to_copy <- c(files_to_copy, unlist(list.files(current_folder))[11])
+          custom_sections <- c(custom_sections, "references")
+          }
       } else {
         files_to_copy <- list.files(current_folder)
       }
@@ -1066,7 +1076,7 @@ create_template <- function(
 
             # Add selected sections from base
             sec_list1 <- add_base_section(files_to_copy)
-            # Create new sections as .qmd in folder
+             # Create new sections as .qmd in folder
             # check if sections are in custom_sections list
             if (any(stringr::str_replace(section_location, "^[a-z]+-", "") %notin% custom_sections)) {
               stop("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
@@ -1077,6 +1087,9 @@ create_template <- function(
             if (include_figures) {
               sec_list1 <- c(sec_list1, "09_figures.qmd")
             }
+            # reorder sec_list1 alphabetically so that 11_appendix goes to end of list
+            sec_list1 <- sec_list1[order(names(setNames(sec_list1, sec_list1)))]
+
             sec_list2 <- add_section(
               new_section = new_section,
               section_location = section_location,
