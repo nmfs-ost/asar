@@ -500,13 +500,23 @@ create_acronym_table <- function(){
     dplyr::mutate_if(is.character, ~stringr::str_replace(., "U.S.", "US")) |>
     dplyr::select(2:4)
 
+  # take rows where SSB is in the acronym, change it to SB, and add to main df
+  ssb_rows <- unique_all_cleaned |>
+    dplyr::filter(grepl('SSB', Acronym)) |>
+    dplyr::mutate(Acronym = stringr::str_replace_all(Acronym,
+                                                      "SSB",
+                                                      "SB"))
+
+  unique_all_cleaned <- unique_all_cleaned |>
+    dplyr::full_join(ssb_rows)
+
   # keep cleaning by:
   # -change GOM to GOA ?
 
-  write.csv(unique_all_cleaned |>
-  dplyr::select(Acronym, Meaning, Definition),
-            file = paste0(ac_dir, "/", "final_files", "/", "cleaned_acronyms.csv"))
-  }
+  # write.csv(unique_all_cleaned |>
+  # dplyr::select(Acronym, Meaning, Definition),
+  #           file = paste0(ac_dir, "/", "final_files", "/", "cleaned_acronyms.csv"))
+   }
 
 # create_acronym_table()
 
