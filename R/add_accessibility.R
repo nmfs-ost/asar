@@ -14,9 +14,15 @@
 #' @param alttext_csv_dir Directory for the csv file containing alternative
 #' text and captions generated when running satf::exp_all_figs_tables
 #'
+<<<<<<< HEAD
 #' @return This function runs all functions from {asar} associated with
 #' accessibility and renders the final document. The document is tagged and
 #' includes alternative text from the captions_alt_text.csv produced from
+=======
+#' @return This function runs all functions from {asar} associated with 
+#' accessibility and renders the final document. The document is tagged and 
+#' includes alternative text from the captions_alt_text.csv produced from 
+>>>>>>> ad3c0dc (update(a11y fxns): update documentation and add in additional checks to fxns)
 #' {stockplotr} package also available on GitHub.
 #' @export
 #'
