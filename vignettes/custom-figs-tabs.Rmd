@@ -303,7 +303,7 @@ Your next step is to get a sense of your table dimensions. You'll ask:
 
 This section contains the steps to answer these questions.
 
-> **NOTE**: This workflow is reflected in the create_tables_doc.R file and its associated functions (such as `render_lg_table()`, which has its own synonymous R file, and `ID_tbl_width_class()` and `export_split_tbls()`, which are found in the [utils.R](https://github.com/nmfs-ost/asar/blob/main/R/utils.R) file).
+> **NOTE**: This workflow is reflected in the create_tables_doc.R file and its associated functions (such as `render_lg_table()`, `ID_tbl_width_class()` and `export_split_tbls()`).
 
 ## Table width and orientation
 
