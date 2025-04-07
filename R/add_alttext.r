@@ -80,6 +80,8 @@ add_alttext <- function(
   if (!file.exists(file.path(alttext_csv_dir, "captions_alt_text.csv"))) stop(glue:glue("'captions_alt_text.csv' not found in {alttext_csv_dir}."))
   
   # Identify lines with figures
+  # check if any lines have figures added
+  if (!any(grepl("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file))) stop ("No images/figures present in file.")
   # this approach allows us to not mistake the replacement for other figures
   # For render to pdf
   fig_lines <- grep("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file) # -plot
@@ -189,8 +191,9 @@ add_alttext <- function(
   img_path <- file.path(dir, gsub(".tex", "_files/figure-pdf", x))
   if (dir.exists(img_path)) {
     imgs <- list.files(img_path)
-    for (i in length(imgs)) {
+    for (i in 1:length(imgs)) {
       img_file <- imgs[i]
+      if (grepl(".png", img_file)) next
       img_file_con <- gsub(".pdf", ".png", img_file)
       if (!file.exists(file.path(img_path, img_file_con))) {
         pdftools::pdf_convert(
