@@ -451,6 +451,8 @@ Then, add three colons to close the braces:
 :::
 ```
 
+> **NOTE**: Landscape braces only work in [Quarto v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn how to check your Quarto version and update it if necessary.
+
 #### Page break
 
 If you are including more than one custom table or figure in a file, we suggest adding a page break to separate the tables/figures:
@@ -571,6 +573,8 @@ And add three colons to close the landscape braces:
 :::
 ```
 
+> **NOTE**: Landscape braces only work in [Quarto v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn how to check your Quarto version and update it if necessary.
+
 If you are adding another table, regardless of size, add a page break first:
 
 ```{verbatim}
@@ -644,6 +648,8 @@ Now, add three colons to close the landscape braces:
 ```{verbatim}
 :::
 ```
+
+> **NOTE**: Landscape braces only work in [Quarto v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn how to check your Quarto version and update it if necessary.
 
 Keep adding as many tables as you'd like. Keep in mind that each table must have a chunk that imports it, and another chunk that displays it, as shown above.
 
@@ -785,6 +791,8 @@ And add three colons to close the landscape braces:
 ```{verbatim}
 :::
 ```
+
+> **NOTE**: Landscape braces only work in [Quarto v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn how to check your Quarto version and update it if necessary.
 
 If you are adding another table, regardless of size, add a page break first:
 
