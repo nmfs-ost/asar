@@ -10,7 +10,12 @@
 #' text needs to be found in either the rda files produced from
 #' stockplotr::exp_all_figs_tables or in the captions_alt_text.csv also produced from
 #' the same function. Users not using this format should create a csv file with
-#' columns containing "label" and "alt_text".
+#' columns containing "label" and "alt_text" where the label column contains the
+#'  exact label name when referencing the image/figure in text. The label is 
+#'  very important as it provides a way for the function to match where the 
+#'  alternative text gets placed. When compile is set to TRUE, the alternative 
+#'  text using this format will not be available and must be used in conjunction 
+#'  with `asar::add_tagging()`.
 #'
 #' @export
 #'
@@ -46,7 +51,7 @@
 #'      dir = getwd(),
 #'      alttext_csv_dir = getwd(),
 #'      rda_dir = path,
-#'      compile = TRUE,
+#'      compile = FALSE,
 #'      rename = "SAR_Dover_sole_tagged")
 #'    )
 #' }
@@ -59,6 +64,7 @@ add_alttext <- function(
     compile = TRUE,
     rename = NULL) {
   # Read latex file
+  if (!file.exists(file.path(dir, x))) stop(glue::glue("File {dir}/{x} does not exist!"))
   tex_file <- readLines(file.path(dir, x))
 
   # Check: count instances of pattern
@@ -70,6 +76,9 @@ add_alttext <- function(
   #        )
   #   )
 
+  # Check if alt text csv is where indicated
+  if (!file.exists(file.path(alttext_csv_dir, "captions_alt_text.csv"))) stop(glue:glue("'captions_alt_text.csv' not found in {alttext_csv_dir}."))
+  
   # Identify lines with figures
   # this approach allows us to not mistake the replacement for other figures
   # For render to pdf

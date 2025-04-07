@@ -2,10 +2,11 @@
 #'
 #' @inheritParams add_accessibility
 #'
-#' @return DRAFT: This function was made to help add in
+#' @return This function was made to help add in
 #' latex packages and content associated with PDF
 #' tagging. Quarto does not allow the user to edit anything
 #' before documentclass, so this function alters the rendered .tex file.
+#' 
 #' @export
 #'
 #' @examples
