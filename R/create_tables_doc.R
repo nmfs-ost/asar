@@ -347,7 +347,158 @@ indices_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
       )
     }
 
-    # landings table----- # ADD WHEN READY
+    # landings table-----
+    plot_name.landings <- "landings_table.rda"
+    if (any(grepl(plot_name.landings, list.files(file.path(rda_dir, "rda_files"))))) {
+      ## import table, caption
+      tables_doc <- paste0(
+        tables_doc,
+        add_chunk(
+          paste0("# if the landings table rda exists:
+if (file.exists(file.path(rda_dir, 'landings_table.rda'))){\n
+  # load rda
+  load(file.path(rda_dir, 'landings_table.rda'))\n
+  # save rda with plot-specific name
+  landings_table_rda <- rda\n
+  # remove generic rda object
+  rm(rda)\n
+  # save table, caption as separate objects; set eval to TRUE
+  landings_table <- landings_table_rda$table
+  landings_cap <- landings_table_rda$cap
+  eval_landings <- TRUE\n
+# if the landings table rda does not exist, don't evaluate the next chunk
+} else {eval_landings <- FALSE}"),
+          label = "tbl-landings-setup",
+          eval = "true",
+          add_option = TRUE,
+          chunk_op = c(
+            glue::glue(
+              "include: false"
+            )
+          )
+        ),
+        "\n"
+      )
+
+      # identify table orientation
+      landings_orient <- ID_tbl_width_class(plot_name = plot_name.landings,
+                                           rda_dir = rda_dir,
+                                           portrait_pg_width = portrait_pg_width)
+
+      # add landscape braces before R chunk depending on table width
+      if(landings_orient != "regular"){
+        tables_doc <- paste0(
+          tables_doc,
+          "::: {.landscape}\n\n"
+        )
+      }
+
+      if(landings_orient == "extra-wide"){
+        # split extra-wide tables into smaller tables and export AND
+        # identify number of split tables
+        split_tables <- export_split_tbls(rda_dir = rda_dir,
+                                          plot_name = plot_name.landings,
+                                          essential_columns = 1)
+
+        # add a chunk to import new captions
+        tables_doc <- paste0(
+          tables_doc,
+          add_chunk(
+            paste0(
+              "load(file.path(rda_dir, 'landings_table_split.rda'))\n
+# save rda with plot-specific name
+landings_table_split_rda <- table_list\n
+# remove generic rda object
+rm(table_list)\n
+# extract table caption specifiers
+landings_cap_split <- names(landings_table_split_rda)"
+            )
+            ,
+            label = "tbl-landings-labels",
+            eval = "!expr eval_landings",
+            add_option = TRUE,
+            chunk_op = c(
+              glue::glue(
+                "include: false"
+              )
+            )
+          ),
+          "\n"
+        )
+
+        # prepare text for chunk that will display split tables
+        for (i in 1:as.numeric(split_tables)){
+
+          # add a chunk for each table
+          tables_doc <- paste0(
+            tables_doc,
+            add_chunk(
+              paste0(
+                "# plot split table ", i, "
+landings_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
+              )
+              ,
+              label = paste0("tbl-landings", i),
+              eval = "!expr eval_landings",
+              add_option = TRUE,
+              chunk_op = c(
+                glue::glue(
+                  "tbl-cap: !expr if(eval_landings) paste0(landings_cap, '(', landings_cap_split[[", i, "]], ')')"
+                ),
+                glue::glue(
+                  "include: !expr eval_landings"
+                )
+              )
+            ),
+            "\n"
+          )
+        }
+      } else {
+
+        ## add table if it only requires one chunk
+        tables_doc <- paste0(
+          tables_doc,
+          add_chunk(
+            if (landings_orient == "wide"){
+              paste0(
+                "landings_table |>
+                flextable::fit_to_width(max_width = 8)"
+              )
+            } else if (landings_orient == "regular"){
+              paste0("landings_table")
+            }
+            ,
+            label = "tbl-landings",
+            eval = "!expr eval_landings",
+            add_option = TRUE,
+            chunk_op = c(
+              glue::glue(
+                "tbl-cap: !expr if(eval_landings) landings_cap"
+              ),
+              glue::glue(
+                "include: !expr eval_landings"
+              )
+            )
+          ),
+          "\n"
+        )
+      }
+
+      # add landscape braces after R chunk depending on table width
+      if(landings_orient != "regular"){
+        tables_doc <- paste0(
+          tables_doc,
+          ":::\n"
+        )
+      }
+
+      # add page break after table plotted
+      tables_doc <- paste0(
+        tables_doc,
+        "\n{{< pagebreak >}}\n"
+      )
+    }
+
 
     # Add other tables follow the same above format
   } else {
