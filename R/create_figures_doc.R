@@ -378,6 +378,107 @@ if (file.exists(file.path(rda_dir, 'indices_figure.rda'))){\n
     } else {
       message("Indices of abundance figure not created.")
     }
+
+    # abundance at age figure
+    if (any(grepl("pop.naa_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
+      ## import plot, caption, alt text
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("# if the abundance at age figure rda exists:
+if (file.exists(file.path(rda_dir, 'pop.naa_figure.rda'))){\n
+  # load rda
+  load(file.path(rda_dir, 'pop.naa_figure.rda'))\n
+  # save rda with plot-specific name
+  pop.naa_plot_rda <- rda\n
+  # remove generic rda object
+  rm(rda)\n
+  # save figure, caption, and alt text as separate objects; set eval to TRUE
+  pop.naa_plot <- pop.naa_plot_rda$figure
+  pop.naa_cap <- pop.naa_plot_rda$cap
+  pop.naa_alt_text <- pop.naa_plot_rda$alt_text
+  eval_pop.naa <- TRUE\n
+# if the abundance at age figure rda does not exist, don't evaluate the next chunk
+} else {eval_pop.naa <- FALSE}"),
+          label = "fig-pop.naa-setup",
+          eval = "true"
+        ),
+        "\n"
+      )
+
+      ## add figure
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("pop.naa_plot"),
+          label = "fig-pop.naa",
+          eval = "!expr eval_pop.naa",
+          add_option = TRUE,
+          chunk_op = c(
+            glue::glue(
+              "fig-cap: !expr if(eval_pop.naa) pop.naa_cap"
+            ),
+            glue::glue(
+              "fig-alt: !expr if(eval_pop.naa) pop.naa_alt_text"
+            )
+          )
+        ),
+        "\n"
+      )
+    } else {
+      message("Abundance at age figure not created.")
+    }
+
+    # biomass at age figure
+    if (any(grepl("pop.baa_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
+      ## import plot, caption, alt text
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("# if the biomass at age figure rda exists:
+if (file.exists(file.path(rda_dir, 'pop.baa_figure.rda'))){\n
+  # load rda
+  load(file.path(rda_dir, 'pop.baa_figure.rda'))\n
+  # save rda with plot-specific name
+  pop.baa_plot_rda <- rda\n
+  # remove generic rda object
+  rm(rda)\n
+  # save figure, caption, and alt text as separate objects; set eval to TRUE
+  pop.baa_plot <- pop.baa_plot_rda$figure
+  pop.baa_cap <- pop.baa_plot_rda$cap
+  pop.baa_alt_text <- pop.baa_plot_rda$alt_text
+  eval_pop.baa <- TRUE\n
+# if the biomass at age figure rda does not exist, don't evaluate the next chunk
+} else {eval_pop.baa <- FALSE}"),
+          label = "fig-pop.baa-setup",
+          eval = "true"
+        ),
+        "\n"
+      )
+
+      ## add figure
+      figures_doc <- paste0(
+        figures_doc,
+        add_chunk(
+          paste0("pop.baa_plot"),
+          label = "fig-pop.baa",
+          eval = "!expr eval_pop.baa",
+          add_option = TRUE,
+          chunk_op = c(
+            glue::glue(
+              "fig-cap: !expr if(eval_pop.baa) pop.baa_cap"
+            ),
+            glue::glue(
+              "fig-alt: !expr if(eval_pop.baa) pop.baa_alt_text"
+            )
+          )
+        ),
+        "\n"
+      )
+    } else {
+      message("Biomass at age figure not created.")
+    }
+
   } else {
     # add option for only adding specified figures
     warning("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")

@@ -5,11 +5,10 @@ output:
     toc: true
     toc_float: true
     toc-depth: 3
-  pdf_document:
-    toc: true
-    toc-depth: 3
-vignette: "%\\VignetteIndexEntry{Adding Custom Tables and Figures} %\\VignetteEngine{knitr::rmarkdown}
-  %\\VignetteEncoding{UTF-8}\n"
+vignette: >
+  %\VignetteIndexEntry{Adding Custom Tables and Figures}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
@@ -304,7 +303,7 @@ Your next step is to get a sense of your table dimensions. You'll ask:
 
 This section contains the steps to answer these questions.
 
-> **NOTE**: This workflow is reflected in the create_tables_doc.R file and its associated functions (such as `render_lg_table()`, which has its own synonymous R file, and `ID_tbl_width_class()` and `export_split_tbls()`, which are found in the [utils.R](https://github.com/nmfs-ost/asar/blob/main/R/utils.R) file).
+> **NOTE**: This workflow is reflected in the create_tables_doc.R file and its associated functions (such as `render_lg_table()`, `ID_tbl_width_class()` and `export_split_tbls()`).
 
 ## Table width and orientation
 
@@ -452,6 +451,8 @@ Then, add three colons to close the braces:
 :::
 ```
 
+> **NOTE**: Landscape braces only work in [Quarto v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn how to check your Quarto version and update it if necessary.
+
 #### Page break
 
 If you are including more than one custom table or figure in a file, we suggest adding a page break to separate the tables/figures:
@@ -572,6 +573,8 @@ And add three colons to close the landscape braces:
 :::
 ```
 
+> **NOTE**: Landscape braces only work in [Quarto v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn how to check your Quarto version and update it if necessary.
+
 If you are adding another table, regardless of size, add a page break first:
 
 ```{verbatim}
@@ -645,6 +648,8 @@ Now, add three colons to close the landscape braces:
 ```{verbatim}
 :::
 ```
+
+> **NOTE**: Landscape braces only work in [Quarto v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn how to check your Quarto version and update it if necessary.
 
 Keep adding as many tables as you'd like. Keep in mind that each table must have a chunk that imports it, and another chunk that displays it, as shown above.
 
@@ -786,6 +791,8 @@ And add three colons to close the landscape braces:
 ```{verbatim}
 :::
 ```
+
+> **NOTE**: Landscape braces only work in [Quarto v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn how to check your Quarto version and update it if necessary.
 
 If you are adding another table, regardless of size, add a page break first:
 

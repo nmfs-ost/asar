@@ -21,6 +21,7 @@ PIFSC
 Pomatomus
 README
 REPO
+RStudio
 Rdata
 Rmarkdown
 SAR
@@ -76,13 +77,15 @@ prewritten
 qmd
 rda
 rda's
+rdas
 rdat
 rdata
 rda’s
+readLines
 roboto
 rowid
-RStudio
 saltatrix
+satf
 sd
 se
 snakecase
@@ -102,3 +105,5 @@ tidyr
 tidyselect
 titlepage
 xlsx
+yaml
+yml

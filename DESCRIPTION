@@ -24,15 +24,13 @@ Imports:
     flextable,
     forstringr,
     fs,
-    ggplot2,
     glue,
     gridExtra,
     naniar,
-    nmfspalette,
     officer,
     openxlsx,
     prodlim,
-    quarto,
+    purrr,
     stats,
     stringr,
     svDialogs,
@@ -40,18 +38,21 @@ Imports:
     tidyr,
     tidyselect,
     tinytex,
-    utils,
-    withr
+    utils
 Suggests: 
+    ggplot2,
     gt,
     kableExtra,
     knitr,
+    nmfspalette,
     parallel,
+    quarto,
     r4ss,
     rmarkdown,
     snowfall,
     stockplotr,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    withr
 VignetteBuilder: 
     knitr
 Remotes:

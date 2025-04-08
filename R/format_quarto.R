@@ -19,6 +19,9 @@ format_quarto <- function(format = NULL) {
       "  ", "  ", "  ", "- 'support_files/_titlepage.tex'", "\n",
       "  ", "  ", "include-in-header:", "\n",
       "  ", "  ", "  ", "- 'support_files/in-header.tex'", "\n",
+      "  ", "  ", "header-includes:", "\n",
+      "  ", "  ", "  ", "\\usepackage{draftwatermark}", "\n",
+      "  ", "  ", "  ", "\\SetWatermarkText{DRAFT}", "\n",
       "  ", "  ", "toc: true", "\n",
       "  ", "  ", "lof: true", "\n",
       "  ", "  ", "lot: true", "\n",
@@ -37,7 +40,7 @@ format_quarto <- function(format = NULL) {
       "  ", "  ", "number-sections: true", "\n",
       "  ", "  ", "toc: true", "\n",
       "  ", "  ", "toc-depth: 3", "\n",
-      "  ", "  ", "citations-hover: true", "\n"
+      "  ","  ", "citations-hover: true", "\n"
     )
   } else if (tolower(format) == "docx") {
     paste0(
