@@ -12,11 +12,14 @@
 <url><loc>nmfs-ost.github.io/asar/articles/regional_workflows.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/authors.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/index.html</loc></url>
+<url><loc>nmfs-ost.github.io/asar/reference/ID_tbl_width_class.html</loc></url>
+<url><loc>nmfs-ost.github.io/asar/reference/add_accessibility.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/add_alttext.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/add_base_section.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/add_child.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/add_chunk.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/add_section.html</loc></url>
+<url><loc>nmfs-ost.github.io/asar/reference/add_tagging.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/asar-package.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/convert_output.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/create_citation.html</loc></url>
@@ -26,9 +29,12 @@
 <url><loc>nmfs-ost.github.io/asar/reference/create_template.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/create_title.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/create_titlepage_tex.html</loc></url>
+<url><loc>nmfs-ost.github.io/asar/reference/create_yaml.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/export_object.html</loc></url>
+<url><loc>nmfs-ost.github.io/asar/reference/export_split_tbls.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/format_quarto.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/index.html</loc></url>
+<url><loc>nmfs-ost.github.io/asar/reference/remove_draft.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/render_lg_table.html</loc></url>
 </urlset>
 

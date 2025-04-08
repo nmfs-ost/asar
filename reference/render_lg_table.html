@@ -62,9 +62,6 @@
       <a href="../articles/convert_output_details.html">Standardizing Assessment Model Output</a>
     </li>
     <li>
-      <a href="../articles/custom-figs-tabs.html">Custom Tables and Figures</a>
-    </li>
-    <li>
       <a href="../articles/faqs.html">Frequently Asked Questions (FAQs)</a>
     </li>
   </ul></li>
@@ -133,14 +130,6 @@
 tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
 column. Example: for the indices table, this could be the year column.</p></dd>
 
-
-<dt id="arg-rda-dir">rda_dir<a class="anchor" aria-label="anchor" href="#arg-rda-dir"></a></dt>
-<dd><p>folder where rda files containing alternative text is located</p></dd>
-
-
-<dt id="arg-plot-name">plot_name<a class="anchor" aria-label="anchor" href="#arg-plot-name"></a></dt>
-<dd><p>name of the .rda file that the table is located from</p></dd>
-
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -151,18 +140,12 @@ column. Example: for the indices table, this could be the year column.</p></dd>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="fu">render_lg_table</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  report_flextable <span class="op">=</span> <span class="va">indices_table</span>,</span></span>
-<span class="r-in"><span>  essential_columns <span class="op">=</span> <span class="fl">1</span>,</span></span>
-<span class="r-in"><span>  rda_dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  plot_name <span class="op">=</span> <span class="st">"indices.abundance_table.rda"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span>report_flextable <span class="op">=</span> <span class="va">indices_table</span>,</span></span>
+<span class="r-in"><span>essential_columns <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">render_lg_table</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  report_flextable <span class="op">=</span> <span class="va">important_table</span>,</span></span>
-<span class="r-in"><span>  essential_columns <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,</span></span>
-<span class="r-in"><span>  rda_dir <span class="op">=</span> <span class="st">"data"</span>,</span></span>
-<span class="r-in"><span>  plot_name <span class="op">=</span> <span class="st">"bnc_table.rda"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span>report_flextable <span class="op">=</span> <span class="va">important_table</span>,</span></span>
+<span class="r-in"><span>essential_columns <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

@@ -1,0 +1,302 @@
+---
+title: 'Stock Assessment Report Template'
+author:
+  - name: 'NA'
+    affiliations: NO AFFILIATION
+date: today
+lang: en 
+keep-tex: true 
+cover: 
+pdf-engine: lualatex
+format: 
+  pdf: 
+    documentclass: scrartcl
+    number-sections: true
+    template-partials:
+      - 'support_files/before-body.tex'
+      - 'support_files/_titlepage.tex'
+    include-in-header:
+      - 'support_files/in-header.tex'
+    toc: true
+    lof: true
+    lot: true
+    titlepage-geometry: 
+      - top=2in
+      - bottom=1in
+      - right=1in
+      - left=1in
+output-file: 'SAR_2025' 
+params:
+   office: ''
+   species: ''
+   spp_latin: ''
+bibliography: 
+-  asar_references.bib 
+---
+
+```{r} 
+#| label: 'output_and_quantities'
+#| echo: false 
+#| warning: false 
+#| eval: false 
+# load converted output from asar::convert_output() 
+output <- utils::read.csv('/') 
+# Call reference points and quantities below 
+output <- output |> 
+  dplyr::mutate(estimate = as.numeric(estimate), 
+    uncertainty = as.numeric(uncertainty)) 
+start_year <- as.numeric(min(output$year, na.rm = TRUE)) 
+end_year <- (output |> 
+  dplyr::filter(!(year %in% c('Virg', 'Init', 'S/Rcurve', 'INIT')), 
+    !is.na(year)) |> 
+  dplyr::mutate(year = as.numeric(year)) |> 
+  dplyr::summarize(max_val = max(year)) |> 
+  dplyr::pull(max_val))-10
+# subset output to remove quantities that are split by factor 
+output2 <- output |> 
+  dplyr::filter(is.na(season), 
+    is.na(fleet), 
+    is.na(sex), 
+    is.na(area), 
+    is.na(growth_pattern), 
+    is.na(subseason), 
+    is.na(age))
+# terminal fishing mortality 
+Fend <- output2 |> 
+  dplyr::filter(c(label == 'fishing_mortality' & year == end_year) | c(label == 'terminal_fishing_mortality' & is.na(year))) |>
+  dplyr::pull(estimate)
+# fishing mortality at msy 
+# please change target if desired 
+Ftarg <- output2 |>
+  dplyr::filter(grepl('f_target', label) | grepl('f_msy', label) | c(grepl('fishing_mortality_msy', label) & is.na(year))) |>
+  dplyr::pull(estimate)
+# Terminal year F respective to F target 
+F_Ftarg <- Fend / Ftarg
+# terminal year biomass 
+Bend <- output2 |>
+  dplyr::filter(grepl('mature_biomass', label) | grepl('^biomass$', label),
+    year == end_year) |>
+  dplyr::pull(estimate)
+# target biomass (msy) 
+# please change target if desired 
+Btarg <- output2 |>
+  dplyr::filter(c(grepl('biomass', label) & grepl('target', label) & estimate >1) | label == 'biomass_msy') |>
+  dplyr::pull(estimate)
+# total catch in the last year 
+total_catch <- output |>
+  dplyr::filter(grepl('^catch$', label), 
+  year == end_year,
+    is.na(fleet),
+    is.na(age),
+    is.na(area),
+    is.na(growth_pattern)) |>
+  dplyr::pull(estimate)
+# total landings in the last year 
+total_landings <- output |>
+  dplyr::filter(grepl('landings_weight', label), year == end_year,
+    is.na(fleet),
+    is.na(age)) |>
+  dplyr::pull(estimate)
+# spawning biomass in the last year
+SBend <- output2 |>
+  dplyr::filter(grepl('spawning_biomass', label), year == end_year) |>
+  dplyr::pull(estimate) |>
+    unique()
+# overall natural mortality or at age 
+M <- output |>
+  dplyr::filter(grepl('natural_mortality', label)) |>
+  dplyr::pull(estimate)
+# Biomass at msy 
+# to change to another reference point, replace msy in the following lines with other label 
+Bmsy <- output2 |>
+  dplyr::filter(c(grepl('biomass', label) & grepl('msy', label) & estimate >1) | label == 'biomass_msy') |>
+  dplyr::pull(estimate)
+# target spawning biomass(msy) 
+# please change target if desired 
+SBtarg <- output2 |>
+  dplyr::filter(c(grepl('spawning_biomass', label) & grepl('msy$', label) & estimate >1) | label == 'spawning_biomass_msy$') |>
+  dplyr::pull(estimate)
+# steepness 
+h <- output |> 
+  dplyr::filter(grepl('steep', label)) |> 
+  dplyr::pull(estimate)
+# recruitment 
+R0 <- output |> 
+  dplyr::filter(grepl('R0', label) | grepl('recruitment_virgin', label)) |> 
+  dplyr::pull(estimate)
+# female SB (placeholder)
+
+``` 
+
+
+
+{{< pagebreak >}} 
+
+Please cite this publication as: 
+
+[AUTHOR NAME]. [YEAR]. Stock Assessment Report Template. NOAA Fisheries Science Center, [CITY], [STATE]. 
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'executive_summary'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('01_executive_summary.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'introduction'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('02_introduction.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'data'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('03_data.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'assessment-configuration'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('04a_assessment-configuration.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'assessment-results'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('04b_assessment-results.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'assessment-sensitivity'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('04c_assessment-sensitivity.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'assessment-benchmarks'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('04d_assessment-benchmarks.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'assessment-projections'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('04e_assessment-projections.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'discussion'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('05_discussion.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'acknowledgments'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('06_acknowledgments.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'references'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('07_references.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'tables'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('08_tables.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'figures'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('09_figures.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'notes'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('10_notes.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
+#| label: 'appendix'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('11_appendix.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```

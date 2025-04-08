@@ -64,9 +64,6 @@ in the console."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/
       <a href="../articles/convert_output_details.html">Standardizing Assessment Model Output</a>
     </li>
     <li>
-      <a href="../articles/custom-figs-tabs.html">Custom Tables and Figures</a>
-    </li>
-    <li>
       <a href="../articles/faqs.html">Frequently Asked Questions (FAQs)</a>
     </li>
   </ul></li>
@@ -167,7 +164,8 @@ in the console.</p>
 <span>  ref_line_sb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"target"</span>, <span class="st">"MSY"</span>, <span class="st">"msy"</span>, <span class="st">"unfished"</span><span class="op">)</span>,</span>
 <span>  indices_unit_label <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  biomass_unit_label <span class="op">=</span> <span class="st">"mt"</span>,</span>
-<span>  catch_unit_label <span class="op">=</span> <span class="st">"mt"</span></span>
+<span>  catch_unit_label <span class="op">=</span> <span class="st">"mt"</span>,</span>
+<span>  rerender_skeleton <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -475,6 +473,14 @@ regardless of how it is specified in <code>dat</code>.</p></dd>
 
 <dt id="arg-catch-unit-label">catch_unit_label<a class="anchor" aria-label="anchor" href="#arg-catch-unit-label"></a></dt>
 <dd><p>Abbreviated units for catch</p></dd>
+
+
+<dt id="arg-rerender-skeleton">rerender_skeleton<a class="anchor" aria-label="anchor" href="#arg-rerender-skeleton"></a></dt>
+<dd><p>Re-create the "skeleton.qmd" in your outline when
+changes to the main skeleton need to be made. This reproduces the
+yaml, output (if changed), preamble quantities, and restructures your
+sectioning in the skeleton if indicated. All files in your folder
+will remain as is.</p></dd>
 
 </dl></div>
     <div id="value">

@@ -1,0 +1,3 @@
+## Notes {#sec-notes}
+
+<!-- Short statement on internal reference to the report (e.g., SEDAR 99, SAFE, management track). -->

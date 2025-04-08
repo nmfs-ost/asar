@@ -62,9 +62,6 @@
       <a href="../articles/convert_output_details.html">Standardizing Assessment Model Output</a>
     </li>
     <li>
-      <a href="../articles/custom-figs-tabs.html">Custom Tables and Figures</a>
-    </li>
-    <li>
       <a href="../articles/faqs.html">Frequently Asked Questions (FAQs)</a>
     </li>
   </ul></li>
@@ -132,7 +129,7 @@ involved in formatting the document during rendering.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">format_quarto</span><span class="op">(</span>format <span class="op">=</span> <span class="st">"pdf"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "format: \n  pdf: \n    documentclass: scrartcl\n    number-sections: true\n    template-partials:\n      - 'support_files/before-body.tex'\n      - 'support_files/_titlepage.tex'\n    include-in-header:\n      - 'support_files/in-header.tex'\n    toc: true\n    lof: true\n    lot: true\n    titlepage-geometry: \n      - top=2in\n      - bottom=1in\n      - right=1in\n      - left=1in\n"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "format: \n  pdf: \n    documentclass: scrartcl\n    number-sections: true\n    template-partials:\n      - 'support_files/before-body.tex'\n      - 'support_files/_titlepage.tex'\n    include-in-header:\n      - 'support_files/in-header.tex'\n    header-includes:\n      \\usepackage{draftwatermark}\n      \\SetWatermarkText{DRAFT}\n    toc: true\n    lof: true\n    lot: true\n    titlepage-geometry: \n      - top=2in\n      - bottom=1in\n      - right=1in\n      - left=1in\n"</span>
 </code></pre></div>
     </div>
   </div>
