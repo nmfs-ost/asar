@@ -152,7 +152,7 @@ before documentclass, so this function alters the rendered .tex file.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="create_template.html">create_template</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="create_template.html">create_template</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  new_template <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  format <span class="op">=</span> <span class="st">"pdf"</span>,</span></span>
 <span class="r-in"><span>  office <span class="op">=</span> <span class="st">"NWFSC"</span>,</span></span>
@@ -164,20 +164,19 @@ before documentclass, so this function alters the rendered .tex file.</p>
 <span class="r-in"><span>  include_affiliation <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  new_section <span class="op">=</span> <span class="st">"an_additional_section"</span>,</span></span>
 <span class="r-in"><span>  section_location <span class="op">=</span> <span class="st">"after-introduction"</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">quarto</span><span class="fu">::</span><span class="fu"><a href="https://quarto-dev.github.io/quarto-r/reference/quarto_render.html" class="external-link">quarto_render</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path</span>, <span class="st">"report"</span>, <span class="st">"SAR_USWC_Dover_sole_skeleton.qmd"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_dir.html" class="external-link">with_dir</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path</span>, <span class="st">"report"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  <span class="fu">add_tagging</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    x <span class="op">=</span> <span class="st">"SAR_USWC_Dover_sole_skeleton.tex"</span>,</span></span>
-<span class="r-in"><span>    dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    compile <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="fu">quarto</span><span class="fu">::</span><span class="fu"><a href="https://quarto-dev.github.io/quarto-r/reference/quarto_render.html" class="external-link">quarto_render</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path</span>, <span class="st">"report"</span>, <span class="st">"SAR_USWC_Dover_sole_skeleton.qmd"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_dir.html" class="external-link">with_dir</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path</span>, <span class="st">"report"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>   <span class="fu">add_tagging</span><span class="op">(</span></span></span>
+<span class="r-in"><span>     x <span class="op">=</span> <span class="st">"SAR_USWC_Dover_sole_skeleton.tex"</span>,</span></span>
+<span class="r-in"><span>     dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>     compile <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>   <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
