@@ -1152,11 +1152,7 @@ convert_output <- function(
     } # close loop over objects listed in dat file
     #### WHAM ----
   } else if (model == "wham") {
-    # This is how Bai read the ASAP output
-    # asap_output conversion written by Bai Li
-    # asap_output <- dget(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = ""), "asap3.rdat"))
-    # setwd(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = "")))
-    # asap_std <- readRep("asap3", suffix = ".std")
+    # See wham.R for current version
     stop("File not currently compatible.")
     #### AMAK ####
   } else if (model == "amak") {
