@@ -31,17 +31,20 @@ add_section <- function(
   for (i in 1:length(new_section)) {
     section_i_name <- paste0(gsub(" ", "_", tolower(new_section[i])), ".qmd")
     local_section <- forstringr::str_extract_part(
-      section_location[i], "-", before = FALSE
+      section_location[i], "-",
+      before = FALSE
     )
     # looking at the section identified for the previous entry
     local_section_prev <- forstringr::str_extract_part(
-      section_location[i - 1], "-", before = FALSE
+      section_location[i - 1], "-",
+      before = FALSE
     )
 
     # Extracting where the new section should be place in relation to a base section
     if (any("TRUE" %in% grepl("-", section_location))) {
       locality <- forstringr::str_extract_part(
-        section_location[i], "-", before = TRUE
+        section_location[i], "-",
+        before = TRUE
       )
       # run again in case there are double -
       if (grepl("-", locality)) {
@@ -52,11 +55,13 @@ add_section <- function(
       }
 
       locality_prev <- forstringr::str_extract_part(
-        section_location[i - 1], "-", before = TRUE
+        section_location[i - 1], "-",
+        before = TRUE
       )
     } else if (any("TRUE" %in% grepl(" ", section_location))) {
       locality <- forstringr::str_extract_part(
-        section_location[i], " ", before = TRUE
+        section_location[i], " ",
+        before = TRUE
       )
       # run again in case there are double -
       if (grepl("-", locality)) {
@@ -67,7 +72,8 @@ add_section <- function(
       }
 
       locality_prev <- forstringr::str_extract_part(
-        section_location[i - 1], "-", before = TRUE
+        section_location[i - 1], "-",
+        before = TRUE
       )
     }
 
@@ -97,8 +103,8 @@ add_section <- function(
           section_i_name,
           after = which(grepl(
             gsub(" ", "_", tolower(new_section[i - 1])),
-            custom_sections)
-          )
+            custom_sections
+          ))
         )
       } else {
         custom_sections <- append(

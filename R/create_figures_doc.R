@@ -478,7 +478,6 @@ if (file.exists(file.path(rda_dir, 'pop.baa_figure.rda'))){\n
     } else {
       message("Biomass at age figure not created.")
     }
-
   } else {
     # add option for only adding specified figures
     warning("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")

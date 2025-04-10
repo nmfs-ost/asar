@@ -11,17 +11,17 @@
 #' stockplotr::exp_all_figs_tables or in the captions_alt_text.csv also produced from
 #' the same function. Users not using this format should create a csv file with
 #' columns containing "label" and "alt_text" where the label column contains the
-#'  exact label name when referencing the image/figure in text. The label is 
-#'  very important as it provides a way for the function to match where the 
-#'  alternative text gets placed. When compile is set to TRUE, the alternative 
-#'  text using this format will not be available and must be used in conjunction 
+#'  exact label name when referencing the image/figure in text. The label is
+#'  very important as it provides a way for the function to match where the
+#'  alternative text gets placed. When compile is set to TRUE, the alternative
+#'  text using this format will not be available and must be used in conjunction
 #'  with `asar::add_tagging()`.
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#'   create_template(
+#' create_template(
 #'   new_template = TRUE,
 #'   format = "pdf",
 #'   office = "NWFSC",
@@ -38,22 +38,23 @@
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction",
 #'   rda_dir = getwd()
-#'   )
+#' )
 #'
-#'   path <- getwd()
+#' path <- getwd()
 #'
-#'   quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
+#' quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
 #'
-#'   withr::with_dir(
+#' withr::with_dir(
 #'   file.path(path, "report"),
-#'    add_alttext(
-#'      x = "SAR_USWC_Dover_sole_skeleton.tex",
-#'      dir = getwd(),
-#'      alttext_csv_dir = getwd(),
-#'      rda_dir = path,
-#'      compile = FALSE,
-#'      rename = "SAR_Dover_sole_tagged")
-#'    )
+#'   add_alttext(
+#'     x = "SAR_USWC_Dover_sole_skeleton.tex",
+#'     dir = getwd(),
+#'     alttext_csv_dir = getwd(),
+#'     rda_dir = path,
+#'     compile = FALSE,
+#'     rename = "SAR_Dover_sole_tagged"
+#'   )
+#' )
 #' }
 #'
 add_alttext <- function(
@@ -78,10 +79,10 @@ add_alttext <- function(
 
   # Check if alt text csv is where indicated
   if (!file.exists(file.path(alttext_csv_dir, "captions_alt_text.csv"))) stop(glue:glue("'captions_alt_text.csv' not found in {alttext_csv_dir}."))
-  
+
   # Identify lines with figures
   # check if any lines have figures added
-  if (!any(grepl("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file))) stop ("No images/figures present in file.")
+  if (!any(grepl("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file))) stop("No images/figures present in file.")
   # this approach allows us to not mistake the replacement for other figures
   # For render to pdf
   fig_lines <- grep("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file) # -plot
@@ -89,8 +90,10 @@ add_alttext <- function(
   # TODO: this might need to be take out in the future - aka not needed
   fig_lines <- c(fig_lines, grep("fig-([a-z]+|[a-z]+_[a-z]+)-plot-1.pdf", tex_file))
   # for html render or external images
-  fig_lines <- c(fig_lines,
-                 grep("fig-([a-z]+|[a-z]+_[a-z]+)-1.png", tex_file))
+  fig_lines <- c(
+    fig_lines,
+    grep("fig-([a-z]+|[a-z]+_[a-z]+)-1.png", tex_file)
+  )
 
   # TODO:
   # create check to see if there are any instances where the suffix is not plot-1
@@ -152,7 +155,7 @@ add_alttext <- function(
       # Add selected alttext onto end of the line
       tex_file[i] <- gsub(
         "keepaspectratio",
-        paste0("keepaspectratio,alt={'", alttext_i,"'}"),
+        paste0("keepaspectratio,alt={'", alttext_i, "'}"),
         tex_file[i]
       )
       # tex_file[i] <- paste(tex_file[i], "{", alttext_i, "}", sep = "")
@@ -201,7 +204,9 @@ add_alttext <- function(
           format = "png",
           dpi = 300,
           filenames = file.path(img_path, img_file_con)
-        ) |> suppressWarnings() |> suppressMessages()
+        ) |>
+          suppressWarnings() |>
+          suppressMessages()
       }
       # Replace names in the tex file
       tex_file <- gsub(img_file, img_file_con, tex_file)
@@ -225,7 +230,7 @@ add_alttext <- function(
     }
     tex_file[fig_line] <- gsub(
       "keepaspectratio",
-      paste0("keepaspectratio,alt={'",alt_text_list[[i]],"'}"),
+      paste0("keepaspectratio,alt={'", alt_text_list[[i]], "'}"),
       tex_file[fig_line]
     )
     # tex_file[fig_line] <- paste(tex_file[fig_line], "{", alt_text_list[[i]], "}", sep = "")
