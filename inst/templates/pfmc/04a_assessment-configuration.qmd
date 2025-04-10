@@ -1,0 +1,11 @@
+## Assessment {#sec-assmt-config}
+
+### Current Modeling Approach
+
+<!--- Include a short, general overview of the modeling platform, including the reference to the model paper or online reference. If using `asar`, a portion of this will be generated based on the stated model. Please include a short description of changes between the approach from the last assessment cycle to the current. --->
+
+### Configuration of the Base Model
+
+<!--- Describe the setup of the stock assessment model. --->
+
+
