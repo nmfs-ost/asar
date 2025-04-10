@@ -1,1 +1,1 @@
-## Appendices {#sec-appendix}
+# Appendices {#sec-appendix}

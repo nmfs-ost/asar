@@ -123,7 +123,7 @@ If you have additional questions, there is a helpful Q&A guide available in the 
 
 This package is intended for use by stock assessment analysts across NOAA Fisheries, but the modularized process and workflow can be used in other applications such as developing other reports for managing organizations or for rendering stock assessment reports in other regions of the world.
 
-Feel free to report any issues with the package to the [GitHub Issue Page](https://github.com/Schiano-NOAA/ASAR/issues) and any questions regarding the package on the [GitHub discussion board](https://github.com/Schiano-NOAA/ASAR/discussions). Before you create an issue, please see the status at the beginning of this page to check if the package is operational or still in early stages of development.
+Feel free to report any issues with the package to the [GitHub Issues Page](https://github.com/nmfs-ost/asar/issues) and any questions regarding the package on the [GitHub discussion board](https://github.com/nmfs-ost/asar/discussions). Before you create an issue, please see the status at the beginning of this page to check if the package is operational or still in early stages of development.
 
 
 ## Disclaimer
