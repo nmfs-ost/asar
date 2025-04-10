@@ -1,0 +1,12 @@
+## Executive Summary {#sec-exec-sum}
+
+<!--- Where possible, the executive summary should paraphrase the shared content of the body of the report to minimize redundancy.--->
+
+### Assessment Model
+
+<!-- Include a short statement describing the assessment model used for the current management cycle and any data updates. -->
+
+### Reference Points, Stock Status, and Projections
+
+<!-- Short summary of reference points, stock status, and projections. When using `asar`, tables of reference points and projections will be automatically generated. -->
+
