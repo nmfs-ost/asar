@@ -35,7 +35,7 @@ Add tagging structure to latex documents produced from quarto
 }
 \examples{
 \dontrun{
-create_template(
+  create_template(
   new_template = TRUE,
   format = "pdf",
   office = "NWFSC",
@@ -47,20 +47,19 @@ create_template(
   include_affiliation = TRUE,
   new_section = "an_additional_section",
   section_location = "after-introduction"
-)
-
-path <- getwd()
-
-quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
-
-withr::with_dir(
-  file.path(path, "report"),
-  add_tagging(
-    x = "SAR_USWC_Dover_sole_skeleton.tex",
-    dir = getwd(),
-    compile = TRUE
   )
-)
+
+  path <- getwd()
+
+  quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
+
+  withr::with_dir(
+  file.path(path, "report"),
+   add_tagging(
+     x = "SAR_USWC_Dover_sole_skeleton.tex",
+     dir = getwd(),
+     compile = TRUE)
+   )
 }
 
 }

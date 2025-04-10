@@ -6,12 +6,12 @@
 #' latex packages and content associated with PDF
 #' tagging. Quarto does not allow the user to edit anything
 #' before documentclass, so this function alters the rendered .tex file.
-#'
+#' 
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' create_template(
+#'   create_template(
 #'   new_template = TRUE,
 #'   format = "pdf",
 #'   office = "NWFSC",
@@ -23,27 +23,27 @@
 #'   include_affiliation = TRUE,
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction"
-#' )
-#'
-#' path <- getwd()
-#'
-#' quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
-#'
-#' withr::with_dir(
-#'   file.path(path, "report"),
-#'   add_tagging(
-#'     x = "SAR_USWC_Dover_sole_skeleton.tex",
-#'     dir = getwd(),
-#'     compile = TRUE
 #'   )
-#' )
+#'
+#'   path <- getwd()
+#'
+#'   quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
+#'
+#'   withr::with_dir(
+#'   file.path(path, "report"),
+#'    add_tagging(
+#'      x = "SAR_USWC_Dover_sole_skeleton.tex",
+#'      dir = getwd(),
+#'      compile = TRUE)
+#'    )
 #' }
 #'
 add_tagging <- function(
     x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
     dir = getwd(),
     compile = TRUE,
-    rename = NULL) {
+    rename = NULL
+) {
   # Read latex file
   tex_file <- readLines(file.path(dir, x))
 
@@ -59,11 +59,9 @@ add_tagging <- function(
   if (length(issue_color) > 1) {
     warning("Failed to solve ~ ! LaTeX Error: Unknown color ''.")
   } else {
-    tex_file[issue_color] <- gsub(
-      "(linkcolor=)",
-      "\\1.",
-      tex_file[issue_color]
-    )
+    tex_file[issue_color] <- gsub("(linkcolor=)",
+                                  "\\1.",
+                                  tex_file[issue_color])
   }
   # Export file
   write(tex_file, file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)))
@@ -73,7 +71,7 @@ add_tagging <- function(
     "\\DocumentMetadata{%", "\n",
     "  ", "testphase={phase-III,math,table,title},", "\n",
     "  ", "pdfversion=2.0,", "\n",
-    "  ", "pdfstandard=ua-2,", "\n",
+    "  ", "pdfstandard=ua-2,","\n",
     "  ", "pdfstandard=a-4f", "\n",
     "  ", "% testphase={phase-II, tabular, graphic}%", "\n",
     "  ", "% testphase={phase-II,math, tabular, graphic}% TOC Does not work", "\n",
