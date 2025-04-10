@@ -14,24 +14,10 @@
 #' @param alttext_csv_dir Directory for the csv file containing alternative
 #' text and captions generated when running satf::exp_all_figs_tables
 #'
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 661912a (update(a11y fxns): update documentation and add in additional checks to fxns)
-#' @return This function runs all functions from {asar} associated with 
-#' accessibility and renders the final document. The document is tagged and 
-#' includes alternative text from the captions_alt_text.csv produced from 
+#' @return This function runs all functions from {asar} associated with
+#' accessibility and renders the final document. The document is tagged and
+#' includes alternative text from the captions_alt_text.csv produced from
 #' {stockplotr} package also available on GitHub.
-<<<<<<< HEAD
-=======
-#' @return DRAFT: This function was made to help add in
-#' latex packages and content associated with PDF
-#' tagging as well as alternative text for latex
-#' documents. Quarto does not allow the user to edit anything
-#' before documentclass, so this function alters the rendered .tex file.
->>>>>>> 6b58bb4 (reset branch to dev)
-=======
->>>>>>> 661912a (update(a11y fxns): update documentation and add in additional checks to fxns)
 #' @export
 #'
 #' @examples
