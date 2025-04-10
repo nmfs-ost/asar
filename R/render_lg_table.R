@@ -12,22 +12,23 @@
 #' @examples
 #' \dontrun{
 #' render_lg_table(
-#' report_flextable = indices_table,
-#' essential_columns = 1,
-#' rda_dir = here::here(),
-#' plot_name = "indices.abundance_table.rda")
+#'   report_flextable = indices_table,
+#'   essential_columns = 1,
+#'   rda_dir = here::here(),
+#'   plot_name = "indices.abundance_table.rda"
+#' )
 #'
 #' render_lg_table(
-#' report_flextable = important_table,
-#' essential_columns = 1:3,
-#' rda_dir = "data",
-#' plot_name = "bnc_table.rda")
+#'   report_flextable = important_table,
+#'   essential_columns = 1:3,
+#'   rda_dir = "data",
+#'   plot_name = "bnc_table.rda"
+#' )
 #' }
 render_lg_table <- function(report_flextable = NULL,
                             essential_columns = NULL,
                             rda_dir = NULL,
-                            plot_name = NULL
-                            ) {
+                            plot_name = NULL) {
   # calculate key numbers
 
   # total columns, width of table
@@ -48,18 +49,20 @@ render_lg_table <- function(report_flextable = NULL,
 
   # set up main df organizing split table information
   table_cols <- matrix(NA,
-                       nrow = num_tables,
-                       ncol = 4) |>
+    nrow = num_tables,
+    ncol = 4
+  ) |>
     as.data.frame() |>
-    dplyr::rename("table" = 1,
-                  "cols_to_keep" = 2,
-                  "start_col" = 3,
-                  "end_col" = 4)
+    dplyr::rename(
+      "table" = 1,
+      "cols_to_keep" = 2,
+      "start_col" = 3,
+      "end_col" = 4
+    )
 
-  i = 1
-  essential_cols = essential_columns
-  for (i in 1:num_tables){
-
+  i <- 1
+  essential_cols <- essential_columns
+  for (i in 1:num_tables) {
     # set table number to i
     table_num <- i
 
@@ -67,21 +70,15 @@ render_lg_table <- function(report_flextable = NULL,
     table_cols$table[i] <- i
 
     # get first and last columns of new table
-    if(i == 1) {
-
+    if (i == 1) {
       init_col <- 1
       end_col <- init_col + goal_cols_per_table
-
-    } else if ((i < num_tables) & (init_col < total_cols)){
-
+    } else if ((i < num_tables) & (init_col < total_cols)) {
       # subtracting essential_cols so the first cols will be the essential ones
       # and the total cols will still = goal_cols_per_table
       end_col <- init_col + goal_cols_per_table - length(essential_cols)
-
     } else {
-
       end_col <- total_cols
-
     }
 
     table_cols$cols_to_keep[i] <- paste0(init_col, ":", end_col)
@@ -93,27 +90,28 @@ render_lg_table <- function(report_flextable = NULL,
     init_col <- end_col + 1
 
     # add 1 for next table
-    i = i + 1
+    i <- i + 1
   }
 
   # add col with essential cols
   table_cols <- table_cols |>
-    dplyr::mutate(essential_cols = paste(essential_cols, collapse = ", "),
+    dplyr::mutate(
+      essential_cols = paste(essential_cols, collapse = ", "),
 
-                  # find cols to delete
-                  cols_to_del = apply(table_cols, 1, function(row){
-                    curr_range <- row["start_col"]:row["end_col"]
-                    miss_nums <- setdiff(1:total_cols, curr_range)
-                    paste(miss_nums, collapse = ", ")
-                  }),
-                  # make cols_to_delete and essential_cols into sequences
-                  cols_to_del_seq = lapply(cols_to_del, function(x) as.numeric(unlist(strsplit(x, ",")))),
-                  essential_cols_seq = lapply(essential_cols, function(x) as.numeric(unlist(strsplit(x, ",")))),
-                  # find the final columns to delete by removing essential_cols from
-                  # cols_to_delete
-                  final_cols_to_del = mapply(function(seq1, seq2) {
-                    paste(setdiff(seq1, seq2), collapse = ", ")
-                  }, cols_to_del_seq, essential_cols_seq)
+      # find cols to delete
+      cols_to_del = apply(table_cols, 1, function(row) {
+        curr_range <- row["start_col"]:row["end_col"]
+        miss_nums <- setdiff(1:total_cols, curr_range)
+        paste(miss_nums, collapse = ", ")
+      }),
+      # make cols_to_delete and essential_cols into sequences
+      cols_to_del_seq = lapply(cols_to_del, function(x) as.numeric(unlist(strsplit(x, ",")))),
+      essential_cols_seq = lapply(essential_cols, function(x) as.numeric(unlist(strsplit(x, ",")))),
+      # find the final columns to delete by removing essential_cols from
+      # cols_to_delete
+      final_cols_to_del = mapply(function(seq1, seq2) {
+        paste(setdiff(seq1, seq2), collapse = ", ")
+      }, cols_to_del_seq, essential_cols_seq)
     )
 
   # print all split tables by removing final_cols_to_del from report_flextable
@@ -139,12 +137,12 @@ render_lg_table <- function(report_flextable = NULL,
         as.numeric(
           unlist(
             strsplit(
-              table_cols[i,"final_cols_to_del"], ",")
+              table_cols[i, "final_cols_to_del"], ","
+            )
           )
         )
-      )
-      )|>
-        flextable::fit_to_width(max_width = goal_width)
+      )) |>
+      flextable::fit_to_width(max_width = goal_width)
 
     table_list[[i]] <- split_table
 
@@ -152,14 +150,16 @@ render_lg_table <- function(report_flextable = NULL,
     all_vals <- split_table$header$dataset
     shown_vals <- c(split_table[["header"]][["content"]][["keys"]])
     split_tbl_vals <- all_vals |>
-      dplyr::select(dplyr::intersect(names(all_vals),
-                                     shown_vals)) |>
+      dplyr::select(dplyr::intersect(
+        names(all_vals),
+        shown_vals
+      )) |>
       dplyr::slice(1) |>
-      dplyr::select_if(~!(all(is.na(.)) | all(. == ""))) |>
+      dplyr::select_if(~ !(all(is.na(.)) | all(. == ""))) |>
       as.character() |>
       unique() |>
       stringr::str_squish() |>
-      paste(collapse=', ')
+      paste(collapse = ", ")
 
     # add rownames to table_list
     names(table_list)[[i]] <- split_tbl_vals
@@ -172,10 +172,12 @@ render_lg_table <- function(report_flextable = NULL,
   }
   # save table_list as rda
   save(table_list,
-       file = fs::path(rda_dir,
-                       "rda_files",
-                       paste0(stringr::str_remove(plot_name, ".rda"), "_split.rda")))
+    file = fs::path(
+      rda_dir,
+      "rda_files",
+      paste0(stringr::str_remove(plot_name, ".rda"), "_split.rda")
+    )
+  )
 
   return(num_tables)
 }
-

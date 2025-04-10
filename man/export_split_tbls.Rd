@@ -7,10 +7,6 @@
 export_split_tbls(rda_dir = NULL, plot_name = NULL, essential_columns = NULL)
 }
 \arguments{
-\item{rda_dir}{folder where rda files containing alternative text is located}
-
-\item{plot_name}{name of the .rda file that the table is located from}
-
 \item{essential_columns}{The columns that will be retained between the split
 tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
 column. Example: for the indices table, this could be the year column.}

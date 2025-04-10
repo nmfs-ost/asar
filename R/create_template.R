@@ -336,10 +336,11 @@ create_template <- function(
     # report name without type and region
     report_name_1 <- gsub(glue::glue("{type}_"), "", prev_report_name)
     # Extract species
-    species <- gsub("_",
-                    " ",
-                    gsub(glue::glue("{region}_"), "", report_name_1)
-                    )
+    species <- gsub(
+      "_",
+      " ",
+      gsub(glue::glue("{region}_"), "", report_name_1)
+    )
 
 
     new_report_name <- paste0(
@@ -402,7 +403,7 @@ create_template <- function(
     grepl("/report", file_dir),
     fs::path(file_dir),
     fs::path(file_dir, "report")
-    )
+  )
 
   # Supporting files folder
   supdir <- file.path(subdir, "support_files")
@@ -469,21 +470,21 @@ create_template <- function(
         prev_format <- stringr::str_extract(
           prev_skeleton[grep("format:", prev_skeleton) + 1],
           "[a-z]+"
-          )
+        )
         year <- as.numeric(stringr::str_extract(
           prev_skeleton[grep("title:", prev_skeleton)],
           "[0-9]+"
-          ))
+        ))
         # if it is previously html and the rerender species html then need to copy over html formatting
         if (tolower(prev_format) != "html" & tolower(format) == "html") {
-         if (!file.exists(file.path(file_dir, "support_files", "theme.scss"))) file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+          if (!file.exists(file.path(file_dir, "support_files", "theme.scss"))) file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         }
         if (tolower(prev_format != "pdf" & tolower(format) == "pdf")) {
           if (is.null(species)) {
             species <- tolower(stringr::str_extract(
               prev_skeleton[grep("species: ", prev_skeleton)],
               "(?<=')[^']+(?=')"
-              ))
+            ))
           }
           if (is.null(office)) {
             office <- stringr::str_extract(
@@ -556,49 +557,49 @@ create_template <- function(
       # Convert output file if TRUE
       # Make sure not asking to rerender
       # if (!rerender_skeleton) {
-        # Check if converted output already exists
-        if (convert_output) {
-          if (!file.exists(file.path(subdir, paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))) {
-            print("__________Converting output file__________")
-            if (tolower(model) == "bam" & is.null(fleet_names)) {
-              # warning("Fleet names not defined.")
-              convert_output(
-                output_file = model_results,
-                outdir = resdir,
-                file_save = TRUE,
-                model = model,
-                savedir = subdir,
-                save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
-              )
-              # } else if (tolower(model) == "bam") {
-              #   convert_output(
-              #     output_file = model_results,
-              #     outdir = resdir,
-              #     file_save = TRUE,
-              #     model = model,
-              #     fleet_names = fleet_names,
-              #     savedir = subdir,
-              #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
-              #   )
-            } else {
-              convert_output(
-                output_file = model_results,
-                outdir = resdir,
-                file_save = TRUE,
-                model = model,
-                savedir = subdir,
-                save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
-              )
-            }
-            # Rename model results file and results file directory if the results are converted in this fxn
-            model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
-            resdir <- subdir
+      # Check if converted output already exists
+      if (convert_output) {
+        if (!file.exists(file.path(subdir, paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))) {
+          print("__________Converting output file__________")
+          if (tolower(model) == "bam" & is.null(fleet_names)) {
+            # warning("Fleet names not defined.")
+            convert_output(
+              output_file = model_results,
+              outdir = resdir,
+              file_save = TRUE,
+              model = model,
+              savedir = subdir,
+              save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
+            )
+            # } else if (tolower(model) == "bam") {
+            #   convert_output(
+            #     output_file = model_results,
+            #     outdir = resdir,
+            #     file_save = TRUE,
+            #     model = model,
+            #     fleet_names = fleet_names,
+            #     savedir = subdir,
+            #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
+            #   )
           } else {
-            message("Output not converted: standard output already in path.")
-            model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
-            resdir <- subdir
+            convert_output(
+              output_file = model_results,
+              outdir = resdir,
+              file_save = TRUE,
+              model = model,
+              savedir = subdir,
+              save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
+            )
           }
-        } # close check for converted output already
+          # Rename model results file and results file directory if the results are converted in this fxn
+          model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
+          resdir <- subdir
+        } else {
+          message("Output not converted: standard output already in path.")
+          model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
+          resdir <- subdir
+        }
+      } # close check for converted output already
       # } # close rerender if
 
       # print("_______Standardized output data________")
@@ -1017,11 +1018,12 @@ create_template <- function(
               preamble[prev_results_line],
               "(?<=read\\.csv\\().*?(?=\\))",
               glue::glue("'{resdir}/{model_results}'")
-              )
+            )
             preamble <- append(
               preamble,
               prev_results,
-              after = prev_results_line)[-prev_results_line]
+              after = prev_results_line
+            )[-prev_results_line]
             if (!grepl(".csv", model_results)) warning("Model results are not in csv format - Will not work on render")
           } else {
             message("Preamble maintained - model results not updated.")
@@ -1067,8 +1069,8 @@ create_template <- function(
           prev_skeleton,
           "(?<=['`])[^']+\\.qmd(?=['`])"
         ) |>
-        unlist() |>
-        purrr::discard(~ .x == "")
+          unlist() |>
+          purrr::discard(~ .x == "")
         # add sections as list
         sections <- add_child(
           sections,
