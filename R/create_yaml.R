@@ -22,6 +22,7 @@ create_yaml <- function(
     prev_skeleton = NULL,
     prev_format = NULL,
     title = NULL,
+    type = NULL,
     # alt_title = FALSE,
     author_list = NULL,
     author = NULL,
