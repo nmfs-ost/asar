@@ -7,7 +7,8 @@
 #' @export
 #'
 #' @examples format_quarto(format = "pdf")
-format_quarto <- function(format = NULL) {
+format_quarto <- function(format = NULL,
+                          type = NULL) {
   if (tolower(format) == "pdf") {
     paste0(
       "format: ", "\n",
