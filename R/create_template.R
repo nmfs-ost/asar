@@ -428,7 +428,6 @@ create_template <- function(
     current_folder <- file.path(asar_folder, type)
     new_folder <- subdir
 
-
     ##### Identify files to copy ----
     if (!is.null(custom_sections)) {
       files_to_copy <- unlist(list.files(current_folder))[c(unlist(sapply(custom_sections, function(x) grep(x, list.files(current_folder)))))]
@@ -533,6 +532,11 @@ create_template <- function(
         file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         # Copy html format file if applicable
         if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+        # Copy over glossary and associated tex file
+        if (tolower(type) == "pfmc") {
+          file.copy(system.file("resources", "formatting_files", "sa4ss_glossaries.tex", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+          file.copy(system.file("resources", "formatting_files", "pfmc.tex", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+        }
       } else {
         warning("There are files in this location.")
         question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
