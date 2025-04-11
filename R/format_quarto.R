@@ -19,6 +19,7 @@ format_quarto <- function(format = NULL) {
       "  ", "  ", "  ", "- 'support_files/_titlepage.tex'", "\n",
       "  ", "  ", "include-in-header:", "\n",
       "  ", "  ", "  ", "- 'support_files/in-header.tex'", "\n",
+      if (tolower(type) == "pfmc") "  ", "  ", "  ", "- 'support_files/pfmc.tex'", "\n",
       "  ", "  ", "header-includes:", "\n",
       "  ", "  ", "  ", "\\usepackage{draftwatermark}", "\n",
       "  ", "  ", "  ", "\\SetWatermarkText{DRAFT}", "\n",
