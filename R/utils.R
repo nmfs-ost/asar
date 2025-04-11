@@ -268,6 +268,7 @@ create_acronym_table <- function(){
         "Socioeconomic Panel (of the Scientific and Statistical Committee)"),
       !Acronym %in% c("E.O.",
                       "FAG",
+                      "F=0",
                       "NS #",
                       "NS1",
                       "NS2",
@@ -346,17 +347,27 @@ create_acronym_table <- function(){
         "Saipan Fishermen's Association",
         "Social impact analysis",
         "Spawning biomass per recruit",
-        "Spatial Working Group"
+        "Spatial Working Group",
+        "United States"
         ),
       !Acronym %in% c(
+        "Board",
+        "B-CURR",
         "CA",
         "CCA",
         "Council",
+        "F-30% SPR",
+        "F-CURR",
+        "F-MSY",
+        "F-OY",
         "LCN",
+        "Mid-Atlantic Council",
+        "Observer Program",
         "PRD",
         "RF",
         "SAS",
         "SBA",
+        "Secretary",
         "SSB",
         "STT"
       ),
@@ -392,7 +403,8 @@ create_acronym_table <- function(){
       !(source %in% c("PFMC", "GMFMC") & Acronym == "TAC"),
       !(source == "PFMC" & Acronym == "VMS"),
       !(source == "GMFMC" & Acronym == "VPA"),
-      !(source == "PFMC" & Acronym == "mt")
+      !(source == "PFMC" & Acronym == "mt"),
+      !(source == "Spawning Stock Biomass at MSY" & Acronym == "SBMSY")
     ) |>
     dplyr::mutate(Definition = stringr::str_replace_all(Definition,
                                                         "An annual catch level recommended by a Council's SSC. The Council's ACL for a stock may not exceed the ABC recommendation of the SSC for that stock. The SSC's ABC recommendation should incorporate consideration of the stock's life history and reproductive potential, vulnerability to overfishing, and the degree of uncertainty in the science upon which the ABC recommendation is based.",
@@ -406,33 +418,23 @@ create_acronym_table <- function(){
                   Definition = stringr::str_replace_all(Definition,
                                                         "panel of members made up of individuals with knowledge and first-hand experience of harvesting Gulf of Mexico managed species and are interested in the conservation and best practices for management of these fishery resources",
                                                         "A group of stakeholders with experience and knowledge of the regional fisheries who provide input into the management process."),
-                  Meaning = stringr::str_replace(Meaning,
-                                                 "stock biomass level",
-                                                 "Biomass"),
+                  Meaning = stringr::str_replace(Meaning, "stock biomass level", "Biomass"),
                   Definition = stringr::str_replace(Definition,
                                                     "unintended capture of marine mammals",
                                                     "unintended capture of non-target species"),
                   Definition = stringr::str_replace(Definition,
                                                     "issued by various NOAA regional offices",
                                                     "A scientific assessment issued by various NOAA regional offices"),
-                  Meaning = stringr::str_replace(Meaning,
-                                                 "Average Catch",
-                                                 "Catch"),
-                  Meaning = stringr::str_replace(Meaning,
-                                                 "ecosystem component species",
-                                                 "Ecosystem component"),
+                  Meaning = stringr::str_replace(Meaning, "Average Catch", "Catch"),
+                  Meaning = stringr::str_replace(Meaning, "ecosystem component species", "Ecosystem component"),
                   Definition = stringr::str_replace(Definition,
                                                     "U.S. federal waters that extend from 3 to 200 miles from shore. The U.S. has sole management authority of the natural resources found therein.",
                                                     "An area of the ocean, generally extending 200 nautical miles (230 miles) beyond a nation's territorial sea, within which a coastal nation has jurisdiction over both living and nonliving resources."),
                   Definition = stringr::str_replace(Definition,
                                                     "The instantaneous rate at which fish in a stock die because of fishing. Typically includes measured bycatch, if data are available.",
                                                     "The rate at which fish die due to fishing activities."),
-                  Meaning = stringr::str_replace(Meaning,
-                                                 "FMSY",
-                                                 "Fishing Mortality at MSY"),
-                  Meaning = stringr::str_replace(Meaning,
-                                                 "FOY",
-                                                 "Fishing Mortality Rate Yielding OY"),
+                  Meaning = stringr::str_replace(Meaning, "FMSY", "Fishing Mortality at MSY"),
+                  Meaning = stringr::str_replace(Meaning, "FOY", "Fishing Mortality Rate Yielding OY"),
                   Definition = stringr::str_replace(Definition,
                                                     "fishing mortality rate corresponding to an equilibrium yield at optimum",
                                                     "fishing mortality rate corresponding to an equilibrium yield that balances ecological, economic, and social goals."),
@@ -475,15 +477,28 @@ create_acronym_table <- function(){
                   Definition = ifelse(Acronym == "SSC",
                                       "An advisory committee of a regional fishery management council composed of scientists, economists, and other technical experts that peer review statistical, biological, ecological, economic, social, and other scientific information that is relevant to the management of council fisheries, and provides preliminary policy language to the full council for consideration.",
                                       Definition),
-                  Meaning = ifelse(Acronym == "mt",
-                                   "Metric ton",
-                                   Meaning),
-                  Acronym = ifelse(Acronym == "SS",
-                                   "SS3",
-                                   Acronym),
+                  Meaning = ifelse(Acronym == "mt", "Metric ton", Meaning),
+                  Acronym = ifelse(Acronym == "SS", "SS3", Acronym),
                   Definition = ifelse(Acronym == "VPA",
                                       "A fisheries stock assessment cohort modeling method that reconstructs historical fish population structure by analyzing catch data and mortality rates to estimate past population sizes and fishing mortality rates.",
-                                      Definition)
+                                      Definition),
+                  Acronym = ifelse(Acronym == "Bo (B sub zero)", "B0", Acronym),
+                  Acronym = ifelse(Acronym == "BCURRENT", "Bcurrent", Acronym),
+                  Acronym = ifelse(Acronym == "BFLAG", "Bflag", Acronym),
+                  Acronym = ifelse(Acronym == "B MAX", "Bmax", Acronym),
+                  Acronym = ifelse(Acronym == "B MSY", "Bmsy", Acronym),
+                  Acronym = ifelse(Acronym == "F MAX", "Fmax", Acronym),
+                  Acronym = ifelse(Acronym == "FCURR", "Fcurrent", Acronym),
+                  Acronym = ifelse(Acronym == "FMSY", "Fmsy", Acronym),
+                  Acronym = ifelse(Acronym == "L MAX", "Lmax", Acronym),
+                  Acronym = ifelse(Acronym == "SBTarget", "SBtarget", Acronym),
+                  Acronym = ifelse(Acronym == "SBThreshold", "SBthreshold", Acronym),
+                  Acronym = ifelse(Acronym == "SSBTarget", "SSBtarget", Acronym),
+                  Acronym = ifelse(Acronym == "SSBThreshold", "SSBthreshold", Acronym),
+                  Acronym = ifelse(Acronym == "TMAX", "Tmax", Acronym),
+                  Acronym = ifelse(Acronym == "TMIN", "Tmin", Acronym),
+                  Acronym = ifelse(Acronym == "TTARGET", "Ttarget", Acronym)
+
     ) |>
     # add periods to end of Definition
     dplyr::mutate(
@@ -498,20 +513,36 @@ create_acronym_table <- function(){
     dplyr::mutate_if(is.character, ~stringr::str_replace(., "U.S.", "US")) |>
     # instance in LEC won't update unless done twice
     dplyr::mutate_if(is.character, ~stringr::str_replace(., "U.S.", "US")) |>
+    dplyr::mutate_if(is.character, ~stringr::str_replace(., "SBMSY", "SBmsy")) |>
     dplyr::select(2:4)
 
   # take rows where SSB is in the acronym, change it to SB, and add to main df
   ssb_rows <- unique_all_cleaned |>
     dplyr::filter(grepl('SSB', Acronym)) |>
-    dplyr::mutate(Acronym = stringr::str_replace_all(Acronym,
-                                                      "SSB",
-                                                      "SB"))
+    dplyr::mutate(Acronym = stringr::str_replace_all(Acronym, "SSB", "SB"))
 
   unique_all_cleaned <- unique_all_cleaned |>
-    dplyr::full_join(ssb_rows)
+    dplyr::full_join(ssb_rows) |>
+    # acronyms with 1 letter, or lowercase letters, are abbreviations
+    dplyr::mutate(
+      Category = ifelse(stringr::str_detect(Acronym, "[a-z]") | stringr::str_detect(Acronym, "[0-9]") | nchar(Acronym) == 1,
+                        "abbreviation",
+                        "acronym")) |>
+    # add periods after every acronym letter
+    dplyr::mutate(Acronym_sep = ifelse(Category == "acronym",
+                                       (sapply(
+                                         strsplit(Acronym, ""), paste, collapse = ".")),
+                                       Acronym),
+                  Acronym_sep = ifelse(Category == "acronym",
+                                       paste0(Acronym_sep, "."),
+                                       Acronym_sep),
+                  # remove periods if they follow /, ., %, or -
+                  Acronym_sep = gsub("(?<=[/ %\\-*])\\.", "", Acronym_sep, perl = TRUE)
+    )
 
   # keep cleaning by:
   # -change GOM to GOA ?
+  # -add periods between letters of acronyms in defs/meanings
 
   # write.csv(unique_all_cleaned |>
   # dplyr::select(Acronym, Meaning, Definition),
