@@ -882,7 +882,8 @@ create_template <- function(
       param_values = param_values,
       bib_file = bib_file,
       bib_name = bib_name,
-      year = year
+      year = year,
+      type = type
     )
 
     if (!rerender_skeleton) print("__________Built YAML Header______________")

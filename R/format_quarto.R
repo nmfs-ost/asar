@@ -7,7 +7,8 @@
 #' @export
 #'
 #' @examples format_quarto(format = "pdf")
-format_quarto <- function(format = NULL) {
+format_quarto <- function(format = NULL,
+                          type = NULL) {
   if (tolower(format) == "pdf") {
     paste0(
       "format: ", "\n",
@@ -19,7 +20,7 @@ format_quarto <- function(format = NULL) {
       "  ", "  ", "  ", "- 'support_files/_titlepage.tex'", "\n",
       "  ", "  ", "include-in-header:", "\n",
       "  ", "  ", "  ", "- 'support_files/in-header.tex'", "\n",
-      if (tolower(type) == "pfmc") "  ", "  ", "  ", "- 'support_files/pfmc.tex'", "\n",
+      if (tolower(type) == "pfmc") {paste0("  ", "  ", "  ", "- 'support_files/pfmc.tex'", "\n")},
       "  ", "  ", "header-includes:", "\n",
       "  ", "  ", "  ", "\\usepackage{draftwatermark}", "\n",
       "  ", "  ", "  ", "\\SetWatermarkText{DRAFT}", "\n",
