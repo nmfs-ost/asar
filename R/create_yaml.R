@@ -224,7 +224,7 @@ create_yaml <- function(
     # Formatting
     yaml <- paste0(
       yaml,
-      format_quarto(format = format),
+      format_quarto(format = format, type = type),
       # Add in output file name (Rendered name of pdf)
       "output-file: '", stringr::str_replace_all(species, " ", "_"), ifelse(is.null(species), "SAR_", "_SAR_"), year, "'", " \n"
     )
