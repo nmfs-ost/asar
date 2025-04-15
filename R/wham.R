@@ -134,6 +134,7 @@ nyears <- input$data$n_years_model
 # Other factors ?
 # area
 # season
+nseas <- input$data$n_seasons
 # subseason
 # sex
 # growth pattern
