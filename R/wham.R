@@ -123,18 +123,24 @@ output <- dat$rep
 # identify fleet names
 fleet_names <- input$fleet_names
 nfleets <- input$data$n_fleets
+
 # identify age structure
 # plus group identifier removed - *always assumed*
 ages <- as.numeric((stringr::str_replace_all(input$ages.lab, "[\\+]*", "")))
 nages <- input$data$n_ages
+
 # identify years
 years <- input$years
 nyears <- input$data$n_years_model
 
 # Other factors ?
 # area
+nareas <- input$data$n_regions
+# is there any instance where region is defined by name or all just numbered?
+
 # season
 nseas <- input$data$n_seasons
+
 # subseason
 # sex
 # growth pattern
@@ -146,9 +152,35 @@ nseas <- input$data$n_seasons
 # platoon
 # month
 
-# n selblocks? - not sure what this is
+# TODO: n selblocks? - not sure what this is
+# selex blocks - but does it mean anything for plotting/tables?
 
+# indices
+# unsure how relevant this is
+nindices <- input$data$n_indices
+
+# TODO: n stocks ?
+# I have no idea what this one is but it's pulled in plot_wham_output
+nstocks <- input$data$n_stocks
+
+# selectivity blocks
+nselex <- input$data$n_selblocks
 
 # Create list for morphed dfs to go into (for rbind later)
 out_list <- list()
+
+weight_at_age <- input$data$waa
+
+# for loop
+for (i in 1:length(output)) {
+  # Pull out the data
+  extract <- output[i]
+  # Pull label
+  label <- names(output[i])
+  # identify the dimensions of the vector/matrix/array
+  dimension <- dim(extract[[1]])
+  # identify dimensions with factors (if known)
+  # TODO: verify with Dan
+
+}
 
