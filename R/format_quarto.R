@@ -6,7 +6,10 @@
 #' involved in formatting the document during rendering.
 #' @export
 #'
-#' @examples format_quarto(format = "pdf")
+#' @examples
+#' \dontrun{
+#' format_quarto(format = "pdf")
+#' }
 format_quarto <- function(format = NULL,
                           type = NULL) {
   if (tolower(format) == "pdf") {

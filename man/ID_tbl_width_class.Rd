@@ -7,9 +7,10 @@
 ID_tbl_width_class(plot_name = NULL, rda_dir = NULL, portrait_pg_width = NULL)
 }
 \arguments{
-\item{plot_name}{name of the .rda file that the table is located from}
+\item{plot_name}{Full name of the .rda file containing the flextable.}
 
-\item{rda_dir}{folder where rda files containing alternative text is located}
+\item{rda_dir}{The location of the folder containing .rda files of figures,
+tables, alt text, and captions.}
 
 \item{portrait_pg_width}{The amount of space between the margins of a
 portrait-oriented page, in inches. Represents the threshold for the maximum

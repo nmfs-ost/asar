@@ -4,6 +4,9 @@
 #' @param essential_columns The columns that will be retained between the split
 #' tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
 #' column. Example: for the indices table, this could be the year column.
+#' @param rda_dir The location of the folder containing .rda files of figures,
+#' tables, alt text, and captions.
+#' @param plot_name Full name of the .rda file containing the flextable.
 #'
 #' @return A list of the split tables.
 #'
