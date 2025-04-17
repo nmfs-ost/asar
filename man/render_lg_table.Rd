@@ -17,6 +17,11 @@ render_lg_table(
 \item{essential_columns}{The columns that will be retained between the split
 tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
 column. Example: for the indices table, this could be the year column.}
+
+\item{rda_dir}{The location of the folder containing .rda files of figures,
+tables, alt text, and captions.}
+
+\item{plot_name}{Full name of the .rda file containing the flextable.}
 }
 \value{
 A list of the split tables.
@@ -28,10 +33,14 @@ Split an extra-wide table into multiple tables
 \dontrun{
 render_lg_table(
 report_flextable = indices_table,
-essential_columns = 1)
+essential_columns = 1,
+rda_dir = here::here(),
+plot_name = "indices.abundance_table.rda")
 
 render_lg_table(
 report_flextable = important_table,
-essential_columns = 1:3)
+essential_columns = 1:3,
+rda_dir = "data",
+plot_name = "bnc_table.rda")
 }
 }

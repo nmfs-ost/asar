@@ -1,0 +1,33 @@
+# Executive Summary {#sec-exec-sum}
+
+<!--- Management Track Assessment TORs (Revised 02/22/2022)
+
+1. Estimate catch from all sources including landings and discards.
+2. Evaluate indices used in the assessment (e.g., indices of relative or absolute abundance,
+recruitment, state surveys, age-length data, etc.).
+3. Estimate annual fishing mortality, recruitment and stock biomass (both total and
+spawning stock) as possible (depending on the assessment method) for the time series
+using the approved assessment method and estimate their uncertainty. Include
+retrospective analyses if possible (both historical and within-model) to allow a
+comparison with previous assessment results and projections, and to examine model fit.
+a. Include bridge runs to sequentially document each change from the previously
+accepted model to the updated model proposed for this peer review.
+b. Prepare a backup assessment approach that would serve as an alternative for
+providing scientific advice to management if the analytical assessment were to not
+pass review
+4. Re-estimate or update the BRP’s as defined by the management track level and
+recommend stock status. Also, provide qualitative descriptions of stock status based
+on simple indicators/metrics (e.g., age- and size-structure, temporal trends in
+population size or recruitment indices, etc.).
+5. Conduct short-term stock projections when appropriate.
+6. Respond to any review panel comments or SSC concerns from the most recent prior
+research or management track assessment.
+--->
+
+## State of stock{-}
+
+
+## Projections{-}
+
+
+## Special comments{-}
