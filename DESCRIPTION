@@ -56,7 +56,7 @@ Suggests:
 VignetteBuilder: 
     knitr
 Remotes:
-    nmfs-fish-tools/nmfspalette,
+    nmfs-ost/nmfspalette,
     nmfs-ost/stockplotr,
     r4ss/r4ss
 Config/testthat/edition: 3
