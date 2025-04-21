@@ -76,7 +76,8 @@
 #' be created as a child document and added into the 02_introduction.qmd.
 #' To add >1 (sub)section, make the location a list corresponding to the
 #' order of (sub)section names listed in the 'new_section' parameter.
-#' @param type Type of report to build. Default is SAR.
+#' @param type Type of report to build. Default is SAR ("SAR"). New options include
+#' templates for PMFC ("pfmc") and NEFSC management track ("nemt").
 #' @param prev_year Year in which the previous assessment report
 #'  was conducted. Used to pull previous assessment template.
 #' @param custom TRUE/FALSE; Build custom sectioning for the
@@ -534,6 +535,10 @@ create_template <- function(
         if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         # Copy over glossary and associated tex file
         if (tolower(type) == "pfmc") {
+          file.copy(system.file("resources", "formatting_files", "sa4ss_glossaries.tex", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+          file.copy(system.file("resources", "formatting_files", "pfmc.tex", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+        }
+        if (tolower(type) == "nemt") {
           file.copy(system.file("resources", "formatting_files", "sa4ss_glossaries.tex", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
           file.copy(system.file("resources", "formatting_files", "pfmc.tex", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         }
@@ -1236,11 +1241,6 @@ create_template <- function(
     )
 
     print("___Created report template______")
-
-    ##### NEFSC MT Template ----
-    # } else if (type == "NEMT") {
-    #   stop("Template not available.")
-    # }
 
     ##### Save skeleton ----
     # Save template as .qmd to render

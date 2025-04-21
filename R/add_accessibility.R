@@ -14,7 +14,7 @@
 #' @param alttext_csv_dir Directory for the csv file containing alternative
 #' text and captions generated when running stockplotr::exp_all_figs_tables
 #'
-#' @return This function runs all functions from {asar} associated with
+#' @return This function runs all functions from `asar` associated with
 #' accessibility and renders the final document. The document is tagged and
 #' includes alternative text from the captions_alt_text.csv produced from
 #' `stockplotr` package also available on GitHub.
