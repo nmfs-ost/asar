@@ -61,6 +61,14 @@ You can use the quantities in the preamble to make dynamic reports that can easi
 
 For more help with using quarto (and using it efficiently), please see our [markdown guide](markdown_notation.html) to learn the in's and out's of writing a stock assessment report in quarto.
 
+### **When rendering, why does my report hang on the figures doc?**
+
+When rendering your report, it may hang when processing the figures file. If this occurs, it probably means that your tinytex installation isn't working properly. This may occur even if you've installed the TinyTeX bundle with every LaTeX package you could install from CTAN ([TinyTeX-2](https://github.com/rstudio/tinytex-releases?tab=readme-ov-file#releases)).
+
+Try this: Uninstall tinytex (`tinytex::uninstall_tinytex()`), then reinstall it in the terminal (`quarto install tinytex`).
+
+Notably, this command will install TinyTeX-1 bundle (the default), then install the necessary LaTeX packages needed for rendering *while your report is rendering the first time*. 
+
 ### **create_template isn't working, what do I do?**
 
 This could mean a lot of things. Most of the time, when create_template is not working, it means you are missing a key argument to the function. Make sure to read the error message(s) clearly and check the 'report' folder where all of the file were created. If you have exhausted your options and double checked that you have all of the correct arguments, then please leave an [issue](https://github.com/nmfs-ost/asar/issues).
