@@ -302,6 +302,7 @@ create_template <- function(
       report_name <- report_name
     }
     # Add species to name
+    # TODO: can this be made into a switch?
     if (!is.null(species)) {
       report_name <- paste0(
         report_name,
@@ -316,12 +317,14 @@ create_template <- function(
   } # close if rerender skeleton for naming
 
   # Select parameter from list
+  # TODO: add switch here instead of if
   if (length(format) > 1) {
     format <- "pdf"
   } else {
     format <- match.arg(format, several.ok = FALSE)
   }
 
+  # TODO: add switch here instead of if
   if (!is.null(office) & length(office) == 1) {
     office <- match.arg(office, several.ok = FALSE)
   } else if (length(office) > 1) {
@@ -441,9 +444,9 @@ create_template <- function(
           # copy before-body tex
           file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
           # customize titlepage tex
-          create_titlepage_tex(office = office, subdir = supdir, species = species)
+          create_titlepage_tex(subdir = supdir, ...)
           # customize in-header tex
-          create_inheader_tex(species = species, year = year, subdir = supdir)
+          create_inheader_tex(subdir = supdir, ...)
           # Copy species image from package
           file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
           # Copy bib file
@@ -497,9 +500,9 @@ create_template <- function(
                 output_file = model_results,
                 outdir = resdir,
                 file_save = TRUE,
-                model = model,
                 savedir = subdir,
-                save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
+                save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = ""),
+                ...
               )
               # } else if (tolower(model) == "bam") {
               #   convert_output(
@@ -516,9 +519,9 @@ create_template <- function(
                 output_file = model_results,
                 outdir = resdir,
                 file_save = TRUE,
-                model = model,
                 savedir = subdir,
-                save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
+                save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = ""),
+                ...
               )
             }
             # Rename model results file and results file directory if the results are converted in this fxn
@@ -581,10 +584,7 @@ create_template <- function(
         if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
           # if there is an existing folder with "rda_files" in the rda_dir:
           if (dir.exists(fs::path(rda_dir, "rda_files"))) {
-            create_tables_doc(
-              subdir = subdir,
-              rda_dir = rda_dir
-            )
+            create_tables_doc(...)
           }
         } else {
           tables_doc <- paste0(
@@ -615,10 +615,7 @@ create_template <- function(
         if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
           # if there is an existing folder with "rda_files" in the rda_dir:
           if (dir.exists(fs::path(rda_dir, "rda_files"))) {
-            create_figures_doc(
-              subdir = subdir,
-              rda_dir = rda_dir
-            )
+            create_figures_doc(...)
           }
         } else {
           figures_doc <- paste0(
@@ -931,18 +928,12 @@ create_template <- function(
         } else {
           author <- grep("  - name: ", prev_skeleton)
           citation <- create_citation(
-            author = author,
-            title = title,
-            year = year,
-            office = office
+            ...
           )
         }
       } else {
         citation <- create_citation(
-          author = author,
-          title = title,
-          year = year,
-          office = office
+          ...
         )
         print("_______Add Report Citation________")
       }
@@ -1039,10 +1030,8 @@ create_template <- function(
               "11_appendix.qmd"
             )
             sec_list2 <- add_section(
-              new_section = new_section,
-              section_location = section_location,
               custom_sections = sec_list1,
-              subdir = subdir
+              ...
             )
             # Create sections object to add into template
             sections <- add_child(
@@ -1068,10 +1057,8 @@ create_template <- function(
             sec_list1 <- sec_list1[order(names(setNames(sec_list1, sec_list1)))]
 
             sec_list2 <- add_section(
-              new_section = new_section,
-              section_location = section_location,
               custom_sections = sec_list1,
-              subdir = subdir
+              ...
             )
             # Create sections object to add into template
             sections <- add_child(
