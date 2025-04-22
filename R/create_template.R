@@ -209,41 +209,42 @@
 #'
 create_template <- function(
     new_template = TRUE,
-    format = c("pdf", "docx", "html", NULL),
+    format = c("pdf", "docx", "html", NA),
     office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
-    species,
-    spp_latin,
-    year,
-    file_dir = getwd(),
+    species = NA,
+    spp_latin = NA,
+    year = NA,
+    file_dir = NA,
     author = "",
-    add_author = NULL,
-    region = NULL,
+    add_author = NA,
+    region = NA,
     complex = FALSE,
     include_affiliation = TRUE,
     simple_affiliation = FALSE,
     alt_title = FALSE,
-    title = NULL,
+    title = NA,
     parameters = TRUE,
-    param_names = NULL,
-    param_values = NULL,
+    param_names = NA,
+    param_values = NA,
     convert_output = FALSE,
-    fleet_names = NULL,
-    resdir,
-    model_results,
-    model,
-    new_section = NULL,
-    section_location = NULL,
+    fleet_names = NA,
+    resdir = NA,
+    model_results = NA,
+    model = NA,
+    new_section = NA,
+    section_location = NA,
     type = "SAR",
-    prev_year = NULL,
+    prev_year = NA,
     custom = FALSE,
-    custom_sections = NULL,
+    custom_sections = NA,
     include_figures = TRUE,
     include_tables = TRUE,
     add_image = FALSE,
-    spp_image = NULL,
+    spp_image = NA,
     bib_file = "asar_references.bib",
     rerender_skeleton = FALSE,
     ...) {
+  # TODO: change is.null statements to is.na
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -320,28 +321,27 @@ create_template <- function(
     )
   } else {
     # Name report
-    if (!is.null(type)) {
-      report_name <- paste0(
-        ifelse(type == "skeleton", "SAR", type),
-        "_"
-      )
-    } else {
-      report_name <- paste0(
-        "type_"
-      )
-    }
+    report_name <- ifelse(
+      !is.null(type),
+      paste0(type,"_"),
+      paste0("type_")
+    )
     # Add region to name
-    if (!is.null(region)) {
-      report_name <- paste0(
+    report_name <- ifelse(
+      !is.null(region),
+      paste0(
         report_name,
         gsub("(\\b[A-Z])[^A-Z]+", "\\1", region),
         "_"
-      )
-    } else {
-      report_name <- report_name
-    }
+      ),
+      report_name
+    )
     # Add species to name
     # TODO: can this be made into a switch?
+    # report_name <- switch(
+    #   species,
+    #
+    # )
     if (!is.null(species)) {
       report_name <- paste0(
         report_name,
