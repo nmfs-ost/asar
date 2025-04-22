@@ -101,59 +101,6 @@
 #' using the image included in the project's repository.
 #' @param bib_file File path to a .bib file used for citing references in
 #' the report
-#' @param rda_dir If the user has already created .rda files containing
-#' figures, tables, alt text, and captions with `stockplotr`, rda_dir represents
-#' the location of the folder containing these .rda files ("rda_files").
-#' Otherwise, if the user has not used `stockplotr` to make those .rda files already,
-#' those files will be generated automatically and placed within an "rda_files"
-#' folder within rda_dir. The "rda_files" folder would have been
-#' made with `stockplotr::exp_all_figs_tables()`, or by exporting files by running individual
-#' `stockplotr` figure- and table-generating functions. If you have used `stockplotr` to
-#' generate these .rda files, you can leave the arguments below blank. NOTE:
-#' If an "rda_files" folder is detected within rda_dir, .rda files will not be
-#' regenerated.
-#' @param end_year The last year of assessment. The default is year - 1.
-#' @param n_projected_years Number of years spawning biomass is projected for.
-#' By default this number is set to 10
-#' @param relative A logical value specifying if the resulting figures should be
-#' relative spawning biomass. The default is 'FALSE'. 'ref_line' indicates which
-#' reference point to use.
-#' @param recruitment_scale_amount A number describing how much to scale down
-#' the recruitment quantities shown on the y axis. For example,
-#' recruitment_scale_amount = 100 would scale down a value from 500,000 -->
-#' 5,000. This scale will be reflected in the y axis label.
-#' @param recruitment_unit_label Units for recruitment
-#' @param ref_line An argument inherited from `stockplotr::plot_spawning_biomass.R`.
-#' A string specifying the type of reference you want to
-#' compare spawning biomass to. The default is `"target"`, which looks for
-#' `"spawning_biomass_target"` in the `"label"` column of `dat`. The actual
-#' searching in `dat` is case agnostic and will work with either upper- or
-#' lower-case letters but you must use one of the options specified in the
-#' default list to ensure that the label on the figure looks correct
-#' regardless of how it is specified in `dat`.
-#' @param ref_point An argument inherited from `stockplotr::plot_biomass.R`. A known
-#' value of the reference point along with the label for the reference point as
-#' specified in the output file. Please use this option if the ref_line cannot
-#' find your desired point. Indicate the reference point in the form
-#' c("label" = value).
-#' @param biomass_scale_amount A number describing how much to scale down the
-#' biomass quantities shown on the y axis. See `recruitment_scale_amount`.
-#' @param landings_unit_label Units for landings
-#' @param spawning_biomass_label Units for spawning biomass
-#' @param spawning_biomass_scale_amount  A number describing how much to scale down the
-#' spawning biomass quantities shown on the y axis. See `recruitment_scale_amount`.
-#' @param ref_line_sb A string specifying the type of
-#' reference you want to compare spawning biomass to. The default is `"target"`,
-#' which looks for `"spawning_biomass_target"` in the `"label"` column of `dat`.
-#' The actual searching in `dat` is case agnostic and will work with either upper- or
-#' lower-case letters but you must use one of the options specified in the
-#' default list to ensure that the label on the figure looks correct
-#' regardless of how it is specified in `dat`.
-#' @param ref_point_sb Identical definition as `ref_point`, but this argument is
-#' applied to plot_spawning_biomass.
-#' @param indices_unit_label Units for index of abundance/CPUE
-#' @param biomass_unit_label Abbreviated units for biomass
-#' @param catch_unit_label Abbreviated units for catch
 #' @param rerender_skeleton Re-create the "skeleton.qmd" in your outline when
 #'        changes to the main skeleton need to be made. This reproduces the
 #'        yaml, output (if changed), preamble quantities, and restructures your
@@ -264,14 +211,14 @@ create_template <- function(
     new_template = TRUE,
     format = c("pdf", "docx", "html", NULL),
     office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
-    region = NULL,
-    complex = FALSE,
-    species = NULL,
-    spp_latin = NULL,
-    year = NULL,
+    species,
+    spp_latin,
+    year,
     file_dir = getwd(),
     author = "",
     add_author = NULL,
+    region = NULL,
+    complex = FALSE,
     include_affiliation = TRUE,
     simple_affiliation = FALSE,
     alt_title = FALSE,
@@ -281,9 +228,9 @@ create_template <- function(
     param_values = NULL,
     convert_output = FALSE,
     fleet_names = NULL,
-    resdir = NULL,
-    model_results = NULL,
-    model = NULL,
+    resdir,
+    model_results,
+    model,
     new_section = NULL,
     section_location = NULL,
     type = "SAR",
@@ -295,24 +242,8 @@ create_template <- function(
     add_image = FALSE,
     spp_image = NULL,
     bib_file = "asar_references.bib",
-    rda_dir = getwd(),
-    end_year = NULL,
-    n_projected_years = 10,
-    relative = FALSE,
-    recruitment_scale_amount = 1,
-    recruitment_unit_label = "metric tons",
-    ref_line = c("target", "MSY", "msy", "unfished"),
-    ref_point = NULL,
-    biomass_scale_amount = 1,
-    landings_unit_label = "metric tons",
-    ref_point_sb = NULL,
-    spawning_biomass_label = "metric tons",
-    spawning_biomass_scale_amount = 1,
-    ref_line_sb = c("target", "MSY", "msy", "unfished"),
-    indices_unit_label = "",
-    biomass_unit_label = "mt",
-    catch_unit_label = "mt",
-    rerender_skeleton = FALSE) {
+    rerender_skeleton = FALSE,
+    ...) {
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -636,17 +567,396 @@ create_template <- function(
             } else {
               resdir_null = FALSE
             }
-            mod_time <- as.character(file.info(file.path(resdir, model_results), extra_cols = F)$ctime)
-            mod_msg <- paste("Report is based upon model output from", model_results, "stored in folder", resdir,
-                             "that was last modified on:", mod_time)
-            message(mod_msg)
-            writeLines(mod_msg, fs::path(subdir, "model_results_metadata.md"))
-            # change resdir back to null if originally null
-            if(resdir_null == TRUE){
-              resdir <- NULL
+            # Rename model results file and results file directory if the results are converted in this fxn
+            model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
+            resdir <- subdir
+          } else {
+            message("Output not converted: standard output already in path.")
+            model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
+            resdir <- subdir
+          }
+        } # close check for converted output already
+      # } # close rerender if
+
+      # print("_______Standardized output data________")
+
+      # run stockplotr::exp_all_figs_tables() if rda files not premade
+      # output folder: rda_dir
+      # Don't run on rerender
+      if (!rerender_skeleton) {
+        if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
+          if (!is.null(resdir) | !is.null(model_results)) {
+            # load converted output
+            if (convert_output) {
+              output <- utils::read.csv(paste0(subdir, "/", paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))
+            } else {
+              output <- utils::read.csv(paste0(resdir, "/", model_results))
+            }
+            # run stockplotr::exp_all_figs_tables() to make rda files
+
+            # test_exp_all <-
+            tryCatch(
+              {
+                stockplotr::exp_all_figs_tables(
+                  dat = output,
+                  ...
+                )
+                # TRUE
+              },
+              error = function(e) {
+                warning("Failed to create all rda files from stockplotr package.")
+                # FALSE
+              }
+            )
+          } # else {
+          # test_exp_all <- FALSE
+          # }
+        }
+      }
+
+      # Create tables qmd
+      if ((include_tables & !rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
+        # if (!test_exp_all) {
+        #   tables_doc <- paste0(
+        #     "### Tables \n \n",
+        #     "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
+        #   )
+        #   utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
+        #   warning("Results file or model name not defined.")
+        # } else
+        if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
+          # if there is an existing folder with "rda_files" in the rda_dir:
+          if (dir.exists(fs::path(rda_dir, "rda_files"))) {
+            create_tables_doc(
+              subdir = subdir,
+              rda_dir = rda_dir
+            )
+          }
+        } else {
+          tables_doc <- paste0(
+            "## Tables \n \n",
+            "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
+          )
+          utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
+          warning("Results file or model name not defined.")
+        }
+      }
+
+      # Rename model results for figures and tables files
+      # TODO: check if this is needed once the tables and figures docs are reformatted
+      # if (convert_output) {
+      #   model_results <- paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
+      # }
+
+      # Create figures qmd
+      if ((include_figures & !rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
+        # if (!test_exp_all) {
+        #   figures_doc <- paste0(
+        #     "### Figures \n \n",
+        #     "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
+        #   )
+        #   utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
+        #   warning("Results file or model name not defined.")
+        # } else
+        if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
+          # if there is an existing folder with "rda_files" in the rda_dir:
+          if (dir.exists(fs::path(rda_dir, "rda_files"))) {
+            create_figures_doc(
+              subdir = subdir,
+              rda_dir = rda_dir
+            )
+          }
+        } else {
+          figures_doc <- paste0(
+            "## Figures \n \n",
+            "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
+          )
+          utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
+          warning("Results file or model name not defined.")
+        }
+      }
+
+      # Part I
+      # Create a report template file to render for the region and species
+      # Create YAML header for document
+      # Write title based on report type and region
+      if (alt_title) {
+        if (is.null(title)) {
+          stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
+        }
+        title <- title
+      } else {
+        title <- create_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type, year = year)
+      }
+
+      # Pull authors and affiliations from national db
+      # Check if rerender and if author is already added
+      # TODO: add feature to allow removal of authors if there are ones that
+        # are repeated from the previous skeleton and those named (not just
+        # additions of new names)
+      if (rerender_skeleton) {
+        # Pull all author names from prev_skeleton
+        author_prev <- grep(
+          "\\- name:\\s*'",
+          prev_skeleton,
+          value = TRUE
+        )
+        # Remove every second occurance of "-name"
+        author_prev <- author_prev[seq(1, length(author_prev), 2)]
+        # Remove everything but the name
+        author_prev <- sub(
+          ".*\\- name:\\s*'([^']+)'.*",
+          "\\1",
+          author_prev
+        )
+        setdiff(author, author_prev) -> author
+      }
+
+      # Parameters to add authorship to YAML
+      # Read authorship file
+      authors <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
+        dplyr::mutate(
+          mi = dplyr::case_when(
+            mi == "" ~ NA,
+            TRUE ~ mi
+          ),
+          name = dplyr::case_when(
+            is.na(mi) ~ paste0(first, " ", last),
+            TRUE ~ paste(first, mi, last, sep = " ")
+          )
+        ) |>
+        dplyr::select(name, office) |>
+        dplyr::filter(name %in% author)
+
+      if (length(author) != dim(authors)[1]){
+        message("Some authors were not found in the author database. Please comment on this issue (https://github.com/nmfs-ost/asar/issues/19) to request name and affiliation additions to the archive of U.S. stock assessment authors.")
+      }
+
+      authors <- authors[match(author, authors$name), ]
+
+      if (include_affiliation) {
+        affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
+      }
+      if (!is.null(add_author)) {
+        authors <- rbind(authors, data.frame(name = add_author, office = rep(NA, length(add_author))))
+      }
+
+      author_list <- list()
+      if (include_affiliation & !simple_affiliation) {
+        if (nrow(authors) > 0) {
+          if (rerender_skeleton) {
+            author_lines <- grep(
+              "\\- name:\\s*'",
+              prev_skeleton,
+              value = TRUE
+            )
+            authors_prev <- sub(
+              ".*\\- name:\\s*'([^']+)'.*",
+              "\\1",
+              author_lines
+            )
+            # remove authors previously in skeleton and keep new additions either from author or add_author
+            author_to_add <- setdiff(authors$name, authors_prev)
+            authors <- authors |>
+              dplyr::filter(name %in% author_to_add)
+          }
+          for (i in 1:nrow(authors)) {
+            auth <- authors[i, ]
+            aff <- affil |>
+              dplyr::filter(affiliation == auth$office)
+            if (is.na(auth$office)) {
+              paste(
+                "  ", "- name: ", "'", auth$name, "'", "\n",
+                "  ", "  ", "affiliations:", "\n",
+                "  ", "  ", "  ", "- name: '[organization]'", "\n", # "NOAA Fisheries ",
+                "  ", "  ", "  ", "  ", "address: '[address]'", "\n",
+                "  ", "  ", "  ", "  ", "city: '[city]'", "\n",
+                "  ", "  ", "  ", "  ", "state: '[state]'", "\n",
+                "  ", "  ", "  ", "  ", "postal-code: '[postal code]'", "\n",
+                sep = ""
+              ) -> author_list[[i]]
+            } else {
+              paste(
+                "  ", "- name: ", "'", auth$name, "'", "\n",
+                "  ", "  ", "affiliations:", "\n",
+                "  ", "  ", "  ", "- name: ", "'", aff$name, "'", "\n", # "NOAA Fisheries ",
+                "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'", "\n",
+                # TODO: remove state in the following line when notation is changed in _titlepage.tex
+                "  ", "  ", "  ", "  ", "city: ", "'", aff$city, ", ", aff$state, "'", "\n",
+                "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
+                "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n",
+                sep = ""
+              ) -> author_list[[i]]
             }
           }
 
+      # Create yaml
+      yaml <- create_yaml(...)
+
+      if (!rerender_skeleton) print("__________Built YAML Header______________")
+
+      # yaml_save <- capture.output(cat(yaml))
+      # cat(yaml, file = here('template','yaml_header.qmd'))
+
+      # add in html for draft watermark if in that format - otherwise pdf draft is in format_quarto fxn
+      if (format == "html") {
+        html_draft <- paste(
+          "\n ```{=html} \n",
+          "<div style='position: fixed; margin-top: 10%; margin-left:5%; font-size: xx-large; font-weight: 900; color: #CCCCCC; rotate: -45deg; z-index:-999;'>DRAFT</div>", "\n",
+          "``` \n",
+          sep = ""
+        )
+      }
+
+      # Add preamble
+      # add in quantities and output data R chunk
+      # Indicate model output path
+
+      # in case where rerndering skeleton and they want to update the model results
+      if (rerender_skeleton) {
+        if (!is.null(model_results) & !is.null(resdir)) {
+          prev_conout <- convert_output
+          convert_output <- FALSE
+        }
+      }
+
+      # standard preamble
+      preamble <- add_chunk(
+        paste0(
+          "# load converted output from asar::convert_output() \n",
+          "output <- utils::read.csv('",
+          ifelse(convert_output,
+            paste0(subdir, "/", stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv"),
+            paste0(resdir, "/", model_results)
+          ), "') \n",
+          "# Call reference points and quantities below \n",
+          "output <- output |> \n",
+          "  ", "dplyr::mutate(estimate = as.numeric(estimate), \n",
+          "  ", "  ", "uncertainty = as.numeric(uncertainty)) \n",
+          "start_year <- as.numeric(min(output$year, na.rm = TRUE)) \n",
+          # change end year in the fxn to ifelse where is.null(year)
+          "end_year <- (output |> \n",
+          "  ", "dplyr::filter(!(year %in% c('Virg', 'Init', 'S/Rcurve', 'INIT')), \n",
+          "  ", "  ", "!is.na(year)) |> \n",
+          "  ", "dplyr::mutate(year = as.numeric(year)) |> \n",
+          "  ", "dplyr::summarize(max_val = max(year)) |> \n",
+          "  ", "dplyr::pull(max_val))-10", "\n",
+          # for quantities - don't want any values that are split by factor
+          "# subset output to remove quantities that are split by factor \n",
+          "output2 <- output |> \n",
+          "  ", "dplyr::filter(is.na(season), \n",
+          "  ", "  ", "is.na(fleet), \n",
+          "  ", "  ", "is.na(sex), \n",
+          "  ", "  ", "is.na(area), \n",
+          "  ", "  ", "is.na(growth_pattern), \n",
+          "  ", "  ", "is.na(subseason), \n",
+          "  ", "  ", "is.na(age))", "\n",
+          "# terminal fishing mortality \n",
+          "Fend <- output2 |> ", "\n",
+          "  ", "dplyr::filter(c(label == 'fishing_mortality' & year == end_year) | c(label == 'terminal_fishing_mortality' & is.na(year))) |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+          "# fishing mortality at msy \n",
+          "# please change target if desired \n",
+          "Ftarg <- output2 |>", "\n",
+          "  ", "dplyr::filter(grepl('f_target', label) | grepl('f_msy', label) | c(grepl('fishing_mortality_msy', label) & is.na(year))) |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+          "# Terminal year F respective to F target \n",
+          "F_Ftarg <- Fend / Ftarg", "\n",
+          "# terminal year biomass \n",
+          "Bend <- output2 |>", "\n",
+          "  ", "dplyr::filter(grepl('mature_biomass', label) | grepl('^biomass$', label),", "\n",
+          "  ", "  ", "year == end_year) |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+          "# target biomass (msy) \n",
+          "# please change target if desired \n",
+          "Btarg <- output2 |>", "\n",
+          "  ", "dplyr::filter(c(grepl('biomass', label) & grepl('target', label) & estimate >1) | label == 'biomass_msy') |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+          "# total catch in the last year \n",
+          "total_catch <- output |>", "\n",
+          "  ", "dplyr::filter(grepl('^catch$', label), \n",
+          "  ", "year == end_year,", "\n",
+          "  ", "  ", "is.na(fleet),", "\n",
+          "  ", "  ", "is.na(age),", "\n",
+          "  ", "  ", "is.na(area),", "\n",
+          "  ", "  ", "is.na(growth_pattern)) |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+          # chk_c <- dplyr::filter(output2, grepl("^catch$", label), year == end_year) |>
+          #   dplyr::group_by(year) |>
+          #   dplyr::summarise(total_catch = sum(estimate))
+          "# total landings in the last year \n",
+          "total_landings <- output |>", "\n",
+          "  ", "dplyr::filter(grepl('landings_weight', label), year == end_year,", "\n",
+          "  ", "  ", "is.na(fleet),", "\n",
+          "  ", "  ", "is.na(age)) |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+          "# spawning biomass in the last year\n",
+          "SBend <- output2 |>", "\n",
+          "  ", "dplyr::filter(grepl('spawning_biomass', label), year == end_year) |>", "\n",
+          "  ", "dplyr::pull(estimate) |>", "\n",
+          "  ", "  ", "unique()", "\n",
+          "# overall natural mortality or at age \n",
+          "M <- output |>", "\n",
+          "  ", "dplyr::filter(grepl('natural_mortality', label)) |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+          "# Biomass at msy \n",
+          "# to change to another reference point, replace msy in the following lines with other label \n",
+          "Bmsy <- output2 |>", "\n",
+          "  ", "dplyr::filter(c(grepl('biomass', label) & grepl('msy', label) & estimate >1) | label == 'biomass_msy') |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+          "# target spawning biomass(msy) \n",
+          "# please change target if desired \n",
+          "SBtarg <- output2 |>", "\n",
+          "  ", "dplyr::filter(c(grepl('spawning_biomass', label) & grepl('msy$', label) & estimate >1) | label == 'spawning_biomass_msy$') |>", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+          "# steepness \n",
+          "h <- output |> ", "\n",
+          "  ", "dplyr::filter(grepl('steep', label)) |> ", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+          "# recruitment \n",
+          "R0 <- output |> ", "\n",
+          "  ", "dplyr::filter(grepl('R0', label) | grepl('recruitment_virgin', label)) |> ", "\n",
+          "  ", "dplyr::pull(estimate)", "\n",
+          "# female SB (placeholder)", "\n"
+        ),
+        label = "output_and_quantities",
+        eval = ifelse(is.null(model_results), "false", "true")
+      )
+      # bring back the initial call of convert_output
+      if (rerender_skeleton) {
+        if (!is.null(model_results)) {
+          convert_output <- prev_conout
+        }
+      }
+      # extract old preamble if don't want to change
+      if (rerender_skeleton) {
+        question1 <- readline("Do you want to keep the current preamble? (Y/N)")
+
+        # answer question1 as y if session isn't interactive
+        if (!interactive()){
+          question1 <- "y"
+        }
+        if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+          start_line <- grep("output_and_quantities", prev_skeleton) - 1
+          # find next trailing "```"` in case it was edited at the end
+          end_line <- grep("```", prev_skeleton)[grep("```", prev_skeleton) > start_line][1]
+          preamble <- paste(prev_skeleton[start_line:end_line], collapse = "\n")
+
+          if (!is.null(model_results) & !is.null(resdir)) {
+            prev_results_line <- grep("output <- utils::read.csv", preamble)
+            prev_results <- stringr::str_replace(
+              preamble[prev_results_line],
+              "(?<=read\\.csv\\().*?(?=\\))",
+              glue::glue("'{resdir}/{model_results}'")
+              )
+            preamble <- append(
+              preamble,
+              prev_results,
+              after = prev_results_line)[-prev_results_line]
+            if (!grepl(".csv", model_results)) warning("Model results are not in csv format - Will not work on render")
+          } else {
+            message("Preamble maintained - model results not updated.")
+          }
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
           warning("Report template files were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder.")
         }

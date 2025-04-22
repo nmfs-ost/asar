@@ -8,9 +8,6 @@
 #' working directory.
 #' @param model Assessment model used in evaluation ("ss3", "bam",
 #'  "asap", "fims", "amak", "ms-java", "wham", "mas").
-#' @param fleet_names Names of fleets in the assessment model as
-#'  shortened in the output file. If fleet names are not properly read, then
-#'  indicate the fleets names as an acronym in a vector
 #' @param file_save TRUE/FALSE; Save the formatted object rather
 #'  than calling the function and adding the formatted object to
 #'  the global environment? Default is false.
@@ -18,6 +15,9 @@
 #' working directory.
 #' @param save_name Name of the converted output file (do not use
 #'  spaces).
+#' @param fleet_names Names of fleets in the assessment model as
+#'  shortened in the output file. If fleet names are not properly read, then
+#'  indicate the fleets names as an acronym in a vector
 #'
 #' @author Samantha Schiano
 #'
@@ -28,7 +28,6 @@
 #'         There are 2 options for adding data to the function. (1) Add the full
 #'         path with the file name in output.file or (2) output.file is the file
 #'         name and outdir is the path to the file without a trailing forward slash.
-#'
 #'
 #' @export
 #'
@@ -42,13 +41,13 @@
 #' save_name = "converted_model_output")
 #' }
 convert_output <- function(
-    output_file = NULL,
+    output_file,
     outdir = getwd(),
-    model = NULL,
-    fleet_names = NULL,
+    model,
     file_save = FALSE,
     savedir = getwd(),
-    save_name = "std_model_output") {
+    save_name = "std_model_output",
+    fleet_names = NULL) {
   #### out_new ####
   # Blank dataframe and set up to mold output into
   out_new <- data.frame(
@@ -1203,7 +1202,7 @@ convert_output <- function(
   }
   if (file_save) {
     save_path <- paste(savedir, "/",
-      ifelse(is.null(save_name), "converted_output", save_name),
+      save_name,
       ".csv",
       sep = ""
     )
