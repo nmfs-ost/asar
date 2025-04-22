@@ -100,59 +100,6 @@
 #' using the image included in the project's repository.
 #' @param bib_file File path to a .bib file used for citing references in
 #' the report
-#' @param rda_dir If the user has already created .rda files containing
-#' figures, tables, alt text, and captions with `stockplotr`, rda_dir represents
-#' the location of the folder containing these .rda files ("rda_files").
-#' Otherwise, if the user has not used `stockplotr` to make those .rda files already,
-#' those files will be generated automatically and placed within an "rda_files"
-#' folder within rda_dir. The "rda_files" folder would have been
-#' made with `stockplotr::exp_all_figs_tables()`, or by exporting files by running individual
-#' `stockplotr` figure- and table-generating functions. If you have used `stockplotr` to
-#' generate these .rda files, you can leave the arguments below blank. NOTE:
-#' If an "rda_files" folder is detected within rda_dir, .rda files will not be
-#' regenerated.
-#' @param end_year The last year of assessment. The default is year - 1.
-#' @param n_projected_years Number of years spawning biomass is projected for.
-#' By default this number is set to 10
-#' @param relative A logical value specifying if the resulting figures should be
-#' relative spawning biomass. The default is 'FALSE'. 'ref_line' indicates which
-#' reference point to use.
-#' @param recruitment_scale_amount A number describing how much to scale down
-#' the recruitment quantities shown on the y axis. For example,
-#' recruitment_scale_amount = 100 would scale down a value from 500,000 -->
-#' 5,000. This scale will be reflected in the y axis label.
-#' @param recruitment_unit_label Units for recruitment
-#' @param ref_line An argument inherited from `stockplotr::plot_spawning_biomass.R`.
-#' A string specifying the type of reference you want to
-#' compare spawning biomass to. The default is `"target"`, which looks for
-#' `"spawning_biomass_target"` in the `"label"` column of `dat`. The actual
-#' searching in `dat` is case agnostic and will work with either upper- or
-#' lower-case letters but you must use one of the options specified in the
-#' default list to ensure that the label on the figure looks correct
-#' regardless of how it is specified in `dat`.
-#' @param ref_point An argument inherited from `stockplotr::plot_biomass.R`. A known
-#' value of the reference point along with the label for the reference point as
-#' specified in the output file. Please use this option if the ref_line cannot
-#' find your desired point. Indicate the reference point in the form
-#' c("label" = value).
-#' @param biomass_scale_amount A number describing how much to scale down the
-#' biomass quantities shown on the y axis. See `recruitment_scale_amount`.
-#' @param landings_unit_label Units for landings
-#' @param spawning_biomass_label Units for spawning biomass
-#' @param spawning_biomass_scale_amount  A number describing how much to scale down the
-#' spawning biomass quantities shown on the y axis. See `recruitment_scale_amount`.
-#' @param ref_line_sb A string specifying the type of
-#' reference you want to compare spawning biomass to. The default is `"target"`,
-#' which looks for `"spawning_biomass_target"` in the `"label"` column of `dat`.
-#' The actual searching in `dat` is case agnostic and will work with either upper- or
-#' lower-case letters but you must use one of the options specified in the
-#' default list to ensure that the label on the figure looks correct
-#' regardless of how it is specified in `dat`.
-#' @param ref_point_sb Identical definition as `ref_point`, but this argument is
-#' applied to plot_spawning_biomass.
-#' @param indices_unit_label Units for index of abundance/CPUE
-#' @param biomass_unit_label Abbreviated units for biomass
-#' @param catch_unit_label Abbreviated units for catch
 #' @param rerender_skeleton Re-create the "skeleton.qmd" in your outline when
 #'        changes to the main skeleton need to be made. This reproduces the
 #'        yaml, output (if changed), preamble quantities, and restructures your
@@ -263,14 +210,14 @@ create_template <- function(
     new_template = TRUE,
     format = c("pdf", "docx", "html", NULL),
     office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
-    region = NULL,
-    complex = FALSE,
-    species = NULL,
-    spp_latin = NULL,
-    year = NULL,
+    species,
+    spp_latin,
+    year,
     file_dir = getwd(),
     author = "",
     add_author = NULL,
+    region = NULL,
+    complex = FALSE,
     include_affiliation = TRUE,
     simple_affiliation = FALSE,
     alt_title = FALSE,
@@ -280,9 +227,9 @@ create_template <- function(
     param_values = NULL,
     convert_output = FALSE,
     fleet_names = NULL,
-    resdir = NULL,
-    model_results = NULL,
-    model = NULL,
+    resdir,
+    model_results,
+    model,
     new_section = NULL,
     section_location = NULL,
     type = "SAR",
@@ -294,24 +241,8 @@ create_template <- function(
     add_image = FALSE,
     spp_image = NULL,
     bib_file = "asar_references.bib",
-    rda_dir = getwd(),
-    end_year = NULL,
-    n_projected_years = 10,
-    relative = FALSE,
-    recruitment_scale_amount = 1,
-    recruitment_unit_label = "metric tons",
-    ref_line = c("target", "MSY", "msy", "unfished"),
-    ref_point = NULL,
-    biomass_scale_amount = 1,
-    landings_unit_label = "metric tons",
-    ref_point_sb = NULL,
-    spawning_biomass_label = "metric tons",
-    spawning_biomass_scale_amount = 1,
-    ref_line_sb = c("target", "MSY", "msy", "unfished"),
-    indices_unit_label = "",
-    biomass_unit_label = "mt",
-    catch_unit_label = "mt",
-    rerender_skeleton = FALSE) {
+    rerender_skeleton = FALSE,
+    ...) {
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -631,24 +562,7 @@ create_template <- function(
               {
                 stockplotr::exp_all_figs_tables(
                   dat = output,
-                  recruitment_scale_amount = recruitment_scale_amount,
-                  end_year = end_year,
-                  n_projected_years = n_projected_years,
-                  relative = relative,
-                  # make_rda = TRUE,
-                  rda_dir = rda_dir,
-                  ref_line = ref_line,
-                  ref_point = ref_point,
-                  biomass_scale_amount = biomass_scale_amount,
-                  landings_unit_label = landings_unit_label,
-                  spawning_biomass_scale_amount = spawning_biomass_scale_amount,
-                  spawning_biomass_label = spawning_biomass_label,
-                  recruitment_unit_label = recruitment_unit_label,
-                  ref_line_sb = ref_line_sb,
-                  ref_point_sb = ref_point_sb,
-                  indices_unit_label = indices_unit_label,
-                  biomass_unit_label = biomass_unit_label,
-                  catch_unit_label = catch_unit_label
+                  ...
                 )
                 # TRUE
               },
@@ -886,29 +800,7 @@ create_template <- function(
       }
 
       # Create yaml
-      yaml <- create_yaml(
-        rerender_skeleton = rerender_skeleton,
-        prev_skeleton = prev_skeleton,
-        prev_format = prev_format,
-        title = title,
-        # alt_title = alt_title,
-        author_list = author_list,
-        author = author,
-        office = office,
-        add_author = add_author,
-        add_image = add_image,
-        spp_image = spp_image,
-        species = species,
-        spp_latin = spp_latin,
-        region = region,
-        format = format,
-        parameters = parameters,
-        param_names = param_names,
-        param_values = param_values,
-        bib_file = bib_file,
-        bib_name = bib_name,
-        year = year
-      )
+      yaml <- create_yaml(...)
 
       if (!rerender_skeleton) print("__________Built YAML Header______________")
 
