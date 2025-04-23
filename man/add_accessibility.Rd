@@ -29,14 +29,13 @@ function. There is no need to include ".tex" in the name. Defaults to current
 name and overwrites the current tex file.}
 
 \item{alttext_csv_dir}{Directory for the csv file containing alternative
-text and captions generated when running satf::exp_all_figs_tables}
+text and captions generated when running stockplotr::exp_all_figs_tables}
 }
 \value{
-DRAFT: This function was made to help add in
-latex packages and content associated with PDF
-tagging as well as alternative text for latex
-documents. Quarto does not allow the user to edit anything
-before documentclass, so this function alters the rendered .tex file.
+This function runs all functions from {asar} associated with
+accessibility and renders the final document. The document is tagged and
+includes alternative text from the captions_alt_text.csv produced from
+\code{stockplotr} package also available on GitHub.
 }
 \description{
 Altering latex file of report to increase accessibility of the document.

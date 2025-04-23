@@ -36,3 +36,10 @@ file). These tables will share the same caption.
 \description{
 Create Quarto Document of Tables
 }
+\examples{
+\dontrun{
+create_tables_doc(
+subdir = getwd(),
+rda_dir = here::here())
+}
+}
