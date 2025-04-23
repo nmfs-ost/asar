@@ -7,9 +7,14 @@
 export_split_tbls(rda_dir = NULL, plot_name = NULL, essential_columns = NULL)
 }
 \arguments{
+<<<<<<< HEAD
 
 \item{rda_dir}{Folder where rda files containing alternative text is located}
 
+=======
+\item{rda_dir}{Folder where rda files containing alternative text is located}
+
+>>>>>>> e8ee2d3 (add examples to functions without any; update documentation; add back parameters that went missing in render_lg_table and fxns that inherited params from it (#210))
 \item{plot_name}{Name of the .rda file containing the table}
 
 \item{essential_columns}{The columns that will be retained between the split
