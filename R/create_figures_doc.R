@@ -10,6 +10,12 @@
 #' quarto document will become part of the stock assessment outline.
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' create_figures_doc(
+#' subdir = getwd(),
+#' rda_dir = here::here())
+#' }
 create_figures_doc <- function(subdir = NULL,
                                include_all = TRUE,
                                rda_dir = NULL) {
