@@ -1116,13 +1116,18 @@ create_template <- function(
         # Create custom template from existing skeleton sections
         if (is.null(new_section)) {
           section_list <- add_base_section(files_to_copy)
-          sections <- add_child(c(section_list, "08_tables.qmd", "09_figures.qmd"),
-            label = custom_sections # this might need to be changed
-          )
+          if (include_tables) {
+            section_list <- c(section_list, "08_tables.qmd")
+            custom_sections <- c(custom_sections, "tables")
+          }
+          if (include_figures) {
+            section_list <- c(section_list, "09_figures.qmd")
+            custom_sections <- c(custom_sections, "figures")
+          }
           # Create sections object to add into template
           sections <- add_child(
-            sections,
-            label = gsub(".qmd", "", unlist(sections))
+            section_list,
+            label = custom_sections
           )
         } else { # custom = TRUE
           # Create custom template using existing sections and new sections from analyst
