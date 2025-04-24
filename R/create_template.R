@@ -731,11 +731,14 @@ create_template <- function(
 
       # Pull authors and affiliations from national db
       # Check if rerender and if author is already added
+      # TODO: add feature to allow removal of authors if there are ones that
+        # are repeated from the previous skeleton and those named (not just
+        # additions of new names)
       if (rerender_skeleton) {
         # Pull all author names from prev_skeleton
         author_prev <- grep(
           "\\- name:\\s*'",
-          prev_skeleton2,
+          prev_skeleton,
           value = TRUE
         )
         # Remove every second occurance of "-name"
