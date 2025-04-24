@@ -730,6 +730,25 @@ create_template <- function(
       }
 
       # Pull authors and affiliations from national db
+      # Check if rerender and if author is already added
+      if (rerender_skeleton) {
+        # Pull all author names from prev_skeleton
+        author_prev <- grep(
+          "\\- name:\\s*'",
+          prev_skeleton2,
+          value = TRUE
+        )
+        # Remove every second occurance of "-name"
+        author_prev <- author_prev[seq(1, length(author_prev), 2)]
+        # Remove everything but the name
+        author_prev <- sub(
+          ".*\\- name:\\s*'([^']+)'.*",
+          "\\1",
+          author_prev
+        )
+        setdiff(author, author_prev) -> author
+      }
+
       # Parameters to add authorship to YAML
       # Read authorship file
       authors <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
