@@ -745,6 +745,11 @@ create_template <- function(
         ) |>
         dplyr::select(name, office) |>
         dplyr::filter(name %in% author)
+
+      if (length(author) != dim(authors)[1]){
+        message("Some authors were not found in the author database. Please comment on this issue (https://github.com/nmfs-ost/asar/issues/19) to request name and affiliation additions to the archive of U.S. stock assessment authors.")
+      }
+
       authors <- authors[match(author, authors$name), ]
 
       if (include_affiliation) {
