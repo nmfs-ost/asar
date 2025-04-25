@@ -4,7 +4,7 @@
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
-[![R-CMD-check](https://github.com/nmfs-ost/asar/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/nmfs-ost/asar/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/nmfs-ost/asar/actions/workflows/call-r-cmd-check.yml/badge.svg)](https://github.com/nmfs-ost/asar/actions/workflows/call-r-cmd-check.yml)
 <!-- badges: end -->
 
 This package is currently in development. For users interested in testing, please see [Testing](#-testing-section) section below. In its current form, this package builds a  template to create a stock assessment report including NOAA Fisheries formatting and included tables and figures.
