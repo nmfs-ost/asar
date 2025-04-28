@@ -28,10 +28,14 @@ Split an extra-wide table into multiple tables
 \dontrun{
 render_lg_table(
 report_flextable = indices_table,
-essential_columns = 1)
+essential_columns = 1,
+rda_dir = here::here(),
+plot_name = "indices.abundance_table.rda")
 
 render_lg_table(
 report_flextable = important_table,
-essential_columns = 1:3)
+essential_columns = 1:3,
+rda_dir = "data",
+plot_name = "bnc_table.rda")
 }
 }

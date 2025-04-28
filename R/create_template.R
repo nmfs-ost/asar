@@ -730,6 +730,28 @@ create_template <- function(
       }
 
       # Pull authors and affiliations from national db
+      # Check if rerender and if author is already added
+      # TODO: add feature to allow removal of authors if there are ones that
+        # are repeated from the previous skeleton and those named (not just
+        # additions of new names)
+      if (rerender_skeleton) {
+        # Pull all author names from prev_skeleton
+        author_prev <- grep(
+          "\\- name:\\s*'",
+          prev_skeleton,
+          value = TRUE
+        )
+        # Remove every second occurance of "-name"
+        author_prev <- author_prev[seq(1, length(author_prev), 2)]
+        # Remove everything but the name
+        author_prev <- sub(
+          ".*\\- name:\\s*'([^']+)'.*",
+          "\\1",
+          author_prev
+        )
+        setdiff(author, author_prev) -> author
+      }
+
       # Parameters to add authorship to YAML
       # Read authorship file
       authors <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
@@ -1116,13 +1138,18 @@ create_template <- function(
         # Create custom template from existing skeleton sections
         if (is.null(new_section)) {
           section_list <- add_base_section(files_to_copy)
-          sections <- add_child(c(section_list, "08_tables.qmd", "09_figures.qmd"),
-            label = custom_sections # this might need to be changed
-          )
+          if (include_tables) {
+            section_list <- c(section_list, "08_tables.qmd")
+            custom_sections <- c(custom_sections, "tables")
+          }
+          if (include_figures) {
+            section_list <- c(section_list, "09_figures.qmd")
+            custom_sections <- c(custom_sections, "figures")
+          }
           # Create sections object to add into template
           sections <- add_child(
-            sections,
-            label = gsub(".qmd", "", unlist(sections))
+            section_list,
+            label = custom_sections
           )
         } else { # custom = TRUE
           # Create custom template using existing sections and new sections from analyst
@@ -1153,9 +1180,12 @@ create_template <- function(
               subdir = subdir
             )
             # Create sections object to add into template
+            custom_sections <- gsub(".qmd", "", unlist(sec_list2))
+            custom_sections <- sub("^[0-9]+_","", custom_sections)
+            custom_sections <- sub("^[0-9]+[a-z]_", "", custom_sections)
             sections <- add_child(
               sec_list2,
-              label = gsub(".qmd", "", unlist(sec_list2))
+              label = custom_sections
             )
           } else { # custom_sections explicit
 
@@ -1182,9 +1212,13 @@ create_template <- function(
               subdir = subdir
             )
             # Create sections object to add into template
+            # name of chunks
+            custom_sections <- gsub(".qmd", "", unlist(sec_list2))
+            custom_sections <- sub("^[0-9]+_","", custom_sections)
+            custom_sections <- sub("^[0-9]+[a-z]_", "", custom_sections)
             sections <- add_child(
               sec_list2,
-              label = gsub(".qmd", "", unlist(sec_list2))
+              label = custom_sections
             )
           } # close if statement for very specific sectioning
         } # close if statement for extra custom
