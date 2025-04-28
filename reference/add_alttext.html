@@ -100,7 +100,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Add alternative text into latex</h1>
-    <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/R/add_alttext.R" class="external-link"><code>R/add_alttext.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/R/add_alttext.r" class="external-link"><code>R/add_alttext.r</code></a></small>
     <div class="hidden name"><code>add_alttext.Rd</code></div>
     </div>
 
@@ -138,7 +138,7 @@ rendering the skeleton made from create_template.</p></dd>
 
 <dt id="arg-alttext-csv-dir">alttext_csv_dir<a class="anchor" aria-label="anchor" href="#arg-alttext-csv-dir"></a></dt>
 <dd><p>Directory for the csv file containing alternative
-text and captions generated when running stockplotr::exp_all_figs_tables</p></dd>
+text and captions generated when running satf::exp_all_figs_tables</p></dd>
 
 
 <dt id="arg-compile">compile<a class="anchor" aria-label="anchor" href="#arg-compile"></a></dt>
@@ -162,7 +162,12 @@ was developed as a work around. The addition of alternative
 text needs to be found in either the rda files produced from
 stockplotr::exp_all_figs_tables or in the captions_alt_text.csv also produced from
 the same function. Users not using this format should create a csv file with
-columns containing "label" and "alt_text".</p>
+columns containing "label" and "alt_text" where the label column contains the
+exact label name when referencing the image/figure in text. The label is
+very important as it provides a way for the function to match where the
+alternative text gets placed. When compile is set to TRUE, the alternative
+text using this format will not be available and must be used in conjunction
+with <code><a href="add_tagging.html">asar::add_tagging()</a></code>.</p>
     </div>
 
     <div id="ref-examples">
@@ -198,7 +203,7 @@ columns containing "label" and "alt_text".</p>
 <span class="r-in"><span>     dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>     alttext_csv_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>     rda_dir <span class="op">=</span> <span class="va">path</span>,</span></span>
-<span class="r-in"><span>     compile <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>     compile <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>     rename <span class="op">=</span> <span class="st">"SAR_Dover_sole_tagged"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>   <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
