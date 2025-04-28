@@ -1180,9 +1180,12 @@ create_template <- function(
               subdir = subdir
             )
             # Create sections object to add into template
+            custom_sections <- gsub(".qmd", "", unlist(sec_list2))
+            custom_sections <- sub("^[0-9]+_","", custom_sections)
+            custom_sections <- sub("^[0-9]+[a-z]_", "", custom_sections)
             sections <- add_child(
               sec_list2,
-              label = gsub(".qmd", "", unlist(sec_list2))
+              label = custom_sections
             )
           } else { # custom_sections explicit
 
