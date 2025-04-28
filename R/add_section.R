@@ -72,7 +72,7 @@ add_section <- function(
     }
 
     section_i <- paste0(
-      "## ", stringr::str_to_title(sub("_", " ", tolower(new_section[i]))), "\n",
+      ifelse(locality == "in", "### ","## "), stringr::str_to_title(sub("_", " ", tolower(new_section[i]))), "\n",
       "\n",
       "[Insert text here]", "\n",
       "\n",
@@ -115,7 +115,8 @@ add_section <- function(
       child_sec <- add_child(
         section_i_name,
         label = gsub(" ", "_", tolower(new_section[i]))
-      )
+      ) |>
+        stringr::str_remove("\\n \\{\\{< pagebreak >\\}\\} \\n")
       # append that text to file
       # if (!file.exists(fs::path(subdir, file_for_subsection)))
       utils::capture.output(cat(child_sec), file = fs::path(subdir, file_for_subsection), append = TRUE)
