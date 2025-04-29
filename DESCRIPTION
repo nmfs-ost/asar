@@ -24,7 +24,6 @@ Imports:
     flextable,
     forstringr,
     fs,
-    glossary,
     glue,
     gridExtra,
     naniar,
