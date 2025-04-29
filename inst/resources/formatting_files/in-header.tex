@@ -24,7 +24,10 @@
 % \else
 
 \usepackage{fontspec}
-\setsansfont[Ligatures=TeX]{Arial Narrow}
+% Arial is a Microsoft font
+% \setsansfont[Ligatures=TeX]{Arial Narrow}
+\setsansfont{Latin Modern Sans}
+\renewcommand{\setmainfont}[2][]{\fontspec[#1]{Latin Modern Sans}}
 
 % added by Ross
 %\fi
