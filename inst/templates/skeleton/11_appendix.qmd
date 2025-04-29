@@ -4,15 +4,4 @@
 
 ## Appendices {#sec-appendix}
 
-```{r, echo=FALSE}
-acronyms_table <- utils::read.csv(fs::path(getwd(), "support_files", "cleaned_acronyms.csv"))
-
-acronyms_table |>
-  dplyr::select(-X) |>
-  flextable::flextable() |>
-  flextable::width(j = 1, width = 0.7, unit = "in") |>
-  flextable::width(j = 2, width = 1.6, unit = "in") |>
-  flextable::width(j = 3, width = 3.38, unit = "in") |>
-  flextable::fontsize(size = 10, part = "all") 
-```
 
