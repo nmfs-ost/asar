@@ -523,31 +523,70 @@ create_acronym_table <- function(){
 
   unique_all_cleaned <- unique_all_cleaned |>
     dplyr::full_join(ssb_rows) |>
-    # acronyms with 1 letter, or lowercase letters, are abbreviations
+    # add periods between acronym letters for acronyms that could be recognized as words
     dplyr::mutate(
-      Category = ifelse(stringr::str_detect(Acronym, "[a-z]") | stringr::str_detect(Acronym, "[0-9]") | nchar(Acronym) == 1,
-                        "abbreviation",
-                        "acronym")) |>
-    # add periods after every acronym letter
-    dplyr::mutate(Acronym_sep = ifelse(Category == "acronym",
-                                       (sapply(
-                                         strsplit(Acronym, ""), paste, collapse = ".")),
-                                       Acronym),
-                  Acronym_sep = ifelse(Category == "acronym",
-                                       paste0(Acronym_sep, "."),
-                                       Acronym_sep),
-                  # remove periods if they follow /, ., %, or -
-                  Acronym_sep = gsub("(?<=[/ %\\-*])\\.", "", Acronym_sep, perl = TRUE)
+      Acronym = ifelse(Acronym == "ACE", "A.C.E.", Acronym),
+      Acronym = ifelse(Acronym == "ACT", "A.C.T.", Acronym),
+      Acronym = ifelse(Acronym == "AM", "A.M.", Acronym),
+      Acronym = ifelse(Acronym == "ARM", "A.R.M.", Acronym),
+      Acronym = ifelse(Acronym == "AS", "A.S.", Acronym),
+      Acronym = ifelse(Acronym == "BEG", "B.E.G.", Acronym),
+      Acronym = ifelse(Acronym == "BET", "B.E.T.", Acronym),
+      Acronym = ifelse(Acronym == "CITES", "C.I.T.E.S.", Acronym),
+      Acronym = ifelse(Acronym == "COP", "C.O.P.", Acronym),
+      Acronym = ifelse(Acronym == "FATE", "F.A.T.E.", Acronym),
+      Acronym = ifelse(Acronym == "GOES", "G.O.E.S.", Acronym),
+      Acronym = ifelse(Acronym == "HOT", "H.O.T.", Acronym),
+      Acronym = ifelse(Acronym == "ID", "I.D.", Acronym),
+      Acronym = ifelse(Acronym == "JAM", "J.A.M.", Acronym),
+      Acronym = ifelse(Acronym == "LAMP", "L.A.M.P.", Acronym),
+      Acronym = ifelse(Acronym == "LEAP", "L.E.A.P.", Acronym),
+      Acronym = ifelse(Acronym == "ME", "M.E.", Acronym),
+      Acronym = ifelse(Acronym == "MEW", "M.E.W.", Acronym),
+      Acronym = ifelse(Acronym == "NOVA", "N.O.V.A.", Acronym),
+      Acronym = ifelse(Acronym == "OLE", "O.L.E.", Acronym),
+      Acronym = ifelse(Acronym == "OR", "O.R.", Acronym),
+      Acronym = ifelse(Acronym == "POP", "P.O.P.", Acronym),
+      Acronym = ifelse(Acronym == "SAFE", "S.A.F.E.", Acronym),
+      Acronym = ifelse(Acronym == "SAP", "S.A.P.", Acronym),
+      Acronym = ifelse(Acronym == "SAW", "S.A.W.", Acronym),
+      Acronym = ifelse(Acronym == "SET", "S.E.T.", Acronym),
+      Acronym = ifelse(Acronym == "SPLASH", "S.P.L.A.S.H.", Acronym),
+      Acronym = ifelse(Acronym == "STAR", "S.T.A.R.", Acronym),
+      Acronym = ifelse(Acronym == "US", "U.S.", Acronym),
+      Acronym = ifelse(Acronym == "WHAM", "W.H.A.M.", Acronym)
     )
 
   # keep cleaning by:
-  # -change GOM to GOA ?
-  # -add periods between letters of acronyms in defs/meanings
+  # -adding new definitions
 
+  # Export to csv
   # write.csv(unique_all_cleaned |>
   # dplyr::select(Acronym, Meaning, Definition),
   #           file = paste0(ac_dir, "/", "final_files", "/", "cleaned_acronyms.csv"))
-   }
+
+  # Convert df into .tex file format
+  # sink(paste0(ac_dir, "/", "final_files", "/", "report_glossary.tex"))
+  # tex_acs <- purrr::map_df(unique_all_cleaned, ~ gsub("%", "\\%", .x, fixed = TRUE))
+  # for(i in 1:dim(tex_acs)[1]) {
+  #   cat(
+  #     paste0(
+  #       "\\newacronym{",
+  #       tolower(tex_acs[[1]][[i]]),
+  #       "}{",
+  #       tex_acs[[1]][[i]],
+  #       "}{",
+  #       tex_acs[[2]][[i]],
+  #       "}{",
+  #       tex_acs[[3]][[i]],
+  #       "}"
+  #     )
+  #   )
+  #   cat("\n")
+  #   }
+  # sink()
+
+  }
 
 # create_acronym_table()
 
