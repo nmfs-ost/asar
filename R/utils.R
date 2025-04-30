@@ -468,9 +468,15 @@ create_acronym_table <- function(){
                   Definition = ifelse(Acronym == "SEFSC",
                                       "The center that provides the scientific advice and data needed to effectively manage the living resources of the Southeast Region and Atlantic high seas.",
                                       Definition),
+                  Definition = ifelse(Acronym == "SOI",
+                                      NA,
+                                      Definition),
+                  Meaning = ifelse(Acronym == "SOI",
+                                      "Statistics of income",
+                                   Meaning),
                   Definition = ifelse(Acronym == "SPR",
                                       "The ratio of the number of eggs that could be produced by a fish over its lifetime that has recruited to a fishery, over the number of eggs that could be produced by an average fish in a stock that is unfished. It can be used to measure the effects of fishing pressure on a stock by expressing the spawning potential of the fished biomass as a percentage of the unfished virgin spawning biomass.",
-                                       Definition),
+                                      Definition),
                   Definition = ifelse(Acronym == "SB",
                                       "The total weight of the mature females, or mature females and males, depending on the species, that are reproducing in a given season (sometimes measured in egg production).",
                                       Definition),
@@ -497,7 +503,9 @@ create_acronym_table <- function(){
                   Acronym = ifelse(Acronym == "SSBThreshold", "SSBthreshold", Acronym),
                   Acronym = ifelse(Acronym == "TMAX", "Tmax", Acronym),
                   Acronym = ifelse(Acronym == "TMIN", "Tmin", Acronym),
-                  Acronym = ifelse(Acronym == "TTARGET", "Ttarget", Acronym)
+                  Acronym = ifelse(Acronym == "TTARGET", "Ttarget", Acronym),
+                  Meaning = ifelse(Meaning == "#VALUE!", NA, Meaning),
+                  Definition = ifelse(Definition == "#VALUE!", NA, Definition)
 
     ) |>
     # add periods to end of Definition
