@@ -164,8 +164,9 @@ add_alttext <- function(
   obj_files <- list.files(file.path(rda_dir, "rda_files"))
 
   # read all files in obj_files and put into list
+  figures_list <- grep("figure", obj_files)
   alt_text_list <- list()
-  for (i in seq_along(obj_files)) {
+  for (i in figures_list) {
     load(file.path(rda_dir, "rda_files", obj_files[i]))
     # extract name to add into the list for placement
     rda_name <- stringr::str_replace(obj_files[i], "_figure.rda", "")
