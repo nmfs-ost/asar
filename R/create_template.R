@@ -800,20 +800,21 @@ create_template <- function(
             aff <- affil |>
               dplyr::filter(affiliation == auth$office)
             if (is.na(auth$office)) {
-              paste0(
+              paste(
                 "  ", "- name: ", "'", auth$name, "'", "\n",
-                "  ", "  ", "affiliations: ", "NO AFFILIATION", "\n"
+                "  ", "  ", "affiliations: ", "NO AFFILIATION", "\n",
+                sep = ""
               ) -> author_list[[i]]
             } else {
-              paste0(
+              paste(
                 "  ", "- name: ", "'", auth$name, "'", "\n",
                 "  ", "  ", "affiliations:", "\n",
                 "  ", "  ", "  ", "- name: ", "'", aff$name, "'", "\n", # "NOAA Fisheries ",
                 "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'", "\n",
                 "  ", "  ", "  ", "  ", "city: ", "'", aff$city, "'", "\n",
                 "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
-                "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n"
-                # sep = " "
+                "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n",
+                sep = ""
               ) -> author_list[[i]]
             }
           }
