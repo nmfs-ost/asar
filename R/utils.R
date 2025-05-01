@@ -575,7 +575,9 @@ create_acronym_table <- function(){
 
   # Convert df into .tex file format
   # sink(paste0(ac_dir, "/", "final_files", "/", "report_glossary.tex"))
-  # tex_acs <- purrr::map_df(unique_all_cleaned, ~ gsub("%", "\\%", .x, fixed = TRUE))
+  # tex_acs <- unique_all_cleaned |>
+  #   dplyr::select(-Definition) |>
+  #   purrr::map_df(~ gsub("%", "\\%", .x, fixed = TRUE))
   # for(i in 1:dim(tex_acs)[1]) {
   #   cat(
   #     paste0(
@@ -585,16 +587,14 @@ create_acronym_table <- function(){
   #       tex_acs[[1]][[i]],
   #       "}{",
   #       tex_acs[[2]][[i]],
-  #       "}{",
-  #       tex_acs[[3]][[i]],
   #       "}"
   #     )
   #   )
   #   cat("\n")
   #   }
   # sink()
-
-  }
+  #
+  # }
 
 # create_acronym_table()
 
