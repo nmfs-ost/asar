@@ -11,10 +11,10 @@
 #' stockplotr::exp_all_figs_tables or in the captions_alt_text.csv also produced from
 #' the same function. Users not using this format should create a csv file with
 #' columns containing "label" and "alt_text" where the label column contains the
-#'  exact label name when referencing the image/figure in text. The label is 
-#'  very important as it provides a way for the function to match where the 
-#'  alternative text gets placed. When compile is set to TRUE, the alternative 
-#'  text using this format will not be available and must be used in conjunction 
+#'  exact label name when referencing the image/figure in text. The label is
+#'  very important as it provides a way for the function to match where the
+#'  alternative text gets placed. When compile is set to TRUE, the alternative
+#'  text using this format will not be available and must be used in conjunction
 #'  with `asar::add_tagging()`.
 #'
 #' @export
@@ -78,7 +78,7 @@ add_alttext <- function(
 
   # Check if alt text csv is where indicated
   if (!file.exists(file.path(alttext_csv_dir, "captions_alt_text.csv"))) stop(glue:glue("'captions_alt_text.csv' not found in {alttext_csv_dir}."))
-  
+
   # Identify lines with figures
   # check if any lines have figures added
   if (!any(grepl("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file))) stop ("No images/figures present in file.")
@@ -164,8 +164,9 @@ add_alttext <- function(
   obj_files <- list.files(file.path(rda_dir, "rda_files"))
 
   # read all files in obj_files and put into list
+  figures_list <- grep("figure", obj_files)
   alt_text_list <- list()
-  for (i in seq_along(obj_files)) {
+  for (i in figures_list) {
     load(file.path(rda_dir, "rda_files", obj_files[i]))
     # extract name to add into the list for placement
     rda_name <- stringr::str_replace(obj_files[i], "_figure.rda", "")
