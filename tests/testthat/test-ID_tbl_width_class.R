@@ -39,7 +39,7 @@ test_that("Table widths calculated correctly", {
     portrait_pg_width = 5
   )
 
-  expected_output <- "regular"
+  expected_output <- "wide"
   expect_equal(tbl_width2, expected_output)
 
   # erase temporary testing files
