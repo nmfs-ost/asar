@@ -6,5 +6,5 @@ on:
     branches: [main]
 jobs:
   call-workflow:
-    uses: nmfs-fish-tools/ghactions4r/.github/workflows/doc-and-style-r.yml@main
+    uses: nmfs-ost/ghactions4r/.github/workflows/doc-and-style-r.yml@main
   
