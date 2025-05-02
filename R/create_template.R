@@ -1057,7 +1057,7 @@ create_template <- function(
       if (rerender_skeleton) {
         if (!is.null(title) | !is.null(species) | !is.null(year) | !is.null(author)) {
           citation_line <- grep("Please cite this publication as:", prev_skeleton) + 2
-          citation <- glue::glue("{{< pagebreak >}} \n\n Please cite this publication as: \n\n {prev_skeleton[citation_line]}\n\n")
+          citation <- paste("{{< pagebreak >}} \n\n Please cite this publication as: \n\n", prev_skeleton[citation_line], "\n\n")
         } else {
           author <- grep("  - name: ", prev_skeleton)
           citation <- create_citation(
