@@ -53,6 +53,7 @@ convert_output <- function(
   out_new <- data.frame(
     label = NA,
     time = NA,
+    era = NA,
     year = NA,
     fleet = NA,
     area = NA,
@@ -248,7 +249,7 @@ convert_output <- function(
     # Loop for all identified parameters to extract for plotting and use
     # Create list of parameters that were not found in the output file
     # 1,4,10,17,19,20,22,32,37
-    factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo", "growth_pattern", "gp")
+    factors <- c("era", "year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo", "growth_pattern", "gp")
     errors <- c("StdDev", "sd", "se", "SE", "cv", "CV")
     miss_parms <- c()
     out_list <- list()
@@ -1182,7 +1183,12 @@ convert_output <- function(
     dplyr::mutate(
       estimate = as.numeric(estimate),
       uncertainty = as.numeric(uncertainty),
-      initial = as.numeric(initial)
+      initial = as.numeric(initial),
+      # change era name to keep standard
+      era = dplyr::case_when(
+        era == "Main" ~ "time",
+        TRUE ~ tolower(era)
+      )
     ) |>
     suppressWarnings()
   if (tolower(model) == "ss3") {
