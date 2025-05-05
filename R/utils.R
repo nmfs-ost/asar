@@ -568,16 +568,30 @@ create_acronym_table <- function(){
   # keep cleaning by:
   # -adding new definitions
 
+  # NOTE: The above definitions are not finalized.
+
   # Export to csv
+  # all acronyms
   # write.csv(unique_all_cleaned |>
   # dplyr::select(Acronym, Meaning, Definition),
   #           file = paste0(ac_dir, "/", "final_files", "/", "cleaned_acronyms.csv"))
+  #
+  # acronyms that need definitions written
+  # need_defs <- unique_all_cleaned |>
+  #   dplyr::filter(is.na(duplicated_ac),
+  #                 is.na(duplicated_mean),
+  #                 is.na(Definition)) |>
+  #   dplyr::select(Acronym, Meaning, Definition)
+  #
+  # write.csv(need_defs,
+  #           "acronyms_need_definitions.csv")
 
-  # Convert df into .tex file format
+  # Convert df into .tex file format and remove definitions
   # sink(paste0(ac_dir, "/", "final_files", "/", "report_glossary.tex"))
   # tex_acs <- unique_all_cleaned |>
   #   dplyr::select(-Definition) |>
-  #   purrr::map_df(~ gsub("%", "\\%", .x, fixed = TRUE))
+  #   purrr::map_df(~ gsub("%", "\\%", .x, fixed = TRUE)) |>
+  #   dplyr::filter(!is.na(Meaning))
   # for(i in 1:dim(tex_acs)[1]) {
   #   cat(
   #     paste0(
@@ -593,17 +607,5 @@ create_acronym_table <- function(){
   #   cat("\n")
   #   }
   # sink()
-  #
-  # }
 
-# create_acronym_table()
-
-# acronyms that need definitions written
-# need_defs <- unique_all_cleaned |>
-#   dplyr::filter(is.na(duplicated_ac),
-#                 is.na(duplicated_mean),
-#                 is.na(Definition)) |>
-#   dplyr::select(Acronym, Meaning, Definition)
-#
-# write.csv(need_defs,
-#           "acronyms_need_definitions.csv")
+}
