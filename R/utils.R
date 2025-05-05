@@ -123,12 +123,26 @@ create_acronym_table <- function(){
     dplyr::filter(!is.na(Acronym),
                   Acronym != "") |>
     dplyr::mutate_all(dplyr::na_if,"") |>
+    # add additional entries
+    dplyr::add_row(source = NA,
+                   Acronym = "JABBA",
+                   Meaning = "Just Another Bayesian Biomass Assessment",
+                   Definition = NA) |>
+    dplyr::add_row(source = NA,
+                   Acronym = "AMAK",
+                   Meaning = "Assessment model for Alaska",
+                   Definition = NA) |>
+    dplyr::add_row(source = NA,
+                   Acronym = "CEATTLE",
+                   Meaning = "Climate enhanced Age-based model with Temperature specific Trophic linkages and Energetics",
+                   Definition = NA) |>
     dplyr::mutate(across(.cols = everything(), trimws),
                   Meaning = gsub("Nino", "Niño", Meaning),
                   meaning_lower = tolower(Meaning),
                   Shared_ac = duplicated(Acronym),
                   Shared_mean = duplicated(meaning_lower)
                   )
+
 
   # min length of consolidated acronyms: ~815
   # length(unique(acronyms$Acronym))
