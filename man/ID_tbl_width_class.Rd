@@ -4,7 +4,7 @@
 \alias{ID_tbl_width_class}
 \title{Identify table width class}
 \usage{
-ID_tbl_width_class(plot_name = NULL, rda_dir = NULL, portrait_pg_width = NULL)
+ID_tbl_width_class(plot_name, rda_dir, portrait_pg_width)
 }
 \arguments{
 \item{plot_name}{Name of the .rda file containing the table}
