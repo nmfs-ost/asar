@@ -18,11 +18,22 @@ create_citation <- function(
     title = NULL,
     year = NULL,
     office = NULL) {
-  if (office %in% c("NEFSC", "SEFSC", "NWFSC", "SWFSC", "PIFSC", "AFSC", "", NULL)) {
+  if (is.null(office)) {
     off_title <- "NOAA Fisheries Science Center"
+  } else if (office %in% c("NEFSC", "SEFSC", "NWFSC", "SWFSC", "PIFSC", "AFSC", "", NULL)) {
+    off_title <- "NOAA Fisheries Science Center"
+  } else {
+    off_title <- "[AGENCY CONDUCTING ASSESSMENT]"
   }
 
-  if (length(author) == 1) {
+  if (is.null(author)) {
+    no_author <- FALSE
+    title <- "TITLE"
+    office <- ""
+    author_list <- "[LAST], [FIRST]"
+    loc_city <- "[CITY]"
+    loc_state <- "[STATE]"
+  } else if (length(author) == 1) {
     if (author == "") {
       no_author <- TRUE
       message("Authorship is not defined.")
@@ -44,17 +55,21 @@ create_citation <- function(
           dplyr::filter(first == unlist(strsplit(author[1], " "))[1])
       }
 
-      office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>
-        dplyr::filter(affiliation == primauth_loc$office)
-
-      # Check
-      if (nrow(office_loc) > 1) {
-        stop("There is more than one office being selected in this function. Please review 'generate_ciation.R'.")
+      if (nrow(primauth_loc) == 1) {
+        office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>
+          dplyr::filter(affiliation == primauth_loc$office)
+        # Check
+        if (nrow(office_loc) > 1) {
+          stop("There is more than one office being selected in this function. Please review 'generate_ciation.R'.")
+        }
+        
+        loc_city <- office_loc$city
+        loc_state <- office_loc$state
+      } else {
+        loc_city <- "[CITY]"
+        loc_state <- "[STATE]"
       }
-
-      loc_city <- office_loc$city
-      loc_state <- office_loc$state
-
+     
       # Author naming convention formatting
       author_spl <- unlist(strsplit(author, split = " "))
       author_list <- paste0(
@@ -77,19 +92,23 @@ create_citation <- function(
     # Check and fix if there is more than one author with the same last name
     if (nrow(primauth_loc) > 1) {
       primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
-        dplyr::filter(last == unlist(strsplit(author[1], " "))[1])
+        dplyr::filter(first == unlist(strsplit(author[1], " "))[1])
     }
-
-    office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>
-      dplyr::filter(affiliation == primauth_loc$office)
-
-    # Check
-    if (nrow(office_loc) > 1) {
-      stop("There is more than one office being selected in this function. Please review 'generate_ciation.R'.")
+    if (nrow(primauth_loc) == 1) {
+      office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>
+        dplyr::filter(affiliation == primauth_loc$office)
+      
+      # Check
+      if (nrow(office_loc) > 1) {
+        stop("There is more than one office being selected in this function. Please review 'generate_ciation.R'.")
+      }
+      
+      loc_city <- office_loc$city
+      loc_state <- office_loc$state
+    } else {
+      loc_city <- "[CITY]"
+      loc_state <- "[STATE]"
     }
-
-    loc_city <- office_loc$city
-    loc_state <- office_loc$state
 
     # Author naming convention formatting
     author1 <- unlist(strsplit(author[1], split = " "))
