@@ -41,7 +41,7 @@ create_citation <- function(
       # Check and fix if there is more than one author with the same last name
       if (nrow(primauth_loc) > 1) {
         primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
-          dplyr::filter(last == unlist(strsplit(author[1], " "))[1])
+          dplyr::filter(first == unlist(strsplit(author[1], " "))[1])
       }
 
       office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>
