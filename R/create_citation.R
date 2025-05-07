@@ -7,7 +7,8 @@
 #' with `asar`.
 #' @export
 #'
-#' @examples create_citation(
+#' @examples
+#' create_citation(
 #'   title = "SA Report for Jellyfish",
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
 #'   year = 2024, office = "NEFSC"
@@ -18,101 +19,23 @@ create_citation <- function(
     title = NULL,
     year = NULL,
     office = NULL) {
+  # FIXME: off_title is not informative enough for me to know what the object
+  #        should be storing, this comment is true for many object names
+  # FIXME: Add an else{} statement to handle the case when the office is not in
+  #        the list of NOAA Fisheries Science Centers. The function will
+  #        currently fail if it tries to this object later because it won't
+  #        exist.
   if (office %in% c("NEFSC", "SEFSC", "NWFSC", "SWFSC", "PIFSC", "AFSC", "", NULL)) {
     off_title <- "NOAA Fisheries Science Center"
   }
 
-  if (length(author) == 1) {
-    if (author == "") {
-      no_author <- TRUE
-      message("Authorship is not defined.")
-    } else {
-      no_author <- FALSE
-      # Pull affiliation of first author
-      if (length(unlist(strsplit(author[1], " "))) == 3) {
-        primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
-          dplyr::filter(last == unlist(strsplit(author[1], " "))[3])
-      } else {
-        primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
-          dplyr::filter(last == unlist(strsplit(author[1], " "))[2])
-        if (nrow(primauth_loc) == 0) stop("Author is not found in the database, Please use add_author instead.")
-      }
-
-      # Check and fix if there is more than one author with the same last name
-      if (nrow(primauth_loc) > 1) {
-        primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
-          dplyr::filter(last == unlist(strsplit(author[1], " "))[1])
-      }
-
-      office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>
-        dplyr::filter(affiliation == primauth_loc$office)
-
-      # Check
-      if (nrow(office_loc) > 1) {
-        stop("There is more than one office being selected in this function. Please review 'generate_ciation.R'.")
-      }
-
-      loc_city <- office_loc$city
-      loc_state <- office_loc$state
-
-      # Author naming convention formatting
-      author_spl <- unlist(strsplit(author, split = " "))
-      author_list <- paste0(
-        ifelse(length(author_spl) == 3, author_spl[3], author_spl[2]), ", ",
-        substring(author_spl[[1]][1], 1, 1), ".",
-        ifelse(length(author_spl) == 3, author_spl[2], "")
-      )
-    }
-  } else { # close if only one author
-    no_author <- FALSE
-    # Pull affiliation of first author
-    if (length(unlist(strsplit(author[1], " "))) == 3) {
-      primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
-        dplyr::filter(last == unlist(strsplit(author[1], " "))[3])
-    } else {
-      primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
-        dplyr::filter(last == unlist(strsplit(author[1], " "))[2])
-    }
-
-    # Check and fix if there is more than one author with the same last name
-    if (nrow(primauth_loc) > 1) {
-      primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
-        dplyr::filter(last == unlist(strsplit(author[1], " "))[1])
-    }
-
-    office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>
-      dplyr::filter(affiliation == primauth_loc$office)
-
-    # Check
-    if (nrow(office_loc) > 1) {
-      stop("There is more than one office being selected in this function. Please review 'generate_ciation.R'.")
-    }
-
-    loc_city <- office_loc$city
-    loc_state <- office_loc$state
-
-    # Author naming convention formatting
-    author1 <- unlist(strsplit(author[1], split = " "))
-    author1 <- paste0(
-      ifelse(length(author1) == 3, author1[3], author1[2]), ", ",
-      substring(author1[1], 1, 1), ".",
-      ifelse(length(author1) == 3, author1[2], "")
-    )
-    author_list <- paste0(author1)
-    for (i in 2:length(author)) {
-      auth_extract <- unlist(strsplit(author[i], split = " "))
-      auth_extract2 <- paste0(
-        substring(auth_extract[1], 1, 1), ".",
-        ifelse(length(auth_extract) == 3, auth_extract[2], ""), " ",
-        ifelse(length(auth_extract) == 3, auth_extract[3], auth_extract[2])
-      )
-      author_list <- paste0(author_list, ", ", auth_extract2)
-    } # close for loop
-  }
-
-  # Create citation string
-  if (no_author) {
-    cit <- paste0(
+  # FIXED: Removed nested if{}else{} statement
+  if (author[1] == "") {
+    no_author <- TRUE
+    message("Authorship is not defined.")
+    # FIXED: Moved citation inside of the first if so no more need for
+    #        no_author and the function can return the citation early
+      cit <- paste0(
       "{{< pagebreak >}} \n",
       "\n",
       "Please cite this publication as: \n",
@@ -121,66 +44,124 @@ create_citation <- function(
       title, ". ", off_title, ", ",
       "[CITY], [STATE]. "
     )
-  } else if (office == "AFSC") {
-    cit <- paste0(
-      "{{< pagebreak >}} \n",
-      "\n",
-      "Please cite this publication as: \n",
-      "\n",
-      author_list, ". ", year, ". ",
-      title,
-      ". North Pacific Fishery Management Council, Anchorage, AK. Available from ",
-      "https://www.npfmc.org/library/safe-reports/"
+    return(cit)
+  } else {
+    no_author <- FALSE
+    # FIXED: No stop() was used in the if part of the if{}else{} statement
+    #        and user was not warned if the author is not found.
+    # FIXED: Instead of creating the object twice, i.e., primauth_loc <- in
+    #        the if statement and then again in the else statement you can
+    #        just assign unlist(strsplit(author[1], " ")) to a variable and
+    #        use that variable to determine the length of the object and
+    #        which part to pull for the filter call. You assigned it to a
+    #        variable later in the code so I just moved it up to here.
+    # FIXED: the if statement for primauthor_loc for more than one row had
+    #        incorrect dplyr::filter call where it was matching last not
+    #        first. But, I removed the need for that by just searching for
+    #        both first and last in the same call to dplyr::filter
+    # FIXED: Just use first author, i.e., author[1], so you do not have to
+    #        use an if{}else{}, because it doesn't matter if author is
+    #        actually just of length one, it will still work.
+    # FIXED: Just read in the authorship.csv file once because reading and
+    #        writing files takes a long time relative to manipulation
+    author_data_frame <- tibble::as_tibble_col(
+      author,
+      column_name = "input"
+    ) |>
+      tidyr::separate_wider_regex(
+        cols = input,
+        # Caitlin Allen Akselrud is the only non-hyphenated dual last name
+        # and needs to be included as its own pattern.
+        # The second pattern allows for first initials rather than first name
+        patterns = c(first = "Caitlin |^[A-Z]. |.*[a-z] ", last = ".*$")
+      ) |>
+      tidyr::separate_wider_delim(
+        cols = last,
+        delim = ". ",
+        names = c("mi", "last"),
+        too_few = "align_end"
+      ) |>
+      dplyr::mutate(
+        first = gsub(" ", "", first),
+        mi = ifelse(is.na(mi), "", paste0(mi, "."))
+      ) |>
+      dplyr::left_join(
+        y = utils::read.csv(
+          system.file(
+            "resources",
+            "authorship.csv",
+            package = "asar",
+            mustWork = TRUE
+          )
+        ),
+        by = c("first", "mi", "last")
+      )
+    # Pull affiliation of first author
+    office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>
+      dplyr::filter(affiliation == author_data_frame[["office"]][1])
+
+    # Check
+    # FIXME: This check should now be if the office location was not found.
+    if (nrow(office_loc) > 1) {
+      stop("There is more than one office being selected in this function. Please review 'generate_ciation.R'.")
+    }
+
+    # FIXED: Just use office_loc[["city"]] and office_loc[["state"]] instead
+    #        of loc_city and loc_state
+
+    # Author naming convention formatting
+    # FIXED: Use APA style citations with spaces between first and middle
+    #        initial.
+    # FIXED: Author's first names with hyphens and multiple capital letters
+    #        were being truncated to just the first letter.
+    # FIXED: Moved this out of the if{}else{} statement so the code is not
+    #        duplicated.
+    # FIXED: The author list should use ", and" for the last addition if
+    #        there are more than two authors and just "and" if there are two
+    #        authors.
+    author_list <- author_data_frame |>
+      dplyr::mutate(
+        first_initial = gsub("([A-Z])[a-z]+", "\\1.", first),
+        bib = purrr::pmap(
+          list(x = first_initial, y = mi, z = last),
+          \(x, y, z) toBibtex(person(given = c(x, y), family = z))
+        )
+      ) |>
+      dplyr::pull(bib) |>
+      gsub(pattern = " $", replacement = "") |>
+      glue::glue_collapse(sep = ", ", last = ", and ")
+  } # close ifelse statement for no author
+
+  # Create citation string
+  # FIXME: Check the title earlier and make sure it either doesn't have a full
+  #        stop or ensure it does have punctuation and remove the punctuation
+  #        added here. Who is to say it doesn't end in a question mark?
+  # FIXED: Removed "." after author list because it already ends in a full stop
+  #        after the last initial.
+  # FIXED: Added a full stop after the url for AFSC.
+  # FIXED: Added a full stop after the url for SEFSC.
+  # FIXED: The incorrect order of title then year for the NWFSC.
+  # FIXED: The incorrect use of comma after author list.
+  # FIXED: Removed space after full stop for NEFSC ending.
+  cit <- paste0(
+    "{{< pagebreak >}} \n",
+    "\n",
+    "Please cite this publication as: \n",
+    "\n",
+    ifelse(office == "SEFSC", "SEDAR.", author_list),
+    " ", year, ". ", title, ".",
+    # FIXME: Should change this to use office assigned to author and use grepl
+    #        instead of office == because some offices have extra text NWFSC-
+    #        then the office argument could be removed from the function.
+    dplyr::case_when(
+      office == "AFSC" ~ " North Pacific Fishery Management Council, Anchorage, AK. Available from https://www.npfmc.org/library/safe-reports/.",
+      office == "NWFSC" ~ " Prepared by [COMMITTEE]. [XX] p.",
+      office == "PIFSC" ~ " NOAA Tech. Memo. [TECH MEMO NUMBER], [XX] p.",
+      office == "SEFSC" ~ " SEDAR, North Charleston SC. [XX] pp. available online at: http://sedarweb.org/.",
+      office == "SWFSC" ~ " Pacific Fishery Management Council, Portland, OR. Available from https://www.pcouncil.org/stock-assessments-and-fishery-evaluation-safe-documents/.",
+      TRUE ~ paste0(" ", off_title, ", ", office_loc[["city"]], ", ", office_loc[["state"]], ".")
     )
-  } else if (office == "NWFSC") {
-    cit <- paste0(
-      "{{< pagebreak >}} \n",
-      "\n",
-      "Please cite this publication as: \n",
-      "\n",
-      author_list, ". ", title, ".", year,
-      ". Prepared by [COMMITTEE]. [XX] p."
-    )
-  } else if (office == "PIFSC") {
-    cit <- paste0(
-      "{{< pagebreak >}} \n",
-      "\n",
-      "Please cite this publication as: \n",
-      "\n",
-      author_list, ". ", year, ". ",
-      title, ". NOAA Tech. Memo. [TECH MEMO NUMBER]",
-      ", ", "[XX] p."
-    )
-  } else if (office == "SEFSC") {
-    cit <- paste0(
-      "'{{< pagebreak >}}' \n",
-      "\n",
-      "Please cite this publication as: \n",
-      "\n",
-      "SEDAR. ", year, ". ", title, ". ",
-      "SEDAR, North Charleston SC. [XX] pp. ",
-      "available online at: http://sedarweb.org/"
-    )
-  } else if (office == "SWFSC") {
-    cit <- paste0(
-      "{{< pagebreak >}} \n",
-      "\n",
-      "Please cite this publication as: \n",
-      "\n",
-      author_list, ", ", year, ". ", title,
-      ". Pacific Fishery Management Council, Portland, OR. Available from https://www.pcouncil.org/stock-assessments-and-fishery-evaluation-safe-documents/."
-    )
-  } else { # this includes NEFSC
-    cit <- paste0(
-      "{{< pagebreak >}} \n",
-      "\n",
-      "Please cite this publication as: \n",
-      "\n",
-      author_list, ". ", year, ". ",
-      title, ". ", off_title, ", ",
-      loc_city, ", ", loc_state, ". "
-    )
-  }
+  )
 
   # Add citation as .qmd to add into template
   cit
