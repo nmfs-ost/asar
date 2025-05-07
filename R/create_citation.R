@@ -10,7 +10,7 @@
 #' @examples create_citation(
 #'   title = "SA Report for Jellyfish",
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
-#'   year = 2024, office = "NEFSC"
+#'   year = 2024
 #' )
 #'
 create_citation <- function(
@@ -137,7 +137,11 @@ create_citation <- function(
           )
         },
         {
-          stop("Office not recognized. Please check the office name.")
+          # Default
+          paste0(
+          ". National Marine Fisheries Service, ",
+          "[CITY], [STATE]. "
+          )
         }
       )    
       # Pull together parts of citation

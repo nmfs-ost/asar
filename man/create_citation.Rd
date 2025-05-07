@@ -27,7 +27,7 @@ Generate Citation for Stock Assessment Report
 create_citation(
   title = "SA Report for Jellyfish",
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
-  year = 2024, office = "NEFSC"
+  year = 2024
 )
 
 }
