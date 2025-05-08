@@ -312,6 +312,21 @@ create_template <- function(
     biomass_unit_label = "mt",
     catch_unit_label = "mt",
     rerender_skeleton = FALSE) {
+  if (!is.null(model_results)){
+    # if resdir = null, change it to getwd() so mod_time can execute file.info()
+    if (is.null(resdir)){
+      resdir <- getwd()
+      resdir_null = TRUE
+    }
+    mod_time <- as.character(file.info(file.path(resdir, model_results), extra_cols = F)$ctime)
+    message(paste("Report is based upon model output from", model_results, 
+                  "that was last modified on:", mod_time))
+    # change resdir back to null if originally null
+    if(resdir_null == TRUE){
+      resdir <- NULL
+    }
+  }
+  
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
