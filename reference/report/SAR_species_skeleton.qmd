@@ -134,7 +134,7 @@ R0 <- output |>
 
 Please cite this publication as: 
 
-[AUTHOR NAME]. [YEAR]. Stock Assessment Report Template. NOAA Fisheries Science Center, [CITY], [STATE]. 
+[AUTHOR NAME]. [YEAR]. Stock Assessment Report Template. National Marine Fisheries Service, [CITY], [STATE]. 
 
  {{< pagebreak >}} 
 
