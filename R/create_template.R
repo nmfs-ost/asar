@@ -812,7 +812,12 @@ create_template <- function(
             if (is.na(auth$office)) {
               paste(
                 "  ", "- name: ", "'", auth$name, "'", "\n",
-                "  ", "  ", "affiliations: ", "NO AFFILIATION", "\n",
+                "  ", "  ", "affiliations:", "\n",
+                "  ", "  ", "  ", "- name: ", "\n", # "NOAA Fisheries ",
+                "  ", "  ", "  ", "  ", "address: ", "\n",
+                "  ", "  ", "  ", "  ", "city: ", "\n",
+                "  ", "  ", "  ", "  ", "state: ", "\n",
+                "  ", "  ", "  ", "  ", "postal-code: ", "\n",
                 sep = ""
               ) -> author_list[[i]]
             } else {
