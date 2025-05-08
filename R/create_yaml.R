@@ -99,6 +99,8 @@ create_yaml <- function(
 
     # replace title
     # if (alt_title) {
+    # DOES NOT WORK when latin latex notation is in the title
+    # TODO: replace {} in the latex notation
       yaml <- stringr::str_replace(yaml, yaml[grep("title:", yaml)], paste("title: ", title, sep = ""))
     # }
 
