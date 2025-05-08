@@ -3,25 +3,16 @@
 <!--- Management Track Assessment TORs (Revised 02/22/2022)
 
 1. Estimate catch from all sources including landings and discards.
-2. Evaluate indices used in the assessment (e.g., indices of relative or absolute abundance,
-recruitment, state surveys, age-length data, etc.).
-3. Estimate annual fishing mortality, recruitment and stock biomass (both total and
-spawning stock) as possible (depending on the assessment method) for the time series
-using the approved assessment method and estimate their uncertainty. Include
-retrospective analyses if possible (both historical and within-model) to allow a
-comparison with previous assessment results and projections, and to examine model fit.
+2. Evaluate indices used in the assessment (e.g., indices of relative or absolute abundance, recruitment, state surveys, age-length data, etc.).
+3. Estimate annual fishing mortality, recruitment and stock biomass (both total and spawning stock) as possible (depending on the assessment method) for the time series using the approved assessment me thod and estimate their uncertainty. Include retrospective analyses if possible (both historical and within-model) to allow a comparison with previous assessment results and projections, and to examine model fit.
 a. Include bridge runs to sequentially document each change from the previously
 accepted model to the updated model proposed for this peer review.
 b. Prepare a backup assessment approach that would serve as an alternative for
-providing scientific advice to management if the analytical assessment were to not
-pass review
+providing scientific advice to management if the analytical assessment were to not pass review
 4. Re-estimate or update the BRP’s as defined by the management track level and
-recommend stock status. Also, provide qualitative descriptions of stock status based
-on simple indicators/metrics (e.g., age- and size-structure, temporal trends in
-population size or recruitment indices, etc.).
+recommend stock status. Also, provide qualitative descriptions of stock status based on simple indicators/metrics (e.g., age- and size-structure, temporal trends in population size or recruitment indices, etc.).
 5. Conduct short-term stock projections when appropriate.
-6. Respond to any review panel comments or SSC concerns from the most recent prior
-research or management track assessment.
+6. Respond to any review panel comments or SSC concerns from the most recent prior research or management track assessment.
 --->
 
 ## State of stock{-}
@@ -31,3 +22,12 @@ research or management track assessment.
 
 
 ## Special comments{-}
+
+<!--- 1. What are the most important sources of uncertainty in this stock assessment? Explain, and describe qualitatively how they affect the assessment results (such as estimates of biomass, F, recruitment, and population projections).
+2. Does this assessment model have a retrospective pattern? If so, is the pattern minor, or major? (A major retrospective pattern occurs when the adjusted SSB or F_Full lies outside of the approximate joint confidence region for SSB and F_Full).
+3. Based on this stock assessment, are population projections well determined or uncertain? If this stock is in a rebuilding plan, how do the projections compare to the rebuilding schedule?
+4. Describe any changes that were made to the current stock assessment, beyond incorporating additional years of data and the effect these changes had on the assessment and stock status.
+5. If the stock status has changed a lot since the previous assessment, explain why this occurred.
+6. Provide qualitative statements describing the condition of the stock that relate to stock status.
+7. Indicate what data or studies are currently lacking and which would be needed most to improve this stock assessment in the future.
+8. Are there other important issues?--->
