@@ -1064,16 +1064,14 @@ create_template <- function(
           citation <- create_citation(
             author = author,
             title = title,
-            year = year,
-            office = office
+            year = year
           )
         }
       } else {
         citation <- create_citation(
           author = author,
           title = title,
-          year = year,
-          office = office
+          year = year
         )
         print("_______Add Report Citation________")
       }

@@ -4,7 +4,7 @@
 \alias{create_citation}
 \title{Generate Citation for Stock Assessment Report}
 \usage{
-create_citation(author = NULL, title = NULL, year = NULL, office = NULL)
+create_citation(author = NULL, title = NULL, year = NULL)
 }
 \arguments{
 \item{author}{Ordered list of authors included in the assessment.}
@@ -14,9 +14,6 @@ create_citation(author = NULL, title = NULL, year = NULL, office = NULL)
 
 \item{year}{Year the assessment is being conducted. Default
 is the year in which the report is rendered.}
-
-\item{office}{Regional Fisheries Science Center producing the
-report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
 }
 \value{
 Generate a citation for use in publications and other
@@ -30,7 +27,7 @@ Generate Citation for Stock Assessment Report
 create_citation(
   title = "SA Report for Jellyfish",
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
-  year = 2024, office = "NEFSC"
+  year = 2024
 )
 
 }

@@ -10,178 +10,153 @@
 #' @examples create_citation(
 #'   title = "SA Report for Jellyfish",
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
-#'   year = 2024, office = "NEFSC"
+#'   year = 2024
 #' )
 #'
 create_citation <- function(
     author = NULL,
     title = NULL,
-    year = NULL,
-    office = NULL) {
-  if (office %in% c("NEFSC", "SEFSC", "NWFSC", "SWFSC", "PIFSC", "AFSC", "", NULL)) {
-    off_title <- "NOAA Fisheries Science Center"
-  }
-
-  if (length(author) == 1) {
-    if (author == "") {
-      no_author <- TRUE
+    year = NULL) {
+  if (is.null(year)) year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
+  # Check if author is input - improved from previous fxn so did not fail
+    if (any(author == "" | is.null(author))) {
       message("Authorship is not defined.")
+      # Define default citation - needs author editing
+      citation <- paste0(
+        "{{< pagebreak >}} \n",
+        "\n",
+        "Please cite this publication as: \n",
+        "\n",
+        "[AUTHOR NAME]. [YEAR]. ",
+        title, ". National Marine Fisheries Service, ",
+        "[CITY], [STATE]. "
+      )
     } else {
-      no_author <- FALSE
-      # Pull affiliation of first author
-      if (length(unlist(strsplit(author[1], " "))) == 3) {
-        primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
-          dplyr::filter(last == unlist(strsplit(author[1], " "))[3])
-      } else {
-        primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
-          dplyr::filter(last == unlist(strsplit(author[1], " "))[2])
-        if (nrow(primauth_loc) == 0) stop("Author is not found in the database, Please use add_author instead.")
-      }
+      # Authored by Kelli Johnson in previous PR
+      author_data_frame <- tibble::as_tibble_col(
+        author,
+        column_name = "input"
+      ) |>
+        tidyr::separate_wider_regex(
+          cols = input,
+          # Caitlin Allen Akselrud is the only non-hyphenated dual last name
+          # and needs to be included as its own pattern.
+          # The second pattern allows for first initials rather than first name
+          patterns = c(first = "Caitlin |^[A-Z]. |.*[a-z] ", last = ".*$")
+        ) |>
+        tidyr::separate_wider_delim(
+          cols = last,
+          delim = ". ",
+          names = c("mi", "last"),
+          too_few = "align_end"
+        ) |>
+        dplyr::mutate(
+          first = gsub(" ", "", first),
+          mi = ifelse(is.na(mi), "", paste0(mi, "."))
+        ) |>
+        dplyr::left_join(
+          y = utils::read.csv(
+            system.file(
+              "resources",
+              "authorship.csv",
+              package = "asar",
+              mustWork = TRUE
+            )
+          ),
+          by = c("first", "mi", "last")
+        )
 
-      # Check and fix if there is more than one author with the same last name
-      if (nrow(primauth_loc) > 1) {
-        primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
-          dplyr::filter(last == unlist(strsplit(author[1], " "))[1])
-      }
-
-      office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>
-        dplyr::filter(affiliation == primauth_loc$office)
+      # Extract location of primary author
+      primary_author_office <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>
+        dplyr::filter(affiliation == author_data_frame$office[1])
 
       # Check
-      if (nrow(office_loc) > 1) {
-        stop("There is more than one office being selected in this function. Please review 'generate_ciation.R'.")
+      if (nrow(primary_author_office) < 1) {
+        warning("No location found for primary author. Please edit the citation found in the 'skeleton.qmd'.")
+        cit <- paste0(
+          "{{< pagebreak >}} \n",
+          "\n",
+          "Please cite this publication as: \n",
+          "\n",
+          "[AUTHOR NAME]. [YEAR]. ",
+          title, ". National Marine Fisheries Service, ",
+          "[CITY], [STATE]. "
+        )
+      } else {
+        # Author naming convention formatting
+        author_list <- author_data_frame |>
+          dplyr::mutate(
+            first_initial = gsub("([A-Z])[a-z]+", "\\1.", first),
+            bib = purrr::pmap(
+              list(x = first_initial, y = mi, z = last),
+              \(x, y, z) toBibtex(person(given = c(x, y), family = z))
+            )
+          ) |>
+          dplyr::pull(bib) |>
+          gsub(pattern = " $", replacement = "") |>
+          glue::glue_collapse(sep = ", ", last = ", and ")
       }
-
-      loc_city <- office_loc$city
-      loc_state <- office_loc$state
-
-      # Author naming convention formatting
-      author_spl <- unlist(strsplit(author, split = " "))
-      author_list <- paste0(
-        ifelse(length(author_spl) == 3, author_spl[3], author_spl[2]), ", ",
-        substring(author_spl[[1]][1], 1, 1), ".",
-        ifelse(length(author_spl) == 3, author_spl[2], "")
+      
+      # Authored by Sam Schiano with contributions from Kelli Johnson
+      
+      region_specific_part <- switch(
+        primary_author_office[["office"]],
+        "AFSC" = {
+          paste0(
+            "North Pacific Fishery Management Council, Anchorage, AK. Available from ",
+            "https://www.npfmc.org/library/safe-reports/"
+          )
+        },
+        "NWFSC" = {
+          paste0(
+            "Prepared by [COMMITTEE]. [XX] p."
+          )
+        },
+        "SEFSC" = {
+          paste0(
+            "SEDAR, North Charleston SC. [XX] pp. ",
+            "available online at: http://sedarweb.org/"
+          )
+        },
+        "SWFSC" = {
+          paste0(
+            "Pacific Fishery Management Council, Portland, OR. Available from https://www.pcouncil.org/stock-assessments-and-fishery-evaluation-safe-documents/."
+          )
+        },
+        "PIFSC" = {
+          paste0(
+            "NOAA Tech. Memo. [TECH MEMO NUMBER]",
+            ", ", "[XX] p."
+          )
+        },
+        "NEFSC" = {
+          paste0(
+            primary_author_office[["name"]], ", ",
+            primary_author_office[["city"]], ", ", 
+            primary_author_office[["state"]], ". "
+          )
+        },
+        {
+          # Default
+          paste0(
+          ". National Marine Fisheries Service, ",
+          "[CITY], [STATE]. "
+          )
+        }
+      )    
+      # Pull together parts of citation
+      citation <- paste0(
+        "{{< pagebreak >}} \n",
+        "\n",
+        "Please cite this publication as: \n",
+        "\n",
+        ifelse(primary_author_office[["office"]]=="SEFSC", "SEDAR.", author_list),
+        " ", year, ". ", 
+        ifelse(is.null(title), "[TITLE]", glue::glue("{title}")), ". ",
+        region_specific_part
       )
     }
-  } else { # close if only one author
-    no_author <- FALSE
-    # Pull affiliation of first author
-    if (length(unlist(strsplit(author[1], " "))) == 3) {
-      primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
-        dplyr::filter(last == unlist(strsplit(author[1], " "))[3])
-    } else {
-      primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
-        dplyr::filter(last == unlist(strsplit(author[1], " "))[2])
-    }
-
-    # Check and fix if there is more than one author with the same last name
-    if (nrow(primauth_loc) > 1) {
-      primauth_loc <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
-        dplyr::filter(last == unlist(strsplit(author[1], " "))[1])
-    }
-
-    office_loc <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>
-      dplyr::filter(affiliation == primauth_loc$office)
-
-    # Check
-    if (nrow(office_loc) > 1) {
-      stop("There is more than one office being selected in this function. Please review 'generate_ciation.R'.")
-    }
-
-    loc_city <- office_loc$city
-    loc_state <- office_loc$state
-
-    # Author naming convention formatting
-    author1 <- unlist(strsplit(author[1], split = " "))
-    author1 <- paste0(
-      ifelse(length(author1) == 3, author1[3], author1[2]), ", ",
-      substring(author1[1], 1, 1), ".",
-      ifelse(length(author1) == 3, author1[2], "")
-    )
-    author_list <- paste0(author1)
-    for (i in 2:length(author)) {
-      auth_extract <- unlist(strsplit(author[i], split = " "))
-      auth_extract2 <- paste0(
-        substring(auth_extract[1], 1, 1), ".",
-        ifelse(length(auth_extract) == 3, auth_extract[2], ""), " ",
-        ifelse(length(auth_extract) == 3, auth_extract[3], auth_extract[2])
-      )
-      author_list <- paste0(author_list, ", ", auth_extract2)
-    } # close for loop
-  }
-
-  # Create citation string
-  if (no_author) {
-    cit <- paste0(
-      "{{< pagebreak >}} \n",
-      "\n",
-      "Please cite this publication as: \n",
-      "\n",
-      "[AUTHOR NAME]. [YEAR]. ",
-      title, ". ", off_title, ", ",
-      "[CITY], [STATE]. "
-    )
-  } else if (office == "AFSC") {
-    cit <- paste0(
-      "{{< pagebreak >}} \n",
-      "\n",
-      "Please cite this publication as: \n",
-      "\n",
-      author_list, ". ", year, ". ",
-      title,
-      ". North Pacific Fishery Management Council, Anchorage, AK. Available from ",
-      "https://www.npfmc.org/library/safe-reports/"
-    )
-  } else if (office == "NWFSC") {
-    cit <- paste0(
-      "{{< pagebreak >}} \n",
-      "\n",
-      "Please cite this publication as: \n",
-      "\n",
-      author_list, ". ", title, ".", year,
-      ". Prepared by [COMMITTEE]. [XX] p."
-    )
-  } else if (office == "PIFSC") {
-    cit <- paste0(
-      "{{< pagebreak >}} \n",
-      "\n",
-      "Please cite this publication as: \n",
-      "\n",
-      author_list, ". ", year, ". ",
-      title, ". NOAA Tech. Memo. [TECH MEMO NUMBER]",
-      ", ", "[XX] p."
-    )
-  } else if (office == "SEFSC") {
-    cit <- paste0(
-      "'{{< pagebreak >}}' \n",
-      "\n",
-      "Please cite this publication as: \n",
-      "\n",
-      "SEDAR. ", year, ". ", title, ". ",
-      "SEDAR, North Charleston SC. [XX] pp. ",
-      "available online at: http://sedarweb.org/"
-    )
-  } else if (office == "SWFSC") {
-    cit <- paste0(
-      "{{< pagebreak >}} \n",
-      "\n",
-      "Please cite this publication as: \n",
-      "\n",
-      author_list, ", ", year, ". ", title,
-      ". Pacific Fishery Management Council, Portland, OR. Available from https://www.pcouncil.org/stock-assessments-and-fishery-evaluation-safe-documents/."
-    )
-  } else { # this includes NEFSC
-    cit <- paste0(
-      "{{< pagebreak >}} \n",
-      "\n",
-      "Please cite this publication as: \n",
-      "\n",
-      author_list, ". ", year, ". ",
-      title, ". ", off_title, ", ",
-      loc_city, ", ", loc_state, ". "
-    )
-  }
 
   # Add citation as .qmd to add into template
-  cit
+  citation
 }
