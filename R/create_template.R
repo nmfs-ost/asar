@@ -813,11 +813,11 @@ create_template <- function(
               paste(
                 "  ", "- name: ", "'", auth$name, "'", "\n",
                 "  ", "  ", "affiliations:", "\n",
-                "  ", "  ", "  ", "- name: ", "\n", # "NOAA Fisheries ",
-                "  ", "  ", "  ", "  ", "address: ", "\n",
-                "  ", "  ", "  ", "  ", "city: ", "\n",
-                "  ", "  ", "  ", "  ", "state: ", "\n",
-                "  ", "  ", "  ", "  ", "postal-code: ", "\n",
+                "  ", "  ", "  ", "- name: '[organization]'", "\n", # "NOAA Fisheries ",
+                "  ", "  ", "  ", "  ", "address: '[address]'", "\n",
+                "  ", "  ", "  ", "  ", "city: '[city]'", "\n",
+                "  ", "  ", "  ", "  ", "state: '[state]'", "\n",
+                "  ", "  ", "  ", "  ", "postal-code: '[postal code]'", "\n",
                 sep = ""
               ) -> author_list[[i]]
             } else {
