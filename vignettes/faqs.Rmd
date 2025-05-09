@@ -89,6 +89,10 @@ You may be using a version of Quarto [older than v1.6](https://quarto.org/docs/b
 
 As far as we know, a fix isn't possible with Quarto. The order of your figures and tables in their respective 08_tables.qmd and 09_figures.qmd docs will determine their numbers in the report. This might result in Table 2 being referenced before Table 1, for instance, in your report. You *can* try manually changing the order of the figure and table chunks in the 08_tables.qmd and 09_figures.qmd docs, but this isn't a reproducible or permanent solution. If you know of a long-term solution, [please let us know](https://github.com/nmfs-ost/asar/issues) or submit a pull request!
 
+### **How can I edit the glossary in the appendix?**
+
+Please refer to the [Acronyms and Glossary section of the accessibility vignette](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#acronyms-and-glossary) for guidance on how to add, remove, and/or edit the acronyms, meanings, and definitions.
+
 ### **I'm getting an error. How do I fix it?**
 
 When getting to know `asar`, you'll probably encounter some errors. We highly recommend checking out our [Issues page](https://github.com/nmfs-ost/asar/issues) to see if someone else has already asked (and maybe solved!) your question. We've also included some errors we've encountered, and what they mean/ideas for solving them.

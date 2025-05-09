@@ -519,6 +519,8 @@ create_template <- function(
           file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
           # Copy us doc logo
           file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+          # Copy glossary
+          file.copy(system.file("resources", "report_glossary.tex", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
           # Copy html format file if applicable
           if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         } else {
@@ -549,6 +551,8 @@ create_template <- function(
             file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
             # Copy us doc logo
             file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+            # Copy glossary
+            file.copy(system.file("resources", "report_glossary.tex", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
             # Copy html format file if applicable
             if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
           } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
