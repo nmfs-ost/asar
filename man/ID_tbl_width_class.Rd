@@ -7,6 +7,7 @@
 ID_tbl_width_class(plot_name, rda_dir, portrait_pg_width)
 }
 \arguments{
+
 \item{plot_name}{Name of the .rda file containing the table}
 
 \item{rda_dir}{Folder where rda files containing alternative text is located}

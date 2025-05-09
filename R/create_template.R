@@ -527,6 +527,11 @@ create_template <- function(
           warning("There are files in this location.")
           question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
 
+          # answer question1 as y if session isn't interactive
+          if (!interactive()){
+            question1 <- "y"
+          }
+
           if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
             # remove old skeleton if present
             if (any(grepl("_skeleton.qmd", list.files(subdir)))) {
@@ -734,6 +739,28 @@ create_template <- function(
       }
 
       # Pull authors and affiliations from national db
+      # Check if rerender and if author is already added
+      # TODO: add feature to allow removal of authors if there are ones that
+        # are repeated from the previous skeleton and those named (not just
+        # additions of new names)
+      if (rerender_skeleton) {
+        # Pull all author names from prev_skeleton
+        author_prev <- grep(
+          "\\- name:\\s*'",
+          prev_skeleton,
+          value = TRUE
+        )
+        # Remove every second occurance of "-name"
+        author_prev <- author_prev[seq(1, length(author_prev), 2)]
+        # Remove everything but the name
+        author_prev <- sub(
+          ".*\\- name:\\s*'([^']+)'.*",
+          "\\1",
+          author_prev
+        )
+        setdiff(author, author_prev) -> author
+      }
+
       # Parameters to add authorship to YAML
       # Read authorship file
       authors <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
@@ -787,20 +814,26 @@ create_template <- function(
             aff <- affil |>
               dplyr::filter(affiliation == auth$office)
             if (is.na(auth$office)) {
-              paste0(
+              paste(
                 "  ", "- name: ", "'", auth$name, "'", "\n",
-                "  ", "  ", "affiliations: ", "NO AFFILIATION", "\n"
+                "  ", "  ", "affiliations:", "\n",
+                "  ", "  ", "  ", "- name: '[organization]'", "\n", # "NOAA Fisheries ",
+                "  ", "  ", "  ", "  ", "address: '[address]'", "\n",
+                "  ", "  ", "  ", "  ", "city: '[city]'", "\n",
+                "  ", "  ", "  ", "  ", "state: '[state]'", "\n",
+                "  ", "  ", "  ", "  ", "postal-code: '[postal code]'", "\n",
+                sep = ""
               ) -> author_list[[i]]
             } else {
-              paste0(
+              paste(
                 "  ", "- name: ", "'", auth$name, "'", "\n",
                 "  ", "  ", "affiliations:", "\n",
                 "  ", "  ", "  ", "- name: ", "'", aff$name, "'", "\n", # "NOAA Fisheries ",
                 "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'", "\n",
                 "  ", "  ", "  ", "  ", "city: ", "'", aff$city, "'", "\n",
                 "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
-                "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n"
-                # sep = " "
+                "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n",
+                sep = ""
               ) -> author_list[[i]]
             }
           }
@@ -1014,6 +1047,11 @@ create_template <- function(
       # extract old preamble if don't want to change
       if (rerender_skeleton) {
         question1 <- readline("Do you want to keep the current preamble? (Y/N)")
+
+        # answer question1 as y if session isn't interactive
+        if (!interactive()){
+          question1 <- "y"
+        }
         if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
           start_line <- grep("output_and_quantities", prev_skeleton) - 1
           # find next trailing "```"` in case it was edited at the end
@@ -1044,7 +1082,7 @@ create_template <- function(
       if (rerender_skeleton) {
         if (!is.null(title) | !is.null(species) | !is.null(year) | !is.null(author)) {
           citation_line <- grep("Please cite this publication as:", prev_skeleton) + 2
-          citation <- glue::glue("{{< pagebreak >}} \n\n Please cite this publication as: \n\n {prev_skeleton[citation_line]}\n\n")
+          citation <- glue::glue("{{{{< pagebreak >}}}} \n\n Please cite this publication as: \n\n {prev_skeleton[citation_line]} \n\n")
         } else {
           author <- grep("  - name: ", prev_skeleton)
           citation <- create_citation(
@@ -1125,13 +1163,18 @@ create_template <- function(
         # Create custom template from existing skeleton sections
         if (is.null(new_section)) {
           section_list <- add_base_section(files_to_copy)
-          sections <- add_child(c(section_list, "08_tables.qmd", "09_figures.qmd"),
-            label = custom_sections # this might need to be changed
-          )
+          if (include_tables) {
+            section_list <- c(section_list, "08_tables.qmd")
+            custom_sections <- c(custom_sections, "tables")
+          }
+          if (include_figures) {
+            section_list <- c(section_list, "09_figures.qmd")
+            custom_sections <- c(custom_sections, "figures")
+          }
           # Create sections object to add into template
           sections <- add_child(
-            sections,
-            label = gsub(".qmd", "", unlist(sections))
+            section_list,
+            label = custom_sections
           )
         } else { # custom = TRUE
           # Create custom template using existing sections and new sections from analyst
@@ -1162,9 +1205,12 @@ create_template <- function(
               subdir = subdir
             )
             # Create sections object to add into template
+            custom_sections <- gsub(".qmd", "", unlist(sec_list2))
+            custom_sections <- sub("^[0-9]+_","", custom_sections)
+            custom_sections <- sub("^[0-9]+[a-z]_", "", custom_sections)
             sections <- add_child(
               sec_list2,
-              label = gsub(".qmd", "", unlist(sec_list2))
+              label = custom_sections
             )
           } else { # custom_sections explicit
 
@@ -1191,9 +1237,13 @@ create_template <- function(
               subdir = subdir
             )
             # Create sections object to add into template
+            # name of chunks
+            custom_sections <- gsub(".qmd", "", unlist(sec_list2))
+            custom_sections <- sub("^[0-9]+_","", custom_sections)
+            custom_sections <- sub("^[0-9]+[a-z]_", "", custom_sections)
             sections <- add_child(
               sec_list2,
-              label = gsub(".qmd", "", unlist(sec_list2))
+              label = custom_sections
             )
           } # close if statement for very specific sectioning
         } # close if statement for extra custom
@@ -1223,6 +1273,12 @@ create_template <- function(
     # Delete old skeleton
     if (length(grep("skeleton.qmd", list.files(file_dir, pattern = "skeleton.qmd"))) > 1) {
       question1 <- readline("Deleting previous skeleton file...Do you want to proceed? (Y/N)")
+
+      # answer question1 as y if session isn't interactive
+      if (!interactive()){
+        question1 <- "y"
+      }
+
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         file.remove(file.path(file_dir, report_name))
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {

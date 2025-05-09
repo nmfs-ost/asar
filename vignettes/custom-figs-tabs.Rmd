@@ -41,7 +41,7 @@ data.frame(
   Summary = c(
     "In this workflow, you will take minimal steps to add an external file to your report in this format:
 
-    ![Your caption here](your_image.png){fig-alt='Your alternative text here' width=___in #fig-your_image_label_name}",
+    ![Your caption here](your_image.png){width=___in #fig-your_image_label_name}",
     "In this workflow, you will make an rda containing your table/figure, caption, and alternative text, then add each into your report in the same way that non-custom tables/figures are added.",
     "In this workflow, you will code, and plot, your table or figure directly in a Quarto document."
   ),
@@ -157,8 +157,6 @@ We recommend adding in key quantities, like maximum and minimum values, to ensur
 
 ## Saving text
 
-*Using the direct image insertion workflow (option 1)? Skip this step and proceed to [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd).*
-
 *Using the direct coding-in-qmd workflow (option 3)? Skip this step and proceed to [Identify table width, orientation, and if splitting is necessary](#sec-id_width).*
 
 Once written, you'll have to save your captions and alternative text.
@@ -182,7 +180,11 @@ Open captions_alt_text.csv file, then add your text. The file is set up like thi
 
 : Format for csv containing table and figure captions and alternative text.
 
+> **NOTE**: If you are using the direct image insertion workflow (option 1), only the _alternative text_ will be used in your final report- not the caption. This happens because of the workaround workflow that allows us to add alt text into PDFs. The caption will be taken from your directly-coded image's markdown code, so you can leave it empty or put the same caption here; it doesn't matter. 
+
 # Export your custom tables and figures
+
+*Using the direct image insertion workflow (option 1)? Skip this step and proceed to [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd).*
 
 Next, export your tables and figures to rda files. This code was adapted from functions like `stockplotr::plot_biomass`.
 
@@ -405,8 +407,9 @@ Identify the preferred width of your image. Keep it in mind for when you add you
 Next, add your image in this format ([see this Quarto documentation for more information](https://quarto.org/docs/authoring/figures.html)):
 
 ``` markdown
-![Your caption here](your_image.png){fig-alt="Your alternative text here" width=___in #fig-your_image_label_name}
+![Your caption here](your_image.png){width=___in #fig-your_image_label_name}
 ```
+> **NOTE**: Remember that alternative text placed in this markdown format will not be put into your final report file; it must be in the captions_alt_text.csv file. However, *you must put the caption here*.
 
 > **NOTE**: It can be a headache to specify the correct image path. We recommend placing your files in either of these places:
 
@@ -428,12 +431,12 @@ stock_assessments_2025/
 
 ``` markdown
 # Example 1
-![Here is my caption to my example figure.](my_custom_figure.png){fig-alt="This alternative text explains my figure well." width=3in #fig-custom_figure1}
+![Here is my caption to my example figure.](my_custom_figure.png){width=3in #fig-custom_figure1}
 ```
 
 ``` markdown
 # Example 2
-![Here is my caption to my example table.](images/my_custom_table.png){fig-alt="This alternative text explains my table well." width=5in #fig-custom_table1}
+![Here is my caption to my example table.](images/my_custom_table.png){width=5in #fig-custom_table1}
 ```
 
 #### Add landscape braces (optional)
@@ -445,7 +448,7 @@ If you'd like to place your image on a landscape-oriented page, you'll add [land
 ```
 
 ``` rmd
-![Your caption here](your_image.png){fig-alt="Your alternative text here" width=___in #fig-your_image_label_name}
+![Your caption here](your_image.png){width=___in #fig-your_image_label_name}
 ```
 
 Then, add three colons to close the braces:

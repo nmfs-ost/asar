@@ -84,7 +84,7 @@ create_yaml <- function(
       #   toad <- paste(author_list[[i]], sep = ",")
       #   add_authors <- paste0(add_authors, toad) # -> add_authors
       # }
-      add_authors <- unlist(stringr::str_split(author_list, "\n "))
+      add_authors <- unlist(stringr::str_split(author_list, "\n"))
       # remove trailing \n from each author entry
       add_authors <- gsub("\n", "", add_authors)
       # check if the template was blank before
@@ -99,6 +99,8 @@ create_yaml <- function(
 
     # replace title
     # if (alt_title) {
+    # DOES NOT WORK when latin latex notation is in the title
+    # TODO: replace {} in the latex notation
       yaml <- stringr::str_replace(yaml, yaml[grep("title:", yaml)], paste("title: ", title, sep = ""))
     # }
 

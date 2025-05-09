@@ -29,6 +29,8 @@ navbar:
         href: articles/regional_workflows.html
       - text: Accessibility
         href: articles/accessibility_guide.html
+      - text: Custom Figures & Tables
+        href: articles/custom-figs-tabs.html
       - text: Standardizing Assessment Model Output
         href: articles/convert_output_details.html
       - text: Frequently Asked Questions (FAQs)
