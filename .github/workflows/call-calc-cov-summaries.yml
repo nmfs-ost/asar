@@ -15,6 +15,9 @@ on:
       - opened
     branches:
       - main
+      - dev
 jobs:
   call-workflow:
     uses: nmfs-ost/ghactions4r/.github/workflows/calc-cov-summaries.yml@main
+    with:
+      depends_on_quarto: true
