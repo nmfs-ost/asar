@@ -1,0 +1,70 @@
+# Data
+
+<!---
+(If the data for any particular component described here are so voluminous that the corresponding tables would comprise more than 2 pages, the tables may be placed on an ftp site referenced in the chapter.)
+For Tiers 1-3, insert a text table summarizing the data used in the assessment model (source, type, years included). 
+Data which should be presented as time series (starting no later than 1977, if possible):
+The following is a typical example:
+--->
+
+The following table summarizes the data used in the stock assessment model for northern rockfish (bold denotes new data for this assessment):
+
+```{r}
+#| echo: false
+#| eval: false
+data.frame(Source = c(rep("NMFS Groundfish survey", 2),
+                      rep("U.S. trawl fishery", 3)),
+           Data = c("Survey biomass",
+                    "Age composition",
+                    "Catch",
+                    "Age composition",
+                    "Length composition"),
+           Years = c("1984-1999 (triennial), 2001-2019 (biennial)",
+                     "1984, 1987, 1990, 1993, 1996, 1999, 2003, 2005, 2007, 2009, 2011, 2013, 2015, 2017, 2019",
+                     "1961-2020",
+                     "1998-2002, 2004-2006, 2008, 2010, 2012, 2014, 2016, 2018",
+                     "1991-1997, 2003, 2007, 2009, 2011, 2013, 2015, 2017, 2019")) |>
+  flextable::flextable()  |> 
+  flextable::width(j = ~ Source, width = 1)  |>
+  flextable::width(j = ~ Data, width = 1.5)  |>
+  flextable::width(j = ~ Years, width = 4)  |>
+  flextable::merge_v(j = 1)  |> 
+  flextable::font(fontname = "Times", part = "all")  |> 
+  flextable::fontsize(size = 10)  |> 
+  flextable::theme_vanilla()  |> 
+  flextable::fix_border_issues() 
+```
+
+## Fishery
+
+### Catch
+
+<!---
+Catch as used in the model (by area and gear if that is how it is used in the model). 
+This table may omitted if this table simply duplicates the catch table shown under “Management units/measures”).
+In an appendix, present removals from sources other than those that are included in the Alaska Region’s official estimate of catch (e.g., removals due to scientific surveys, subsistence fishing, recreational fishing, fisheries managed under other FMPs.)
+--->
+
+### Age and Size Composition
+
+<!---
+Catch at age or catch at length (including sample sizes), as appropriate
+--->
+
+## Survey
+
+### Biomass Estimates from Trawl Surveys
+
+<!---
+Survey biomass estimates, including at least one measure of sampling variability such as standard error, CV, or 95% confidence interval (for stocks managed as complexes, be sure to report the sampling variability for the complex-wide survey biomass estimate, not just the individual stocks). 
+Complex-wide variance could be computed simply by summing the variances from the survey estimates.
+--->
+
+### Age and Size Composition 
+
+<!---
+Survey numbers at age or numbers at length (including sample sizes), as appropriate
+--->
+
+### Maturity Data
+
