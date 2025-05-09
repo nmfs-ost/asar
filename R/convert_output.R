@@ -32,6 +32,15 @@
 #'
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' convert_output(
+#' output_file = "Report.sso",
+#' outdir = "data",
+#' model = "ss3",
+#' savedir = getwd(),
+#' save_name = "converted_model_output")
+#' }
 convert_output <- function(
     output_file = NULL,
     outdir = getwd(),

@@ -525,6 +525,11 @@ create_template <- function(
           warning("There are files in this location.")
           question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
 
+          # answer question1 as y if session isn't interactive
+          if (!interactive()){
+            question1 <- "y"
+          }
+
           if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
             # remove old skeleton if present
             if (any(grepl("_skeleton.qmd", list.files(subdir)))) {
@@ -767,6 +772,11 @@ create_template <- function(
         ) |>
         dplyr::select(name, office) |>
         dplyr::filter(name %in% author)
+
+      if (length(author) != dim(authors)[1]){
+        message("Some authors were not found in the author database. Please comment on this issue (https://github.com/nmfs-ost/asar/issues/19) to request name and affiliation additions to the archive of U.S. stock assessment authors.")
+      }
+
       authors <- authors[match(author, authors$name), ]
 
       if (include_affiliation) {
@@ -802,7 +812,12 @@ create_template <- function(
             if (is.na(auth$office)) {
               paste(
                 "  ", "- name: ", "'", auth$name, "'", "\n",
-                "  ", "  ", "affiliations: ", "NO AFFILIATION", "\n",
+                "  ", "  ", "affiliations:", "\n",
+                "  ", "  ", "  ", "- name: '[organization]'", "\n", # "NOAA Fisheries ",
+                "  ", "  ", "  ", "  ", "address: '[address]'", "\n",
+                "  ", "  ", "  ", "  ", "city: '[city]'", "\n",
+                "  ", "  ", "  ", "  ", "state: '[state]'", "\n",
+                "  ", "  ", "  ", "  ", "postal-code: '[postal code]'", "\n",
                 sep = ""
               ) -> author_list[[i]]
             } else {
@@ -1028,6 +1043,11 @@ create_template <- function(
       # extract old preamble if don't want to change
       if (rerender_skeleton) {
         question1 <- readline("Do you want to keep the current preamble? (Y/N)")
+
+        # answer question1 as y if session isn't interactive
+        if (!interactive()){
+          question1 <- "y"
+        }
         if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
           start_line <- grep("output_and_quantities", prev_skeleton) - 1
           # find next trailing "```"` in case it was edited at the end
@@ -1247,6 +1267,12 @@ create_template <- function(
     # Delete old skeleton
     if (length(grep("skeleton.qmd", list.files(file_dir, pattern = "skeleton.qmd"))) > 1) {
       question1 <- readline("Deleting previous skeleton file...Do you want to proceed? (Y/N)")
+
+      # answer question1 as y if session isn't interactive
+      if (!interactive()){
+        question1 <- "y"
+      }
+
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         file.remove(file.path(file_dir, report_name))
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {

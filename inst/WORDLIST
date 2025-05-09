@@ -4,12 +4,15 @@ APA
 BAM
 Blockquote
 Bolded
+CMD
 CPUE
 Canelón
+CTAN
 Drs
 FIMS
 Filepath
 LaTex
+Lifecycle
 Mainpulate
 NEFSC
 NOAA
@@ -103,6 +106,8 @@ tex
 tibble
 tidyr
 tidyselect
+tinytex
+TinyTeX
 titlepage
 xlsx
 yaml
