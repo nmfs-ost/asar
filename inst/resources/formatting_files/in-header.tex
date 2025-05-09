@@ -23,11 +23,12 @@
 %  % \fontseries{sbc}\fontfamily{lmss}\selectfont }%% uses lmssdc10
 % \else
 
-\usepackage{fontspec}
-% Arial is a Microsoft font
-% \setsansfont[Ligatures=TeX]{Arial Narrow}
-\setsansfont{Latin Modern Sans}
-\renewcommand{\setmainfont}[2][]{\fontspec[#1]{Latin Modern Sans}}
+% \usepackage{fontspec}
+% % Arial is a Microsoft font
+% % \setsansfont[Ligatures=TeX]{Arial Narrow}
+% \setsansfont{Latin Modern Sans}
+% \renewcommand{\setmainfont}[2][]{\fontspec[#1]{Latin Modern Sans}}
+% \renewcommand{\rmdefault}{lmss}
 
 % added by Ross
 %\fi
@@ -41,3 +42,13 @@
 
 \usepackage[T1]{fontenc}
 \usepackage{tgbonum}
+
+\newfontfamily\sectionfont[Color=Black]{Arial Narrow}
+\newfontfamily\subsectionfont[Color=Black]{Arial Narrow}
+\newfontfamily\subsubsectionfont[Color=Black]{Arial Narrow}
+% \newfontfamily\sectionfont[Color=Black]{Latin Modern Sans}
+% \newfontfamily\subsectionfont[Color=Black]{Latin Modern Sans}
+% \newfontfamily\subsubsectionfont[Color=Black]{Latin Modern Sans}
+\addtokomafont{section}{\sectionfont}
+\addtokomafont{subsection}{\subsectionfont}
+\addtokomafont{subsubsection}{\subsubsectionfont}
