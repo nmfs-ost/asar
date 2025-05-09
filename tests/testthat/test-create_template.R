@@ -50,6 +50,7 @@ test_that("create_template() creates correct files", {
     "_titlepage.tex",
     "before-body.tex",
     "in-header.tex",
+    "report_glossary.tex",
     "us_doc_logo.png"
   )
 
@@ -124,6 +125,7 @@ test_that("create_template() creates correct files", {
     "before-body.tex",
     "Dover_sole.png",
     "in-header.tex",
+    "report_glossary.tex",
     "us_doc_logo.png"
   )
 
