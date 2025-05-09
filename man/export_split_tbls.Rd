@@ -7,7 +7,6 @@
 export_split_tbls(rda_dir = NULL, plot_name = NULL, essential_columns = NULL)
 }
 \arguments{
-
 \item{rda_dir}{Folder where rda files containing alternative text is located}
 
 \item{plot_name}{Name of the .rda file containing the table}
