@@ -4,10 +4,9 @@
 \alias{export_split_tbls}
 \title{Split extra-wide tables into smaller tables and export}
 \usage{
-export_split_tbls(rda_dir, plot_name, essential_columns)
+export_split_tbls(rda_dir = NULL, plot_name = NULL, essential_columns = NULL)
 }
 \arguments{
-
 \item{rda_dir}{Folder where rda files containing alternative text is located}
 
 \item{plot_name}{Name of the .rda file containing the table}
