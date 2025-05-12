@@ -98,13 +98,14 @@ create_inheader_tex <- function(species = NULL, year = NULL, subdir) {
   }
   
   # Add in notation to add glossary
-  gloss <- paste(
-    "\\usepackage[acronym, nonumberlist]{glossaries}","\n",
-    "\\makenoidxglossaries", "\n",
-    "\\loadglsentries{report_glossary.tex}", "\n",
-    sep = ""
-  )
-  lines <- append(lines, gloss)
+  # Notation permenantly added in the initial in-header.tex doc
+  # gloss <- paste(
+  #   "\\usepackage[acronym, nonumberlist]{glossaries}","\n",
+  #   "\\makenoidxglossaries", "\n",
+  #   "\\loadglsentries{report_glossary.tex}", "\n",
+  #   sep = ""
+  # )
+  # lines <- append(lines, gloss)
   
   write(lines, file = paste(subdir, "/in-header.tex", sep = ""))
 }
