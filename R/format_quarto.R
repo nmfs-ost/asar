@@ -21,7 +21,7 @@ format_quarto <- function(format = NULL) {
       "  ", "  ", "  ", "- 'support_files/in-header.tex'", "\n",
       "  ", "  ", "include-after-body:", "\n",
       "  ", "  ", "  ", "text: |", "\n",
-      "  ", "  ", "  ", "  ", "\\printnoidxglossaries", "\n",
+      "  ", "  ", "  ", "  ", "\\printnoidxglossary", "\n",
       "  ", "  ", "header-includes:", "\n",
       "  ", "  ", "  ", "\\usepackage{draftwatermark}", "\n",
       "  ", "  ", "  ", "\\SetWatermarkText{DRAFT}", "\n",
