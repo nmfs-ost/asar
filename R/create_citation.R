@@ -89,16 +89,16 @@ create_citation <- function(
             first_initial = gsub("([A-Z])[a-z]+", "\\1.", first),
             bib = purrr::pmap(
               list(x = first_initial, y = mi, z = last),
-              \(x, y, z) toBibtex(person(given = c(x, y), family = z))
+              \(x, y, z) utils::toBibtex(utils::person(given = c(x, y), family = z))
             )
           ) |>
           dplyr::pull(bib) |>
           gsub(pattern = " $", replacement = "") |>
           glue::glue_collapse(sep = ", ", last = ", and ")
       }
-      
+
       # Authored by Sam Schiano with contributions from Kelli Johnson
-      
+
       region_specific_part <- switch(
         primary_author_office[["office"]],
         "AFSC" = {
@@ -132,7 +132,7 @@ create_citation <- function(
         "NEFSC" = {
           paste0(
             primary_author_office[["name"]], ", ",
-            primary_author_office[["city"]], ", ", 
+            primary_author_office[["city"]], ", ",
             primary_author_office[["state"]], ". "
           )
         },
@@ -143,7 +143,7 @@ create_citation <- function(
           "[CITY], [STATE]. "
           )
         }
-      )    
+      )
       # Pull together parts of citation
       citation <- paste0(
         "{{< pagebreak >}} \n",
@@ -151,7 +151,7 @@ create_citation <- function(
         "Please cite this publication as: \n",
         "\n",
         ifelse(primary_author_office[["office"]]=="SEFSC", "SEDAR.", author_list),
-        " ", year, ". ", 
+        " ", year, ". ",
         ifelse(is.null(title), "[TITLE]", glue::glue("{title}")), ". ",
         region_specific_part
       )

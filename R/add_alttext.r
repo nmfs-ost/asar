@@ -78,7 +78,7 @@ add_alttext <- function(
   #   )
 
   # Check if alt text csv is where indicated
-  if (!file.exists(file.path(alttext_csv_dir, "captions_alt_text.csv"))) stop(glue:glue("'captions_alt_text.csv' not found in {alttext_csv_dir}."))
+  if (!file.exists(file.path(alttext_csv_dir, "captions_alt_text.csv"))) stop(glue::glue("'captions_alt_text.csv' not found in {alttext_csv_dir}."))
 
   # Identify lines with figures
   # check if any lines have figures added
