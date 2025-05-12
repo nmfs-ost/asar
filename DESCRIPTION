@@ -29,6 +29,7 @@ Imports:
     naniar,
     officer,
     openxlsx,
+    pdftools,
     prodlim,
     purrr,
     stats,

@@ -6,8 +6,8 @@ Blockquote
 Bolded
 CMD
 CPUE
-Canelón
 CTAN
+Canelón
 Drs
 FIMS
 Filepath
@@ -33,6 +33,7 @@ SEFSC
 SSC
 SWFSC
 Strikethrough
+TinyTeX
 YAML
 amak
 asis
@@ -60,6 +61,7 @@ gp
 img
 is’
 knitr
+kobe
 le
 len
 modularized
@@ -87,7 +89,6 @@ readLines
 roboto
 rowid
 saltatrix
-satf
 sd
 se
 snakecase
@@ -100,12 +101,12 @@ str
 stringr
 subfiles
 subseason
+tbl
 tex
 tibble
 tidyr
 tidyselect
 tinytex
-TinyTeX
 titlepage
 xlsx
 yaml

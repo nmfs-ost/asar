@@ -1226,7 +1226,7 @@ create_template <- function(
               sec_list1 <- c(sec_list1, "09_figures.qmd")
             }
             # reorder sec_list1 alphabetically so that 11_appendix goes to end of list
-            sec_list1 <- sec_list1[order(names(setNames(sec_list1, sec_list1)))]
+            sec_list1 <- sec_list1[order(names(stats::setNames(sec_list1, sec_list1)))]
 
             sec_list2 <- add_section(
               new_section = new_section,
