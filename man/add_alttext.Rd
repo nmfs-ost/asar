@@ -22,7 +22,7 @@ rendering the skeleton made from create_template.}
 \item{rda_dir}{folder where rda files containing alternative text is located}
 
 \item{alttext_csv_dir}{Directory for the csv file containing alternative
-text and captions generated when running satf::exp_all_figs_tables}
+text and captions generated when running stockplotr::exp_all_figs_tables}
 
 \item{compile}{Indicate whether the document (X) should be
 rendered after these files are changed. Default TRUE.}
