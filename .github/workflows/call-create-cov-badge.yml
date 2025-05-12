@@ -12,3 +12,5 @@ on:
 jobs:
   call-workflow:
     uses: nmfs-ost/ghactions4r/.github/workflows/create-cov-badge.yml@main
+    with:
+      depends_on_quarto: true
