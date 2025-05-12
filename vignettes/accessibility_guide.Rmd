@@ -179,13 +179,11 @@ recruitment_alt_text <- new_alt_text
 
 Looking for more resources for writing alt text? Check out the [NOAA Library's website for creating accessible documents](https://library.noaa.gov/Section508/CreatingDocs).
 
-## Acronyms and Glossary
+## Acronyms
 
 Your report will likely include several acronyms (e.g., NOAA in place of the National Oceanic and Atmospheric Administration). To ensure that your audience will be able to correctly interpret your acronyms, please **write the acronym's entire expanded form upon its first usage, followed by the acronym in parentheses. Upon further usage, use the acronym alone.** For example:
 
 *The National Oceanic and Atmospheric Administration (NOAA) has offices spread throughout the United States of America (USA). NOAA regularly produces stock assessments on fish and mammal species.*
-
-Then, please check that the glossary contains your acronym, and if it doesn't, add it to the list. The glossary will be saved in your report folder's support_files folder, with the filename "cleaned_acronyms.csv". You can directly edit this csv to add, remove, and/or edit the acronyms, meanings, and definitions.
 
 ## Tables
 
