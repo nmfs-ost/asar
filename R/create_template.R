@@ -830,7 +830,8 @@ create_template <- function(
                 "  ", "  ", "affiliations:", "\n",
                 "  ", "  ", "  ", "- name: ", "'", aff$name, "'", "\n", # "NOAA Fisheries ",
                 "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'", "\n",
-                "  ", "  ", "  ", "  ", "city: ", "'", aff$city, "'", "\n",
+                # TODO: remove state in the following line when notation is changed in _titlepage.tex
+                "  ", "  ", "  ", "  ", "city: ", "'", aff$city, ", ", aff$state, "'", "\n",
                 "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
                 "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n",
                 sep = ""
