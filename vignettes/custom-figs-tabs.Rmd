@@ -5,9 +5,6 @@ output:
     toc: true
     toc_float: true
     toc-depth: 3
-  pdf_document:
-    toc: true
-    toc-depth: 3
 vignette: >
   %\VignetteIndexEntry{Adding Custom Tables and Figures}
   %\VignetteEngine{knitr::rmarkdown}

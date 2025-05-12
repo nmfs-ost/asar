@@ -3,5 +3,3 @@
 \setcounter{table}{0}
 
 ## Appendices {#sec-appendix}
-
-
