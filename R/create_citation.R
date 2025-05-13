@@ -29,7 +29,7 @@ create_citation <- function(
         "\n",
         "[AUTHOR NAME]. [YEAR]. ",
         title, ". National Marine Fisheries Service, ",
-        "[CITY], [STATE]. "
+        "[CITY], [STATE]. \\pageref{LastPage}{} pp."
       )
     } else {
       # Authored by Kelli Johnson in previous PR
@@ -80,7 +80,7 @@ create_citation <- function(
           "\n",
           "[AUTHOR NAME]. [YEAR]. ",
           title, ". National Marine Fisheries Service, ",
-          "[CITY], [STATE]. "
+          "[CITY], [STATE]. \\pageref{LastPage}{} pp."
         )
       } else {
         # Author naming convention formatting
@@ -153,7 +153,8 @@ create_citation <- function(
         ifelse(primary_author_office[["office"]]=="SEFSC", "SEDAR.", author_list),
         " ", year, ". ",
         ifelse(is.null(title), "[TITLE]", glue::glue("{title}")), ". ",
-        region_specific_part
+        region_specific_part,
+        " \\pageref{LastPage}{} pp."
       )
     }
 
