@@ -186,8 +186,7 @@ create_yaml <- function(
       "date: today", "\n",
       "lang: en \n",
       "keep-tex: true \n",
-      # "mainfont: 'Latin Modern Sans' \n"
-      "mainfont: 'Arial Narrow' \n"
+      "mainfont: 'Arial' \n"
     )
 
     # Add species image on title page
