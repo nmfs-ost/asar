@@ -181,11 +181,55 @@ Looking for more resources for writing alt text? Check out the [NOAA Library's w
 
 ## Acronyms and Glossary
 
-Your report will likely include several acronyms (e.g., NOAA in place of the National Oceanic and Atmospheric Administration). To ensure that your audience will be able to correctly interpret your acronyms, please **write the acronym's entire expanded form upon its first usage, followed by the acronym in parentheses. Upon further usage, use the acronym alone.** For example:
+When you use an acronym, it will be included in a glossary table that is automatically added to the end of your report. Below are directions for using acronyms and editing the glossary.
 
-*The National Oceanic and Atmospheric Administration (NOAA) has offices spread throughout the United States of America (USA). NOAA regularly produces stock assessments on fish and mammal species.*
+### How to view and edit the glossary
 
-Then, please check that the glossary contains your acronym, and if it doesn't, add it to the list. The glossary will be saved in your report folder's support_files folder, with the filename "cleaned_acronyms.csv". You can directly edit this csv to add, remove, and/or edit the acronyms, meanings, and definitions.
+The glossary ("report_glossary.tex") is located in your report folder.
+
+Remember that your changes will only be reflected in your report folder's glossary .tex file, not in the file stored in the `asar` package's inst/ folder. If you regenerate your report folder, that main file will overwrite your edited version unless you have indicated otherwise.
+
+If you would like to contribute suggestions to the glossary, please open a pull request or [issue](https://github.com/nmfs-ost/asar/issues).
+
+#### How to remove a glossary entry
+
+Delete the entire line in the file.
+
+#### How to add a glossary entry
+
+First, ensure that your new acronym is not already duplicated in the glossary as this will cause an error upon rendering.
+
+If your acronym could be read as a regular word- for example, "US" (United States) could also be read as "us" (signifying we, as in a group)- please add periods after each letter. Other examples include "A.R.M." (Adaptive Resource Management Framework) and "S.A.W." (Stock Assessment Workshop).
+
+Find the logical location for your acronym based on alphabetical order. Make a new line and add the following information for your acronym and its meaning, based on this structure:
+
+`\newacronym{<label>}{<acronym ("short form")>}{<meaning ("long form")>}`
+
+Here is an example for NOAA:
+
+`\newacronym{noaa}{NOAA}{National Oceanic and Atmospheric Administration}`
+
+#### How to edit a glossary entry
+
+You can edit any entry as needed.
+
+### How to indicate that a word is an acronym
+
+First, check if the glossary contains your acronym; if it doesn't, you can edit the file and add it yourself (see section above).
+
+Once your acronym is in the glossary, go back to the location of the acronym in your report. Encase it in curly brackets ({}), with "\gls" preceding it. For example, to indicate "ABC" is an acronym, you would write `\gls{ABC}`. Use this notation each time you use the acronym in your text.
+
+*Good news*: when using this notation, you never have to spell out the full meaning of the acronym upon its first usage, or even remember the location of its first usage! The CTAN `glossaries` package takes care of all of that.
+
+Your text will look like this:
+
+> This is the first instance of `\gls{ABC}`. Here, `\gls{ABC}` is used a second time.
+
+And it will render like this:
+
+> This is the first instance of Acceptable Biological Catch (ABC). Here, ABC is used a second time.
+
+For specialized commands that enable capitalization, reference to acronyms' meanings, and more, check out the Command Summary (pg 46) within [the `glossaries` package's beginners' guide](https://ctan.math.illinois.edu/macros/latex/contrib/glossaries/glossariesbegin.pdf).
 
 ## Tables
 
