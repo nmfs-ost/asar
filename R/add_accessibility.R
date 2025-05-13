@@ -14,15 +14,15 @@
 #' @param alttext_csv_dir Directory for the csv file containing alternative
 #' text and captions generated when running satf::exp_all_figs_tables
 #'
-#' @return This function runs all functions from {asar} associated with 
-#' accessibility and renders the final document. The document is tagged and 
-#' includes alternative text from the captions_alt_text.csv produced from 
+#' @return This function runs all functions from {asar} associated with
+#' accessibility and renders the final document. The document is tagged and
+#' includes alternative text from the captions_alt_text.csv produced from
 #' {stockplotr} package also available on GitHub.
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#'   create_template(
+#' create_template(
 #'   new_template = TRUE,
 #'   format = "pdf",
 #'   office = "NWFSC",
@@ -39,31 +39,30 @@
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction",
 #'   rda_dir = getwd()
-#'   )
+#' )
 #'
-#'   path <- getwd()
+#' path <- getwd()
 #'
-#'   quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
+#' quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
 #'
-#'   withr::with_dir(
+#' withr::with_dir(
 #'   file.path(path, "report"),
-#'    add_accessibility(
-#'      x = "SAR_USWC_Dover_sole_skeleton.tex",
-#'      dir = getwd(),
-#'      rda_dir = path,
-#'      compile = TRUE)
-#'    )
+#'   add_accessibility(
+#'     x = "SAR_USWC_Dover_sole_skeleton.tex",
+#'     dir = getwd(),
+#'     rda_dir = path,
+#'     compile = TRUE
+#'   )
+#' )
 #' }
 #'
 add_accessibility <- function(
-  x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
-  dir = getwd(),
-  rda_dir = getwd(),
-  compile = TRUE,
-  rename = NULL,
-  alttext_csv_dir = getwd()
-  ) {
-
+    x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
+    dir = getwd(),
+    rda_dir = getwd(),
+    compile = TRUE,
+    rename = NULL,
+    alttext_csv_dir = getwd()) {
   # Add tagpdf pkg to template and create accessibility.tex
   add_tagging(
     x = x,
@@ -80,7 +79,7 @@ add_accessibility <- function(
     rename = rename,
     alttext_csv_dir = rda_dir
   )
- # Render the .tex file after edits
+  # Render the .tex file after edits
   if (compile) {
     # message("______Tagging structure added to tex file.______")
     # test if this can be done when skeleton is in different folder than the wd
