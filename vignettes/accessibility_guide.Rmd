@@ -187,6 +187,10 @@ When you use an acronym, it will be included in a glossary table that is automat
 
 The glossary ("report_glossary.tex") is located in your report folder.
 
+Remember that your changes will only be reflected in your report folder's glossary .tex file, not in the file stored in the `asar` package's inst/ folder. If you regenerate your report folder, that main file will overwrite your edited version unless you have indicated otherwise.
+
+If you would like to contribute suggestions to the glossary, please open a pull request or [issue](https://github.com/nmfs-ost/asar/issues).
+
 #### How to remove a glossary entry
 
 Delete the entire line in the file.
