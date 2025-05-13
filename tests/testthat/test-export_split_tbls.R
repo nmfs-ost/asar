@@ -1,5 +1,4 @@
 test_that("Number of split tables is calculated correctly for converted bam model", {
-
   # bam model with table split into 2
   dat <- utils::read.csv(
     file.path("fixtures", "bam_models_converted", "bsb_conout.csv")
@@ -7,8 +6,9 @@ test_that("Number of split tables is calculated correctly for converted bam mode
   )
 
   stockplotr::table_indices(dat,
-                            make_rda = TRUE,
-                            rda_dir = getwd())
+    make_rda = TRUE,
+    rda_dir = getwd()
+  )
 
   # indices table
   num_tabs <- export_split_tbls(

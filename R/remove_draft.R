@@ -13,8 +13,8 @@
 #' @export
 #'
 #' @examples {
-#' create_template()
-#' remove_draft(x = "SAR_species_skeleton.qmd", dir = file.path(getwd(), "report"))
+#'   create_template()
+#'   remove_draft(x = "SAR_species_skeleton.qmd", dir = file.path(getwd(), "report"))
 #' }
 remove_draft <- function(
     x = list.files(getwd())[grep("skeleton.qmd", list.files(getwd()))],
