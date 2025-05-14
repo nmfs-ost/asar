@@ -9,29 +9,23 @@
 
 \usepackage{lastpage}
 % set font
-
-% added by Ross
-% % set font - - depends upon the driver
-% \ifPDFTeX
-%  %% only want this in body section headings and ToC, using \sf
-%  \def\sfdefault{phv}% Helvetica instead of its clone Arial
-%  \renewcommand{\sectfont}{\normalcolor
-%   \def\bfdefault{bc}% bold condensed; i.e., narrow
-%   \maybesffamily \bfseries }%% uses uhvb8ac
-% % \def\sfdefault{lmss}% Latin Modern replaces Arial
-% % \renewcommand{\sectfont}{\normalcolor
-%  % \fontseries{sbc}\fontfamily{lmss}\selectfont }%% uses lmssdc10
-% \else
-
-\usepackage{fontspec}
-\setsansfont[Ligatures=TeX]{Arial Narrow}
-
-% added by Ross
-%\fi
-%\usepackage[scaled=0.9]{helvet}% needed later to replace Arial Narrow
+% \usepackage{fontspec}
+% \setsansfont{Latin Modern Sans}
+% \renewcommand{\setmainfont}[2][]{\fontspec[#1]{Latin Modern Sans}}
+% \renewcommand{\rmdefault}{lmss}
 
 % Acronyms
 \usepackage[acronym]{glossaries}
 \glsdisablehyper
 \makenoidxglossaries
 \loadglsentries{report_glossary.tex}
+
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+
+\newfontfamily\sectionfont[Color=Black]{Latin Modern Sans}
+\newfontfamily\subsectionfont[Color=Black]{Latin Modern Sans}
+\newfontfamily\subsubsectionfont[Color=Black]{Latin Modern Sans}
+% \addtokomafont{section}{\sectionfont}
+% \addtokomafont{subsection}{\subsectionfont}
+% \addtokomafont{subsubsection}{\subsubsectionfont}
