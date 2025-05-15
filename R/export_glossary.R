@@ -236,7 +236,7 @@ export_glossary <- function() {
   #           file = fs::path("inst/glossary/partially_cleaned_glossary/acronyms_duplicates.csv"))
   
   # remove duplicated acronyms as per discussions with Sam, Steve
-  unique_all_cleaned <- unique_all |>
+  unique_all_cleaning <- unique_all |>
     dplyr::filter(
       !Meaning %in% c(
         "Assistant Administrator",
@@ -276,6 +276,7 @@ export_glossary <- function() {
         "F-CURR",
         "F-MSY",
         "F-OY",
+        "Gulf",
         "LCN",
         "Mid-Atlantic Council",
         "Observer Program",
@@ -328,6 +329,7 @@ export_glossary <- function() {
                   Definition = stringr::str_replace_all(Definition,
                                                         "The level of annual catch of a stock or stock complex that serves as the basis for invoking [accountability measures]. ACL cannot exceed the ABC, but may be divided into sector-ACLs.",
                                                         "The level of annual catch, set equal to or below the OFL, of a stock or stock complex that serves as the basis for invoking accountability measures. ACL cannot exceed the ABC, but may be divided into sector-ACLs."),
+                  Meaning = stringr::str_replace(Meaning, "Annual Catch Limits", "Annual Catch Limit"),
                   Meaning = stringr::str_replace(Meaning,
                                                  "\\(commercial fishing statistics\\)",
                                                  ""),
@@ -421,8 +423,14 @@ export_glossary <- function() {
                   Acronym = ifelse(Acronym == "TMIN", "Tmin", Acronym),
                   Acronym = ifelse(Acronym == "TTARGET", "Ttarget", Acronym),
                   Meaning = ifelse(Meaning == "#VALUE!", NA, Meaning),
-                  Definition = ifelse(Definition == "#VALUE!", NA, Definition)
-                  
+                  Acronym = ifelse(Acronym == "TnS/TNS", "TNS", Acronym),
+                  Meaning = ifelse(Meaning == "Climate and Commununities Initiative", "Climate and Communities Initiative", Meaning),
+                  Meaning = ifelse(Acronym == "DMIS", "Data Matching Imputation System", Meaning),
+                  Definition = ifelse(Definition == "#VALUE!", NA, Definition),
+                  Definition = ifelse(Definition == "(Charter boat)", "Charter boat", Definition),
+                  Meaning = ifelse(Meaning == "Fishing Mortality at MSY", "fishing mortality at MSY", Meaning),
+                  Meaning = ifelse(Meaning == "Fishing Mortality Rate Yielding OY", "fishing mortality rate yielding OY", Meaning),
+                  Meaning = ifelse(Meaning == "General Additive Models", "General Additive Model", Meaning)
     ) |>
     # add periods to end of Definition
     dplyr::mutate(
@@ -439,13 +447,45 @@ export_glossary <- function() {
     dplyr::mutate_if(is.character, ~stringr::str_replace(., "SBMSY", "SBmsy")) |>
     dplyr::select(2:4)
   
-  # take rows where SSB is in the acronym, change it to SB, and add to main df
-  ssb_rows <- unique_all_cleaned |>
+    # take rows where SSB is in the acronym, change it to SB
+  ssb_rows <- unique_all_cleaning |>
     dplyr::filter(grepl('SSB', Acronym)) |>
     dplyr::mutate(Acronym = stringr::str_replace_all(Acronym, "SSB", "SB"))
   
-  unique_all_cleaned <- unique_all_cleaned |>
-    dplyr::full_join(ssb_rows)
+  unique_all_cleaning2 <- rbind(unique_all_cleaning,
+                                         ssb_rows) |>
+    # make label column
+    dplyr::mutate(Label = tolower(Acronym)) |>
+    dplyr::relocate(Label, .after = Acronym) |>
+    # keep certain labels uppercase to differentiate from labels with same lowercase acronym
+    dplyr::mutate(Label = ifelse(Acronym == "CM", "CM", Label),
+                  Label = ifelse(Acronym == "M", "M", Label),
+                  Label = ifelse(Acronym == "PPT", "PPT", Label)) |>
+    dplyr::arrange(Label) |>
+    as.data.frame()
+  
+  # rows with meanings that should be all lowercase, labelled by label
+  rows_to_lower <- c("M",
+                     "aa", "abc", "abm", "ace", "acl", "adp", "aeq", "ais", "alj", "aop", "ap", "ar", "arm", "asc", "atm",
+                     "b", "b-oy", "b1", "b2", "ba", "bb", "bc", "bcurrent", "beg", "bet", "bflag", "bkc", "bmsy", "brp", "bts",
+                     "c", "cams", "cas", "cdq", "cea", "cfa", "cfs", "cm", "cml", "cmm", "co2", "cp", "cpdf", "cs", "cvoa", "cy",
+                     "das", "dea", "deis", "dgn", "dic", "dps", "dtl", "dts", "dwfn",
+                     "eam", "ebm", "ebfm", "ec", "ed", "edr", "eej", "ef", "efh", "efh-hapc", "efhca", "eir", "eis", "elaps", "em", "eo", "epr", "esd", "esp", "ewg",
+                     "f", "f/v", "fad", "fcurrent", "feis", "fep", "fes", "fis", "fl", "fll", "fm", "fmc", "fmp", "fmu", "fonsi", "fpr", "frfa",
+                     "gac", "gam", "gdp", "gf", "ghl", "gis", "gkc", "gm", "gni", "gnp", "goes", "grt",
+                     "haccp", "hapc", "hbs", "hc", "hcr", "hg", "hms", "hp",
+                     "iba", "ibq", "ica", "id", "iea", "int", "ipa", "ipq", "ipt", "iq", "iqf", "irfa", "iriu", "itq", "iuu",
+                     "jai", "jam", 
+                     "laa", "lc", "le", "lk", "llp", "lng", "loa", "loc", "lof",
+                     "m", "m&si", "mc", "mca", "mcd", "mfmt", "mhhw", "mm", "moa", "mou", "mpcc", "mra", "ms", "mse", "msst", "msvpa", "msy", "mt", "mus", "mw"
+                     # continue with n through z here
+                     # ,
+                     )
+  
+  unique_all_cleaning3 <- unique_all_cleaning2 |>
+    dplyr::mutate(Meaning = ifelse(Label %in% rows_to_lower,
+                  tolower(Meaning),
+                  Meaning))
   
   # keep cleaning by:
   # -adding new definitions
@@ -454,12 +494,12 @@ export_glossary <- function() {
   
   # Export to csv
   # all acronyms
-  # write.csv(unique_all_cleaned |>
+  # write.csv(unique_all_cleaning3 |>
   # dplyr::select(Acronym, Meaning, Definition),
   #           file = fs::path("inst/glossary/cleaned_acronyms.csv"))
   
   # acronyms that need definitions written
-  # need_defs <- unique_all_cleaned |>
+  # need_defs <- unique_all_cleaning3 |>
   #   dplyr::filter(is.na(duplicated_ac),
   #                 is.na(duplicated_mean),
   #                 is.na(Definition)) |>
@@ -470,19 +510,28 @@ export_glossary <- function() {
   
   # Convert df into .tex file format and remove definitions
   sink(fs::path("inst/glossary/report_glossary.tex"))
-  tex_acs <- unique_all_cleaned |>
+  tex_acs <- unique_all_cleaning3 |>
     dplyr::select(-Definition) |>
-    purrr::map_df(~ gsub("%", "\\%", .x, fixed = TRUE)) |>
-    dplyr::filter(!is.na(Meaning))
+    # remove rows causing issues for now
+    dplyr::filter(!Acronym %in% c("B25%", "B40%", "F30% SPR")) |>
+   # purrr::map_df(~ gsub("%", "\\%", .x, fixed = TRUE)) |>
+    dplyr::filter(!is.na(Meaning)) |>
+    dplyr::mutate(
+      Acronym = stringr::str_replace_all(Acronym, stringr::regex("msy", ignore_case = TRUE), "_{MSY}"),
+      Acronym = ifelse(grepl("\\{MSY\\}", Acronym),
+                       paste0("$", Acronym, "$"),
+                       Acronym)
+    )
+    
   for(i in 1:dim(tex_acs)[1]) {
     cat(
       paste0(
         "\\newacronym{",
-        tolower(tex_acs[[1]][[i]]),
+        tex_acs[[2]][[i]],
         "}{",
         tex_acs[[1]][[i]],
         "}{",
-        tex_acs[[2]][[i]],
+        tex_acs[[3]][[i]],
         "}"
       )
     )
