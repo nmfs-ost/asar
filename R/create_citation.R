@@ -29,7 +29,7 @@ create_citation <- function(
         "\n",
         "[AUTHOR NAME]. [YEAR]. ",
         title, ". National Marine Fisheries Service, ",
-        "[CITY], [STATE]. "
+        "[CITY], [STATE]. \\pageref*{LastPage}{} pp."
       )
     } else {
       # Authored by Kelli Johnson in previous PR
@@ -80,7 +80,7 @@ create_citation <- function(
           "\n",
           "[AUTHOR NAME]. [YEAR]. ",
           title, ". National Marine Fisheries Service, ",
-          "[CITY], [STATE]. "
+          "[CITY], [STATE]. \\pageref*{LastPage}{} pp."
         )
       } else {
         # Author naming convention formatting
@@ -89,16 +89,16 @@ create_citation <- function(
             first_initial = gsub("([A-Z])[a-z]+", "\\1.", first),
             bib = purrr::pmap(
               list(x = first_initial, y = mi, z = last),
-              \(x, y, z) toBibtex(person(given = c(x, y), family = z))
+              \(x, y, z) utils::toBibtex(utils::person(given = c(x, y), family = z))
             )
           ) |>
           dplyr::pull(bib) |>
           gsub(pattern = " $", replacement = "") |>
           glue::glue_collapse(sep = ", ", last = ", and ")
       }
-      
+
       # Authored by Sam Schiano with contributions from Kelli Johnson
-      
+
       region_specific_part <- switch(
         primary_author_office[["office"]],
         "AFSC" = {
@@ -109,7 +109,7 @@ create_citation <- function(
         },
         "NWFSC" = {
           paste0(
-            "Prepared by [COMMITTEE]. [XX] p."
+            "Prepared by [COMMITTEE]."
           )
         },
         "SEFSC" = {
@@ -126,13 +126,13 @@ create_citation <- function(
         "PIFSC" = {
           paste0(
             "NOAA Tech. Memo. [TECH MEMO NUMBER]",
-            ", ", "[XX] p."
+            ", "
           )
         },
         "NEFSC" = {
           paste0(
             primary_author_office[["name"]], ", ",
-            primary_author_office[["city"]], ", ", 
+            primary_author_office[["city"]], ", ",
             primary_author_office[["state"]], ". "
           )
         },
@@ -143,7 +143,7 @@ create_citation <- function(
           "[CITY], [STATE]. "
           )
         }
-      )    
+      )
       # Pull together parts of citation
       citation <- paste0(
         "{{< pagebreak >}} \n",
@@ -151,9 +151,10 @@ create_citation <- function(
         "Please cite this publication as: \n",
         "\n",
         ifelse(primary_author_office[["office"]]=="SEFSC", "SEDAR.", author_list),
-        " ", year, ". ", 
+        " ", year, ". ",
         ifelse(is.null(title), "[TITLE]", glue::glue("{title}")), ". ",
-        region_specific_part
+        region_specific_part,
+        " \\pageref*{LastPage}{} pp."
       )
     }
 

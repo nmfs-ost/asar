@@ -16,6 +16,30 @@
 #' quarto file for a stock assessment report.
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' create_yaml(
+#'   rerender_skeleton = FALSE,
+#'   prev_skeleton = NULL,
+#'   title = "My title",
+#'   author_list = "  - name: 'Patrick Star'\n    affiliations:\n      - name: 'NOAA Fisheries Southeast Fisheries Science Center'\n        address: '75 Virginia Beach Drive'\n        city: 'Miami'\n        state: 'FL'\n        postal-code: '33149'\n",
+#'   author = "Patrick Star",
+#'   office = "AFSC",
+#'   add_author = NULL,
+#'   add_image = FALSE,
+#'   spp_image = "",
+#'   species = NULL,
+#'   spp_latin = NULL,
+#'   region = NULL,
+#'   format = "pdf",
+#'   parameters = TRUE,
+#'   param_names = NULL,
+#'   param_values = NULL,
+#'   bib_file = "asar_references.bib",
+#'   bib_name = "asar_references.bib",
+#'   year = 2025
+#' )
+#' }
 create_yaml <- function(
     rerender_skeleton = FALSE,
     office = NULL,
@@ -75,6 +99,8 @@ create_yaml <- function(
 
     # replace title
     # if (alt_title) {
+    # DOES NOT WORK when latin latex notation is in the title
+    # TODO: replace {} in the latex notation
       yaml <- stringr::str_replace(yaml, yaml[grep("title:", yaml)], paste("title: ", title, sep = ""))
     # }
 
@@ -159,7 +185,8 @@ create_yaml <- function(
       # Date
       "date: today", "\n",
       "lang: en \n",
-      "keep-tex: true \n"
+      "keep-tex: true \n",
+      "mainfont: 'Latin Modern Sans' \n"
     )
 
     # Add species image on title page

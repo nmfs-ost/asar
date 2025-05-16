@@ -14,6 +14,12 @@
 #' file). These tables will share the same caption.
 #' @export
 #'
+#' @examples
+#' \dontrun{
+#' create_tables_doc(
+#' subdir = getwd(),
+#' rda_dir = here::here())
+#' }
 create_tables_doc <- function(subdir = NULL,
                               include_all = TRUE,
                               rda_dir = NULL) {

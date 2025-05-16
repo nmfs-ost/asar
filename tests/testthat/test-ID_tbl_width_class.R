@@ -28,7 +28,7 @@ test_that("Table widths calculated correctly", {
   expect_equal(tbl_width, expected_output)
 
 
-  # regular width
+  # wide width
   stockplotr::table_bnc(dat,
                             make_rda = TRUE,
                             rda_dir = getwd())
