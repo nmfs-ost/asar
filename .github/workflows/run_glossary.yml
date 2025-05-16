@@ -1,0 +1,48 @@
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+
+# build triggers
+on:
+#  push:
+#   branches: [main, master]
+#  pull_request:
+  workflow_dispatch:
+
+# this action runs export_glossary() to create the glossary
+name: run_glossary.yml
+
+permissions: 
+  contents: write
+  pull-requests: write
+
+jobs:
+  run_glossary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::remotes
+
+      - name: Install R package (asar.glossary)
+        run: remotes::install_local(upgrade = "always")
+        shell: Rscript {0} # use the default terminal for shell
+        
+      - name: Make glossary
+        run: | # | means there will be multiple lines of code here
+         # source('R/utils.R')
+          asar::export_glossary()
+        shell: Rscript {0}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: 'run export_glossary()'
+          branch: regenerate_glossary
+          title: 'Regenerate glossary'
+          body: Automated changes by run_glossary.yml GitHub action
