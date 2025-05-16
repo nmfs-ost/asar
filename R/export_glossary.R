@@ -434,9 +434,8 @@ export_glossary <- function() {
                   Meaning = ifelse(Meaning == "Northwest Atlantic Fisheries Organization viii", "Northwest Atlantic Fisheries Organization", Meaning),
                   Meaning = ifelse(Meaning == "Optimum sustainable production, Oregon State Police", "optimum sustainable production", Meaning),
                   Meaning = ifelse(Meaning == "Spawning Abundance at MSY", "spawning abundance at MSY", Meaning),
-                  Meaning = ifelse(Meaning == "Spawning Stock Biomass at MSY", "spawning stock biomass at MSY", Meaning)
-                  
-                  
+                  Meaning = ifelse(Meaning == "Spawning Stock Biomass at MSY", "spawning stock biomass at MSY", Meaning),
+                  Meaning = ifelse(Acronym == "R", "Programming environment for statistical processing and presentation", Meaning)
                    ) |>
     # add periods to end of Definition
     dplyr::mutate(
@@ -489,7 +488,14 @@ export_glossary <- function() {
                      "p*", "pbf", "pbr", "pce", "pdt", "peec", "pid", "pie rule", "ppa", "ppm", "prt", "psc", "pse", "pt",
                      "qa/qc", "qp", "qs",
                      "r/v", "rer", "rffa", "rfma", "rfmo", "rhl", "rir", "rkc", "rkm", "roa", "rod", "rofr", "rov", "rpa", "rpb", "rqe", "rsw", "rta", "rvc", 
-                     "s-r", "sa", "sap", "sar", "sac", "saw", "sb", "sb", "sbrm", "sbtarget", "sca", "scs", "seg", "sep", "set", "sfm", "sg", "sia", "sir", "smp", "snp", "sofi", "soi", "sopp", "srd", "srkw", "srt", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 
+                     "s-r", "sa", "sap", "sar", "sac", "saw", "sb", "sb", "sbrm", "sbtarget", "sca", "scs", "seg", "sep", "set", "sfm", "sg", "sia", "sir", "smp", "snp", "sofi", "soi", "sopp", "srd", "srkw", "srt", "ssbtarget", "ssc", "ssl", "sst", "star", "star panel", "std", "stf", "swac", "swo", 
+                     "ta", "tac", "tal", "tc", "tk", "tla", "tlas", "tmct", "total catch oy", 
+                     "u/a",
+                     "vpa", "vtr", 
+                     "wets", "wpue", 
+                     "xbt",
+                     "yfs", "ypr", 
+                     "z"
                      )
   
   unique_all_cleaning3 <- unique_all_cleaning2 |>
@@ -526,12 +532,63 @@ export_glossary <- function() {
     dplyr::filter(!Acronym %in% c("B25%", "B40%", "F30% SPR")) |>
    # purrr::map_df(~ gsub("%", "\\%", .x, fixed = TRUE)) |>
     dplyr::filter(!is.na(Meaning)) |>
+    # properly format terms with sub/superscripts
     dplyr::mutate(
       Acronym = stringr::str_replace_all(Acronym, stringr::regex("msy", ignore_case = TRUE), "_{MSY}"),
       Acronym = ifelse(grepl("\\{MSY\\}", Acronym),
                        paste0("$", Acronym, "$"),
                        Acronym)
-    )
+    ) |>
+    dplyr::mutate(
+      Acronym = stringr::str_replace_all(Acronym, stringr::regex("current", ignore_case = TRUE), "_{current}"),
+      Acronym = ifelse(grepl("\\{current\\}", Acronym),
+                       paste0("$", Acronym, "$"),
+                       Acronym)
+    ) |>
+    dplyr::mutate(
+      Acronym = stringr::str_replace_all(Acronym, stringr::regex("target", ignore_case = TRUE), "_{target}"),
+      Acronym = ifelse(grepl("\\{target\\}", Acronym),
+                       paste0("$", Acronym, "$"),
+                       Acronym)
+    ) |>
+    dplyr::mutate(
+      Acronym = stringr::str_replace_all(Acronym, stringr::regex("proxy", ignore_case = TRUE), "_{proxy}"),
+      Acronym = ifelse(grepl("\\{proxy\\}", Acronym),
+                       paste0("$", Acronym, "$"),
+                       Acronym)
+    ) |>
+    dplyr::mutate(
+      Acronym = stringr::str_replace_all(Acronym, stringr::regex("threshold", ignore_case = TRUE), "_{threshold}"),
+      Acronym = ifelse(grepl("\\{threshold\\}", Acronym),
+                       paste0("$", Acronym, "$"),
+                       Acronym)
+    ) |>
+    dplyr::mutate(
+      Acronym = stringr::str_replace_all(Acronym, stringr::regex("max", ignore_case = TRUE), "_{max}"),
+      Acronym = ifelse(grepl("\\{max\\}", Acronym),
+                       paste0("$", Acronym, "$"),
+                       Acronym)
+    ) |> 
+    dplyr::mutate(Acronym = ifelse(Acronym == "$$SSB_{MSY} _{proxy}$$",
+                                   "$SSB_{MSY proxy}$",
+                                   Acronym),
+                  Acronym = ifelse(Acronym == "$$SB_{MSY} _{proxy}$$",
+                                   "$SB_{MSY proxy}$",
+                                   Acronym),
+                  Acronym = ifelse(Acronym == "SSBR",
+                                   "$SSB_{R}$",
+                                   Acronym),
+                  Acronym = ifelse(Acronym == "CO2",
+                                   "$CO_{2}$",
+                                   Acronym),
+                  Meaning = ifelse(Meaning == "C. opilio Bycatch Limitation Zone",
+                                   "\\textit{C. opilio} Bycatch Limitation Zone",
+                                   Meaning),
+                  Acronym = ifelse(Acronym == "$_{MSY}$",
+                                   "$MSY$",
+                                   Acronym)
+                  )
+
     
   for(i in 1:dim(tex_acs)[1]) {
     cat(
