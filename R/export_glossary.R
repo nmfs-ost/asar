@@ -430,8 +430,14 @@ export_glossary <- function() {
                   Definition = ifelse(Definition == "(Charter boat)", "Charter boat", Definition),
                   Meaning = ifelse(Meaning == "Fishing Mortality at MSY", "fishing mortality at MSY", Meaning),
                   Meaning = ifelse(Meaning == "Fishing Mortality Rate Yielding OY", "fishing mortality rate yielding OY", Meaning),
-                  Meaning = ifelse(Meaning == "General Additive Models", "General Additive Model", Meaning)
-    ) |>
+                  Meaning = ifelse(Meaning == "General Additive Models", "General Additive Model", Meaning),
+                  Meaning = ifelse(Meaning == "Northwest Atlantic Fisheries Organization viii", "Northwest Atlantic Fisheries Organization", Meaning),
+                  Meaning = ifelse(Meaning == "Optimum sustainable production, Oregon State Police", "optimum sustainable production", Meaning),
+                  Meaning = ifelse(Meaning == "Spawning Abundance at MSY", "spawning abundance at MSY", Meaning),
+                  Meaning = ifelse(Meaning == "Spawning Stock Biomass at MSY", "spawning stock biomass at MSY", Meaning)
+                  
+                  
+                   ) |>
     # add periods to end of Definition
     dplyr::mutate(
       Definition = ifelse(
@@ -477,9 +483,13 @@ export_glossary <- function() {
                      "iba", "ibq", "ica", "id", "iea", "int", "ipa", "ipq", "ipt", "iq", "iqf", "irfa", "iriu", "itq", "iuu",
                      "jai", "jam", 
                      "laa", "lc", "le", "lk", "llp", "lng", "loa", "loc", "lof",
-                     "m", "m&si", "mc", "mca", "mcd", "mfmt", "mhhw", "mm", "moa", "mou", "mpcc", "mra", "ms", "mse", "msst", "msvpa", "msy", "mt", "mus", "mw"
-                     # continue with n through z here
-                     # ,
+                     "m", "m&si", "mc", "mca", "mcd", "mfmt", "mhhw", "mm", "moa", "mou", "mpcc", "mra", "ms", "mse", "msst", "msvpa", "msy", "mt", "mus", "mw",
+                     "ne", "ngo", "nlaa",
+                     "oa", "oeg", "ofl", "oswag", "otec", "oy",
+                     "p*", "pbf", "pbr", "pce", "pdt", "peec", "pid", "pie rule", "ppa", "ppm", "prt", "psc", "pse", "pt",
+                     "qa/qc", "qp", "qs",
+                     "r/v", "rer", "rffa", "rfma", "rfmo", "rhl", "rir", "rkc", "rkm", "roa", "rod", "rofr", "rov", "rpa", "rpb", "rqe", "rsw", "rta", "rvc", 
+                     "s-r", "sa", "sap", "sar", "sac", "saw", "sb", "sb", "sbrm", "sbtarget", "sca", "scs", "seg", "sep", "set", "sfm", "sg", "sia", "sir", "smp", "snp", "sofi", "soi", "sopp", "srd", "srkw", "srt", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", 
                      )
   
   unique_all_cleaning3 <- unique_all_cleaning2 |>
