@@ -1136,7 +1136,7 @@ create_template <- function(
             "07_references.qmd",
             "08_tables.qmd",
             "09_figures.qmd",
-            "10_notes.qmd",
+            # "10_notes.qmd",
             "11_appendix.qmd"
           ),
           label = c(
@@ -1153,7 +1153,7 @@ create_template <- function(
             "references",
             "tables",
             "figures",
-            "notes",
+            # "notes",
             "appendix"
           )
         )
@@ -1194,7 +1194,7 @@ create_template <- function(
               "07_references.qmd",
               "08_tables.qmd",
               "09_figures.qmd",
-              "10_notes.qmd",
+              # "10_notes.qmd",
               "11_appendix.qmd"
             )
             sec_list2 <- add_section(
