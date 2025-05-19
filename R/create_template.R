@@ -47,9 +47,6 @@
 #'  of parameter names. Parameters automatically included:
 #'  office, region, species (each of which are listed as
 #'  individual parameters for this function, above).
-#' @param convert_output TRUE/FALSE; Convert the output file to
-#' standard model format while creating report template? Default
-#' is false.
 #' @param fleet_names Deprecated: List of fleet names as described in BAM output
 #'  file (abbreviations).
 #' @param resdir Filepath of the directory storing the model
@@ -60,7 +57,7 @@
 #' @param model_results The model results file. Before the stock
 #' assessment output file has been converted to a standardized format
 #'  with the function convert_output.R, the model results file may be
-#'  a .sso or .rdata file. After conversion, this file will be a .csv file.
+#'  a .sso or .rdata file. After conversion, this file might be a .csv file.
 #' @param model Type of assessment model that was used to assess
 #'  the stock (e.g., "BAM", "SS3", "AMAK", "ASAP", etc.).
 #' @param new_section Names of section(s) (e.g., introduction, results) or
@@ -169,7 +166,6 @@
 #'   parameters = TRUE,
 #'   param_names = c("region", "year"),
 #'   param_values = c("my_region", "2024"),
-#'   convert_output = FALSE,
 #'   fleet_names = c("fleet1", "fleet2", "fleet3"),
 #'   resdir = "C:/Users/Documents/Example_Files",
 #'   model_results = "Report.sso",
@@ -501,11 +497,7 @@ create_template <- function(
         if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
           if (!is.null(resdir) | !is.null(model_results)) {
             # load converted output
-            if (convert_output) {
-              output <- utils::read.csv(paste0(subdir, "/", paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))
-            } else {
-              output <- utils::read.csv(paste0(resdir, "/", model_results))
-            }
+            output <- utils::read.csv(paste0(resdir, "/", model_results))
             # run stockplotr::exp_all_figs_tables() to make rda files
 
             # test_exp_all <-
@@ -552,12 +544,6 @@ create_template <- function(
           warning("Results file or model name not defined.")
         }
       }
-
-      # Rename model results for figures and tables files
-      # TODO: check if this is needed once the tables and figures docs are reformatted
-      # if (convert_output) {
-      #   model_results <- paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = "")
-      # }
 
       # Create figures qmd
       if ((include_figures & !rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
@@ -761,23 +747,13 @@ create_template <- function(
       # add in quantities and output data R chunk
       # Indicate model output path
 
-      # in case where rerndering skeleton and they want to update the model results
-      if (rerender_skeleton) {
-        if (!is.null(model_results) & !is.null(resdir)) {
-          prev_conout <- convert_output
-          convert_output <- FALSE
-        }
-      }
-
       # standard preamble
       preamble <- add_chunk(
         paste0(
           "# load converted output from asar::convert_output() \n",
           "output <- utils::read.csv('",
-          ifelse(convert_output,
-            paste0(subdir, "/", stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv"),
-            paste0(resdir, "/", model_results)
-          ), "') \n",
+          paste0(resdir, "/", model_results),
+          "') \n",
           "# Call reference points and quantities below \n",
           "output <- output |> \n",
           "  ", "dplyr::mutate(estimate = as.numeric(estimate), \n",
@@ -871,12 +847,7 @@ create_template <- function(
         label = "output_and_quantities",
         eval = ifelse(is.null(model_results), "false", "true")
       )
-      # bring back the initial call of convert_output
-      if (rerender_skeleton) {
-        if (!is.null(model_results)) {
-          convert_output <- prev_conout
-        }
-      }
+    
       # extract old preamble if don't want to change
       if (rerender_skeleton) {
         question1 <- readline("Do you want to keep the current preamble? (Y/N)")
