@@ -8,3 +8,7 @@
 ^\.github$
 ^doc$
 ^Meta$
+^inst/glossary/acronym_metadata\.txt$
+^inst/glossary/formatted_acronym_lists$
+^inst/glossary/raw_acronym_lists$
+^\.octocov\.yml$
