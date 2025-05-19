@@ -1196,6 +1196,6 @@ convert_output <- function(
       )) |>
       dplyr::select(-alt_label)
   }
-  out_new
+  return(out_new)
   message("Finished!")
 } # close function
