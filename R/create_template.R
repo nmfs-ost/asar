@@ -519,11 +519,18 @@ create_template <- function(
           file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
           # Copy us doc logo
           file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+          # Copy glossary
+          file.copy(system.file("glossary", "report_glossary.tex", package = "asar"), subdir, overwrite = FALSE) |> suppressWarnings()
           # Copy html format file if applicable
           if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         } else {
           warning("There are files in this location.")
           question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
+
+          # answer question1 as y if session isn't interactive
+          if (!interactive()){
+            question1 <- "y"
+          }
 
           if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
             # remove old skeleton if present
@@ -544,6 +551,8 @@ create_template <- function(
             file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
             # Copy us doc logo
             file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+            # Copy glossary
+            file.copy(system.file("glossary", "report_glossary.tex", package = "asar"), subdir, overwrite = FALSE) |> suppressWarnings()
             # Copy html format file if applicable
             if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
           } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
@@ -767,6 +776,11 @@ create_template <- function(
         ) |>
         dplyr::select(name, office) |>
         dplyr::filter(name %in% author)
+
+      if (length(author) != dim(authors)[1]){
+        message("Some authors were not found in the author database. Please comment on this issue (https://github.com/nmfs-ost/asar/issues/19) to request name and affiliation additions to the archive of U.S. stock assessment authors.")
+      }
+
       authors <- authors[match(author, authors$name), ]
 
       if (include_affiliation) {
@@ -802,7 +816,12 @@ create_template <- function(
             if (is.na(auth$office)) {
               paste(
                 "  ", "- name: ", "'", auth$name, "'", "\n",
-                "  ", "  ", "affiliations: ", "NO AFFILIATION", "\n",
+                "  ", "  ", "affiliations:", "\n",
+                "  ", "  ", "  ", "- name: '[organization]'", "\n", # "NOAA Fisheries ",
+                "  ", "  ", "  ", "  ", "address: '[address]'", "\n",
+                "  ", "  ", "  ", "  ", "city: '[city]'", "\n",
+                "  ", "  ", "  ", "  ", "state: '[state]'", "\n",
+                "  ", "  ", "  ", "  ", "postal-code: '[postal code]'", "\n",
                 sep = ""
               ) -> author_list[[i]]
             } else {
@@ -811,7 +830,8 @@ create_template <- function(
                 "  ", "  ", "affiliations:", "\n",
                 "  ", "  ", "  ", "- name: ", "'", aff$name, "'", "\n", # "NOAA Fisheries ",
                 "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'", "\n",
-                "  ", "  ", "  ", "  ", "city: ", "'", aff$city, "'", "\n",
+                # TODO: remove state in the following line when notation is changed in _titlepage.tex
+                "  ", "  ", "  ", "  ", "city: ", "'", aff$city, ", ", aff$state, "'", "\n",
                 "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
                 "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n",
                 sep = ""
@@ -1028,6 +1048,11 @@ create_template <- function(
       # extract old preamble if don't want to change
       if (rerender_skeleton) {
         question1 <- readline("Do you want to keep the current preamble? (Y/N)")
+
+        # answer question1 as y if session isn't interactive
+        if (!interactive()){
+          question1 <- "y"
+        }
         if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
           start_line <- grep("output_and_quantities", prev_skeleton) - 1
           # find next trailing "```"` in case it was edited at the end
@@ -1111,7 +1136,7 @@ create_template <- function(
             "07_references.qmd",
             "08_tables.qmd",
             "09_figures.qmd",
-            "10_notes.qmd",
+            # "10_notes.qmd",
             "11_appendix.qmd"
           ),
           label = c(
@@ -1128,7 +1153,7 @@ create_template <- function(
             "references",
             "tables",
             "figures",
-            "notes",
+            # "notes",
             "appendix"
           )
         )
@@ -1169,7 +1194,7 @@ create_template <- function(
               "07_references.qmd",
               "08_tables.qmd",
               "09_figures.qmd",
-              "10_notes.qmd",
+              # "10_notes.qmd",
               "11_appendix.qmd"
             )
             sec_list2 <- add_section(
@@ -1202,7 +1227,7 @@ create_template <- function(
               sec_list1 <- c(sec_list1, "09_figures.qmd")
             }
             # reorder sec_list1 alphabetically so that 11_appendix goes to end of list
-            sec_list1 <- sec_list1[order(names(setNames(sec_list1, sec_list1)))]
+            sec_list1 <- sec_list1[order(names(stats::setNames(sec_list1, sec_list1)))]
 
             sec_list2 <- add_section(
               new_section = new_section,
@@ -1247,6 +1272,12 @@ create_template <- function(
     # Delete old skeleton
     if (length(grep("skeleton.qmd", list.files(file_dir, pattern = "skeleton.qmd"))) > 1) {
       question1 <- readline("Deleting previous skeleton file...Do you want to proceed? (Y/N)")
+
+      # answer question1 as y if session isn't interactive
+      if (!interactive()){
+        question1 <- "y"
+      }
+
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         file.remove(file.path(file_dir, report_name))
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {

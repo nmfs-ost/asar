@@ -4,12 +4,15 @@ APA
 BAM
 Blockquote
 Bolded
+CMD
 CPUE
+CTAN
 Canelón
 Drs
 FIMS
 Filepath
 LaTex
+Lifecycle
 Mainpulate
 NEFSC
 NOAA
@@ -30,6 +33,7 @@ SEFSC
 SSC
 SWFSC
 Strikethrough
+TinyTeX
 YAML
 amak
 asis
@@ -53,6 +57,7 @@ filepath
 fims
 flextable
 frac
+gls
 gp
 img
 is’
@@ -85,7 +90,6 @@ readLines
 roboto
 rowid
 saltatrix
-satf
 sd
 se
 snakecase
@@ -103,6 +107,7 @@ tex
 tibble
 tidyr
 tidyselect
+tinytex
 titlepage
 xlsx
 yaml

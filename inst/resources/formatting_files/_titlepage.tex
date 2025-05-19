@@ -29,7 +29,7 @@ $endif$
 
 $if(subtitle)${\large{$subtitle$}}\\[4\baselineskip]$endif$
 
-\vspace{1\baselineskip}
+\vspace{2\baselineskip}
 % Ross would change this to 2\baselineskip
 
 %%%%%% Cover image
@@ -96,7 +96,8 @@ $endif$%
 $if(by-affiliation.address)$%
 % Ross recommends putting address on one line
 $if(by-affiliation.name)$, $else$$if(by-affiliation.department)$, $endif$$endif$%
-{$it.address$}%
+% {$it.address$}%
+{$it.address$, $it.city$, $it.postal-code$}%
 $endif$%
 $sep$\par\hangindent=1em\hangafter=1%
 $endfor$
@@ -121,7 +122,7 @@ $endfor$
 
 %%%%%% Tagline at bottom
 % Ross says the tagline below could also be centered
-\includegraphics[alt={},width=2cm]{support_files/us_doc_logo.png}\newline % empty curly brackets without alt text is suitable for this logo because it's purely decorative/an "artifact"
+\includegraphics[width=2cm]{support_files/us_doc_logo.png}\newline % empty curly brackets without alt text is suitable for this logo because it's purely decorative/an "artifact"
 U.S. Department of Commerce\newline
 National Oceanic and Atmospheric Administration\newline
 National Marine Fisheries Service\newline
