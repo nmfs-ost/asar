@@ -492,54 +492,6 @@ create_template <- function(
         prev_skeleton <- NULL
       } # close if rerender
 
-      # Convert output file if TRUE
-      # Make sure not asking to rerender
-      # if (!rerender_skeleton) {
-        # Check if converted output already exists
-        if (convert_output) {
-          if (!file.exists(file.path(subdir, paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv", sep = "")))) {
-            print("__________Converting output file__________")
-            if (tolower(model) == "bam" & is.null(fleet_names)) {
-              # warning("Fleet names not defined.")
-              convert_output(
-                output_file = model_results,
-                outdir = resdir,
-                file_save = TRUE,
-                savedir = subdir,
-                save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = ""),
-                ...
-              )
-              # } else if (tolower(model) == "bam") {
-              #   convert_output(
-              #     output_file = model_results,
-              #     outdir = resdir,
-              #     file_save = TRUE,
-              #     model = model,
-              #     fleet_names = fleet_names,
-              #     savedir = subdir,
-              #     save_name = paste(sub(" ", "_", species), "_std_res_", year, sep = "")
-              #   )
-            } else {
-              convert_output(
-                output_file = model_results,
-                outdir = resdir,
-                file_save = TRUE,
-                savedir = subdir,
-                save_name = paste(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, sep = ""),
-                ...
-              )
-            }
-            # Rename model results file and results file directory if the results are converted in this fxn
-            model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
-            resdir <- subdir
-          } else {
-            message("Output not converted: standard output already in path.")
-            model_results <- paste0(stringr::str_replace_all(species, " ", "_"), "_std_res_", year, ".csv")
-            resdir <- subdir
-          }
-        } # close check for converted output already
-      # } # close rerender if
-
       # print("_______Standardized output data________")
 
       # run stockplotr::exp_all_figs_tables() if rda files not premade

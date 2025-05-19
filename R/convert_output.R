@@ -8,13 +8,6 @@
 #' working directory.
 #' @param model Assessment model used in evaluation ("ss3", "bam",
 #'  "asap", "fims", "amak", "ms-java", "wham", "mas").
-#' @param file_save TRUE/FALSE; Save the formatted object rather
-#'  than calling the function and adding the formatted object to
-#'  the global environment? Default is false.
-#' @param savedir Directory to save the converted output file. Defaults to
-#' working directory.
-#' @param save_name Name of the converted output file (do not use
-#'  spaces).
 #' @param fleet_names Names of fleets in the assessment model as
 #'  shortened in the output file. If fleet names are not properly read, then
 #'  indicate the fleets names as an acronym in a vector
@@ -43,10 +36,7 @@
 convert_output <- function(
     output_file,
     outdir = getwd(),
-    model,
-    file_save = FALSE,
-    savedir = getwd(),
-    save_name = "std_model_output",
+    model = NULL,
     fleet_names = NULL) {
   #### out_new ####
   # Blank dataframe and set up to mold output into
@@ -1206,15 +1196,6 @@ convert_output <- function(
       )) |>
       dplyr::select(-alt_label)
   }
-  if (file_save) {
-    save_path <- paste(savedir, "/",
-      save_name,
-      ".csv",
-      sep = ""
-    )
-    utils::write.csv(out_new, file = save_path, row.names = FALSE)
-  } else {
-    return(out_new)
-  }
+  out_new
   message("Finished!")
 } # close function
