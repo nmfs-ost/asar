@@ -132,7 +132,7 @@
       <h1 data-toc-skip>Achieve Greater Accessibility</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/vignettes/accessibility_guide.Rmd" class="external-link"><code>vignettes/accessibility_guide.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/v1.3.0/vignettes/accessibility_guide.Rmd" class="external-link"><code>vignettes/accessibility_guide.Rmd</code></a></small>
       <div class="hidden name"><code>accessibility_guide.Rmd</code></div>
 
     </div>
@@ -421,18 +421,80 @@ website for creating accessible documents</a>.</p>
 </div>
 </div>
 <div class="section level3">
-<h3 id="acronyms">Acronyms<a class="anchor" aria-label="anchor" href="#acronyms"></a>
+<h3 id="acronyms-and-glossary">Acronyms and Glossary<a class="anchor" aria-label="anchor" href="#acronyms-and-glossary"></a>
 </h3>
-<p>Your report will likely include several acronyms (e.g., NOAA in place
-of the National Oceanic and Atmospheric Administration). To ensure that
-your audience will be able to correctly interpret your acronyms, please
-<strong>write the acronym’s entire expanded form upon its first usage,
-followed by the acronym in parentheses. Upon further usage, use the
-acronym alone.</strong> For example:</p>
-<p><em>The National Oceanic and Atmospheric Administration (NOAA) has
-offices spread throughout the United States of America (USA). NOAA
-regularly produces stock assessments on fish and mammal
-species.</em></p>
+<p>When you use an acronym, it will be included in a glossary table that
+is automatically added to the end of your report. Below are directions
+for using acronyms and editing the glossary.</p>
+<div class="section level4">
+<h4 id="how-to-view-and-edit-the-glossary">How to view and edit the glossary<a class="anchor" aria-label="anchor" href="#how-to-view-and-edit-the-glossary"></a>
+</h4>
+<p>The glossary (“report_glossary.tex”) is located in your report
+folder.</p>
+<p>Remember that your changes will only be reflected in your report
+folder’s glossary .tex file, not in the file stored in the
+<code>asar</code> package’s inst/ folder. If you regenerate your report
+folder, that main file will overwrite your edited version unless you
+have indicated otherwise.</p>
+<p>If you would like to contribute suggestions to the glossary, please
+open a pull request or <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issue</a>.</p>
+<div class="section level5">
+<h5 id="how-to-remove-a-glossary-entry">How to remove a glossary entry<a class="anchor" aria-label="anchor" href="#how-to-remove-a-glossary-entry"></a>
+</h5>
+<p>Delete the entire line in the file.</p>
+</div>
+<div class="section level5">
+<h5 id="how-to-add-a-glossary-entry">How to add a glossary entry<a class="anchor" aria-label="anchor" href="#how-to-add-a-glossary-entry"></a>
+</h5>
+<p>First, ensure that your new acronym is not already duplicated in the
+glossary as this will cause an error upon rendering.</p>
+<p>If your acronym could be read as a regular word- for example, “US”
+(United States) could also be read as “us” (signifying we, as in a
+group)- please add periods after each letter. Other examples include
+“A.R.M.” (Adaptive Resource Management Framework) and “S.A.W.” (Stock
+Assessment Workshop).</p>
+<p>Find the logical location for your acronym based on alphabetical
+order. Make a new line and add the following information for your
+acronym and its meaning, based on this structure:</p>
+<p><code>\newacronym{&lt;label&gt;}{&lt;acronym ("short form")&gt;}{&lt;meaning ("long form")&gt;}</code></p>
+<p>Here is an example for NOAA:</p>
+<p><code>\newacronym{noaa}{NOAA}{National Oceanic and Atmospheric Administration}</code></p>
+</div>
+<div class="section level5">
+<h5 id="how-to-edit-a-glossary-entry">How to edit a glossary entry<a class="anchor" aria-label="anchor" href="#how-to-edit-a-glossary-entry"></a>
+</h5>
+<p>You can edit any entry as needed.</p>
+</div>
+</div>
+<div class="section level4">
+<h4 id="how-to-indicate-that-a-word-is-an-acronym">How to indicate that a word is an acronym<a class="anchor" aria-label="anchor" href="#how-to-indicate-that-a-word-is-an-acronym"></a>
+</h4>
+<p>First, check if the glossary contains your acronym; if it doesn’t,
+you can edit the file and add it yourself (see section above).</p>
+<p>Once your acronym is in the glossary, go back to the location of the
+acronym in your report. Encase it in curly brackets ({}), with “\gls”
+preceding it. For example, to indicate “ABC” is an acronym, you would
+write <code>\gls{ABC}</code>. Use this notation each time you use the
+acronym in your text.</p>
+<p><em>Good news</em>: when using this notation, you never have to spell
+out the full meaning of the acronym upon its first usage, or even
+remember the location of its first usage! The CTAN
+<code>glossaries</code> package takes care of all of that.</p>
+<p>Your text will look like this:</p>
+<blockquote>
+<p>This is the first instance of <code>\gls{ABC}</code>. Here,
+<code>\gls{ABC}</code> is used a second time.</p>
+</blockquote>
+<p>And it will render like this:</p>
+<blockquote>
+<p>This is the first instance of Acceptable Biological Catch (ABC).
+Here, ABC is used a second time.</p>
+</blockquote>
+<p>For specialized commands that enable capitalization, reference to
+acronyms’ meanings, and more, check out the Command Summary (pg 46)
+within <a href="https://ctan.math.illinois.edu/macros/latex/contrib/glossaries/glossariesbegin.pdf" class="external-link">the
+<code>glossaries</code> package’s beginners’ guide</a>.</p>
+</div>
 </div>
 <div class="section level3">
 <h3 id="tables">Tables<a class="anchor" aria-label="anchor" href="#tables"></a>

@@ -2,10 +2,16 @@
 title: 'Stock Assessment Report Template'
 author:
   - name: 'NA'
-    affiliations: NO AFFILIATION
+    affiliations:
+      - name: '[organization]'
+        address: '[address]'
+        city: '[city]'
+        state: '[state]'
+        postal-code: '[postal code]'
 date: today
 lang: en 
 keep-tex: true 
+mainfont: 'Latin Modern Sans' 
 cover: 
 pdf-engine: lualatex
 format: 
@@ -17,7 +23,12 @@ format:
       - 'support_files/_titlepage.tex'
     include-in-header:
       - 'support_files/in-header.tex'
+    include-after-body:
+      text: |
+        \newpage{}
+        \printnoidxglossaries
     toc: true
+    sansfont: 'Latin Modern Sans'
     lof: true
     lot: true
     titlepage-geometry: 
@@ -134,7 +145,7 @@ R0 <- output |>
 
 Please cite this publication as: 
 
-[AUTHOR NAME]. [YEAR]. Stock Assessment Report Template. National Marine Fisheries Service, [CITY], [STATE]. 
+[AUTHOR NAME]. [YEAR]. Stock Assessment Report Template. National Marine Fisheries Service, [CITY], [STATE]. \pageref*{LastPage}{} pp.
 
  {{< pagebreak >}} 
 
@@ -276,17 +287,6 @@ cat(a, sep = '\n')
 #| echo: false
 #| warning: false
 a <- knitr::knit_child('09_figures.qmd', quiet = TRUE)
-cat(a, sep = '\n')
-```
-
- {{< pagebreak >}} 
-
-```{r, results='asis'}
-#| label: 'notes'
-#| eval: true
-#| echo: false
-#| warning: false
-a <- knitr::knit_child('10_notes.qmd', quiet = TRUE)
 cat(a, sep = '\n')
 ```
 

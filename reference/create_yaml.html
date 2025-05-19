@@ -103,7 +103,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create string for yml header in quarto file</h1>
-    <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/R/create_yaml.R" class="external-link"><code>R/create_yaml.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/v1.3.0/R/create_yaml.R" class="external-link"><code>R/create_yaml.R</code></a></small>
     <div class="hidden name"><code>create_yaml.Rd</code></div>
     </div>
 
@@ -258,6 +258,33 @@ is the year in which the report is rendered.</p></dd>
 quarto file for a stock assessment report.</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="fu">create_yaml</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  rerender_skeleton <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  prev_skeleton <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  title <span class="op">=</span> <span class="st">"My title"</span>,</span></span>
+<span class="r-in"><span>  author_list <span class="op">=</span> <span class="st">"  - name: 'Patrick Star'\n    affiliations:\n      - name: 'NOAA Fisheries Southeast Fisheries Science Center'\n        address: '75 Virginia Beach Drive'\n        city: 'Miami'\n        state: 'FL'\n        postal-code: '33149'\n"</span>,</span></span>
+<span class="r-in"><span>  author <span class="op">=</span> <span class="st">"Patrick Star"</span>,</span></span>
+<span class="r-in"><span>  office <span class="op">=</span> <span class="st">"AFSC"</span>,</span></span>
+<span class="r-in"><span>  add_author <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  add_image <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  spp_image <span class="op">=</span> <span class="st">""</span>,</span></span>
+<span class="r-in"><span>  species <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  spp_latin <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  region <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  format <span class="op">=</span> <span class="st">"pdf"</span>,</span></span>
+<span class="r-in"><span>  parameters <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  param_names <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  param_values <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
+<span class="r-in"><span>  bib_file <span class="op">=</span> <span class="st">"asar_references.bib"</span>,</span></span>
+<span class="r-in"><span>  bib_name <span class="op">=</span> <span class="st">"asar_references.bib"</span>,</span></span>
+<span class="r-in"><span>  year <span class="op">=</span> <span class="fl">2025</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

@@ -132,16 +132,18 @@
       <h1 data-toc-skip>Frequently Asked Questions (FAQs)</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/vignettes/faqs.Rmd" class="external-link"><code>vignettes/faqs.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/v1.3.0/vignettes/faqs.Rmd" class="external-link"><code>vignettes/faqs.Rmd</code></a></small>
       <div class="hidden name"><code>faqs.Rmd</code></div>
 
     </div>
 
     
     
+<div class="section level2">
+<h2 id="installing-asar">Installing <code>asar</code><a class="anchor" aria-label="anchor" href="#installing-asar"></a>
+</h2>
 <div class="section level3">
-<h3 id="how-can-i-download-the-package">
-<strong>How can I download the package?</strong><a class="anchor" aria-label="anchor" href="#how-can-i-download-the-package"></a>
+<h3 id="how-can-i-download-the-package">How can I download the package?<a class="anchor" aria-label="anchor" href="#how-can-i-download-the-package"></a>
 </h3>
 <p>Our README page provides a lot of basic directions to prepare you to
 successfully download the package. Please consult the page for
@@ -155,10 +157,99 @@ Error: Failed to install 'unknown package' from GitHub:
 <p>Please download the package using this code:</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"asar"</span>, repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"https://nmfs-ost.r-universe.dev"</span>, <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
+</div>
+<div class="section level2">
+<h2 id="setting-up-the-report-skeleton">Setting up the report skeleton<a class="anchor" aria-label="anchor" href="#setting-up-the-report-skeleton"></a>
+</h2>
 <div class="section level3">
-<h3 id="why-am-i-getting-the-following-error-message-when-i-try-to-render-my-template">
-<strong>Why am I getting the following error message when I try to
-render my template?:</strong><a class="anchor" aria-label="anchor" href="#why-am-i-getting-the-following-error-message-when-i-try-to-render-my-template"></a>
+<h3 id="create_template-isnt-working--what-do-i-do">create_template isn’t working. What do I do?<a class="anchor" aria-label="anchor" href="#create_template-isnt-working--what-do-i-do"></a>
+</h3>
+<p>This could mean a lot of things. Most of the time, when
+create_template is not working, it means you are missing a key argument
+to the function. Make sure to read the error message(s) clearly and
+check the ‘report’ folder where all of the file were created. If you
+have exhausted your options and double checked that you have all of the
+correct arguments, then please leave an <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issue</a>.</p>
+</div>
+<div class="section level3">
+<h3 id="what-should-i-do-if-i-have-a-species-complexmultispecies-assessment">What should I do if I have a species complex/multispecies
+assessment?<a class="anchor" aria-label="anchor" href="#what-should-i-do-if-i-have-a-species-complexmultispecies-assessment"></a>
+</h3>
+<p><code>asar</code> was not developed with the intention to use it for
+multiple species in one go. While in testing, users have simply combined
+the species using “and” in the species argument of create_template. The
+report can be written as desired after the fact. The beauty of asar is
+that it is still a template and highly customizable. User’s familiar
+with Quarto can make edits to the YAML, chunk options, and other
+important components controlling the production of the document. We
+highly discourage making changes to the formatting or adding large
+additions of sections to the document that stray too far from the
+intended “NOAA” formatting.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="editing-reports">Editing reports<a class="anchor" aria-label="anchor" href="#editing-reports"></a>
+</h2>
+<div class="section level3">
+<h3 id="how-do-i-reference-one-of-the-quantities-in-the-preamble-in-my-text">How do I reference one of the quantities in the preamble in my
+text?<a class="anchor" aria-label="anchor" href="#how-do-i-reference-one-of-the-quantities-in-the-preamble-in-my-text"></a>
+</h3>
+<p>You can use the quantities in the preamble to make dynamic reports
+that can easily be changed within the text by changing the output file.
+To reference these quantities in your text please use the following
+notation:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>`r Fend`</span></code></pre></div>
+<p>For more help with using quarto (and using it efficiently), please
+see our <a href="markdown_notation.html">markdown guide</a> to learn the
+in’s and out’s of writing a stock assessment report in quarto.</p>
+</div>
+<div class="section level3">
+<h3 id="how-can-i-edit-my-reports-alt-text-and-captions">How can I edit my report’s alt text and captions?<a class="anchor" aria-label="anchor" href="#how-can-i-edit-my-reports-alt-text-and-captions"></a>
+</h3>
+<p>Please refer to <a href="https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#how-to-edit-your-reports-alt-text-and-captions">the
+accessibility vignette’s guide</a> on editing alt text and captions.</p>
+</div>
+<div class="section level3">
+<h3 id="how-can-i-use-acronyms-and-edit-the-glossary">How can I use acronyms and edit the glossary?<a class="anchor" aria-label="anchor" href="#how-can-i-use-acronyms-and-edit-the-glossary"></a>
+</h3>
+<p>Please refer to the <a href="https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#acronyms-and-glossary">Acronyms
+and Glossary section of the accessibility vignette</a> for guidance on
+how to use acronyms and edit the glossary.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="tables-and-figures">Tables and Figures<a class="anchor" aria-label="anchor" href="#tables-and-figures"></a>
+</h2>
+<div class="section level3">
+<h3 id="why-arent-my-tables-andor-figures-displaying-on-landscape-oriented-pages-when-the-landscape-braces-are-present">Why aren’t my tables and/or figures displaying on landscape-oriented
+pages when the landscape braces are present?<a class="anchor" aria-label="anchor" href="#why-arent-my-tables-andor-figures-displaying-on-landscape-oriented-pages-when-the-landscape-braces-are-present"></a>
+</h3>
+<p>You may be using a version of Quarto <a href="https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/" class="external-link">older
+than v1.6</a>. Please read <a href="https://github.com/nmfs-ost/asar/discussions/186" class="external-link">this Discussion
+post</a> detailing how to check which version you have and update
+it.</p>
+</div>
+<div class="section level3">
+<h3 id="my-figure-and-table-references-arent-in-chronological-order-in-the-report--how-do-i-fix-this">My figure and table references aren’t in chronological order in the
+report. How do I fix this?<a class="anchor" aria-label="anchor" href="#my-figure-and-table-references-arent-in-chronological-order-in-the-report--how-do-i-fix-this"></a>
+</h3>
+<p>As far as we know, a fix isn’t possible with Quarto. The order of
+your figures and tables in their respective 08_tables.qmd and
+09_figures.qmd docs will determine their numbers in the report. This
+might result in Table 2 being referenced before Table 1, for instance,
+in your report. You <em>can</em> try manually changing the order of the
+figure and table chunks in the 08_tables.qmd and 09_figures.qmd docs,
+but this isn’t a reproducible or permanent solution. If you know of a
+long-term solution, <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">please let us know</a> or
+submit a pull request!</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="rendering-reports">Rendering reports<a class="anchor" aria-label="anchor" href="#rendering-reports"></a>
+</h2>
+<div class="section level3">
+<h3 id="why-am-i-getting-the-following-error-message-when-i-try-to-render-my-template">Why am I getting the following error message when I try to render my
+template?:<a class="anchor" aria-label="anchor" href="#why-am-i-getting-the-following-error-message-when-i-try-to-render-my-template"></a>
 </h3>
 <pre class="error:"><code>compilation failed- error
 LaTeX Error: Something's wrong--perhaps a missing \item.
@@ -177,83 +268,25 @@ asar_references.bib file</em>):</p>
 <p><code>Here is an example of an in text citation (@methot_stock_2013).</code></p>
 </div>
 <div class="section level3">
-<h3 id="how-do-i-reference-one-of-the-quantities-in-the-preamble-in-my-text">
-<strong>How do I reference one of the quantities in the preamble in
-my text?</strong><a class="anchor" aria-label="anchor" href="#how-do-i-reference-one-of-the-quantities-in-the-preamble-in-my-text"></a>
+<h3 id="when-rendering-why-does-my-report-hang-on-the-figures-doc">When rendering, why does my report hang on the figures doc?<a class="anchor" aria-label="anchor" href="#when-rendering-why-does-my-report-hang-on-the-figures-doc"></a>
 </h3>
-<p>You can use the quantities in the preamble to make dynamic reports
-that can easily be changed within the text by changing the output file.
-To reference these quantities in your text please use the following
-notation:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>`r Fend`</span></code></pre></div>
-<p>For more help with using quarto (and using it efficiently), please
-see our <a href="markdown_notation.html">markdown guide</a> to learn the
-in’s and out’s of writing a stock assessment report in quarto.</p>
+<p>When rendering your report, it may hang when processing the figures
+file. If this occurs, it probably means that your tinytex installation
+isn’t working properly. This may occur even if you’ve installed the
+TinyTeX bundle with every LaTeX package you could install from CTAN (<a href="https://github.com/rstudio/tinytex-releases?tab=readme-ov-file#releases" class="external-link">TinyTeX-2</a>).</p>
+<p>Try this: Uninstall tinytex
+(<code><a href="https://rdrr.io/pkg/tinytex/man/install_tinytex.html" class="external-link">tinytex::uninstall_tinytex()</a></code>), then reinstall it in the
+terminal (<code>quarto install tinytex</code>).</p>
+<p>Notably, this command will install TinyTeX-1 bundle (the default),
+then install the necessary LaTeX packages needed for rendering <em>while
+your report is rendering the first time</em>.</p>
 </div>
-<div class="section level3">
-<h3 id="create_template-isnt-working-what-do-i-do">
-<strong>create_template isn’t working, what do I do?</strong><a class="anchor" aria-label="anchor" href="#create_template-isnt-working-what-do-i-do"></a>
-</h3>
-<p>This could mean a lot of things. Most of the time, when
-create_template is not working, it means you are missing a key argument
-to the function. Make sure to read the error message(s) clearly and
-check the ‘report’ folder where all of the file were created. If you
-have exhausted your options and double checked that you have all of the
-correct arguments, then please leave an <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issue</a>.</p>
 </div>
+<div class="section level2">
+<h2 id="general-errors">General errors<a class="anchor" aria-label="anchor" href="#general-errors"></a>
+</h2>
 <div class="section level3">
-<h3 id="what-should-i-do-if-i-have-a-species-complexmultispecies-assessment">
-<strong>What should I do if I have a species complex/multispecies
-assessment?</strong><a class="anchor" aria-label="anchor" href="#what-should-i-do-if-i-have-a-species-complexmultispecies-assessment"></a>
-</h3>
-<p><code>asar</code> was not developed with the intention to use it for
-multiple species in one go. While in testing, users have simply combined
-the species using “and” in the species argument of create_template. The
-report can be written as desired after the fact. The beauty of asar is
-that it is still a template and highly customizable. User’s familiar
-with Quarto can make edits to the YAML, chunk options, and other
-important components controlling the production of the document. We
-highly discourage making changes to the formatting or adding large
-additions of sections to the document that stray too far from the
-intended “NOAA” formatting.</p>
-</div>
-<div class="section level3">
-<h3 id="how-can-i-edit-my-reports-alt-text-and-captions">
-<strong>How can I edit my report’s alt text and
-captions?</strong><a class="anchor" aria-label="anchor" href="#how-can-i-edit-my-reports-alt-text-and-captions"></a>
-</h3>
-<p>Please refer to <a href="https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#how-to-edit-your-reports-alt-text-and-captions">the
-accessibility vignette’s guide</a> on editing alt text and captions.</p>
-</div>
-<div class="section level3">
-<h3 id="why-arent-my-tables-andor-figures-displaying-on-landscape-oriented-pages-when-the-landscape-braces-are-present">
-<strong>Why aren’t my tables and/or figures displaying on
-landscape-oriented pages when the landscape braces are
-present?</strong><a class="anchor" aria-label="anchor" href="#why-arent-my-tables-andor-figures-displaying-on-landscape-oriented-pages-when-the-landscape-braces-are-present"></a>
-</h3>
-<p>You may be using a version of Quarto <a href="https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/" class="external-link">older
-than v1.6</a>. Please read <a href="https://github.com/nmfs-ost/asar/discussions/186" class="external-link">this Discussion
-post</a> detailing how to check which version you have and update
-it.</p>
-</div>
-<div class="section level3">
-<h3 id="my-figure-and-table-references-arent-in-chronological-order-in-the-report--how-do-i-fix-this">
-<strong>My figure and table references aren’t in chronological order
-in the report. How do I fix this?</strong><a class="anchor" aria-label="anchor" href="#my-figure-and-table-references-arent-in-chronological-order-in-the-report--how-do-i-fix-this"></a>
-</h3>
-<p>As far as we know, a fix isn’t possible with Quarto. The order of
-your figures and tables in their respective 08_tables.qmd and
-09_figures.qmd docs will determine their numbers in the report. This
-might result in Table 2 being referenced before Table 1, for instance,
-in your report. You <em>can</em> try manually changing the order of the
-figure and table chunks in the 08_tables.qmd and 09_figures.qmd docs,
-but this isn’t a reproducible or permanent solution. If you know of a
-long-term solution, <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">please let us know</a> or
-submit a pull request!</p>
-</div>
-<div class="section level3">
-<h3 id="im-getting-an-error--how-do-i-fix-it">
-<strong>I’m getting an error. How do I fix it?</strong><a class="anchor" aria-label="anchor" href="#im-getting-an-error--how-do-i-fix-it"></a>
+<h3 id="im-getting-an-error--how-do-i-fix-it">I’m getting an error. How do I fix it?<a class="anchor" aria-label="anchor" href="#im-getting-an-error--how-do-i-fix-it"></a>
 </h3>
 <p>When getting to know <code>asar</code>, you’ll probably encounter
 some errors. We highly recommend checking out our <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">Issues page</a> to see if
@@ -278,6 +311,7 @@ for solving them.</p>
 <code>ref_line</code> and <code>ref_line_sb</code>; they aren’t being
 found in the dataset. This error should disappear once these arguments
 are accurate.</p>
+</div>
 </div>
 </div>
   </div>
