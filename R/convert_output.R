@@ -1189,5 +1189,4 @@ convert_output <- function(
       dplyr::select(-alt_label)
   }
   return(out_new)
-  message("Finished!")
 } # close function
