@@ -2,10 +2,8 @@
 #'
 #' Format stock assessment output files to a standardized format.
 #'
-#' @param output_file Assessment model output file (e.g., the
+#' @param output_file Assessment model output file path (e.g., the
 #'  Report.sso file for SS3, the rdat file for BAM, etc.)
-#' @param outdir Directory of the assessment model output file. Defaults to
-#' working directory.
 #' @param model Assessment model used in evaluation ("ss3", "bam",
 #'  "asap", "fims", "amak", "ms-java", "wham", "mas").
 #' @param fleet_names Names of fleets in the assessment model as
@@ -18,9 +16,6 @@
 #'         for application in building a stock assessment reports and to easily
 #'         adapt results among regional assessments. The resulting object is
 #'         simply a transformed and machine readable version of a model output file.
-#'         There are 2 options for adding data to the function. (1) Add the full
-#'         path with the file name in output.file or (2) output.file is the file
-#'         name and outdir is the path to the file without a trailing forward slash.
 #'
 #' @export
 #'
@@ -28,14 +23,10 @@
 #' \dontrun{
 #' convert_output(
 #' output_file = "Report.sso",
-#' outdir = "data",
-#' model = "ss3",
-#' savedir = getwd(),
-#' save_name = "converted_model_output")
+#' model = "ss3")
 #' }
 convert_output <- function(
-    output_file,
-    outdir = getwd(),
+    output_file = NULL,
     model = NULL,
     fleet_names = NULL) {
   #### out_new ####
@@ -80,18 +71,9 @@ convert_output <- function(
   )
   out_new <- out_new[-1, ]
 
-  # pull together path
-  if (file.exists(output_file)) {
-    output_file <- output_file
-  } else {
-    output_file <- file.path(outdir, output_file)
-  }
-
-  # check path
-  if (!file.exists(output_file)) {
-    stop("File not found.")
-  }
-
+  # check if file exists
+  if (!file.exists(output_file)) stop("File not found.")
+  
   #### SS3 ####
   # Convert SS3 output Report.sso file
   if (model %in% c("ss3", "SS3")) {
