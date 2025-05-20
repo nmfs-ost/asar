@@ -26,8 +26,8 @@
 #' model = "ss3")
 #' }
 convert_output <- function(
-    output_file = NULL,
-    model = NULL,
+    output_file,
+    model,
     fleet_names = NULL) {
   #### out_new ####
   # Blank dataframe and set up to mold output into
@@ -715,11 +715,11 @@ convert_output <- function(
       if (any(is.na(fleet_names))) {
         stop("No fleet names found in dataframe. Please indicate the abbreviations of fleet names using fleet_names arg.")
       }
-    } else {
-      # check fleet names are input
-      # if (any(is.na(fleet_names))) {
-      fleet_names <- fleet_names
-    }
+    } # else {
+    #   # check fleet names are input
+    #   # if (any(is.na(fleet_names))) {
+    #   fleet_names <- fleet_names
+    # }
     # Create list for morphed dfs to go into (for rbind later)
     out_list <- list()
 
