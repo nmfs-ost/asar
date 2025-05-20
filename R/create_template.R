@@ -978,7 +978,7 @@ create_template <- function(
           citation <- create_citation(
             author = author,
             title = title,
-            year = year
+            year = year,
             ...
           )
         }
