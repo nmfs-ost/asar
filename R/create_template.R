@@ -203,48 +203,39 @@ create_template <- function(
     new_template = TRUE,
     format = c("pdf", "docx", "html", NA),
     office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
-    species = NA,
-    spp_latin = NA,
-    year = NA,
-    file_dir = NA,
+    species = NULL,
+    spp_latin = NULL,
+    year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
+    file_dir = getwd(),
     author = "",
-    add_author = NA,
-    region = NA,
+    add_author = NULL,
+    region = NULL,
     complex = FALSE,
     include_affiliation = TRUE,
     simple_affiliation = FALSE,
-    title = NA,
+    alt_title = FALSE,
+    title = NULL,
     parameters = TRUE,
-    param_names = NA,
-    param_values = NA,
+    param_names = NULL,
+    param_values = NULL,
     convert_output = FALSE,
-    fleet_names = NA,
-    resdir = NA,
-    model_results = NA,
-    model = NA,
-    new_section = NA,
-    section_location = NA,
+    fleet_names = NULL,
+    resdir = NULL,
+    model_results = NULL,
+    model = NULL,
+    new_section = NULL,
+    section_location = NULL,
     type = "SAR",
-    prev_year = NA,
+    prev_year = NULL,
     custom = FALSE,
-    custom_sections = NA,
+    custom_sections = NULL,
     include_figures = TRUE,
     include_tables = TRUE,
     add_image = FALSE,
-    spp_image = NA,
+    spp_image = NULL,
     bib_file = "asar_references.bib",
     rerender_skeleton = FALSE,
     ...) {
-  # TODO: change is.null statements to is.na
-  # If analyst forgets to add year, default will be the current year report is being produced
-  if (is.null(year)) {
-    year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
-  }
-
-  # If analyst forgets to add end year, default will be year - 1
-  if (is.null(end_year)) {
-    end_year <- as.numeric(year) - 1
-  }
 
   if (rerender_skeleton) {
     # TODO: set up situation where species, region can be changed
