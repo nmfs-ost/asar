@@ -3,7 +3,7 @@
 
 # build triggers
 on:
-#  push:
+  push:
 #   branches: [main, master]
 #  pull_request:
   workflow_dispatch:
@@ -11,7 +11,7 @@ on:
 # this action runs export_glossary() to create the glossary
 name: run_glossary.yml
 
-permissions: 
+permissions:
   contents: write
   pull-requests: write
 
@@ -27,12 +27,12 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::remotes
+          extra-packages: any::pak
 
-      - name: Install R package (asar.glossary)
-        run: remotes::install_local(upgrade = "always")
+      - name: Install R package (asar)
+        run: pak::local_install()
         shell: Rscript {0} # use the default terminal for shell
-        
+
       - name: Make glossary
         run: | # | means there will be multiple lines of code here
          # source('R/utils.R')
