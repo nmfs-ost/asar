@@ -46,3 +46,8 @@ jobs:
           branch: regenerate_glossary
           title: 'Regenerate glossary'
           body: Automated changes by run_glossary.yml GitHub action
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: glossary-artifact.tex
+          path: inst/glossary/report_glossary.tex
