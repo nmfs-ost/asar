@@ -49,17 +49,7 @@
 #'  individual parameters for this function, above).
 #' @param fleet_names Deprecated: List of fleet names as described in BAM output
 #'  file (abbreviations).
-#' @param resdir Filepath of the directory storing the model
-#'  results file(s). Examples where dover_sole_2024 is the project root
-#'  for absolute and relative filepaths, respectively:
-#'  "C:/Users/patrick.star/Documents/dover_sole_2024/models",
-#'  "here::here("models")".
-#' @param model_results The model results file. Before the stock
-#' assessment output file has been converted to a standardized format
-#'  with the function convert_output.R, the model results file may be
-#'  a .sso or .rdata file. After conversion, this file might be a .csv file.
-#' @param model Type of assessment model that was used to assess
-#'  the stock (e.g., "BAM", "SS3", "AMAK", "ASAP", etc.).
+#' @param model_results The name of the object in your environment that contains the data frame of converted model output from `asar::convert_output()`
 #' @param new_section Names of section(s) (e.g., introduction, results) or
 #' subsection(s) (e.g., a section within the introduction) that will be
 #' added to the document. Please make a short list if >1 section/subsection
@@ -125,9 +115,7 @@
 #'   year = 2010,
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
 #'   include_affiliation = TRUE,
-#'   resdir = "C:/Users/Documents/Example_Files",
 #'   model_results = "Report.sso",
-#'   model = "SS3",
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction",
 #'   rda_dir = here::here()
@@ -141,7 +129,6 @@
 #'   spp_latin = "Kajikia audax",
 #'   year = 2018,
 #'   author = "Alba Tross",
-#'   model = "BAM",
 #'   new_section = c("a_new_section", "another_new_section"),
 #'   section_location = c("before-introduction", "after-introduction"),
 #'   custom = TRUE,
@@ -167,9 +154,7 @@
 #'   param_names = c("region", "year"),
 #'   param_values = c("my_region", "2024"),
 #'   fleet_names = c("fleet1", "fleet2", "fleet3"),
-#'   resdir = "C:/Users/Documents/Example_Files",
 #'   model_results = "Report.sso",
-#'   model = "SS3",
 #'   new_section = "an_additional_section",
 #'   section_location = "before-discussion",
 #'   type = "SAR",
@@ -220,9 +205,7 @@ create_template <- function(
     param_values = NULL,
     convert_output = FALSE,
     fleet_names = NULL,
-    resdir = NULL,
     model_results = NULL,
-    model = NULL,
     new_section = NULL,
     section_location = NULL,
     type = "SAR",
@@ -486,16 +469,16 @@ create_template <- function(
       # Don't run on rerender
       if (!rerender_skeleton) {
         if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
-          if (!is.null(resdir) | !is.null(model_results)) {
+          # if (!is.null(resdir) | !is.null(model_results)) {
             # load converted output
-            output <- utils::read.csv(paste0(resdir, "/", model_results))
+            # output <- model_results
             # run stockplotr::exp_all_figs_tables() to make rda files
 
             # test_exp_all <-
             tryCatch(
               {
                 stockplotr::exp_all_figs_tables(
-                  dat = output,
+                  dat = model_results,
                   ...
                 )
                 # TRUE
@@ -505,7 +488,7 @@ create_template <- function(
                 # FALSE
               }
             )
-          } # else {
+          # } # else {
           # test_exp_all <- FALSE
           # }
         }
@@ -521,7 +504,7 @@ create_template <- function(
         #   utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
         #   warning("Results file or model name not defined.")
         # } else
-        if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
+        if (!is.null(model_results)) {
           # if there is an existing folder with "rda_files" in the rda_dir:
           if (dir.exists(fs::path(rda_dir, "rda_files"))) {
             create_tables_doc(...)
@@ -546,7 +529,7 @@ create_template <- function(
         #   utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
         #   warning("Results file or model name not defined.")
         # } else
-        if (!is.null(resdir) | !is.null(model_results) | !is.null(model)) {
+        if (!is.null(model_results)) {
           # if there is an existing folder with "rda_files" in the rda_dir:
           if (dir.exists(fs::path(rda_dir, "rda_files"))) {
             create_figures_doc(...)
@@ -879,12 +862,13 @@ create_template <- function(
           end_line <- grep("```", prev_skeleton)[grep("```", prev_skeleton) > start_line][1]
           preamble <- paste(prev_skeleton[start_line:end_line], collapse = "\n")
 
-          if (!is.null(model_results) & !is.null(resdir)) {
-            prev_results_line <- grep("output <- utils::read.csv", preamble)
+          if (!is.null(model_results)) {
+            # TODO: check that the regex is accurate
+            prev_results_line <- grep("output <- ", preamble)
             prev_results <- stringr::str_replace(
               preamble[prev_results_line],
-              "(?<=read\\.csv\\().*?(?=\\))",
-              glue::glue("'{resdir}/{model_results}'")
+              "(?<=output <- .*?(?=\\))",
+              glue::glue("'{model_results}'")
               )
             preamble <- append(
               preamble,
