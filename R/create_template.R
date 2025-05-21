@@ -312,21 +312,6 @@ create_template <- function(
     biomass_unit_label = "mt",
     catch_unit_label = "mt",
     rerender_skeleton = FALSE) {
-  if (!is.null(model_results)){
-    # if resdir = null, change it to getwd() so mod_time can execute file.info()
-    if (is.null(resdir)){
-      resdir <- getwd()
-      resdir_null = TRUE
-    }
-    mod_time <- as.character(file.info(file.path(resdir, model_results), extra_cols = F)$ctime)
-    message(paste("Report is based upon model output from", model_results, 
-                  "that was last modified on:", mod_time))
-    # change resdir back to null if originally null
-    if(resdir_null == TRUE){
-      resdir <- NULL
-    }
-  }
-  
   # If analyst forgets to add year, default will be the current year report is being produced
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
@@ -538,7 +523,28 @@ create_template <- function(
           file.copy(system.file("glossary", "report_glossary.tex", package = "asar"), subdir, overwrite = FALSE) |> suppressWarnings()
           # Copy html format file if applicable
           if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
-        } else {
+
+          # show message and make README stating model_results info
+          if (!is.null(model_results)){
+            # if resdir = null, change it to getwd() so mod_time can execute file.info()
+            if (is.null(resdir)){
+              resdir <- getwd()
+              resdir_null = TRUE
+            } else {
+              resdir_null = FALSE
+            }
+            mod_time <- as.character(file.info(file.path(resdir, model_results), extra_cols = F)$ctime)
+            mod_msg <- paste("Report is based upon model output from", model_results, "stored in folder", resdir,
+                             "that was last modified on:", mod_time)
+            message(mod_msg)
+            writeLines(mod_msg, fs::path(subdir, "model_results_metadata.md"))
+            # change resdir back to null if originally null
+            if(resdir_null == TRUE){
+              resdir <- NULL
+            }
+          }
+
+          } else {
           warning("There are files in this location.")
           question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
 
@@ -570,7 +576,27 @@ create_template <- function(
             file.copy(system.file("glossary", "report_glossary.tex", package = "asar"), subdir, overwrite = FALSE) |> suppressWarnings()
             # Copy html format file if applicable
             if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
-          } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+            # make README stating model_results info
+            if (!is.null(model_results)){
+              # if resdir = null, change it to getwd() so mod_time can execute file.info()
+              if (is.null(resdir)){
+                resdir <- getwd()
+                resdir_null = TRUE
+              } else {
+                resdir_null = FALSE
+              }
+              mod_time <- as.character(file.info(file.path(resdir, model_results), extra_cols = F)$ctime)
+              mod_msg <- paste("Report is based upon model output from", model_results, "stored in folder", resdir,
+                               "that was last modified on:", mod_time)
+              message(mod_msg)
+              writeLines(mod_msg, fs::path(subdir, "model_results_metadata.md"))
+              # change resdir back to null if originally null
+              if(resdir_null == TRUE){
+                resdir <- NULL
+              }
+            }
+
+            } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
             warning("Report template files were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder.")
           }
         } # close check for previous files & respective copying

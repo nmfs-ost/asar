@@ -41,6 +41,7 @@ test_that("create_template() creates correct files", {
     # "10_notes.qmd",
     "11_appendix.qmd",
     "SAR_species_skeleton.qmd",
+ #   "model_results_metadata.md",
     "report_glossary.tex",
     "asar_references.bib",
     "support_files"
@@ -62,7 +63,6 @@ test_that("create_template() creates correct files", {
   no_inputs_output_path <- file.path(path, "report")
   object_report_files <- list.files(no_inputs_output_path)
   object_support_files <- list.files(file.path(no_inputs_output_path, "support_files"))
-
 
   # Check if all expected report files are created
   expect_true(all(sort(expect_report_files) == sort(object_report_files)))
@@ -246,4 +246,58 @@ test_that("file_dir works", {
 
   # erase temporary testing files
   unlink(file_path, recursive = T)
+})
+
+test_that("model_results metadata file created", {
+
+  create_template(
+    new_template = TRUE,
+    model_results = "bsb_conout.csv",
+    format = "pdf",
+    office = "NWFSC",
+   # species = "Dover sole",
+    spp_latin = "Pomatomus saltatrix",
+    year = 2010,
+    author = c("John Snow", "Danny Phantom", "Patrick Star"),
+    include_affiliation = TRUE,
+    parameters = FALSE,
+    resdir = test_path("fixtures", "bam_models_converted")
+  )
+
+  file_path <- file.path(getwd(), "report")
+
+  expect_true(file.exists(file_path))
+
+  expect_report_files <- c(
+    "01_executive_summary.qmd",
+    "02_introduction.qmd",
+    "03_data.qmd",
+    "04a_assessment-configuration.qmd",
+    "04b_assessment-results.qmd",
+    "04c_assessment-sensitivity.qmd",
+    "04d_assessment-benchmarks.qmd",
+    "04e_assessment-projections.qmd",
+    "05_discussion.qmd",
+    "06_acknowledgments.qmd",
+    "07_references.qmd",
+    "08_tables.qmd",
+    "09_figures.qmd",
+    # "10_notes.qmd",
+    "11_appendix.qmd",
+    "SAR_species_skeleton.qmd",
+    "model_results_metadata.md",
+    "report_glossary.tex",
+    "asar_references.bib",
+    "support_files"
+  )
+
+  object_report_files <- list.files(file_path)
+
+  # Check if all expected report files are created
+  expect_true(all(sort(expect_report_files) == sort(object_report_files)))
+
+ # erase temporary testing files
+  unlink(file_path, recursive = T)
+  unlink(file.path(getwd(), "rda_files"), recursive = T)
+  unlink(file.path(getwd(), "captions_alt_text.csv"), recursive = T)
 })
