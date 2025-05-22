@@ -14,7 +14,7 @@
 #' @export
 create_titlepage_tex <- function(office = "",
                                  subdir,
-                                 species) {
+                                 species = "") {
   # Read basic latex file
   lines <- readLines(
     system.file("resources", "formatting_files", "_titlepage.tex", package = "asar")
