@@ -94,6 +94,12 @@ convert_output <- function(
       stop("This function in its current state can not process the data.")
     }
 
+    # Extract fleet names
+    if (is.null(fleet_names)){
+      fleet_info <- SS3_extract_df(dat, "Fleet")[-1,]
+      fleet_names <- setNames(fleet_info[[10]], fleet_info[[1]])
+    }
+  
     # Estimated and focal parameters to put into reformatted output df - naming conventions from SS3
     # Future changes will include a direct pull of these parameters from the output file instead of a manual list
     # Below the parameters are grouped and narrowed down into priority to reach deadline.
@@ -685,12 +691,10 @@ convert_output <- function(
     if (length(miss_parms) > 0) {
       message("Some parameters were not found or included in the output file. The inital release of this converter only inlcudes to most necessary parameters and values. The following parameters were not added into the new output file: \n", paste(miss_parms, collapse = "\n"))
     }
-    out_new <- Reduce(rbind, out_list)
-
-  } else if (model %in% c("bam", "BAM")) {
-    #### BAM ####
-    # Extract values from BAM output - model file after following ADMB2R
-    dat <- dget(output_file)
+    out_new <- Reduce(rbind, out_list) |>
+      dplyr::mutate(fleet = dplyr::case_when(
+        
+      )
 
     # Find fleet names
     if (is.null(fleet_names)) {
@@ -1131,6 +1135,9 @@ convert_output <- function(
         warning(paste(names(extract), " not compatible.", sep = ""))
       } # close if statement
     } # close loop over objects listed in dat file
+    
+    # Place out_list into a single data frame
+    out_new <- Reduce(rbind, out_list)
     #### WHAM ----
   } else if (model == "wham") {
     # This is how Bai read the ASAP output
@@ -1151,7 +1158,7 @@ convert_output <- function(
 
   #### Exporting ####
   # Combind DFs into one
-  out_new <- Reduce(rbind, out_list) |>
+  out_new <- out_new |>
     dplyr::mutate(
       estimate = as.numeric(estimate),
       uncertainty = as.numeric(uncertainty),
