@@ -692,9 +692,12 @@ convert_output <- function(
       message("Some parameters were not found or included in the output file. The inital release of this converter only inlcudes to most necessary parameters and values. The following parameters were not added into the new output file: \n", paste(miss_parms, collapse = "\n"))
     }
     out_new <- Reduce(rbind, out_list) |>
-      dplyr::mutate(fleet = dplyr::case_when(
-        
-      )
+      dplyr::mutate(fleet = fleet_names[fleet])
+    
+  } else if (model %in% c("bam", "BAM")) {
+    #### BAM ####
+    # Extract values from BAM output - model file after following ADMB2R
+    dat <- dget(output_file)
 
     # Find fleet names
     if (is.null(fleet_names)) {
