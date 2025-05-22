@@ -145,10 +145,15 @@ render_lg_table <- function(report_flextable = NULL,
           )
         )
       )
-      )|>
-        flextable::fit_to_width(max_width = goal_width)
+      ) |>
+      flextable::fit_to_width(max_width = goal_width) |>
+      flextable::hline(part = "header",
+                      # i = 1,
+                       border = officer::fp_border(width = 1.5,
+                                                   color = "#666666")) |>
+      flextable::valign(valign = "center", part = "header")
 
-    table_list[[i]] <- split_table
+      table_list[[i]] <- split_table
 
     # get rownames of split table
     all_vals <- split_table$header$dataset
