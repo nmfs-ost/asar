@@ -250,6 +250,13 @@ test_that("file_dir works", {
 
 test_that("model_results metadata file created", {
 
+  # identify wd on github to debug failing test there (but not locally)
+  resdir <- fs::path(getwd(), "tests", "testthat", "fixtures", "bam_models_converted")
+  print(paste0("The working directory is: ", getwd()))
+  print(paste0("The resdir is: ", resdir))
+  message(paste0("The working directory is: ", getwd()))
+  message(paste0("The resdir is: ", resdir))
+
   create_template(
     new_template = TRUE,
     model_results = "bsb_conout.csv",
@@ -261,10 +268,14 @@ test_that("model_results metadata file created", {
     author = c("John Snow", "Danny Phantom", "Patrick Star"),
     include_affiliation = TRUE,
     parameters = FALSE,
-    resdir = test_path("fixtures", "bam_models_converted")
+    resdir = resdir
   )
 
+  message("create_template run")
+
   file_path <- file.path(getwd(), "report")
+
+  message(paste0("file_path: ", file_path))
 
   expect_true(file.exists(file_path))
 
@@ -292,6 +303,8 @@ test_that("model_results metadata file created", {
   )
 
   object_report_files <- list.files(file_path)
+
+  message(paste0("object_report_files: ", object_report_files))
 
   # Check if all expected report files are created
   expect_true(all(sort(expect_report_files) == sort(object_report_files)))
