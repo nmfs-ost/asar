@@ -704,6 +704,7 @@ create_template <- function(
         prev_format = prev_format,
         prev_skeleton = prev_skeleton,
         author_list = author_list,
+        title = title,
         ...)
 
       if (!rerender_skeleton) print("__________Built YAML Header______________")
