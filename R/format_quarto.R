@@ -53,15 +53,16 @@ format_quarto <- function(format = NULL,
       "  ","  ", "citations-hover: true", "\n"
     )
   } else if (tolower(format) == "docx") {
-    paste0(
-      "format: \n",
-      "  ", format, ": \n",
-      "  ", "  ", "toc: ", "true \n",
-      "  ", "  ", "toc-depth: 2", "\n",
-      "  ", "  ", "reference-doc: template.docx", "\n",
-      "  ", "  ", "always_allow_html: true", "\n",
-      "  ", "  ", "keep-tex: true", "\n"
-    )
+    # paste0(
+    #   "format: \n",
+    #   "  ", format, ": \n",
+    #   "  ", "  ", "toc: ", "true \n",
+    #   "  ", "  ", "toc-depth: 2", "\n",
+    #   "  ", "  ", "reference-doc: template.docx", "\n",
+    #   "  ", "  ", "always_allow_html: true", "\n",
+    #   "  ", "  ", "keep-tex: true", "\n"
+    # )
+    stop("docx is not yet a functional format. Please use pdf or html.")
   } else {
     stop("Invalid render format.")
   }
