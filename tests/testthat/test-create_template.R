@@ -251,7 +251,7 @@ test_that("file_dir works", {
 test_that("model_results metadata file created", {
 
   # identify wd on github to debug failing test there (but not locally)
-  resdir <- fs::path(getwd(), "tests", "testthat", "fixtures", "bam_models_converted")
+  resdir <- fs::path(getwd(), "fixtures", "bam_models_converted")
   print(paste0("The working directory is: ", getwd()))
   print(paste0("The resdir is: ", resdir))
   message(paste0("The working directory is: ", getwd()))
