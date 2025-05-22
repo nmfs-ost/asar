@@ -74,6 +74,15 @@ convert_output <- function(
   # check if file exists
   if (!file.exists(output_file)) stop("File not found.")
   
+  # Recognize model through file extension
+  # Uncomment later
+  # model <- switch(
+  #   stringr::str_extract(output_file, "\\.([^.]+)$"),
+  #   ".sso" = "ss3",
+  #   ".rdat" = "bam",
+  #   "wham"
+  # )
+  
   #### SS3 ####
   # Convert SS3 output Report.sso file
   if (model %in% c("ss3", "SS3")) {
@@ -101,7 +110,33 @@ convert_output <- function(
     }
   
     # Estimated and focal parameters to put into reformatted output df - naming conventions from SS3
-    # Future changes will include a direct pull of these parameters from the output file instead of a manual list
+    # Extract keywords from ss3 file
+    # Find row where keywords start
+    keywords_start_row <- which(apply(dat, 1, function(row) any(grepl("#_KeyWords_of_tables_available_in_report_sso", row))))
+    # Extract this first chunk of keywords to identify the first reported df - most likely DEFINITIONS
+    first_blank_after <- which(apply(dat, 1, function(row) all(is.na(row) | row == "")) & (seq_len(nrow(dat)) > keywords_start_row))[1]
+    rows <- c(keywords_start_row, first_blank_after)
+    # Extract the metric using the rows from above as a guide and clean up empty columns
+    keyword_1 <- dat[rows[1]:(rows[2] - 1), ] |>
+      naniar::replace_with_na_all(condition = ~ .x == "")
+    keyword_1 <- Filter(function(x) !all(is.na(x)), keyword_1)[-c(1:3),]
+    colnames(keyword_1) <- c("output","keyword","output_order")
+    keyword_1 <- keyword_1 |>
+      dplyr::mutate(output_order = as.numeric(stringr::str_extract(output_order, "\\d+$"))) |>
+      dplyr::filter(output_order == 1) |>
+      dplyr::pull(keyword)
+    # identify first reported keyword
+    keywords_end_row <- which(apply(dat, 1, function(row) any(grepl(keyword_1, row))))[2] - 6 # 6 rows behind is the last entry for keywords
+    # always extract the second entry bc the first is just in the list of keywords
+    
+    keywords <- dat[keywords_start_row:keywords_end_row, ][-c(1:3),c(1:3)] |>
+      naniar::replace_with_na_all(condition = ~ .x == "")
+    keywords <- Filter(function(x) !all(is.na(x)), keywords)
+    colnames(keywords) <- c("output","keyword","output_order")
+    keywords <- keywords |>
+      dplyr::mutate(output_order = as.numeric(stringr::str_extract(output_order, "\\d+$"))) |>
+      dplyr::filter(output=="Y")
+    
     # Below the parameters are grouped and narrowed down into priority to reach deadline.
     # Other parameters will be developed into the future
     param_names <- c(
