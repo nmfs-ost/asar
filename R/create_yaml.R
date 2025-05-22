@@ -50,17 +50,17 @@ create_yaml <- function(
     author = NA,
     add_author = NA,
     add_image = FALSE,
-    spp_image = NA,
-    species = NA,
-    spp_latin = NA,
-    region = NA,
+    spp_image = "",
+    species = NULL,
+    spp_latin = NULL,
+    region = NULL,
     format = "pdf",
     parameters = TRUE,
-    param_names = NA,
-    param_values = NA,
-    bib_name = NA,
-    bib_file,
-    year = format(Sys.Date(), "%Y")
+    param_names = NULL,
+    param_values = NULL,
+    bib_name = NULL,
+    bib_file = "asar_references.bib",
+    year = NULL
     ){
   # check first if want to rerender current skeleton
   if (rerender_skeleton) {
@@ -216,6 +216,8 @@ create_yaml <- function(
         "pdf-engine: lualatex", "\n"
       )
     }
+    # Add quarto format
+    # quarto_formatting <- format_quarto(format = format)
 
     # Formatting
     yaml <- paste0(

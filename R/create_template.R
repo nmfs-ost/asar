@@ -215,7 +215,7 @@ create_template <- function(
     include_figures = TRUE,
     include_tables = TRUE,
     add_image = FALSE,
-    spp_image = NULL,
+    spp_image = "",
     bib_file = "asar_references.bib",
     rerender_skeleton = FALSE,
     ...) {
@@ -467,82 +467,82 @@ create_template <- function(
       # run stockplotr::exp_all_figs_tables() if rda files not premade
       # output folder: rda_dir
       # Don't run on rerender
-      if (!rerender_skeleton) {
-        if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
-          # if (!is.null(resdir) | !is.null(model_results)) {
-            # load converted output
-            # output <- model_results
-            # run stockplotr::exp_all_figs_tables() to make rda files
-
-            # test_exp_all <-
-            tryCatch(
-              {
-                stockplotr::exp_all_figs_tables(
-                  dat = model_results,
-                  ...
-                )
-                # TRUE
-              },
-              error = function(e) {
-                warning("Failed to create all rda files from stockplotr package.")
-                # FALSE
-              }
-            )
-          # } # else {
-          # test_exp_all <- FALSE
-          # }
-        }
-      }
+      # if (!rerender_skeleton) {
+      #   if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
+      #     # if (!is.null(resdir) | !is.null(model_results)) {
+      #       # load converted output
+      #       # output <- model_results
+      #       # run stockplotr::exp_all_figs_tables() to make rda files
+      # 
+      #       # test_exp_all <-
+      #       tryCatch(
+      #         {
+      #           stockplotr::exp_all_figs_tables(
+      #             dat = model_results,
+      #             ...
+      #           )
+      #           # TRUE
+      #         },
+      #         error = function(e) {
+      #           warning("Failed to create all rda files from stockplotr package.")
+      #           # FALSE
+      #         }
+      #       )
+      #     # } # else {
+      #     # test_exp_all <- FALSE
+      #     # }
+      #   }
+      # }
 
       # Create tables qmd
-      if ((include_tables & !rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
-        # if (!test_exp_all) {
-        #   tables_doc <- paste0(
-        #     "### Tables \n \n",
-        #     "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
-        #   )
-        #   utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
-        #   warning("Results file or model name not defined.")
-        # } else
-        if (!is.null(model_results)) {
-          # if there is an existing folder with "rda_files" in the rda_dir:
-          if (dir.exists(fs::path(rda_dir, "rda_files"))) {
-            create_tables_doc(...)
-          }
-        } else {
+      # if ((include_tables & !rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
+      #   # if (!test_exp_all) {
+      #   #   tables_doc <- paste0(
+      #   #     "### Tables \n \n",
+      #   #     "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
+      #   #   )
+      #   #   utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
+      #   #   warning("Results file or model name not defined.")
+      #   # } else
+      #   if (!is.null(model_results)) {
+      #     # if there is an existing folder with "rda_files" in the rda_dir:
+      #     if (dir.exists(fs::path(rda_dir, "rda_files"))) {
+      #       create_tables_doc(...)
+      #     }
+      #   } else {
           tables_doc <- paste0(
             "## Tables \n \n",
             "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
           )
           utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
-          warning("Results file or model name not defined.")
-        }
-      }
+      #     warning("Results file or model name not defined.")
+      #   }
+      # }
 
       # Create figures qmd
-      if ((include_figures & !rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
-        # if (!test_exp_all) {
-        #   figures_doc <- paste0(
-        #     "### Figures \n \n",
-        #     "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
-        #   )
-        #   utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
-        #   warning("Results file or model name not defined.")
-        # } else
-        if (!is.null(model_results)) {
-          # if there is an existing folder with "rda_files" in the rda_dir:
-          if (dir.exists(fs::path(rda_dir, "rda_files"))) {
-            create_figures_doc(...)
-          }
-        } else {
+      # if ((include_figures & !rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
+      #   # if (!test_exp_all) {
+      #   #   figures_doc <- paste0(
+      #   #     "### Figures \n \n",
+      #   #     "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
+      #   #   )
+      #   #   utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
+      #   #   warning("Results file or model name not defined.")
+      #   # } else
+      #   if (!is.null(model_results)) {
+      #     # if there is an existing folder with "rda_files" in the rda_dir:
+      #     if (dir.exists(fs::path(rda_dir, "rda_files"))) {
+      #       create_figures_doc(...)
+      #     }
+      #   } else {
           figures_doc <- paste0(
             "## Figures \n \n",
             "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
           )
           utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
-          warning("Results file or model name not defined.")
-        }
-      }
+      #     warning("Results file or model name not defined.")
+      #   }
+      # }
 
       # Part I
       # Create a report template file to render for the region and species
@@ -700,7 +700,11 @@ create_template <- function(
       }
 
       # Create yaml
-      yaml <- create_yaml(...)
+      yaml <- create_yaml(
+        prev_format = prev_format,
+        prev_skeleton = prev_skeleton,
+        author_list = author_list,
+        ...)
 
       if (!rerender_skeleton) print("__________Built YAML Header______________")
 
@@ -719,17 +723,20 @@ create_template <- function(
 
       # Add preamble
       # add in quantities and output data R chunk
-      # Indicate model output path
+      # Reassign model_results as output and save into environment for user
+      # assign("output", model_results, envir = .GlobalEnv)
+      df_name <- deparse(substitute(model_results))
 
       # standard preamble
       preamble <- add_chunk(
         paste0(
-          "# load converted output from asar::convert_output() \n",
+          # "# load converted output from asar::convert_output() \n",
           # "output <- utils::read.csv('",
           # paste0(resdir, "/", model_results),
           # "') \n",
+          # "output <- ", df_name, "\n",
           "# Call reference points and quantities below \n",
-          "output <- output |> \n",
+          "output <- ", df_name, " |> \n",
           "  ", "dplyr::mutate(estimate = as.numeric(estimate), \n",
           "  ", "  ", "uncertainty = as.numeric(uncertainty)) \n",
           # "start_year <- as.numeric(min(output$year, na.rm = TRUE)) \n",
@@ -860,21 +867,24 @@ create_template <- function(
           start_line <- grep("output_and_quantities", prev_skeleton) - 1
           # find next trailing "```"` in case it was edited at the end
           end_line <- grep("```", prev_skeleton)[grep("```", prev_skeleton) > start_line][1]
-          preamble <- paste(prev_skeleton[start_line:end_line], collapse = "\n")
+          # preamble <- paste(prev_skeleton[start_line:end_line], collapse = "\n")
+          preamble <- prev_skeleton[start_line:end_line]
 
           if (!is.null(model_results)) {
-            # TODO: check that the regex is accurate
-            prev_results_line <- grep("output <- ", preamble)
+            prev_results_line <- grep("output <- ", preamble)[1]
             prev_results <- stringr::str_replace(
               preamble[prev_results_line],
-              "(?<=output <- .*?(?=\\))",
-              glue::glue("'{model_results}'")
-              )
-            preamble <- append(
-              preamble,
-              prev_results,
-              after = prev_results_line)[-prev_results_line]
-            if (!grepl(".csv", model_results)) warning("Model results are not in csv format - Will not work on render")
+              "(?<=output\\s{0,5}<-).*",
+              deparse(substitute(model_results))
+            )
+            preamble <- paste(
+              append(
+                preamble,
+                prev_results,
+                after = prev_results_line)[-prev_results_line],
+              collapse = "\n"
+            )
+            # if (!grepl(".csv", model_results)) warning("Model results are not in csv format - Will not work on render")
           } else {
             message("Preamble maintained - model results not updated.")
           }
