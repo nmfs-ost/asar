@@ -51,7 +51,7 @@ create_yaml <- function(
     author = NULL,
     add_author = NULL,
     add_image = FALSE,
-    spp_image = NULL,
+    spp_image = "",
     species = NULL,
     spp_latin = NULL,
     region = NULL,
@@ -60,7 +60,7 @@ create_yaml <- function(
     param_names = NULL,
     param_values = NULL,
     bib_name = NULL,
-    bib_file,
+    bib_file = "asar_references.bib",
     year = NULL
     ){
   # check first if want to rerender current skeleton
@@ -219,11 +219,13 @@ create_yaml <- function(
         "pdf-engine: lualatex", "\n"
       )
     }
+    # Add quarto format
+    # quarto_formatting <- format_quarto(format = format)
 
     # Formatting
     yaml <- paste0(
       yaml,
-      format_quarto(...),
+      format_quarto(format = format),
       # Add in output file name (Rendered name of pdf)
       "output-file: '", stringr::str_replace_all(species, " ", "_"), ifelse(is.null(species), "SAR_", "_SAR_"), year, "'", " \n"
     )

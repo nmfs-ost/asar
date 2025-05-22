@@ -16,7 +16,7 @@ test_that("convert_output works for SS3", {
     ))
 
     # Check that the result has exactly 31 columns
-    expect_equal(dim(result)[2], 33)
+    expect_equal(dim(result)[2], 34)
   }
 
   # Test saving the output in a global environment
@@ -25,17 +25,6 @@ test_that("convert_output works for SS3", {
     outdir = all_models[1],
     model = "ss3"
   )
-  expect_equal(dim(output)[2], 33)
+  expect_equal(dim(output)[2], 34)
 
-  # Test saving the output as a CSV file in a temporary directory
-  convert_output(
-    output_file = "Report.sso",
-    outdir = all_models[1],
-    model = "ss3",
-    file_save = TRUE,
-    savedir = tempdir()
-  )
-
-  # Ensure the CSV file was created successfully
-  expect_true(file.exists(file.path(tempdir(), "std_model_output.csv")))
 })

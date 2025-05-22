@@ -140,6 +140,8 @@ Another hurdle to tackle is naming conventions. We have attempted to create a st
 
 [`convert_output()`](https://github.com/nmfs-ost/asar/blob/main/R/convert_output.R) exports data frames as a csv. While this is not necessary to the function of {asar} and {stockplotr} packages as a whole due to their setup, we recommend continuing this practice to remain consistent with the function.
 
+*UPDATE*: we no longer offer the option to save the data frame as a csv. This was removed in a current version of {asar}. We now recommend either converting each time you want the data frame in your environment or save as desired. The function does not take long to run, but can take a long time to save due to its size.
+
 The final data frame does not manipulate column typing (character, numeric, etc.). We have left that to the analyst or other functions since there can be conflicts within the estimates due to NAs. Ideally, all columns beside the following with remain as characters or factors and the following will be converted to numeric:
 
   - estimate
