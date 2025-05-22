@@ -126,7 +126,7 @@ convert_output <- function(
       dplyr::filter(output_order == 1) |>
       dplyr::pull(keyword)
     # identify first reported keyword
-    keywords_end_row <- which(apply(dat, 1, function(row) any(grepl(keyword_1, row))))[2] - 6 # 6 rows behind is the last entry for keywords
+    keywords_end_row <- which(apply(dat, 1, function(row) any(grepl(keyword_1, row))))[2] - 12 # 12 rows behind is the last entry for keywords
     # always extract the second entry bc the first is just in the list of keywords
     
     keywords <- dat[keywords_start_row:keywords_end_row, ][-c(1:3),c(1:3)] |>
@@ -135,7 +135,8 @@ convert_output <- function(
     colnames(keywords) <- c("output","keyword","output_order")
     keywords <- keywords |>
       dplyr::mutate(output_order = as.numeric(stringr::str_extract(output_order, "\\d+$"))) |>
-      dplyr::filter(output=="Y")
+      dplyr::filter(output=="Y") |>
+      dplyr::pull(keyword)
     
     # Below the parameters are grouped and narrowed down into priority to reach deadline.
     # Other parameters will be developed into the future
@@ -208,19 +209,6 @@ convert_output <- function(
     # aa.al_set <- c(11,12,14,16,17,18,19,20,36,37,47,49)
     # nn_set <- c(41,42,43,44,50,54,56)
 
-    # groups <- list(std_set=std_set, std2_set=std2_set, cha_set=cha_set, rand_set=rand_set, unkn_set=unkn_set, info_set=info_set, aa.al_set=aa.al_set, nn_set=nn_set)
-
-    # for(i in 1:length(groups)){
-    #   sub1 <- groups[[i]]
-    #   x <- gsub("_set", "", names(groups[i]))
-    #   # assign(x, c())
-    #   vec <- c()
-    #   for (j in 1:length(sub1)) {
-    #     sub2 <- param_names[sub1[[j]]]
-    #     vec <- c(vec, sub2)
-    #   }
-    #   assign(x, vec)
-    # }
     # First release will converted output for SS3 will only include the below parameters
     std <- c(
       "DERIVED_QUANTITIES",
@@ -240,11 +228,15 @@ convert_output <- function(
     )
     std2 <- c("OVERALL_COMPS")
     cha <- c("Dynamic_Bzero")
-    rand <- c( # "SPR_SERIES",
+    rand <- c( 
+      # "SPR_SERIES",
       # "selparm(Size)_By_Year_after_adjustments",
       # "selparm(Age)_By_Year_after_adjustments"
     )
-    # info <- c("LIKELIHOOD")
+    info <- c(
+      "LIKELIHOOD",
+      "DEFINITIONS"
+    )
     aa.al <- c(
       "BIOMASS_AT_AGE",
       "BIOMASS_AT_LENGTH",
