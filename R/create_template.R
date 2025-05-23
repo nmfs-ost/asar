@@ -35,10 +35,8 @@
 #' @param simple_affiliation TRUE/FALSE; If including affiliations,
 #'  should the office name function as the affiliation, rather
 #'  than the full address? Default is true.
-#' @param alt_title TRUE/FALSE; Use a title that is not the
-#' default title (i.e., an alternative title)? Default is false.
-#' @param title The alternative title. Example:
-#' "Management Track Assessments Spring 2024".
+#' @param title A custom title that is an alternative to the default title (composed
+#' in asar::create_title()). Example: "Management Track Assessments Spring 2024".
 #' @param parameters TRUE/FALSE; For
 #' parameterization of the script. Default is true.
 #' @param param_names List of parameter names that will be called
@@ -167,7 +165,6 @@
 #'   add_author = "Sun E Day",
 #'   include_affiliation = TRUE,
 #'   simple_affiliation = TRUE,
-#'   alt_title = FALSE,
 #'   title = "Management Track Assessments Spring 2024",
 #'   parameters = TRUE,
 #'   param_names = c("region", "year"),
@@ -220,7 +217,6 @@ create_template <- function(
     complex = FALSE,
     include_affiliation = TRUE,
     simple_affiliation = FALSE,
-    alt_title = FALSE,
     title = NA,
     parameters = TRUE,
     param_names = NA,
@@ -640,13 +636,10 @@ create_template <- function(
       # Create a report template file to render for the region and species
       # Create YAML header for document
       # Write title based on report type and region
-      if (alt_title) {
-        if (is.null(title)) {
-          stop("Alternate title not defined. Please define an alternative title in the parameter 'title'.")
-        }
-        title <- title
-      } else {
+      if (is.na(title)) {
         title <- create_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type, year = year)
+      } else {
+        title <- title
       }
 
       # Pull authors and affiliations from national db
@@ -970,7 +963,7 @@ create_template <- function(
 
       # Add page for citation of assessment report
       if (rerender_skeleton) {
-        if (!is.null(title) | !is.null(species) | !is.null(year) | !is.null(author)) {
+        if (title != "" | !is.null(species) | !is.null(year) | !is.null(author)) {
           citation_line <- grep("Please cite this publication as:", prev_skeleton) + 2
           citation <- glue::glue("{{{{< pagebreak >}}}} \n\n Please cite this publication as: \n\n {prev_skeleton[citation_line]} \n\n")
         } else {
