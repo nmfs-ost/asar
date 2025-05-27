@@ -35,11 +35,12 @@
 #' @examples
 #' \dontrun{
 #' convert_output(
-#' output_file = "Report.sso",
-#' outdir = "data",
-#' model = "ss3",
-#' savedir = getwd(),
-#' save_name = "converted_model_output")
+#'   output_file = "Report.sso",
+#'   outdir = "data",
+#'   model = "ss3",
+#'   savedir = getwd(),
+#'   save_name = "converted_model_output"
+#' )
 #' }
 convert_output <- function(
     output_file = NULL,
@@ -714,7 +715,6 @@ convert_output <- function(
       message("Some parameters were not found or included in the output file. The inital release of this converter only inlcudes to most necessary parameters and values. The following parameters were not added into the new output file: \n", paste(miss_parms, collapse = "\n"))
     }
     out_new <- Reduce(rbind, out_list)
-
   } else if (model %in% c("bam", "BAM")) {
     #### BAM ####
     # Extract values from BAM output - model file after following ADMB2R

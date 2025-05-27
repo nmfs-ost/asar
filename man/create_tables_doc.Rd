@@ -39,7 +39,8 @@ Create Quarto Document of Tables
 \examples{
 \dontrun{
 create_tables_doc(
-subdir = getwd(),
-rda_dir = here::here())
+  subdir = getwd(),
+  rda_dir = here::here()
+)
 }
 }

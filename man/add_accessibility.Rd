@@ -42,7 +42,7 @@ Altering latex file of report to increase accessibility of the document.
 }
 \examples{
 \dontrun{
-  create_template(
+create_template(
   new_template = TRUE,
   format = "pdf",
   office = "NWFSC",
@@ -59,20 +59,21 @@ Altering latex file of report to increase accessibility of the document.
   new_section = "an_additional_section",
   section_location = "after-introduction",
   rda_dir = getwd()
-  )
+)
 
-  path <- getwd()
+path <- getwd()
 
-  quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
+quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
 
-  withr::with_dir(
+withr::with_dir(
   file.path(path, "report"),
-   add_accessibility(
-     x = "SAR_USWC_Dover_sole_skeleton.tex",
-     dir = getwd(),
-     rda_dir = path,
-     compile = TRUE)
-   )
+  add_accessibility(
+    x = "SAR_USWC_Dover_sole_skeleton.tex",
+    dir = getwd(),
+    rda_dir = path,
+    compile = TRUE
+  )
+)
 }
 
 }

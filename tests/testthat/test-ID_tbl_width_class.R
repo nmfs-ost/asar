@@ -1,5 +1,4 @@
 test_that("Table widths calculated correctly", {
-
   # convert sample dataset
   convert_output(
     output_file = "Report.sso",
@@ -14,15 +13,16 @@ test_that("Table widths calculated correctly", {
   )
 
   stockplotr::table_indices(dat,
-                            make_rda = TRUE,
-                            rda_dir = getwd())
+    make_rda = TRUE,
+    rda_dir = getwd()
+  )
 
   # extra-wide width
   tbl_width <- ID_tbl_width_class(
     plot_name = "indices.abundance_table.rda",
     rda_dir = getwd(),
     portrait_pg_width = 5
-    )
+  )
 
   expected_output <- "extra-wide"
   expect_equal(tbl_width, expected_output)
@@ -30,8 +30,9 @@ test_that("Table widths calculated correctly", {
 
   # wide width
   stockplotr::table_bnc(dat,
-                            make_rda = TRUE,
-                            rda_dir = getwd())
+    make_rda = TRUE,
+    rda_dir = getwd()
+  )
 
   tbl_width2 <- ID_tbl_width_class(
     plot_name = "bnc_table.rda",

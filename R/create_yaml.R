@@ -61,8 +61,7 @@ create_yaml <- function(
     param_values = NULL,
     bib_name = NULL,
     bib_file,
-    year = NULL
-    ){
+    year = NULL) {
   # check first if want to rerender current skeleton
   if (rerender_skeleton) {
     # Extract yaml from current template
@@ -101,49 +100,49 @@ create_yaml <- function(
     # if (alt_title) {
     # DOES NOT WORK when latin latex notation is in the title
     # TODO: replace {} in the latex notation
-      yaml <- stringr::str_replace(yaml, yaml[grep("title:", yaml)], paste("title: ", title, sep = ""))
+    yaml <- stringr::str_replace(yaml, yaml[grep("title:", yaml)], paste("title: ", title, sep = ""))
     # }
 
     # add add'l param names
-      # this occurs below
+    # this occurs below
     # if (!is.null(param_names) & !is.null(param_values)) {
     #   add_params <- paste("  ", " ", param_names, ": ", "'", param_values, "'", sep = "")
     #   yaml <- append(yaml, add_params, after = grep("bibliography:", yaml) - 1)
     # }
 
-      # Parameters
-      # office, region, and species are default parameters
-      if (parameters) {
-        # check if params is already in yaml, if not then add in params: following with the other lines
-        if (!grep("params:", yaml)) {
-          yaml <- append(yaml, "params:", after = grep("output-file:", yaml))
-        }
-        # if species, office, and latin are updated - replace in space
-        if (!is.null(species) & any(grepl("species: ''", yaml))) {
-          yaml <- stringr::str_replace(yaml, yaml[grep("species: ''", yaml)], paste("  ", " ", "species: ", "'", species, "'", sep = ""))
-        }
-        if (length(office) == 1 & any(grepl("office: ''", yaml))) {
-          yaml <- stringr::str_replace(yaml, yaml[grep("office: ''", yaml)], paste("  ", " ", "office: ", "'", office, "'", sep = ""))
-        }
-        if (!is.null(spp_latin) & any(grepl("spp_latin: ''", yaml))) {
-          yaml <- stringr::str_replace(yaml, yaml[grep("spp_latin: ''", yaml)], paste("  ", " ", "spp_latin: ", "'", spp_latin, "'", sep = ""))
-        }
-        # if params are not entered - use previous ones else change
-        # TODO: add check for params not being replicated of default
-        if (!is.null(param_names) | !is.null(param_values)) {
-          if (length(param_names) != length(param_values)) {
-            print("Please define ALL parameter names (param_names) and values (param_values).")
-          } else {
-            add_params <- NULL
-            for (i in 1:length(param_names)) {
-              toad <- paste("  ", " ", param_names[i], ": ", "'", param_values[i], "'", sep = "")
-              add_params <- c(add_params, toad)
-            } # close loop
-            # add params into yaml
-            yaml <- append(yaml, add_params, after = grep("params: ", yaml))
-          } # close check
-        } # close if adding add'l params
-      } # close if params to be included in template
+    # Parameters
+    # office, region, and species are default parameters
+    if (parameters) {
+      # check if params is already in yaml, if not then add in params: following with the other lines
+      if (!grep("params:", yaml)) {
+        yaml <- append(yaml, "params:", after = grep("output-file:", yaml))
+      }
+      # if species, office, and latin are updated - replace in space
+      if (!is.null(species) & any(grepl("species: ''", yaml))) {
+        yaml <- stringr::str_replace(yaml, yaml[grep("species: ''", yaml)], paste("  ", " ", "species: ", "'", species, "'", sep = ""))
+      }
+      if (length(office) == 1 & any(grepl("office: ''", yaml))) {
+        yaml <- stringr::str_replace(yaml, yaml[grep("office: ''", yaml)], paste("  ", " ", "office: ", "'", office, "'", sep = ""))
+      }
+      if (!is.null(spp_latin) & any(grepl("spp_latin: ''", yaml))) {
+        yaml <- stringr::str_replace(yaml, yaml[grep("spp_latin: ''", yaml)], paste("  ", " ", "spp_latin: ", "'", spp_latin, "'", sep = ""))
+      }
+      # if params are not entered - use previous ones else change
+      # TODO: add check for params not being replicated of default
+      if (!is.null(param_names) | !is.null(param_values)) {
+        if (length(param_names) != length(param_values)) {
+          print("Please define ALL parameter names (param_names) and values (param_values).")
+        } else {
+          add_params <- NULL
+          for (i in 1:length(param_names)) {
+            toad <- paste("  ", " ", param_names[i], ": ", "'", param_values[i], "'", sep = "")
+            add_params <- c(add_params, toad)
+          } # close loop
+          # add params into yaml
+          yaml <- append(yaml, add_params, after = grep("params: ", yaml))
+        } # close check
+      } # close if adding add'l params
+    } # close if params to be included in template
 
     # add bib file name
     if (bib_name != "asar_references.bib") {
