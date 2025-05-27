@@ -218,20 +218,20 @@ convert_output <- function(
       "TIME_SERIES",
       "DISCARD_OUTPUT",
       "INDEX_2",
-      # "FIT_LEN_COMPS",
-      # "FIT_AGE_COMPS",
-      # "FIT_SIZE_COMPS",
-      # "SELEX_database",
-      # "Biology_at_age_in_endyr",
-      # "Growth_Parameters",
+      "FIT_LEN_COMPS",
+      "FIT_AGE_COMPS",
+      "FIT_SIZE_COMPS",
+      "SELEX_database",
+      "Biology_at_age_in_endyr",
+      "Growth_Parameters",
       "Kobe_Plot"
     )
     std2 <- c("OVERALL_COMPS")
     cha <- c("Dynamic_Bzero")
     rand <- c( 
-      # "SPR_SERIES",
-      # "selparm(Size)_By_Year_after_adjustments",
-      # "selparm(Age)_By_Year_after_adjustments"
+      "SPR_SERIES",
+      "selparm(Size)_By_Year_after_adjustments",
+      "selparm(Age)_By_Year_after_adjustments"
     )
     info <- c(
       "LIKELIHOOD",
