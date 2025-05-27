@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.1.2
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   accessibility_guide: accessibility_guide.html
@@ -9,7 +9,7 @@ articles:
   manual: manual.html
   markdown_notation: markdown_notation.html
   regional_workflows: regional_workflows.html
-last_built: 2025-05-19T15:53Z
+last_built: 2025-05-27T14:59Z
 urls:
   reference: nmfs-ost.github.io/asar/reference
   article: nmfs-ost.github.io/asar/articles
