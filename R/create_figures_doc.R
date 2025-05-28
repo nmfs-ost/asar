@@ -19,12 +19,15 @@
 create_figures_doc <- function(subdir = getwd(),
                                include_all = TRUE,
                                rda_dir = getwd()) {
-  if (include_all) {
+  if (include_all == FALSE) {
+    # add option for only adding specified figures
+    warning("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")
+  } else {
+
+    figures_doc_header <- "## Figures {#sec-figures}\n \n"
 
     # add chunk that creates object as the directory of all rdas
     figures_doc_setup <- paste0(
-      # add header
-      "## Figures {#sec-figures}\n \n",
       add_chunk(
         paste0("rda_dir <- '", rda_dir, "/rda_files'"),
         label = "set-rda-dir-figs",
@@ -35,10 +38,15 @@ create_figures_doc <- function(subdir = getwd(),
 
     figures_doc <- ""
 
-    # list all rdas in rda_files
-    rda_list <- list.files(file.path(rda_dir, "rda_files"))
-    # narrow down list to only figures files
-    rda_fig_list <- rda_list[grepl("figure", rda_list)]
+    # list all files in rda_files
+    file_list <- list.files(file.path(rda_dir, "rda_files"))
+    # create sublist of only figure files
+    file_fig_list <- file_list[grepl("_figure", file_list)]
+
+    # create sublist of only rda figure files
+    rda_fig_list <- file_fig_list[grepl("_figure.rda", file_fig_list)]
+    # create sublist of only non-rda figure files
+    non.rda_fig_list <- file_fig_list[!grepl(".rda", file_fig_list)]
 
     # create two-chunk system to plot each rda figure
     create_fig_chunks <- function(fig = NA,
@@ -95,33 +103,56 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
                       figures_doc_plot_setup2))
     }
 
-    # paste rda figure code chunks into one object
-    rda_figures_doc <- ""
-    if (length(rda_fig_list) > 0) {
-      for (i in 1:length(rda_fig_list)){
-        fig_chunk <- create_fig_chunks(fig = rda_fig_list[i],
-                                         rda_dir = rda_dir)
+    if (length(file_fig_list) == 0){
+      message(paste0("No figure files were found in rda_dir '", rda_dir , "'."))
+      figures_doc <- "## Figures {#sec-figures}"
+    } else {
+      # paste rda figure code chunks into one object
+      if (length(rda_fig_list) > 0) {
+        rda_figures_doc <- ""
+        for (i in 1:length(rda_fig_list)){
+          fig_chunk <- create_fig_chunks(fig = rda_fig_list[i],
+                                           rda_dir = rda_dir)
 
-        rda_figures_doc <- ifelse(is.null(fig_chunk),
-                                  rda_figures_doc,
-                                  paste0(rda_figures_doc, fig_chunk)
-                                  )
+          rda_figures_doc <- paste0(rda_figures_doc, fig_chunk)
+          }
+        } else {
+          message(paste0("No figure in an rda format (e.g., .rda) were found in rda_dir '", rda_dir , "'."))
+        }
+      if (length(non.rda_fig_list) > 0){
+        non.rda_figures_doc <- ""
+        for (i in 1:length(non.rda_fig_list)){
+          # remove file extension
+          fig_name <- stringr::str_extract(non.rda_fig_list[i],
+                                           "^[^.]+")
+          # remove "_figure", if present
+          fig_name <- sub("_figure", "", fig_name)
+          fig_chunk <- paste0(
+            "![Your caption here](", fs::path("rda_files",
+                                                     non.rda_fig_list[i]),
+            "){#fig-",
+            fig_name,
+            "}\n\n"
+          )
 
-        # combine figures_doc setup with figure chunks
-        figures_doc <- paste0(figures_doc_setup,
-                              rda_figures_doc)
-
+          non.rda_figures_doc <- paste0(non.rda_figures_doc, fig_chunk)
         }
       } else {
-        message(paste0("No figure rda files were found in rda_dir '", rda_dir , "'. Figures not created."))
-        figures_doc <- "## Figures {#sec-figures}"
+        message(paste0("No figure files in a non-rda format (e.g., .jpg, .png) were found in rda_dir '", rda_dir , "'."))
       }
 
-  } else {
-    # add option for only adding specified figures
-    warning("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")
+      # combine figures_doc setup with figure chunks
+      figures_doc <- paste0(figures_doc_header,
+                            figures_doc_setup,
+                            ifelse(exists("rda_figures_doc"),
+                                   rda_figures_doc,
+                                   NA),
+                            ifelse(exists("non.rda_figures_doc"),
+                                   non.rda_figures_doc,
+                                   NA)
+                            )
+      }
     }
-
   # Save figures doc to template folder
   utils::capture.output(cat(figures_doc),
     file = paste0(subdir, "/", "09_figures.qmd"),
