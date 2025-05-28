@@ -104,7 +104,7 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
     }
 
     if (length(file_fig_list) == 0){
-      message(paste0("No figure files were found in rda_dir '", rda_dir , "'."))
+      message(paste0("No figure files were found in '", fs::path(rda_dir, "rda_files"), "'."))
       figures_doc <- "## Figures {#sec-figures}"
     } else {
       # paste rda figure code chunks into one object
@@ -117,7 +117,7 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
           rda_figures_doc <- paste0(rda_figures_doc, fig_chunk)
           }
         } else {
-          message(paste0("No figure in an rda format (e.g., .rda) were found in rda_dir '", rda_dir , "'."))
+          message(paste0("No figures in an rda format (e.g., .rda) were found in '", fs::path(rda_dir, "rda_files"), "'."))
         }
       if (length(non.rda_fig_list) > 0){
         non.rda_figures_doc <- ""
@@ -138,7 +138,7 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
           non.rda_figures_doc <- paste0(non.rda_figures_doc, fig_chunk)
         }
       } else {
-        message(paste0("No figure files in a non-rda format (e.g., .jpg, .png) were found in rda_dir '", rda_dir , "'."))
+        message(paste0("No figure files in a non-rda format (e.g., .jpg, .png) were found in '",  fs::path(rda_dir, "rda_files") , "'."))
       }
 
       # combine figures_doc setup with figure chunks
