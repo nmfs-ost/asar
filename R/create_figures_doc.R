@@ -33,36 +33,27 @@ create_figures_doc <- function(subdir = getwd(),
       "\n"
     )
 
-    # current list of figures that can be produced with stockplotr
-    stockplotr_fig_list <- c(
-      "recruitment_figure.rda",
-      "spawning.biomass_figure.rda",
-      "biomass_figure.rda",
-      "landings_figure.rda",
-      "recruitment.deviations_figure.rda",
-      "sr_figure.rda",
-      "indices_figure.rda",
-      "pop.naa_figure.rda",
-      "pop.baa_figure.rda"
-    )
+    figures_doc <- ""
 
-    # create two-chunk system to plot each figure
-    create_fig_chunks <- function(stockplotr_fig = NA,
+    # list all rdas in rda_files
+    rda_list <- list.files(file.path(rda_dir, "rda_files"))
+    # narrow down list to only figures files
+    rda_fig_list <- rda_list[grepl("figure", rda_list)]
+
+    # create two-chunk system to plot each rda figure
+    create_fig_chunks <- function(fig = NA,
                                   rda_dir = getwd()){
 
-        if (any(grepl(stockplotr_fig,
-                      list.files(file.path(rda_dir, "rda_files"))))) {
-
-          fig_shortname <- stringr::str_remove(stockplotr_fig, "_figure.rda")
+        fig_shortname <- stringr::str_remove(fig, "_figure.rda")
 
         ## import plot, caption, alt text
         figures_doc_plot_setup1 <- paste0(
-         # figures_doc,
+          # figures_doc,
           add_chunk(
             paste0("# if the figure rda exists:
-if (file.exists(file.path(rda_dir, '", stockplotr_fig, "'))){\n
+if (file.exists(file.path(rda_dir, '", fig, "'))){\n
   # load rda
-  load(file.path(rda_dir, '", stockplotr_fig, "'))\n
+  load(file.path(rda_dir, '", fig, "'))\n
   # save rda with plot-specific name
   ", fig_shortname, "_plot_rda <- rda\n
   # remove generic rda object
@@ -76,13 +67,13 @@ if (file.exists(file.path(rda_dir, '", stockplotr_fig, "'))){\n
 } else {eval_", fig_shortname, " <- FALSE}"),
             label = paste0("fig-", fig_shortname, "-setup"),
             eval = "true"
-            ),
+          ),
           "\n"
-         )
+        )
 
         ## make figure chunk
         figures_doc_plot_setup2 <- paste0(
-         # figures_doc_plot_setup1,
+          # figures_doc_plot_setup1,
           add_chunk(
             paste0(fig_shortname, "_plot"),
             label = paste0("fig-", fig_shortname),
@@ -98,34 +89,38 @@ if (file.exists(file.path(rda_dir, '", stockplotr_fig, "'))){\n
             )
           ),
           "\n"
-         )
+        )
 
         return(paste0(figures_doc_plot_setup1,
                       figures_doc_plot_setup2))
-        } else {
-          message(paste0(stockplotr_fig, " not found. Figure not created."))
-        }
     }
 
-    # paste together figures_doc setup and code chunks into one object
-    figures_doc <- paste0("")
-    for (i in 1:length(stockplotr_fig_list)){
-      fig_chunk <- create_fig_chunks(stockplotr_fig = stockplotr_fig_list[i],
-                                       rda_dir = rda_dir)
+    # paste rda figure code chunks into one object
+    rda_figures_doc <- ""
+    if (length(rda_fig_list) > 0) {
+      for (i in 1:length(rda_fig_list)){
+        fig_chunk <- create_fig_chunks(fig = rda_fig_list[i],
+                                         rda_dir = rda_dir)
 
-      figures_doc <- ifelse(is.null(fig_chunk),
-                            figures_doc,
-                            paste0(figures_doc, fig_chunk))
+        rda_figures_doc <- ifelse(is.null(fig_chunk),
+                                  rda_figures_doc,
+                                  paste0(rda_figures_doc, fig_chunk)
+                                  )
 
-     if (i == length(stockplotr_fig_list)){
-       figures_doc <- paste0(figures_doc_setup, figures_doc)
-     }
-   }
+        # combine figures_doc setup with figure chunks
+        figures_doc <- paste0(figures_doc_setup,
+                              rda_figures_doc)
+
+        }
+      } else {
+        message(paste0("No figure rda files were found in rda_dir '", rda_dir , "'. Figures not created."))
+        figures_doc <- "## Figures {#sec-figures}"
+      }
 
   } else {
     # add option for only adding specified figures
     warning("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")
-  }
+    }
 
   # Save figures doc to template folder
   utils::capture.output(cat(figures_doc),
