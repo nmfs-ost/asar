@@ -67,7 +67,9 @@ convert_output <- function(
     bin = NA,
     kind = NA,
     nsim = NA,
-    age_a = NA
+    age_a = NA,
+    count = NA,
+    morph = NA
   )
   out_new <- out_new[-1, ]
 
@@ -133,71 +135,71 @@ convert_output <- function(
       naniar::replace_with_na_all(condition = ~ .x == "")
     keywords <- Filter(function(x) !all(is.na(x)), keywords)
     colnames(keywords) <- c("output","keyword","output_order")
-    keywords <- keywords |>
+    param_names <- keywords |>
       dplyr::mutate(output_order = as.numeric(stringr::str_extract(output_order, "\\d+$"))) |>
       dplyr::filter(output=="Y") |>
       dplyr::pull(keyword)
     
     # Below the parameters are grouped and narrowed down into priority to reach deadline.
     # Other parameters will be developed into the future
-    param_names <- c(
-      # "DEFINITIONS",
-      "DERIVED_QUANTITIES",
-      "ENVIRONMENTAL_DATA",
-      # "Input_Variance_Adjustment",
-      "LIKELIHOOD",
-      "MGparm_By_Year_after_adjustments",
-      # "MORPH_INDEXING",
-      "OVERALL_COMPS",
-      "PARAMETERS",
-      "Parm_devs_detail",
-      "BIOMASS_AT_AGE",
-      "BIOMASS_AT_LENGTH",
-      "CATCH",
-      "DISCARD_AT_AGE",
-      # "EXPLOITATION",
-      "CATCH_AT_AGE",
-      "F_AT_AGE",
-      "MEAN_SIZE_TIMESERIES",
-      "NUMBERS_AT_AGE",
-      "NUMBERS_AT_LENGTH",
-      "SPAWN_RECRUIT",
-      "SPAWN_RECR_CURVE",
-      # "SPR_SERIES",
-      "TIME_SERIES",
-      # "COMPOSITION_DATABASE",
-      # "DISCARD_SPECIFICATION",
-      "DISCARD_OUTPUT",
-      "INDEX_1",
-      "INDEX_2",
-      "INDEX_3",
-      "FIT_LEN_COMPS",
-      "FIT_AGE_COMPS",
-      "FIT_SIZE_COMPS",
-      "MEAN_BODY_WT_OUTPUT",
-      # "TAG_Recapture",
-      "AGE_SELEX",
-      "LEN_SELEX",
-      "selparm(Size)_By_Year_after_adjustments",
-      "selparm(Age)_By_Year_after_adjustments",
-      # "SELEX_database",
-      # "AGE_AGE_KEY",
-      # "AGE_LENGTH_KEY",
-      # "AGE_SPECIFIC_K",
-      # "BIOLOGY",
-      # "Biology_at_age_in_endyr",
-      "Growth_Parameters",
-      # "MEAN_BODY_WT(Begin)",
-      "MOVEMENT",
-      "Natural_Mortality",
-      # "RECRUITMENT_DIST",
-      # "Seas_Effects",
-      # "SIZEFREQ_TRANSLATION",
-      "Dynamic_Bzero",
-      # "GLOBAL_MSY",
-      "Kobe_Plot",
-      "SPR/YPR_Profile"
-    )
+    # param_names <- c(
+    #   # "DEFINITIONS",
+    #   "DERIVED_QUANTITIES",
+    #   "ENVIRONMENTAL_DATA",
+    #   # "Input_Variance_Adjustment",
+    #   "LIKELIHOOD",
+    #   "MGparm_By_Year_after_adjustments",
+    #   # "MORPH_INDEXING",
+    #   "OVERALL_COMPS",
+    #   "PARAMETERS",
+    #   "Parm_devs_detail",
+    #   "BIOMASS_AT_AGE",
+    #   "BIOMASS_AT_LENGTH",
+    #   "CATCH",
+    #   "DISCARD_AT_AGE",
+    #   # "EXPLOITATION",
+    #   "CATCH_AT_AGE",
+    #   "F_AT_AGE",
+    #   "MEAN_SIZE_TIMESERIES",
+    #   "NUMBERS_AT_AGE",
+    #   "NUMBERS_AT_LENGTH",
+    #   "SPAWN_RECRUIT",
+    #   "SPAWN_RECR_CURVE",
+    #   # "SPR_SERIES",
+    #   "TIME_SERIES",
+    #   # "COMPOSITION_DATABASE",
+    #   # "DISCARD_SPECIFICATION",
+    #   "DISCARD_OUTPUT",
+    #   "INDEX_1",
+    #   "INDEX_2",
+    #   "INDEX_3",
+    #   "FIT_LEN_COMPS",
+    #   "FIT_AGE_COMPS",
+    #   "FIT_SIZE_COMPS",
+    #   "MEAN_BODY_WT_OUTPUT",
+    #   # "TAG_Recapture",
+    #   "AGE_SELEX",
+    #   "LEN_SELEX",
+    #   "selparm(Size)_By_Year_after_adjustments",
+    #   "selparm(Age)_By_Year_after_adjustments",
+    #   # "SELEX_database",
+    #   # "AGE_AGE_KEY",
+    #   # "AGE_LENGTH_KEY",
+    #   # "AGE_SPECIFIC_K",
+    #   # "BIOLOGY",
+    #   # "Biology_at_age_in_endyr",
+    #   "Growth_Parameters",
+    #   # "MEAN_BODY_WT(Begin)",
+    #   "MOVEMENT",
+    #   "Natural_Mortality",
+    #   # "RECRUITMENT_DIST",
+    #   # "Seas_Effects",
+    #   # "SIZEFREQ_TRANSLATION",
+    #   "Dynamic_Bzero",
+    #   # "GLOBAL_MSY",
+    #   "Kobe_Plot",
+    #   "SPR/YPR_Profile"
+    # )
     # SS3 Groupings - manually done
     # Notes on the side indicate those removed since the information is not needed
     # std_set <- c(2,6,13,21,23,24,27,29,31,32,33,38,40,45,46,55) # Removing - 7
@@ -213,6 +215,7 @@ convert_output <- function(
     std <- c(
       "DERIVED_QUANTITIES",
       "MGparm_By_Year_after_adjustments",
+      "PARAMETERS",
       "CATCH",
       "SPAWN_RECRUIT",
       "TIME_SERIES",
@@ -228,10 +231,14 @@ convert_output <- function(
     )
     std2 <- c("OVERALL_COMPS")
     cha <- c("Dynamic_Bzero")
-    rand <- c( 
+    rand <- c(
+      "Input_Variance_Adjustment",
       "SPR_SERIES",
       "selparm(Size)_By_Year_after_adjustments",
-      "selparm(Age)_By_Year_after_adjustments"
+      "selparm(Age)_By_Year_after_adjustments",
+      "BIOLOGY",
+      "SPR/YPR_Profile",
+      "SPAWN_RECR_CURVE"
     )
     info <- c(
       "LIKELIHOOD",
@@ -247,15 +254,30 @@ convert_output <- function(
       "NUMBERS_AT_AGE",
       "NUMBERS_AT_LENGTH",
       "AGE_SELEX",
-      "LEN_SELEX"
+      "LEN_SELEX",
+      "MEAN_BODY_WT(Begin)",
+      "Natural_Mortality"
     )
-    # nn <- NA
+    nn <- c(
+      "MORPH_INDEXING",
+      "EXPLOITATION",
+      "DISCARD_SPECIFICATION",
+      "INDEX_1",
+      "MEAN_BODY_WT_OUTPUT"
+    )
 
     # Loop for all identified parameters to extract for plotting and use
     # Create list of parameters that were not found in the output file
     # 1,4,10,17,19,20,22,32,37
-    factors <- c("era", "year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo", "growth_pattern", "gp")
-    errors <- c("StdDev", "sd", "se", "SE", "cv", "CV")
+    factors <- c("era", "year", "fleet", 
+                 "fleet_name", "age", "sex", 
+                 "area", "seas", "season", 
+                 "time", "era", "subseas", 
+                 "subseason", "platoon", "platoo", 
+                 "growth_pattern", "gp", "month", 
+                 "like", "morph", "bio_pattern", 
+                 "settlement", "birthseas", "count")
+    errors <- c("StdDev", "sd", "se", "SE", "cv", "CV", "std")
     miss_parms <- c()
     out_list <- list()
     #### SS3 loop ####
@@ -346,7 +368,7 @@ convert_output <- function(
                   ),
                   month = dplyr::case_when(
                     grepl("_month_[0-9]+$", label) ~ stringr::str_extract(label, "(?<=month_)[0-9]+$"),
-                    TRUE ~ NA
+                    TRUE ~ ifelse(any(grepl("month", colnames(df3))), month, NA)
                   )
                 )
 
@@ -382,15 +404,15 @@ convert_output <- function(
             if (any(colnames(df4) %in% c("value"))) df4 <- dplyr::rename(df4, estimate = value)
 
             # Check if error values are in the labels column and extract out
-            if (any(sapply(errors, function(x) grepl(x, unique(df4$label))))) {
-              err_names <- unique(df4$label)[grepl(paste(errors, collapse = "|"), unique(df4$label)) & !unique(df4$label) %in% errors]
+            if (any(sapply(paste0("(^|[_.])", errors, "($|[_.])"), function(x) grepl(x, unique(df4$label))))) {
+              err_names <- unique(df4$label)[grepl(paste(paste0("(^|[_.])", errors, "($|[_.])"), collapse = "|"), unique(df4$label)) & !unique(df4$label) %in% errors]
               if (any(grepl("sel", err_names))) {
                 df4 <- df4
               } else if (length(intersect(errors, colnames(df4))) == 1) {
                 df4 <- df4[-grep(paste(errors, "_", collapse = "|", sep = ""), df4$label), ]
               } else if (parm_sel == "MGparm_By_Year_after_adjustments") { # this is too specific
                 df4 <- df4
-                message("Error values are present, but are unique to the data frame and not to a selected parameter.")
+                cli::cli_alert_info("Error values are present, but are unique to the data frame and not to a selected parameter.")
               } else {
                 df4 <- df4 |>
                   tidyr::pivot_wider(
@@ -410,22 +432,39 @@ convert_output <- function(
                   if (any(grepl(paste(err_names, collapse = "|"), colnames(df4)))) {
                     df4 <- df4 |>
                       dplyr::select(-tidyselect::all_of(err_names[2:length(err_names)]))
+                    cli::cli_alert_info(
+                      glue::glue("Multiple error metrics reported in {parm_sel}."
+                      )
+                    )
+                    cli::cli_alert_info(
+                      glue::glue("Error label(s) removed: \n {paste(err_names[-1], sep = '\n')}"
+                      )
+                    )
                   } else {
                     df4 <- df4 |>
                       dplyr::filter(!(label %in% err_names[2:length(err_names)]))
                   }
+                  # Find overlapping error values if still present
                   find_error_value <- function(column_names, to_match_vector) {
                     vals <- sapply(column_names, function(col_name) {
-                      match <- sapply(to_match_vector, function(err) if (grepl(err, col_name)) err else NA)
+                      match <- sapply(to_match_vector, function(err) {
+                        pattern <- paste0("(^|[_.])", err, "($|[_.])")
+                        if (grepl(pattern, col_name)) err else NA
+                      })
                       stats::na.omit(match)[1]
                     })
                     # only unique values and those that intersect with values vector
                     intersect(unique(vals), to_match_vector)
                   }
+                  # SS: I am not entirely sure what this step is doing, but is a good check
                   if (any(grepl(paste(err_names, collapse = "|"), colnames(df4)))) {
                     err_name <- find_error_value(names(df4), errors)
                     if (length(err_name) > 1) {
                       err_name <- stringr::str_extract(err_names[1], paste(errors, collapse = "|"))
+                      # cli::cli_alert_info(
+                      #   glue::glue("Multiple error metrics reported in {parm_sel}. Error label(s) removed: {err_names[-1]}"
+                      #   )
+                      # )
                     }
                     colnames(df4)[grepl(err_name, colnames(df4))] <- err_name
                   } else {
@@ -465,11 +504,12 @@ convert_output <- function(
             # } else if (ncol(out_new) > ncol(df5)){
             #   warning(paste0("Transformed data frame for ", parm_sel, " has less columns than default."))
             # }
-            if ("seas" %in% colnames(df5)) {
-              df5 <- df5 |>
-                dplyr::rename(season = seas)
-            }
+            if ("seas" %in% colnames(df5))df5 <- dplyr::rename(df5, season = seas)
+            
             if ("subseas" %in% colnames(df5)) df5 <- dplyr::rename(df5, subseason = subseas)
+            
+            if ("like" %in% colnames(df5)) df5 <- dplyr::rename(df5, likelihood = like)
+            
             df5[setdiff(tolower(names(out_new)), tolower(names(df5)))] <- NA
             if (ncol(out_new) < ncol(df5)) {
               diff <- setdiff(names(df5), names(out_new))
@@ -600,7 +640,103 @@ convert_output <- function(
               out_list[[parm_sel]] <- df2
             }
             ##### rand ####
-            # } else if (parm_sel %in% rand) {
+          } else if (parm_sel %in% rand) {
+            # KEYWORDS in RAND
+            # "Input_Variance_Adjustment"
+            # "SPR_SERIES"
+            # "selparm(Size)_By_Year_after_adjustments"
+            # "selparm(Age)_By_Year_after_adjustments"
+            # "BIOLOGY"
+            # "SPR/YPR_Profile"
+            # "SPAWN_RECR_CURVE"
+            
+            if (parm_sel == "SPAWN_RECR_CURVE") {
+              # 32
+              # remove first row - naming
+              # df1 <- extract[-1, ]
+              # # Find first row without NAs = headers
+              # df2 <- df1[stats::complete.cases(df1), ]
+              # # identify first row
+              # row <- df2[1, ]
+              # # make row the header names for first df
+              # colnames(df1) <- row
+              # # find row number that matches 'row'
+              # rownum <- prodlim::row.match(row, df1)
+              # # Subset data frame
+              # df3 <- df1[-c(1:rownum), ]
+              # colnames(df3) <- tolower(row)
+              # # add year and manipulate df
+              # # Extract first year of recruitment
+              # fyr_row <- which(apply(dat, 1, function(row) any(row == "Start_year:")))
+              # first_year <- dat[fyr_row,2]
+              # # Extract last year
+              # endyr_row <- which(apply(dat, 1, function(row) any(row == "End_year:")))
+              # end_year <- dat[endyr_row,2]
+              # 
+              # df4 <- df3 |>
+              #   dplyr::mutate(
+              #     year = seq(first_year, end_year, by = 1),
+              #   )
+              # skipping for now cuz not needed
+              miss_parms <- c(miss_parms, parm_sel)
+              next
+            } 
+            
+            if (parm_sel == "SPR_SERIES") {
+              # split into the 3 dfs then stack - make sure all factors are present
+              # remove first row - naming
+              df1 <- extract[-1, ]
+              # Find first row without NAs = headers
+              df2 <- df1[stats::complete.cases(df1), ]
+              # identify first row
+              row <- df2[1, ]
+              # make row the header names for first df
+              colnames(df1) <- row
+              # find row number that matches 'row'
+              rownum <- prodlim::row.match(row, df1)
+              # Subset data frame
+              df3 <- df1[-c(1:rownum), ]
+              colnames(df3) <- tolower(row)
+              actual_col <- grep("actual", colnames(df3))
+              moref_col <- grep("more_f", colnames(df3))
+              sub_df1 <- df3[, 1:(actual_col-1)] |>
+                tidyr::pivot_longer(
+                  cols = -c(yr, era),
+                  names_to = "label",
+                  values_to = "estimate"
+                ) |>
+                dplyr::rename(year = yr) |>
+                dplyr::mutate(label = paste("est_", label, sep = ""))
+              
+              sub_df2 <- df3[, c(1:2, (actual_col+1):(moref_col-1))] |>
+                tidyr::pivot_longer(
+                  cols = -c(yr, era),
+                  names_to = "label",
+                  values_to = "estimate"
+                ) |>
+                dplyr::rename(year = yr) |>
+                dplyr::mutate(label = paste("act_", label, sep = ""))
+              
+              sub_df3 <- df3[, c(1:2, (moref_col+1):ncol(df3))] |>
+                tidyr::pivot_longer(
+                  cols = -c(yr, era),
+                  names_to = "label",
+                  values_to = "estimate"
+                ) |>
+                dplyr::rename(year = yr) |>
+                dplyr::mutate(
+                  morph = dplyr::case_when(
+                    grepl("avef_|maxf_", label) ~ stringr::str_extract(label, "[0-9]+$"),
+                    TRUE ~ NA_character_
+                  ),
+                  label = dplyr::case_when(
+                    grepl("avef_", label) ~ stringr::str_remove(label, "_[0-9]+"),
+                    grepl("maxf_", label) ~ stringr::str_remove(label, "_[0-9]+"),
+                    TRUE ~ label
+                  )
+                )
+              
+            }
             #   miss_parms <- c(miss_parms, parm_sel)
             #   next
             # } else if (parm_sel %in% info) {
@@ -1211,6 +1347,12 @@ convert_output <- function(
     out_new <- dplyr::left_join(out_new, var_names_sheet, by = c("module_name", "label")) |>
       dplyr::mutate(label = dplyr::case_when(
         !is.na(alt_label) ~ alt_label,
+        # TODO: add this to ss3_var_names.xlsx
+        label == "dev" & module_name == "SPAWN_RECRUIT" ~ "recruitment_deviation",
+        # TODO: add this to ss3_var_names.xlsx
+        label == "dev" & module_name == "SPAWN_RECRUIT_CURVE" ~ "recruitment_deviation",
+        # TODO: add this to ss3_var_names.xlsx
+        label == "dev" & module_name == "DISCARD_OUTPUT" ~ "discard_deviation",
         TRUE ~ label
       )) |>
       dplyr::select(-alt_label)
