@@ -20,12 +20,11 @@ create_figures_doc <- function(subdir = getwd(),
                                include_all = TRUE,
                                rda_dir = getwd()) {
   if (include_all) {
-    # add header
-    figures_doc <- paste0("## Figures {#sec-figures}\n \n")
 
     # add chunk that creates object as the directory of all rdas
-    figures_doc <- paste0(
-      figures_doc,
+    figures_doc_setup <- paste0(
+      # add header
+      "## Figures {#sec-figures}\n \n",
       add_chunk(
         paste0("rda_dir <- '", rda_dir, "/rda_files'"),
         label = "set-rda-dir-figs",
@@ -34,8 +33,7 @@ create_figures_doc <- function(subdir = getwd(),
       "\n"
     )
 
-    # will condense/simplify this workflow in another phase
-    #
+    # current list of figures that can be produced with stockplotr
     stockplotr_fig_list <- c(
       "recruitment_figure.rda",
       "spawning.biomass_figure.rda",
@@ -48,6 +46,7 @@ create_figures_doc <- function(subdir = getwd(),
       "pop.baa_figure.rda"
     )
 
+    # create two-chunk system to plot each figure
     create_fig_chunks <- function(stockplotr_fig = NA,
                                   rda_dir = getwd()){
 
@@ -57,8 +56,8 @@ create_figures_doc <- function(subdir = getwd(),
           fig_shortname <- stringr::str_remove(stockplotr_fig, "_figure.rda")
 
         ## import plot, caption, alt text
-        figures_doc <- paste0(
-          figures_doc,
+        figures_doc_plot_setup1 <- paste0(
+         # figures_doc,
           add_chunk(
             paste0("# if the figure rda exists:
 if (file.exists(file.path(rda_dir, '", stockplotr_fig, "'))){\n
@@ -81,9 +80,9 @@ if (file.exists(file.path(rda_dir, '", stockplotr_fig, "'))){\n
           "\n"
          )
 
-        ## add figure
-        figures_doc <- paste0(
-          figures_doc,
+        ## make figure chunk
+        figures_doc_plot_setup2 <- paste0(
+         # figures_doc_plot_setup1,
           add_chunk(
             paste0(fig_shortname, "_plot"),
             label = paste0("fig-", fig_shortname),
@@ -100,186 +99,28 @@ if (file.exists(file.path(rda_dir, '", stockplotr_fig, "'))){\n
           ),
           "\n"
          )
+
+        return(paste0(figures_doc_plot_setup1,
+                      figures_doc_plot_setup2))
         } else {
-          message("stockplotr_fig not found. Figure not created.")
+          message(paste0(stockplotr_fig, " not found. Figure not created."))
         }
     }
 
-    # Recruitment ts figure
-    figures_doc <- create_fig_chunks(stockplotr_fig = stockplotr_fig_list[1],
-                                     rda_dir = rda_dir)
+    # paste together figures_doc setup and code chunks into one object
+    figures_doc <- paste0("")
+    for (i in 1:length(stockplotr_fig_list)){
+      fig_chunk <- create_fig_chunks(stockplotr_fig = stockplotr_fig_list[i],
+                                       rda_dir = rda_dir)
 
-    # SB figure
-    figures_doc <- create_fig_chunks(stockplotr_fig = stockplotr_fig_list[2],
-                                     rda_dir = rda_dir)
+      figures_doc <- ifelse(is.null(fig_chunk),
+                            figures_doc,
+                            paste0(figures_doc, fig_chunk))
 
-    # B figure
-    figures_doc <- create_fig_chunks(stockplotr_fig = stockplotr_fig_list[3],
-                                     rda_dir = rda_dir)
-
-    # Landings figure
-    figures_doc <- create_fig_chunks(stockplotr_fig = stockplotr_fig_list[4],
-                                     rda_dir = rda_dir)
-
-    # recruitment deviations figure
-    figures_doc <- create_fig_chunks(stockplotr_fig = stockplotr_fig_list[5],
-                                     rda_dir = rda_dir)
-
-    # stock recruitment figure
-    # TODO: fix workflow so that if a fig isn't found, it doesn't convert figures_doc
-    # to NULL. If it is found, then figures_doc <- figures_doc (needs to append)
-    create_fig_chunks(stockplotr_fig = stockplotr_fig_list[6],
-                                     rda_dir = rda_dir)
-
-    # indices figure
-    if (any(grepl("indices_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
-      ## import plot, caption, alt text
-      figures_doc <- paste0(
-        figures_doc,
-        add_chunk(
-          paste0("# if the indices figure rda exists:
-if (file.exists(file.path(rda_dir, 'indices_figure.rda'))){\n
-  # load rda
-  load(file.path(rda_dir, 'indices_figure.rda'))\n
-  # save rda with plot-specific name
-  indices_plot_rda <- rda\n
-  # remove generic rda object
-  rm(rda)\n
-  # save figure, caption, and alt text as separate objects; set eval to TRUE
-  indices_plot <- indices_plot_rda$figure
-  indices_cap <- indices_plot_rda$cap
-  indices_alt_text <- indices_plot_rda$alt_text
-  eval_indices <- TRUE\n
-# if the indices figure rda does not exist, don't evaluate the next chunk
-} else {eval_indices <- FALSE}"),
-          label = "fig-indices-setup",
-          eval = "true"
-        ),
-        "\n"
-      )
-
-      ## add figure
-      figures_doc <- paste0(
-        figures_doc,
-        add_chunk(
-          paste0("indices_plot"),
-          label = "fig-indices",
-          eval = "!expr eval_indices",
-          add_option = TRUE,
-          chunk_op = c(
-            glue::glue(
-              "fig-cap: !expr if(eval_indices) indices_cap"
-            ),
-            glue::glue(
-              "fig-alt: !expr if(eval_indices) indices_alt_text"
-            )
-          )
-        ),
-        "\n"
-      )
-    } else {
-      message("Indices of abundance figure not created.")
-    }
-
-    # abundance at age figure
-    if (any(grepl("pop.naa_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
-      ## import plot, caption, alt text
-      figures_doc <- paste0(
-        figures_doc,
-        add_chunk(
-          paste0("# if the abundance at age figure rda exists:
-if (file.exists(file.path(rda_dir, 'pop.naa_figure.rda'))){\n
-  # load rda
-  load(file.path(rda_dir, 'pop.naa_figure.rda'))\n
-  # save rda with plot-specific name
-  pop.naa_plot_rda <- rda\n
-  # remove generic rda object
-  rm(rda)\n
-  # save figure, caption, and alt text as separate objects; set eval to TRUE
-  pop.naa_plot <- pop.naa_plot_rda$figure
-  pop.naa_cap <- pop.naa_plot_rda$cap
-  pop.naa_alt_text <- pop.naa_plot_rda$alt_text
-  eval_pop.naa <- TRUE\n
-# if the abundance at age figure rda does not exist, don't evaluate the next chunk
-} else {eval_pop.naa <- FALSE}"),
-          label = "fig-pop.naa-setup",
-          eval = "true"
-        ),
-        "\n"
-      )
-
-      ## add figure
-      figures_doc <- paste0(
-        figures_doc,
-        add_chunk(
-          paste0("pop.naa_plot"),
-          label = "fig-pop.naa",
-          eval = "!expr eval_pop.naa",
-          add_option = TRUE,
-          chunk_op = c(
-            glue::glue(
-              "fig-cap: !expr if(eval_pop.naa) pop.naa_cap"
-            ),
-            glue::glue(
-              "fig-alt: !expr if(eval_pop.naa) pop.naa_alt_text"
-            )
-          )
-        ),
-        "\n"
-      )
-    } else {
-      message("Abundance at age figure not created.")
-    }
-
-    # biomass at age figure
-    if (any(grepl("pop.baa_figure.rda", list.files(file.path(rda_dir, "rda_files"))))) {
-      ## import plot, caption, alt text
-      figures_doc <- paste0(
-        figures_doc,
-        add_chunk(
-          paste0("# if the biomass at age figure rda exists:
-if (file.exists(file.path(rda_dir, 'pop.baa_figure.rda'))){\n
-  # load rda
-  load(file.path(rda_dir, 'pop.baa_figure.rda'))\n
-  # save rda with plot-specific name
-  pop.baa_plot_rda <- rda\n
-  # remove generic rda object
-  rm(rda)\n
-  # save figure, caption, and alt text as separate objects; set eval to TRUE
-  pop.baa_plot <- pop.baa_plot_rda$figure
-  pop.baa_cap <- pop.baa_plot_rda$cap
-  pop.baa_alt_text <- pop.baa_plot_rda$alt_text
-  eval_pop.baa <- TRUE\n
-# if the biomass at age figure rda does not exist, don't evaluate the next chunk
-} else {eval_pop.baa <- FALSE}"),
-          label = "fig-pop.baa-setup",
-          eval = "true"
-        ),
-        "\n"
-      )
-
-      ## add figure
-      figures_doc <- paste0(
-        figures_doc,
-        add_chunk(
-          paste0("pop.baa_plot"),
-          label = "fig-pop.baa",
-          eval = "!expr eval_pop.baa",
-          add_option = TRUE,
-          chunk_op = c(
-            glue::glue(
-              "fig-cap: !expr if(eval_pop.baa) pop.baa_cap"
-            ),
-            glue::glue(
-              "fig-alt: !expr if(eval_pop.baa) pop.baa_alt_text"
-            )
-          )
-        ),
-        "\n"
-      )
-    } else {
-      message("Biomass at age figure not created.")
-    }
+     if (i == length(stockplotr_fig_list)){
+       figures_doc <- paste0(figures_doc_setup, figures_doc)
+     }
+   }
 
   } else {
     # add option for only adding specified figures
