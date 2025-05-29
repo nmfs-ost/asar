@@ -15,17 +15,17 @@ create_yaml(
   author = NULL,
   add_author = NULL,
   add_image = FALSE,
-  spp_image = NULL,
-  species = NULL,
-  spp_latin = NULL,
-  region = NULL,
+  spp_image = NA,
+  species = NA,
+  spp_latin = NA,
+  region = NA,
   format = "pdf",
   parameters = TRUE,
-  param_names = NULL,
-  param_values = NULL,
-  bib_name = NULL,
+  param_names = NA,
+  param_values = NA,
+  bib_name = NA,
   bib_file,
-  year = NULL
+  year = format(Sys.Date(), "\%Y")
 )
 }
 \arguments{
@@ -45,8 +45,8 @@ base R.}
 \item{prev_format}{The format that the previous skeleton was directed to
 render to. Parameter is inherited from create_template.}
 
-\item{title}{The alternative title. Example:
-"Management Track Assessments Spring 2024".}
+\item{title}{A custom title that is an alternative to the default title (composed
+in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
 
 \item{type}{Type of report to build. Default is SAR ("SAR"). New options include
 templates for PMFC ("pfmc") and NEFSC management track ("nemt").}
@@ -115,21 +115,21 @@ Create string for yml header in quarto file
 \dontrun{
 create_yaml(
   rerender_skeleton = FALSE,
-  prev_skeleton = NULL,
+  prev_skeleton = NA,
   title = "My title",
   author_list = "  - name: 'Patrick Star'\n    affiliations:\n      - name: 'NOAA Fisheries Southeast Fisheries Science Center'\n        address: '75 Virginia Beach Drive'\n        city: 'Miami'\n        state: 'FL'\n        postal-code: '33149'\n",
   author = "Patrick Star",
   office = "AFSC",
-  add_author = NULL,
+  add_author = NA,
   add_image = FALSE,
-  spp_image = "",
-  species = NULL,
-  spp_latin = NULL,
-  region = NULL,
+  spp_image = NA,
+  species = NA,
+  spp_latin = NA,
+  region = NA,
   format = "pdf",
   parameters = TRUE,
-  param_names = NULL,
-  param_values = NULL,
+  param_names = NA,
+  param_values = NA,
   bib_file = "asar_references.bib",
   bib_name = "asar_references.bib",
   year = 2025

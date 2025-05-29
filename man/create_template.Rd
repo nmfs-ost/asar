@@ -104,11 +104,8 @@ false.}
 should the office name function as the affiliation, rather
 than the full address? Default is true.}
 
-\item{alt_title}{TRUE/FALSE; Use a title that is not the
-default title (i.e., an alternative title)? Default is false.}
-
-\item{title}{The alternative title. Example:
-"Management Track Assessments Spring 2024".}
+\item{title}{A custom title that is an alternative to the default title (composed
+in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
 
 \item{parameters}{TRUE/FALSE; For
 parameterization of the script. Default is true.}
@@ -334,7 +331,6 @@ create_template(
   add_author = "Sun E Day",
   include_affiliation = TRUE,
   simple_affiliation = TRUE,
-  alt_title = FALSE,
   title = "Management Track Assessments Spring 2024",
   parameters = TRUE,
   param_names = c("region", "year"),
