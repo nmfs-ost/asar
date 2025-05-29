@@ -261,6 +261,8 @@ dir.create(fs::path(getwd(), "rda_files"))
 
 ## Export your rdas
 
+> **NOTE**: Your exported rda file must end in "table" or "figure" (e.g., "example_tab_table.rda", "example_fig_figure.rda"). If it does not, the table or figure will not be added to your Figures or Tables documents.
+
 ### Tables
 
 This will produce an rda called "example_tab_table.rda" and save it in your rda_files folder.

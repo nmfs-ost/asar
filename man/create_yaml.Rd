@@ -21,7 +21,8 @@ create_yaml(
   prev_format = NULL,
   parameters = TRUE,
   param_names = NULL,
-  param_values = NULL
+  param_values = NULL,
+  type = "SAR"
 )
 }
 \arguments{
@@ -85,6 +86,9 @@ individual parameters for this function, above).}
 of parameter names. Parameters automatically included:
 office, region, species (each of which are listed as
 individual parameters for this function, above).}
+
+\item{type}{Type of report to build. Default is SAR (NOAA Fisheries
+Stock Assessment Report).}
 }
 \value{
 Create a string indicating the important formatting pieces for a
