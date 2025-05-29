@@ -5,13 +5,13 @@
 \title{Convert Output}
 \usage{
 convert_output(
-  output_file = NULL,
+  output_file,
   outdir = getwd(),
-  model = NULL,
-  fleet_names = NULL,
+  model,
   file_save = FALSE,
   savedir = getwd(),
-  save_name = "std_model_output"
+  save_name = "std_model_output",
+  fleet_names = NULL
 )
 }
 \arguments{
@@ -24,10 +24,6 @@ working directory.}
 \item{model}{Assessment model used in evaluation ("ss3", "bam",
 "asap", "fims", "amak", "ms-java", "wham", "mas").}
 
-\item{fleet_names}{Names of fleets in the assessment model as
-shortened in the output file. If fleet names are not properly read, then
-indicate the fleets names as an acronym in a vector}
-
 \item{file_save}{TRUE/FALSE; Save the formatted object rather
 than calling the function and adding the formatted object to
 the global environment? Default is false.}
@@ -37,6 +33,10 @@ working directory.}
 
 \item{save_name}{Name of the converted output file (do not use
 spaces).}
+
+\item{fleet_names}{Names of fleets in the assessment model as
+shortened in the output file. If fleet names are not properly read, then
+indicate the fleets names as an acronym in a vector}
 }
 \value{
 A reformatted and standardized version of assessment model results
