@@ -699,6 +699,7 @@ convert_output <- function(
               colnames(df3) <- tolower(row)
               actual_col <- grep("actual", colnames(df3))
               moref_col <- grep("more_f", colnames(df3))
+              # Separate out parts of the dataframe
               sub_df1 <- df3[, 1:(actual_col-1)] |>
                 tidyr::pivot_longer(
                   cols = -c(yr, era),
@@ -706,7 +707,18 @@ convert_output <- function(
                   values_to = "estimate"
                 ) |>
                 dplyr::rename(year = yr) |>
-                dplyr::mutate(label = paste("est_", label, sep = ""))
+                dplyr::mutate(
+                  label = dplyr::case_when(
+                    label == "bio_all" ~ "biomass",
+                    label == "bio_smry" ~ "biomass_midyear",
+                    label == "ssbzero" ~ "spawning_biomass_zero",
+                    # label == "ssbfished" ~ "spawning_biomass",
+                    label == "ssbfished/r" ~ "ssbfished_r",
+                    TRUE ~ label
+                  ),
+                  label = paste("estimate_", label, sep = ""),
+                  morph = NA
+                )
               
               sub_df2 <- df3[, c(1:2, (actual_col+1):(moref_col-1))] |>
                 tidyr::pivot_longer(
@@ -715,7 +727,20 @@ convert_output <- function(
                   values_to = "estimate"
                 ) |>
                 dplyr::rename(year = yr) |>
-                dplyr::mutate(label = paste("act_", label, sep = ""))
+                dplyr::mutate(
+                  label = dplyr::case_when(
+                    label == "bio_all" ~ "biomass",
+                    label == "bio_smry" ~ "biomass_midyear",
+                    label == "num_smry" ~ "abundance_midyear",
+                    label == "dead_catch" ~ "total_catch", # dead + retained
+                    label == "retain_catch" ~ "landings",
+                    label == "ssb" ~ "spawning_biomass",
+                    label == "recruits" ~ "recruitment",
+                    TRUE ~ label
+                  ),
+                  label = paste("actual_", label, sep = ""),
+                  morph = NA
+                )
               
               sub_df3 <- df3[, c(1:2, (moref_col+1):ncol(df3))] |>
                 tidyr::pivot_longer(
@@ -732,10 +757,16 @@ convert_output <- function(
                   label = dplyr::case_when(
                     grepl("avef_", label) ~ stringr::str_remove(label, "_[0-9]+"),
                     grepl("maxf_", label) ~ stringr::str_remove(label, "_[0-9]+"),
+                    label == "f=z-m" ~ "fishing_mortality",
                     TRUE ~ label
                   )
                 )
-              
+              # combine all subdataframes
+              df4 <- rbind(sub_df1, sub_df2, sub_df3)
+              # match to out_new
+              df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
+              # Add to out list
+              out_list[[parm_sel]] <- df4
             }
             #   miss_parms <- c(miss_parms, parm_sel)
             #   next
