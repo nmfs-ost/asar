@@ -6,57 +6,41 @@
 \usage{
 create_template(
   new_template = TRUE,
-  format = c("pdf", "docx", "html", NULL),
+  format = c("pdf", "docx", "html", NA),
   office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
-  region = NULL,
-  complex = FALSE,
-  species = NULL,
-  spp_latin = NULL,
-  year = NULL,
-  file_dir = getwd(),
+  species = NA,
+  spp_latin = NA,
+  year = NA,
+  file_dir = NA,
   author = "",
-  add_author = NULL,
+  add_author = NA,
+  region = NA,
+  complex = FALSE,
   include_affiliation = TRUE,
   simple_affiliation = FALSE,
   alt_title = FALSE,
-  title = NULL,
+  title = NA,
   parameters = TRUE,
-  param_names = NULL,
-  param_values = NULL,
+  param_names = NA,
+  param_values = NA,
   convert_output = FALSE,
-  fleet_names = NULL,
-  resdir = NULL,
-  model_results = NULL,
-  model = NULL,
-  new_section = NULL,
-  section_location = NULL,
+  fleet_names = NA,
+  resdir = NA,
+  model_results = NA,
+  model = NA,
+  new_section = NA,
+  section_location = NA,
   type = "SAR",
-  prev_year = NULL,
+  prev_year = NA,
   custom = FALSE,
-  custom_sections = NULL,
+  custom_sections = NA,
   include_figures = TRUE,
   include_tables = TRUE,
   add_image = FALSE,
-  spp_image = NULL,
+  spp_image = NA,
   bib_file = "asar_references.bib",
-  rda_dir = getwd(),
-  end_year = NULL,
-  n_projected_years = 10,
-  relative = FALSE,
-  recruitment_scale_amount = 1,
-  recruitment_unit_label = "metric tons",
-  ref_line = c("target", "MSY", "msy", "unfished"),
-  ref_point = NULL,
-  biomass_scale_amount = 1,
-  landings_unit_label = "metric tons",
-  ref_point_sb = NULL,
-  spawning_biomass_label = "metric tons",
-  spawning_biomass_scale_amount = 1,
-  ref_line_sb = c("target", "MSY", "msy", "unfished"),
-  indices_unit_label = "",
-  biomass_unit_label = "mt",
-  catch_unit_label = "mt",
-  rerender_skeleton = FALSE
+  rerender_skeleton = FALSE,
+  ...
 )
 }
 \arguments{
@@ -68,13 +52,6 @@ Default is false.}
 
 \item{office}{Regional Fisheries Science Center producing the
 report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
-
-\item{region}{Full name of region in which the species is
-evaluated (if applicable). If the region is not specified for
-your center or species, do not use this variable.}
-
-\item{complex}{TRUE/FALSE; Is this a species complex? Default
-is false.}
 
 \item{species}{Full common name for target species. Split
 naming with a space and capitalize first letter(s). Example:
@@ -95,6 +72,13 @@ by this function. Default is the working directory.}
 and who should be temporarily added to the author list. Format
 as "First MI Last".
 Please leave a comment on the GitHub issues page to be added.}
+
+\item{region}{Full name of region in which the species is
+evaluated (if applicable). If the region is not specified for
+your center or species, do not use this variable.}
+
+\item{complex}{TRUE/FALSE; Is this a species complex? Default
+is false.}
 
 \item{include_affiliation}{TRUE/FALSE; Does the analyst want to
 include the authors' affiliations in the document? Default is
@@ -189,76 +173,6 @@ using the image included in the project's repository.}
 
 \item{bib_file}{File path to a .bib file used for citing references in
 the report}
-
-\item{rda_dir}{If the user has already created .rda files containing
-figures, tables, alt text, and captions with \code{stockplotr}, rda_dir represents
-the location of the folder containing these .rda files ("rda_files").
-Otherwise, if the user has not used \code{stockplotr} to make those .rda files already,
-those files will be generated automatically and placed within an "rda_files"
-folder within rda_dir. The "rda_files" folder would have been
-made with \code{stockplotr::exp_all_figs_tables()}, or by exporting files by running individual
-\code{stockplotr} figure- and table-generating functions. If you have used \code{stockplotr} to
-generate these .rda files, you can leave the arguments below blank. NOTE:
-If an "rda_files" folder is detected within rda_dir, .rda files will not be
-regenerated.}
-
-\item{end_year}{The last year of assessment. The default is year - 1.}
-
-\item{n_projected_years}{Number of years spawning biomass is projected for.
-By default this number is set to 10}
-
-\item{relative}{A logical value specifying if the resulting figures should be
-relative spawning biomass. The default is 'FALSE'. 'ref_line' indicates which
-reference point to use.}
-
-\item{recruitment_scale_amount}{A number describing how much to scale down
-the recruitment quantities shown on the y axis. For example,
-recruitment_scale_amount = 100 would scale down a value from 500,000 -->
-5,000. This scale will be reflected in the y axis label.}
-
-\item{recruitment_unit_label}{Units for recruitment}
-
-\item{ref_line}{An argument inherited from \code{stockplotr::plot_spawning_biomass.R}.
-A string specifying the type of reference you want to
-compare spawning biomass to. The default is \code{"target"}, which looks for
-\code{"spawning_biomass_target"} in the \code{"label"} column of \code{dat}. The actual
-searching in \code{dat} is case agnostic and will work with either upper- or
-lower-case letters but you must use one of the options specified in the
-default list to ensure that the label on the figure looks correct
-regardless of how it is specified in \code{dat}.}
-
-\item{ref_point}{An argument inherited from \code{stockplotr::plot_biomass.R}. A known
-value of the reference point along with the label for the reference point as
-specified in the output file. Please use this option if the ref_line cannot
-find your desired point. Indicate the reference point in the form
-c("label" = value).}
-
-\item{biomass_scale_amount}{A number describing how much to scale down the
-biomass quantities shown on the y axis. See \code{recruitment_scale_amount}.}
-
-\item{landings_unit_label}{Units for landings}
-
-\item{ref_point_sb}{Identical definition as \code{ref_point}, but this argument is
-applied to plot_spawning_biomass.}
-
-\item{spawning_biomass_label}{Units for spawning biomass}
-
-\item{spawning_biomass_scale_amount}{A number describing how much to scale down the
-spawning biomass quantities shown on the y axis. See \code{recruitment_scale_amount}.}
-
-\item{ref_line_sb}{A string specifying the type of
-reference you want to compare spawning biomass to. The default is \code{"target"},
-which looks for \code{"spawning_biomass_target"} in the \code{"label"} column of \code{dat}.
-The actual searching in \code{dat} is case agnostic and will work with either upper- or
-lower-case letters but you must use one of the options specified in the
-default list to ensure that the label on the figure looks correct
-regardless of how it is specified in \code{dat}.}
-
-\item{indices_unit_label}{Units for index of abundance/CPUE}
-
-\item{biomass_unit_label}{Abbreviated units for biomass}
-
-\item{catch_unit_label}{Abbreviated units for catch}
 
 \item{rerender_skeleton}{Re-create the "skeleton.qmd" in your outline when
 changes to the main skeleton need to be made. This reproduces the
