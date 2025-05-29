@@ -596,6 +596,7 @@ convert_output <- function(
                 df4 <- df4 |>
                   dplyr::rename(season = seas)
               }
+              df4 <- dplyr::mutate(df4, module_name = parm_sel)
               df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
               if (ncol(out_new) < ncol(df4)) {
                 diff <- setdiff(names(df4), names(out_new))
@@ -628,7 +629,8 @@ convert_output <- function(
               dplyr::mutate(
                 area = stringr::str_extract(label, "(?<=_)[0-9]+"),
                 growth_pattern = stringr::str_extract(label, "(?<=_)[0-9]+$"),
-                label = stringr::str_extract(label, "^.*?(?=_[0-9]+)")
+                label = stringr::str_extract(label, "^.*?(?=_[0-9]+)"),
+                module_name = parm_sel
               )
             df2[setdiff(tolower(names(out_new)), tolower(names(df2)))] <- NA
             if (ncol(out_new) < ncol(df2)) {
@@ -680,9 +682,7 @@ convert_output <- function(
               # skipping for now cuz not needed
               miss_parms <- c(miss_parms, parm_sel)
               next
-            } 
-            
-            if (parm_sel == "SPR_SERIES") {
+            } else if (parm_sel == "SPR_SERIES") {
               # split into the 3 dfs then stack - make sure all factors are present
               # remove first row - naming
               df1 <- extract[-1, ]
@@ -695,84 +695,171 @@ convert_output <- function(
               # find row number that matches 'row'
               rownum <- prodlim::row.match(row, df1)
               # Subset data frame
-              df3 <- df1[-c(1:rownum), ]
+              df3 <- df1[-(1:rownum), ]
               colnames(df3) <- tolower(row)
-              actual_col <- grep("actual", colnames(df3))
-              moref_col <- grep("more_f", colnames(df3))
-              # Separate out parts of the dataframe
-              sub_df1 <- df3[, 1:(actual_col-1)] |>
-                tidyr::pivot_longer(
-                  cols = -c(yr, era),
-                  names_to = "label",
-                  values_to = "estimate"
-                ) |>
-                dplyr::rename(year = yr) |>
-                dplyr::mutate(
-                  label = dplyr::case_when(
-                    label == "bio_all" ~ "biomass",
-                    label == "bio_smry" ~ "biomass_midyear",
-                    label == "ssbzero" ~ "spawning_biomass_zero",
-                    # label == "ssbfished" ~ "spawning_biomass",
-                    label == "ssbfished/r" ~ "ssbfished_r",
-                    TRUE ~ label
-                  ),
-                  label = paste("estimate_", label, sep = ""),
-                  morph = NA
-                )
-              
-              sub_df2 <- df3[, c(1:2, (actual_col+1):(moref_col-1))] |>
-                tidyr::pivot_longer(
-                  cols = -c(yr, era),
-                  names_to = "label",
-                  values_to = "estimate"
-                ) |>
-                dplyr::rename(year = yr) |>
-                dplyr::mutate(
-                  label = dplyr::case_when(
-                    label == "bio_all" ~ "biomass",
-                    label == "bio_smry" ~ "biomass_midyear",
-                    label == "num_smry" ~ "abundance_midyear",
-                    label == "dead_catch" ~ "total_catch", # dead + retained
-                    label == "retain_catch" ~ "landings",
-                    label == "ssb" ~ "spawning_biomass",
-                    label == "recruits" ~ "recruitment",
-                    TRUE ~ label
-                  ),
-                  label = paste("actual_", label, sep = ""),
-                  morph = NA
-                )
-              
-              sub_df3 <- df3[, c(1:2, (moref_col+1):ncol(df3))] |>
-                tidyr::pivot_longer(
-                  cols = -c(yr, era),
-                  names_to = "label",
-                  values_to = "estimate"
-                ) |>
-                dplyr::rename(year = yr) |>
-                dplyr::mutate(
-                  morph = dplyr::case_when(
-                    grepl("avef_|maxf_", label) ~ stringr::str_extract(label, "[0-9]+$"),
-                    TRUE ~ NA_character_
-                  ),
-                  label = dplyr::case_when(
-                    grepl("avef_", label) ~ stringr::str_remove(label, "_[0-9]+"),
-                    grepl("maxf_", label) ~ stringr::str_remove(label, "_[0-9]+"),
-                    label == "f=z-m" ~ "fishing_mortality",
-                    TRUE ~ label
+              # check if there are estimate and acual values within the df
+              if (any(grepl("actual", colnames(df3)) | grepl("more_f", colnames(df3)))) {
+                actual_col <- grep("actual", colnames(df3))
+                moref_col <- grep("more_f", colnames(df3))
+                # Separate out parts of the dataframe
+                sub_df1 <- df3[, 1:(actual_col-1)] |>
+                  tidyr::pivot_longer(
+                    cols = -c(yr, era),
+                    names_to = "label",
+                    values_to = "estimate"
+                  ) |>
+                  dplyr::rename(year = yr) |>
+                  dplyr::mutate(
+                    label = dplyr::case_when(
+                      label == "bio_all" ~ "biomass",
+                      label == "bio_smry" ~ "biomass_midyear",
+                      label == "ssbzero" ~ "spawning_biomass_zero",
+                      # label == "ssbfished" ~ "spawning_biomass",
+                      label == "ssbfished/r" ~ "ssbfished_r",
+                      TRUE ~ label
+                    ),
+                    # label = paste("estimate_", label, sep = ""),
+                    morph = NA
                   )
-                )
-              # combine all subdataframes
-              df4 <- rbind(sub_df1, sub_df2, sub_df3)
+                
+                sub_df2 <- df3[, c(1:2, (actual_col+1):(moref_col-1))] |>
+                  tidyr::pivot_longer(
+                    cols = -c(yr, era),
+                    names_to = "label",
+                    values_to = "initial"
+                  ) |>
+                  dplyr::rename(year = yr) |>
+                  dplyr::mutate(
+                    label = dplyr::case_when(
+                      label == "bio_all" ~ "biomass",
+                      label == "bio_smry" ~ "biomass_midyear",
+                      label == "num_smry" ~ "abundance_midyear",
+                      label == "dead_catch" ~ "total_catch", # dead + retained
+                      label == "retain_catch" ~ "landings",
+                      label == "ssb" ~ "spawning_biomass",
+                      label == "recruits" ~ "recruitment",
+                      TRUE ~ label
+                    ),
+                    # change so that the values are placed in the column "initial" then combine w/ estimates
+                    # label = paste("actual_", label, sep = ""),
+                    morph = NA
+                  )
+                
+                sub_df3 <- df3[, c(1:2, (moref_col+1):ncol(df3))] |>
+                  tidyr::pivot_longer(
+                    cols = -c(yr, era),
+                    names_to = "label",
+                    values_to = "estimate"
+                  ) |>
+                  dplyr::rename(year = yr) |>
+                  dplyr::mutate(
+                    morph = dplyr::case_when(
+                      grepl("avef_|maxf_", label) ~ stringr::str_extract(label, "[0-9]+$"),
+                      TRUE ~ NA_character_
+                    ),
+                    label = dplyr::case_when(
+                      grepl("avef_", label) ~ stringr::str_remove(label, "_[0-9]+"),
+                      grepl("maxf_", label) ~ stringr::str_remove(label, "_[0-9]+"),
+                      label == "f=z-m" ~ "fishing_mortality",
+                      TRUE ~ label
+                    )
+                  )
+                # combine all subdataframes
+                df4 <- rbind(sub_df1, sub_df2, sub_df3) |>
+                  dplyr::mutate(module_name = parm_sel)
+              } else {
+                df4 <- df3 |>
+                  tidyr::pivot_longer(
+                    cols = -c(intersect(colnames(df3), c("Yr", "yr", "era"))),
+                    names_to = "label",
+                    values_to = "estimate"
+                  ) |>
+                  dplyr::rename(year = intersect(colnames(df3), c("Yr", "yr", "Year"))) |>
+                  dplyr::mutate(
+                    label = dplyr::case_when(
+                      grepl("bio_all", label) ~ "biomass",
+                      grepl("bio_smry", label) ~ "biomass_midyear",
+                      label == "ssbzero" ~ "spawning_biomass_zero",
+                      # label == "ssbfished" ~ "spawning_biomass",
+                      grepl("SSB_unfished", label) ~ "SSB_unfished",
+                      grepl("SSBfished_eq", label) ~ "SSB_fished",
+                      label == "ssbfished/r" ~ "ssbfished_r",
+                      TRUE ~ label
+                    ),
+                    # label = paste("estimate_", label, sep = ""),
+                    morph = NA,
+                    module_name = parm_sel
+                  )
+              }
               # match to out_new
               df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
               # Add to out list
               out_list[[parm_sel]] <- df4
+            } else if (parm_sel == "selparm(Size)_By_Year_after_adjustments") {
+              # TODO: revisit one day in group work
+              # skipping this one because there are no headers
+                miss_parms <- c(miss_parms, parm_sel)
+                next
+            } else if (parm_sel == "selparm(Age)_By_Year_after_adjustments") {
+              # also skipping
+              miss_parms <- c(miss_parms, parm_sel)
+              next
+            } else if (parm_sel == "BIOLOGY") {
+              # not sure how this output is helpful
+              miss_parms <- c(miss_parms, parm_sel)
+              next
+            } else if (parm_sel == "SPR/YPR_Profile") {
+              miss_parms <- c(miss_parms, parm_sel)
+              next
+            } else {
+              miss_parms <- c(miss_parms, parm_sel)
+              next
             }
             #   miss_parms <- c(miss_parms, parm_sel)
             #   next
-            # } else if (parm_sel %in% info) {
-            #   miss_parms <- c(miss_parms, parm_sel)
-            #   next
+            #### info ####
+          } else if (parm_sel %in% info) {
+            if (parm_sel == "LIKELIHOOD") {
+              df1 <- extract[-1, ]
+              # make row the header names for first df
+              colnames(df1) <- df1[1, ]
+              # Remove first row containing column names
+              df2 <- df1[-1, ] |>
+                dplyr::rename(label = Component) |>
+                tidyr::pivot_longer(
+                  cols = -label,
+                  names_to = "type",
+                  values_to = "likelihood"
+                )
+              # match to out_new
+              df2[setdiff(tolower(names(out_new)), tolower(names(df2)))] <- NA
+              # Add to out list
+              out_list[[parm_sel]] <- df2
+            } else if (parm_sel == "DEFINITIONS") {
+              # Pull out only the first two columns and remove first row keyword
+              df1 <- extract[-1,1:2]
+              colnames(df1) <- c("label", "estimate")
+              # find where rescale is located
+              col_rescale <- grep("rescaled_to_sum_to:", extract)
+              rescaled_months <- extract[4, row_rescale + 1] |> dplyr::pull()
+              # remove : from all labels and tolower and add in rescaled months
+              df2 <- df1 |>
+                rbind(data.frame(
+                  label = "rescaled_months",
+                  estimate = rescaled_months
+                )) |>
+                dplyr::mutate(
+                  label = tolower(stringr::str_remove_all(label, ":")),
+                  module_name = parm_sel
+                )
+              # match to out_new
+              df2[setdiff(tolower(names(out_new)), tolower(names(df2)))] <- NA
+              # Add to out list
+              out_list[[parm_sel]] <- df2
+            } else {
+              miss_parms <- c(miss_parms, parm_sel)
+              next
+            }
             #### aa.al ####
           } else if (parm_sel %in% aa.al) {
             # 8,9,11,12,13,14,15,16,28,29
