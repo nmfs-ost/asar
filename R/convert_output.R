@@ -315,6 +315,11 @@ convert_output <- function(
             # Subset data frame
             df3 <- df1[-c(1:rownum), ]
             colnames(df3) <- tolower(row)
+            # Remove suprper + use from df
+            if (any(grepl("suprper|use", colnames(df3)))) {
+              df3 <- df3 |>
+                dplyr::select(-tidyselect::any_of(c("suprper","use")))
+            }
             # Reformat data frame
             if (any(colnames(df3) %in% c("Yr", "yr"))) {
               df3 <- df3 |>
@@ -338,6 +343,14 @@ convert_output <- function(
               # aka there are multiple columns containing the string and they are not selected properly
 
               df4 <- df3 |>
+                # add in case if sexes is present and add sex as na if so
+                dplyr::mutate(
+                  sex = dplyr::case_when(
+                    any(grepl("sexes", colnames(df3))) ~ sexes,
+                    TRUE ~ NA
+                  )
+                ) |>
+                (\(x) if (any(grepl("sexes", colnames(df3)))) dplyr::select(x, -sexes) else .)() |>
                 tidyr::pivot_longer(
                   !tidyselect::any_of(c(factors, errors)),
                   names_to = "label",
@@ -358,7 +371,7 @@ convert_output <- function(
                     grepl("_sx:2$", label) ~ "male",
                     grepl("_sx:1_", label) ~ "female",
                     grepl("_sx:2_", label) ~ "male",
-                    TRUE ~ NA
+                    TRUE ~ sex
                   ),
                   growth_pattern = dplyr::case_when(
                     grepl("_gp_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
@@ -744,7 +757,13 @@ convert_output <- function(
                     # label = paste("actual_", label, sep = ""),
                     morph = NA
                   )
-                
+                # combine above 2 since they show the estimate and actual values - matching
+                sub_df12 <- dplyr::full_join(
+                  sub_df1, 
+                  sub_df2, 
+                  by = c("year", "era", "label", "morph")
+                  )
+                # extract last part of df
                 sub_df3 <- df3[, c(1:2, (moref_col+1):ncol(df3))] |>
                   tidyr::pivot_longer(
                     cols = -c(yr, era),
@@ -762,10 +781,11 @@ convert_output <- function(
                       grepl("maxf_", label) ~ stringr::str_remove(label, "_[0-9]+"),
                       label == "f=z-m" ~ "fishing_mortality",
                       TRUE ~ label
-                    )
+                    ),
+                    initial = NA
                   )
                 # combine all subdataframes
-                df4 <- rbind(sub_df1, sub_df2, sub_df3) |>
+                df4 <- rbind(sub_df12, sub_df3) |>
                   dplyr::mutate(module_name = parm_sel)
               } else {
                 df4 <- df3 |>
@@ -1444,9 +1464,9 @@ convert_output <- function(
   # Combind DFs into one
   out_new <- out_new |>
     dplyr::mutate(
-      estimate = as.numeric(estimate),
-      uncertainty = as.numeric(uncertainty),
-      initial = as.numeric(initial),
+      # estimate = as.numeric(estimate),
+      # uncertainty = as.numeric(uncertainty),
+      # initial = as.numeric(initial),
       # change era name to keep standard
       era = dplyr::case_when(
         era == "Main" ~ "time",
