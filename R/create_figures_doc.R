@@ -146,10 +146,10 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
                             figures_doc_setup,
                             ifelse(exists("rda_figures_doc"),
                                    rda_figures_doc,
-                                   NA),
+                                   ""),
                             ifelse(exists("non.rda_figures_doc"),
                                    non.rda_figures_doc,
-                                   NA)
+                                   "")
                             )
       }
     }
