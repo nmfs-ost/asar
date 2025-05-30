@@ -215,7 +215,7 @@ convert_output <- function(
     std <- c(
       "DERIVED_QUANTITIES",
       "MGparm_By_Year_after_adjustments",
-      "PARAMETERS",
+      "PARAMETERS", # TODO: check
       "CATCH",
       "SPAWN_RECRUIT",
       "TIME_SERIES",
@@ -225,7 +225,6 @@ convert_output <- function(
       "FIT_AGE_COMPS",
       "FIT_SIZE_COMPS",
       "SELEX_database",
-      "Biology_at_age_in_endyr",
       "Growth_Parameters",
       "Kobe_Plot"
     )
@@ -238,6 +237,7 @@ convert_output <- function(
       "selparm(Age)_By_Year_after_adjustments",
       "BIOLOGY",
       "SPR/YPR_Profile",
+      "Biology_at_age_in_endyr",
       "SPAWN_RECR_CURVE"
     )
     info <- c(
@@ -276,7 +276,8 @@ convert_output <- function(
                  "subseason", "platoon", "platoo", 
                  "growth_pattern", "gp", "month", 
                  "like", "morph", "bio_pattern", 
-                 "settlement", "birthseas", "count")
+                 "settlement", "birthseas", "count",
+                 "kind")
     errors <- c("StdDev", "sd", "se", "SE", "cv", "CV", "std")
     miss_parms <- c()
     out_list <- list()
@@ -342,15 +343,21 @@ convert_output <- function(
               # Keeping check here if case arises that there is a similar situation to the error
               # aka there are multiple columns containing the string and they are not selected properly
 
+              if ("sexes" %in% colnames(df3)) {
+                df3 <- df3 |>
+                  # add in case if sexes is present and add sex as na if so
+                  dplyr::mutate(
+                    sex = dplyr::case_when(
+                      any(grepl("^sexes$", colnames(df3))) ~ sexes,
+                      TRUE ~ NA
+                    )
+                  ) |> 
+                  dplyr::select(-sexes)
+              } else {
+                df3 <- dplyr::mutate(df3, sex = NA)
+              }
+              
               df4 <- df3 |>
-                # add in case if sexes is present and add sex as na if so
-                dplyr::mutate(
-                  sex = dplyr::case_when(
-                    any(grepl("sexes", colnames(df3))) ~ sexes,
-                    TRUE ~ NA
-                  )
-                ) |>
-                (\(x) if (any(grepl("sexes", colnames(df3)))) dplyr::select(x, -sexes) else .)() |>
                 tidyr::pivot_longer(
                   !tidyselect::any_of(c(factors, errors)),
                   names_to = "label",
@@ -664,9 +671,12 @@ convert_output <- function(
             # "BIOLOGY"
             # "SPR/YPR_Profile"
             # "SPAWN_RECR_CURVE"
+            # "Biology_at_age_in_endyr"
             
             if (parm_sel == "SPAWN_RECR_CURVE") {
               # 32
+              # TODO: add this to converter
+              # set labels to "fitted_line_x"
               # remove first row - naming
               # df1 <- extract[-1, ]
               # # Find first row without NAs = headers
@@ -831,6 +841,9 @@ convert_output <- function(
             } else if (parm_sel == "SPR/YPR_Profile") {
               miss_parms <- c(miss_parms, parm_sel)
               next
+            } else if (parm_sel == "Biology_at_age_in_endyr") {
+              miss_parms <- c(miss_parms, parm_sel)
+              next
             } else {
               miss_parms <- c(miss_parms, parm_sel)
               next
@@ -990,7 +1003,7 @@ convert_output <- function(
       }
     } # close loop
     if (length(miss_parms) > 0) {
-      message("Some parameters were not found or included in the output file. The inital release of this converter only inlcudes to most necessary parameters and values. The following parameters were not added into the new output file: \n", paste(miss_parms, collapse = "\n"))
+      message("Some parameters were not found or included in the output file. The following parameters were not added into the new output file: \n", paste(miss_parms, collapse = "\n"))
     }
     out_new <- Reduce(rbind, out_list) |>
       dplyr::mutate(fleet = fleet_names[fleet])
