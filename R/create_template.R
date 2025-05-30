@@ -558,11 +558,11 @@ create_template <- function(
         title <- title
       } else {
         title <- create_title(
-          office = office, 
-          species = species, 
-          spp_latin = spp_latin, 
-          region = region, 
-          type = type, 
+          office = office,
+          species = species,
+          spp_latin = spp_latin,
+          region = region,
+          type = type,
           year = year
           )
       }
