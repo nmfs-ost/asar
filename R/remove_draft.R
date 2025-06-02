@@ -12,7 +12,8 @@
 #'  removed.
 #' @export
 #'
-#' @examples {
+#' @examples
+#' \dontrun{
 #' create_template()
 #' remove_draft(x = "SAR_species_skeleton.qmd", dir = file.path(getwd(), "report"))
 #' }

@@ -1,17 +1,26 @@
 #' Create Quarto Document of Tables
 #'
+#' Only tables in an rda format (e.g., my_table.rda) will be imported. Tables in
+#' other formats (e.g., .jpg, .png) are not supported; they lack text recognition.
+#' See [the `asar` custom figures and tables vignette](https://nmfs-ost.github.io/asar/articles/custom-figs-tabs.html#make-rdas)
+#' for more information about making .rda files with custom tables.
+#'
+#' If your table is too wide to print on a portrait-oriented page,
+#' the page will be rotated to landscape view. If if is too wide to print in
+#' landscape view, it will be split into multiple tables. In this case, a new rda
+#' will be created and is identifiable by the phrase "split" in the filename (e.g.,
+#' indices.abundance_table.rda will generate a new indices.abundance_table_split.rda
+#' file), and column 1 will be repeated across split tables. These tables will
+#' share the same caption. To specify a different repeated column(s), use
+#' asar::export_split_tbls with your preferred essential_columns value.
+#'
 #' @inheritParams create_template
 #' @param subdir subdirectory where the assessment report template is being stored
 #' @param include_all include all default tables for a stock assessment report
 #'
 #' @return Create a quarto document as part of a stock assessment outline with
-#' pre-loaded R chunk adding the stock assessment tables from the nmfs-ost/stockplotr
-#' R package. NOTE: If your table is too wide to print on a portrait-oriented page,
-#' the page will be rotated to landscape view. If if is too wide to print in
-#' landscape view, it will be split into multiple tables. In this case, a new rda
-#' will be created and is identifiable by the phrase "split" in the filename (e.g.,
-#' indices.abundance_table.rda will generate a new indices.abundance_table_split.rda
-#' file). These tables will share the same caption.
+#' pre-loaded R chunks that add stock assessment tables from the nmfs-ost/stockplotr
+#' R package, or other tables in the same rda format.
 #' @export
 #'
 #' @examples
@@ -20,9 +29,17 @@
 #' subdir = getwd(),
 #' rda_dir = here::here())
 #' }
-create_tables_doc <- function(subdir = NULL,
+create_tables_doc <- function(subdir = getwd(),
                               include_all = TRUE,
-                              rda_dir = NULL) {
+                              rda_dir = getwd()) {
+
+  # NOTE: essential_columns = 1 for all tables split using export_split_tbls() in
+  # the code below.
+  # To customize essential_columns, the user must run export_split_tbls() manually
+  # and specify essential_columns. Then, the split table will be imported into
+  # the tables doc as is.
+  # Upon adding more tables to stockplotr, the code may need to be altered to
+  # specify essential_columns for stockplotr-created tables.
 
   # set portrait page width (in)
   portrait_pg_width <- 5
@@ -30,13 +47,13 @@ create_tables_doc <- function(subdir = NULL,
   # set landscape page width (in)
   landscape_pg_width <- 8
 
-  if (include_all) {
+  if (!include_all) stop("Functionality for adding specific tables is still in development. Please set 'include_all' to true and edit the 08_tables.qmd file to remove specific tables from the report.")
+
     # add header
-    tables_doc <- paste0("## Tables {#sec-tables}\n \n")
+    tables_doc_header <- paste0("## Tables {#sec-tables}\n \n")
 
     # add chunk that creates object as the directory of all rdas
-    tables_doc <- paste0(
-      tables_doc,
+    tables_doc_setup <- paste0(
       add_chunk(
         paste0("library(flextable)\nrda_dir <- '", rda_dir, "/rda_files'"),
         label = "set-rda-dir-tbls",
@@ -47,470 +64,239 @@ create_tables_doc <- function(subdir = NULL,
       "\n"
     )
 
+    tables_doc <- ""
 
-    # Bnc table-----
-    plot_name.bnc <- "bnc_table.rda"
-    if (any(grepl(plot_name.bnc, list.files(file.path(rda_dir, "rda_files"))))) {
-      ## import table, caption
-      tables_doc <- paste0(
-        tables_doc,
-        add_chunk(
-          paste0("# if the bnc table rda exists:
-if (file.exists(file.path(rda_dir, 'bnc_table.rda'))){\n
-  # load rda
-  load(file.path(rda_dir, 'bnc_table.rda'))\n
-  # save rda with plot-specific name
-  bnc_table_rda <- rda\n
-  # remove generic rda object
-  rm(rda)\n
-  # save table, caption as separate objects; set eval to TRUE
-  bnc_table <- bnc_table_rda$table
-  bnc_cap <- bnc_table_rda$cap
-  eval_bnc <- TRUE\n
-# if the bnc table rda does not exist, don't evaluate the next chunk
-} else {eval_bnc <- FALSE}"),
-          label = "tbl-bnc-setup",
-          eval = "true",
-          add_option = TRUE,
-          chunk_op = c(
-            glue::glue(
-              "include: false"
-            )
-          )
-        ),
-        "\n"
-      )
+    # list all files in rda_files
+    file_list <- list.files(file.path(rda_dir, "rda_files"))
 
+    # create sublist of only table files
+    file_tab_list <- file_list[grepl("_table", file_list)]
+    # create sublist of only rda table files
+    rda_tab_list <- file_tab_list[grepl(".rda", file_tab_list)]
+
+    # remove rda table files that have an associated "split" version
+    # remove "_split" from filenames
+    remove_split_names <- gsub("_split", "", rda_tab_list)
+    # identify duplicates in remove_split_names
+    dup_tab <- remove_split_names[duplicated(remove_split_names) | duplicated(remove_split_names, fromLast = TRUE)]
+    # remove duplicates in remove_split_names to create final list
+    final_rda_tab_list <- rda_tab_list[!(remove_split_names %in% dup_tab & !grepl("_split", rda_tab_list))]
+
+    # create sublist of only non-rda table files
+    # non.rda_tab_list <- file_tab_list[!grepl(".rda", file_tab_list)]
+
+    # create two-chunk system to plot each rda figure
+    create_tab_chunks <- function(tab = NA,
+                                  rda_dir = getwd()){
+
+      # test whether table has been split
+      split <- grepl("split", tab)
+
+      tab_shortname <- ifelse(split,
+                              stringr::str_remove(tab, "_table_split.rda"),
+                              stringr::str_remove(tab, "_table.rda"))
 
       # identify table orientation
-      bnc_orient <- ID_tbl_width_class(plot_name = plot_name.bnc,
-                                       rda_dir = rda_dir,
-                                       portrait_pg_width = portrait_pg_width)
+      # split tables will always be extra_wide
+      tbl_orient <- ifelse(split,
+                           "extra_wide",
+                           ID_tbl_width_class(plot_name = tab_shortname,
+                                              rda_dir = rda_dir,
+                                              portrait_pg_width = portrait_pg_width))
 
-      # add landscape braces before R chunk depending on table width
-      if(bnc_orient != "regular"){
-        tables_doc <- paste0(
-          tables_doc,
-          "::: {.landscape}\n\n"
-        )
-      }
-
-      if(bnc_orient == "extra-wide"){
-        # split extra-wide tables into smaller tables and export AND
-        # identify number of split tables
-        split_tables <- export_split_tbls(rda_dir = rda_dir,
-                                          plot_name = plot_name.bnc,
-                                          essential_columns = 1)
-
-        # add a chunk to import new captions
-        tables_doc <- paste0(
-          tables_doc,
-          add_chunk(
-            paste0(
-              "load(file.path(rda_dir, 'bnc_table_split.rda'))\n
-# save rda with plot-specific name
-bnc_table_split_rda <- table_list\n
-# remove generic rda object
-rm(table_list)\n
-# extract table caption specifiers
-bnc_cap_split <- names(bnc_table_split_rda)"
-            )
-            ,
-            label = "tbl-bnc-labels",
-            eval = "!expr eval_bnc",
-            add_option = TRUE,
-            chunk_op = c(
-              glue::glue(
-                "include: false"
-              )
-            )
+      ## import table, caption, alt text
+      ## do this for all tables
+      tables_doc_plot_setup1 <- paste0(
+        add_chunk(
+          paste0(
+"# if the table rda exists:
+if (file.exists(file.path(rda_dir, '", stringr::str_remove(tab, "_split"), "'))){\n
+# load rda
+load(file.path(rda_dir, '", stringr::str_remove(tab, "_split"), "'))\n
+# save rda with table-specific name\n",
+tab_shortname, "_table_rda <- rda\n
+# save table and caption as separate objects; set eval to TRUE\n",
+tab_shortname, "_table <- ", tab_shortname, "_table_rda$table\n",
+tab_shortname, "_cap <- ", tab_shortname, "_table_rda$cap
+eval_", tab_shortname, " <- TRUE\n
+# if the table rda does not exist, don't evaluate the next chunk
+} else {eval_",  tab_shortname, " <- FALSE}"
           ),
-          "\n"
-        )
+          label = paste0("tab-", tab_shortname, "-setup"),
+          eval = "true"
+        ),
+"\n"
+)
 
-        # prepare text for chunk that will display split tables
-        for (i in 1:as.numeric(split_tables)){
-
-          # add a chunk for each table
-          tables_doc <- paste0(
-            tables_doc,
+      ## add table if it only requires one chunk
+      if(tbl_orient == "regular"){
+          tables_doc_plot_setup2 <- paste0(
             add_chunk(
-              paste0(
-                "# plot split table ", i, "
-bnc_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
-              )
-              ,
-              label = paste0("tbl-bnc", i),
-              eval = "!expr eval_bnc",
+              paste0(tab_shortname, "_table"),
+              label = paste0("tbl-", tab_shortname),
+              eval = paste0("!expr eval_", tab_shortname),
               add_option = TRUE,
               chunk_op = c(
                 glue::glue(
-                  "tbl-cap: !expr if(eval_bnc) paste0(bnc_cap, '(', bnc_cap_split[[", i, "]], ')')"
+                  "tbl-cap: !expr if(eval_", tab_shortname, ") ", tab_shortname, "_cap"
                 ),
                 glue::glue(
-                  "include: !expr eval_bnc"
+                  "include: !expr eval_", tab_shortname
                 )
               )
             ),
             "\n"
           )
-        }
-      } else {
+      }
 
-        ## add table if it only requires one chunk
-        tables_doc <- paste0(
-          tables_doc,
+      if(tbl_orient == "wide"){
+        tables_doc_plot_setup2 <- paste0(
+          # add landscape braces before R chunk
+          "::: {.landscape}\n\n",
           add_chunk(
-            if (bnc_orient == "wide"){
               paste0(
-                "bnc_table |>
+                tab_shortname, "_table |>
                 flextable::fit_to_width(max_width = 8)"
-              )
-            } else if (bnc_orient == "regular"){
-              paste0("bnc_table")
-            }
-            ,
-            label = "tbl-bnc",
-            eval = "!expr eval_bnc",
+              ),
+            label = paste0("tbl-", tab_shortname),
+            eval = paste0("!expr eval_", tab_shortname),
             add_option = TRUE,
             chunk_op = c(
               glue::glue(
-                "tbl-cap: !expr if(eval_bnc) bnc_cap"
+                "tbl-cap: !expr if(eval_", tab_shortname, ") ", tab_shortname, "_cap"
               ),
               glue::glue(
-                "include: !expr eval_bnc"
+                "include: !expr eval_", tab_shortname
               )
             )
           ),
-          "\n"
-        )
-      }
-
-      # add landscape braces after R chunk depending on table width
-      if(bnc_orient != "regular"){
-        tables_doc <- paste0(
-          tables_doc,
+          "\n",
+          # add landscape braces after R chunk
           ":::\n"
         )
       }
 
-      # add page break after table plotted
-      tables_doc <- paste0(
-        tables_doc,
-        "\n{{< pagebreak >}}\n"
-      )
-    }
-
-    # Indices table-----
-    plot_name.indices <- "indices.abundance_table.rda"
-    if (any(grepl(plot_name.indices, list.files(file.path(rda_dir, "rda_files"))))) {
-      ## import table, caption
-      tables_doc <- paste0(
-        tables_doc,
-        add_chunk(
-          paste0("# if the indices table rda exists:
-if (file.exists(file.path(rda_dir, 'indices.abundance_table.rda'))){\n
-  # load rda
-  load(file.path(rda_dir, 'indices.abundance_table.rda'))\n
-  # save rda with plot-specific name
-  indices_table_rda <- rda\n
-  # remove generic rda object
-  rm(rda)\n
-  # save table, caption as separate objects; set eval to TRUE
-  indices_table <- indices_table_rda$table
-  indices_cap <- indices_table_rda$cap
-  eval_indices <- TRUE\n
-# if the indices table rda does not exist, don't evaluate the next chunk
-} else {eval_indices <- FALSE}"),
-          label = "tbl-indices-setup",
-          eval = "true",
-          add_option = TRUE,
-          chunk_op = c(
-            glue::glue(
-              "include: false"
-            )
-          )
-        ),
-        "\n"
-      )
-
-      # identify table orientation
-      indices_orient <- ID_tbl_width_class(plot_name = plot_name.indices,
-                                           rda_dir = rda_dir,
-                                           portrait_pg_width = portrait_pg_width)
-
-      # add landscape braces before R chunk depending on table width
-      if(indices_orient != "regular"){
-        tables_doc <- paste0(
-          tables_doc,
-          "::: {.landscape}\n\n"
-        )
-      }
-
-      if(indices_orient == "extra-wide"){
-        # split extra-wide tables into smaller tables and export AND
-        # identify number of split tables
-        split_tables <- export_split_tbls(rda_dir = rda_dir,
-                                          plot_name = plot_name.indices,
+       if(tbl_orient == "extra_wide"){
+        if (split) {
+          # identify number of split tables
+          load(fs::path(rda_dir, "rda_files", tab))
+          split_tables <- length(table_list)
+        } else {
+          # split extra_wide tables into smaller tables and export AND
+          # identify number of split tables IF not already split
+          split_tables <- export_split_tbls(rda_dir = rda_dir,
+                                          plot_name = tab,
                                           essential_columns = 1)
+        }
 
-        # add a chunk to import new captions
-        tables_doc <- paste0(
-          tables_doc,
-          add_chunk(
-            paste0(
-              "load(file.path(rda_dir, 'indices.abundance_table_split.rda'))\n
-# save rda with plot-specific name
-indices_table_split_rda <- table_list\n
-# remove generic rda object
-rm(table_list)\n
-# extract table caption specifiers
-indices_cap_split <- names(indices_table_split_rda)"
-            )
-            ,
-            label = "tbl-indices-labels",
-            eval = "!expr eval_indices",
-            add_option = TRUE,
-            chunk_op = c(
-              glue::glue(
-                "include: false"
-              )
-            )
-          ),
-          "\n"
-        )
-
+         # add a chunk to import split tables
+         tables_doc_plot_setup2_import <- paste0(
+           add_chunk(
+             paste0(
+               "load(file.path(rda_dir, '", tab, "'))\n
+# save rda with plot-specific name\n",
+               tab_shortname, "_table_split_rda <- table_list\n
+# extract table caption specifiers\n",
+               tab_shortname, "_cap_split <- names(", tab_shortname, "_table_split_rda)"
+             )
+             ,
+             label = paste0("tbl-", tab_shortname, "-labels"),
+             eval = paste0("!expr eval_", tab_shortname),
+             add_option = TRUE,
+             chunk_op = c(glue::glue("include: false"))
+           ),
+           "\n"
+         )
         # prepare text for chunk that will display split tables
+        tables_doc_plot_setup2_display <- ""
         for (i in 1:as.numeric(split_tables)){
-
           # add a chunk for each table
-          tables_doc <- paste0(
-            tables_doc,
+          tables_doc_plot_setup2_display <- paste0(
+           tables_doc_plot_setup2_display,
+            # add landscape braces before R chunk
+            "::: {.landscape}\n\n",
             add_chunk(
               paste0(
-                "# plot split table ", i, "
-indices_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
+                "# plot split table ", i, "\n",
+                tab_shortname, "_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
               )
               ,
-              label = paste0("tbl-indices", i),
-              eval = "!expr eval_indices",
+              label = paste0("tbl-", tab_shortname, i),
+              eval = paste0("!expr eval_", tab_shortname),
               add_option = TRUE,
               chunk_op = c(
                 glue::glue(
-                  "tbl-cap: !expr if(eval_indices) paste0(indices_cap, '(', indices_cap_split[[", i, "]], ')')"
+                  "tbl-cap: !expr if(eval_", tab_shortname, ") paste0(", tab_shortname, "_cap, '(', ", tab_shortname, "_cap_split[[", i, "]], ')')"
                 ),
                 glue::glue(
-                  "include: !expr eval_indices"
+                  "include: !expr eval_", tab_shortname
                 )
               )
             ),
-            "\n"
+            "\n",
+            # add landscape braces after R chunk
+            ":::\n"
           )
         }
-      } else {
 
-        ## add table if it only requires one chunk
-        tables_doc <- paste0(
-          tables_doc,
-          add_chunk(
-            if (indices_orient == "wide"){
-              paste0(
-                "indices_table |>
-                flextable::fit_to_width(max_width = 8)"
-              )
-            } else if (indices_orient == "regular"){
-              paste0("indices_table")
-            }
-            ,
-            label = "tbl-indices",
-            eval = "!expr eval_indices",
-            add_option = TRUE,
-            chunk_op = c(
-              glue::glue(
-                "tbl-cap: !expr if(eval_indices) indices_cap"
-              ),
-              glue::glue(
-                "include: !expr eval_indices"
-              )
-            )
-          ),
-          "\n"
+        tables_doc_plot_setup2 <- paste0(
+          tables_doc_plot_setup2_import,
+          tables_doc_plot_setup2_display
         )
-      }
-
-      # add landscape braces after R chunk depending on table width
-      if(indices_orient != "regular"){
-        tables_doc <- paste0(
-          tables_doc,
-          ":::\n"
-        )
-      }
-
-      # add page break after table plotted
-      tables_doc <- paste0(
-        tables_doc,
-        "\n{{< pagebreak >}}\n"
-      )
-    }
-
-    # landings table-----
-    plot_name.landings <- "landings_table.rda"
-    if (any(grepl(plot_name.landings, list.files(file.path(rda_dir, "rda_files"))))) {
-      ## import table, caption
-      tables_doc <- paste0(
-        tables_doc,
-        add_chunk(
-          paste0("# if the landings table rda exists:
-if (file.exists(file.path(rda_dir, 'landings_table.rda'))){\n
-  # load rda
-  load(file.path(rda_dir, 'landings_table.rda'))\n
-  # save rda with plot-specific name
-  landings_table_rda <- rda\n
-  # remove generic rda object
-  rm(rda)\n
-  # save table, caption as separate objects; set eval to TRUE
-  landings_table <- landings_table_rda$table
-  landings_cap <- landings_table_rda$cap
-  eval_landings <- TRUE\n
-# if the landings table rda does not exist, don't evaluate the next chunk
-} else {eval_landings <- FALSE}"),
-          label = "tbl-landings-setup",
-          eval = "true",
-          add_option = TRUE,
-          chunk_op = c(
-            glue::glue(
-              "include: false"
-            )
-          )
-        ),
-        "\n"
-      )
-
-      # identify table orientation
-      landings_orient <- ID_tbl_width_class(plot_name = plot_name.landings,
-                                           rda_dir = rda_dir,
-                                           portrait_pg_width = portrait_pg_width)
-
-      # add landscape braces before R chunk depending on table width
-      if(landings_orient != "regular"){
-        tables_doc <- paste0(
-          tables_doc,
-          "::: {.landscape}\n\n"
-        )
-      }
-
-      if(landings_orient == "extra-wide"){
-        # split extra-wide tables into smaller tables and export AND
-        # identify number of split tables
-        split_tables <- export_split_tbls(rda_dir = rda_dir,
-                                          plot_name = plot_name.landings,
-                                          essential_columns = 1)
-
-        # add a chunk to import new captions
-        tables_doc <- paste0(
-          tables_doc,
-          add_chunk(
-            paste0(
-              "load(file.path(rda_dir, 'landings_table_split.rda'))\n
-# save rda with plot-specific name
-landings_table_split_rda <- table_list\n
-# remove generic rda object
-rm(table_list)\n
-# extract table caption specifiers
-landings_cap_split <- names(landings_table_split_rda)"
-            )
-            ,
-            label = "tbl-landings-labels",
-            eval = "!expr eval_landings",
-            add_option = TRUE,
-            chunk_op = c(
-              glue::glue(
-                "include: false"
-              )
-            )
-          ),
-          "\n"
-        )
-
-        # prepare text for chunk that will display split tables
-        for (i in 1:as.numeric(split_tables)){
-
-          # add a chunk for each table
-          tables_doc <- paste0(
-            tables_doc,
-            add_chunk(
-              paste0(
-                "# plot split table ", i, "
-landings_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
-              )
-              ,
-              label = paste0("tbl-landings", i),
-              eval = "!expr eval_landings",
-              add_option = TRUE,
-              chunk_op = c(
-                glue::glue(
-                  "tbl-cap: !expr if(eval_landings) paste0(landings_cap, '(', landings_cap_split[[", i, "]], ')')"
-                ),
-                glue::glue(
-                  "include: !expr eval_landings"
-                )
-              )
-            ),
-            "\n"
-          )
         }
-      } else {
 
-        ## add table if it only requires one chunk
-        tables_doc <- paste0(
-          tables_doc,
-          add_chunk(
-            if (landings_orient == "wide"){
-              paste0(
-                "landings_table |>
-                flextable::fit_to_width(max_width = 8)"
-              )
-            } else if (landings_orient == "regular"){
-              paste0("landings_table")
-            }
-            ,
-            label = "tbl-landings",
-            eval = "!expr eval_landings",
-            add_option = TRUE,
-            chunk_op = c(
-              glue::glue(
-                "tbl-cap: !expr if(eval_landings) landings_cap"
-              ),
-              glue::glue(
-                "include: !expr eval_landings"
-              )
-            )
-          ),
-          "\n"
-        )
-      }
+      return(paste0(tables_doc_plot_setup1,
+                    tables_doc_plot_setup2))
 
-      # add landscape braces after R chunk depending on table width
-      if(landings_orient != "regular"){
-        tables_doc <- paste0(
-          tables_doc,
-          ":::\n"
-        )
-      }
-
-      # add page break after table plotted
-      tables_doc <- paste0(
-        tables_doc,
-        "\n{{< pagebreak >}}\n"
-      )
     }
 
+    if (length(rda_tab_list) == 0){
+      message(paste0("Note: No tables in an rda format (i.e., .rda) were present in '", fs::path(rda_dir, "rda_files"), "'."))
+      tables_doc <- "## Tables {#sec-tables}"
+    } else {
+      # paste rda table code chunks into one object
+      if (length(final_rda_tab_list) > 0) {
+        rda_tables_doc <- ""
+        for (i in 1:length(final_rda_tab_list)){
+          tab_chunk <- create_tab_chunks(tab = final_rda_tab_list[i],
+                                         rda_dir = rda_dir)
 
-    # Add other tables follow the same above format
-  } else {
-    # add option for only adding specified tables
-    warning("Functionality for adding specific tables is still in development. Please set 'include_all' to true and edit the 08_tables.qmd file to remove specific tables from the report.")
-  }
+          rda_tables_doc <- paste0(rda_tables_doc, tab_chunk)
+        }
+      }
+      # if (length(non.rda_tab_list) > 0){
+      #   non.rda_tables_doc <- ""
+      #   for (i in 1:length(non.rda_tab_list)){
+      #     # remove file extension
+      #     tab_name <- stringr::str_extract(non.rda_tab_list[i],
+      #                                      "^[^.]+")
+      #     # remove "_table", if present
+      #     tab_name <- sub("_table", "", tab_name)
+      #     tab_chunk <- paste0(
+      #       "![Your caption here](", fs::path("rda_files",
+      #                                         non.rda_tab_list[i]),
+      #       "){#tab-",
+      #       tab_name,
+      #       "}\n\n"
+      #     )
+      #
+      #     non.rda_tables_doc <- paste0(non.rda_tables_doc, tab_chunk)
+      #   }
+      # } else {
+      #   message(paste0("Note: No table files in a non-rda format (e.g., .jpg, .png) were present in '",  fs::path(rda_dir, "rda_files") , "'."))
+      # }
+
+      # combine figures_doc setup with figure chunks
+      tables_doc <- paste0(tables_doc_header,
+                           tables_doc_setup,
+                           ifelse(exists("rda_tables_doc"),
+                                  rda_tables_doc,
+                                  "")#,
+                           # ifelse(exists("non.rda_tables_doc"),
+                           #        non.rda_tables_doc,
+                           #        "")
+      )
+    }
 
   # Save tables doc to template folder
   utils::capture.output(cat(tables_doc),
