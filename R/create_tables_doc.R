@@ -80,47 +80,29 @@ create_tables_doc <- function(subdir = getwd(),
 
       tab_shortname <- ifelse(split,
                               stringr::str_remove(tab, "_table_split.rda"),
-                              stringr::str_remove(tab_shortname, "_table.rda"))
+                              stringr::str_remove(tab, "_table.rda"))
 
       # identify table orientation
-      tbl_orient <- ID_tbl_width_class(plot_name = tab_shortname,
-                                       rda_dir = rda_dir,
-                                       portrait_pg_width = portrait_pg_width)
+      # split tables will always be extra_wide
+      tbl_orient <- ifelse(split,
+                           "extra_wide",
+                           ID_tbl_width_class(plot_name = tab_shortname,
+                                              rda_dir = rda_dir,
+                                              portrait_pg_width = portrait_pg_width))
 
       ## import table, caption, alt text
-      ## use this for non-split tables
-      tables_doc_plot_setup1 <- ifelse(
-        split == TRUE,
-        # use this for split tables
-        paste0(
-          add_chunk(
-            paste0(
-"load(file.path(rda_dir, '", tab, "'))\n
-# save rda with plot-specific name",
-tab_shortname, "_table_split_rda <- table_list\n
-# extract table caption specifiers",
-tab_shortname, "_cap_split <- names", tab_shortname, "_table_split_rda)"
-            )
-            ,
-            label = paste0("tbl-", tab_shortname, "-labels"),
-            eval = paste0("!expr eval_", tab_shortname),
-            add_option = TRUE,
-            chunk_op = c(glue::glue("include: false"))
-          ),
-          "\n"
-        ),
-
-        # use this for non-split tables
-        paste0(add_chunk(
+      ## do this for all tables
+      tables_doc_plot_setup1 <- paste0(
+        add_chunk(
           paste0(
 "# if the table rda exists:
-if (file.exists(file.path(rda_dir, '", tab, "'))){\n
+if (file.exists(file.path(rda_dir, '", stringr::str_remove(tab, "_split"), "'))){\n
 # load rda
-load(file.path(rda_dir, '", tab, "'))\n
-# save rda with table-specific name",
+load(file.path(rda_dir, '", stringr::str_remove(tab, "_split"), "'))\n
+# save rda with table-specific name\n",
 tab_shortname, "_table_rda <- rda\n
-# save table and caption as separate objects; set eval to TRUE",
-tab_shortname, "_table <- ", tab_shortname, "_table_rda$table",
+# save table and caption as separate objects; set eval to TRUE\n",
+tab_shortname, "_table <- ", tab_shortname, "_table_rda$table\n",
 tab_shortname, "_cap <- ", tab_shortname, "_table_rda$cap
 eval_", tab_shortname, " <- TRUE\n
 # if the table rda does not exist, don't evaluate the next chunk
@@ -128,123 +110,126 @@ eval_", tab_shortname, " <- TRUE\n
           ),
           label = paste0("tab-", tab_shortname, "-setup"),
           eval = "true"
-        ), "\n")
-      )
+        ),
+"\n"
+)
 
-      # TODO: set up tables_doc_plot_setup2 if split is true/false
-      # THEN, based on tbl_orient
+      ## add table if it only requires one chunk
+      if(tbl_orient == "regular"){
+          tables_doc_plot_setup2 <- paste0(
+            add_chunk(
+              paste0(tab_shortname, "_table"),
+              label = paste0("tbl-", tab_shortname),
+              eval = paste0("!expr eval_", tab_shortname),
+              add_option = TRUE,
+              chunk_op = c(
+                glue::glue(
+                  "tbl-cap: !expr if(eval_", tab_shortname, ") ", tab_shortname, "_cap"
+                ),
+                glue::glue(
+                  "include: !expr eval_", tab_shortname
+                )
+              )
+            ),
+            "\n"
+          )
+      }
 
-#       ## add table if it only requires one chunk
-#       if(tbl_orient == "regular"){
-#           tables_doc_plot_setup2 <- paste0(
-#             add_chunk(
-#               paste0(tab_shortname, "_table"),
-#               label = paste0("tbl-", tab_shortname),
-#               eval = paste0("!expr eval_", tab_shortname),
-#               add_option = TRUE,
-#               chunk_op = c(
-#                 glue::glue(
-#                   "tbl-cap: !expr if(eval_", tab_shortname, ") ", tab_shortname, "_cap"
-#                 ),
-#                 glue::glue(
-#                   "include: !expr eval_", tab_shortname
-#                 )
-#               )
-#             ),
-#             "\n"
-#           )
-#       }
-#
-#       if(tbl_orient == "wide"){
-#         tables_doc_plot_setup2 <- paste0(
-#           # add landscape braces before R chunk
-#           "::: {.landscape}\n\n",
-#           add_chunk(
-#               paste0(
-#                 tab_shortname, "_table |>
-#                 flextable::fit_to_width(max_width = 8)"
-#               ),
-#             label = paste0("tbl-", tab_shortname),
-#             eval = paste0("!expr eval_", tab_shortname),
-#             add_option = TRUE,
-#             chunk_op = c(
-#               glue::glue(
-#                 "tbl-cap: !expr if(eval_", tab_shortname, ") ", tab_shortname, "_cap"
-#               ),
-#               glue::glue(
-#                 "include: !expr eval_", tab_shortname
-#               )
-#             )
-#           ),
-#           "\n",
-#           # add landscape braces after R chunk
-#           ":::\n"
-#         )
-#       }
-#
-#       if(tbl_orient == "extra-wide"){
-#         # split extra-wide tables into smaller tables and export AND
-#         # identify number of split tables
-#         split_tables <- export_split_tbls(rda_dir = rda_dir,
-#                                           plot_name = tab,
-#                                           essential_columns = 1)
-#
-#         # add a chunk to import new captions
-#         tables_doc_plot_setup2 <- paste0(
-#           add_chunk(
-#             paste0(
-# "load(file.path(rda_dir, '", tab_shortname, "_table_split.rda'))\n
-# # save rda with table-specific name
-# ", tab_shortname, "_table_split_rda <- table_list\n
-# # remove generic rda object
-# rm(table_list)\n
-# # extract table caption specifiers
-# ", tab_shortname, "_cap_split <- names(", tab_shortname, "_table_split_rda)"
-#             )
-#             ,
-#             label = paste0("tbl-", tab_shortname, "-labels"),
-#             eval = paste0("!expr eval_", tab_shortname),
-#             add_option = TRUE,
-#             chunk_op = c(
-#               glue::glue(
-#                 "include: false"
-#               )
-#             )
-#           ),
-#           "\n"
-#         )
-#         # prepare text for chunk that will display split tables
-#         tables_doc_plot_setup2 <- ""
-#         for (i in 1:as.numeric(split_tables)){
-#           # add a chunk for each table
-#           tables_doc_plot_setup2 <- paste0(
-#             tables_doc_plot_setup2,
-#             # add landscape braces before R chunk
-#             "::: {.landscape}\n\n",
-#             add_chunk(
-#               paste0(
-#                 "# plot split table ", i,
-#                 tab_shortname, "_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
-#               )
-#               ,
-#               label = paste0("tbl-", tab_shortname, i),
-#               eval = paste0("!expr eval_", tab_shortname),
-#               add_option = TRUE,
-#               chunk_op = c(
-#                 glue::glue(
-#                   "tbl-cap: !expr if(eval_", tab_shortname, ") paste0(", tab_shortname, "_cap, '(', ", tab_shortname, "_cap_split[[", i, "]], ')')"
-#                 ),
-#                 glue::glue(
-#                   "include: !expr eval_", tab_shortname
-#                 )
-#               )
-#             ),
-#             "\n",
-#             # add landscape braces after R chunk
-#             ":::\n"
-#           )
-#         }
-#       }
+      if(tbl_orient == "wide"){
+        tables_doc_plot_setup2 <- paste0(
+          # add landscape braces before R chunk
+          "::: {.landscape}\n\n",
+          add_chunk(
+              paste0(
+                tab_shortname, "_table |>
+                flextable::fit_to_width(max_width = 8)"
+              ),
+            label = paste0("tbl-", tab_shortname),
+            eval = paste0("!expr eval_", tab_shortname),
+            add_option = TRUE,
+            chunk_op = c(
+              glue::glue(
+                "tbl-cap: !expr if(eval_", tab_shortname, ") ", tab_shortname, "_cap"
+              ),
+              glue::glue(
+                "include: !expr eval_", tab_shortname
+              )
+            )
+          ),
+          "\n",
+          # add landscape braces after R chunk
+          ":::\n"
+        )
+      }
+
+       if(tbl_orient == "extra_wide"){
+        if (split) {
+          # identify number of split tables
+          load(fs::path(rda_dir, "rda_files", tab))
+          split_tables <- length(table_list)
+        } else {
+          # split extra_wide tables into smaller tables and export AND
+          # identify number of split tables
+          split_tables <- export_split_tbls(rda_dir = rda_dir,
+                                          plot_name = tab,
+                                          essential_columns = 1)
+        }
+
+         # add a chunk to import split tables
+         tables_doc_plot_setup2_import <- paste0(
+           add_chunk(
+             paste0(
+               "load(file.path(rda_dir, '", tab, "'))\n
+# save rda with plot-specific name\n",
+               tab_shortname, "_table_split_rda <- table_list\n
+# extract table caption specifiers\n",
+               tab_shortname, "_cap_split <- names(", tab_shortname, "_table_split_rda)"
+             )
+             ,
+             label = paste0("tbl-", tab_shortname, "-labels"),
+             eval = paste0("!expr eval_", tab_shortname),
+             add_option = TRUE,
+             chunk_op = c(glue::glue("include: false"))
+           ),
+           "\n"
+         )
+        # prepare text for chunk that will display split tables
+        tables_doc_plot_setup2_display <- ""
+        for (i in 1:as.numeric(split_tables)){
+          # add a chunk for each table
+          tables_doc_plot_setup2_display <- paste0(
+           tables_doc_plot_setup2_display,
+            # add landscape braces before R chunk
+            "::: {.landscape}\n\n",
+            add_chunk(
+              paste0(
+                "# plot split table ", i, "\n",
+                tab_shortname, "_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
+              )
+              ,
+              label = paste0("tbl-", tab_shortname, i),
+              eval = paste0("!expr eval_", tab_shortname),
+              add_option = TRUE,
+              chunk_op = c(
+                glue::glue(
+                  "tbl-cap: !expr if(eval_", tab_shortname, ") paste0(", tab_shortname, "_cap, '(', ", tab_shortname, "_cap_split[[", i, "]], ')')"
+                ),
+                glue::glue(
+                  "include: !expr eval_", tab_shortname
+                )
+              )
+            ),
+            "\n",
+            # add landscape braces after R chunk
+            ":::\n"
+          )
+        }
+
+        tables_doc_plot_setup2 <- paste0(
+          tables_doc_plot_setup2_import,
+          tables_doc_plot_setup2_display
+        )
+        }
 
       return(paste0(tables_doc_plot_setup1,
                     tables_doc_plot_setup2))
