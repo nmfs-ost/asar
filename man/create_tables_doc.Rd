@@ -13,8 +13,17 @@ create_tables_doc(subdir = getwd(), include_all = TRUE, rda_dir = getwd())
 }
 \value{
 Create a quarto document as part of a stock assessment outline with
-pre-loaded R chunk adding the stock assessment tables from the nmfs-ost/stockplotr
-R package. NOTE: If your table is too wide to print on a portrait-oriented page,
+pre-loaded R chunks that add stock assessment tables from the nmfs-ost/stockplotr
+R package, or other tables in the same rda format.
+}
+\description{
+Only tables in an rda format (e.g., my_table.rda) will be imported. Tables in
+other formats (e.g., .jpg, .png) are not supported; they lack text recognition.
+See \href{https://nmfs-ost.github.io/asar/articles/custom-figs-tabs.html#make-rdas}{the \code{asar} custom figures and tables vignette}
+for more information about making .rda files with custom tables.
+}
+\details{
+If your table is too wide to print on a portrait-oriented page,
 the page will be rotated to landscape view. If if is too wide to print in
 landscape view, it will be split into multiple tables. In this case, a new rda
 will be created and is identifiable by the phrase "split" in the filename (e.g.,
@@ -22,9 +31,6 @@ indices.abundance_table.rda will generate a new indices.abundance_table_split.rd
 file), and column 1 will be repeated across split tables. These tables will
 share the same caption. To specify a different repeated column(s), use
 asar::export_split_tbls with your preferred essential_columns value.
-}
-\description{
-Create Quarto Document of Tables
 }
 \examples{
 \dontrun{

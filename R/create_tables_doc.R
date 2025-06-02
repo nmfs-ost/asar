@@ -1,12 +1,11 @@
 #' Create Quarto Document of Tables
 #'
-#' @inheritParams create_template
-#' @param subdir subdirectory where the assessment report template is being stored
-#' @param include_all include all default tables for a stock assessment report
+#' Only tables in an rda format (e.g., my_table.rda) will be imported. Tables in
+#' other formats (e.g., .jpg, .png) are not supported; they lack text recognition.
+#' See [the `asar` custom figures and tables vignette](https://nmfs-ost.github.io/asar/articles/custom-figs-tabs.html#make-rdas)
+#' for more information about making .rda files with custom tables.
 #'
-#' @return Create a quarto document as part of a stock assessment outline with
-#' pre-loaded R chunk adding the stock assessment tables from the nmfs-ost/stockplotr
-#' R package. NOTE: If your table is too wide to print on a portrait-oriented page,
+#' If your table is too wide to print on a portrait-oriented page,
 #' the page will be rotated to landscape view. If if is too wide to print in
 #' landscape view, it will be split into multiple tables. In this case, a new rda
 #' will be created and is identifiable by the phrase "split" in the filename (e.g.,
@@ -14,6 +13,14 @@
 #' file), and column 1 will be repeated across split tables. These tables will
 #' share the same caption. To specify a different repeated column(s), use
 #' asar::export_split_tbls with your preferred essential_columns value.
+#'
+#' @inheritParams create_template
+#' @param subdir subdirectory where the assessment report template is being stored
+#' @param include_all include all default tables for a stock assessment report
+#'
+#' @return Create a quarto document as part of a stock assessment outline with
+#' pre-loaded R chunks that add stock assessment tables from the nmfs-ost/stockplotr
+#' R package, or other tables in the same rda format.
 #' @export
 #'
 #' @examples
@@ -79,7 +86,7 @@ create_tables_doc <- function(subdir = getwd(),
     final_rda_tab_list <- rda_tab_list[!(remove_split_names %in% dup_tab & !grepl("_split", rda_tab_list))]
 
     # create sublist of only non-rda table files
-    non.rda_tab_list <- file_tab_list[!grepl(".rda", file_tab_list)]
+    # non.rda_tab_list <- file_tab_list[!grepl(".rda", file_tab_list)]
 
     # create two-chunk system to plot each rda figure
     create_tab_chunks <- function(tab = NA,
@@ -246,8 +253,8 @@ eval_", tab_shortname, " <- TRUE\n
 
     }
 
-    if (length(file_tab_list) == 0){
-      message(paste0("Note: No table files were present in '", fs::path(rda_dir, "rda_files"), "'."))
+    if (length(rda_tab_list) == 0){
+      message(paste0("Note: No tables in an rda format (i.e., .rda) were present in '", fs::path(rda_dir, "rda_files"), "'."))
       tables_doc <- "## Tables {#sec-tables}"
     } else {
       # paste rda table code chunks into one object
@@ -259,40 +266,38 @@ eval_", tab_shortname, " <- TRUE\n
 
           rda_tables_doc <- paste0(rda_tables_doc, tab_chunk)
         }
-      } else {
-        message(paste0("Note: No tables in an rda format (i.e., .rda) were present in '", fs::path(rda_dir, "rda_files"), "'."))
       }
-      if (length(non.rda_tab_list) > 0){
-        non.rda_tables_doc <- ""
-        for (i in 1:length(non.rda_tab_list)){
-          # remove file extension
-          tab_name <- stringr::str_extract(non.rda_tab_list[i],
-                                           "^[^.]+")
-          # remove "_table", if present
-          tab_name <- sub("_table", "", tab_name)
-          tab_chunk <- paste0(
-            "![Your caption here](", fs::path("rda_files",
-                                              non.rda_tab_list[i]),
-            "){#tab-",
-            tab_name,
-            "}\n\n"
-          )
-
-          non.rda_tables_doc <- paste0(non.rda_tables_doc, tab_chunk)
-        }
-      } else {
-        message(paste0("Note: No table files in a non-rda format (e.g., .jpg, .png) were present in '",  fs::path(rda_dir, "rda_files") , "'."))
-      }
+      # if (length(non.rda_tab_list) > 0){
+      #   non.rda_tables_doc <- ""
+      #   for (i in 1:length(non.rda_tab_list)){
+      #     # remove file extension
+      #     tab_name <- stringr::str_extract(non.rda_tab_list[i],
+      #                                      "^[^.]+")
+      #     # remove "_table", if present
+      #     tab_name <- sub("_table", "", tab_name)
+      #     tab_chunk <- paste0(
+      #       "![Your caption here](", fs::path("rda_files",
+      #                                         non.rda_tab_list[i]),
+      #       "){#tab-",
+      #       tab_name,
+      #       "}\n\n"
+      #     )
+      #
+      #     non.rda_tables_doc <- paste0(non.rda_tables_doc, tab_chunk)
+      #   }
+      # } else {
+      #   message(paste0("Note: No table files in a non-rda format (e.g., .jpg, .png) were present in '",  fs::path(rda_dir, "rda_files") , "'."))
+      # }
 
       # combine figures_doc setup with figure chunks
       tables_doc <- paste0(tables_doc_header,
                            tables_doc_setup,
                            ifelse(exists("rda_tables_doc"),
                                   rda_tables_doc,
-                                  ""),
-                           ifelse(exists("non.rda_tables_doc"),
-                                  non.rda_tables_doc,
-                                  "")
+                                  "")#,
+                           # ifelse(exists("non.rda_tables_doc"),
+                           #        non.rda_tables_doc,
+                           #        "")
       )
     }
   }
