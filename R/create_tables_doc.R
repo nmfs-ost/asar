@@ -11,7 +11,9 @@
 #' landscape view, it will be split into multiple tables. In this case, a new rda
 #' will be created and is identifiable by the phrase "split" in the filename (e.g.,
 #' indices.abundance_table.rda will generate a new indices.abundance_table_split.rda
-#' file). These tables will share the same caption.
+#' file), and column 1 will be repeated across split tables. These tables will
+#' share the same caption. To specify a different repeated column(s), use
+#' asar::export_split_tbls with your preferred essential_columns value.
 #' @export
 #'
 #' @examples
@@ -23,6 +25,14 @@
 create_tables_doc <- function(subdir = getwd(),
                               include_all = TRUE,
                               rda_dir = getwd()) {
+
+  # NOTE: essential_columns = 1 for all tables split using export_split_tbls() in
+  # the code below.
+  # To customize essential_columns, the user must run export_split_tbls() manually
+  # and specify essential_columns. Then, the split table will be imported into
+  # the tables doc as is.
+  # Upon adding more tables to stockplotr, the code may need to be altered to
+  # specify essential_columns for stockplotr-created tables.
 
   # set portrait page width (in)
   portrait_pg_width <- 5
@@ -169,7 +179,7 @@ eval_", tab_shortname, " <- TRUE\n
           split_tables <- length(table_list)
         } else {
           # split extra_wide tables into smaller tables and export AND
-          # identify number of split tables
+          # identify number of split tables IF not already split
           split_tables <- export_split_tbls(rda_dir = rda_dir,
                                           plot_name = tab,
                                           essential_columns = 1)

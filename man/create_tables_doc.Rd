@@ -4,7 +4,7 @@
 \alias{create_tables_doc}
 \title{Create Quarto Document of Tables}
 \usage{
-create_tables_doc(subdir = NULL, include_all = TRUE, rda_dir = NULL)
+create_tables_doc(subdir = getwd(), include_all = TRUE, rda_dir = getwd())
 }
 \arguments{
 \item{subdir}{subdirectory where the assessment report template is being stored}
@@ -19,7 +19,9 @@ the page will be rotated to landscape view. If if is too wide to print in
 landscape view, it will be split into multiple tables. In this case, a new rda
 will be created and is identifiable by the phrase "split" in the filename (e.g.,
 indices.abundance_table.rda will generate a new indices.abundance_table_split.rda
-file). These tables will share the same caption.
+file), and column 1 will be repeated across split tables. These tables will
+share the same caption. To specify a different repeated column(s), use
+asar::export_split_tbls with your preferred essential_columns value.
 }
 \description{
 Create Quarto Document of Tables
