@@ -672,6 +672,7 @@ convert_output <- function(
             # "SPR/YPR_Profile"
             # "SPAWN_RECR_CURVE"
             # "Biology_at_age_in_endyr"
+            # "PARAMETERS"
             
             if (parm_sel == "SPAWN_RECR_CURVE") {
               # 32
@@ -844,6 +845,105 @@ convert_output <- function(
             } else if (parm_sel == "Biology_at_age_in_endyr") {
               miss_parms <- c(miss_parms, parm_sel)
               next
+            } else if (parm_sel == "PARAMETERS") {
+              df1 <- extract[-1, ]
+              # Find first row without NAs = headers
+              # temp fix for catch df
+              df2 <- df1[stats::complete.cases(df1), ]
+              if (any(c("#") %in% df2[, 1])) {
+                full_row <- which(apply(df1, 1, function(row) is.na(row) | row == " " | row == "-" | row == "#"))[1]
+                df1 <- df1[-full_row[1], ]
+                df1 <- Filter(function(x) !all(is.na(x)), df1)
+                df2 <- df1[stats::complete.cases(df1), ]
+              }
+              # identify first row
+              row <- df2[1, ]
+              # make row the header names for first df
+              colnames(df1) <- row
+              # find row number that matches 'row'
+              rownum <- prodlim::row.match(row, df1)
+              # Subset data frame
+              df3 <- df1[-c(1:rownum), ]
+              colnames(df3) <- tolower(row)
+              df4 <- df3 |>
+                dplyr::select(intersect(colnames(df3), c("label","value","init", "parm_stdev"))) |>
+                dplyr::rename(
+                  estimate = value,
+                  initial = init,
+                  uncertainty = parm_stdev
+                ) |>
+                dplyr::mutate(
+                  uncertainty = dplyr::case_when(
+                    uncertainty == "_" ~ NA,
+                    TRUE ~ uncertainty
+                  ),
+                  uncertainty_label = dplyr::case_when(
+                    is.na(uncertainty) ~ NA,
+                    TRUE ~ "sd"),
+                  area = dplyr::case_when(
+                    grepl("?_area_[0-9]_?", label) ~ stringr::str_extract(label, "(?<=area_)[0-9]+"),
+                    grepl("_[0-9]_", label) ~ stringr::str_extract(label, "(?<=_)[0-9]+"),
+                    grepl(":_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]+"),
+                    grepl(":_[0-9][0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9][0-9]+"),
+                    TRUE ~ NA
+                  ),
+                  sex = dplyr::case_when(
+                    grepl("_fem_", label) ~ "female",
+                    grepl("_mal_", label) ~ "male",
+                    grepl("_sx:1$", label) ~ "female",
+                    grepl("_sx:2$", label) ~ "male",
+                    grepl("_sx:1_", label) ~ "female",
+                    grepl("_sx:2_", label) ~ "male",
+                    TRUE ~ NA
+                  ),
+                  growth_pattern = dplyr::case_when(
+                    grepl("_gp_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
+                    grepl("_gp:[0-9]$", label) ~ stringr::str_extract(label, "(?<=:)[0-9]$"),
+                    grepl("_gp:[0-9][0-9]$", label) ~ stringr::str_extract(label, "(?<=:)[0-9][0-9]$"),
+                    grepl("_GP_[0-9]$", label) ~ stringr::str_extract(label, "(?<=_)[0-9]$"),
+                    grepl("_GP:[0-9]$", label) ~ stringr::str_extract(label, "(?<=:)[0-9]$"),
+                    grepl("_GP:[0-9][0-9]$", label) ~ stringr::str_extract(label, "(?<=:)[0-9][0-9]$"),
+                    TRUE ~ NA
+                  ),
+                  month = dplyr::case_when(
+                    grepl("_month_[0-9]+$", label) ~ stringr::str_extract(label, "(?<=month_)[0-9]+$"),
+                    TRUE ~ ifelse(any(grepl("month", colnames(df3))), month, NA)
+                  ),
+                  age = dplyr::case_when(
+                    grepl("InitAge", label) ~ stringr::str_extract(label, "(?<=InitAge_)[0-9]+"),
+                    TRUE ~ NA
+                  ),
+                  year = dplyr::case_when(
+                    grepl("RecrDev", label) ~ stringr::str_extract(label, "(?<=RecrDev_)[0-9]+$"),
+                    TRUE ~ NA
+                  ),
+                  era = dplyr::case_when(
+                    grepl("InitAge", label) ~ stringr::str_extract(label, "^.*?(?=_InitAge_[0-9]+$)"),
+                    grepl("RecrDev", label) ~ stringr::str_extract(label, "^.*?(?=_RecrDev)"),
+                    TRUE ~ NA
+                  ),
+                  fleet = dplyr::case_when(
+                    grepl(
+                      paste(
+                        fleet_names, collapse = "|"
+                        ), 
+                      label) ~ stringr::str_extract(label, paste0("(^.*?_)?<=|", paste(fleet_names, collapse = "|"))),
+                    TRUE ~ NA
+                  ),
+                  # Must be last step in mutate bc all info comes from the 
+                  label = dplyr::case_when(
+                    grepl("?_month_[0-9]_?", label) ~ stringr::str_replace(label, "_?month_\\d?", ""),
+                    grepl("?_area_[0-9]_?", label) ~ stringr::str_replace(label, "_?area_\\d?", ""),
+                    grepl("InitAge", label) ~ "initial_age",
+                    grepl("RecrDev", label) ~ "recruitment_deviations",
+                    grepl(paste0(paste0("_",fleet_names, collapse = "|"), "\\([0-9]+\\)"), label) ~ stringr::str_extract(label, paste0("^.*?(?=", paste0("_", fleet_names, collapse = "|"), "\\([0-9]+\\))")),
+                    TRUE ~ stringr::str_extract(label, "^.*?(?=_\\d|_gp|_fem|_mal|_sx|:|$)")
+                  )
+                )
+              # match to out_new
+              df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
+              # Add to out list
+              out_list[[parm_sel]] <- df4
             } else {
               miss_parms <- c(miss_parms, parm_sel)
               next
