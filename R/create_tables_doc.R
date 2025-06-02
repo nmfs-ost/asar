@@ -47,10 +47,7 @@ create_tables_doc <- function(subdir = getwd(),
   # set landscape page width (in)
   landscape_pg_width <- 8
 
-  if (include_all == FALSE) {
-    # add option for only adding specified tables
-    warning("Functionality for adding specific tables is still in development. Please set 'include_all' to true and edit the 08_tables.qmd file to remove specific tables from the report.")
-  } else {
+  if (!include_all) stop("Functionality for adding specific tables is still in development. Please set 'include_all' to true and edit the 08_tables.qmd file to remove specific tables from the report.")
 
     # add header
     tables_doc_header <- paste0("## Tables {#sec-tables}\n \n")
@@ -300,7 +297,6 @@ eval_", tab_shortname, " <- TRUE\n
                            #        "")
       )
     }
-  }
 
   # Save tables doc to template folder
   utils::capture.output(cat(tables_doc),
