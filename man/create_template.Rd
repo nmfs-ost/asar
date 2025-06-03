@@ -8,35 +8,34 @@ create_template(
   new_template = TRUE,
   format = c("pdf", "docx", "html", NA),
   office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
-  species = NA,
-  spp_latin = NA,
-  year = NA,
-  file_dir = NA,
+  species = NULL,
+  spp_latin = NULL,
+  year = format(as.POSIXct(Sys.Date(), format = "\%YYYY-\%mm-\%dd"), "\%Y"),
+  file_dir = getwd(),
   author = "",
-  add_author = NA,
-  region = NA,
+  add_author = NULL,
+  region = NULL,
   complex = FALSE,
   include_affiliation = TRUE,
   simple_affiliation = FALSE,
-  title = NA,
+  alt_title = FALSE,
+  title = NULL,
   parameters = TRUE,
-  param_names = NA,
-  param_values = NA,
+  param_names = NULL,
+  param_values = NULL,
   convert_output = FALSE,
-  fleet_names = NA,
-  resdir = NA,
-  model_results = NA,
-  model = NA,
-  new_section = NA,
-  section_location = NA,
+  fleet_names = NULL,
+  model_results = NULL,
+  new_section = NULL,
+  section_location = NULL,
   type = "SAR",
-  prev_year = NA,
+  prev_year = NULL,
   custom = FALSE,
-  custom_sections = NA,
+  custom_sections = NULL,
   include_figures = TRUE,
   include_tables = TRUE,
   add_image = FALSE,
-  spp_image = NA,
+  spp_image = "",
   bib_file = "asar_references.bib",
   rerender_skeleton = FALSE,
   ...
@@ -103,26 +102,10 @@ of parameter names. Parameters automatically included:
 office, region, species (each of which are listed as
 individual parameters for this function, above).}
 
-\item{convert_output}{TRUE/FALSE; Convert the output file to
-standard model format while creating report template? Default
-is false.}
-
 \item{fleet_names}{Deprecated: List of fleet names as described in BAM output
 file (abbreviations).}
 
-\item{resdir}{Filepath of the directory storing the model
-results file(s). Examples where dover_sole_2024 is the project root
-for absolute and relative filepaths, respectively:
-"C:/Users/patrick.star/Documents/dover_sole_2024/models",
-"here::here("models")".}
-
-\item{model_results}{The model results file. Before the stock
-assessment output file has been converted to a standardized format
-with the function convert_output.R, the model results file may be
-a .sso or .rdata file. After conversion, this file will be a .csv file.}
-
-\item{model}{Type of assessment model that was used to assess
-the stock (e.g., "BAM", "SS3", "AMAK", "ASAP", etc.).}
+\item{model_results}{The name of the object in your environment that contains the data frame of converted model output from \code{asar::convert_output()}}
 
 \item{new_section}{Names of section(s) (e.g., introduction, results) or
 subsection(s) (e.g., a section within the introduction) that will be
@@ -206,9 +189,7 @@ create_template(
   year = 2010,
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
   include_affiliation = TRUE,
-  resdir = "C:/Users/Documents/Example_Files",
   model_results = "Report.sso",
-  model = "SS3",
   new_section = "an_additional_section",
   section_location = "after-introduction",
   rda_dir = here::here()
@@ -222,7 +203,6 @@ asar::create_template(
   spp_latin = "Kajikia audax",
   year = 2018,
   author = "Alba Tross",
-  model = "BAM",
   new_section = c("a_new_section", "another_new_section"),
   section_location = c("before-introduction", "after-introduction"),
   custom = TRUE,
@@ -247,11 +227,8 @@ create_template(
   parameters = TRUE,
   param_names = c("region", "year"),
   param_values = c("my_region", "2024"),
-  convert_output = FALSE,
   fleet_names = c("fleet1", "fleet2", "fleet3"),
-  resdir = "C:/Users/Documents/Example_Files",
   model_results = "Report.sso",
-  model = "SS3",
   new_section = "an_additional_section",
   section_location = "before-discussion",
   type = "SAR",

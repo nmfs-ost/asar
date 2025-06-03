@@ -2,19 +2,9 @@
 #'
 #' Format stock assessment output files to a standardized format.
 #'
-#' @param output_file Assessment model output file (e.g., the
-#'  Report.sso file for SS3, the rdat file for BAM, etc.)
-#' @param outdir Directory of the assessment model output file. Defaults to
-#' working directory.
+#' @param output_file Assessment model output file path
 #' @param model Assessment model used in evaluation ("ss3", "bam",
 #'  "asap", "fims", "amak", "ms-java", "wham", "mas").
-#' @param file_save TRUE/FALSE; Save the formatted object rather
-#'  than calling the function and adding the formatted object to
-#'  the global environment? Default is false.
-#' @param savedir Directory to save the converted output file. Defaults to
-#' working directory.
-#' @param save_name Name of the converted output file (do not use
-#'  spaces).
 #' @param fleet_names Names of fleets in the assessment model as
 #'  shortened in the output file. If fleet names are not properly read, then
 #'  indicate the fleets names as an acronym in a vector
@@ -25,34 +15,26 @@
 #'         for application in building a stock assessment reports and to easily
 #'         adapt results among regional assessments. The resulting object is
 #'         simply a transformed and machine readable version of a model output file.
-#'         There are 2 options for adding data to the function. (1) Add the full
-#'         path with the file name in output.file or (2) output.file is the file
-#'         name and outdir is the path to the file without a trailing forward slash.
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' convert_output(
-#' output_file = "Report.sso",
-#' outdir = "data",
+#' output_file = "~/Documents/ss3_models/model1/Report.sso",
 #' model = "ss3",
-#' savedir = getwd(),
-#' save_name = "converted_model_output")
+#' fleet_names = c("TWL", "NONTWL"))
 #' }
 convert_output <- function(
     output_file,
-    outdir = getwd(),
     model,
-    file_save = FALSE,
-    savedir = getwd(),
-    save_name = "std_model_output",
     fleet_names = NULL) {
   #### out_new ####
   # Blank dataframe and set up to mold output into
   out_new <- data.frame(
     label = NA,
     time = NA,
+    era = NA,
     year = NA,
     fleet = NA,
     area = NA,
@@ -89,18 +71,9 @@ convert_output <- function(
   )
   out_new <- out_new[-1, ]
 
-  # pull together path
-  if (file.exists(output_file)) {
-    output_file <- output_file
-  } else {
-    output_file <- file.path(outdir, output_file)
-  }
-
-  # check path
-  if (!file.exists(output_file)) {
-    stop("File not found.")
-  }
-
+  # check if file exists
+  if (!file.exists(output_file)) stop("File not found.")
+  
   #### SS3 ####
   # Convert SS3 output Report.sso file
   if (model %in% c("ss3", "SS3")) {
@@ -121,6 +94,12 @@ convert_output <- function(
       stop("This function in its current state can not process the data.")
     }
 
+    # Extract fleet names
+    if (is.null(fleet_names)){
+      fleet_info <- SS3_extract_df(dat, "Fleet")[-1,]
+      fleet_names <- setNames(fleet_info[[10]], fleet_info[[1]])
+    }
+  
     # Estimated and focal parameters to put into reformatted output df - naming conventions from SS3
     # Future changes will include a direct pull of these parameters from the output file instead of a manual list
     # Below the parameters are grouped and narrowed down into priority to reach deadline.
@@ -248,7 +227,7 @@ convert_output <- function(
     # Loop for all identified parameters to extract for plotting and use
     # Create list of parameters that were not found in the output file
     # 1,4,10,17,19,20,22,32,37
-    factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo", "growth_pattern", "gp")
+    factors <- c("era", "year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo", "growth_pattern", "gp")
     errors <- c("StdDev", "sd", "se", "SE", "cv", "CV")
     miss_parms <- c()
     out_list <- list()
@@ -712,8 +691,9 @@ convert_output <- function(
     if (length(miss_parms) > 0) {
       message("Some parameters were not found or included in the output file. The inital release of this converter only inlcudes to most necessary parameters and values. The following parameters were not added into the new output file: \n", paste(miss_parms, collapse = "\n"))
     }
-    out_new <- Reduce(rbind, out_list)
-
+    out_new <- Reduce(rbind, out_list) |>
+      dplyr::mutate(fleet = fleet_names[fleet])
+    
   } else if (model %in% c("bam", "BAM")) {
     #### BAM ####
     # Extract values from BAM output - model file after following ADMB2R
@@ -742,11 +722,11 @@ convert_output <- function(
       if (any(is.na(fleet_names))) {
         stop("No fleet names found in dataframe. Please indicate the abbreviations of fleet names using fleet_names arg.")
       }
-    } else {
-      # check fleet names are input
-      # if (any(is.na(fleet_names))) {
-      fleet_names <- fleet_names
-    }
+    } # else {
+    #   # check fleet names are input
+    #   # if (any(is.na(fleet_names))) {
+    #   fleet_names <- fleet_names
+    # }
     # Create list for morphed dfs to go into (for rbind later)
     out_list <- list()
 
@@ -1158,6 +1138,9 @@ convert_output <- function(
         warning(paste(names(extract), " not compatible.", sep = ""))
       } # close if statement
     } # close loop over objects listed in dat file
+    
+    # Place out_list into a single data frame
+    out_new <- Reduce(rbind, out_list)
     #### WHAM ----
   } else if (model == "wham") {
     # This is how Bai read the ASAP output
@@ -1178,11 +1161,16 @@ convert_output <- function(
 
   #### Exporting ####
   # Combind DFs into one
-  out_new <- Reduce(rbind, out_list) |>
+  out_new <- out_new |>
     dplyr::mutate(
       estimate = as.numeric(estimate),
       uncertainty = as.numeric(uncertainty),
-      initial = as.numeric(initial)
+      initial = as.numeric(initial),
+      # change era name to keep standard
+      era = dplyr::case_when(
+        era == "Main" ~ "time",
+        TRUE ~ tolower(era)
+      )
     ) |>
     suppressWarnings()
   if (tolower(model) == "ss3") {
@@ -1200,15 +1188,6 @@ convert_output <- function(
       )) |>
       dplyr::select(-alt_label)
   }
-  if (file_save) {
-    save_path <- paste(savedir, "/",
-      save_name,
-      ".csv",
-      sep = ""
-    )
-    utils::write.csv(out_new, file = save_path, row.names = FALSE)
-  } else {
-    return(out_new)
-  }
+  return(out_new)
   message("Finished!")
 } # close function
