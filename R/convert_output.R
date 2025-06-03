@@ -117,6 +117,12 @@ convert_output <- function(
       fleet_names <- setNames(fleet_info[[ncol(fleet_info)]], fleet_info[[1]])
     }
 
+    # Extract fleet names
+    if (is.null(fleet_names)){
+      fleet_info <- SS3_extract_df(dat, "Fleet")[-1,]
+      fleet_names <- setNames(fleet_info[[10]], fleet_info[[1]])
+    }
+
     # Estimated and focal parameters to put into reformatted output df - naming conventions from SS3
     # Extract keywords from ss3 file
     # Find row where keywords start
