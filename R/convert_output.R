@@ -215,7 +215,6 @@ convert_output <- function(
     std <- c(
       "DERIVED_QUANTITIES",
       "MGparm_By_Year_after_adjustments",
-      "PARAMETERS", # TODO: check
       "CATCH",
       "SPAWN_RECRUIT",
       "TIME_SERIES",
@@ -238,7 +237,8 @@ convert_output <- function(
       "BIOLOGY",
       "SPR/YPR_Profile",
       "Biology_at_age_in_endyr",
-      "SPAWN_RECR_CURVE"
+      "SPAWN_RECR_CURVE",
+      "PARAMETERS"
     )
     info <- c(
       "LIKELIHOOD",
@@ -1580,9 +1580,9 @@ convert_output <- function(
   # Combind DFs into one
   out_new <- out_new |>
     dplyr::mutate(
-      # estimate = as.numeric(estimate),
-      # uncertainty = as.numeric(uncertainty),
-      # initial = as.numeric(initial),
+      estimate = as.numeric(estimate),
+      uncertainty = as.numeric(uncertainty),
+      initial = as.numeric(initial),
       # change era name to keep standard
       era = dplyr::case_when(
         era == "Main" ~ "time",
