@@ -2,8 +2,7 @@
 #'
 #' Format stock assessment output files to a standardized format.
 #'
-#' @param output_file Assessment model output file path (e.g., the
-#'  Report.sso file for SS3, the rdat file for BAM, etc.)
+#' @param output_file Assessment model output file path
 #' @param model Assessment model used in evaluation ("ss3", "bam",
 #'  "asap", "fims", "amak", "ms-java", "wham", "mas").
 #' @param fleet_names Names of fleets in the assessment model as
@@ -22,8 +21,9 @@
 #' @examples
 #' \dontrun{
 #' convert_output(
-#' output_file = "Report.sso",
-#' model = "ss3")
+#' output_file = "~/Documents/ss3_models/model1/Report.sso",
+#' model = "ss3",
+#' fleet_names = c("TWL", "NONTWL"))
 #' }
 convert_output <- function(
     output_file,

@@ -4,7 +4,11 @@
 \alias{create_citation}
 \title{Generate Citation for Stock Assessment Report}
 \usage{
-create_citation(author = NULL, title = NULL, year = NULL)
+create_citation(
+  author = "",
+  title = NULL,
+  year = format(as.POSIXct(Sys.Date(), format = "\%YYYY-\%mm-\%dd"), "\%Y")
+)
 }
 \arguments{
 \item{author}{Ordered list of authors included in the assessment.}
