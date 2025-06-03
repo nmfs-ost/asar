@@ -936,9 +936,12 @@ convert_output <- function(
                     grepl("?_area_[0-9]_?", label) ~ stringr::str_replace(label, "_?area_\\d?", ""),
                     grepl("InitAge", label) ~ "initial_age",
                     grepl("RecrDev", label) ~ "recruitment_deviations",
-                    grepl(paste0(paste0("_",fleet_names, collapse = "|"), "\\([0-9]+\\)"), label) ~ stringr::str_remove(label, paste0("_", fleet_names, "\\([0-9]+\\)", collapse = "|")), # stringr::str_extract(chk2, paste0("^.*?(?=", paste0("_", fleet_names, collapse = "|"), "\\([0-9]+\\))")),
+                    grepl(paste0(paste0("_",fleet_names, collapse = "|"), "\\([0-9]+\\)"), label) ~ stringr::str_remove(label, paste0(paste0("_", fleet_names, "\\([0-9]+\\)", collapse = "|"),paste0("_", fleet_names, collapse = "|"))),
                     TRUE ~ stringr::str_extract(label, "^.*?(?=_\\d|_gp|_fem|_mal|_sx|:|$)")
-                  )
+                  ),
+                  # fix remaining labels
+                  label = ifelse(grepl("_GP$", label), stringr::str_remove(label, "_GP$"), label),
+                  label = ifelse(grepl("_Fem|_Mal", label), stringr::str_remove(label, "_Fem$|_Mal$"), label)
                 )
               # match to out_new
               df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
