@@ -36,7 +36,7 @@ jobs:
       - name: Make glossary
         run: | # | means there will be multiple lines of code here
          # source('R/utils.R')
-          asar::export_glossary()
+          asar:::export_glossary()
         shell: Rscript {0}
 
       - name: Create Pull Request
