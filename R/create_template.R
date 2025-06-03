@@ -45,8 +45,6 @@
 #'  of parameter names. Parameters automatically included:
 #'  office, region, species (each of which are listed as
 #'  individual parameters for this function, above).
-#' @param fleet_names Deprecated: List of fleet names as described in BAM output
-#'  file (abbreviations).
 #' @param model_results The name of the object in your environment that contains the data frame of converted model output from `asar::convert_output()`
 #' @param new_section Names of section(s) (e.g., introduction, results) or
 #' subsection(s) (e.g., a section within the introduction) that will be
@@ -60,8 +58,6 @@
 #' To add >1 (sub)section, make the location a list corresponding to the
 #' order of (sub)section names listed in the 'new_section' parameter.
 #' @param type Type of report to build. Default is SAR.
-#' @param prev_year Year in which the previous assessment report
-#'  was conducted. Used to pull previous assessment template.
 #' @param custom TRUE/FALSE; Build custom sectioning for the
 #' template, rather than the default for stock assessments in
 #' your region? Default is false.
@@ -146,12 +142,10 @@
 #'   parameters = TRUE,
 #'   param_names = c("region", "year"),
 #'   param_values = c("my_region", "2024"),
-#'   fleet_names = c("fleet1", "fleet2", "fleet3"),
 #'   model_results = "Report.sso",
 #'   new_section = "an_additional_section",
 #'   section_location = "before-discussion",
 #'   type = "SAR",
-#'   prev_year = 2021,
 #'   custom = TRUE,
 #'   custom_sections = c("executive_summary", "introduction", "discussion"),
 #'   add_image = TRUE,
@@ -192,12 +186,10 @@ create_template <- function(
     parameters = TRUE,
     param_names = NULL,
     param_values = NULL,
-    fleet_names = NULL,
     model_results = NULL,
     new_section = NULL,
     section_location = NULL,
     type = "SAR",
-    prev_year = NULL,
     custom = FALSE,
     custom_sections = NULL,
     add_image = FALSE,
@@ -455,7 +447,7 @@ create_template <- function(
       # Don't run on rerender
       # if (!rerender_skeleton) {
       #   if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
-      #     # if (!is.null(resdir) | !is.null(model_results)) {
+      #     # if (!is.null(model_results)) {
       #       # load converted output
       #       # output <- model_results
       #       # run stockplotr::exp_all_figs_tables() to make rda files
@@ -719,6 +711,7 @@ create_template <- function(
         paste0(
           # "# load converted output from asar::convert_output() \n",
           # "output <- utils::read.csv('",
+          # TODO: replace resdir with substitute object; was removed as arg
           # paste0(resdir, "/", model_results),
           # "') \n",
           # "output <- ", df_name, "\n",
