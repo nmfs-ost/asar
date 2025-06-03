@@ -548,7 +548,7 @@ create_template <- function(
       # Create a report template file to render for the region and species
       # Create YAML header for document
       # Write title based on report type and region
-      if (is.na(title)) {
+      if (is.null(title)) {
         title <- create_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type, year = year)
       }
 
@@ -896,7 +896,7 @@ create_template <- function(
 
       # Add page for citation of assessment report
       if (rerender_skeleton) {
-        if (is.na(title) | !is.null(species) | !is.null(year) | !is.null(author)) {
+        if (is.ni(title) | !is.null(species) | !is.null(year) | !is.null(author)) {
           citation_line <- grep("Please cite this publication as:", prev_skeleton) + 2
           citation <- glue::glue("{{{{< pagebreak >}}}} \n\n Please cite this publication as: \n\n {prev_skeleton[citation_line]} \n\n")
         } else {
