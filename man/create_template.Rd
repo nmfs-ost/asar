@@ -25,9 +25,7 @@ create_template(
   param_values = NULL,
   convert_output = FALSE,
   fleet_names = NULL,
-  resdir = NULL,
   model_results = NULL,
-  model = NULL,
   new_section = NULL,
   section_location = NULL,
   type = "SAR",
@@ -120,26 +118,10 @@ of parameter names. Parameters automatically included:
 office, region, species (each of which are listed as
 individual parameters for this function, above).}
 
-\item{convert_output}{TRUE/FALSE; Convert the output file to
-standard model format while creating report template? Default
-is false.}
-
 \item{fleet_names}{Deprecated: List of fleet names as described in BAM output
 file (abbreviations).}
 
-\item{resdir}{Filepath of the directory storing the model
-results file(s). Examples where dover_sole_2024 is the project root
-for absolute and relative filepaths, respectively:
-"C:/Users/patrick.star/Documents/dover_sole_2024/models",
-"here::here("models")".}
-
-\item{model_results}{The model results file. Before the stock
-assessment output file has been converted to a standardized format
-with the function convert_output.R, the model results file may be
-a .sso or .rdata file. After conversion, this file will be a .csv file.}
-
-\item{model}{Type of assessment model that was used to assess
-the stock (e.g., "BAM", "SS3", "AMAK", "ASAP", etc.).}
+\item{model_results}{The name of the object in your environment that contains the data frame of converted model output from \code{asar::convert_output()}}
 
 \item{new_section}{Names of section(s) (e.g., introduction, results) or
 subsection(s) (e.g., a section within the introduction) that will be
@@ -294,9 +276,7 @@ create_template(
   year = 2010,
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
   include_affiliation = TRUE,
-  resdir = "C:/Users/Documents/Example_Files",
   model_results = "Report.sso",
-  model = "SS3",
   new_section = "an_additional_section",
   section_location = "after-introduction",
   rda_dir = here::here()
@@ -310,7 +290,6 @@ asar::create_template(
   spp_latin = "Kajikia audax",
   year = 2018,
   author = "Alba Tross",
-  model = "BAM",
   new_section = c("a_new_section", "another_new_section"),
   section_location = c("before-introduction", "after-introduction"),
   custom = TRUE,
@@ -335,11 +314,8 @@ create_template(
   parameters = TRUE,
   param_names = c("region", "year"),
   param_values = c("my_region", "2024"),
-  convert_output = FALSE,
   fleet_names = c("fleet1", "fleet2", "fleet3"),
-  resdir = "C:/Users/Documents/Example_Files",
   model_results = "Report.sso",
-  model = "SS3",
   new_section = "an_additional_section",
   section_location = "before-discussion",
   type = "SAR",

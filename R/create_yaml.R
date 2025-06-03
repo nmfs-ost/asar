@@ -52,17 +52,17 @@ create_yaml <- function(
     author = NULL,
     add_author = NULL,
     add_image = FALSE,
-    spp_image = NA,
-    species = NA,
-    spp_latin = NA,
-    region = NA,
+    spp_image = "",
+    species = NULL,
+    spp_latin = NULL,
+    region = NULL,
     format = "pdf",
     parameters = TRUE,
-    param_names = NA,
-    param_values = NA,
-    bib_name = NA,
-    bib_file,
-    year = format(Sys.Date(), "%Y")
+    param_names = NULL,
+    param_values = NULL,
+    bib_name = NULL,
+    bib_file = "asar_references.bib",
+    year = NULL
     ){
   # check first if want to rerender current skeleton
   if (rerender_skeleton) {
@@ -79,7 +79,7 @@ create_yaml <- function(
     }
 
     # add authors
-    if (any(!is.na(author)) | !is.na(add_author)) {
+    if (any(!is.null(author)) | !is.null(add_author)) {
       # add_authors <- NULL
       # for (i in 1:length(author_list)) {
       #   toad <- paste(author_list[[i]], sep = ",")
@@ -105,7 +105,7 @@ create_yaml <- function(
 
     # add add'l param names
       # this occurs below
-    # if (!is.na(param_names) & !is.na(param_values)) {
+    # if (!is.null(param_names) & !is.null(param_values)) {
     #   add_params <- paste("  ", " ", param_names, ": ", "'", param_values, "'", sep = "")
     #   yaml <- append(yaml, add_params, after = grep("bibliography:", yaml) - 1)
     # }
@@ -118,18 +118,18 @@ create_yaml <- function(
           yaml <- append(yaml, "params:", after = grep("output-file:", yaml))
         }
         # if species, office, and latin are updated - replace in space
-        if (!is.na(species) & any(grepl("species: ''", yaml))) {
+        if (!is.null(species) & any(grepl("species: ''", yaml))) {
           yaml <- stringr::str_replace(yaml, yaml[grep("species: ''", yaml)], paste("  ", " ", "species: ", "'", species, "'", sep = ""))
         }
-        if (length(office) == 1 & !is.na(office) & any(grepl("office: ''", yaml))) {
+        if (length(office) == 1 & !is.null(office) & any(grepl("office: ''", yaml))) {
           yaml <- stringr::str_replace(yaml, yaml[grep("office: ''", yaml)], paste("  ", " ", "office: ", "'", office, "'", sep = ""))
         }
-        if (!is.na(spp_latin) & any(grepl("spp_latin: ''", yaml))) {
+        if (!is.null(spp_latin) & any(grepl("spp_latin: ''", yaml))) {
           yaml <- stringr::str_replace(yaml, yaml[grep("spp_latin: ''", yaml)], paste("  ", " ", "spp_latin: ", "'", spp_latin, "'", sep = ""))
         }
         # if params are not entered - use previous ones else change
         # TODO: add check for params not being replicated of default
-        if (!is.na(param_names) | !is.na(param_values)) {
+        if (!is.null(param_names) | !is.null(param_values)) {
           if (length(param_names) != length(param_values)) {
             print("Please define ALL parameter names (param_names) and values (param_values).")
           } else {
@@ -197,7 +197,7 @@ create_yaml <- function(
         # image as pulled in from above
         "cover: support_files/", new_img, "\n"
       )
-    } else if (is.na(spp_image)) {
+    } else if (is.null(spp_image)) {
       yaml <- paste0(
         yaml,
         # image as pulled in from above
@@ -218,6 +218,8 @@ create_yaml <- function(
         "pdf-engine: lualatex", "\n"
       )
     }
+    # Add quarto format
+    # quarto_formatting <- format_quarto(format = format)
 
     # Formatting
     yaml <- paste0(
@@ -245,11 +247,11 @@ create_yaml <- function(
         "  ", " ", "species: ", "'", species, "'", "\n",
         "  ", " ", "spp_latin: ", "'", spp_latin, "'", "\n"
       )
-      if (!is.na(region)) {
+      if (!is.null(region)) {
         yaml <- paste0(yaml, "  ", " ", "region: ", "'", region, "'", "\n")
       }
       # Add more parameters if indicated
-      if (!is.na(param_names) & !is.na(param_values)) {
+      if (!is.null(param_names) & !is.null(param_values)) {
         # check there are the same number of names and values
         if (length(param_names) != length(param_values)) {
           print("Please define ALL parameter names (param_names) and values (param_values).")
