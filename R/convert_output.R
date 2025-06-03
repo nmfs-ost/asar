@@ -286,11 +286,11 @@ convert_output <- function(
       # Processing data frame
       parm_sel <- param_names[i]
       if (parm_sel %in% c(std, std2, cha, rand, aa.al)) {
-        message("Processing ", parm_sel)
+        cli::cli_alert(glue::glue("Processing {parm_sel}"))
         extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
         if (!is.data.frame(extract)) {
           miss_parms <- c(miss_parms, parm_sel)
-          message("Skipped ", parm_sel)
+          cli::cli_alert(glue::glue("Skipped {parm_sel}"))
           next
         } else {
           ##### STD ####
@@ -419,7 +419,7 @@ convert_output <- function(
                   )
               }
             } else {
-              warning("Data frame not compatible in ", parm_sel, ".")
+              cli::cli_alert_warning(glue::glue("Data frame not compatible in {parm_sel}."))
             }
             if (any(colnames(df4) %in% c("value"))) df4 <- dplyr::rename(df4, estimate = value)
 
@@ -533,7 +533,7 @@ convert_output <- function(
             df5[setdiff(tolower(names(out_new)), tolower(names(df5)))] <- NA
             if (ncol(out_new) < ncol(df5)) {
               diff <- setdiff(names(df5), names(out_new))
-              message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
+              cli::cli_alert_info(paste0("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", ")))
               # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
               df5 <- dplyr::select(df5, -tidyselect::all_of(c(diff)))
               out_list[[parm_sel]] <- df5
@@ -620,7 +620,7 @@ convert_output <- function(
               df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
               if (ncol(out_new) < ncol(df4)) {
                 diff <- setdiff(names(df4), names(out_new))
-                message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
+                cli::cli_alert_info(paste0("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", ")))
                 # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
                 df4 <- dplyr::select(df4, -tidyselect::all_of(diff))
               }
@@ -655,7 +655,7 @@ convert_output <- function(
             df2[setdiff(tolower(names(out_new)), tolower(names(df2)))] <- NA
             if (ncol(out_new) < ncol(df2)) {
               diff <- setdiff(names(df2), names(out_new))
-              message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
+              cli::cli_alert_info(paste0("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", ")))
               df2 <- dplyr::select(df2, -tidyselect::all_of(diff))
               out_list[[parm_sel]] <- df2
             } else {
@@ -1022,7 +1022,7 @@ convert_output <- function(
             naming <- c("biomass", "discard", "catch", "f", "mean_size", "numbers", "sel", "mean_body_wt", "natural_mortality")
             if (stringr::str_detect(tolower(parm_sel), paste(naming, collapse = "|"))) {
               label <- stringr::str_extract(tolower(parm_sel), paste(naming, collapse = "|"))
-              if (length(label) > 1) warning("Length of label is > 1.")
+              if (length(label) > 1) cli::cli_alert_warning("Length of label is > 1.")
               if (label == "f") {
                 label <- "F"
               }
@@ -1084,7 +1084,7 @@ convert_output <- function(
             df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
             if (ncol(out_new) < ncol(df4)) {
               diff <- setdiff(names(df4), names(out_new))
-              message("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", "))
+              cli::cli_alert_info(paste0("FACTORS REMOVED: ", parm_sel, " - ", paste(diff, collapse = ", ")))
               # warning(parm_sel, " has more columns than the output data frame. The column(s) ", paste(diff, collapse = ", ")," are not found in the standard file. It was excluded from the resulting output. Please open an issue for developer fix.")
               df4 <- dplyr::select(df4, -tidyselect::all_of(diff))
               out_list[[parm_sel]] <- df4
@@ -1095,18 +1095,20 @@ convert_output <- function(
             #   miss_parms <- c(miss_parms, parm_sel)
             #   next
           } else {
-            message("Processing ", parm_sel)
+            cli::cli_alert_info(glue::glue("Processing {parm_sel}"))
             miss_parms <- c(miss_parms, parm_sel)
             next
           }
         } # close if param is in output file
       } else {
-        message("Skipped ", parm_sel)
+        cli::cli_alert(glue::glue("Skipped {parm_sel}"))
         next
       }
     } # close loop
     if (length(miss_parms) > 0) {
-      message("Some parameters were not found or included in the output file. The following parameters were not added into the new output file: \n", paste(miss_parms, collapse = "\n"))
+      cli::cli_alert_info(
+        paste0("Some parameters were not found or included in the output file. The following parameters were not added into the new output file: \n", paste(miss_parms, collapse = "\n"))
+        )
     }
     out_new <- Reduce(rbind, out_list) |>
       dplyr::mutate(fleet = fleet_names[fleet])
@@ -1158,7 +1160,7 @@ convert_output <- function(
     # Not transforming or inclusing info chunk
     for (p in 2:length(dat)) {
       extract <- dat[p]
-      message("Processing ", names(extract))
+      cli::cli_alert_info(glue::glue("Processing {names(extract)}"))
       # is the object class matrix, list, or vector
       if (is.vector(extract[[1]])) {
         if (is.list(extract[[1]])) { # indicates vector and list
@@ -1306,7 +1308,7 @@ convert_output <- function(
             df2[setdiff(tolower(names(out_new)), tolower(names(df2)))] <- NA
             out_list[[names(extract)]] <- df2
           } else {
-            message("Not compatible.")
+            cli::cli_alert_warning("Not compatible.")
           }
         } else { # vector only
           df <- as.data.frame(extract) |>
@@ -1434,7 +1436,7 @@ convert_output <- function(
               df <- tibble::rowid_to_column(df, var = fac) |>
                 dplyr::mutate(nsim = as.character(nsim))
             } else {
-              warning("not compatible")
+              cli::cli_alert_warning("Not compatible")
             }
           }
           if (length(intersect(colnames(df), c(factors, errors))) > 0) {
@@ -1517,7 +1519,7 @@ convert_output <- function(
           df2[setdiff(tolower(names(out_new)), tolower(names(df2)))] <- NA
           out_list[[names(extract)]] <- df2
         } else {
-          message("Not compatible.")
+          cli::cli_alert_warning("Not compatible.")
         }
       } else if (is.matrix(extract[[1]])) { # matrix only
         df <- as.data.frame(extract[[1]]) |>
@@ -1552,7 +1554,7 @@ convert_output <- function(
         df2[setdiff(tolower(names(out_new)), tolower(names(df2)))] <- NA
         out_list[[names(extract)]] <- df2
       } else {
-        warning(paste(names(extract), " not compatible.", sep = ""))
+        cli::cli_alert_warning(paste(names(extract), " not compatible.", sep = ""))
       } # close if statement
     } # close loop over objects listed in dat file
     
@@ -1612,4 +1614,5 @@ convert_output <- function(
       dplyr::select(-alt_label)
   }
   return(out_new)
+  cli::cli_alert_success("Finished!")
 } # close function
