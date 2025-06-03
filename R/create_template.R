@@ -13,8 +13,6 @@
 #' @param region Full name of region in which the species is
 #'  evaluated (if applicable). If the region is not specified for
 #'   your center or species, do not use this variable.
-#' @param complex TRUE/FALSE; Is this a species complex? Default
-#'  is false.
 #' @param species Full common name for target species. Split
 #' naming with a space and capitalize first letter(s). Example:
 #' "Dover sole".
@@ -74,10 +72,6 @@
 #'  name of the file, can be used (e.g., 'abstract' rather than
 #'  '00_abstract.qmd'). If adding a new section, also use
 #'   parameters 'new_section' and 'section_location'.
-#' @param include_figures TRUE/FALSE; Should figures be
-#' included in the report? Default is true.
-#' @param include_tables TRUE/FALSE; Should tables be included
-#'  in the report? Default is true.
 #' @param add_image TRUE/FALSE; Add image of species to the
 #' template that is not already included in the project's
 #' inst/resources/spp_img folder? Default is false.
@@ -141,7 +135,6 @@
 #'   format = "pdf",
 #'   office = "NWFSC",
 #'   region = "my_region",
-#'   complex = FALSE,
 #'   species = "Bluefish",
 #'   spp_latin = "Pomatomus saltatrix",
 #'   year = 2010,
@@ -161,8 +154,6 @@
 #'   prev_year = 2021,
 #'   custom = TRUE,
 #'   custom_sections = c("executive_summary", "introduction", "discussion"),
-#'   include_figures = TRUE,
-#'   include_tables = TRUE,
 #'   add_image = TRUE,
 #'   spp_image = "dir/containing/spp_image",
 #'   rda_dir = "C:/Users/Documents",
@@ -195,7 +186,6 @@ create_template <- function(
     author = "",
     add_author = NULL,
     region = NULL,
-    complex = FALSE,
     include_affiliation = TRUE,
     simple_affiliation = FALSE,
     title = NULL,
@@ -210,8 +200,6 @@ create_template <- function(
     prev_year = NULL,
     custom = FALSE,
     custom_sections = NULL,
-    include_figures = TRUE,
-    include_tables = TRUE,
     add_image = FALSE,
     spp_image = "",
     bib_file = "asar_references.bib",
@@ -493,7 +481,7 @@ create_template <- function(
       # }
 
       # Create tables qmd
-      # if ((include_tables & !rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
+      # if ((!rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
       #   # if (!test_exp_all) {
       #   #   tables_doc <- paste0(
       #   #     "### Tables \n \n",
@@ -518,7 +506,7 @@ create_template <- function(
       # }
 
       # Create figures qmd
-      # if ((include_figures & !rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
+      # if ((!rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
       #   # if (!test_exp_all) {
       #   #   figures_doc <- paste0(
       #   #     "### Figures \n \n",
@@ -916,10 +904,8 @@ create_template <- function(
       }
 
       # Create report template
-      # Include tables and figures if desired into template
+      # Include tables and figures in template
       # at this point, files_to_copy is the most updated outline
-      # if (include_tables) files_to_copy <- c(files_to_copy, "08_tables.qmd")
-      # if (include_figures) files_to_copy <- c(files_to_copy, "09_figures.qmd")
 
       if (rerender_skeleton & custom == FALSE) {
         # identify all previous sections
@@ -976,14 +962,10 @@ create_template <- function(
         # Create custom template from existing skeleton sections
         if (is.null(new_section)) {
           section_list <- add_base_section(files_to_copy)
-          if (include_tables) {
-            section_list <- c(section_list, "08_tables.qmd")
-            custom_sections <- c(custom_sections, "tables")
-          }
-          if (include_figures) {
-            section_list <- c(section_list, "09_figures.qmd")
-            custom_sections <- c(custom_sections, "figures")
-          }
+          section_list <- c(section_list, "08_tables.qmd")
+          custom_sections <- c(custom_sections, "tables")
+          section_list <- c(section_list, "09_figures.qmd")
+          custom_sections <- c(custom_sections, "figures")
           # Create sections object to add into template
           sections <- add_child(
             section_list,
@@ -1032,12 +1014,8 @@ create_template <- function(
             if (any(stringr::str_replace(section_location, "^[a-z]+-", "") %notin% custom_sections)) {
               cli::cli_abort("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
             }
-            if (include_tables) {
               sec_list1 <- c(sec_list1, "08_tables.qmd")
-            }
-            if (include_figures) {
               sec_list1 <- c(sec_list1, "09_figures.qmd")
-            }
             # reorder sec_list1 alphabetically so that 11_appendix goes to end of list
             sec_list1 <- sec_list1[order(names(stats::setNames(sec_list1, sec_list1)))]
 
