@@ -15,8 +15,6 @@ create_template(
   author = "",
   add_author = NULL,
   region = NULL,
-  include_affiliation = TRUE,
-  simple_affiliation = FALSE,
   alt_title = FALSE,
   title = NULL,
   parameters = TRUE,
@@ -68,14 +66,6 @@ Please leave a comment on the GitHub issues page to be added.}
 \item{region}{Full name of region in which the species is
 evaluated (if applicable). If the region is not specified for
 your center or species, do not use this variable.}
-
-\item{include_affiliation}{TRUE/FALSE; Does the analyst want to
-include the authors' affiliations in the document? Default is
-false.}
-
-\item{simple_affiliation}{TRUE/FALSE; If including affiliations,
-should the office name function as the affiliation, rather
-than the full address? Default is true.}
 
 \item{title}{A custom title that is an alternative to the default title (composed
 in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
@@ -163,7 +153,6 @@ create_template(
   spp_latin = "Microstomus pacificus",
   year = 2010,
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
-  include_affiliation = TRUE,
   model_results = "Report.sso",
   new_section = "an_additional_section",
   section_location = "after-introduction",
@@ -195,8 +184,6 @@ create_template(
   year = 2010,
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
   add_author = "Sun E Day",
-  include_affiliation = TRUE,
-  simple_affiliation = TRUE,
   title = "Management Track Assessments Spring 2024",
   parameters = TRUE,
   param_names = c("region", "year"),
