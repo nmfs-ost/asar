@@ -45,7 +45,6 @@ Suggests:
     gt,
     kableExtra,
     knitr,
-    nmfspalette,
     parallel,
     quarto,
     r4ss,
@@ -57,7 +56,6 @@ Suggests:
 VignetteBuilder: 
     knitr
 Remotes:
-    nmfs-ost/nmfspalette,
     nmfs-ost/stockplotr,
     r4ss/r4ss
 Config/testthat/edition: 3
@@ -67,3 +65,4 @@ Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+BugReports: https://github.com/nmfs-ost/asar/issues
