@@ -25,7 +25,6 @@
 #'   author_list = "  - name: 'Patrick Star'\n    affiliations:\n      - name: 'NOAA Fisheries Southeast Fisheries Science Center'\n        address: '75 Virginia Beach Drive'\n        city: 'Miami'\n        state: 'FL'\n        postal-code: '33149'\n",
 #'   author = "Patrick Star",
 #'   office = "AFSC",
-#'   add_author = NA,
 #'   spp_image = NA,
 #'   species = NA,
 #'   spp_latin = NA,
@@ -46,8 +45,7 @@ create_yaml <- function(
     prev_format = NULL,
     title = NULL,
     author_list = NULL,
-    author = NULL,
-    add_author = NULL,
+    # author = NULL,
     spp_image = "",
     species = NULL,
     spp_latin = NULL,
@@ -75,7 +73,7 @@ create_yaml <- function(
     }
 
     # add authors
-    if (any(!is.null(author)) | !is.null(add_author)) {
+    # if (any(!is.null(author))) {
       # add_authors <- NULL
       # for (i in 1:length(author_list)) {
       #   toad <- paste(author_list[[i]], sep = ",")
@@ -92,7 +90,7 @@ create_yaml <- function(
       } else {
         yaml <- append(yaml, add_authors, after = utils::tail(grep("postal-code:", yaml), n = 1))
       }
-    }
+    # }
 
     # replace title
     # DOES NOT WORK when latin latex notation is in the title
