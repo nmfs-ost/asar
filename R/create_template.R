@@ -27,12 +27,6 @@
 #' and who should be temporarily added to the author list. Format
 #' as "First MI Last".
 #' Please leave a comment on the GitHub issues page to be added.
-#' @param include_affiliation TRUE/FALSE; Does the analyst want to
-#'  include the authors' affiliations in the document? Default is
-#'  false.
-#' @param simple_affiliation TRUE/FALSE; If including affiliations,
-#'  should the office name function as the affiliation, rather
-#'  than the full address? Default is true.
 #' @param title A custom title that is an alternative to the default title (composed
 #' in asar::create_title()). Example: "Management Track Assessments Spring 2024".
 #' @param parameters TRUE/FALSE; For
@@ -101,7 +95,6 @@
 #'   spp_latin = "Microstomus pacificus",
 #'   year = 2010,
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
-#'   include_affiliation = TRUE,
 #'   model_results = "Report.sso",
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction",
@@ -133,8 +126,6 @@
 #'   year = 2010,
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
 #'   add_author = "Sun E Day",
-#'   include_affiliation = TRUE,
-#'   simple_affiliation = TRUE,
 #'   title = "Management Track Assessments Spring 2024",
 #'   parameters = TRUE,
 #'   param_names = c("region", "year"),
@@ -176,8 +167,6 @@ create_template <- function(
     author = "",
     add_author = NULL,
     region = NULL,
-    include_affiliation = TRUE,
-    simple_affiliation = FALSE,
     title = NULL,
     parameters = TRUE,
     param_names = NULL,
@@ -569,106 +558,70 @@ create_template <- function(
 
       authors <- authors[match(author, authors$name), ]
 
-      if (include_affiliation) {
-        affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
-      }
+      affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
+
       if (!is.null(add_author)) {
         authors <- rbind(authors, data.frame(name = add_author, office = rep(NA, length(add_author))))
       }
 
       author_list <- list()
-      if (include_affiliation & !simple_affiliation) {
-        if (nrow(authors) > 0) {
-          if (rerender_skeleton) {
-            author_lines <- grep(
-              "\\- name:\\s*'",
-              prev_skeleton,
-              value = TRUE
-            )
-            authors_prev <- sub(
-              ".*\\- name:\\s*'([^']+)'.*",
-              "\\1",
-              author_lines
-            )
-            # remove authors previously in skeleton and keep new additions either from author or add_author
-            author_to_add <- setdiff(authors$name, authors_prev)
-            authors <- authors |>
-              dplyr::filter(name %in% author_to_add)
-          }
-          for (i in 1:nrow(authors)) {
-            auth <- authors[i, ]
-            aff <- affil |>
-              dplyr::filter(affiliation == auth$office)
-            if (is.na(auth$office)) {
-              paste(
-                "  ", "- name: ", "'", auth$name, "'", "\n",
-                "  ", "  ", "affiliations:", "\n",
-                "  ", "  ", "  ", "- name: '[organization]'", "\n", # "NOAA Fisheries ",
-                "  ", "  ", "  ", "  ", "address: '[address]'", "\n",
-                "  ", "  ", "  ", "  ", "city: '[city]'", "\n",
-                "  ", "  ", "  ", "  ", "state: '[state]'", "\n",
-                "  ", "  ", "  ", "  ", "postal-code: '[postal code]'", "\n",
-                sep = ""
-              ) -> author_list[[i]]
-            } else {
-              paste(
-                "  ", "- name: ", "'", auth$name, "'", "\n",
-                "  ", "  ", "affiliations:", "\n",
-                "  ", "  ", "  ", "- name: ", "'", aff$name, "'", "\n", # "NOAA Fisheries ",
-                "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'", "\n",
-                # TODO: remove state in the following line when notation is changed in _titlepage.tex
-                "  ", "  ", "  ", "  ", "city: ", "'", aff$city, ", ", aff$state, "'", "\n",
-                "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
-                "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n",
-                sep = ""
-              ) -> author_list[[i]]
-            }
-          }
-        } else {
-          paste0(
-            "  ", "- name: ", "'FIRST LAST'", "\n",
-            "  ", "  ", "affiliations: \n",
-            "  ", "  ", "  ", "- name: 'NOAA Fisheries' \n",
-            "  ", "  ", "  ", "  ", "address: 'ADDRESS' \n",
-            "  ", "  ", "  ", "  ", "city: 'CITY' \n",
-            "  ", "  ", "  ", "  ", "state: 'STATE' \n",
-            "  ", "  ", "  ", "  ", "postal-code: 'POSTAL CODE' \n"
-            # sep = " "
-          ) -> author_list[[1]]
+      if (nrow(authors) > 0) {
+        if (rerender_skeleton) {
+          author_lines <- grep(
+            "\\- name:\\s*'",
+            prev_skeleton,
+            value = TRUE
+          )
+          authors_prev <- sub(
+            ".*\\- name:\\s*'([^']+)'.*",
+            "\\1",
+            author_lines
+          )
+          # remove authors previously in skeleton and keep new additions either from author or add_author
+          author_to_add <- setdiff(authors$name, authors_prev)
+          authors <- authors |>
+            dplyr::filter(name %in% author_to_add)
         }
-      } else if (include_affiliation & simple_affiliation) {
-        if (nrow(authors) > 0) {
-          for (i in 1:nrow(authors)) {
-            auth <- authors[i, ]
-            aff <- affil |>
-              dplyr::filter(affiliation == auth$office)
-            if (!is.na(auth$office)) {
-              paste0(
-                "  ", "- name: ", "'", auth$name, "'", "\n",
-                "  ", "  ", "affiliations: ", "'", aff$name, "'", "\n"
-              ) -> author_list[[i]]
-            } else {
-              paste0(
-                "  ", "- name: ", "'", auth$name, "'", "\n",
-                "  ", "  ", "affiliations: ", "'NO AFFILIATION'", "\n"
-              ) -> author_list[[i]]
-            }
+        for (i in 1:nrow(authors)) {
+          auth <- authors[i, ]
+          aff <- affil |>
+            dplyr::filter(affiliation == auth$office)
+          if (is.na(auth$office)) {
+            paste(
+              "  ", "- name: ", "'", auth$name, "'", "\n",
+              "  ", "  ", "affiliations:", "\n",
+              "  ", "  ", "  ", "- name: '[organization]'", "\n", # "NOAA Fisheries ",
+              "  ", "  ", "  ", "  ", "address: '[address]'", "\n",
+              "  ", "  ", "  ", "  ", "city: '[city]'", "\n",
+              "  ", "  ", "  ", "  ", "state: '[state]'", "\n",
+              "  ", "  ", "  ", "  ", "postal-code: '[postal code]'", "\n",
+              sep = ""
+            ) -> author_list[[i]]
+          } else {
+            paste(
+              "  ", "- name: ", "'", auth$name, "'", "\n",
+              "  ", "  ", "affiliations:", "\n",
+              "  ", "  ", "  ", "- name: ", "'", aff$name, "'", "\n", # "NOAA Fisheries ",
+              "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'", "\n",
+              # TODO: remove state in the following line when notation is changed in _titlepage.tex
+              "  ", "  ", "  ", "  ", "city: ", "'", aff$city, ", ", aff$state, "'", "\n",
+              "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
+              "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n",
+              sep = ""
+            ) -> author_list[[i]]
           }
-        } else {
-          paste0(
-            "  ", "- name: ", "'FIRST LAST'", "\n",
-            "  ", "  ", "affiliations: ", "NO AFFILIATION", "\n"
-          ) -> author_list[[1]]
         }
       } else {
-        if (nrow(authors) > 0) {
-          for (i in 1:nrow(authors)) {
-            auth <- authors[i, ]
-            paste0("  ", "- ", "'", auth$name, "'", "\n") -> author_list[[i]]
-          }
-        } else {
-          paste0("  ", "- 'FIRST LAST' \n") -> author_list[[1]]
-        }
+        paste0(
+          "  ", "- name: ", "'FIRST LAST'", "\n",
+          "  ", "  ", "affiliations: \n",
+          "  ", "  ", "  ", "- name: 'NOAA Fisheries' \n",
+          "  ", "  ", "  ", "  ", "address: 'ADDRESS' \n",
+          "  ", "  ", "  ", "  ", "city: 'CITY' \n",
+          "  ", "  ", "  ", "  ", "state: 'STATE' \n",
+          "  ", "  ", "  ", "  ", "postal-code: 'POSTAL CODE' \n"
+          # sep = " "
+        ) -> author_list[[1]]
       }
 
       # Create yaml
