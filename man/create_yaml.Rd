@@ -58,10 +58,6 @@ and who should be temporarily added to the author list. Format
 as "First MI Last".
 Please leave a comment on the GitHub issues page to be added.}
 
-\item{add_image}{TRUE/FALSE; Add image of species to the
-template that is not already included in the project's
-inst/resources/spp_img folder? Default is false.}
-
 \item{spp_image}{File path to the species' image if not
 using the image included in the project's repository.}
 
