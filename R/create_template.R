@@ -22,10 +22,7 @@
 #' is the year in which the report is rendered.
 #' @param file_dir Location of stock assessment files produced
 #' by this function. Default is the working directory.
-#' @param author Ordered list of authors included in the assessment.
-#' @param add_author Author that is not currently in the database
-#' and who should be temporarily added to the author list. Format
-#' as "First MI Last".
+#' @param author Ordered list of authors included in the assessment with their associated affiliation acronym (ex. "John N. Doe"="NWFSC-SWA")
 #' Please leave a comment on the GitHub issues page to be added.
 #' @param title A custom title that is an alternative to the default title (composed
 #' in asar::create_title()). Example: "Management Track Assessments Spring 2024".
@@ -125,7 +122,6 @@
 #'   spp_latin = "Pomatomus saltatrix",
 #'   year = 2010,
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
-#'   add_author = "Sun E Day",
 #'   title = "Management Track Assessments Spring 2024",
 #'   parameters = TRUE,
 #'   param_names = c("region", "year"),
@@ -165,7 +161,6 @@ create_template <- function(
     year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
     file_dir = getwd(),
     author = "",
-    add_author = NULL,
     region = NULL,
     title = NULL,
     parameters = TRUE,
@@ -560,10 +555,6 @@ create_template <- function(
 
       affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
 
-      if (!is.null(add_author)) {
-        authors <- rbind(authors, data.frame(name = add_author, office = rep(NA, length(add_author))))
-      }
-
       author_list <- list()
       if (nrow(authors) > 0) {
         if (rerender_skeleton) {
@@ -577,7 +568,7 @@ create_template <- function(
             "\\1",
             author_lines
           )
-          # remove authors previously in skeleton and keep new additions either from author or add_author
+          # remove authors previously in skeleton and keep new additions either from author
           author_to_add <- setdiff(authors$name, authors_prev)
           authors <- authors |>
             dplyr::filter(name %in% author_to_add)
