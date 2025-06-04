@@ -15,7 +15,6 @@ create_template(
   author = "",
   add_author = NULL,
   region = NULL,
-  complex = FALSE,
   include_affiliation = TRUE,
   simple_affiliation = FALSE,
   alt_title = FALSE,
@@ -24,17 +23,12 @@ create_template(
   param_names = NULL,
   param_values = NULL,
   convert_output = FALSE,
-  fleet_names = NULL,
   model_results = NULL,
   new_section = NULL,
   section_location = NULL,
   type = "SAR",
-  prev_year = NULL,
   custom = FALSE,
   custom_sections = NULL,
-  include_figures = TRUE,
-  include_tables = TRUE,
-  add_image = FALSE,
   spp_image = "",
   bib_file = "asar_references.bib",
   rerender_skeleton = FALSE,
@@ -75,9 +69,6 @@ Please leave a comment on the GitHub issues page to be added.}
 evaluated (if applicable). If the region is not specified for
 your center or species, do not use this variable.}
 
-\item{complex}{TRUE/FALSE; Is this a species complex? Default
-is false.}
-
 \item{include_affiliation}{TRUE/FALSE; Does the analyst want to
 include the authors' affiliations in the document? Default is
 false.}
@@ -102,9 +93,6 @@ of parameter names. Parameters automatically included:
 office, region, species (each of which are listed as
 individual parameters for this function, above).}
 
-\item{fleet_names}{Deprecated: List of fleet names as described in BAM output
-file (abbreviations).}
-
 \item{model_results}{The name of the object in your environment that contains the data frame of converted model output from \code{asar::convert_output()}}
 
 \item{new_section}{Names of section(s) (e.g., introduction, results) or
@@ -122,9 +110,6 @@ order of (sub)section names listed in the 'new_section' parameter.}
 
 \item{type}{Type of report to build. Default is SAR.}
 
-\item{prev_year}{Year in which the previous assessment report
-was conducted. Used to pull previous assessment template.}
-
 \item{custom}{TRUE/FALSE; Build custom sectioning for the
 template, rather than the default for stock assessments in
 your region? Default is false.}
@@ -136,16 +121,6 @@ package = "asar")). The name of the section, rather than the
 name of the file, can be used (e.g., 'abstract' rather than
 '00_abstract.qmd'). If adding a new section, also use
 parameters 'new_section' and 'section_location'.}
-
-\item{include_figures}{TRUE/FALSE; Should figures be
-included in the report? Default is true.}
-
-\item{include_tables}{TRUE/FALSE; Should tables be included
-in the report? Default is true.}
-
-\item{add_image}{TRUE/FALSE; Add image of species to the
-template that is not already included in the project's
-inst/resources/spp_img folder? Default is false.}
 
 \item{spp_image}{File path to the species' image if not
 using the image included in the project's repository.}
@@ -215,7 +190,6 @@ create_template(
   format = "pdf",
   office = "NWFSC",
   region = "my_region",
-  complex = FALSE,
   species = "Bluefish",
   spp_latin = "Pomatomus saltatrix",
   year = 2010,
@@ -227,17 +201,12 @@ create_template(
   parameters = TRUE,
   param_names = c("region", "year"),
   param_values = c("my_region", "2024"),
-  fleet_names = c("fleet1", "fleet2", "fleet3"),
   model_results = "Report.sso",
   new_section = "an_additional_section",
   section_location = "before-discussion",
   type = "SAR",
-  prev_year = 2021,
   custom = TRUE,
   custom_sections = c("executive_summary", "introduction", "discussion"),
-  include_figures = TRUE,
-  include_tables = TRUE,
-  add_image = TRUE,
   spp_image = "dir/containing/spp_image",
   rda_dir = "C:/Users/Documents",
   end_year = 2022,

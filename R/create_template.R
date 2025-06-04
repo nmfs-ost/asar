@@ -68,9 +68,6 @@
 #'  name of the file, can be used (e.g., 'abstract' rather than
 #'  '00_abstract.qmd'). If adding a new section, also use
 #'   parameters 'new_section' and 'section_location'.
-#' @param add_image TRUE/FALSE; Add image of species to the
-#' template that is not already included in the project's
-#' inst/resources/spp_img folder? Default is false.
 #' @param spp_image File path to the species' image if not
 #' using the image included in the project's repository.
 #' @param bib_file File path to a .bib file used for citing references in
@@ -148,7 +145,6 @@
 #'   type = "SAR",
 #'   custom = TRUE,
 #'   custom_sections = c("executive_summary", "introduction", "discussion"),
-#'   add_image = TRUE,
 #'   spp_image = "dir/containing/spp_image",
 #'   rda_dir = "C:/Users/Documents",
 #'   end_year = 2022,
@@ -192,7 +188,6 @@ create_template <- function(
     type = "SAR",
     custom = FALSE,
     custom_sections = NULL,
-    add_image = FALSE,
     spp_image = "",
     bib_file = "asar_references.bib",
     rerender_skeleton = FALSE,
@@ -319,11 +314,10 @@ create_template <- function(
       before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "asar")
       # header_file <- system.file("resources", "formatting_files", "in-header.tex", package = "asar")
       # format_files <- list(before_body_file, header_file)
-      if (add_image) {
-        spp_image <- spp_image
-      } else {
-        spp_image <- system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar")
-      }
+      spp_image <- ifelse(spp_image == "",
+        system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar"),
+        spp_image
+      )
 
       # Add bib file
       if (bib_file == "asar_references.bib") {

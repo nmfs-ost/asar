@@ -29,9 +29,6 @@ your center or species, do not use this variable.}
 \item{year}{Year the assessment is being conducted. Default
 is the year in which the report is rendered.}
 
-\item{complex}{TRUE/FALSE; Is this a species complex? Default
-is false.}
-
 \item{type}{Type of report to build. Default is SAR.}
 
 \item{spp_latin}{Latin name for the target species. Example:
