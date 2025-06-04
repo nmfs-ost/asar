@@ -36,7 +36,7 @@ add_authors <- function(
         cli::cli_abort("No skeleton quarto file found in the working directory.")
       }
     }
-    
+
     # Pull all author names from prev_skeleton
     author_prev <- grep(
       "\\- name:\\s*'",
@@ -50,7 +50,7 @@ add_authors <- function(
     } else {
       author_prev <- author_prev[seq(1, length(author_prev), 2)]
     }
-    
+
     # Remove everything but the name
     author_prev <- sub(
       ".*\\- name:\\s*'([^']+)'.*",
