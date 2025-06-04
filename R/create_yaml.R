@@ -25,12 +25,11 @@
 #'   author_list = "  - name: 'Patrick Star'\n    affiliations:\n      - name: 'NOAA Fisheries Southeast Fisheries Science Center'\n        address: '75 Virginia Beach Drive'\n        city: 'Miami'\n        state: 'FL'\n        postal-code: '33149'\n",
 #'   author = "Patrick Star",
 #'   office = "AFSC",
-#'   add_author = NULL,
-#'   add_image = FALSE,
-#'   spp_image = NULL,
-#'   species = NULL,
-#'   spp_latin = NULL,
-#'   region = NULL,
+#'   add_author = NA,
+#'   spp_image = NA,
+#'   species = NA,
+#'   spp_latin = NA,
+#'   region = NA,
 #'   format = "pdf",
 #'   parameters = TRUE,
 #'   param_names = NULL,
@@ -49,7 +48,6 @@ create_yaml <- function(
     author_list = NULL,
     author = NULL,
     add_author = NULL,
-    add_image = FALSE,
     spp_image = "",
     species = NULL,
     spp_latin = NULL,
@@ -187,15 +185,7 @@ create_yaml <- function(
     )
 
     # Add species image on title page
-    if (add_image) {
-      # extract image name
-      new_img <- sapply(strsplit(spp_image, "/"), utils::tail, 1)
-      yaml <- paste0(
-        yaml,
-        # image as pulled in from above
-        "cover: support_files/", new_img, "\n"
-      )
-    } else if (is.null(spp_image)) {
+    if (spp_image == "") {
       yaml <- paste0(
         yaml,
         # image as pulled in from above
