@@ -730,6 +730,7 @@ create_template <- function(
         }
       } else {
         citation <- create_citation(
+          author = author,
           ...
         )
         print("_______Add Report Citation________")
