@@ -573,14 +573,15 @@ create_template <- function(
       # cat(yaml, file = here('template','yaml_header.qmd'))
 
       # add in html for draft watermark if in that format - otherwise pdf draft is in format_quarto fxn
-      if (format == "html") {
-        html_draft <- paste(
-          "\n ```{=html} \n",
-          "<div style='position: fixed; margin-top: 10%; margin-left:5%; font-size: xx-large; font-weight: 900; color: #CCCCCC; rotate: -45deg; z-index:-999;'>DRAFT</div>", "\n",
-          "``` \n",
-          sep = ""
-        )
-      }
+      # Deprecated in favor of disclaimer
+      # if (format == "html") {
+      #   html_draft <- paste(
+      #     "\n ```{=html} \n",
+      #     "<div style='position: fixed; margin-top: 10%; margin-left:5%; font-size: xx-large; font-weight: 900; color: #CCCCCC; rotate: -45deg; z-index:-999;'>DRAFT</div>", "\n",
+      #     "``` \n",
+      #     sep = ""
+      #   )
+      # }
 
       # Add preamble
       # add in quantities and output data R chunk
