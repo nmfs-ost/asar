@@ -677,7 +677,7 @@ create_template <- function(
           "# female SB (placeholder)", "\n"
         ),
         label = "output_and_quantities",
-        chunk_option = c("echo: false", "warnings: false", ifelse(is.null(model_results), "eval: false", "eval: true"))
+        chunk_option = c("echo: false", "warning: false", ifelse(is.null(model_results), "eval: false", "eval: true"))
       )
 
       # extract old preamble if don't want to change
