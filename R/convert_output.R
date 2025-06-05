@@ -1613,6 +1613,6 @@ convert_output <- function(
       )) |>
       dplyr::select(-alt_label)
   }
-  return(out_new)
   cli::cli_alert_success("Finished!")
+  return(out_new)
 } # close function
