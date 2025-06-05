@@ -1559,7 +1559,15 @@ convert_output <- function(
     } # close loop over objects listed in dat file
     
     # Place out_list into a single data frame
-    out_new <- Reduce(rbind, out_list)
+    # VIRG, INIT, TIME, FORE
+    out_new <- Reduce(rbind, out_list) |>
+      # Add era as factor into BAM conout
+      dplyr::mutate(era = dplyr::case_when(
+        year < dat$parms$styr ~ "init",
+        year >= dat$parms$styr & year <= dat$parms$endyr ~ "time",
+        year > dat$parms$endyr ~ "fore",
+        TRUE ~ NA
+      ))
     #### WHAM ----
   } else if (model == "wham") {
     # This is how Bai read the ASAP output
