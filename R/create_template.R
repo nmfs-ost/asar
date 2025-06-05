@@ -155,9 +155,9 @@
 #'
 create_template <- function(
     new_template = TRUE,
-    format = c("pdf", "docx", "html", NA),
+    format = "pdf",
     office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
-    species = NULL,
+    species = "species",
     spp_latin = NULL,
     year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
     file_dir = getwd(),
@@ -227,26 +227,33 @@ create_template <- function(
     #   species,
     #
     # )
-    if (!is.null(species)) {
+    # if (!is.null(species)) {
       report_name <- paste0(
         report_name,
         gsub(" ", "_", species),
         "_skeleton.qmd"
       )
-    } else {
-      report_name <- paste0(
-        report_name, "species_skeleton.qmd"
-      )
-    }
+    # } else {
+    #   report_name <- paste0(
+    #     report_name, "species_skeleton.qmd"
+    #   )
+    # }
   } # close if rerender skeleton for naming
 
   # Select parameter from list
   # TODO: add switch here instead of if
-  if (length(format) > 1) {
-    format <- "pdf"
-  } else {
-    format <- match.arg(format, several.ok = FALSE)
-  }
+  # if (length(format) > 1) {
+  #   format <- "pdf"
+  # } else {
+  #   format <- match.arg(format, several.ok = FALSE)
+  # }
+  format <- switch(
+    format,
+    tolower("pdf") = "pdf",
+    tolower("html") = "html",
+    tolower("docx") = {cli::cl_warn("The docx format is not currently supported by asar. Defaulting to pdf") ; "pdf"},
+    {cli::cli_abort("Format not compatible.")}
+  )
 
   # TODO: add switch here instead of if
   if (!is.null(office) & length(office) == 1) {
