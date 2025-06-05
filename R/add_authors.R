@@ -63,7 +63,7 @@ add_authors <- function(author, rerender_skeleton = FALSE) {
   affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
   
   author_list <- list()
-  if (nrow(authors) > 0) {
+  if (authors$name != "1") { # nrow(authors) > 0 |
     if (rerender_skeleton) {
       author_lines <- grep(
         "\\- name:\\s*'",
