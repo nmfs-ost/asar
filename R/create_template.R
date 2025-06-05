@@ -240,8 +240,7 @@ create_template <- function(
     # }
   } # close if rerender skeleton for naming
 
-  # Select parameter from list
-  # TODO: add switch here instead of if
+  # Select format
   # if (length(format) > 1) {
   #   format <- "pdf"
   # } else {
@@ -283,44 +282,6 @@ create_template <- function(
       cli::cli_abort("Format not recognized. Please use pdf, html, or docx.")
     }
   }
-  # format <- 
-  switch(
-    tolower(format),
-    "pdf" = "pdf",
-    "html" = "html",
-    "docx" = {cli::cl_warn("The docx format is not currently supported by asar. Defaulting to pdf") ; "pdf"},
-    {
-      cli::cli_alert("Format not compatible.")
-      if (grepl("pdf", format)) {
-       question1 <- readline("Did you mean -- pdf?")
-       if (!interactive()) question1 <- "y"
-       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-         ; "pdf"
-       } else (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-         cli::cli_abort("Template processing stopped.")
-       }
-      } else if (grepl("html", format)) {
-       question1 <- readline("Did you mean -- html?")
-         if (!interactive()) question1 <- "y"
-         if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-           "html"
-         } else (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-           cli::cli_abort("Template processing stopped.")
-         }
-       } else if (grepl("docx", format)) {
-         question1 <- readline("Did you mean -- docx?")
-         if (!interactive()) question1 <- "y"
-         if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-           cli::cl_warn("The docx format is not currently supported by asar. Defaulting to pdf")
-           "pdf"
-         } else (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-           cli::cli_abort("Template processing stopped.")
-         }
-       } else {
-         cli::cli_abort("Format not recognized. Please use pdf, html, or docx.")
-       }
-    }
-  )
 
   # TODO: add switch here instead of if
   if (!is.null(office) & length(office) == 1) {
