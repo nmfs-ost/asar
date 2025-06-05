@@ -84,7 +84,7 @@ add_authors <- function(author, rerender_skeleton = FALSE) {
       auth <- authors[i, ]
       aff <- affil |>
         dplyr::filter(affiliation == auth$office)
-      if (is.na(auth$office)) {
+      if (is.na(auth$office) | auth$office == "") {
         paste(
           "  ", "- name: ", "'", auth$name, "'", "\n",
           "  ", "  ", "affiliations:", "\n",
