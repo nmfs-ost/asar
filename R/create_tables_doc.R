@@ -251,7 +251,7 @@ eval_", tab_shortname, " <- TRUE\n
     }
 
     if (length(rda_tab_list) == 0){
-      message(paste0("Note: No tables in an rda format (i.e., .rda) were present in '", fs::path(rda_dir, "rda_files"), "'."))
+      cli::cli_alert_warning(paste0("Note: No tables in an rda format (i.e., .rda) were present in '", fs::path(rda_dir, "rda_files"), "'."))
       tables_doc <- "## Tables {#sec-tables}"
     } else {
       # paste rda table code chunks into one object

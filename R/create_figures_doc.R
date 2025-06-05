@@ -21,7 +21,7 @@ create_figures_doc <- function(subdir = getwd(),
                                rda_dir = getwd()) {
   if (include_all == FALSE) {
     # add option for only adding specified figures
-    warning("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")
+    cli::cli_alert_danger("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")
   } else {
 
     figures_doc_header <- "## Figures {#sec-figures}\n \n"
@@ -104,7 +104,7 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
     }
 
     if (length(file_fig_list) == 0){
-      message(paste0("Note: No figure files were present in '", fs::path(rda_dir, "rda_files"), "'."))
+      cli::cli_alert_warning(paste0("Note: No figure files were present in '", fs::path(rda_dir, "rda_files"), "'."))
       figures_doc <- "## Figures {#sec-figures}"
     } else {
       # paste rda figure code chunks into one object
@@ -117,7 +117,7 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
           rda_figures_doc <- paste0(rda_figures_doc, fig_chunk)
           }
         } else {
-          message(paste0("Note: No figures in an rda format (i.e., .rda) were present in '", fs::path(rda_dir, "rda_files"), "'."))
+          cli::cli_alert_warning(paste0("Note: No figures in an rda format (i.e., .rda) were present in '", fs::path(rda_dir, "rda_files"), "'."))
         }
       if (length(non.rda_fig_list) > 0){
         non.rda_figures_doc <- ""
@@ -138,7 +138,7 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
           non.rda_figures_doc <- paste0(non.rda_figures_doc, fig_chunk)
         }
       } else {
-        message(paste0("Note: No figure files in a non-rda format (e.g., .jpg, .png) were present in '",  fs::path(rda_dir, "rda_files") , "'."))
+        cli::cli_alert_warning(paste0("Note: No figure files in a non-rda format (e.g., .jpg, .png) were present in '",  fs::path(rda_dir, "rda_files") , "'."))
       }
 
       # combine figures_doc setup with figure chunks

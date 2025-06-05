@@ -145,9 +145,7 @@ add_alttext <- function(
         dplyr::pull(alt_text)
       if (is.na(label_line)) {
         alttext_i <- ""
-        warning(glue::glue(
-          "No alternative text found for {line_label}."
-        ))
+        cli::cli_alert_warning("No alternative text found for {line_label}.")
       }
       # Add selected alttext onto end of the line
       tex_file[i] <- gsub(
@@ -215,13 +213,13 @@ add_alttext <- function(
     fig_line <- grep(names(alt_text_list[i]), tex_file)
     # Check that line we are adding the alt text to is for correct fig
     if (!grepl(names(alt_text_list[i]), tex_file[fig_line])) {
-      warning(glue::glue("Non-matching object name to tex file line."))
+      cli::cli_alert_warning("Non-matching object name to tex file line.")
       next
     }
     # Check that selected tex_line contains a marked figure - aka correct placement
     file_name <- stringr::str_remove(x, ".tex")
     if (!grepl(glue::glue("{file_name}_files/figure-pdf/fig-"), tex_file[fig_line])) {
-      warning(glue::glue("Improper line for appendment: \n Skipped adding alternative text for {names(alt_text_list[i])}"))
+      cli::cli_alert_warning(glue::glue("Improper line for appendment: \n Skipped adding alternative text for {names(alt_text_list[i])}"))
       next
     }
     tex_file[fig_line] <- gsub(
@@ -245,12 +243,12 @@ add_alttext <- function(
   # Save overwrite tex file
   write(unlist(tex_file), file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)))
   # utils::capture.output(cat(tex_file), file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)), append = FALSE)
-  message("______Alternative text added to tex file.______")
+  cli::cli_alert_success("______Alternative text added to tex file.______")
   # Render the .tex file after edits
   if (compile) {
-    message("______Compiling in progress - This can take a while...______")
+    cli::cli_alert_info("______Compiling in progress - This can take a while...______")
     # test if this can be done when skeleton is in different folder than the wd
     tinytex::lualatex(file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)))
-    message("______Compiling finished______")
+    cli::cli_alert_success("______Compiling finished______")
   }
 }
