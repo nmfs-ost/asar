@@ -156,7 +156,7 @@
 create_template <- function(
     new_template = TRUE,
     format = "pdf",
-    office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
+    office = "",
     species = "species",
     spp_latin = NULL,
     year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
@@ -284,11 +284,11 @@ create_template <- function(
   }
 
   # TODO: add switch here instead of if
-  if (!is.null(office) & length(office) == 1) {
-    office <- match.arg(office, several.ok = FALSE)
-  } else if (length(office) > 1) {
-    office <- ""
-  }
+  # if (!is.null(office) & length(office) == 1) {
+  #   office <- match.arg(office, several.ok = FALSE)
+  # } else if (length(office) > 1) {
+  #   office <- ""
+  # }
 
   # Create subdirectory for files
   subdir <- ifelse(
@@ -541,7 +541,13 @@ create_template <- function(
       # Create YAML header for document
       # Write title based on report type and region
       if (is.null(title)) {
-        title <- create_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type, year = year)
+        title <- create_title(
+          office = office, 
+          species = species, 
+          spp_latin = spp_latin, 
+          region = region, 
+          type = type, 
+          year = year)
       }
 
       # Authors and affiliations
@@ -558,7 +564,8 @@ create_template <- function(
         prev_skeleton = prev_skeleton,
         author_list = author_list,
         title = title,
-        ...)
+        ...
+      )
 
       if (!rerender_skeleton) print("__________Built YAML Header______________")
 
