@@ -1,4 +1,4 @@
-#' Remove draft watermark
+#' DEPRECATED: Remove draft watermark
 #'
 #' @param x Quarto file containing the draft watermark notation.
 #' @param dir Path to folder where the quarto containing the draft watermark
