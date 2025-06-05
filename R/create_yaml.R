@@ -6,9 +6,9 @@
 #' base R.
 #' @param prev_format The format that the previous skeleton was directed to
 #' render to. Parameter is inherited from create_template.
-#' @param author_list A vector of strings containing pre-formatted author names
+#' @param author_list A list of strings containing pre-formatted author names
 #' and affiliations that would be found in the format in a yaml of a quarto
-#' file when using cat(author_list).
+#' file when using cat(author_list[[i]]).
 #' @param bib_name Name of a bib file being added into the yaml. For example,
 #' "asar.bib".
 #'

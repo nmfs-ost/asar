@@ -2,8 +2,8 @@
 #'
 #' @inheritParams create_template
 #'
-#' @returns A list of authors formatted for a yaml. Viewable by running the 
-#' return object inside of cat()
+#' @returns A list of authors formatted for a yaml in quarto. Viewable by running the 
+#' return object inside of cat() for each part of the list.
 #' @export
 #'
 #' @examples
