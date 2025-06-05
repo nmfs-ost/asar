@@ -52,11 +52,8 @@ The SS3 Report.sso files was converted using the following code:
 
 ```r
 asar::convert_output(
-  output_file = "Report.sso",
-  outdir = "~/data",
-  model = "ss3",
-  file_save = TRUE,
-  save_name = "petrale_convert_output")
+  output_file = "~/data/Report.sso",
+  model = "ss3")
 ```
 
 In this function, the users have the option to convert output files to a standardized framework from either SS3 (Report.sso) or BAM (.rdat) output files. The converted output was saved as an Rdata file and can be found in the example folder in this repository. Typically, when saving converted output from the `convert_output` function, the resulting file is a csv.
