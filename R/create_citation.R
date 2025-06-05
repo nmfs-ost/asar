@@ -32,10 +32,8 @@ create_citation <- function(
       )
     } else {
       # Authored by Kelli Johnson in previous PR
-      author_data_frame <- tibble::as_tibble_col(
-        author,
-        column_name = "input"
-      ) |>
+      author_data_frame <- data.frame(office = author) |>
+        tibble::rownames_to_column("input") |>
         tidyr::separate_wider_regex(
           cols = input,
           # Caitlin Allen Akselrud is the only non-hyphenated dual last name
@@ -52,18 +50,18 @@ create_citation <- function(
         dplyr::mutate(
           first = gsub(" ", "", first),
           mi = ifelse(is.na(mi), "", paste0(mi, "."))
-        ) |>
-        dplyr::left_join(
-          y = utils::read.csv(
-            system.file(
-              "resources",
-              "authorship.csv",
-              package = "asar",
-              mustWork = TRUE
-            )
-          ),
-          by = c("first", "mi", "last")
         )
+        # dplyr::left_join(
+        #   y = utils::read.csv(
+        #     system.file(
+        #       "resources",
+        #       "authorship.csv",
+        #       package = "asar",
+        #       mustWork = TRUE
+        #     )
+        #   ),
+        #   by = c("first", "mi", "last")
+        # )
 
       # Extract location of primary author
       primary_author_office <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>
