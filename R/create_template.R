@@ -714,8 +714,8 @@ create_template <- function(
           "  ", "dplyr::pull(estimate)", "\n",
           "# female SB (placeholder)", "\n"
         ),
-        label = "output_and_quantities",
-        eval = ifelse(is.null(model_results), "false", "true")
+        label = "output_and_quantities"
+        # eval = ifelse(is.null(model_results), "false", "true")
       )
 
       # extract old preamble if don't want to change

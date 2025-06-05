@@ -6,24 +6,14 @@
 \usage{
 add_chunk(
   x,
-  echo = "false",
-  warnings = "false",
-  eval = "true",
   label = NULL,
-  add_option = FALSE,
-  chunk_op = NULL,
-  rmark_op = NULL
+  add_option = TRUE,
+  chunk_option = c("echo: false", "warnings: false", "eval: true"),
+  rmark_option = NULL
 )
 }
 \arguments{
 \item{x}{Content to be written within the R chunk. Wrap in quotation marks ("").}
-
-\item{echo}{TRUE/FALSE; Option to repeat code in the document. Default is false.}
-
-\item{warnings}{TRUE/FALSE; Option to report warnings in the console during render.
-Default is false.}
-
-\item{eval}{TRUE/FALSE; Option to evaluate the chunk. Default is true.}
 
 \item{label}{The name of the chunk in the 'label:' section of the R code chunk.
 This should be in snakecase (i.e., in which words are written in lowercase and
@@ -31,9 +21,16 @@ connected by underscores).}
 
 \item{add_option}{TRUE/FALSE; Option to add additional chunk options. Default is false.}
 
-\item{chunk_op}{List of chunk options to add. For example: c("output: true", "error: false)}
+\item{chunk_option}{List of chunk options to add. For example: c("output: true", "error: false)}
 
-\item{rmark_op}{List of chunk options to add after indicating the language of the chunk as used in Rmarkdown.}
+\item{rmark_option}{List of chunk options to add after indicating the language of the chunk as used in Rmarkdown.}
+
+\item{echo}{TRUE/FALSE; Option to repeat code in the document. Default is false.}
+
+\item{warnings}{TRUE/FALSE; Option to report warnings in the console during render.
+Default is false.}
+
+\item{eval}{TRUE/FALSE; Option to evaluate the chunk. Default is true.}
 }
 \value{
 Write an additional R chunk into the template using this function.

@@ -11,7 +11,9 @@ create_citation(
 )
 }
 \arguments{
-\item{author}{Ordered list of authors included in the assessment.}
+\item{author}{A character vector of author names with their accompanying
+affiliations. For example an Jane Doe at the NWFSC Seattle, Washington office
+would have an entry of c("Jane Doe"="NWFSC-SWA").}
 
 \item{title}{A custom title that is an alternative to the default title (composed
 in asar::create_title()). Example: "Management Track Assessments Spring 2024".}

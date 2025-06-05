@@ -6,14 +6,13 @@
 \usage{
 create_template(
   new_template = TRUE,
-  format = c("pdf", "docx", "html", NA),
-  office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
-  species = NULL,
+  format = "pdf",
+  office = "",
+  species = "species",
   spp_latin = NULL,
   year = format(as.POSIXct(Sys.Date(), format = "\%YYYY-\%mm-\%dd"), "\%Y"),
   file_dir = getwd(),
   author = "",
-  add_author = NULL,
   region = NULL,
   title = NULL,
   parameters = TRUE,
@@ -54,12 +53,9 @@ is the year in which the report is rendered.}
 \item{file_dir}{Location of stock assessment files produced
 by this function. Default is the working directory.}
 
-\item{author}{Ordered list of authors included in the assessment.}
-
-\item{add_author}{Author that is not currently in the database
-and who should be temporarily added to the author list. Format
-as "First MI Last".
-Please leave a comment on the GitHub issues page to be added.}
+\item{author}{A character vector of author names with their accompanying
+affiliations. For example an Jane Doe at the NWFSC Seattle, Washington office
+would have an entry of c("Jane Doe"="NWFSC-SWA").}
 
 \item{region}{Full name of region in which the species is
 evaluated (if applicable). If the region is not specified for
@@ -151,7 +147,7 @@ create_template(
   spp_latin = "Microstomus pacificus",
   year = 2010,
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
-  model_results = "Report.sso",
+  model_results = dover_sole_output,
   new_section = "an_additional_section",
   section_location = "after-introduction",
   rda_dir = here::here()
@@ -181,12 +177,11 @@ create_template(
   spp_latin = "Pomatomus saltatrix",
   year = 2010,
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
-  add_author = "Sun E Day",
   title = "Management Track Assessments Spring 2024",
   parameters = TRUE,
   param_names = c("region", "year"),
   param_values = c("my_region", "2024"),
-  model_results = "Report.sso",
+  model_results = bluefish_output,
   new_section = "an_additional_section",
   section_location = "before-discussion",
   type = "SAR",
