@@ -19,7 +19,7 @@ create_citation <- function(
     year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")) {
   # Check if author is input - improved from previous fxn so did not fail
     if (any(author == "")) {
-      message("Authorship is not defined.")
+      cli::cli_alert_warning("Authorship is not defined.")
       # Define default citation - needs author editing
       citation <- paste0(
         "{{< pagebreak >}} \n",
@@ -71,7 +71,7 @@ create_citation <- function(
 
       # Check
       if (nrow(primary_author_office) < 1) {
-        warning("No location found for primary author. Please edit the citation found in the 'skeleton.qmd'.")
+        cli::cli_alert_warning("No location found for primary author. Please edit the citation found in the 'skeleton.qmd'.")
         cit <- paste0(
           "{{< pagebreak >}} \n",
           "\n",
