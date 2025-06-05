@@ -93,7 +93,7 @@
 #'   spp_latin = "Microstomus pacificus",
 #'   year = 2010,
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
-#'   model_results = "Report.sso",
+#'   model_results = dover_sole_output,
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction",
 #'   rda_dir = here::here()
@@ -127,7 +127,7 @@
 #'   parameters = TRUE,
 #'   param_names = c("region", "year"),
 #'   param_values = c("my_region", "2024"),
-#'   model_results = "Report.sso",
+#'   model_results = bluefish_output,
 #'   new_section = "an_additional_section",
 #'   section_location = "before-discussion",
 #'   type = "SAR",
