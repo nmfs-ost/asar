@@ -247,12 +247,79 @@ create_template <- function(
   # } else {
   #   format <- match.arg(format, several.ok = FALSE)
   # }
-  format <- switch(
-    format,
-    tolower("pdf") = "pdf",
-    tolower("html") = "html",
-    tolower("docx") = {cli::cl_warn("The docx format is not currently supported by asar. Defaulting to pdf") ; "pdf"},
-    {cli::cli_abort("Format not compatible.")}
+  if (grepl("^pdf$|^html$", tolower(format))) {
+    format <- tolower(format)
+  } else if (grepl("docx", tolower(format))) {
+    cli::cl_warn("The docx format is not currently supported by asar. Defaulting to pdf")
+    format <- "pdf"
+  } else {
+    cli::cli_alert("Format not compatible.")
+    if (grepl("pdf", format)) {
+      question1 <- readline("Did you mean -- pdf? (y/n)")
+      if (!interactive()) question1 <- "y"
+      if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+        format <- "pdf"
+      } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+        cli::cli_abort("Template processing stopped.")
+      }
+    } else if (grepl("html", format)) {
+      question1 <- readline("Did you mean -- html? (y/n)")
+      if (!interactive()) question1 <- "y"
+      if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+        format <- "html"
+      } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+        cli::cli_abort("Template processing stopped.")
+      }
+    } else if (grepl("docx", format)) {
+      question1 <- readline("Did you mean -- docx?")
+      if (!interactive()) question1 <- "y"
+      if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+        cli::cl_warn("The docx format is not currently supported by asar. Defaulting to pdf")
+        format <- "pdf"
+      } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+        cli::cli_abort("Template processing stopped.")
+      }
+    } else {
+      cli::cli_abort("Format not recognized. Please use pdf, html, or docx.")
+    }
+  }
+  # format <- 
+  switch(
+    tolower(format),
+    "pdf" = "pdf",
+    "html" = "html",
+    "docx" = {cli::cl_warn("The docx format is not currently supported by asar. Defaulting to pdf") ; "pdf"},
+    {
+      cli::cli_alert("Format not compatible.")
+      if (grepl("pdf", format)) {
+       question1 <- readline("Did you mean -- pdf?")
+       if (!interactive()) question1 <- "y"
+       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+         ; "pdf"
+       } else (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+         cli::cli_abort("Template processing stopped.")
+       }
+      } else if (grepl("html", format)) {
+       question1 <- readline("Did you mean -- html?")
+         if (!interactive()) question1 <- "y"
+         if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+           "html"
+         } else (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+           cli::cli_abort("Template processing stopped.")
+         }
+       } else if (grepl("docx", format)) {
+         question1 <- readline("Did you mean -- docx?")
+         if (!interactive()) question1 <- "y"
+         if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+           cli::cl_warn("The docx format is not currently supported by asar. Defaulting to pdf")
+           "pdf"
+         } else (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+           cli::cli_abort("Template processing stopped.")
+         }
+       } else {
+         cli::cli_abort("Format not recognized. Please use pdf, html, or docx.")
+       }
+    }
   )
 
   # TODO: add switch here instead of if
@@ -526,6 +593,7 @@ create_template <- function(
       # Create yaml
       yaml <- create_yaml(
         prev_format = prev_format,
+        format = format,
         prev_skeleton = prev_skeleton,
         author_list = author_list,
         title = title,
