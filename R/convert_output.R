@@ -114,7 +114,7 @@ convert_output <- function(
     # Extract fleet names
     if (is.null(fleet_names)){
       fleet_info <- SS3_extract_df(dat, "Fleet")[-1,]
-      fleet_names <- setNames(fleet_info[[10]], fleet_info[[1]])
+      fleet_names <- setNames(fleet_info[[ncol(fleet_info)]], fleet_info[[1]])
     }
 
     # Estimated and focal parameters to put into reformatted output df - naming conventions from SS3
@@ -705,7 +705,6 @@ convert_output <- function(
               # # Extract last year
               # endyr_row <- which(apply(dat, 1, function(row) any(row == "End_year:")))
               # end_year <- dat[endyr_row,2]
-              #
               # df4 <- df3 |>
               #   dplyr::mutate(
               #     year = seq(first_year, end_year, by = 1),
