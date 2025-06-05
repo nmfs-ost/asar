@@ -2,7 +2,7 @@
 % Please edit documentation in R/remove_draft.R
 \name{remove_draft}
 \alias{remove_draft}
-\title{Remove draft watermark}
+\title{DEPRECATED: Remove draft watermark}
 \usage{
 remove_draft(
   x = list.files(getwd())[grep("skeleton.qmd", list.files(getwd()))],
@@ -24,7 +24,7 @@ must use this before rendering the final report for the watermark to be
 removed.
 }
 \description{
-Remove draft watermark
+DEPRECATED: Remove draft watermark
 }
 \examples{
 \dontrun{
