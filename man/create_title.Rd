@@ -5,13 +5,13 @@
 \title{Write Stock Assessment Title}
 \usage{
 create_title(
-  office = NA,
-  species = NA,
-  region = NA,
+  office = NULL,
+  species = NULL,
+  region = NULL,
   year = format(Sys.Date(), "\%Y"),
-  complex = NA,
-  type = NA,
-  spp_latin = NA
+  complex = NULL,
+  type = NULL,
+  spp_latin = NULL
 )
 }
 \arguments{

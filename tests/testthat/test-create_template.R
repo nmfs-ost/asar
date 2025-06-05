@@ -139,30 +139,31 @@ test_that("create_template() creates correct files", {
   unlink(fs::path(path, "report"), recursive = T)
 })
 
-test_that("warning is triggered for missing models", {
-  # Test if warning is triggered when resdir is NULL and results or model name is not defined
-  expect_warning(
-    create_template(
-      new_template = TRUE,
-      format = "pdf",
-      office = "NWFSC",
-      species = "Dover sole",
-      spp_latin = "Pomatomus saltatrix",
-      year = 2010,
-      author = c("John Snow", "Danny Phantom", "Patrick Star"),
-      include_affiliation = TRUE,
-      parameters = FALSE,
-      resdir = NULL,
-      model_results = NULL,
-      model = NULL
-    ),
-    regexp = "Results file or model name not defined."
-  )
-  path <- getwd()
-
-  # erase temporary testing files
-  unlink(fs::path(path, "report"), recursive = T)
-})
+# Test no longer applies bc warning was removed
+# test_that("warning is triggered for missing models", {
+#   # Test if warning is triggered when resdir is NULL and results or model name is not defined
+#   expect_warning(
+#     create_template(
+#       new_template = TRUE,
+#       format = "pdf",
+#       office = "NWFSC",
+#       species = "Dover sole",
+#       spp_latin = "Pomatomus saltatrix",
+#       year = 2010,
+#       author = c("John Snow", "Danny Phantom", "Patrick Star"),
+#       include_affiliation = TRUE,
+#       parameters = FALSE,
+#       # resdir = NULL,
+#       model_results = NULL
+#       # model = NULL
+#     ),
+#     regexp = "Results file or model name not defined."
+#   )
+#   path <- getwd()
+# 
+#   # erase temporary testing files
+#   unlink(fs::path(path, "report"), recursive = T)
+# })
 
 test_that("warning is triggered for existing files", {
   create_template(
