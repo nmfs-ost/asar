@@ -6,8 +6,12 @@
 #' involved in formatting the document during rendering.
 #' @export
 #'
-#' @examples format_quarto(format = "pdf")
-format_quarto <- function(format = NULL) {
+#' @examples
+#' \dontrun{
+#' format_quarto(format = "pdf")
+#' }
+format_quarto <- function(format = NULL,
+                          type = NULL) {
   if (tolower(format) == "pdf") {
     paste0(
       "format: ", "\n",
@@ -19,6 +23,7 @@ format_quarto <- function(format = NULL) {
       "  ", "  ", "  ", "- 'support_files/_titlepage.tex'", "\n",
       "  ", "  ", "include-in-header:", "\n",
       "  ", "  ", "  ", "- 'support_files/in-header.tex'", "\n",
+      if (tolower(type) == "pfmc") "  ", "  ", "  ", "- 'support_files/pfmc.tex'", "\n",
       "  ", "  ", "include-after-body:", "\n",
       "  ", "  ", "  ", "text: |", "\n",
       "  ", "  ", "  ", "  ", "\\newpage{}", "\n",

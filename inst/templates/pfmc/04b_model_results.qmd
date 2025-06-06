@@ -1,0 +1,21 @@
+## Base Model Results
+
+
+### Parameter Estimates
+
+<!-- Table listing all explicit parameters in the stock assessment model used for base model, their purpose (e.g., recruitment parameter, selectivity parameter) and whether or not the parameter was actually estimated in the stock assessment model. Include the associated asymptotic standard error estimates.  -->
+
+<!-- Population numbers and biomass at age × year × sex (if sex-specific M, growth, or selectivity) (may be provided as a text, csv, or spreadsheet file). This is not required while undergoing review. Can be included in electronic appendices (SS report files), should be provided as supplementary material for assessments developed with alternative assessment platforms.  -->
+
+<!-- 4. Selectivity estimates (if not included elsewhere). 5. Stock-recruitment relationship. 6. Clear description of units for all outputs.  -->
+
+<!-- Parameter uncertainty (variance estimation conditioned on a given model, estimation framework, data set choice, and weighting scheme). This element for evaluating uncertainty includes expressing uncertainty in derived outputs of the model and estimating CVs using appropriate methods (e.g., bootstrap, asymptotic methods, Bayesian approaches, such as MCMC).   -->
+
+### Fits to the Data
+
+<!-- Residual analysis for the base-run configuration, e.g., residual plots, time series plots of observed and predicted values, etc.   -->
+
+### Population Trajectory
+
+<!-- Time-series of total biomass, summary biomass, and spawning biomass (and/or spawning output), depletion relative to B0, recruitment and fishing mortality (1-SPR) (or exploitation rate estimates if fishing mortality not available) (table and figures).  -->
+

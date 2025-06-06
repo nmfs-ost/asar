@@ -1,0 +1,23 @@
+# Fishery 
+
+<!---
+Brief description of fishery history  
+Description of management measures/unit(s)   
+Management history (including key changes which may have influenced assessment procedures; selectivity of commercial fishing gear; or distribution of catch by gear, area, or season.  
+Include a table of total catch, total ABC, total OFL, and total TAC, and associated management measures  
+Description of the current directed fishery (including gear types, seasons, major fishing locations)  
+Description of effort and CPUE  
+Information on discards of this stock or stock complex (from directed fishery for this stock or stock complex)
+--->
+
+## Description of the Directed Fishery
+
+
+### Catch Patterns
+
+
+### Bycatch and Discards
+
+
+## Management Measures 
+
