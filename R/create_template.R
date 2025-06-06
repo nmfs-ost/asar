@@ -323,6 +323,43 @@ create_template <- function(
     end_year <- as.numeric(year) - 1
   }
 
+  # Check input type
+  if (interactive()) {
+    type <- switch(
+      type,
+      "Northeast Management Track" = "nemt",
+      "Pacific Fishery Management Council" = "pfmc",
+      "Stock Assessment and Fishery Evaluation" = "safe",
+      "Stock Assessment Report" = "skeleton",
+      "SAR" = "skeleton",
+      "pfmc" = "pfmc",
+      "nemt" = "nemt",
+      "safe" = "safe",
+      {
+        type_fxn <- function() {
+          selection <- utils::menu(
+            title = "Unrecognized template type. Please select an option below: ",
+            choices = c("Default", "PFMC", "NEMT", "SAFE")
+          )
+          type <- switch (
+            as.character(selection),
+            "1" = "skeleton",
+            "2" = "pfmc",
+            "3" = "nemt",
+            "4" = "safe",
+            {
+              "skeleton"
+            }
+          )
+          return(type)
+        }
+        type_fxn()
+      }
+    )
+  } else {
+    type <- "SAR"
+  }
+
   #### Rerender skeleton ----
   if (rerender_skeleton) {
     # TODO: set up situation where species, region can be changed
@@ -422,8 +459,7 @@ create_template <- function(
   if (new_template) {
     ##### Pull sections based on type ----
     # Pull skeleton for sections
-    # Can below be an if statement for copying over the files?
-    if (is.null(type) | type == "SAR") type <- "skeleton"
+
     asar_folder <- system.file("templates", package = "asar")
     # copy files from specific type folder
     current_folder <- file.path(asar_folder, type)
