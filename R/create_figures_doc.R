@@ -19,10 +19,8 @@
 create_figures_doc <- function(subdir = getwd(),
                                include_all = TRUE,
                                rda_dir = getwd()) {
-  if (include_all == FALSE) {
-    # add option for only adding specified figures
-    cli::cli_alert_danger("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")
-  } else {
+
+  if (!include_all) cli::cli_abort("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")
 
     figures_doc_header <- "## Figures {#sec-figures}\n \n"
 
@@ -151,7 +149,6 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
                                    non.rda_figures_doc,
                                    "")
                             )
-      }
     }
   # Save figures doc to template folder
   utils::capture.output(cat(figures_doc),

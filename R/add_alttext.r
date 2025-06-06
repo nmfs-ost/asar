@@ -64,7 +64,7 @@ add_alttext <- function(
     compile = TRUE,
     rename = NULL) {
   # Read latex file
-  if (!file.exists(file.path(dir, x))) cli::cli_abort(glue::glue("File {dir}/{x} does not exist!"))
+  if (!file.exists(file.path(dir, x))) cli::cli_abort("File {dir}/{x} does not exist!")
   tex_file <- readLines(file.path(dir, x))
 
   # Check: count instances of pattern
