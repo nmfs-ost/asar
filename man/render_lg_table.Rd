@@ -18,10 +18,9 @@ render_lg_table(
 tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
 column. Example: for the indices table, this could be the year column.}
 
-\item{rda_dir}{The location of the folder containing .rda files of figures,
-tables, alt text, and captions.}
+\item{rda_dir}{Folder where rda files containing alternative text is located}
 
-\item{plot_name}{Full name of the .rda file containing the flextable.}
+\item{plot_name}{Name of the .rda file containing the table}
 }
 \value{
 A list of the split tables.
