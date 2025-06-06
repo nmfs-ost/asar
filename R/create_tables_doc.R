@@ -47,7 +47,7 @@ create_tables_doc <- function(subdir = getwd(),
   # set landscape page width (in)
   landscape_pg_width <- 8
 
-  if (!include_all) stop("Functionality for adding specific tables is still in development. Please set 'include_all' to true and edit the 08_tables.qmd file to remove specific tables from the report.")
+  if (!include_all) cli::cli_abort("Functionality for adding specific tables is still in development. Please set 'include_all' to true and edit the 08_tables.qmd file to remove specific tables from the report.")
 
     # add header
     tables_doc_header <- paste0("## Tables {#sec-tables}\n \n")
@@ -251,7 +251,7 @@ eval_", tab_shortname, " <- TRUE\n
     }
 
     if (length(rda_tab_list) == 0){
-      message(paste0("Note: No tables in an rda format (i.e., .rda) were present in '", fs::path(rda_dir, "rda_files"), "'."))
+      cli::cli_alert_warning(paste0("Note: No tables in an rda format (i.e., .rda) were present in '", fs::path(rda_dir, "rda_files"), "'."))
       tables_doc <- "## Tables {#sec-tables}"
     } else {
       # paste rda table code chunks into one object
