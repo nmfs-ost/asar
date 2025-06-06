@@ -262,8 +262,8 @@ create_template <- function(
   if (rerender_skeleton) {
     # TODO: set up situation where species, region can be changed
     report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
-    if (length(report_name) == 0) stop("No skeleton quarto file found in the working directory.")
-    if (length(report_name) > 1) stop("Multiple skeleton quarto files found in the working directory.")
+    if (length(report_name) == 0) cli::cli_abort("No skeleton quarto file found in the working directory.")
+    if (length(report_name) > 1) cli::cli_abort("Multiple skeleton quarto files found in the working directory.")
 
     prev_report_name <- gsub("_skeleton.qmd", "", report_name)
     # Extract type
@@ -1592,7 +1592,7 @@ create_template <- function(
           # Create new sections as .qmd in folder
           # check if sections are in custom_sections list
           if (any(stringr::str_replace(section_location, "^[a-z]+-", "") %notin% custom_sections)) {
-            stop("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
+            cli::cli_abort("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
           }
           if (include_tables) {
             sec_list1 <- c(sec_list1, "08_tables.qmd")

@@ -148,12 +148,12 @@ create_yaml <- function(
     if (bib_name != "asar_references.bib") {
       # check if input bib file contains a path
       if (file.exists(bib_file)) {
-        message("Copying bibliography file to report folder...")
+        cli::cli_alert("Copying bibliography file to report folder...")
         file.copy(bib_file, file_dir)
         # bib_file_only <- stringr::str_extract(bib_file, "[^/]+$")
         bib_format <- paste("-  ", bib_name, sep = "")
       } else if (!file.exists(file.path(file_dir, bib_file))) {
-        warning(glue::glue("Bibliography file {bib_file} is not in the report directory. The file will not be read in on render if it is not in the same path as the skeleton file."))
+        cli::cli_alert_warning("Bibliography file {bib_file} is not in the report directory. The file will not be read in on render if it is not in the same path as the skeleton file.")
         bib_format <- paste("-  ", bib_name, sep = "")
       }
     }

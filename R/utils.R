@@ -22,7 +22,7 @@ SS3_extract_df <- function(dat, label) {
 
   # If the parameter value is not found, return NA
   if (is.na(value_row)) {
-    message("Label not found in data frame.")
+    cli::cli_alert_warning("Label not found in data frame.")
     return(NA)
   }
   # Search for the next blank row after the value

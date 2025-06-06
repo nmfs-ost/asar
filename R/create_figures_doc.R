@@ -18,10 +18,11 @@
 #' }
 create_figures_doc <- function(subdir = NULL,
                                include_all = TRUE,
-                               rda_dir = NULL) {
-  if (include_all) {
-    # add header
-    figures_doc <- paste0("## Figures {#sec-figures}\n \n")
+                               rda_dir = getwd()) {
+
+  if (!include_all) cli::cli_abort("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")
+
+    figures_doc_header <- "## Figures {#sec-figures}\n \n"
 
     # add chunk that creates object as the directory of all rdas
     figures_doc <- paste0(
@@ -76,12 +77,62 @@ if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){\n
             glue::glue(
               "fig-alt: !expr if(eval_recruitment) recruitment_alt_text"
             )
-          )
-        ),
-        "\n"
-      )
+          ),
+          "\n"
+        )
+
+        return(paste0(figures_doc_plot_setup1,
+                      figures_doc_plot_setup2))
+    }
+
+    if (length(file_fig_list) == 0){
+      cli::cli_alert_warning(paste0("Note: No figure files were present in '", fs::path(rda_dir, "rda_files"), "'."))
+      figures_doc <- "## Figures {#sec-figures}"
     } else {
-      message("Recruitment time series figure not created.")
+      # paste rda figure code chunks into one object
+      if (length(rda_fig_list) > 0) {
+        rda_figures_doc <- ""
+        for (i in 1:length(rda_fig_list)){
+          fig_chunk <- create_fig_chunks(fig = rda_fig_list[i],
+                                           rda_dir = rda_dir)
+
+          rda_figures_doc <- paste0(rda_figures_doc, fig_chunk)
+          }
+        } else {
+          cli::cli_alert_warning(paste0("Note: No figures in an rda format (i.e., .rda) were present in '", fs::path(rda_dir, "rda_files"), "'."))
+        }
+      if (length(non.rda_fig_list) > 0){
+        non.rda_figures_doc <- ""
+        for (i in 1:length(non.rda_fig_list)){
+          # remove file extension
+          fig_name <- stringr::str_extract(non.rda_fig_list[i],
+                                           "^[^.]+")
+          # remove "_figure", if present
+          fig_name <- sub("_figure", "", fig_name)
+          fig_chunk <- paste0(
+            "![Your caption here](", fs::path("rda_files",
+                                                     non.rda_fig_list[i]),
+            "){#fig-",
+            fig_name,
+            "}\n\n"
+          )
+
+          non.rda_figures_doc <- paste0(non.rda_figures_doc, fig_chunk)
+        }
+      } else {
+        cli::cli_alert_warning(paste0("Note: No figure files in a non-rda format (e.g., .jpg, .png) were present in '",  fs::path(rda_dir, "rda_files") , "'."))
+      }
+
+      # combine figures_doc setup with figure chunks
+      figures_doc <- paste0(figures_doc_header,
+                            figures_doc_setup,
+                            ifelse(exists("rda_figures_doc"),
+                                   rda_figures_doc,
+                                   ""),
+                            ifelse(exists("non.rda_figures_doc"),
+                                   non.rda_figures_doc,
+                                   "")
+                            )
     }
 
     # SB figure
