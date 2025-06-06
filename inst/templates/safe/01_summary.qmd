@@ -1,0 +1,54 @@
+# Executive Summary
+
+## Summary of Changes in Assessment Inputs
+
+<!---
+List of changes (if any) in the input data, including estimated catches assumed for the current year and projected catches for current year + 1 and current year + 2.
+
+List of changes (if any) in the assessment methodology. 
+**This is one of the most important sections of the SAFE report**. 
+Common mistakes in this section include: 1) listing something that *has not* changed, and 2) not listing something that *has* changed.
+--->
+
+
+## Summary of Results
+
+<!---
+List of changes (if any) in the input data, including estimated catches assumed for the current year and projected catches for current year + 1 and current year + 2.
+List of changes (if any) in the assessment methodology. This is one of the most important sections of the SAFE report.  Common mistakes in this section include: 1) listing something that has not changed, and 2) not listing something that has changed.
+--->
+
+```{r, results='asis'}
+#| label: '01a_main-table'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child("01a_main-table.qmd", quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+<!---
+Text table of area apportionments (if any) for the recommended one- and two-year ahead ABCs and OFLs, with a brief description of the apportionment methodology.
+--->
+
+```{r, results='asis'}
+#| label: '01b_apportionment'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child("01b_apportionment.qmd", quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+<!---
+If so are so kind as to provide tables for the plan team, place them here
+--->
+
+```{r, results='asis'}
+#| label: '01c_plan-team'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child("01c_plan-team.qmd", quiet = TRUE)
+cat(a, sep = '\n')
+```

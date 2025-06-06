@@ -32,7 +32,7 @@ name and overwrites the current tex file.}
 text and captions generated when running stockplotr::exp_all_figs_tables}
 }
 \value{
-This function runs all functions from {asar} associated with
+This function runs all functions from \code{asar} associated with
 accessibility and renders the final document. The document is tagged and
 includes alternative text from the captions_alt_text.csv produced from
 \code{stockplotr} package also available on GitHub.
