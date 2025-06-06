@@ -47,7 +47,7 @@ create_yaml <- function(
     author_list = NULL,
     # author = NULL,
     spp_image = "",
-    species = NULL,
+    species = "species",
     spp_latin = NULL,
     region = NULL,
     format = "pdf",
