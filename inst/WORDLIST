@@ -1,17 +1,14 @@
 AFSC
-AMAK
 APA
 BAM
 Blockquote
 Bolded
 CMD
-CPUE
 CTAN
 Canelón
 CTAN
 Drs
 FIMS
-Filepath
 LaTex
 Lifecycle
 Mainpulate
@@ -50,7 +47,6 @@ cv
 dir
 documentclass
 docx
-dover
 dplyr
 ect
 eval
@@ -62,6 +58,7 @@ gls
 gp
 img
 is’
+jpg
 knitr
 kobe
 le
@@ -72,10 +69,8 @@ multispecies
 nmfs
 nsim
 ost
-outdir
 overline
 params
-patrick
 petrale
 png
 pre
@@ -104,6 +99,7 @@ stringr
 subfiles
 subseason
 tbl
+tbls
 tex
 tibble
 tidyr

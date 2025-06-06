@@ -1,16 +1,9 @@
 test_that("Table widths calculated correctly", {
 
   # convert sample dataset
-  convert_output(
-    output_file = "Report.sso",
-    outdir = file.path("fixtures", "ss3_models", "models", "Sablefish2015"),
-    model = "ss3",
-    file_save = TRUE,
-    savedir = getwd()
-  )
-
-  dat <- utils::read.csv(
-    file.path("std_model_output.csv")
+  dat <- convert_output(
+    output_file = file.path("fixtures", "ss3_models", "models", "Sablefish2015","Report.sso"),
+    model = "ss3"
   )
 
   stockplotr::table_indices(dat,
@@ -43,7 +36,7 @@ test_that("Table widths calculated correctly", {
   expect_equal(tbl_width2, expected_output)
 
   # erase temporary testing files
-  file.remove(fs::path(getwd(), "std_model_output.csv"))
+  # file.remove(fs::path(getwd(), "std_model_output.csv"))
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
   unlink(fs::path(getwd(), "rda_files"), recursive = T)
 })

@@ -14,7 +14,7 @@ create_yaml(
   author = NULL,
   add_author = NULL,
   add_image = FALSE,
-  spp_image = NULL,
+  spp_image = "",
   species = NULL,
   spp_latin = NULL,
   region = NULL,
@@ -23,7 +23,7 @@ create_yaml(
   param_names = NULL,
   param_values = NULL,
   bib_name = NULL,
-  bib_file,
+  bib_file = "asar_references.bib",
   year = NULL
 )
 }
@@ -44,8 +44,8 @@ base R.}
 \item{prev_format}{The format that the previous skeleton was directed to
 render to. Parameter is inherited from create_template.}
 
-\item{title}{The alternative title. Example:
-"Management Track Assessments Spring 2024".}
+\item{title}{A custom title that is an alternative to the default title (composed
+in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
 
 \item{author_list}{A vector of strings containing pre-formatted author names
 and affiliations that would be found in the format in a yaml of a quarto
@@ -118,7 +118,7 @@ create_yaml(
   office = "AFSC",
   add_author = NULL,
   add_image = FALSE,
-  spp_image = "",
+  spp_image = NULL,
   species = NULL,
   spp_latin = NULL,
   region = NULL,

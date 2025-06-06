@@ -55,6 +55,6 @@ export_object <- function(
       file = paste0(subdir, "/", sprintf(deparse(substitute(object))), ".Rdata")
     )
   } else {
-    stop("File format is not currently available for output. Please open an issue in the GitHub repository to request the addition.")
+    cli::cli_abort("File format is not currently available for output. Please open an issue in the GitHub repository to request the addition.")
   }
 }

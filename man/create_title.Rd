@@ -8,7 +8,7 @@ create_title(
   office = NULL,
   species = NULL,
   region = NULL,
-  year = NULL,
+  year = format(Sys.Date(), "\%Y"),
   complex = NULL,
   type = NULL,
   spp_latin = NULL

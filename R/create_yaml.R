@@ -27,7 +27,7 @@
 #'   office = "AFSC",
 #'   add_author = NULL,
 #'   add_image = FALSE,
-#'   spp_image = "",
+#'   spp_image = NULL,
 #'   species = NULL,
 #'   spp_latin = NULL,
 #'   region = NULL,
@@ -46,12 +46,11 @@ create_yaml <- function(
     prev_skeleton = NULL,
     prev_format = NULL,
     title = NULL,
-    # alt_title = FALSE,
     author_list = NULL,
     author = NULL,
     add_author = NULL,
     add_image = FALSE,
-    spp_image = NULL,
+    spp_image = "",
     species = NULL,
     spp_latin = NULL,
     region = NULL,
@@ -60,7 +59,7 @@ create_yaml <- function(
     param_names = NULL,
     param_values = NULL,
     bib_name = NULL,
-    bib_file,
+    bib_file = "asar_references.bib",
     year = NULL
     ){
   # check first if want to rerender current skeleton
@@ -78,7 +77,7 @@ create_yaml <- function(
     }
 
     # add authors
-    if (any(author != "") | !is.null(add_author)) {
+    if (any(!is.null(author)) | !is.null(add_author)) {
       # add_authors <- NULL
       # for (i in 1:length(author_list)) {
       #   toad <- paste(author_list[[i]], sep = ",")
@@ -98,11 +97,9 @@ create_yaml <- function(
     }
 
     # replace title
-    # if (alt_title) {
     # DOES NOT WORK when latin latex notation is in the title
     # TODO: replace {} in the latex notation
       yaml <- stringr::str_replace(yaml, yaml[grep("title:", yaml)], paste("title: ", title, sep = ""))
-    # }
 
     # add add'l param names
       # this occurs below
@@ -122,7 +119,7 @@ create_yaml <- function(
         if (!is.null(species) & any(grepl("species: ''", yaml))) {
           yaml <- stringr::str_replace(yaml, yaml[grep("species: ''", yaml)], paste("  ", " ", "species: ", "'", species, "'", sep = ""))
         }
-        if (length(office) == 1 & any(grepl("office: ''", yaml))) {
+        if (length(office) == 1 & !is.null(office) & any(grepl("office: ''", yaml))) {
           yaml <- stringr::str_replace(yaml, yaml[grep("office: ''", yaml)], paste("  ", " ", "office: ", "'", office, "'", sep = ""))
         }
         if (!is.null(spp_latin) & any(grepl("spp_latin: ''", yaml))) {
@@ -149,12 +146,12 @@ create_yaml <- function(
     if (bib_name != "asar_references.bib") {
       # check if input bib file contains a path
       if (file.exists(bib_file)) {
-        message("Copying bibliography file to report folder...")
+        cli::cli_alert("Copying bibliography file to report folder...")
         file.copy(bib_file, file_dir)
         # bib_file_only <- stringr::str_extract(bib_file, "[^/]+$")
         bib_format <- paste("-  ", bib_name, sep = "")
       } else if (!file.exists(file.path(file_dir, bib_file))) {
-        warning(glue::glue("Bibliography file {bib_file} is not in the report directory. The file will not be read in on render if it is not in the same path as the skeleton file."))
+        cli::cli_alert_warning("Bibliography file {bib_file} is not in the report directory. The file will not be read in on render if it is not in the same path as the skeleton file.")
         bib_format <- paste("-  ", bib_name, sep = "")
       }
     }
@@ -198,7 +195,7 @@ create_yaml <- function(
         # image as pulled in from above
         "cover: support_files/", new_img, "\n"
       )
-    } else if (spp_image == "") {
+    } else if (is.null(spp_image)) {
       yaml <- paste0(
         yaml,
         # image as pulled in from above
@@ -219,6 +216,8 @@ create_yaml <- function(
         "pdf-engine: lualatex", "\n"
       )
     }
+    # Add quarto format
+    # quarto_formatting <- format_quarto(format = format)
 
     # Formatting
     yaml <- paste0(

@@ -108,7 +108,7 @@ add_section <- function(
         )
       }
     } else if (locality == "in") {
-      # stop("No available option for adding a new section 'in' another quarto document.", call. = FALSE)
+      # cli::cli_abort("No available option for adding a new section 'in' another quarto document.", call. = FALSE)
       # recognize locality_prev file
       file_for_subsection <- list.files(file.path(subdir))[grep(local_section, list.files(file.path(subdir)))]
       # create code for reading in child doc
@@ -123,7 +123,7 @@ add_section <- function(
       # section does not need to be added to appended custom sections as stated above
       # creating qmd is already done in line 48
     } else {
-      stop("Invalid selection for placement of section. Please name the follow the format 'placement-section_name' for adding a new section.")
+      cli::cli_abort("Invalid selection for placement of section. Please name the follow the format 'placement-section_name' for adding a new section.")
     }
   } # close for loop
   custom_sections

@@ -4,13 +4,17 @@
 \alias{create_citation}
 \title{Generate Citation for Stock Assessment Report}
 \usage{
-create_citation(author = NULL, title = NULL, year = NULL)
+create_citation(
+  author = "",
+  title = NULL,
+  year = format(as.POSIXct(Sys.Date(), format = "\%YYYY-\%mm-\%dd"), "\%Y")
+)
 }
 \arguments{
 \item{author}{Ordered list of authors included in the assessment.}
 
-\item{title}{The alternative title. Example:
-"Management Track Assessments Spring 2024".}
+\item{title}{A custom title that is an alternative to the default title (composed
+in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
 
 \item{year}{Year the assessment is being conducted. Default
 is the year in which the report is rendered.}
