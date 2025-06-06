@@ -15,7 +15,7 @@
 #'
 create_citation <- function(
     author = "",
-    title = NULL,
+    title = "[TITLE]",
     year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")) {
   # Check if author is input - improved from previous fxn so did not fail
     if (any(author == "")) {
@@ -149,7 +149,7 @@ create_citation <- function(
         "\n",
         ifelse(primary_author_office[["office"]]=="SEFSC", "SEDAR.", author_list),
         " ", year, ". ",
-        ifelse(is.null(title), "[TITLE]", glue::glue("{title}")), ". ",
+        glue::glue("{title}"), ". ",
         region_specific_part,
         " \\pageref*{LastPage}{} pp."
       )

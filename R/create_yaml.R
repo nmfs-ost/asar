@@ -43,7 +43,7 @@ create_yaml <- function(
     office = NULL,
     prev_skeleton = NULL,
     prev_format = NULL,
-    title = NULL,
+    title = "[TITLE]",
     author_list = NULL,
     # author = NULL,
     spp_image = "",

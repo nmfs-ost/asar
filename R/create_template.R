@@ -163,7 +163,7 @@ create_template <- function(
     file_dir = getwd(),
     author = "",
     region = NULL,
-    title = NULL,
+    title = "[TITLE]",
     parameters = TRUE,
     param_names = NULL,
     param_values = NULL,
@@ -540,7 +540,7 @@ create_template <- function(
       # Create a report template file to render for the region and species
       # Create YAML header for document
       # Write title based on report type and region
-      if (is.null(title)) {
+      if (title != "[TITLE]") {
         title <- create_title(
           office = office, 
           species = species, 
