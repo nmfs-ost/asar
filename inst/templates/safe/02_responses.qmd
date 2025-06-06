@@ -1,0 +1,11 @@
+## Responses to SSC and Plan Team Comments on Assessments in General
+
+> "The SSC requests that all authors fill out the risk table in 2019…" (SSC December 2018)  
+
+A risk table has been included in this assessment.
+
+## Responses to SSC and Plan Team Comments Specific to this Assessment
+
+> "For this cycle, the SSC also agrees with the author’s justification for the adjustment of the likelihood weight of the survey index to utilize this new time series more appropriately."
+
+The likelihood weighting has remained consistent with the weights found in the last full assessment.

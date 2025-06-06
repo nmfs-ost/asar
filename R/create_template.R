@@ -696,12 +696,21 @@ create_template <- function(
             rda_dir = rda_dir
           )
         }
+        if (type == "safe") {
+          file.rename(
+            file.path(subdir, "08_tables.qmd"),
+            file.path(subdir, "11_tables.qmd")
+          )
+        }
       } else {
         tables_doc <- paste0(
           "## Tables \n \n",
           "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
         )
-        utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
+        utils::capture.output(
+          cat(tables_doc),
+          file = fs::path(subdir, ifelse(type=="safe", "11_tables.qmd", "08_tables.qmd")),
+          append = FALSE)
         warning("Results file or model name not defined.")
       }
     }
@@ -730,12 +739,21 @@ create_template <- function(
             rda_dir = rda_dir
           )
         }
+        if (type == "safe") {
+          file.rename(
+            file.path(subdir, "09_figures.qmd"),
+            file.path(subdir, "12_figures.qmd")
+          )
+        }
       } else {
         figures_doc <- paste0(
           "## Figures \n \n",
           "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
         )
-        utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
+        utils::capture.output(
+          cat(figures_doc),
+          file = fs::path(subdir, ifelse(type=="safe", "12_figures.qmd", "09_figures.qmd")),
+          append = FALSE)
         warning("Results file or model name not defined.")
       }
     }
