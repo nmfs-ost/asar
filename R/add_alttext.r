@@ -78,11 +78,7 @@ add_alttext <- function(
   #   )
 
   # Check if alt text csv is where indicated
-<<<<<<< HEAD
   if (!file.exists(file.path(alttext_csv_dir, "captions_alt_text.csv"))) stop(glue::glue("'captions_alt_text.csv' not found in {alttext_csv_dir}."))
-=======
-  if (!file.exists(file.path(alttext_csv_dir, "captions_alt_text.csv"))) stop(glue:glue("'captions_alt_text.csv' not found in {alttext_csv_dir}."))
->>>>>>> 109403a (Add NE mgmt track report type (#204))
 
   # Identify lines with figures
   # check if any lines have figures added
