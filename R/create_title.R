@@ -1,6 +1,8 @@
 #' Write Stock Assessment Title
 #'
 #' @inheritParams create_template
+#' @param complex TRUE/FALSE; Is this a species complex? Default
+#'  is false.
 #'
 #' @return NULL
 #' @export
@@ -10,12 +12,12 @@
 #'   year = 2024, type = "SAR", spp_latin = "Lutjanus campechanus"
 #' )
 create_title <- function(
-    office = NULL,
-    species = NULL,
+    office = "",
+    species = "species",
     region = NULL,
     year = format(Sys.Date(), "%Y"),
     complex = NULL,
-    type = NULL,
+    type = "SAR",
     spp_latin = NULL) {
   # Species latin name with italics latex fxn
   spp_latin <- paste("\\textit{", spp_latin, "}", sep = "")
@@ -69,7 +71,7 @@ create_title <- function(
       title <- paste0("Status of the ", species, " stock in U.S. waters off the coast of ", region, " in ", year)
     }
   } else {
-    if (is.null(species) | is.null(region)) {
+    if (species == "species" | is.null(region)) {
       title <- "Stock Assessment Report Template"
     } else {
       title <- paste0("Stock Assessment Report for the ", species, " Stock in ", year)

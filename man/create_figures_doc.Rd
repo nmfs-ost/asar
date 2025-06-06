@@ -9,8 +9,13 @@ create_figures_doc(subdir = getwd(), include_all = TRUE, rda_dir = getwd())
 \arguments{
 \item{subdir}{Location of subdirectory storing the assessment report template}
 
-\item{include_all}{TRUE/FALSE; Option to include all default
-figures for a stock assessment report. Default is true.}
+\item{include_all}{TRUE/FALSE; Option to include all default figures (for
+create_figures_doc) or all default tables (for create_tables_doc) in the stock
+assessment report. Default is true.}
+
+\item{rda_dir}{If the user has already created .rda files containing
+figures, tables, alt text, and captions with \code{stockplotr}, rda_dir represents
+the location of the folder containing these .rda files ("rda_files").}
 }
 \value{
 A quarto document with pre-loaded R chunk that adds the
