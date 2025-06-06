@@ -1,0 +1,41 @@
+# Executive Summary {#sec-exec-sum}
+
+<!--- Where possible, the executive summary should paraphrase the shared content of the body of the report to minimize redundancy.--->
+
+## Stock{-}
+
+
+## Catches{-}
+
+
+## Data and assessment{-}
+
+
+## Stock biomass and dynamics{-}
+
+
+## Recruitment{-}
+
+
+## Exploitation status{-}
+
+
+## Ecosystem considerations{-}
+
+
+## Reference points{-}
+
+
+## Management performance{-}
+
+
+## Unresolved problems and major uncertainties{-}
+
+
+## Decision table and projections{-}
+
+
+## Scientific uncertainty{-}
+
+
+## Research and data needs{-}

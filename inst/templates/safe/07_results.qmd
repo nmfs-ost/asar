@@ -1,0 +1,49 @@
+# Results
+
+## Model Evaluation
+
+<!--- 
+(This section should be omitted for Tiers 4-6)  
+Conduct within-model retrospective analysis by rerunning each model successively, dropping data one year at a time.
+Specifically:
+
+1. Include retrospective analysis extending back 10 years, plot spawning biomass estimates and error bars, plot relative differences, and report Mohn's “rho” statistic (see **Retrospective Working Group report** for formula, *not* Mohn’s 1999 paper).
+2. Communicate the uncertainty implied by retrospective variability in biomass estimates.
+3. For the time being, *do not* disqualify a model on the grounds of poor retrospective performance alone.
+4. *Do* consider retrospective performance as one factor in model selection.
+
+Description of other criteria used to evaluate the model or to choose between alternative models, including the role (if any) of uncertainty.  
+Evaluation of the model, if only one model is presented; or evaluation of alternative models and selection of final model, if more than one model is presented.  
+List of final parameter estimates, **with confidence bounds** or other statistical measures of uncertainty if possible (if the set of parameters includes quantities listed in the “Time Series Results” section below, the values of these quantities should be presented in the “Time Series Results” section rather than here).
+
+Schedules, if any, defined by final parameter estimates
+--->
+
+## Time Series Results
+
+<!---
+(This section should be omitted for Tiers 4-6. 
+For Tiers 1-3, items in this section pertain to the authors’ recommended model.)
+
+Include a table that has a set of parallel key results) for the previously accepted assessment, compared with new results. At a minimum this table should include spawning biomass and recruitment. 
+
+Definition of biomass measures used (e.g., age range used in the “age+” biomass)
+
+Definition of recruitment measures used (e.g., numbers at age 3)
+
+Table of estimated biomass time series, including age+ biomass and spawning biomass, **with confidence bounds** or other statistical measure of uncertainty if possible. 
+The time series included in this table **should end with estimates for the projection year**. Include estimates from previous SAFE for retrospective comparison.
+
+Table of estimated recruitment time series, including average of year classes spawned after 1976, **with confidence bounds** or other statistical measure of uncertainty if possible.  Include estimates from previous SAFE for retrospective comparisons
+
+Table of estimated numbers at age. 
+
+Graph of estimated biomass time series, with confidence bounds if possible
+
+Graph of estimated fishing mortality versus estimated spawning stock biomass (phase-plane plot), including applicable OFL and maximum FABC definitions for the stock. 
+Biomass should be scaled relative to $B_{MSY}$ for Tier 1 stocks and %B_{35\%}$ for Tier 3 stocks. 
+Fishing mortality should be scaled relative to the arithmetic mean of $F_{MSY}$ for Tier 1 stocks and $F_{35\%}$ for Tier 3 stocks. 
+Include 2 years of projected *F* and *B* in the phase-plane plot.
+--->
+
+
