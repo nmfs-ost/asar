@@ -357,7 +357,7 @@ create_template <- function(
       }
     )
   } else {
-    type <- "SAR"
+    type <- "skeleton"
   }
 
   #### Rerender skeleton ----
@@ -391,7 +391,7 @@ create_template <- function(
     # Name report
     if (!is.null(type)) {
       report_name <- paste0(
-        type,
+        ifelse(type == "skeleton", "SAR", type),
         "_"
       )
     } else {
@@ -567,6 +567,8 @@ create_template <- function(
         file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
         # Copy us doc logo
         file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+        # Copy glossary
+        file.copy(system.file("glossary", "report_glossary.tex", package = "asar"), subdir, overwrite = FALSE) |> suppressWarnings()
         # Copy html format file if applicable
         if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         # Copy over glossary and associated tex file
@@ -577,6 +579,25 @@ create_template <- function(
         if (tolower(type) == "nemt") {
           file.copy(system.file("resources", "formatting_files", "sa4ss_glossaries.tex", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
           file.copy(system.file("resources", "formatting_files", "pfmc.tex", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+        }
+        # show message and make README stating model_results info
+        if (!is.null(model_results)){
+          # if resdir = null, change it to getwd() so mod_time can execute file.info()
+          if (is.null(resdir)){
+            resdir <- getwd()
+            resdir_null = TRUE
+          } else {
+            resdir_null = FALSE
+          }
+          mod_time <- as.character(file.info(file.path(resdir, model_results), extra_cols = F)$ctime)
+          mod_msg <- paste("Report is based upon model output from", model_results, "stored in folder", resdir,
+                           "that was last modified on:", mod_time)
+          message(mod_msg)
+          writeLines(mod_msg, fs::path(subdir, "model_results_metadata.md"))
+          # change resdir back to null if originally null
+          if(resdir_null == TRUE){
+            resdir <- NULL
+          }
         }
       } else {
         warning("There are files in this location.")
@@ -605,6 +626,26 @@ create_template <- function(
           file.copy(system.file("glossary", "report_glossary.tex", package = "asar"), subdir, overwrite = FALSE) |> suppressWarnings()
           # Copy html format file if applicable
           if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+
+          # make README stating model_results info
+          if (!is.null(model_results)){
+            # if resdir = null, change it to getwd() so mod_time can execute file.info()
+            if (is.null(resdir)){
+              resdir <- getwd()
+              resdir_null = TRUE
+            } else {
+              resdir_null = FALSE
+            }
+            mod_time <- as.character(file.info(file.path(resdir, model_results), extra_cols = F)$ctime)
+            mod_msg <- paste("Report is based upon model output from", model_results, "stored in folder", resdir,
+                             "that was last modified on:", mod_time)
+            message(mod_msg)
+            writeLines(mod_msg, fs::path(subdir, "model_results_metadata.md"))
+            # change resdir back to null if originally null
+            if(resdir_null == TRUE){
+              resdir <- NULL
+            }
+          }
 
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
           warning("Report template files were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder.")
@@ -1132,8 +1173,7 @@ create_template <- function(
       citation <- create_citation(
         author = author,
         title = title,
-        year = year,
-        office = office
+        year = year
       )
       print("_______Add Report Citation________")
     }
