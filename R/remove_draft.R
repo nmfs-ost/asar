@@ -29,7 +29,7 @@ remove_draft <- function(
     # case if user is in wd and does not identify any args
     skeleton <- readLines(file.path(dir, x))
   } else {
-    stop("Skeleton file not found.")
+    cli::cli_abort("Skeleton file not found.")
   }
   skeleton <- readLines(file.path(dir, x))
   # Remove draft watermark lines
@@ -47,9 +47,9 @@ remove_draft <- function(
     # Remove lines
     skeleton <- skeleton[-(find_html:(find_html + 3))]
   } else if (format == "docx") {
-    stop("Docx is not a functional format for this tool.")
+    cli::cli_abort("Docx is not a functional format for this tool.")
   } else {
-    stop("Invalid render format.")
+    cli::cli_abort("Invalid render format.")
   }
   # Save skeleton over previous input file
   writeLines(skeleton, file.path(dir, x))

@@ -57,8 +57,8 @@ format_quarto <- function(format = "") {
     #   "  ", "  ", "always_allow_html: true", "\n",
     #   "  ", "  ", "keep-tex: true", "\n"
     # )
-    stop("docx is not yet a functional format. Please use pdf or html.")
+    cli::cli_abort("docx is not yet a functional format. Please use pdf or html.")
   } else {
-    stop("Invalid render format.")
+    cli::cli_abort("Invalid render format.")
   }
 }

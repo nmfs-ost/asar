@@ -223,8 +223,8 @@ create_template <- function(
   if (rerender_skeleton) {
     # TODO: set up situation where species, region can be changed
     report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
-    if (length(report_name) == 0) stop("No skeleton quarto file found in the working directory.")
-    if (length(report_name) > 1) stop("Multiple skeleton quarto files found in the working directory.")
+    if (length(report_name) == 0) cli::cli_abort("No skeleton quarto file found in the working directory.")
+    if (length(report_name) > 1) cli::cli_abort("Multiple skeleton quarto files found in the working directory.")
 
     prev_report_name <- gsub("_skeleton.qmd", "", report_name)
     # Extract type
@@ -353,7 +353,7 @@ create_template <- function(
         bib_name <- bib_file
       } else {
         # check if enter file exists
-        # if (!file.exists(bib_file)) stop(".bib file not found.")
+        # if (!file.exists(bib_file)) cli::cli_abort(".bib file not found.")
         warning(glue::glue("Bibliography file {bib_file} is not in the report directory. The file will not be read in on render if it is not in the same path as the skeleton file."))
 
         bib_loc <- bib_file # dirname(bib_file)
@@ -363,7 +363,7 @@ create_template <- function(
       # Check if this is a rerender of the skeleton file
       if (rerender_skeleton) {
         # read format in skeleton & check if format is identified in the rerender call
-        if (!file.exists(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))) stop("No skeleton quarto file found in the working directory.")
+        if (!file.exists(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))) cli::cli_abort("No skeleton quarto file found in the working directory.")
         prev_skeleton <- readLines(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))
         # extract previous format
         prev_format <- stringr::str_extract(
@@ -473,7 +473,7 @@ create_template <- function(
       #       # load converted output
       #       # output <- model_results
       #       # run stockplotr::exp_all_figs_tables() to make rda files
-      # 
+      #
       #       # test_exp_all <-
       #       tryCatch(
       #         {
@@ -855,7 +855,7 @@ create_template <- function(
         label = "output_and_quantities",
         eval = ifelse(is.null(model_results), "false", "true")
       )
-    
+
       # extract old preamble if don't want to change
       if (rerender_skeleton) {
         question1 <- readline("Do you want to keep the current preamble? (Y/N)")
@@ -1030,7 +1030,7 @@ create_template <- function(
             # Create new sections as .qmd in folder
             # check if sections are in custom_sections list
             if (any(stringr::str_replace(section_location, "^[a-z]+-", "") %notin% custom_sections)) {
-              stop("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
+              cli::cli_abort("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
             }
             if (include_tables) {
               sec_list1 <- c(sec_list1, "08_tables.qmd")
@@ -1074,7 +1074,7 @@ create_template <- function(
       ##### NEFSC MT Template####
       ######## |###############################################################
     } else if (type == "NEMT") {
-      stop("Template not available.")
+      cli::cli_abort("Template not available.")
     }
 
     # Save template as .qmd to render

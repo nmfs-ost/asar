@@ -64,7 +64,7 @@ add_alttext <- function(
     compile = TRUE,
     rename = NULL) {
   # Read latex file
-  if (!file.exists(file.path(dir, x))) stop(glue::glue("File {dir}/{x} does not exist!"))
+  if (!file.exists(file.path(dir, x))) cli::cli_abort(glue::glue("File {dir}/{x} does not exist!"))
   tex_file <- readLines(file.path(dir, x))
 
   # Check: count instances of pattern
@@ -77,11 +77,11 @@ add_alttext <- function(
   #   )
 
   # Check if alt text csv is where indicated
-  if (!file.exists(file.path(alttext_csv_dir, "captions_alt_text.csv"))) stop(glue::glue("'captions_alt_text.csv' not found in {alttext_csv_dir}."))
+  if (!file.exists(file.path(alttext_csv_dir, "captions_alt_text.csv"))) cli::cli_abort("'captions_alt_text.csv' not found in {alttext_csv_dir}.")
 
   # Identify lines with figures
   # check if any lines have figures added
-  if (!any(grepl("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file))) stop ("No images/figures present in file.")
+  if (!any(grepl("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file))) cli::cli_abort("No images/figures present in file.")
   # this approach allows us to not mistake the replacement for other figures
   # For render to pdf
   fig_lines <- grep("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file) # -plot

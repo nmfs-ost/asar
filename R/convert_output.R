@@ -74,8 +74,8 @@ convert_output <- function(
   out_new <- out_new[-1, ]
 
   # check if file exists
-  if (!file.exists(output_file)) stop("File not found.")
-  
+  if (!file.exists(output_file)) cli::cli_abort("File not found.")
+
   # Recognize model through file extension
   # Uncomment later
   # model <- switch(
@@ -84,7 +84,7 @@ convert_output <- function(
   #   ".rdat" = "bam",
   #   "wham"
   # )
-  
+
   #### SS3 ####
   # Convert SS3 output Report.sso file
   if (model %in% c("ss3", "SS3")) {
@@ -102,7 +102,7 @@ convert_output <- function(
     # Check SS3 model version
     vers <- as.numeric(stringr::str_extract(dat[1, 1], "[0-9].[0-9][0-9]"))
     if (vers < 3.3) {
-      stop("This function in its current state can not process the data.")
+      cli::cli_abort("This function in its current state can not process the data.")
     }
 
     # Extract fleet names
@@ -110,7 +110,7 @@ convert_output <- function(
       fleet_info <- SS3_extract_df(dat, "Fleet")[-1,]
       fleet_names <- setNames(fleet_info[[ncol(fleet_info)]], fleet_info[[1]])
     }
-  
+
     # Estimated and focal parameters to put into reformatted output df - naming conventions from SS3
     # Extract keywords from ss3 file
     # Find row where keywords start
@@ -130,7 +130,7 @@ convert_output <- function(
     # identify first reported keyword
     keywords_end_row <- which(apply(dat, 1, function(row) any(grepl(keyword_1, row))))[2] - 12 # 12 rows behind is the last entry for keywords
     # always extract the second entry bc the first is just in the list of keywords
-    
+
     keywords <- dat[keywords_start_row:keywords_end_row, ][-c(1:3),c(1:3)] |>
       naniar::replace_with_na_all(condition = ~ .x == "")
     keywords <- Filter(function(x) !all(is.na(x)), keywords)
@@ -139,7 +139,7 @@ convert_output <- function(
       dplyr::mutate(output_order = as.numeric(stringr::str_extract(output_order, "\\d+$"))) |>
       dplyr::filter(output=="Y") |>
       dplyr::pull(keyword)
-    
+
     # Below the parameters are grouped and narrowed down into priority to reach deadline.
     # Other parameters will be developed into the future
     # param_names <- c(
@@ -269,13 +269,13 @@ convert_output <- function(
     # Loop for all identified parameters to extract for plotting and use
     # Create list of parameters that were not found in the output file
     # 1,4,10,17,19,20,22,32,37
-    factors <- c("era", "year", "fleet", 
-                 "fleet_name", "age", "sex", 
-                 "area", "seas", "season", 
-                 "time", "era", "subseas", 
-                 "subseason", "platoon", "platoo", 
-                 "growth_pattern", "gp", "month", 
-                 "like", "morph", "bio_pattern", 
+    factors <- c("era", "year", "fleet",
+                 "fleet_name", "age", "sex",
+                 "area", "seas", "season",
+                 "time", "era", "subseas",
+                 "subseason", "platoon", "platoo",
+                 "growth_pattern", "gp", "month",
+                 "like", "morph", "bio_pattern",
                  "settlement", "birthseas", "count",
                  "kind")
     errors <- c("StdDev", "sd", "se", "SE", "cv", "CV", "std")
@@ -351,12 +351,12 @@ convert_output <- function(
                       any(grepl("^sexes$", colnames(df3))) ~ sexes,
                       TRUE ~ NA
                     )
-                  ) |> 
+                  ) |>
                   dplyr::select(-sexes)
               } else {
                 df3 <- dplyr::mutate(df3, sex = NA)
               }
-              
+
               df4 <- df3 |>
                 tidyr::pivot_longer(
                   !tidyselect::any_of(c(factors, errors)),
@@ -525,11 +525,11 @@ convert_output <- function(
             #   warning(paste0("Transformed data frame for ", parm_sel, " has less columns than default."))
             # }
             if ("seas" %in% colnames(df5))df5 <- dplyr::rename(df5, season = seas)
-            
+
             if ("subseas" %in% colnames(df5)) df5 <- dplyr::rename(df5, subseason = subseas)
-            
+
             if ("like" %in% colnames(df5)) df5 <- dplyr::rename(df5, likelihood = like)
-            
+
             df5[setdiff(tolower(names(out_new)), tolower(names(df5)))] <- NA
             if (ncol(out_new) < ncol(df5)) {
               diff <- setdiff(names(df5), names(out_new))
@@ -673,7 +673,7 @@ convert_output <- function(
             # "SPAWN_RECR_CURVE"
             # "Biology_at_age_in_endyr"
             # "PARAMETERS"
-            
+
             if (parm_sel == "SPAWN_RECR_CURVE") {
               # 32
               # TODO: add this to converter
@@ -698,7 +698,7 @@ convert_output <- function(
               # # Extract last year
               # endyr_row <- which(apply(dat, 1, function(row) any(row == "End_year:")))
               # end_year <- dat[endyr_row,2]
-              # 
+              #
               # df4 <- df3 |>
               #   dplyr::mutate(
               #     year = seq(first_year, end_year, by = 1),
@@ -745,7 +745,7 @@ convert_output <- function(
                     # label = paste("estimate_", label, sep = ""),
                     morph = NA
                   )
-                
+
                 sub_df2 <- df3[, c(1:2, (actual_col+1):(moref_col-1))] |>
                   tidyr::pivot_longer(
                     cols = -c(yr, era),
@@ -770,8 +770,8 @@ convert_output <- function(
                   )
                 # combine above 2 since they show the estimate and actual values - matching
                 sub_df12 <- dplyr::full_join(
-                  sub_df1, 
-                  sub_df2, 
+                  sub_df1,
+                  sub_df2,
                   by = c("year", "era", "label", "morph")
                   )
                 # extract last part of df
@@ -926,11 +926,11 @@ convert_output <- function(
                     grepl(
                       paste(
                         fleet_names, collapse = "|"
-                        ), 
+                        ),
                       label) ~ stringr::str_extract(label, paste0("(^.*?_)?<=|", paste(fleet_names, collapse = "|"))),
                     TRUE ~ NA
                   ),
-                  # Must be last step in mutate bc all info comes from the 
+                  # Must be last step in mutate bc all info comes from the
                   label = dplyr::case_when(
                     grepl("?_month_[0-9]_?", label) ~ stringr::str_replace(label, "_?month_\\d?", ""),
                     grepl("?_area_[0-9]_?", label) ~ stringr::str_replace(label, "_?area_\\d?", ""),
@@ -1112,7 +1112,7 @@ convert_output <- function(
     }
     out_new <- Reduce(rbind, out_list) |>
       dplyr::mutate(fleet = fleet_names[fleet])
-    
+
   } else if (model %in% c("bam", "BAM")) {
     #### BAM ####
     # Extract values from BAM output - model file after following ADMB2R
@@ -1139,7 +1139,7 @@ convert_output <- function(
       fleets <- unique(c(fleets_ind, fleets_land, fleets_disc, fleets_parm))
       fleet_names <- fleets[!is.na(fleets)]
       if (any(is.na(fleet_names))) {
-        stop("No fleet names found in dataframe. Please indicate the abbreviations of fleet names using fleet_names arg.")
+        cli::cli_abort("No fleet names found in dataframe. Please indicate the abbreviations of fleet names using fleet_names arg.")
       }
     } # else {
     #   # check fleet names are input
@@ -1557,7 +1557,7 @@ convert_output <- function(
         cli::cli_alert_warning(paste(names(extract), " not compatible.", sep = ""))
       } # close if statement
     } # close loop over objects listed in dat file
-    
+
     # Place out_list into a single data frame
     # VIRG, INIT, TIME, FORE
     out_new <- Reduce(rbind, out_list) |>
@@ -1575,15 +1575,15 @@ convert_output <- function(
     # asap_output <- dget(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = ""), "asap3.rdat"))
     # setwd(file.path(casedir, "output", subdir, paste("s", keep_sim_id[om_sim], sep = "")))
     # asap_std <- readRep("asap3", suffix = ".std")
-    stop("File not currently compatible.")
+    cli::cli_abort("File not currently compatible.")
     #### AMAK ####
   } else if (model == "amak") {
-    stop("File not currently compatible.")
+    cli::cli_abort("File not currently compatible.")
     #### JABBA ####
   } else if (tolower(model) == "jabba") {
-    stop("File not currently compatible.")
+    cli::cli_abort("File not currently compatible.")
   } else {
-    stop("File not compatible.")
+    cli::cli_abort("File not compatible.")
   }
 
   #### Exporting ####
