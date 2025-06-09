@@ -251,9 +251,12 @@ eval_", tab_shortname, " <- TRUE\n
     }
 
     if (length(rda_tab_list) == 0){
-      cli::cli_alert_warning(paste0("Note: No tables in an rda format (i.e., .rda) were present in '", fs::path(rda_dir, "rda_files"), "'."))
+      cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(rda_dir, 'rda_files')}.",
+                             wrap = TRUE)
       tables_doc <- "## Tables {#sec-tables}"
     } else {
+      cli::cli_alert_success("Found {length(final_rda_tab_list)} table{?s} in an rda format (i.e., .rda) in {fs::path(rda_dir, 'rda_files')}.",
+                             wrap = TRUE)
       # paste rda table code chunks into one object
       if (length(final_rda_tab_list) > 0) {
         rda_tables_doc <- ""
@@ -283,7 +286,7 @@ eval_", tab_shortname, " <- TRUE\n
       #     non.rda_tables_doc <- paste0(non.rda_tables_doc, tab_chunk)
       #   }
       # } else {
-      #   message(paste0("Note: No table files in a non-rda format (e.g., .jpg, .png) were present in '",  fs::path(rda_dir, "rda_files") , "'."))
+      #   message(paste0("Note: No table files in a non-rda format (e.g., .jpg, .png) were found in '",  fs::path(rda_dir, "rda_files") , "'."))
       # }
 
       # combine figures_doc setup with figure chunks
