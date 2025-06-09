@@ -75,6 +75,7 @@ add_authors <- function(
   
   author_list <- list()
   if (any(authors$name != "1")) { # nrow(authors) > 0 |
+    # print("inside author==1")
     if (rerender_skeleton) {
       author_lines <- grep(
         "\\- name:\\s*'",
@@ -136,6 +137,8 @@ add_authors <- function(
       ) -> author_list[[1]]
     } # close rerender if else statement
   } # close if else statement
+  
+  if (rerender_skeleton) author_list <- NULL
   
   return(author_list)
 } # close function
