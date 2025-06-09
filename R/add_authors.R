@@ -13,12 +13,28 @@
 #'   rerender_skeleton = FALSE
 #' )
 #' }
-add_authors <- function(author, rerender_skeleton = FALSE) {
+add_authors <- function(
+    author,
+    rerender_skeleton = FALSE ,
+    prev_skeleton = NULL) {
+  # Set author into proper format - will get overwritten later if rerender = T
+  author_names <- names(author)
+  # Get authors into readable format for ordering
+  authors <- data.frame(office = author) |>
+    tibble::rownames_to_column("name")
   # Check if rerender and if author is already added
   # TODO: add feature to allow removal of authors if there are ones that
   # are repeated from the previous skeleton and those named (not just
   # additions of new names)
   if (rerender_skeleton) {
+    if (is.null(prev_skeleton)) {
+      # attempt to find the skeleton file
+      if (file.exists(file.path(getwd(), list.files(file_dir, pattern = "skeleton.qmd")))) {
+        prev_skeleton <- readLines(file.path(getwd(), list.files(file_dir, pattern = "skeleton.qmd")))
+      } else {
+        cli::cli_abort("No skeleton quarto file found in the working directory.")
+      }
+    }
     # Pull all author names from prev_skeleton
     author_prev <- grep(
       "\\- name:\\s*'",
@@ -33,7 +49,9 @@ add_authors <- function(author, rerender_skeleton = FALSE) {
       "\\1",
       author_prev
     )
-    setdiff(author, author_prev) -> author
+    setdiff(names(author), author_prev) -> author2
+    # subset authors with only ones new ones
+    authors <- dplyr::filter(authors, name %in% author2)
   }
   # Read authorship file
   # authors <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
@@ -56,14 +74,11 @@ add_authors <- function(author, rerender_skeleton = FALSE) {
   
   # authors <- authors[match(author, authors$name), ]
   
-  # Place author naming into same format as before
-  authors <- data.frame(office = author) |>
-    tibble::rownames_to_column("name")
-  
+  # Load in affiliation
   affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
   
   author_list <- list()
-  if (authors$name != "1") { # nrow(authors) > 0 |
+  if (any(authors$name != "1")) { # nrow(authors) > 0 |
     if (rerender_skeleton) {
       author_lines <- grep(
         "\\- name:\\s*'",
