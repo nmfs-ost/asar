@@ -163,7 +163,7 @@ create_template <- function(
     year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
     author = "",
     file_dir = getwd(),
-    title = NULL,
+    title = "[TITLE]",
     model_results = NULL,
     spp_image = "",
     bib_file = "asar_references.bib",
@@ -178,6 +178,13 @@ create_template <- function(
     param_values = NULL,
     ...) {
 
+  # if no office chosen - set to empty
+  if (!is.null(office) & length(office) == 1) {
+    office <- match.arg(office, several.ok = FALSE)
+  } else if (length(office) > 1) {
+    office <- ""
+  }
+  
   if (rerender_skeleton) {
     # TODO: set up situation where species, region can be changed
     report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
@@ -553,6 +560,7 @@ create_template <- function(
       # Authors and affiliations
       # Parameters to add authorship to YAML
       author_list <- add_authors(
+        prev_skeleton = ifelse(rerender_skeleton, prev_skeleton, NULL),
         author = author, # need to put this in case there is a rerender otherwise it would not use the correct argument
         ...
       )
