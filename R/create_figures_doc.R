@@ -86,11 +86,14 @@ if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){\n
     }
 
     if (length(file_fig_list) == 0){
-      cli::cli_alert_warning(paste0("Note: No figure files were present in '", fs::path(rda_dir, "rda_files"), "'."))
+      cli::cli_alert_warning("Found zero figure files in {fs::path(rda_dir, 'rda_files')}.",
+                             wrap = TRUE)
       figures_doc <- "## Figures {#sec-figures}"
     } else {
       # paste rda figure code chunks into one object
       if (length(rda_fig_list) > 0) {
+        cli::cli_alert_success("Found {length(rda_fig_list)} figure{?s} in an rda format (i.e., .rda) in {fs::path(rda_dir, 'rda_files')}.",
+                               wrap = TRUE)
         rda_figures_doc <- ""
         for (i in 1:length(rda_fig_list)){
           fig_chunk <- create_fig_chunks(fig = rda_fig_list[i],
@@ -99,9 +102,12 @@ if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){\n
           rda_figures_doc <- paste0(rda_figures_doc, fig_chunk)
           }
         } else {
-          cli::cli_alert_warning(paste0("Note: No figures in an rda format (i.e., .rda) were present in '", fs::path(rda_dir, "rda_files"), "'."))
+          cli::cli_alert_warning("Found zero figures in an rda format (i.e., .rda) in {fs::path(rda_dir, 'rda_files')}.",
+                                 wrap = TRUE)
         }
       if (length(non.rda_fig_list) > 0){
+        cli::cli_alert_success("Found {length(non.rda_fig_list)} figure{?s} in a non-rda format (e.g., .jpg, .png) in {fs::path(rda_dir, 'rda_files')}.",
+                               wrap = TRUE)
         non.rda_figures_doc <- ""
         for (i in 1:length(non.rda_fig_list)){
           # remove file extension
@@ -120,7 +126,8 @@ if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){\n
           non.rda_figures_doc <- paste0(non.rda_figures_doc, fig_chunk)
         }
       } else {
-        cli::cli_alert_warning(paste0("Note: No figure files in a non-rda format (e.g., .jpg, .png) were present in '",  fs::path(rda_dir, "rda_files") , "'."))
+        cli::cli_alert_warning("Found zero figure files in a non-rda format (e.g., .jpg, .png) in {fs::path(rda_dir, 'rda_files')}.",
+                               wrap = TRUE)
       }
 
       # combine figures_doc setup with figure chunks
