@@ -15,7 +15,7 @@
 #' }
 add_authors <- function(
     author,
-    rerender_skeleton = FALSE ,
+    rerender_skeleton = FALSE,
     prev_skeleton = NULL) {
   # Set author into proper format - will get overwritten later if rerender = T
   author_names <- names(author)
@@ -49,36 +49,17 @@ add_authors <- function(
       "\\1",
       author_prev
     )
-    setdiff(names(author), author_prev) -> author2
+    setdiff(author_names, author_prev) -> author2
     # subset authors with only ones new ones
     authors <- dplyr::filter(authors, name %in% author2)
   }
-  # Read authorship file
-  # authors <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
-  #   dplyr::mutate(
-  #     mi = dplyr::case_when(
-  #       mi == "" ~ NA,
-  #       TRUE ~ mi
-  #     ),
-  #     name = dplyr::case_when(
-  #       is.na(mi) ~ paste0(first, " ", last),
-  #       TRUE ~ paste(first, mi, last, sep = " ")
-  #     )
-  #   ) |>
-  #   dplyr::select(name, office) |>
-  #   dplyr::filter(name %in% author)
-  # 
-  # if (length(author) != dim(authors)[1]){
-  #   message("Some authors were not found in the author database. Please comment on this issue (https://github.com/nmfs-ost/asar/issues/19) to request name and affiliation additions to the archive of U.S. stock assessment authors.")
-  # }
-  
-  # authors <- authors[match(author, authors$name), ]
   
   # Load in affiliation
   affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
   
   author_list <- list()
   if (any(authors$name != "1")) { # nrow(authors) > 0 |
+    # print("inside author==1")
     if (rerender_skeleton) {
       author_lines <- grep(
         "\\- name:\\s*'",
@@ -136,6 +117,8 @@ add_authors <- function(
       # sep = " "
     ) -> author_list[[1]]
   } # close if else statement
+  
+  if (rerender_skeleton) author_list <- NULL
   
   return(author_list)
 } # close function

@@ -461,93 +461,29 @@ create_template <- function(
         prev_skeleton <- NULL
       } # close if rerender
 
-      # print("_______Standardized output data________")
-
-      # run stockplotr::exp_all_figs_tables() if rda files not premade
-      # output folder: rda_dir
-      # Don't run on rerender
-      # if (!rerender_skeleton) {
-      #   if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
-      #     # if (!is.null(model_results)) {
-      #       # load converted output
-      #       # output <- model_results
-      #       # run stockplotr::exp_all_figs_tables() to make rda files
-      #
-      #       # test_exp_all <-
-      #       tryCatch(
-      #         {
-      #           stockplotr::exp_all_figs_tables(
-      #             dat = model_results,
-      #             ...
-      #           )
-      #           # TRUE
-      #         },
-      #         error = function(e) {
-      #           warning("Failed to create all rda files from stockplotr package.")
-      #           # FALSE
-      #         }
-      #       )
-      #     # } # else {
-      #     # test_exp_all <- FALSE
-      #     # }
-      #   }
-      # }
-
-      # Create tables qmd
-      # if ((!rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
-      #   # if (!test_exp_all) {
-      #   #   tables_doc <- paste0(
-      #   #     "### Tables \n \n",
-      #   #     "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
-      #   #   )
-      #   #   utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
-      #   #   warning("Results file or model name not defined.")
-      #   # } else
-      #   if (!is.null(model_results)) {
-      #     # if there is an existing folder with "rda_files" in the rda_dir:
-      #     if (dir.exists(fs::path(rda_dir, "rda_files"))) {
-      #       create_tables_doc(...)
-      #     }
-      #   } else {
-          tables_doc <- paste0(
-            "## Tables \n \n",
-            "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
-          )
-          utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
-      #     warning("Results file or model name not defined.")
-      #   }
-      # }
+      # created tables doc
+      if (!rerender_skeleton) {
+        tables_doc <- paste0(
+          "## Tables \n \n",
+          "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
+        )
+        utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
+      }
 
       # Create figures qmd
-      # if ((!rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
-      #   # if (!test_exp_all) {
-      #   #   figures_doc <- paste0(
-      #   #     "### Figures \n \n",
-      #   #     "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
-      #   #   )
-      #   #   utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
-      #   #   warning("Results file or model name not defined.")
-      #   # } else
-      #   if (!is.null(model_results)) {
-      #     # if there is an existing folder with "rda_files" in the rda_dir:
-      #     if (dir.exists(fs::path(rda_dir, "rda_files"))) {
-      #       create_figures_doc(...)
-      #     }
-      #   } else {
-          figures_doc <- paste0(
-            "## Figures \n \n",
-            "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
-          )
-          utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
-      #     warning("Results file or model name not defined.")
-      #   }
-      # }
-
+      if (!rerender_skeleton) {
+        figures_doc <- paste0(
+          "## Figures \n \n",
+          "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
+        )
+        utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
+      }
+      
       # Part I
       # Create a report template file to render for the region and species
       # Create YAML header for document
       # Write title based on report type and region
-      if (title != "[TITLE]") {
+      if (title == "[TITLE]") {
         title <- create_title(
           office = office, 
           species = species, 
@@ -562,7 +498,7 @@ create_template <- function(
       author_list <- add_authors(
         prev_skeleton = ifelse(rerender_skeleton, prev_skeleton, NULL),
         author = author, # need to put this in case there is a rerender otherwise it would not use the correct argument
-        ...
+        rerender_skeleton = rerender_skeleton
       )
 
       # Create yaml
