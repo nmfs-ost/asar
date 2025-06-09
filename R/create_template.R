@@ -191,7 +191,7 @@ create_template <- function(
   } else if (length(office) > 1) {
     office <- ""
   }
-
+  
   if (rerender_skeleton) {
     # TODO: set up situation where species, region can be changed
     report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
