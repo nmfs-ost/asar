@@ -12,3 +12,4 @@
 ^inst/glossary/formatted_acronym_lists$
 ^inst/glossary/raw_acronym_lists$
 ^\.octocov\.yml$
+^tests$
