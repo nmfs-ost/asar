@@ -64,6 +64,6 @@ format_quarto <- function(format = NULL,
     # )
     cli::cli_abort("docx is not yet a functional format. Please use pdf or html.")
   } else {
-    cli::cli_abort("Invalid render format.")
+    cli::cli_abort("Invalid render format. Please use pdf or html.")
   }
 }
