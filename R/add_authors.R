@@ -17,16 +17,19 @@ add_authors <- function(
     author,
     rerender_skeleton = FALSE,
     prev_skeleton = NULL) {
+  message("pre-processing")
   # Set author into proper format - will get overwritten later if rerender = T
   author_names <- names(author)
   # Get authors into readable format for ordering
-  authors <- data.frame(office = author) |>
-    tibble::rownames_to_column("name")
+  authors <- data.frame(name = author_names, office = author, row.names = NULL)
+  message("author df ready")
+  
   # Check if rerender and if author is already added
   # TODO: add feature to allow removal of authors if there are ones that
   # are repeated from the previous skeleton and those named (not just
   # additions of new names)
   if (rerender_skeleton) {
+    message("continuing process for rerender")
     if (is.null(prev_skeleton)) {
       # attempt to find the skeleton file
       if (file.exists(file.path(getwd(), list.files(file_dir, pattern = "skeleton.qmd")))) {
@@ -35,6 +38,7 @@ add_authors <- function(
         cli::cli_abort("No skeleton quarto file found in the working directory.")
       }
     }
+    message("passed if skeleton found")
     # Pull all author names from prev_skeleton
     author_prev <- grep(
       "\\- name:\\s*'",
@@ -49,14 +53,23 @@ add_authors <- function(
       "\\1",
       author_prev
     )
+    message("extracted previous author(s)")
     setdiff(author_names, author_prev) -> author2
-    # subset authors with only ones new ones
-    authors <- dplyr::filter(authors, name %in% author2)
+    message("extracted new authors (if any)")
+    # return if null
+    if (is.null(author2)) {
+      return(NULL) # this line should stop the function here 
+    } else {
+      # Continue if there are authors
+      # subset authors with only ones new ones
+      authors <- dplyr::filter(authors, name %in% author2)
+    }
   }
-  
+  message("ended processing new authors on rerender")
   # Load in affiliation
   affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
   
+  message("start getting authors in yaml format")
   author_list <- list()
   if (any(authors$name != "1")) { # nrow(authors) > 0 |
     # print("inside author==1")
@@ -106,19 +119,21 @@ add_authors <- function(
       }
     }
   } else {
-    paste0(
-      "  ", "- name: ", "'FIRST LAST'", "\n",
-      "  ", "  ", "affiliations: \n",
-      "  ", "  ", "  ", "- name: 'NOAA Fisheries' \n",
-      "  ", "  ", "  ", "  ", "address: 'ADDRESS' \n",
-      "  ", "  ", "  ", "  ", "city: 'CITY' \n",
-      "  ", "  ", "  ", "  ", "state: 'STATE' \n",
-      "  ", "  ", "  ", "  ", "postal-code: 'POSTAL CODE' \n"
-      # sep = " "
-    ) -> author_list[[1]]
+    if (rerender_skeleton) {
+      author_list <- NULL
+    } else {
+      paste0(
+        "  ", "- name: ", "'FIRST LAST'", "\n",
+        "  ", "  ", "affiliations: \n",
+        "  ", "  ", "  ", "- name: 'NOAA Fisheries' \n",
+        "  ", "  ", "  ", "  ", "address: 'ADDRESS' \n",
+        "  ", "  ", "  ", "  ", "city: 'CITY' \n",
+        "  ", "  ", "  ", "  ", "state: 'STATE' \n",
+        "  ", "  ", "  ", "  ", "postal-code: 'POSTAL CODE' \n"
+        # sep = " "
+      ) -> author_list[[1]]
+    } # close rerender if else statement
   } # close if else statement
-  
-  if (rerender_skeleton) author_list <- NULL
   
   return(author_list)
 } # close function

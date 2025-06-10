@@ -161,7 +161,7 @@ create_template <- function(
     species = "species",
     spp_latin = NULL,
     year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
-    author = "",
+    author = NULL,
     file_dir = getwd(),
     title = "[TITLE]",
     model_results = NULL,
@@ -508,7 +508,18 @@ create_template <- function(
         prev_skeleton = prev_skeleton,
         author_list = author_list,
         title = title,
-        ...
+        rerender_skeleton = FALSE,
+        office = office,
+        spp_image = spp_image,
+        species = species,
+        spp_latin = spp_latin,
+        region = region,
+        parameters = parameters,
+        param_names = param_names,
+        param_values = param_values,
+        bib_name = bib_name,
+        bib_file = bib_file,
+        year = year
       )
 
       if (!rerender_skeleton) print("__________Built YAML Header______________")
