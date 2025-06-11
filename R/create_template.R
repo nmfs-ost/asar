@@ -848,7 +848,7 @@ create_template <- function(
           "  ", "dplyr::pull(estimate)", "\n",
           "# recruitment \n",
           "R0 <- output |> ", "\n",
-          "  ", "dplyr::filter(grepl('R0', label) | grepl('recruitment_virgin', label)) |> ", "\n",
+          "  ", "dplyr::filter(grepl('R0$', label) | grepl('recruitment_virgin', label)) |> ", "\n",
           "  ", "dplyr::pull(estimate)", "\n",
           "# female SB (placeholder)", "\n"
         ),
