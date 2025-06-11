@@ -17,6 +17,9 @@ create_title <- function(
     complex = NULL,
     type = NULL,
     spp_latin = NULL) {
+
+  if (is.null(office)) cli::cli_abort("`office` must be specified.")
+
   # Species latin name with italics latex fxn
   spp_latin <- paste("\\textit{", spp_latin, "}", sep = "")
 
