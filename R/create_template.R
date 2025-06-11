@@ -1451,6 +1451,9 @@ create_template <- function(
       } # close if updating preamble
     } # close if rerendering skeleton
 
+    ##### Disclaimer ----
+    disclaimer <- "These materials do not constitute a formal publication and are for information only. They are in a pre-review, pre-decisional state and should not be formally cited or reproduced. They are to be considered provisional and do not represent any determination or policy of NOAA or the Department of Commerce."
+
     ##### Citation ----
     # Add page for citation of assessment report
     if (rerender_skeleton) {
@@ -1623,6 +1626,7 @@ create_template <- function(
       yaml,
       if (format == "html") html_draft,
       preamble, "\n",
+      disclaimer,
       citation,
       sections,
       sep = "\n"
