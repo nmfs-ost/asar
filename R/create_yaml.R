@@ -163,7 +163,8 @@ create_yaml <- function(
         # bib_file_only <- stringr::str_extract(bib_file, "[^/]+$")
         bib_format <- paste("-  ", bib_name, sep = "")
       } else if (!file.exists(file.path(file_dir, bib_file))) {
-        cli::cli_alert_warning("Bibliography file {bib_file} is not in the report directory. The file will not be read in on render if it is not in the same path as the skeleton file.")
+        cli::cli_alert_warning("Bibliography file {bib_file} is not in the report directory. The file will not be read in on render if it is not in the same path as the skeleton file.",
+                               wrap = TRUE)
         bib_format <- paste("-  ", bib_name, sep = "")
       }
     }

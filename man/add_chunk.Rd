@@ -5,7 +5,14 @@
 \title{Write R chunk to template}
 \usage{
 add_chunk(
+<<<<<<< HEAD
   x,
+=======
+  x = NULL,
+  echo = "false",
+  warnings = "false",
+  eval = "true",
+>>>>>>> b0abf90 (Update messaging for add_child, add_chunk, create_title, and create_yaml; update documentation)
   label = NULL,
   add_option = TRUE,
   chunk_option = c("echo: false", "warnings: false", "eval: true"),
