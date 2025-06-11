@@ -117,6 +117,9 @@ changes to the main skeleton need to be made. This reproduces the
 yaml, output (if changed), preamble quantities, and restructures your
 sectioning in the skeleton if indicated. All files in your folder
 will remain as is.}
+
+\item{...}{Additional arguments passed into functions used in create_template
+such as \code{create_citation()}, \code{format_quarto()}, \code{add_chunk()}, ect}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
