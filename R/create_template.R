@@ -76,6 +76,38 @@
 #'  of parameter names. Parameters automatically included:
 #'  office, region, species (each of which are listed as
 #'  individual parameters for this function, above).
+#' @param type Type of report to build. Default is SAR.
+#' @param prev_year Year in which the previous assessment report
+#'  was conducted. Used to pull previous assessment template.
+#' @param custom TRUE/FALSE; Build custom sectioning for the
+#' template, rather than the default for stock assessments in
+#' your region? Default is false.
+#' @param custom_sections List of existing sections to include in
+#' the custom template. Note: this only includes sections within
+#'  list.files(system.file("templates", "skeleton",
+#'  package = "asar")). The name of the section, rather than the
+#'  name of the file, can be used (e.g., 'abstract' rather than
+#'  '00_abstract.qmd'). If adding a new section, also use
+#'   parameters 'new_section' and 'section_location'.
+#' @param include_figures TRUE/FALSE; Should figures be
+#' included in the report? Default is true.
+#' @param include_tables TRUE/FALSE; Should tables be included
+#'  in the report? Default is true.
+#' @param add_image TRUE/FALSE; Add image of species to the
+#' template that is not already included in the project's
+#' inst/resources/spp_img folder? Default is false.
+#' @param spp_image File path to the species' image if not
+#' using the image included in the project's repository.
+#' @param bib_file File path to a .bib file used for citing references in
+#' the report
+#' @param rerender_skeleton Re-create the "skeleton.qmd" in your outline when
+#'        changes to the main skeleton need to be made. This reproduces the
+#'        yaml, output (if changed), preamble quantities, and restructures your
+#'        sectioning in the skeleton if indicated. All files in your folder
+#'        will remain as is.
+#' @param ... Additional arguments passed into functions used in create_template
+#' such as `create_citation()`, `format_quarto()`, `add_chunk()`, ect
+#' 
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
 #'         resources and workflows from different U.S. Fishery Science Centers.

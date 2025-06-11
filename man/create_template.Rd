@@ -124,6 +124,29 @@ individual parameters for this function, above).}
 of parameter names. Parameters automatically included:
 office, region, species (each of which are listed as
 individual parameters for this function, above).}
+
+\item{custom_sections}{List of existing sections to include in
+the custom template. Note: this only includes sections within
+list.files(system.file("templates", "skeleton",
+package = "asar")). The name of the section, rather than the
+name of the file, can be used (e.g., 'abstract' rather than
+'00_abstract.qmd'). If adding a new section, also use
+parameters 'new_section' and 'section_location'.}
+
+\item{spp_image}{File path to the species' image if not
+using the image included in the project's repository.}
+
+\item{bib_file}{File path to a .bib file used for citing references in
+the report}
+
+\item{rerender_skeleton}{Re-create the "skeleton.qmd" in your outline when
+changes to the main skeleton need to be made. This reproduces the
+yaml, output (if changed), preamble quantities, and restructures your
+sectioning in the skeleton if indicated. All files in your folder
+will remain as is.}
+
+\item{...}{Additional arguments passed into functions used in create_template
+such as \code{create_citation()}, \code{format_quarto()}, \code{add_chunk()}, ect}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
