@@ -15,7 +15,7 @@
 #' asar::export_split_tbls with your preferred essential_columns value.
 #'
 #' @inheritParams create_figures_doc
-#'
+#' 
 #' @return Create a quarto document as part of a stock assessment outline with
 #' pre-loaded R chunks that add stock assessment tables from the nmfs-ost/stockplotr
 #' R package, or other tables in the same rda format.
