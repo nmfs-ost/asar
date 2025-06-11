@@ -104,6 +104,8 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
     if (length(file_fig_list) == 0){
       cli::cli_alert_warning("Found zero figure files in {fs::path(rda_dir, 'rda_files')}.",
                              wrap = TRUE)
+      cli::cli_alert_info("If this was unexpected, did you forget to add '_figure' to your figures' filenames?",
+                          wrap = TRUE)
       figures_doc <- "## Figures {#sec-figures}"
     } else {
       # paste rda figure code chunks into one object
@@ -120,6 +122,8 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
         } else {
           cli::cli_alert_warning("Found zero figures in an rda format (i.e., .rda) in {fs::path(rda_dir, 'rda_files')}.",
                                  wrap = TRUE)
+          cli::cli_alert_info("If this was unexpected, did you forget to add '_figure' to your figures' filenames?",
+                              wrap = TRUE)
         }
       if (length(non.rda_fig_list) > 0){
         cli::cli_alert_success("Found {length(non.rda_fig_list)} figure{?s} in a non-rda format (e.g., .jpg, .png) in {fs::path(rda_dir, 'rda_files')}.",
@@ -144,6 +148,8 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
       } else {
         cli::cli_alert_warning("Found zero figure files in a non-rda format (e.g., .jpg, .png) in {fs::path(rda_dir, 'rda_files')}.",
                                wrap = TRUE)
+        cli::cli_alert_info("If this was unexpected, did you forget to add '_figure' to your figures' filenames?",
+                            wrap = TRUE)
       }
 
       # combine figures_doc setup with figure chunks
