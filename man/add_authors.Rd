@@ -4,7 +4,7 @@
 \alias{add_authors}
 \title{Format authors for skeleton}
 \usage{
-add_authors(author, rerender_skeleton = FALSE)
+add_authors(author, rerender_skeleton = FALSE, prev_skeleton = NULL)
 }
 \arguments{
 \item{author}{A character vector of author names with their accompanying

@@ -1,13 +1,13 @@
 #' Create Quarto Document of Figures
 #'
+#' @param rda_dir If the user has already created .rda files containing
+#' figures, tables, alt text, and captions with `stockplotr`, rda_dir represents
+#' the location of the folder containing these .rda files ("rda_files").
 #' @param subdir Location of subdirectory storing the assessment report template
 #' @param include_all TRUE/FALSE; Option to include all default figures (for
 #' create_figures_doc) or all default tables (for create_tables_doc) in the stock
 #' assessment report. Default is true.
-#' @param rda_dir If the user has already created .rda files containing
-#' figures, tables, alt text, and captions with `stockplotr`, rda_dir represents
-#' the location of the folder containing these .rda files ("rda_files").
-#'
+#' 
 #' @return A quarto document with pre-loaded R chunk that adds the
 #' stock assessment tables from the nmfs-ost/stockplotr R package. The
 #' quarto document will become part of the stock assessment outline.
@@ -110,11 +110,14 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
     }
 
     if (length(file_fig_list) == 0){
-      cli::cli_alert_warning(paste0("Note: No figure files were present in '", fs::path(rda_dir, "rda_files"), "'."))
+      cli::cli_alert_warning("Found zero figure files in {fs::path(rda_dir, 'rda_files')}.",
+                             wrap = TRUE)
       figures_doc <- "## Figures {#sec-figures}"
     } else {
       # paste rda figure code chunks into one object
       if (length(rda_fig_list) > 0) {
+        cli::cli_alert_success("Found {length(rda_fig_list)} figure{?s} in an rda format (i.e., .rda) in {fs::path(rda_dir, 'rda_files')}.",
+                               wrap = TRUE)
         rda_figures_doc <- ""
         for (i in 1:length(rda_fig_list)){
           fig_chunk <- create_fig_chunks(fig = rda_fig_list[i],
@@ -123,9 +126,12 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
           rda_figures_doc <- paste0(rda_figures_doc, fig_chunk)
           }
         } else {
-          cli::cli_alert_warning(paste0("Note: No figures in an rda format (i.e., .rda) were present in '", fs::path(rda_dir, "rda_files"), "'."))
+          cli::cli_alert_warning("Found zero figures in an rda format (i.e., .rda) in {fs::path(rda_dir, 'rda_files')}.",
+                                 wrap = TRUE)
         }
       if (length(non.rda_fig_list) > 0){
+        cli::cli_alert_success("Found {length(non.rda_fig_list)} figure{?s} in a non-rda format (e.g., .jpg, .png) in {fs::path(rda_dir, 'rda_files')}.",
+                               wrap = TRUE)
         non.rda_figures_doc <- ""
         for (i in 1:length(non.rda_fig_list)){
           # remove file extension
@@ -144,7 +150,8 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
           non.rda_figures_doc <- paste0(non.rda_figures_doc, fig_chunk)
         }
       } else {
-        cli::cli_alert_warning(paste0("Note: No figure files in a non-rda format (e.g., .jpg, .png) were present in '",  fs::path(rda_dir, "rda_files") , "'."))
+        cli::cli_alert_warning("Found zero figure files in a non-rda format (e.g., .jpg, .png) in {fs::path(rda_dir, 'rda_files')}.",
+                               wrap = TRUE)
       }
 
       # combine figures_doc setup with figure chunks

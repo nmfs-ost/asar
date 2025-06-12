@@ -4,10 +4,6 @@
 #' @param label The name of the chunk in the 'label:' section of the R code chunk.
 #'  This should be in snakecase (i.e., in which words are written in lowercase and
 #'   connected by underscores).
-#' @param echo TRUE/FALSE; Option to repeat code in the document. Default is false.
-#' @param warnings TRUE/FALSE; Option to report warnings in the console during render.
-#'  Default is false.
-#' @param eval TRUE/FALSE; Option to evaluate the chunk. Default is true.
 #' @param add_option TRUE/FALSE; Option to add additional chunk options. Default is false.
 #' @param chunk_option List of chunk options to add. For example: c("output: true", "error: false)
 #' @param rmark_option List of chunk options to add after indicating the language of the chunk as used in Rmarkdown.
@@ -20,9 +16,6 @@
 #' @examples add_chunk("plot(cars$speed, cars$distance)")
 add_chunk <- function(
     x,
-    # echo = "false",
-    # warnings = "false",
-    # eval = "true",
     label = NULL,
     add_option = TRUE,
     chunk_option = c("echo: false", "warnings: false","eval: true"),

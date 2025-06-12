@@ -5,40 +5,42 @@
 \title{Create Stock Assessment Report Template}
 \usage{
 create_template(
-  new_template = TRUE,
   format = "pdf",
-  office = "",
+  type = "SAR",
+  office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
+  region = NULL,
   species = "species",
   spp_latin = NULL,
   year = format(as.POSIXct(Sys.Date(), format = "\%YYYY-\%mm-\%dd"), "\%Y"),
+  author = NULL,
   file_dir = getwd(),
-  author = "",
-  region = NULL,
-  title = NULL,
+  title = "[TITLE]",
+  model_results = NULL,
+  spp_image = "",
+  bib_file = "asar_references.bib",
+  new_template = TRUE,
+  rerender_skeleton = FALSE,
+  custom = FALSE,
+  custom_sections = NULL,
+  new_section = NULL,
+  section_location = NULL,
   parameters = TRUE,
   param_names = NULL,
   param_values = NULL,
-  model_results = NULL,
-  new_section = NULL,
-  section_location = NULL,
-  type = "SAR",
-  custom = FALSE,
-  custom_sections = NULL,
-  spp_image = "",
-  bib_file = "asar_references.bib",
-  rerender_skeleton = FALSE,
   ...
 )
 }
 \arguments{
-\item{new_template}{TRUE/FALSE; Create a new template? If true,
-will pull the last saved stock assessment report skeleton.
-Default is false.}
-
 \item{format}{Rendering format (pdf, html, or docx).}
+
+\item{type}{Type of report to build. Default is SAR.}
 
 \item{office}{Regional Fisheries Science Center producing the
 report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
+
+\item{region}{Full name of region in which the species is
+evaluated (if applicable). If the region is not specified for
+your center or species, do not use this variable.}
 
 \item{species}{Full common name for target species. Split
 naming with a space and capitalize first letter(s). Example:
@@ -50,34 +52,45 @@ naming with a space and capitalize first letter(s). Example:
 \item{year}{Year the assessment is being conducted. Default
 is the year in which the report is rendered.}
 
-\item{file_dir}{Location of stock assessment files produced
-by this function. Default is the working directory.}
-
 \item{author}{A character vector of author names with their accompanying
 affiliations. For example an Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA").}
 
-\item{region}{Full name of region in which the species is
-evaluated (if applicable). If the region is not specified for
-your center or species, do not use this variable.}
+\item{file_dir}{Location of stock assessment files produced
+by this function. Default is the working directory.}
 
 \item{title}{A custom title that is an alternative to the default title (composed
 in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
 
-\item{parameters}{TRUE/FALSE; For
-parameterization of the script. Default is true.}
-
-\item{param_names}{List of parameter names that will be called
-in the document. Parameters automatically included:
-office, region, species (each of which are listed as
-individual parameters for this function, above).}
-
-\item{param_values}{List of values associated with the order
-of parameter names. Parameters automatically included:
-office, region, species (each of which are listed as
-individual parameters for this function, above).}
-
 \item{model_results}{The name of the object in your environment that contains the data frame of converted model output from \code{asar::convert_output()}}
+
+\item{spp_image}{File path to the species' image if not
+using the image included in the project's repository.}
+
+\item{bib_file}{File path to a .bib file used for citing references in
+the report}
+
+\item{new_template}{TRUE/FALSE; Create a new template? If true,
+will pull the last saved stock assessment report skeleton.
+Default is false.}
+
+\item{rerender_skeleton}{Re-create the "skeleton.qmd" in your outline when
+changes to the main skeleton need to be made. This reproduces the
+yaml, output (if changed), preamble quantities, and restructures your
+sectioning in the skeleton if indicated. All files in your folder
+will remain as is.}
+
+\item{custom}{TRUE/FALSE; Build custom sectioning for the
+template, rather than the default for stock assessments in
+your region? Default is false.}
+
+\item{custom_sections}{List of existing sections to include in
+the custom template. Note: this only includes sections within
+list.files(system.file("templates", "skeleton",
+package = "asar")). The name of the section, rather than the
+name of the file, can be used (e.g., 'abstract' rather than
+'00_abstract.qmd'). If adding a new section, also use
+parameters 'new_section' and 'section_location'.}
 
 \item{new_section}{Names of section(s) (e.g., introduction, results) or
 subsection(s) (e.g., a section within the introduction) that will be
@@ -92,31 +105,34 @@ be created as a child document and added into the 02_introduction.qmd.
 To add >1 (sub)section, make the location a list corresponding to the
 order of (sub)section names listed in the 'new_section' parameter.}
 
-\item{type}{Type of report to build. Default is SAR.}
+\item{parameters}{TRUE/FALSE; For
+parameterization of the script. Default is true.}
 
-\item{custom}{TRUE/FALSE; Build custom sectioning for the
-template, rather than the default for stock assessments in
-your region? Default is false.}
+\item{param_names}{List of parameter names that will be called
+in the document. Parameters automatically included:
+office, region, species (each of which are listed as
+individual parameters for this function, above).}
 
-\item{custom_sections}{List of existing sections to include in
-the custom template. Note: this only includes sections within
-list.files(system.file("templates", "skeleton",
-package = "asar")). The name of the section, rather than the
-name of the file, can be used (e.g., 'abstract' rather than
-'00_abstract.qmd'). If adding a new section, also use
-parameters 'new_section' and 'section_location'.}
+\item{param_values}{List of values associated with the order
+of parameter names. Parameters automatically included:
+office, region, species (each of which are listed as
+individual parameters for this function, above).}
 
-\item{spp_image}{File path to the species' image if not
-using the image included in the project's repository.}
+\item{...}{Additional arguments passed into functions used in create_template
+such as \code{create_citation()}, \code{format_quarto()}, \code{add_chunk()}, ect}
 
-\item{bib_file}{File path to a .bib file used for citing references in
-the report}
+\item{prev_year}{Year in which the previous assessment report
+was conducted. Used to pull previous assessment template.}
 
-\item{rerender_skeleton}{Re-create the "skeleton.qmd" in your outline when
-changes to the main skeleton need to be made. This reproduces the
-yaml, output (if changed), preamble quantities, and restructures your
-sectioning in the skeleton if indicated. All files in your folder
-will remain as is.}
+\item{include_figures}{TRUE/FALSE; Should figures be
+included in the report? Default is true.}
+
+\item{include_tables}{TRUE/FALSE; Should tables be included
+in the report? Default is true.}
+
+\item{add_image}{TRUE/FALSE; Add image of species to the
+template that is not already included in the project's
+inst/resources/spp_img folder? Default is false.}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
@@ -134,8 +150,7 @@ in the console.
 \dontrun{
 create_template(
   new_section = "a_new_section",
-  section_location = "before-introduction",
-  rda_dir = here::here()
+  section_location = "before-introduction"
 )
 
 
@@ -149,8 +164,7 @@ create_template(
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
   model_results = dover_sole_output,
   new_section = "an_additional_section",
-  section_location = "after-introduction",
-  rda_dir = here::here()
+  section_location = "after-introduction"
 )
 
 asar::create_template(
@@ -164,8 +178,7 @@ asar::create_template(
   new_section = c("a_new_section", "another_new_section"),
   section_location = c("before-introduction", "after-introduction"),
   custom = TRUE,
-  custom_sections = c("executive_summary", "introduction"),
-  rda_dir = here::here()
+  custom_sections = c("executive_summary", "introduction")
 )
 
 create_template(
@@ -187,23 +200,9 @@ create_template(
   type = "SAR",
   custom = TRUE,
   custom_sections = c("executive_summary", "introduction", "discussion"),
-  spp_image = "dir/containing/spp_image",
-  rda_dir = "C:/Users/Documents",
-  end_year = 2022,
-  n_projected_years = 10,
-  relative = FALSE,
-  recruitment_scale_amount = 10,
-  recruitment_unit_label = "metric tons",
-  ref_line = "target",
-  biomass_scale_amount = 100,
-  landings_unit_label = "metric tons",
-  spawning_biomass_label = "metric tons",
-  spawning_biomass_scale_amount = 1000,
-  recruitment_unit_label = "metric tons",
-  ref_line_sb = "target",
-  indices_unit_label = "CPUE",
-  biomass_unit_label = "mt",
-  catch_unit_label = "mt"
+  include_figures = TRUE,
+  include_tables = TRUE,
+  spp_image = "dir/containing/spp_image"
 )
 }
 
