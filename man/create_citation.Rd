@@ -6,7 +6,7 @@
 \usage{
 create_citation(
   author = "",
-  title = NULL,
+  title = "[TITLE]",
   year = format(as.POSIXct(Sys.Date(), format = "\%YYYY-\%mm-\%dd"), "\%Y")
 )
 }
