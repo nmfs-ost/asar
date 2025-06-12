@@ -466,7 +466,7 @@ create_template <- function(
       # output folder: rda_dir
       # Don't run on rerender
       # if (!rerender_skeleton) {
-      #   if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
+      #   if (!dir.exists(fs::path(rda_dir, "figures_tables"))) {
       #     # if (!is.null(resdir) | !is.null(model_results)) {
       #       # load converted output
       #       # output <- model_results
@@ -503,8 +503,8 @@ create_template <- function(
       #   #   warning("Results file or model name not defined.")
       #   # } else
       #   if (!is.null(model_results)) {
-      #     # if there is an existing folder with "rda_files" in the rda_dir:
-      #     if (dir.exists(fs::path(rda_dir, "rda_files"))) {
+      #     # if there is an existing folder with "figures_tables" in the rda_dir:
+      #     if (dir.exists(fs::path(rda_dir, "figures_tables"))) {
       #       create_tables_doc(...)
       #     }
       #   } else {
@@ -528,8 +528,8 @@ create_template <- function(
       #   #   warning("Results file or model name not defined.")
       #   # } else
       #   if (!is.null(model_results)) {
-      #     # if there is an existing folder with "rda_files" in the rda_dir:
-      #     if (dir.exists(fs::path(rda_dir, "rda_files"))) {
+      #     # if there is an existing folder with "figures_tables" in the rda_dir:
+      #     if (dir.exists(fs::path(rda_dir, "figures_tables"))) {
       #       create_figures_doc(...)
       #     }
       #   } else {

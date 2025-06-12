@@ -96,7 +96,7 @@
 #   on.exit(unlink(file.path(getwd(), "report"),
 #       recursive = TRUE
 #     ), add = TRUE)
-#   on.exit(unlink(file.path(getwd(), "rda_files"),
+#   on.exit(unlink(file.path(getwd(), "figures_tables"),
 #       recursive = TRUE
 #     ), add = TRUE)
 #   on.exit(unlink(file.path(getwd(), "spp_conout.csv"),
