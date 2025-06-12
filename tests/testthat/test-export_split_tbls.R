@@ -8,11 +8,11 @@ test_that("Number of split tables is calculated correctly for converted bam mode
 
   stockplotr::table_indices(dat,
                             make_rda = TRUE,
-                            rda_dir = getwd())
+                            figures_tables_dir = getwd())
 
   # indices table
   num_tabs <- export_split_tbls(
-    rda_dir = getwd(),
+    figures_tables_dir = getwd(),
     plot_name = "indices.abundance_table.rda",
     essential_columns = 1
   )

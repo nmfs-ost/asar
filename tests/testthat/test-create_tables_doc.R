@@ -3,7 +3,7 @@ test_that("Creates expected start of tables doc", {
   create_tables_doc(
     subdir = getwd(),
     include_all = TRUE,
-    rda_dir = getwd()
+    figures_tables_dir = getwd()
   )
 
   # read in tables doc

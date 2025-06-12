@@ -41,7 +41,7 @@
 #     add_accessibility(
 #       x = "SAR_USWC_Big_skate_skeleton.tex",
 #       dir = getwd(),
-#       rda_dir = path,
+#       figures_tables_dir = path,
 #       compile = TRUE,
 #       alttext_csv_dir = path,
 #       rename = "Simple_SAR_2025_a11y"

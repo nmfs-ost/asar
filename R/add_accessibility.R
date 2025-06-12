@@ -5,7 +5,7 @@
 #' @param x .tex file containing report. Typically produced after initially
 #' rendering the skeleton made from create_template.
 #' @param dir directory where the tex file is located that will be edited
-#' @param rda_dir folder where rda files containing alternative text is located
+#' @param figures_tables_dir folder where rda files containing alternative text is located
 #' @param alttext_csv_dir Directory for the csv file containing alternative
 #' text and captions generated when running stockplotr::exp_all_figs_tables
 #' @param compile Indicate whether the document (X) should be
@@ -46,7 +46,7 @@
 #'    add_accessibility(
 #'      x = "SAR_USWC_Dover_sole_skeleton.tex",
 #'      dir = getwd(),
-#'      rda_dir = path,
+#'      figures_tables_dir = path,
 #'      compile = TRUE)
 #'    )
 #' }
@@ -54,7 +54,7 @@
 add_accessibility <- function(
   x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
   dir = getwd(),
-  rda_dir = getwd(),
+  figures_tables_dir = getwd(),
   alttext_csv_dir = getwd(),
   compile = TRUE,
   rename = NULL
@@ -71,10 +71,10 @@ add_accessibility <- function(
   add_alttext(
     x = ifelse(is.null(rename), x, glue::glue("{rename}.tex")),
     dir = dir,
-    rda_dir = rda_dir,
+    figures_tables_dir = figures_tables_dir,
     compile = FALSE,
     rename = rename,
-    alttext_csv_dir = rda_dir
+    alttext_csv_dir = figures_tables_dir
   )
   # Render the .tex file after edits
   if (compile) {

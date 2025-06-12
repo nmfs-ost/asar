@@ -8,12 +8,12 @@ test_that("Table widths calculated correctly", {
 
   stockplotr::table_indices(dat,
                             make_rda = TRUE,
-                            rda_dir = getwd())
+                            figures_tables_dir = getwd())
 
   # extra-wide width
   tbl_width <- ID_tbl_width_class(
     plot_name = "indices.abundance_table.rda",
-    rda_dir = getwd(),
+    figures_tables_dir = getwd(),
     portrait_pg_width = 5
     )
 
@@ -24,11 +24,11 @@ test_that("Table widths calculated correctly", {
   # wide width
   stockplotr::table_bnc(dat,
                             make_rda = TRUE,
-                            rda_dir = getwd())
+                            figures_tables_dir = getwd())
 
   tbl_width2 <- ID_tbl_width_class(
     plot_name = "bnc_table.rda",
-    rda_dir = getwd(),
+    figures_tables_dir = getwd(),
     portrait_pg_width = 5
   )
 

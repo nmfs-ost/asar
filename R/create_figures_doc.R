@@ -17,12 +17,11 @@
 #' \dontrun{
 #' create_figures_doc(
 #' subdir = getwd(),
-#' rda_dir = here::here())
+#' figures_tables_dir = here::here())
 #' }
 create_figures_doc <- function(subdir = getwd(),
-                               rda_dir = getwd(),
+                               figures_tables_dir = getwd(),
                                include_all = TRUE) {
-
   if (!include_all) cli::cli_abort("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")
 
   figures_doc_header <- "## Figures {#sec-figures}\n \n"
@@ -62,7 +61,7 @@ create_figures_doc <- function(subdir = getwd(),
         paste0("# if the figure rda exists:
 if (file.exists(file.path(rda_dir, '", fig, "'))){\n
   # load rda
-  load(file.path(rda_dir, '", fig, "'))\n
+  load(file.path(figures_tables_dir, '", fig, "'))\n
   # save rda with plot-specific name
   ", fig_shortname, "_plot_rda <- rda\n
   # remove generic rda object

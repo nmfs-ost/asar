@@ -4,7 +4,7 @@
 #' @param essential_columns The columns that will be retained between the split
 #' tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
 #' column. Example: for the indices table, this could be the year column.
-#' @param rda_dir Folder where rda files containing alternative text is located
+#' @param figures_tables_dir Folder where rda files containing alternative text is located
 #' @param plot_name Name of the .rda file containing the table
 #'
 #' @return A list of the split tables.
@@ -16,18 +16,18 @@
 #' render_lg_table(
 #' report_flextable = indices_table,
 #' essential_columns = 1,
-#' rda_dir = here::here(),
+#' figures_tables_dir = here::here(),
 #' plot_name = "indices.abundance_table.rda")
 #'
 #' render_lg_table(
 #' report_flextable = important_table,
 #' essential_columns = 1:3,
-#' rda_dir = "data",
+#' figures_tables_dir = "data",
 #' plot_name = "bnc_table.rda")
 #' }
 render_lg_table <- function(report_flextable,
                             essential_columns,
-                            rda_dir,
+                            figures_tables_dir,
                             plot_name
                             ) {
   # calculate key numbers
@@ -180,7 +180,7 @@ render_lg_table <- function(report_flextable,
   }
   # save table_list as rda
   save(table_list,
-       file = fs::path(rda_dir,
+       file = fs::path(figures_tables_dir,
                        "figures_tables",
                        paste0(stringr::str_remove(plot_name, ".rda"), "_split.rda")))
 
