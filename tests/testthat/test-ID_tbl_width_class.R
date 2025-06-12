@@ -38,5 +38,5 @@ test_that("Table widths calculated correctly", {
   # erase temporary testing files
   # file.remove(fs::path(getwd(), "std_model_output.csv"))
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
-  unlink(fs::path(getwd(), "rda_files"), recursive = T)
+  unlink(fs::path(getwd(), "figures_tables"), recursive = T)
 })

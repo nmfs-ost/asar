@@ -53,7 +53,7 @@ create_tables_doc <- function(subdir = getwd(),
     # add chunk that creates object as the directory of all rdas
     tables_doc_setup <- paste0(
       add_chunk(
-        paste0("library(flextable)\nrda_dir <- '", rda_dir, "/rda_files'"),
+        paste0("library(flextable)\nrda_dir <- '", rda_dir, "/figures_tables'"),
         label = "set-rda-dir-tbls",
         # eval = "true",
         # add_option = TRUE,
@@ -69,8 +69,8 @@ create_tables_doc <- function(subdir = getwd(),
 
     tables_doc <- ""
 
-    # list all files in rda_files
-    file_list <- list.files(file.path(rda_dir, "rda_files"))
+    # list all files in figures_tables
+    file_list <- list.files(file.path(rda_dir, "figures_tables"))
 
     # create sublist of only table files
     file_tab_list <- file_list[grepl("_table", file_list)]
@@ -192,7 +192,7 @@ eval_", tab_shortname, " <- TRUE\n
        if(tbl_orient == "extra_wide"){
         if (split) {
           # identify number of split tables
-          load(fs::path(rda_dir, "rda_files", tab))
+          load(fs::path(rda_dir, "figures_tables", tab))
           split_tables <- length(table_list)
         } else {
           # split extra_wide tables into smaller tables and export AND
@@ -271,11 +271,11 @@ eval_", tab_shortname, " <- TRUE\n
     }
 
     if (length(rda_tab_list) == 0){
-      cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(rda_dir, 'rda_files')}.",
+      cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(rda_dir, 'figures_tables')}.",
                              wrap = TRUE)
       tables_doc <- "## Tables {#sec-tables}"
     } else {
-      cli::cli_alert_success("Found {length(final_rda_tab_list)} table{?s} in an rda format (i.e., .rda) in {fs::path(rda_dir, 'rda_files')}.",
+      cli::cli_alert_success("Found {length(final_rda_tab_list)} table{?s} in an rda format (i.e., .rda) in {fs::path(rda_dir, 'figures_tables')}.",
                              wrap = TRUE)
       # paste rda table code chunks into one object
       if (length(final_rda_tab_list) > 0) {
@@ -296,7 +296,7 @@ eval_", tab_shortname, " <- TRUE\n
       #     # remove "_table", if present
       #     tab_name <- sub("_table", "", tab_name)
       #     tab_chunk <- paste0(
-      #       "![Your caption here](", fs::path("rda_files",
+      #       "![Your caption here](", fs::path("figures_tables",
       #                                         non.rda_tab_list[i]),
       #       "){#tab-",
       #       tab_name,
@@ -306,7 +306,7 @@ eval_", tab_shortname, " <- TRUE\n
       #     non.rda_tables_doc <- paste0(non.rda_tables_doc, tab_chunk)
       #   }
       # } else {
-      #   message(paste0("Note: No table files in a non-rda format (e.g., .jpg, .png) were found in '",  fs::path(rda_dir, "rda_files") , "'."))
+      #   message(paste0("Note: No table files in a non-rda format (e.g., .jpg, .png) were found in '",  fs::path(rda_dir, "figures_tables") , "'."))
       # }
 
       # combine figures_doc setup with figure chunks

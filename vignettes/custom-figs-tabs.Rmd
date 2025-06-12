@@ -251,12 +251,12 @@ rda <- list(
 )
 ```
 
-## Make an rda_files folder (if needed)
+## Make an figures_tables folder (if needed)
 
-Do you already have an rda_files folder? *Hint: it should be in your working directory.* If yes: Great! You can skip this step. If not, simply enter the code below to make an rda_files folder.
+Do you already have an figures_tables folder? *Hint: it should be in your working directory.* If yes: Great! You can skip this step. If not, simply enter the code below to make an figures_tables folder.
 
 ```{r eval=FALSE}
-dir.create(fs::path(getwd(), "rda_files"))
+dir.create(fs::path(getwd(), "figures_tables"))
 ```
 
 ## Export your rdas
@@ -265,13 +265,13 @@ dir.create(fs::path(getwd(), "rda_files"))
 
 ### Tables
 
-This will produce an rda called "example_tab_table.rda" and save it in your rda_files folder.
+This will produce an rda called "example_tab_table.rda" and save it in your figures_tables folder.
 
 ```{r eval=FALSE}
 save(rda,
   file = fs::path(
-    getwd(), # this is your rda_files directory
-    "rda_files",
+    getwd(), # this is your figures_tables directory
+    "figures_tables",
     paste0(
       "example_tab", # your table's label
       "_",
@@ -284,13 +284,13 @@ save(rda,
 
 ### Figures
 
-This will produce an rda called "example_fig_figure.rda" and save it in your rda_files folder.
+This will produce an rda called "example_fig_figure.rda" and save it in your figures_tables folder.
 
 ```{r eval=FALSE}
 save(rda,
   file = fs::path(
-    getwd(), # this is your rda_files directory
-    "rda_files",
+    getwd(), # this is your figures_tables directory
+    "figures_tables",
     paste0(
       "example_fig", # your figure's label
       "_",
@@ -322,7 +322,7 @@ Run this code:
 
 ```{r eval=F}
 my_plot_name <- "example_tab_table.rda" # replace this with the filename of your table rda
-rda_dir <- getwd() # replace this with the location of your rda_files folder
+rda_dir <- getwd() # replace this with the location of your figures_tables folder
 
 ID_tbl_width_class(
   plot_name = my_plot_name,
@@ -370,7 +370,7 @@ Extra-wide tables will need to be split among multiple pages. Run this code to l
 
 ```{r eval=F}
 my_plot_name <- "example_tab_table.rda" # replace this with the filename of your table rda
-rda_dir <- getwd() # replace this with the location of your rda_files folder
+rda_dir <- getwd() # replace this with the location of your figures_tables folder
 essential_cols <- 1:2 # replace this with the columns that will be retained between the split tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single column)
 
 export_split_tbls(
@@ -488,7 +488,7 @@ Click the following links to learn more about [cross-references](https://quarto.
 #| warning: false
 #| include: false
 library(flextable)
-rda_dir <- "C:/path/to/your/rda_files" # set the path to your rda_dir
+rda_dir <- "C:/path/to/your/figures_tables" # set the path to your rda_dir
 ``` 
 ````
 
@@ -678,7 +678,7 @@ Click the following links to learn more about [cross-references](https://quarto.
 #| label: 'set-rda-dir-figs-custom' # you can set this label as you wish, as long as it's not repeated in any other R chunk in, for instance, the 08_tables.qmd or 09_figures.qmd files. Labels are used for cross-referencing in your report text.
 #| echo: false
 #| warning: false
-rda_dir <- "C:/path/to/your/rda_files" # set the path to your rda_dir
+rda_dir <- "C:/path/to/your/figures_tables" # set the path to your rda_dir
 ``` 
 ````
 

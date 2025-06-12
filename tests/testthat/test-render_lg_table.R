@@ -7,7 +7,7 @@ test_that("accurate number of split tables identified", {
       dplyr::select(1:50) |>
       flextable::flextable()
 
-  dir.create("rda_files")
+  dir.create("figures_tables")
 
   # 0 essential columns
   tables_test1 <- render_lg_table(ft,
@@ -75,7 +75,7 @@ test_that("accurate number of split tables identified", {
   expect_equal(tables_test6, 2)
 
   # erase temporary testing files
-  unlink(fs::path(getwd(), "rda_files"), recursive = T)
+  unlink(fs::path(getwd(), "figures_tables"), recursive = T)
 
 })
 
@@ -88,7 +88,7 @@ test_that("table_list saved as an rda", {
     dplyr::select(1:50) |>
     flextable::flextable()
 
-  dir.create("rda_files")
+  dir.create("figures_tables")
 
   render_lg_table(ft,
                   essential_columns = 0,
@@ -96,10 +96,10 @@ test_that("table_list saved as an rda", {
                   plot_name = "test_plot1.rda")
 
   expect_true(file.exists(fs::path(getwd(),
-                                   "rda_files",
+                                   "figures_tables",
                                    "test_plot1_split.rda")))
 
   # erase temporary testing files
-  unlink(fs::path(getwd(), "rda_files"), recursive = T)
+  unlink(fs::path(getwd(), "figures_tables"), recursive = T)
 
 })

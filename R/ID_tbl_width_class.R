@@ -23,7 +23,7 @@ ID_tbl_width_class <- function(
     rda_dir,
     plot_name,
     portrait_pg_width) {
-  rda_path <- file.path(paste0(rda_dir, "/rda_files/", plot_name))
+  rda_path <- file.path(paste0(rda_dir, "/figures_tables/", plot_name))
 
   if (file.exists(rda_path)) {
     load(rda_path)

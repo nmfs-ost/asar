@@ -181,7 +181,7 @@ render_lg_table <- function(report_flextable,
   # save table_list as rda
   save(table_list,
        file = fs::path(rda_dir,
-                       "rda_files",
+                       "figures_tables",
                        paste0(stringr::str_remove(plot_name, ".rda"), "_split.rda")))
 
   return(num_tables)
