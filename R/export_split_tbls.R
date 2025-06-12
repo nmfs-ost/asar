@@ -23,7 +23,7 @@ export_split_tbls <- function(
     rda_dir = NULL,
     plot_name = NULL,
     essential_columns = NULL) {
-  rda_path <- file.path(paste0(rda_dir, "/rda_files/", plot_name))
+  rda_path <- file.path(paste0(rda_dir, "/figures_tables/", plot_name))
 
   load(rda_path)
   table_rda <- rda

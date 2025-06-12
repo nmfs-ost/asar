@@ -5,7 +5,7 @@
 #'  in the console.
 #'
 #' @param format Rendering format (pdf, html, or docx).
-#' @param type Type of report to build. Default is SAR (a NOAA standard "Stock 
+#' @param type Type of report to build. Default is SAR (a NOAA standard "Stock
 #' Assessment Report").
 #' @param office Regional Fisheries Science Center producing the
 #'  report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).
@@ -21,14 +21,14 @@
 #' is the year in which the report is rendered.
 #' @param author A character vector of author names with their accompanying
 #' affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
-#' would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices 
-#' is found in a database located in the package: \code{system.file("resources", 
-#' "affiliation_info.csv", package = "asar")}. Keys to the office addresses 
-#' follow the naming convention of the office acronym (ex. NWFSC) with a dash 
-#' followed by the first initial of the city then the 2 letter abbreviation for 
-#' the state the office is located in. If the city has 2 or more words such as 
-#' Panama City, the first initial of each word is used in the key 
-#' (ex. Panama City, Florida = PCFL) 
+#' would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
+#' is found in a database located in the package: \code{system.file("resources",
+#' "affiliation_info.csv", package = "asar")}. Keys to the office addresses
+#' follow the naming convention of the office acronym (ex. NWFSC) with a dash
+#' followed by the first initial of the city then the 2 letter abbreviation for
+#' the state the office is located in. If the city has 2 or more words such as
+#' Panama City, the first initial of each word is used in the key
+#' (ex. Panama City, Florida = PCFL)
 #' @param file_dir Location of stock assessment files produced
 #' by this function. Default is the working directory.
 #' @param title A custom title that is an alternative to the default title (composed
@@ -77,7 +77,7 @@
 #'  of parameter names. Parameters automatically included:
 #'  office, region, species (each of which are listed as
 #'  individual parameters for this function, above).
-#' @param type Type of report to build. Default is SAR (NOAA Fisheries 
+#' @param type Type of report to build. Default is SAR (NOAA Fisheries
 #' Stock Assessment Report).
 #' @param custom TRUE/FALSE; Build custom sectioning for the
 #' template, rather than the default for stock assessments in
@@ -100,7 +100,7 @@
 #'        will remain as is.
 #' @param ... Additional arguments passed into functions used in create_template
 #' such as `create_citation()`, `format_quarto()`, `add_chunk()`, ect
-#' 
+#'
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
 #'         resources and workflows from different U.S. Fishery Science Centers.
@@ -197,7 +197,7 @@ create_template <- function(
   } else if (length(office) > 1) {
     office <- ""
   }
-  
+
   if (rerender_skeleton) {
     # TODO: set up situation where species, region can be changed
     report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
@@ -502,12 +502,12 @@ create_template <- function(
           title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
         } else {
           title <- create_title(
-            office = office, 
-            species = species, 
-            spp_latin = spp_latin, 
-            region = region, 
-            type = type, 
-            year = year) 
+            office = office,
+            species = species,
+            spp_latin = spp_latin,
+            region = region,
+            type = type,
+            year = year)
       }
 
       # Authors and affiliations
