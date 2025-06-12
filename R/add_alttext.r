@@ -37,7 +37,7 @@
 #'   model = "SS3",
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction",
-#'   rda_dir = getwd()
+#'   figures_tables_dir = getwd()
 #'   )
 #'
 #'   path <- getwd()
@@ -50,7 +50,7 @@
 #'      x = "SAR_USWC_Dover_sole_skeleton.tex",
 #'      dir = getwd(),
 #'      alttext_csv_dir = getwd(),
-#'      rda_dir = path,
+#'      figures_tables_dir = path,
 #'      compile = FALSE,
 #'      rename = "SAR_Dover_sole_tagged")
 #'    )
@@ -59,7 +59,7 @@
 add_alttext <- function(
     x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
     dir = getwd(),
-    rda_dir = getwd(),
+    figures_tables_dir = getwd(),
     alttext_csv_dir = getwd(),
     compile = TRUE,
     rename = NULL) {
@@ -159,13 +159,13 @@ add_alttext <- function(
 
   # Insert alt text for figures
   # Call alt text in list with names
-  obj_files <- list.files(file.path(rda_dir, "figures_tables"))
+  obj_files <- list.files(file.path(figures_tables_dir, "figures_tables"))
 
   # read all files in obj_files and put into list
   figures_list <- grep("figure", obj_files)
   alt_text_list <- list()
   for (i in figures_list) {
-    load(file.path(rda_dir, "figures_tables", obj_files[i]))
+    load(file.path(figures_tables_dir, "figures_tables", obj_files[i]))
     # extract name to add into the list for placement
     rda_name <- stringr::str_replace(obj_files[i], "_figure.rda", "")
     # if name is >1 word then replace the _ with - to follow naming convention for

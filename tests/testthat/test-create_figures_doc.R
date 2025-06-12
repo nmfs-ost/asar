@@ -2,7 +2,7 @@ test_that("Creates expected start of figures doc", {
   # create tables doc
   create_figures_doc(
     subdir = getwd(),
-    rda_dir = getwd()
+    figures_tables_dir = getwd()
   )
 
   # read in tables doc

@@ -18,12 +18,10 @@ create_template(
   complex = FALSE,
   include_affiliation = TRUE,
   simple_affiliation = FALSE,
-  alt_title = FALSE,
   title = NULL,
   parameters = TRUE,
   param_names = NULL,
   param_values = NULL,
-  convert_output = FALSE,
   fleet_names = NULL,
   model_results = NULL,
   new_section = NULL,
@@ -176,7 +174,7 @@ in the console.
 create_template(
   new_section = "a_new_section",
   section_location = "before-introduction",
-  rda_dir = here::here()
+  figures_tables_dir = here::here()
 )
 
 
@@ -192,7 +190,7 @@ create_template(
   model_results = "Report.sso",
   new_section = "an_additional_section",
   section_location = "after-introduction",
-  rda_dir = here::here()
+  figures_tables_dir = here::here()
 )
 
 asar::create_template(
@@ -207,7 +205,7 @@ asar::create_template(
   section_location = c("before-introduction", "after-introduction"),
   custom = TRUE,
   custom_sections = c("executive_summary", "introduction"),
-  rda_dir = here::here()
+  figures_tables_dir = here::here()
 )
 
 create_template(
@@ -239,7 +237,7 @@ create_template(
   include_tables = TRUE,
   add_image = TRUE,
   spp_image = "dir/containing/spp_image",
-  rda_dir = "C:/Users/Documents",
+  figures_tables_dir = "C:/Users/Documents",
   end_year = 2022,
   n_projected_years = 10,
   relative = FALSE,

@@ -7,7 +7,7 @@
 add_accessibility(
   x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
   dir = getwd(),
-  rda_dir = getwd(),
+  figures_tables_dir = getwd(),
   compile = TRUE,
   rename = NULL,
   alttext_csv_dir = getwd()
@@ -19,7 +19,7 @@ rendering the skeleton made from create_template.}
 
 \item{dir}{directory where the tex file is located that will be edited}
 
-\item{rda_dir}{folder where rda files containing alternative text is located}
+\item{figures_tables_dir}{folder where rda files containing alternative text is located}
 
 \item{compile}{Indicate whether the document (X) should be
 rendered after these files are changed. Default TRUE.}
@@ -58,7 +58,7 @@ Altering latex file of report to increase accessibility of the document.
   model = "SS3",
   new_section = "an_additional_section",
   section_location = "after-introduction",
-  rda_dir = getwd()
+  figures_tables_dir = getwd()
   )
 
   path <- getwd()
@@ -70,7 +70,7 @@ Altering latex file of report to increase accessibility of the document.
    add_accessibility(
      x = "SAR_USWC_Dover_sole_skeleton.tex",
      dir = getwd(),
-     rda_dir = path,
+     figures_tables_dir = path,
      compile = TRUE)
    )
 }
