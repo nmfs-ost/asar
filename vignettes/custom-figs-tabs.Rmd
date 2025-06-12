@@ -322,11 +322,11 @@ Run this code:
 
 ```{r eval=F}
 my_plot_name <- "example_tab_table.rda" # replace this with the filename of your table rda
-rda_dir <- getwd() # replace this with the location of your figures_tables folder
+figures_tables_dir <- getwd() # replace this with the location of your figures_tables folder
 
 ID_tbl_width_class(
   plot_name = my_plot_name,
-  rda_dir = rda_dir,
+  figures_tables_dir = figures_tables_dir,
   portrait_pg_width = 5 # 5 inches = the threshold for maximum table width before it needs to be resized, rotated, and/or split
 )
 ```
@@ -370,11 +370,11 @@ Extra-wide tables will need to be split among multiple pages. Run this code to l
 
 ```{r eval=F}
 my_plot_name <- "example_tab_table.rda" # replace this with the filename of your table rda
-rda_dir <- getwd() # replace this with the location of your figures_tables folder
+figures_tables_dir <- getwd() # replace this with the location of your figures_tables folder
 essential_cols <- 1:2 # replace this with the columns that will be retained between the split tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single column)
 
 export_split_tbls(
-  rda_dir = rda_dir,
+  figures_tables_dir = figures_tables_dir,
   plot_name = my_plot_name,
   essential_columns = essential_cols
 )
@@ -382,7 +382,7 @@ export_split_tbls(
 
 If the number returned was, say, 5, then since each split table must be in its own chunk, you will need 5 chunks to show your split tables. You will also need an additional chunk to load in the data. Each table needs its own chunk, and therefore label, so that it can be cross-referenced in text.
 
-You can check out your split tables in the new rda saved in your rda_dir folder. It will have the same filename as your original rda except that it will contain "\_split" in the filename. For instance, split tables created from "example_tab_table.rda" will be saved in "example_tab_table_split.rda".
+You can check out your split tables in the new rda saved in your figures_tables_dir folder. It will have the same filename as your original rda except that it will contain "\_split" in the filename. For instance, split tables created from "example_tab_table.rda" will be saved in "example_tab_table_split.rda".
 
 # Set up Quarto markdown (.qmd) files to display custom tables and figures {#sec-set-up-qmd}
 
@@ -477,7 +477,7 @@ You're almost done! Proceed to the last section ([Update report skeleton](#sec-u
 
 #### Tables
 
-In your tables doc, add your first R chunk (shown below). This chunk is used to establish your rda_dir folder and load the library needed to plot your tables (`flextable`).
+In your tables doc, add your first R chunk (shown below). This chunk is used to establish your figures_tables_dir folder and load the library needed to plot your tables (`flextable`).
 
 Click the following links to learn more about [cross-references](https://quarto.org/docs/computations/execution-options.html) (label) and [chunk options](https://quarto.org/docs/computations/execution-options.html) (echo, warning, etc.).
 
@@ -488,7 +488,7 @@ Click the following links to learn more about [cross-references](https://quarto.
 #| warning: false
 #| include: false
 library(flextable)
-rda_dir <- "C:/path/to/your/figures_tables" # set the path to your rda_dir
+figures_tables_dir <- "C:/path/to/your/figures_tables" # set the path to your figures_tables_dir
 ``` 
 ````
 
@@ -505,7 +505,7 @@ Add the following chunk to your script to import your table's rda and save objec
 #| warning: false
 #| include: false
 # load your rda and save with a table-specific name, then delete "rda"
-load(file.path(rda_dir, "example_tab_table.rda"))
+load(file.path(figures_tables_dir, "example_tab_table.rda"))
 example_table_rda <- rda
 rm(rda)
 
@@ -548,7 +548,7 @@ Add the following chunk to your script to import your table's rda and save objec
 #| warning: false
 #| include: false
 # load your rda and save with a table-specific name, then delete "rda"
-load(file.path(rda_dir, "example_tab_table.rda"))
+load(file.path(figures_tables_dir, "example_tab_table.rda"))
 example_table_rda <- rda
 rm(rda)
 
@@ -611,7 +611,7 @@ Add the following chunk to your script to:
 #| warning: false
 #| include: false
 # load your original table rda and save with a table-specific name, then delete "rda"
-load(file.path(rda_dir, "example_tab_table.rda"))
+load(file.path(figures_tables_dir, "example_tab_table.rda"))
 example_table_rda <- rda
 rm(rda)
 
@@ -619,7 +619,7 @@ rm(rda)
 example_cap <- example_table_rda$cap
 
 # load split table rda and save with a table-specific name, then delete "table_list"
-load(file.path(rda_dir, "example_table_split.rda"))
+load(file.path(figures_tables_dir, "example_table_split.rda"))
 example_table_rda_split <- table_list
 rm(table_list)
 
@@ -669,7 +669,7 @@ You're almost done! Proceed to the last section ([Update report skeleton](#sec-u
 
 The workflow for figures is very similar to the workflow for regular tables.
 
-In your figures doc, add your first R chunk (shown below). This chunk is used to establish your rda_dir folder.
+In your figures doc, add your first R chunk (shown below). This chunk is used to establish your figures_tables_dir folder.
 
 Click the following links to learn more about [cross-references](https://quarto.org/docs/computations/execution-options.html) (label) and [chunk options](https://quarto.org/docs/computations/execution-options.html) (echo, warning, etc.).
 
@@ -678,7 +678,7 @@ Click the following links to learn more about [cross-references](https://quarto.
 #| label: 'set-rda-dir-figs-custom' # you can set this label as you wish, as long as it's not repeated in any other R chunk in, for instance, the 08_tables.qmd or 09_figures.qmd files. Labels are used for cross-referencing in your report text.
 #| echo: false
 #| warning: false
-rda_dir <- "C:/path/to/your/figures_tables" # set the path to your rda_dir
+figures_tables_dir <- "C:/path/to/your/figures_tables" # set the path to your figures_tables_dir
 ``` 
 ````
 
@@ -691,7 +691,7 @@ Add the following chunk to your script to import your figure's rda and save obje
 #| warning: false
 #| include: false
 # load your rda and save with a figure-specific name, then delete "rda"
-load(file.path(rda_dir, "example_fig_figure.rda"))
+load(file.path(figures_tables_dir, "example_fig_figure.rda"))
 example_figure_rda <- rda
 rm(rda)
 

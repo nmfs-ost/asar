@@ -41,7 +41,7 @@
 #     add_alttext(
 #       x = "SAR_USWC_Simple_skeleton.tex",
 #       dir = getwd(),
-#       rda_dir = path,
+#       figures_tables_dir = path,
 #       compile = TRUE,
 #       alttext_csv_dir = path,
 #       rename = "Simple_SAR_2025_alttext"
@@ -70,7 +70,7 @@
 #   #     add_alttext(
 #   #       x = tex_file,
 #   #       dir = tex_dir,
-#   #       rda_dir = path,
+#   #       figures_tables_dir = path,
 #   #       compile = TRUE,
 #   #       rename = rename
 #   #     )

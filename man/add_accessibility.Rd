@@ -7,8 +7,12 @@
 add_accessibility(
   x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
   dir = getwd(),
+<<<<<<< HEAD
   rda_dir = getwd(),
   alttext_csv_dir = getwd(),
+=======
+  figures_tables_dir = getwd(),
+>>>>>>> de403c2 (Replace 'rda_dir' with 'figures_tables_dir'; update documentation)
   compile = TRUE,
   rename = NULL
 )
@@ -19,7 +23,7 @@ rendering the skeleton made from create_template.}
 
 \item{dir}{directory where the tex file is located that will be edited}
 
-\item{rda_dir}{folder where rda files containing alternative text is located}
+\item{figures_tables_dir}{folder where rda files containing alternative text is located}
 
 \item{alttext_csv_dir}{Directory for the csv file containing alternative
 text and captions generated when running stockplotr::exp_all_figs_tables}
@@ -54,7 +58,12 @@ Altering latex file of report to increase accessibility of the document.
   model_results = output,
   model = "SS3",
   new_section = "an_additional_section",
+<<<<<<< HEAD
   section_location = "after-introduction"
+=======
+  section_location = "after-introduction",
+  figures_tables_dir = getwd()
+>>>>>>> de403c2 (Replace 'rda_dir' with 'figures_tables_dir'; update documentation)
   )
 
   path <- getwd()
@@ -66,7 +75,7 @@ Altering latex file of report to increase accessibility of the document.
    add_accessibility(
      x = "SAR_USWC_Dover_sole_skeleton.tex",
      dir = getwd(),
-     rda_dir = path,
+     figures_tables_dir = path,
      compile = TRUE)
    )
 }
