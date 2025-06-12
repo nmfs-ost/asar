@@ -84,8 +84,9 @@ create_yaml <- function(
       add_authors <- gsub("\n", "", add_authors)
       # check if the template was blank before
       author_line <- grep("author:", yaml)
-      if (grepl("- name: 'NA'", yaml[author_line + 1])) {
-        yaml <- yaml[-((author_line + 1):(author_line + 2))]
+      # Replacing the empty author if template was made before adding any authors
+      if (grepl("- name: 'FIRST LAST'", yaml[author_line + 1])) {
+        yaml <- yaml[-((author_line + 1):(author_line + 8))]
         yaml <- append(yaml, add_authors, after = utils::tail(grep("author:", yaml), n = 1))
       } else {
         yaml <- append(yaml, add_authors, after = utils::tail(grep("postal-code:", yaml), n = 1))
