@@ -484,9 +484,6 @@ create_template <- function(
       # Create YAML header for document
       # Write title based on report type and region
       if (title == "[TITLE]") {
-        if (rerender_skeleton) {
-          title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
-        } else {
           title <- create_title(
             office = office, 
             species = species, 
@@ -494,7 +491,6 @@ create_template <- function(
             region = region, 
             type = type, 
             year = year) 
-        }
       }
 
       # Authors and affiliations
@@ -512,7 +508,7 @@ create_template <- function(
         prev_skeleton = prev_skeleton,
         author_list = author_list,
         title = title,
-        rerender_skeleton = FALSE,
+        rerender_skeleton = rerender_skeleton,
         office = office,
         spp_image = spp_image,
         species = species,
@@ -698,6 +694,13 @@ create_template <- function(
               preamble[prev_results_line],
               "(?<=output\\s{0,5}<-).*",
               deparse(substitute(model_results))
+            )
+            # change chunk eval to true
+            chunk_eval_line <- grep("eval: ", preamble)
+            prev_results <- stringr::str_replace(
+              preamble[chunk_eval_line],
+              "eval: false",
+              "eval: true"
             )
             preamble <- paste(
               append(
