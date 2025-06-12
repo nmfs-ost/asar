@@ -484,13 +484,17 @@ create_template <- function(
       # Create YAML header for document
       # Write title based on report type and region
       if (title == "[TITLE]") {
-        title <- create_title(
-          office = office, 
-          species = species, 
-          spp_latin = spp_latin, 
-          region = region, 
-          type = type, 
-          year = year)
+        if (rerender_skeleton) {
+          title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
+        } else {
+          title <- create_title(
+            office = office, 
+            species = species, 
+            spp_latin = spp_latin, 
+            region = region, 
+            type = type, 
+            year = year) 
+        }
       }
 
       # Authors and affiliations
