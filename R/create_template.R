@@ -502,7 +502,6 @@ create_template <- function(
             region = region, 
             type = type, 
             year = year) 
-        }
       }
 
       # Authors and affiliations
