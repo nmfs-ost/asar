@@ -17,7 +17,6 @@ add_authors <- function(
     author,
     rerender_skeleton = FALSE,
     prev_skeleton = NULL) {
-  message("pre-processing")
   # Set author into proper format - will get overwritten later if rerender = T
   author_names <- names(author)
   # Get authors into readable format for ordering
@@ -69,11 +68,10 @@ add_authors <- function(
       authors <- dplyr::filter(authors, name %in% author2)
     }
   }
-  message("ended processing new authors on rerender")
+  
   # Load in affiliation
   affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
   
-  message("start getting authors in yaml format")
   author_list <- list()
   if (any(authors$name != "1")) { # nrow(authors) > 0 |
     # print("inside author==1")
