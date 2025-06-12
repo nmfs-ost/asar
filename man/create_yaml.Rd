@@ -44,7 +44,7 @@ render to. Parameter is inherited from create_template.}
 \item{title}{A custom title that is an alternative to the default title (composed
 in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
 
-\item{author_list}{A list of strings containing pre-formatted author names
+\item{author_list}{A vector of strings containing pre-formatted author names
 and affiliations that would be found in the format in a yaml of a quarto
 file when using cat(author_list[\link{i}]).}
 
@@ -100,12 +100,13 @@ create_yaml(
   prev_skeleton = NULL,
   title = "My title",
   author_list = "  - name: 'Patrick Star'\n    affiliations:\n      - name: 'NOAA Fisheries Southeast Fisheries Science Center'\n        address: '75 Virginia Beach Drive'\n        city: 'Miami'\n        state: 'FL'\n        postal-code: '33149'\n",
-  author = "Patrick Star",
-  office = "AFSC",
-  spp_image = NA,
-  species = NA,
-  spp_latin = NA,
-  region = NA,
+  author = c("Patrick Star"="SEFSC"),
+  office = "SEFSC",
+  add_author = NULL,
+  spp_image = NULL,
+  species = "",
+  spp_latin = NULL,
+  region = NULL,
   format = "pdf",
   parameters = TRUE,
   param_names = NULL,
