@@ -585,7 +585,8 @@ export_glossary <- function() {
                   Acronym = ifelse(Acronym == "$_{MSY}$",
                                    "$MSY$",
                                    Acronym)
-                  )
+                  ) |>
+    dplyr::arrange(tolower(Label))
 
 
   for(i in 1:dim(tex_acs)[1]) {
