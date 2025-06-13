@@ -3,15 +3,15 @@
 #' @export
 #'
 export_glossary <- function() {
-  
+
   # set up fxn that capitalizes first letter of string
   first_capitalize <- function(x) {
     substr(x, 1, 1) <- toupper(substr(x, 1, 1))
     x
   }
-  
+
   ac_dir <- fs::path("inst", "glossary", "formatted_acronym_lists")
-  
+
   # import all acronyms, meanings, and definitions
   # (later, the definitions may go in a glossary)
   all_entries <- ac_dir |>
@@ -19,7 +19,7 @@ export_glossary <- function() {
     purrr::map_dfr(read.csv, .id = "source") |>
     dplyr::mutate(source = gsub(".*acronym_lists/","",source),
                   source = gsub("_.*","",source))
-  
+
   acronyms <- all_entries |>
     dplyr::select(-c(All, X)) |>
     dplyr::filter(!is.na(Acronym),
@@ -44,10 +44,10 @@ export_glossary <- function() {
                   Shared_ac = duplicated(Acronym),
                   Shared_mean = duplicated(meaning_lower)
     )
-  
+
   # min length of consolidated acronyms: ~818
   # length(unique(acronyms$Acronym))
-  
+
   # for a given acronym: if there is a row with an identical acronym,
   # and there is a row with an identical meaning_lower, and at least one
   # row has a definition, then keep the row with the definition
@@ -56,7 +56,7 @@ export_glossary <- function() {
     dplyr::filter(dplyr::if_any(Definition, ~!is.na(.))) |>
     dplyr::slice_max(order_by = !is.na(Definition), n = 1) |>
     dplyr::ungroup()
-  
+
   # anti-join above with main list (grouped by acronym) to find acronyms
   # that have no definitions
   no_definitions_unique <- acronyms |>
@@ -65,13 +65,13 @@ export_glossary <- function() {
     dplyr::anti_join(has_definitions_unique) |>
     dplyr::left_join(acronyms[c(2:3, 5)]) |>
     dplyr::distinct(Acronym, meaning_lower, n, .keep_all = T)
-  
+
   # join the two dfs
   unique_all <- dplyr::full_join(has_definitions_unique,
                                  no_definitions_unique) |>
     dplyr::arrange(Acronym) |>
     dplyr::select(source:meaning_lower) |>
-    
+
     # manually clean rows to make some extremely similar rows identical
     dplyr::filter(Acronym != "?",
                   # ACE is already used for multiple acronyms; will use ACOE
@@ -207,24 +207,24 @@ export_glossary <- function() {
     dplyr::filter(!Definition %in% "An advisory committee of the PFMC made up of scientists and economists. The Magnuson-Stevens Act requires that each council maintain an SSC to assist in gathering and analyzing statistical, biological, ecological, economic, social, and other scientific information that is relevant to the management of Council fisheries.") |>
     # recreate meaning_lower after updates
     dplyr::mutate(meaning_lower = tolower(Meaning))
-  
+
   dup_acs <- unique_all |>
     dplyr::count(Acronym) |>
     dplyr::filter(n > 1) |>
     dplyr::mutate(duplicated_ac = "Y")
-  
+
   dup_means <- unique_all |>
     dplyr::count(meaning_lower) |>
     dplyr::filter(n > 1) |>
     dplyr::mutate(duplicated_mean = "Y")
-  
+
   unique_all <- unique_all |>
     dplyr::left_join(dup_acs) |>
     dplyr::left_join(dup_means)
-  
+
   # redundants <- unique_all |>
   #   dplyr::filter(!dplyr::if_all(c(duplicated_ac, duplicated_mean), is.na))
-  
+
   # export to csv
   # all acronyms
   # dir.create(fs::path("inst/glossary/partially_cleaned_glossary/"))
@@ -234,7 +234,7 @@ export_glossary <- function() {
   # write.csv(redundants |>
   #             dplyr::select(-meaning_lower),
   #           file = fs::path("inst/glossary/partially_cleaned_glossary/acronyms_duplicates.csv"))
-  
+
   # remove duplicated acronyms as per discussions with Sam, Steve
   unique_all_cleaning <- unique_all |>
     dplyr::filter(
@@ -451,12 +451,12 @@ export_glossary <- function() {
     dplyr::mutate_if(is.character, ~stringr::str_replace(., "U.S.", "US")) |>
     dplyr::mutate_if(is.character, ~stringr::str_replace(., "SBMSY", "SBmsy")) |>
     dplyr::select(2:4)
-  
+
     # take rows where SSB is in the acronym, change it to SB
   ssb_rows <- unique_all_cleaning |>
     dplyr::filter(grepl('SSB', Acronym)) |>
     dplyr::mutate(Acronym = stringr::str_replace_all(Acronym, "SSB", "SB"))
-  
+
   unique_all_cleaning2 <- rbind(unique_all_cleaning,
                                          ssb_rows) |>
     # make label column
@@ -468,7 +468,7 @@ export_glossary <- function() {
                   Label = ifelse(Acronym == "PPT", "PPT", Label)) |>
     dplyr::arrange(Label) |>
     as.data.frame()
-  
+
   # rows with meanings that should be all lowercase, labelled by label
   rows_to_lower <- c("M",
                      "aa", "abc", "abm", "ace", "acl", "adp", "aeq", "ais", "alj", "aop", "ap", "ar", "arm", "asc", "atm",
@@ -480,40 +480,40 @@ export_glossary <- function() {
                      "gac", "gam", "gdp", "gf", "ghl", "gis", "gkc", "gm", "gni", "gnp", "goes", "grt",
                      "haccp", "hapc", "hbs", "hc", "hcr", "hg", "hms", "hp",
                      "iba", "ibq", "ica", "id", "iea", "int", "ipa", "ipq", "ipt", "iq", "iqf", "irfa", "iriu", "itq", "iuu",
-                     "jai", "jam", 
+                     "jai", "jam",
                      "laa", "lc", "le", "lk", "llp", "lng", "loa", "loc", "lof",
                      "m", "m&si", "mc", "mca", "mcd", "mfmt", "mhhw", "mm", "moa", "mou", "mpcc", "mra", "ms", "mse", "msst", "msvpa", "msy", "mt", "mus", "mw",
                      "ne", "ngo", "nlaa",
                      "oa", "oeg", "ofl", "oswag", "otec", "oy",
                      "p*", "pbf", "pbr", "pce", "pdt", "peec", "pid", "pie rule", "ppa", "ppm", "prt", "psc", "pse", "pt",
                      "qa/qc", "qp", "qs",
-                     "r/v", "rer", "rffa", "rfma", "rfmo", "rhl", "rir", "rkc", "rkm", "roa", "rod", "rofr", "rov", "rpa", "rpb", "rqe", "rsw", "rta", "rvc", 
-                     "s-r", "sa", "sap", "sar", "sac", "saw", "sb", "sb", "sbrm", "sbtarget", "sca", "scs", "seg", "sep", "set", "sfm", "sg", "sia", "sir", "smp", "snp", "sofi", "soi", "sopp", "srd", "srkw", "srt", "ssbtarget", "ssc", "ssl", "sst", "star", "star panel", "std", "stf", "swac", "swo", 
-                     "ta", "tac", "tal", "tc", "tk", "tla", "tlas", "tmct", "total catch oy", 
+                     "r/v", "rer", "rffa", "rfma", "rfmo", "rhl", "rir", "rkc", "rkm", "roa", "rod", "rofr", "rov", "rpa", "rpb", "rqe", "rsw", "rta", "rvc",
+                     "s-r", "sa", "sap", "sar", "sac", "saw", "sb", "sb", "sbrm", "sbtarget", "sca", "scs", "seg", "sep", "set", "sfm", "sg", "sia", "sir", "smp", "snp", "sofi", "soi", "sopp", "srd", "srkw", "srt", "ssbtarget", "ssc", "ssl", "sst", "star", "star panel", "std", "stf", "swac", "swo",
+                     "ta", "tac", "tal", "tc", "tk", "tla", "tlas", "tmct", "total catch oy",
                      "u/a",
-                     "vpa", "vtr", 
-                     "wets", "wpue", 
+                     "vpa", "vtr",
+                     "wets", "wpue",
                      "xbt",
-                     "yfs", "ypr", 
+                     "yfs", "ypr",
                      "z"
                      )
-  
+
   unique_all_cleaning3 <- unique_all_cleaning2 |>
     dplyr::mutate(Meaning = ifelse(Label %in% rows_to_lower,
                   tolower(Meaning),
                   Meaning))
-  
+
   # keep cleaning by:
   # -adding new definitions
-  
+
   # NOTE: The above definitions are not finalized.
-  
+
   # Export to csv
   # all acronyms
   # write.csv(unique_all_cleaning3 |>
   # dplyr::select(Acronym, Meaning, Definition),
   #           file = fs::path("inst/glossary/cleaned_acronyms.csv"))
-  
+
   # acronyms that need definitions written
   # need_defs <- unique_all_cleaning3 |>
   #   dplyr::filter(is.na(duplicated_ac),
@@ -523,7 +523,7 @@ export_glossary <- function() {
   #
   # write.csv(need_defs,
   #           file = fs::path("inst/glossary/partially_cleaned_glossary/acronyms_need_definitions.csv"))
-  
+
   # Convert df into .tex file format and remove definitions
   sink(fs::path("inst/glossary/report_glossary.tex"))
   tex_acs <- unique_all_cleaning3 |>
@@ -568,7 +568,7 @@ export_glossary <- function() {
       Acronym = ifelse(grepl("\\{max\\}", Acronym),
                        paste0("$", Acronym, "$"),
                        Acronym)
-    ) |> 
+    ) |>
     dplyr::mutate(Acronym = ifelse(Acronym == "$$SSB_{MSY} _{proxy}$$",
                                    "$SSB_{MSY proxy}$",
                                    Acronym),
@@ -587,9 +587,10 @@ export_glossary <- function() {
                   Acronym = ifelse(Acronym == "$_{MSY}$",
                                    "$MSY$",
                                    Acronym)
-                  )
+                  ) |>
+    dplyr::arrange(tolower(Label))
 
-    
+
   for(i in 1:dim(tex_acs)[1]) {
     cat(
       paste0(
@@ -605,5 +606,5 @@ export_glossary <- function() {
     cat("\n")
   }
   sink()
-  
+
 }
