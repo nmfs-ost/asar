@@ -102,7 +102,7 @@
 #' create_template(
 #'   new_section = "a_new_section",
 #'   section_location = "before-introduction",
-#'   rda_dir = here::here()
+#'   figures_tables_dir = here::here()
 #' )
 #'
 #'
@@ -118,7 +118,7 @@
 #'   model_results = "Report.sso",
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction",
-#'   rda_dir = here::here()
+#'   figures_tables_dir = here::here()
 #' )
 #'
 #' asar::create_template(
@@ -133,7 +133,7 @@
 #'   section_location = c("before-introduction", "after-introduction"),
 #'   custom = TRUE,
 #'   custom_sections = c("executive_summary", "introduction"),
-#'   rda_dir = here::here()
+#'   figures_tables_dir = here::here()
 #' )
 #'
 #' create_template(
@@ -165,7 +165,7 @@
 #'   include_tables = TRUE,
 #'   add_image = TRUE,
 #'   spp_image = "dir/containing/spp_image",
-#'   rda_dir = "C:/Users/Documents",
+#'   figures_tables_dir = "C:/Users/Documents",
 #'   end_year = 2022,
 #'   n_projected_years = 10,
 #'   relative = FALSE,
@@ -463,10 +463,10 @@ create_template <- function(
       # print("_______Standardized output data________")
 
       # run stockplotr::exp_all_figs_tables() if rda files not premade
-      # output folder: rda_dir
+      # output folder: figures_tables_dir
       # Don't run on rerender
       # if (!rerender_skeleton) {
-      #   if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
+      #   if (!dir.exists(fs::path(figures_tables_dir, "figures_tables"))) {
       #     # if (!is.null(resdir) | !is.null(model_results)) {
       #       # load converted output
       #       # output <- model_results
@@ -503,8 +503,8 @@ create_template <- function(
       #   #   warning("Results file or model name not defined.")
       #   # } else
       #   if (!is.null(model_results)) {
-      #     # if there is an existing folder with "rda_files" in the rda_dir:
-      #     if (dir.exists(fs::path(rda_dir, "rda_files"))) {
+      #     # if there is an existing folder with "figures_tables" in the figures_tables_dir:
+      #     if (dir.exists(fs::path(figures_tables_dir, "figures_tables"))) {
       #       create_tables_doc(...)
       #     }
       #   } else {
@@ -528,8 +528,8 @@ create_template <- function(
       #   #   warning("Results file or model name not defined.")
       #   # } else
       #   if (!is.null(model_results)) {
-      #     # if there is an existing folder with "rda_files" in the rda_dir:
-      #     if (dir.exists(fs::path(rda_dir, "rda_files"))) {
+      #     # if there is an existing folder with "figures_tables" in the figures_tables_dir:
+      #     if (dir.exists(fs::path(figures_tables_dir, "figures_tables"))) {
       #       create_figures_doc(...)
       #     }
       #   } else {

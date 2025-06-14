@@ -4,7 +4,11 @@
 \alias{create_tables_doc}
 \title{Create Quarto Document of Tables}
 \usage{
-create_tables_doc(subdir = getwd(), include_all = TRUE, rda_dir = getwd())
+create_tables_doc(
+  subdir = getwd(),
+  include_all = TRUE,
+  figures_tables_dir = getwd()
+)
 }
 \arguments{
 \item{subdir}{subdirectory where the assessment report template is being stored}
@@ -36,6 +40,6 @@ asar::export_split_tbls with your preferred essential_columns value.
 \dontrun{
 create_tables_doc(
 subdir = getwd(),
-rda_dir = here::here())
+figures_tables_dir = here::here())
 }
 }

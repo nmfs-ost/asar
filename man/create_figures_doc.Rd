@@ -4,7 +4,11 @@
 \alias{create_figures_doc}
 \title{Create Quarto Document of Figures}
 \usage{
-create_figures_doc(subdir = getwd(), include_all = TRUE, rda_dir = getwd())
+create_figures_doc(
+  subdir = getwd(),
+  include_all = TRUE,
+  figures_tables_dir = getwd()
+)
 }
 \arguments{
 \item{subdir}{Location of subdirectory storing the assessment report template}
@@ -24,6 +28,6 @@ Create Quarto Document of Figures
 \dontrun{
 create_figures_doc(
 subdir = getwd(),
-rda_dir = here::here())
+figures_tables_dir = here::here())
 }
 }
