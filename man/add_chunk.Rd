@@ -5,7 +5,7 @@
 \title{Write R chunk to template}
 \usage{
 add_chunk(
-  x,
+  x = NULL,
   echo = "false",
   warnings = "false",
   eval = "true",

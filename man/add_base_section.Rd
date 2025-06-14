@@ -4,7 +4,7 @@
 \alias{add_base_section}
 \title{Add selected sections to outline}
 \usage{
-add_base_section(custom_sections)
+add_base_section(custom_sections = NULL)
 }
 \arguments{
 \item{custom_sections}{List of existing sections to include in
@@ -16,7 +16,8 @@ name of the file, can be used (e.g., 'abstract' rather than
 parameters 'new_section' and 'section_location'.}
 }
 \value{
-Call and copy the sections in the package templates to create an outline for a stock assessment
+Call and copy the sections in the package templates to create an
+outline for a stock assessment
 }
 \description{
 Add selected sections to outline
