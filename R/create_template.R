@@ -695,20 +695,28 @@ create_template <- function(
               "(?<=output\\s{0,5}<-).*",
               deparse(substitute(model_results))
             )
+            # add back in pipe
+            prev_results <- paste0(prev_results, " |>")
+            preamble <- append(preamble, prev_results, after = prev_results_line)[-prev_results_line]
+            
             # change chunk eval to true
-            chunk_eval_line <- grep("eval: ", preamble)
-            prev_results <- stringr::str_replace(
-              preamble[chunk_eval_line],
-              "eval: false",
-              "eval: true"
-            )
-            preamble <- paste(
-              append(
-                preamble,
-                prev_results,
-                after = prev_results_line)[-prev_results_line],
-              collapse = "\n"
-            )
+            if (any(grepl("eval: false", preamble))) {
+              chunk_eval_line <- grep("eval: ", preamble)
+              eval_line_new <- stringr::str_replace(
+                preamble[chunk_eval_line],
+                "eval: false",
+                "eval: true"
+              )
+              preamble <- paste(
+                append(
+                  preamble,
+                  eval_line_new,
+                  after = chunk_eval_line)[-chunk_eval_line],
+                collapse = "\n"
+              )
+            }
+            preamble <- paste(preamble, collapse = "\n")
+            
             # if (!grepl(".csv", model_results)) warning("Model results are not in csv format - Will not work on render")
           } else {
             message("Preamble maintained - model results not updated.")
