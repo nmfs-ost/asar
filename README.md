@@ -1,5 +1,5 @@
 
-# asar (Automated Stock Assessment Reporting)
+# asar (Automated Stock Assessment Reporting) <img src="man/figures/asar.png" align="right" height="139" />
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
