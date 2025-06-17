@@ -25,10 +25,10 @@
 #' rda_dir = "data",
 #' plot_name = "bnc_table.rda")
 #' }
-render_lg_table <- function(report_flextable = NULL,
-                            essential_columns = NULL,
-                            rda_dir = NULL,
-                            plot_name = NULL
+render_lg_table <- function(report_flextable,
+                            essential_columns,
+                            rda_dir,
+                            plot_name
                             ) {
   # calculate key numbers
 
@@ -59,6 +59,7 @@ render_lg_table <- function(report_flextable = NULL,
                   "end_col" = 4)
 
   i = 1
+  # TODO: add error improved error message
   essential_cols = essential_columns
   for (i in 1:num_tables){
 

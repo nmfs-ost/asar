@@ -28,8 +28,8 @@
 #' rda_dir = here::here())
 #' }
 create_tables_doc <- function(subdir = getwd(),
-                              include_all = TRUE,
-                              rda_dir = getwd()) {
+                              rda_dir = getwd(),
+                              include_all = TRUE) {
 
   # NOTE: essential_columns = 1 for all tables split using export_split_tbls() in
   # the code below.

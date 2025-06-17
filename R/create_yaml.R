@@ -39,30 +39,29 @@
 #'   parameters = TRUE,
 #'   param_names = NULL,
 #'   param_values = NULL,
-#'   bib_file = "asar_references.bib",
+#'   bib_file = "path/asar_references.bib",
 #'   bib_name = "asar_references.bib",
 #'   year = 2025
 #' )
 #' }
 create_yaml <- function(
-    rerender_skeleton = FALSE,
+    format = "pdf",
     office = NULL,
-    prev_skeleton = NULL,
-    prev_format = NULL,
-    title = "[TITLE]",
-    author_list = NULL,
-    # author = NULL,
-    spp_image = "",
+    region = NULL,
     species = "species",
     spp_latin = NULL,
-    region = NULL,
-    format = "pdf",
-    parameters = TRUE,
-    param_names = NULL,
-    param_values = NULL,
+    spp_image = "",
+    year = NULL,
     bib_name = NULL,
     bib_file = "asar_references.bib",
-    year = NULL
+    author_list = NULL,
+    title = "[TITLE]",
+    rerender_skeleton = FALSE,
+    prev_skeleton = NULL,
+    prev_format = NULL,
+    parameters = TRUE,
+    param_names = NULL,
+    param_values = NULL
     ){
   # check first if want to rerender current skeleton
   if (rerender_skeleton) {

@@ -20,8 +20,8 @@
 #' rda_dir = here::here())
 #' }
 create_figures_doc <- function(subdir = getwd(),
-                               include_all = TRUE,
-                               rda_dir = getwd()) {
+                               rda_dir = getwd(),
+                               include_all = TRUE) {
 
   if (!include_all) cli::cli_abort("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")
 
