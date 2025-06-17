@@ -18,8 +18,8 @@
 #' "Pomatomus saltatrix".
 #' @param year Year the assessment is being conducted. Default
 #' is the year in which the report is rendered.
-#' @param author A character vector of author names with their accompanying 
-#' affiliations. For example an Jane Doe at the NWFSC Seattle, Washington office 
+#' @param author A character vector of author names with their accompanying
+#' affiliations. For example an Jane Doe at the NWFSC Seattle, Washington office
 #' would have an entry of c("Jane Doe"="NWFSC-SWA").
 #' @param file_dir Location of stock assessment files produced
 #' by this function. Default is the working directory.
@@ -184,7 +184,7 @@ create_template <- function(
   } else if (length(office) > 1) {
     office <- ""
   }
-  
+
   if (rerender_skeleton) {
     # TODO: set up situation where species, region can be changed
     report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
@@ -478,19 +478,19 @@ create_template <- function(
         )
         utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
       }
-      
+
       # Part I
       # Create a report template file to render for the region and species
       # Create YAML header for document
       # Write title based on report type and region
       if (title == "[TITLE]") {
           title <- create_title(
-            office = office, 
-            species = species, 
-            spp_latin = spp_latin, 
-            region = region, 
-            type = type, 
-            year = year) 
+            office = office,
+            species = species,
+            spp_latin = spp_latin,
+            region = region,
+            type = type,
+            year = year)
       }
 
       # Authors and affiliations
@@ -698,7 +698,7 @@ create_template <- function(
             # add back in pipe
             prev_results <- paste0(prev_results, " |>")
             preamble <- append(preamble, prev_results, after = prev_results_line)[-prev_results_line]
-            
+
             # change chunk eval to true
             if (any(grepl("eval: false", preamble))) {
               chunk_eval_line <- grep("eval: ", preamble)
@@ -716,10 +716,11 @@ create_template <- function(
               )
             }
             preamble <- paste(preamble, collapse = "\n")
-            
+
             # if (!grepl(".csv", model_results)) warning("Model results are not in csv format - Will not work on render")
           } else {
             message("Preamble maintained - model results not updated.")
+            preamble <- paste(preamble, collapse = "\n")
           }
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
           preamble <- preamble
@@ -842,7 +843,9 @@ create_template <- function(
             )
             sec_list2 <- add_section(
               custom_sections = sec_list1,
-              ...
+              new_section = new_section,
+              section_location = section_location,
+              subdir = subdir
             )
             # Create sections object to add into template
             custom_sections <- gsub(".qmd", "", unlist(sec_list2))

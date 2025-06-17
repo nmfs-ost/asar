@@ -14,11 +14,11 @@
 #' )
 #'
 create_citation <- function(
-    author = "",
+    author = NULL,
     title = "[TITLE]",
     year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")) {
   # Check if author is input - improved from previous fxn so did not fail
-    if (any(author == "")) {
+    if (is.null(author) | any(author == "")) {
       cli::cli_alert("Authorship is not defined.")
       # Define default citation - needs author editing
       citation <- paste0(

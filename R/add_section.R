@@ -78,10 +78,21 @@ add_section <- function(
       "\n",
       add_chunk("# Insert code", label = paste0("example_chunk_", i)), "\n"
     )
-    utils::capture.output(
-      cat(section_i),
-      file = paste0(subdir, "/", section_i_name),
-      append = FALSE
+
+    # Export new section .qmd - catch when this fails so that the user can adjust
+    tryCatch(
+      {
+        utils::capture.output(
+          cat(section_i),
+          file = paste0(subdir, "/", section_i_name),
+          append = FALSE
+          )
+        # TRUE
+      },
+      error = function(e) {
+        cli::cli_abort("Unable to create new section. Please check your file path (file_dir).")
+        # FALSE
+      }
     )
 
     if (locality == "before") {
