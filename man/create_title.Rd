@@ -32,7 +32,8 @@ is the year in which the report is rendered.}
 \item{complex}{TRUE/FALSE; Is this a species complex? Default
 is false.}
 
-\item{type}{Type of report to build. Default is SAR.}
+\item{type}{Type of report to build. Default is SAR (a NOAA standard "Stock
+Assessment Report").}
 
 \item{spp_latin}{Latin name for the target species. Example:
 "Pomatomus saltatrix".}

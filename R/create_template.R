@@ -5,7 +5,8 @@
 #'  in the console.
 #'
 #' @param format Rendering format (pdf, html, or docx).
-#' @param type Type of report to build. Default is SAR.
+#' @param type Type of report to build. Default is SAR (a NOAA standard "Stock 
+#' Assessment Report").
 #' @param office Regional Fisheries Science Center producing the
 #'  report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).
 #' @param region Full name of region in which the species is
@@ -20,7 +21,13 @@
 #' is the year in which the report is rendered.
 #' @param author A character vector of author names with their accompanying
 #' affiliations. For example an Jane Doe at the NWFSC Seattle, Washington office
-#' would have an entry of c("Jane Doe"="NWFSC-SWA").
+#' would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices 
+#' is found in a database located in the package. Keys to the office addresses 
+#' follow the naming convention of the office acronym (ex. NWFSC) with a dash 
+#' followed by the first initial of the city then the 2 letter abbreviation for 
+#' the state the office is located in. If the city has 2 or more words such as 
+#' Panama City, the first initial of each word is used in the key 
+#' (ex. Panama City, Florida = PCFL) 
 #' @param file_dir Location of stock assessment files produced
 #' by this function. Default is the working directory.
 #' @param title A custom title that is an alternative to the default title (composed
