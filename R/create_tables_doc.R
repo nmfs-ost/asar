@@ -14,9 +14,7 @@
 #' share the same caption. To specify a different repeated column(s), use
 #' asar::export_split_tbls with your preferred essential_columns value.
 #'
-#' @inheritParams create_template
-#' @param subdir subdirectory where the assessment report template is being stored
-#' @param include_all include all default tables for a stock assessment report
+#' @inheritParams create_figures_doc
 #'
 #' @return Create a quarto document as part of a stock assessment outline with
 #' pre-loaded R chunks that add stock assessment tables from the nmfs-ost/stockplotr
@@ -57,9 +55,14 @@ create_tables_doc <- function(subdir = getwd(),
       add_chunk(
         paste0("library(flextable)\nrda_dir <- '", rda_dir, "/rda_files'"),
         label = "set-rda-dir-tbls",
-        eval = "true",
-        add_option = TRUE,
-        chunk_op = "include: false"
+        # eval = "true",
+        # add_option = TRUE,
+        chunk_option = c(
+          "echo: false",
+          "warning: false",
+          "eval: true",
+          "include: false"
+        )
       ),
       "\n"
     )
@@ -122,8 +125,8 @@ eval_", tab_shortname, " <- TRUE\n
 # if the table rda does not exist, don't evaluate the next chunk
 } else {eval_",  tab_shortname, " <- FALSE}"
           ),
-          label = paste0("tab-", tab_shortname, "-setup"),
-          eval = "true"
+          label = paste0("tab-", tab_shortname, "-setup")
+          # eval = "true"
         ),
 "\n"
 )
@@ -134,9 +137,14 @@ eval_", tab_shortname, " <- TRUE\n
             add_chunk(
               paste0(tab_shortname, "_table"),
               label = paste0("tbl-", tab_shortname),
-              eval = paste0("!expr eval_", tab_shortname),
-              add_option = TRUE,
-              chunk_op = c(
+              # eval = paste0("!expr eval_", tab_shortname),
+              # add_option = TRUE,
+              chunk_option = c(
+                "echo: false",
+                "warnings: false",
+                glue::glue(
+                  "eval: !expr if(eval_{tab_shortname}) {tab_shortname}_alt_text"
+                ),
                 glue::glue(
                   "tbl-cap: !expr if(eval_", tab_shortname, ") ", tab_shortname, "_cap"
                 ),
@@ -159,9 +167,14 @@ eval_", tab_shortname, " <- TRUE\n
                 flextable::fit_to_width(max_width = 8)"
               ),
             label = paste0("tbl-", tab_shortname),
-            eval = paste0("!expr eval_", tab_shortname),
-            add_option = TRUE,
-            chunk_op = c(
+            # eval = paste0("!expr eval_", tab_shortname),
+            # add_option = TRUE,
+            chunk_option = c(
+              "echo: false",
+              "warnings: false",
+              glue::glue(
+                "eval: !expr if(eval_{tab_shortname}) {tab_shortname}_alt_text"
+              ),
               glue::glue(
                 "tbl-cap: !expr if(eval_", tab_shortname, ") ", tab_shortname, "_cap"
               ),
@@ -201,9 +214,16 @@ eval_", tab_shortname, " <- TRUE\n
              )
              ,
              label = paste0("tbl-", tab_shortname, "-labels"),
-             eval = paste0("!expr eval_", tab_shortname),
-             add_option = TRUE,
-             chunk_op = c(glue::glue("include: false"))
+             # eval = paste0("!expr eval_", tab_shortname),
+             # add_option = TRUE,
+             chunk_option = c(
+               "echo: false",
+               "warnings: false",
+               glue::glue(
+                 "eval: !expr if(eval_{tab_shortname}) {tab_shortname}_alt_text"
+               ),
+               glue::glue("include: false")
+             )
            ),
            "\n"
          )
@@ -224,7 +244,7 @@ eval_", tab_shortname, " <- TRUE\n
               label = paste0("tbl-", tab_shortname, i),
               eval = paste0("!expr eval_", tab_shortname),
               add_option = TRUE,
-              chunk_op = c(
+              chunk_option = c(
                 glue::glue(
                   "tbl-cap: !expr if(eval_", tab_shortname, ") paste0(", tab_shortname, "_cap, '(', ", tab_shortname, "_cap_split[[", i, "]], ')')"
                 ),

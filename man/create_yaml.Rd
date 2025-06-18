@@ -9,13 +9,10 @@ create_yaml(
   office = NULL,
   prev_skeleton = NULL,
   prev_format = NULL,
-  title = NULL,
+  title = "[TITLE]",
   author_list = NULL,
-  author = NULL,
-  add_author = NULL,
-  add_image = FALSE,
   spp_image = "",
-  species = NULL,
+  species = "species",
   spp_latin = NULL,
   region = NULL,
   format = "pdf",
@@ -47,20 +44,9 @@ render to. Parameter is inherited from create_template.}
 \item{title}{A custom title that is an alternative to the default title (composed
 in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
 
-\item{author_list}{A vector of strings containing pre-formatted author names
+\item{author_list}{A list of strings containing pre-formatted author names
 and affiliations that would be found in the format in a yaml of a quarto
-file when using cat(author_list).}
-
-\item{author}{Ordered list of authors included in the assessment.}
-
-\item{add_author}{Author that is not currently in the database
-and who should be temporarily added to the author list. Format
-as "First MI Last".
-Please leave a comment on the GitHub issues page to be added.}
-
-\item{add_image}{TRUE/FALSE; Add image of species to the
-template that is not already included in the project's
-inst/resources/spp_img folder? Default is false.}
+file when using cat(author_list[\link{i}]).}
 
 \item{spp_image}{File path to the species' image if not
 using the image included in the project's repository.}
@@ -116,12 +102,10 @@ create_yaml(
   author_list = "  - name: 'Patrick Star'\n    affiliations:\n      - name: 'NOAA Fisheries Southeast Fisheries Science Center'\n        address: '75 Virginia Beach Drive'\n        city: 'Miami'\n        state: 'FL'\n        postal-code: '33149'\n",
   author = "Patrick Star",
   office = "AFSC",
-  add_author = NULL,
-  add_image = FALSE,
-  spp_image = NULL,
-  species = NULL,
-  spp_latin = NULL,
-  region = NULL,
+  spp_image = NA,
+  species = NA,
+  spp_latin = NA,
+  region = NA,
   format = "pdf",
   parameters = TRUE,
   param_names = NULL,
