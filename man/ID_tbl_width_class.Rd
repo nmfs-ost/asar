@@ -4,23 +4,10 @@
 \alias{ID_tbl_width_class}
 \title{Identify table width class}
 \usage{
-<<<<<<< HEAD
-ID_tbl_width_class(rda_dir, plot_name, portrait_pg_width)
+ID_tbl_width_class(figures_tables_dir, plot_name, portrait_pg_width)
 }
 \arguments{
-\item{rda_dir}{Folder where rda files containing alternative text is located}
-=======
-ID_tbl_width_class(
-  plot_name = NULL,
-  figures_tables_dir = NULL,
-  portrait_pg_width = NULL
-)
-}
-\arguments{
-\item{plot_name}{Name of the .rda file containing the table}
-
 \item{figures_tables_dir}{Folder where rda files containing alternative text is located}
->>>>>>> de403c2 (Replace 'rda_dir' with 'figures_tables_dir'; update documentation)
 
 \item{plot_name}{Name of the .rda file containing the table}
 

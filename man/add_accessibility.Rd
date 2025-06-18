@@ -7,12 +7,8 @@
 add_accessibility(
   x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
   dir = getwd(),
-<<<<<<< HEAD
-  rda_dir = getwd(),
-  alttext_csv_dir = getwd(),
-=======
   figures_tables_dir = getwd(),
->>>>>>> de403c2 (Replace 'rda_dir' with 'figures_tables_dir'; update documentation)
+  alttext_csv_dir = getwd(),
   compile = TRUE,
   rename = NULL
 )
@@ -58,12 +54,7 @@ Altering latex file of report to increase accessibility of the document.
   model_results = output,
   model = "SS3",
   new_section = "an_additional_section",
-<<<<<<< HEAD
   section_location = "after-introduction"
-=======
-  section_location = "after-introduction",
-  figures_tables_dir = getwd()
->>>>>>> de403c2 (Replace 'rda_dir' with 'figures_tables_dir'; update documentation)
   )
 
   path <- getwd()

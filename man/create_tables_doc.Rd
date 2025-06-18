@@ -4,26 +4,15 @@
 \alias{create_tables_doc}
 \title{Create Quarto Document of Tables}
 \usage{
-<<<<<<< HEAD
-create_tables_doc(subdir = getwd(), rda_dir = getwd(), include_all = TRUE)
-=======
 create_tables_doc(
   subdir = getwd(),
-  include_all = TRUE,
-  figures_tables_dir = getwd()
+  figures_tables_dir = getwd(),
+  include_all = TRUE
 )
->>>>>>> de403c2 (Replace 'rda_dir' with 'figures_tables_dir'; update documentation)
 }
 \arguments{
 \item{subdir}{Location of subdirectory storing the assessment report template}
 
-<<<<<<< HEAD
-\item{rda_dir}{If the user has already created .rda files containing
-figures, tables, alt text, and captions with \code{stockplotr}, rda_dir represents
-the location of the folder containing these .rda files ("rda_files").}
-
-=======
->>>>>>> 870c3bb (Update documentation)
 \item{include_all}{TRUE/FALSE; Option to include all default figures (for
 create_figures_doc) or all default tables (for create_tables_doc) in the stock
 assessment report. Default is true.}
