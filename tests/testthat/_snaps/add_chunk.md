@@ -5,7 +5,7 @@
     Output
       ```{r} 
       #| echo: false 
-      #| warnings: false 
+      #| warning: false 
       #| eval: true
       plot(cars$speed, cars$distance)
       ``` 
