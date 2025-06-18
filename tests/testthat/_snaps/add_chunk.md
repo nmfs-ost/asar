@@ -14,7 +14,7 @@
 
     Code
       cat(add_chunk("plot(cars$speed, cars$distance)", chunk_option = c("echo:true",
-        "warnings: false", "eval: true")))
+        "warning: false", "eval: true")))
     Output
       ```{r} 
       #| echo:true 
