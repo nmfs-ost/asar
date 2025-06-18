@@ -19,11 +19,10 @@
 #'   subdir = tempdir()
 #' )
 add_section <- function(
-    new_section = NULL,
-    section_location = NULL,
+    subdir = NULL,
     custom_sections = NULL,
-    custom = TRUE,
-    subdir = NULL) {
+    new_section = NULL,
+    section_location = NULL) {
   # Location options
   # before-section
   # after-section

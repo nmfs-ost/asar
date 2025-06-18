@@ -5,58 +5,6 @@
 \title{Create Stock Assessment Report Template}
 \usage{
 create_template(
-<<<<<<< HEAD
-  new_template = TRUE,
-  format = c("pdf", "docx", "html", NULL),
-  office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
-  region = NULL,
-  complex = FALSE,
-  species = NULL,
-  spp_latin = NULL,
-  year = NULL,
-  file_dir = getwd(),
-  author = "",
-  add_author = NULL,
-  include_affiliation = TRUE,
-  simple_affiliation = FALSE,
-  alt_title = FALSE,
-  title = NULL,
-  parameters = TRUE,
-  param_names = NULL,
-  param_values = NULL,
-  convert_output = FALSE,
-  fleet_names = NULL,
-  model_results = NULL,
-  new_section = NULL,
-  section_location = NULL,
-  type = "SAR",
-  prev_year = NULL,
-  custom = FALSE,
-  custom_sections = NULL,
-  include_figures = TRUE,
-  include_tables = TRUE,
-  add_image = FALSE,
-  spp_image = NULL,
-  bib_file = "asar_references.bib",
-  rda_dir = getwd(),
-  end_year = NULL,
-  n_projected_years = 10,
-  relative = FALSE,
-  recruitment_scale_amount = 1,
-  recruitment_unit_label = "metric tons",
-  ref_line = c("target", "MSY", "msy", "unfished"),
-  ref_point = NULL,
-  biomass_scale_amount = 1,
-  landings_unit_label = "metric tons",
-  ref_point_sb = NULL,
-  spawning_biomass_label = "metric tons",
-  spawning_biomass_scale_amount = 1,
-  ref_line_sb = c("target", "MSY", "msy", "unfished"),
-  indices_unit_label = "",
-  biomass_unit_label = "mt",
-  catch_unit_label = "mt",
-  rerender_skeleton = FALSE
-=======
   format = "pdf",
   type = "SAR",
   office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
@@ -80,14 +28,13 @@ create_template(
   param_names = NULL,
   param_values = NULL,
   ...
->>>>>>> 7ec73a0 (Cleanup pkg create template (#269))
 )
 }
 \arguments{
 \item{format}{Rendering format (pdf, html, or docx).}
 
-\item{type}{Type of report to build. Default is SAR (a NOAA standard "Stock
-Assessment Report").}
+\item{type}{Type of report to build. Default is SAR (NOAA Fisheries
+Stock Assessment Report).}
 
 \item{office}{Regional Fisheries Science Center producing the
 report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
@@ -96,12 +43,6 @@ report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
 evaluated (if applicable). If the region is not specified for
 your center or species, do not use this variable.}
 
-<<<<<<< HEAD
-\item{complex}{TRUE/FALSE; Is this a species complex? Default
-is false.}
-
-=======
->>>>>>> 7ec73a0 (Cleanup pkg create template (#269))
 \item{species}{Full common name for target species. Split
 naming with a space and capitalize first letter(s). Example:
 "Dover sole".}
@@ -113,9 +54,10 @@ naming with a space and capitalize first letter(s). Example:
 is the year in which the report is rendered.}
 
 \item{author}{A character vector of author names with their accompanying
-affiliations. For example an Jane Doe at the NWFSC Seattle, Washington office
+affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
-is found in a database located in the package: \code{system.file("resources", "affiliation_info.csv", package = "asar")}. Keys to the office addresses
+is found in a database located in the package: \code{system.file("resources",
+"affiliation_info.csv", package = "asar")}. Keys to the office addresses
 follow the naming convention of the office acronym (ex. NWFSC) with a dash
 followed by the first initial of the city then the 2 letter abbreviation for
 the state the office is located in. If the city has 2 or more words such as
@@ -125,24 +67,6 @@ Panama City, the first initial of each word is used in the key
 \item{file_dir}{Location of stock assessment files produced
 by this function. Default is the working directory.}
 
-<<<<<<< HEAD
-\item{author}{Ordered list of authors included in the assessment.}
-
-\item{add_author}{Author that is not currently in the database
-and who should be temporarily added to the author list. Format
-as "First MI Last".
-Please leave a comment on the GitHub issues page to be added.}
-
-\item{include_affiliation}{TRUE/FALSE; Does the analyst want to
-include the authors' affiliations in the document? Default is
-false.}
-
-\item{simple_affiliation}{TRUE/FALSE; If including affiliations,
-should the office name function as the affiliation, rather
-than the full address? Default is true.}
-
-=======
->>>>>>> 7ec73a0 (Cleanup pkg create template (#269))
 \item{title}{A custom title that is an alternative to the default title (composed
 in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
 
@@ -189,129 +113,16 @@ be created as a child document and added into the 02_introduction.qmd.
 To add >1 (sub)section, make the location a list corresponding to the
 order of (sub)section names listed in the 'new_section' parameter.}
 
-<<<<<<< HEAD
-\item{type}{Type of report to build. Default is SAR ("SAR"). New options include
-templates for PMFC ("pfmc") and NEFSC management track ("nemt").}
-=======
 \item{parameters}{TRUE/FALSE; For
 parameterization of the script. Default is true.}
->>>>>>> 7ec73a0 (Cleanup pkg create template (#269))
 
 \item{param_names}{List of parameter names that will be called
 in the document. Parameters automatically included:
 office, region, species (each of which are listed as
 individual parameters for this function, above).}
 
-<<<<<<< HEAD
-\item{custom}{TRUE/FALSE; Build custom sectioning for the
-template, rather than the default for stock assessments in
-your region? Default is false.}
-
-\item{custom_sections}{List of existing sections to include in
-the custom template. Note: this only includes sections within
-list.files(system.file("templates", "skeleton",
-package = "asar")). The name of the section, rather than the
-name of the file, can be used (e.g., 'abstract' rather than
-'00_abstract.qmd'). If adding a new section, also use
-parameters 'new_section' and 'section_location'.}
-
-\item{include_figures}{TRUE/FALSE; Should figures be
-included in the report? Default is true.}
-
-\item{include_tables}{TRUE/FALSE; Should tables be included
-in the report? Default is true.}
-
-\item{add_image}{TRUE/FALSE; Add image of species to the
-template that is not already included in the project's
-inst/resources/spp_img folder? Default is false.}
-
-\item{spp_image}{File path to the species' image if not
-using the image included in the project's repository.}
-
-\item{bib_file}{File path to a .bib file used for citing references in
-the report}
-
-\item{rda_dir}{If the user has already created .rda files containing
-figures, tables, alt text, and captions with \code{stockplotr}, rda_dir represents
-the location of the folder containing these .rda files ("rda_files").
-Otherwise, if the user has not used \code{stockplotr} to make those .rda files already,
-those files will be generated automatically and placed within an "rda_files"
-folder within rda_dir. The "rda_files" folder would have been
-made with \code{stockplotr::exp_all_figs_tables()}, or by exporting files by running individual
-\code{stockplotr} figure- and table-generating functions. If you have used \code{stockplotr} to
-generate these .rda files, you can leave the arguments below blank. NOTE:
-If an "rda_files" folder is detected within rda_dir, .rda files will not be
-regenerated.}
-
-\item{end_year}{The last year of assessment. The default is year - 1.}
-
-\item{n_projected_years}{Number of years spawning biomass is projected for.
-By default this number is set to 10}
-
-\item{relative}{A logical value specifying if the resulting figures should be
-relative spawning biomass. The default is 'FALSE'. 'ref_line' indicates which
-reference point to use.}
-
-\item{recruitment_scale_amount}{A number describing how much to scale down
-the recruitment quantities shown on the y axis. For example,
-recruitment_scale_amount = 100 would scale down a value from 500,000 -->
-5,000. This scale will be reflected in the y axis label.}
-
-\item{recruitment_unit_label}{Units for recruitment}
-
-\item{ref_line}{An argument inherited from \code{stockplotr::plot_spawning_biomass.R}.
-A string specifying the type of reference you want to
-compare spawning biomass to. The default is \code{"target"}, which looks for
-\code{"spawning_biomass_target"} in the \code{"label"} column of \code{dat}. The actual
-searching in \code{dat} is case agnostic and will work with either upper- or
-lower-case letters but you must use one of the options specified in the
-default list to ensure that the label on the figure looks correct
-regardless of how it is specified in \code{dat}.}
-
-\item{ref_point}{An argument inherited from \code{stockplotr::plot_biomass.R}. A known
-value of the reference point along with the label for the reference point as
-specified in the output file. Please use this option if the ref_line cannot
-find your desired point. Indicate the reference point in the form
-c("label" = value).}
-
-\item{biomass_scale_amount}{A number describing how much to scale down the
-biomass quantities shown on the y axis. See \code{recruitment_scale_amount}.}
-
-\item{landings_unit_label}{Units for landings}
-
-\item{ref_point_sb}{Identical definition as \code{ref_point}, but this argument is
-applied to plot_spawning_biomass.}
-
-\item{spawning_biomass_label}{Units for spawning biomass}
-
-\item{spawning_biomass_scale_amount}{A number describing how much to scale down the
-spawning biomass quantities shown on the y axis. See \code{recruitment_scale_amount}.}
-
-\item{ref_line_sb}{A string specifying the type of
-reference you want to compare spawning biomass to. The default is \code{"target"},
-which looks for \code{"spawning_biomass_target"} in the \code{"label"} column of \code{dat}.
-The actual searching in \code{dat} is case agnostic and will work with either upper- or
-lower-case letters but you must use one of the options specified in the
-default list to ensure that the label on the figure looks correct
-regardless of how it is specified in \code{dat}.}
-
-\item{indices_unit_label}{Units for index of abundance/CPUE}
-
-\item{biomass_unit_label}{Abbreviated units for biomass}
-
-\item{catch_unit_label}{Abbreviated units for catch}
-
-\item{rerender_skeleton}{Re-create the "skeleton.qmd" in your outline when
-changes to the main skeleton need to be made. This reproduces the
-yaml, output (if changed), preamble quantities, and restructures your
-sectioning in the skeleton if indicated. All files in your folder
-will remain as is.}
-=======
-\item{param_values}{List of values associated with the order
-of parameter names. Parameters automatically included:
-office, region, species (each of which are listed as
-individual parameters for this function, above).}
->>>>>>> 7ec73a0 (Cleanup pkg create template (#269))
+\item{...}{Additional arguments passed into functions used in create_template
+such as \code{create_citation()}, \code{format_quarto()}, \code{add_chunk()}, ect}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
@@ -329,8 +140,7 @@ in the console.
 \dontrun{
 create_template(
   new_section = "a_new_section",
-  section_location = "before-introduction",
-  rda_dir = here::here()
+  section_location = "before-introduction"
 )
 
 
@@ -344,8 +154,7 @@ create_template(
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
   model_results = dover_sole_output,
   new_section = "an_additional_section",
-  section_location = "after-introduction",
-  rda_dir = here::here()
+  section_location = "after-introduction"
 )
 
 asar::create_template(
@@ -359,8 +168,7 @@ asar::create_template(
   new_section = c("a_new_section", "another_new_section"),
   section_location = c("before-introduction", "after-introduction"),
   custom = TRUE,
-  custom_sections = c("executive_summary", "introduction"),
-  rda_dir = here::here()
+  custom_sections = c("executive_summary", "introduction")
 )
 
 create_template(
@@ -382,23 +190,7 @@ create_template(
   type = "SAR",
   custom = TRUE,
   custom_sections = c("executive_summary", "introduction", "discussion"),
-  spp_image = "dir/containing/spp_image",
-  rda_dir = "C:/Users/Documents",
-  end_year = 2022,
-  n_projected_years = 10,
-  relative = FALSE,
-  recruitment_scale_amount = 10,
-  recruitment_unit_label = "metric tons",
-  ref_line = "target",
-  biomass_scale_amount = 100,
-  landings_unit_label = "metric tons",
-  spawning_biomass_label = "metric tons",
-  spawning_biomass_scale_amount = 1000,
-  recruitment_unit_label = "metric tons",
-  ref_line_sb = "target",
-  indices_unit_label = "CPUE",
-  biomass_unit_label = "mt",
-  catch_unit_label = "mt"
+  spp_image = "dir/containing/spp_image"
 )
 }
 
