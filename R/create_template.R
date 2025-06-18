@@ -652,7 +652,7 @@ create_template <- function(
           # "  ", "  ", "is.na(age)) |>", "\n",
           # "  ", "dplyr::pull(estimate)", "\n",
           "total_landings <- output |>", "\n",
-          "  ","dplyr::filter(grepl('landings_weight', label) | grepl('landings_observed', label), year == end_year) |>", "\n",
+          "  ","dplyr::filter(grepl('landings_observed', label), year == end_year) |>", "\n", # temp remove grepl('landings_weight', label) | 
           "  ","dplyr::group_by(year) |>", "\n",
           "  ","dplyr::summarise(total_land  = sum(estimate)) |>", "\n",
           "  ","dplyr::ungroup() |>", "\n",
