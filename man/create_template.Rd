@@ -14,7 +14,6 @@ create_template(
   year = format(as.POSIXct(Sys.Date(), format = "\%YYYY-\%mm-\%dd"), "\%Y"),
   author = NULL,
   file_dir = getwd(),
-<<<<<<< HEAD
   title = "[TITLE]",
   model_results = NULL,
   spp_image = "",
@@ -28,32 +27,6 @@ create_template(
   parameters = TRUE,
   param_names = NULL,
   param_values = NULL,
-=======
-  author = "",
-  add_author = NULL,
-  region = NULL,
-  complex = FALSE,
-  include_affiliation = TRUE,
-  simple_affiliation = FALSE,
-  title = NULL,
-  parameters = TRUE,
-  param_names = NULL,
-  param_values = NULL,
-  fleet_names = NULL,
-  model_results = NULL,
-  new_section = NULL,
-  section_location = NULL,
-  type = "SAR",
-  prev_year = NULL,
-  custom = FALSE,
-  custom_sections = NULL,
-  include_figures = TRUE,
-  include_tables = TRUE,
-  add_image = FALSE,
-  spp_image = "",
-  bib_file = "asar_references.bib",
-  rerender_skeleton = FALSE,
->>>>>>> b0abf90 (Update messaging for add_child, add_chunk, create_title, and create_yaml; update documentation)
   ...
 )
 }
@@ -81,7 +54,7 @@ naming with a space and capitalize first letter(s). Example:
 is the year in which the report is rendered.}
 
 \item{author}{A character vector of author names with their accompanying
-affiliations. For example an Jane Doe at the NWFSC Seattle, Washington office
+affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
 is found in a database located in the package: \code{system.file("resources", "affiliation_info.csv", package = "asar")}. Keys to the office addresses
 follow the naming convention of the office acronym (ex. NWFSC) with a dash

@@ -46,7 +46,7 @@ in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
 
 \item{author_list}{A list of strings containing pre-formatted author names
 and affiliations that would be found in the format in a yaml of a quarto
-file when using cat(author_list[\link{i}]).}
+file when using \code{cat(author_list[[i]])}.}
 
 \item{spp_image}{File path to the species' image if not
 using the image included in the project's repository.}
