@@ -279,17 +279,14 @@ create_yaml <- function(
     bib <- glue::glue(
       "bibliography: ", "\n"
     )
-    bib_all <- paste("  ", "- ", bib_file, "\n", collapse = "")
-    bib <- glue::glue(
-      bib, "\n",
-      bib_all, "\n"
-    )
-    yaml <- paste0(yaml, bib)
+    bib_all <- paste0("  ", "- ", bib_file, "\n", collapse = "")
+    bib <- glue::glue("{bib} \n {bib_all}")
+    yaml <- paste(yaml, bib, sep = "")
     # }
     # add in else statement once a national .bib file is made
 
     # Close yaml
-    yaml <- paste0(yaml, "---")
+    yaml <- glue::glue("{yaml}---\n")
   }
   # return finished yaml string
   yaml
