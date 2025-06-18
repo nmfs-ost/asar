@@ -6,9 +6,9 @@
 #' base R.
 #' @param prev_format The format that the previous skeleton was directed to
 #' render to. Parameter is inherited from create_template.
-#' @param author_list A vector of strings containing pre-formatted author names
+#' @param author_list A list of strings containing pre-formatted author names
 #' and affiliations that would be found in the format in a yaml of a quarto
-#' file when using cat(author_list).
+#' file when using `cat(author_list[[i]])`.
 #' @param bib_name Name of a bib file being added into the yaml. For example,
 #' "asar.bib".
 #'
@@ -25,12 +25,10 @@
 #'   author_list = "  - name: 'Patrick Star'\n    affiliations:\n      - name: 'NOAA Fisheries Southeast Fisheries Science Center'\n        address: '75 Virginia Beach Drive'\n        city: 'Miami'\n        state: 'FL'\n        postal-code: '33149'\n",
 #'   author = "Patrick Star",
 #'   office = "AFSC",
-#'   add_author = NULL,
-#'   add_image = FALSE,
-#'   spp_image = NULL,
-#'   species = NULL,
-#'   spp_latin = NULL,
-#'   region = NULL,
+#'   spp_image = NA,
+#'   species = NA,
+#'   spp_latin = NA,
+#'   region = NA,
 #'   format = "pdf",
 #'   parameters = TRUE,
 #'   param_names = NULL,
@@ -45,15 +43,11 @@ create_yaml <- function(
     office = NULL,
     prev_skeleton = NULL,
     prev_format = NULL,
-    title = NULL,
-    type = NULL,
-    # alt_title = FALSE,
+    title = "[TITLE]",
     author_list = NULL,
-    author = NULL,
-    add_author = NULL,
-    add_image = FALSE,
+    # author = NULL,
     spp_image = "",
-    species = NULL,
+    species = "species",
     spp_latin = NULL,
     region = NULL,
     format = "pdf",
@@ -79,7 +73,7 @@ create_yaml <- function(
     }
 
     # add authors
-    if (any(!is.null(author)) | !is.null(add_author)) {
+    # if (any(!is.null(author))) {
       # add_authors <- NULL
       # for (i in 1:length(author_list)) {
       #   toad <- paste(author_list[[i]], sep = ",")
@@ -90,13 +84,14 @@ create_yaml <- function(
       add_authors <- gsub("\n", "", add_authors)
       # check if the template was blank before
       author_line <- grep("author:", yaml)
-      if (grepl("- name: 'NA'", yaml[author_line + 1])) {
-        yaml <- yaml[-((author_line + 1):(author_line + 2))]
+      # Replacing the empty author if template was made before adding any authors
+      if (grepl("- name: 'FIRST LAST'", yaml[author_line + 1])) {
+        yaml <- yaml[-((author_line + 1):(author_line + 8))]
         yaml <- append(yaml, add_authors, after = utils::tail(grep("author:", yaml), n = 1))
       } else {
         yaml <- append(yaml, add_authors, after = utils::tail(grep("postal-code:", yaml), n = 1))
       }
-    }
+    # }
 
     # replace title
     # DOES NOT WORK when latin latex notation is in the title
@@ -189,15 +184,7 @@ create_yaml <- function(
     )
 
     # Add species image on title page
-    if (add_image) {
-      # extract image name
-      new_img <- sapply(strsplit(spp_image, "/"), utils::tail, 1)
-      yaml <- paste0(
-        yaml,
-        # image as pulled in from above
-        "cover: support_files/", new_img, "\n"
-      )
-    } else if (is.null(spp_image)) {
+    if (spp_image == "") {
       yaml <- paste0(
         yaml,
         # image as pulled in from above

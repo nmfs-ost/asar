@@ -5,12 +5,12 @@
 \title{Write Stock Assessment Title}
 \usage{
 create_title(
-  office = NULL,
-  species = NULL,
+  office = "",
+  species = "species",
   region = NULL,
   year = format(Sys.Date(), "\%Y"),
   complex = NULL,
-  type = NULL,
+  type = "SAR",
   spp_latin = NULL
 )
 }
@@ -32,8 +32,13 @@ is the year in which the report is rendered.}
 \item{complex}{TRUE/FALSE; Is this a species complex? Default
 is false.}
 
+<<<<<<< HEAD
 \item{type}{Type of report to build. Default is SAR ("SAR"). New options include
 templates for PMFC ("pfmc") and NEFSC management track ("nemt").}
+=======
+\item{type}{Type of report to build. Default is SAR (a NOAA standard "Stock
+Assessment Report").}
+>>>>>>> 7ec73a0 (Cleanup pkg create template (#269))
 
 \item{spp_latin}{Latin name for the target species. Example:
 "Pomatomus saltatrix".}

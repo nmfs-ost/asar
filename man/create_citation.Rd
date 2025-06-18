@@ -5,13 +5,21 @@
 \title{Generate Citation for Stock Assessment Report}
 \usage{
 create_citation(
-  author = "",
-  title = NULL,
+  author = NULL,
+  title = "[TITLE]",
   year = format(as.POSIXct(Sys.Date(), format = "\%YYYY-\%mm-\%dd"), "\%Y")
 )
 }
 \arguments{
-\item{author}{Ordered list of authors included in the assessment.}
+\item{author}{A character vector of author names with their accompanying
+affiliations. For example an Jane Doe at the NWFSC Seattle, Washington office
+would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
+is found in a database located in the package: \code{system.file("resources", "affiliation_info.csv", package = "asar")}. Keys to the office addresses
+follow the naming convention of the office acronym (ex. NWFSC) with a dash
+followed by the first initial of the city then the 2 letter abbreviation for
+the state the office is located in. If the city has 2 or more words such as
+Panama City, the first initial of each word is used in the key
+(ex. Panama City, Florida = PCFL)}
 
 \item{title}{A custom title that is an alternative to the default title (composed
 in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
@@ -28,10 +36,12 @@ with \code{asar}.
 Generate Citation for Stock Assessment Report
 }
 \examples{
+\dontrun{
 create_citation(
   title = "SA Report for Jellyfish",
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
   year = 2024
 )
+}
 
 }

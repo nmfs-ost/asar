@@ -4,17 +4,14 @@
 #' 'list.files(system.file('templates','skeleton', package = 'asar'))'
 #'  in the console.
 #'
-#' @param new_template TRUE/FALSE; Create a new template? If true,
-#' will pull the last saved stock assessment report skeleton.
-#' Default is false.
 #' @param format Rendering format (pdf, html, or docx).
+#' @param type Type of report to build. Default is SAR (a NOAA standard "Stock
+#' Assessment Report").
 #' @param office Regional Fisheries Science Center producing the
 #'  report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).
 #' @param region Full name of region in which the species is
 #'  evaluated (if applicable). If the region is not specified for
 #'   your center or species, do not use this variable.
-#' @param complex TRUE/FALSE; Is this a species complex? Default
-#'  is false.
 #' @param species Full common name for target species. Split
 #' naming with a space and capitalize first letter(s). Example:
 #' "Dover sole".
@@ -22,34 +19,42 @@
 #' "Pomatomus saltatrix".
 #' @param year Year the assessment is being conducted. Default
 #' is the year in which the report is rendered.
+#' @param author A character vector of author names with their accompanying
+#' affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
+#' would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
+#' is found in a database located in the package: \code{system.file("resources", "affiliation_info.csv", package = "asar")}. Keys to the office addresses
+#' follow the naming convention of the office acronym (ex. NWFSC) with a dash
+#' followed by the first initial of the city then the 2 letter abbreviation for
+#' the state the office is located in. If the city has 2 or more words such as
+#' Panama City, the first initial of each word is used in the key
+#' (ex. Panama City, Florida = PCFL)
 #' @param file_dir Location of stock assessment files produced
 #' by this function. Default is the working directory.
-#' @param author Ordered list of authors included in the assessment.
-#' @param add_author Author that is not currently in the database
-#' and who should be temporarily added to the author list. Format
-#' as "First MI Last".
-#' Please leave a comment on the GitHub issues page to be added.
-#' @param include_affiliation TRUE/FALSE; Does the analyst want to
-#'  include the authors' affiliations in the document? Default is
-#'  false.
-#' @param simple_affiliation TRUE/FALSE; If including affiliations,
-#'  should the office name function as the affiliation, rather
-#'  than the full address? Default is true.
 #' @param title A custom title that is an alternative to the default title (composed
 #' in asar::create_title()). Example: "Management Track Assessments Spring 2024".
-#' @param parameters TRUE/FALSE; For
-#' parameterization of the script. Default is true.
-#' @param param_names List of parameter names that will be called
-#'  in the document. Parameters automatically included:
-#'  office, region, species (each of which are listed as
-#'  individual parameters for this function, above).
-#' @param param_values List of values associated with the order
-#'  of parameter names. Parameters automatically included:
-#'  office, region, species (each of which are listed as
-#'  individual parameters for this function, above).
-#' @param fleet_names Deprecated: List of fleet names as described in BAM output
-#'  file (abbreviations).
 #' @param model_results The name of the object in your environment that contains the data frame of converted model output from `asar::convert_output()`
+#' @param spp_image File path to the species' image if not
+#' using the image included in the project's repository.
+#' @param bib_file File path to a .bib file used for citing references in
+#' the report
+#' @param new_template TRUE/FALSE; Create a new template? If true,
+#' will pull the last saved stock assessment report skeleton.
+#' Default is false.
+#' @param rerender_skeleton Re-create the "skeleton.qmd" in your outline when
+#'        changes to the main skeleton need to be made. This reproduces the
+#'        yaml, output (if changed), preamble quantities, and restructures your
+#'        sectioning in the skeleton if indicated. All files in your folder
+#'        will remain as is.
+#' @param custom TRUE/FALSE; Build custom sectioning for the
+#' template, rather than the default for stock assessments in
+#' your region? Default is false.
+#' @param custom_sections List of existing sections to include in
+#' the custom template. Note: this only includes sections within
+#'  list.files(system.file("templates", "skeleton",
+#'  package = "asar")). The name of the section, rather than the
+#'  name of the file, can be used (e.g., 'abstract' rather than
+#'  '00_abstract.qmd'). If adding a new section, also use
+#'   parameters 'new_section' and 'section_location'.
 #' @param new_section Names of section(s) (e.g., introduction, results) or
 #' subsection(s) (e.g., a section within the introduction) that will be
 #' added to the document. Please make a short list if >1 section/subsection
@@ -61,36 +66,16 @@
 #' be created as a child document and added into the 02_introduction.qmd.
 #' To add >1 (sub)section, make the location a list corresponding to the
 #' order of (sub)section names listed in the 'new_section' parameter.
-#' @param type Type of report to build. Default is SAR ("SAR"). New options include
-#' templates for PMFC ("pfmc") and NEFSC management track ("nemt").
-#' @param prev_year Year in which the previous assessment report
-#'  was conducted. Used to pull previous assessment template.
-#' @param custom TRUE/FALSE; Build custom sectioning for the
-#' template, rather than the default for stock assessments in
-#' your region? Default is false.
-#' @param custom_sections List of existing sections to include in
-#' the custom template. Note: this only includes sections within
-#'  list.files(system.file("templates", "skeleton",
-#'  package = "asar")). The name of the section, rather than the
-#'  name of the file, can be used (e.g., 'abstract' rather than
-#'  '00_abstract.qmd'). If adding a new section, also use
-#'   parameters 'new_section' and 'section_location'.
-#' @param include_figures TRUE/FALSE; Should figures be
-#' included in the report? Default is true.
-#' @param include_tables TRUE/FALSE; Should tables be included
-#'  in the report? Default is true.
-#' @param add_image TRUE/FALSE; Add image of species to the
-#' template that is not already included in the project's
-#' inst/resources/spp_img folder? Default is false.
-#' @param spp_image File path to the species' image if not
-#' using the image included in the project's repository.
-#' @param bib_file File path to a .bib file used for citing references in
-#' the report
-#' @param rerender_skeleton Re-create the "skeleton.qmd" in your outline when
-#'        changes to the main skeleton need to be made. This reproduces the
-#'        yaml, output (if changed), preamble quantities, and restructures your
-#'        sectioning in the skeleton if indicated. All files in your folder
-#'        will remain as is.
+#' @param parameters TRUE/FALSE; For
+#' parameterization of the script. Default is true.
+#' @param param_names List of parameter names that will be called
+#'  in the document. Parameters automatically included:
+#'  office, region, species (each of which are listed as
+#'  individual parameters for this function, above).
+#' @param param_values List of values associated with the order
+#'  of parameter names. Parameters automatically included:
+#'  office, region, species (each of which are listed as
+#'  individual parameters for this function, above).
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
 #'         resources and workflows from different U.S. Fishery Science Centers.
@@ -115,8 +100,7 @@
 #'   spp_latin = "Microstomus pacificus",
 #'   year = 2010,
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
-#'   include_affiliation = TRUE,
-#'   model_results = "Report.sso",
+#'   model_results = dover_sole_output,
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction",
 #'   rda_dir = here::here()
@@ -142,29 +126,20 @@
 #'   format = "pdf",
 #'   office = "NWFSC",
 #'   region = "my_region",
-#'   complex = FALSE,
 #'   species = "Bluefish",
 #'   spp_latin = "Pomatomus saltatrix",
 #'   year = 2010,
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
-#'   add_author = "Sun E Day",
-#'   include_affiliation = TRUE,
-#'   simple_affiliation = TRUE,
 #'   title = "Management Track Assessments Spring 2024",
 #'   parameters = TRUE,
 #'   param_names = c("region", "year"),
 #'   param_values = c("my_region", "2024"),
-#'   fleet_names = c("fleet1", "fleet2", "fleet3"),
-#'   model_results = "Report.sso",
+#'   model_results = bluefish_output,
 #'   new_section = "an_additional_section",
 #'   section_location = "before-discussion",
 #'   type = "SAR",
-#'   prev_year = 2021,
 #'   custom = TRUE,
 #'   custom_sections = c("executive_summary", "introduction", "discussion"),
-#'   include_figures = TRUE,
-#'   include_tables = TRUE,
-#'   add_image = TRUE,
 #'   spp_image = "dir/containing/spp_image",
 #'   rda_dir = "C:/Users/Documents",
 #'   end_year = 2022,
@@ -186,37 +161,28 @@
 #' }
 #'
 create_template <- function(
-    new_template = TRUE,
-    format = c("pdf", "docx", "html", NA),
+    format = "pdf",
+    type = "SAR",
     office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
-    species = NULL,
+    region = NULL,
+    species = "species",
     spp_latin = NULL,
     year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
+    author = NULL,
     file_dir = getwd(),
-    author = "",
-    add_author = NULL,
-    region = NULL,
-    complex = FALSE,
-    include_affiliation = TRUE,
-    simple_affiliation = FALSE,
-    title = NULL,
+    title = "[TITLE]",
+    model_results = NULL,
+    spp_image = "",
+    bib_file = "asar_references.bib",
+    new_template = TRUE,
+    rerender_skeleton = FALSE,
+    custom = FALSE,
+    custom_sections = NULL,
+    new_section = NULL,
+    section_location = NULL,
     parameters = TRUE,
     param_names = NULL,
     param_values = NULL,
-    fleet_names = NULL,
-    model_results = NULL,
-    new_section = NULL,
-    section_location = NULL,
-    type = "SAR",
-    prev_year = NULL,
-    custom = FALSE,
-    custom_sections = NULL,
-    include_figures = TRUE,
-    include_tables = TRUE,
-    add_image = FALSE,
-    spp_image = "",
-    bib_file = "asar_references.bib",
-    rerender_skeleton = FALSE,
     ...) {
 
   # Check input type
@@ -306,33 +272,68 @@ create_template <- function(
     #   species,
     #
     # )
-    if (!is.null(species)) {
+    # if (!is.null(species)) {
       report_name <- paste0(
         report_name,
         gsub(" ", "_", species),
         "_skeleton.qmd"
       )
-    } else {
-      report_name <- paste0(
-        report_name, "species_skeleton.qmd"
-      )
-    }
+    # } else {
+    #   report_name <- paste0(
+    #     report_name, "species_skeleton.qmd"
+    #   )
+    # }
   } # close if rerender skeleton for naming
 
-  # Select parameter from list
-  # TODO: add switch here instead of if
-  if (length(format) > 1) {
+  # Select format
+  # if (length(format) > 1) {
+  #   format <- "pdf"
+  # } else {
+  #   format <- match.arg(format, several.ok = FALSE)
+  # }
+  if (grepl("^pdf$|^html$", tolower(format))) {
+    format <- tolower(format)
+  } else if (grepl("docx", tolower(format))) {
+    cli::cli_alert_warning("The docx format is not currently supported by asar. Defaulting to pdf")
     format <- "pdf"
   } else {
-    format <- match.arg(format, several.ok = FALSE)
+    cli::cli_alert("Format not compatible.")
+    if (grepl("pdf", format)) {
+      question1 <- readline("Did you mean -- pdf? (y/n)")
+      if (!interactive()) question1 <- "y"
+      if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+        format <- "pdf"
+      } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+        cli::cli_abort("Template processing stopped.")
+      }
+    } else if (grepl("html", format)) {
+      question1 <- readline("Did you mean -- html? (y/n)")
+      if (!interactive()) question1 <- "y"
+      if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+        format <- "html"
+      } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+        cli::cli_abort("Template processing stopped.")
+      }
+    } else if (grepl("docx", format)) {
+      question1 <- readline("Did you mean -- docx?")
+      if (!interactive()) question1 <- "y"
+      if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+        cli::cli_alert_warning("The docx format is not currently supported by asar. Defaulting to pdf")
+        format <- "pdf"
+      } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+        cli::cli_abort("Template processing stopped.")
+      }
+    } else {
+      cli::cli_abort("Format not recognized. Please use pdf, html, or docx.")
+    }
   }
 
   # TODO: add switch here instead of if
-  if (!is.null(office) & length(office) == 1) {
-    office <- match.arg(office, several.ok = FALSE)
-  } else if (length(office) > 1) {
-    office <- ""
-  }
+  # if (!is.null(office) & length(office) == 1) {
+  #   office <- match.arg(office, several.ok = FALSE)
+  # } else if (length(office) > 1) {
+  #   office <- ""
+  # }
 
   # Create subdirectory for files
   subdir <- ifelse(
@@ -385,11 +386,10 @@ create_template <- function(
     # format_files <- list(before_body_file, header_file)
 
     #### Links to files for yaml ----
-    if (add_image) {
-      spp_image <- spp_image
-    } else {
-      spp_image <- system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar")
-    }
+    spp_image <- ifelse(spp_image == "",
+                        system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar"),
+                        spp_image
+    )
 
     # Add bib file
     if (bib_file == "asar_references.bib") {
@@ -560,204 +560,66 @@ create_template <- function(
         prev_skeleton <- NULL
       } # close if rerender
 
-      # print("_______Standardized output data________")
-
-      # run stockplotr::exp_all_figs_tables() if rda files not premade
-      # output folder: rda_dir
-      # Don't run on rerender
-      # if (!rerender_skeleton) {
-      #   if (!dir.exists(fs::path(rda_dir, "rda_files"))) {
-      #     # if (!is.null(resdir) | !is.null(model_results)) {
-      #       # load converted output
-      #       # output <- model_results
-      #       # run stockplotr::exp_all_figs_tables() to make rda files
-      #
-      #       # test_exp_all <-
-      #       tryCatch(
-      #         {
-      #           stockplotr::exp_all_figs_tables(
-      #             dat = model_results,
-      #             ...
-      #           )
-      #           # TRUE
-      #         },
-      #         error = function(e) {
-      #           warning("Failed to create all rda files from stockplotr package.")
-      #           # FALSE
-      #         }
-      #       )
-      #     # } # else {
-      #     # test_exp_all <- FALSE
-      #     # }
-      #   }
-      # }
-
-      # Create tables qmd
-      # if ((include_tables & !rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
-      #   # if (!test_exp_all) {
-      #   #   tables_doc <- paste0(
-      #   #     "### Tables \n \n",
-      #   #     "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
-      #   #   )
-      #   #   utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
-      #   #   warning("Results file or model name not defined.")
-      #   # } else
-      #   if (!is.null(model_results)) {
-      #     # if there is an existing folder with "rda_files" in the rda_dir:
-      #     if (dir.exists(fs::path(rda_dir, "rda_files"))) {
-      #       create_tables_doc(...)
-      #     }
-      #   } else {
-          tables_doc <- paste0(
-            "## Tables \n \n",
-            "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
-          )
-          utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
-      #     warning("Results file or model name not defined.")
-      #   }
-      # }
+      # created tables doc
+      if (!rerender_skeleton) {
+        tables_doc <- paste0(
+          "## Tables \n \n",
+          "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
+        )
+        utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
+      }
 
       # Create figures qmd
-      # if ((include_figures & !rerender_skeleton) | (rerender_skeleton & !is.null(model_results))) {
-      #   # if (!test_exp_all) {
-      #   #   figures_doc <- paste0(
-      #   #     "### Figures \n \n",
-      #   #     "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
-      #   #   )
-      #   #   utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
-      #   #   warning("Results file or model name not defined.")
-      #   # } else
-      #   if (!is.null(model_results)) {
-      #     # if there is an existing folder with "rda_files" in the rda_dir:
-      #     if (dir.exists(fs::path(rda_dir, "rda_files"))) {
-      #       create_figures_doc(...)
-      #     }
-      #   } else {
-          figures_doc <- paste0(
-            "## Figures \n \n",
-            "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
-          )
-          utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
-      #     warning("Results file or model name not defined.")
-      #   }
-      # }
+      if (!rerender_skeleton) {
+        figures_doc <- paste0(
+          "## Figures \n \n",
+          "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
+        )
+        utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
+      }
 
       # Part I
       # Create a report template file to render for the region and species
       # Create YAML header for document
       # Write title based on report type and region
-      if (is.null(title)) {
-        title <- create_title(office = office, species = species, spp_latin = spp_latin, region = region, type = type, year = year)
+      if (title == "[TITLE]") {
+          title <- create_title(
+            office = office,
+            species = species,
+            spp_latin = spp_latin,
+            region = region,
+            type = type,
+            year = year)
       }
 
-      # Pull authors and affiliations from national db
-      # Check if rerender and if author is already added
-      # TODO: add feature to allow removal of authors if there are ones that
-        # are repeated from the previous skeleton and those named (not just
-        # additions of new names)
-      if (rerender_skeleton) {
-        # Pull all author names from prev_skeleton
-        author_prev <- grep(
-          "\\- name:\\s*'",
-          prev_skeleton,
-          value = TRUE
-        )
-        # Remove every second occurance of "-name"
-        author_prev <- author_prev[seq(1, length(author_prev), 2)]
-        # Remove everything but the name
-        author_prev <- sub(
-          ".*\\- name:\\s*'([^']+)'.*",
-          "\\1",
-          author_prev
-        )
-        setdiff(author, author_prev) -> author
-      }
-
+      # Authors and affiliations
       # Parameters to add authorship to YAML
-      # Read authorship file
-      authors <- utils::read.csv(system.file("resources", "authorship.csv", package = "asar", mustWork = TRUE)) |>
-        dplyr::mutate(
-          mi = dplyr::case_when(
-            mi == "" ~ NA,
-            TRUE ~ mi
-          ),
-          name = dplyr::case_when(
-            is.na(mi) ~ paste0(first, " ", last),
-            TRUE ~ paste(first, mi, last, sep = " ")
-          )
-        ) |>
-        dplyr::select(name, office) |>
-        dplyr::filter(name %in% author)
-
-      if (length(author) != dim(authors)[1]){
-        message("Some authors were not found in the author database. Please comment on this issue (https://github.com/nmfs-ost/asar/issues/19) to request name and affiliation additions to the archive of U.S. stock assessment authors.")
-      }
-
-      authors <- authors[match(author, authors$name), ]
-
-      if (include_affiliation) {
-        affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
-      }
-      if (!is.null(add_author)) {
-        authors <- rbind(authors, data.frame(name = add_author, office = rep(NA, length(add_author))))
-      }
-
-      author_list <- list()
-      if (include_affiliation & !simple_affiliation) {
-        if (nrow(authors) > 0) {
-          if (rerender_skeleton) {
-            author_lines <- grep(
-              "\\- name:\\s*'",
-              prev_skeleton,
-              value = TRUE
-            )
-            authors_prev <- sub(
-              ".*\\- name:\\s*'([^']+)'.*",
-              "\\1",
-              author_lines
-            )
-            # remove authors previously in skeleton and keep new additions either from author or add_author
-            author_to_add <- setdiff(authors$name, authors_prev)
-            authors <- authors |>
-              dplyr::filter(name %in% author_to_add)
-          }
-          for (i in 1:nrow(authors)) {
-            auth <- authors[i, ]
-            aff <- affil |>
-              dplyr::filter(affiliation == auth$office)
-            if (is.na(auth$office)) {
-              paste(
-                "  ", "- name: ", "'", auth$name, "'", "\n",
-                "  ", "  ", "affiliations:", "\n",
-                "  ", "  ", "  ", "- name: '[organization]'", "\n", # "NOAA Fisheries ",
-                "  ", "  ", "  ", "  ", "address: '[address]'", "\n",
-                "  ", "  ", "  ", "  ", "city: '[city]'", "\n",
-                "  ", "  ", "  ", "  ", "state: '[state]'", "\n",
-                "  ", "  ", "  ", "  ", "postal-code: '[postal code]'", "\n",
-                sep = ""
-              ) -> author_list[[i]]
-            } else {
-              paste(
-                "  ", "- name: ", "'", auth$name, "'", "\n",
-                "  ", "  ", "affiliations:", "\n",
-                "  ", "  ", "  ", "- name: ", "'", aff$name, "'", "\n", # "NOAA Fisheries ",
-                "  ", "  ", "  ", "  ", "address: ", "'", aff$address, "'", "\n",
-                # TODO: remove state in the following line when notation is changed in _titlepage.tex
-                "  ", "  ", "  ", "  ", "city: ", "'", aff$city, ", ", aff$state, "'", "\n",
-                "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
-                "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n",
-                sep = ""
-              ) -> author_list[[i]]
-            }
-          }
+      author_list <- add_authors(
+        prev_skeleton = ifelse(rerender_skeleton, prev_skeleton, NULL),
+        author = author, # need to put this in case there is a rerender otherwise it would not use the correct argument
+        rerender_skeleton = rerender_skeleton
+      )
 
       # Create yaml
       yaml <- create_yaml(
         prev_format = prev_format,
+        format = format,
         prev_skeleton = prev_skeleton,
         author_list = author_list,
         title = title,
-        ...)
+        rerender_skeleton = rerender_skeleton,
+        office = office,
+        spp_image = spp_image,
+        species = species,
+        spp_latin = spp_latin,
+        region = region,
+        parameters = parameters,
+        param_names = param_names,
+        param_values = param_values,
+        bib_name = bib_name,
+        bib_file = bib_file,
+        year = year
+      )
 
       if (!rerender_skeleton) print("__________Built YAML Header______________")
 
@@ -765,14 +627,15 @@ create_template <- function(
       # cat(yaml, file = here('template','yaml_header.qmd'))
 
       # add in html for draft watermark if in that format - otherwise pdf draft is in format_quarto fxn
-      if (format == "html") {
-        html_draft <- paste(
-          "\n ```{=html} \n",
-          "<div style='position: fixed; margin-top: 10%; margin-left:5%; font-size: xx-large; font-weight: 900; color: #CCCCCC; rotate: -45deg; z-index:-999;'>DRAFT</div>", "\n",
-          "``` \n",
-          sep = ""
-        )
-      }
+      # Deprecated in favor of disclaimer
+      # if (format == "html") {
+      #   html_draft <- paste(
+      #     "\n ```{=html} \n",
+      #     "<div style='position: fixed; margin-top: 10%; margin-left:5%; font-size: xx-large; font-weight: 900; color: #CCCCCC; rotate: -45deg; z-index:-999;'>DRAFT</div>", "\n",
+      #     "``` \n",
+      #     sep = ""
+      #   )
+      # }
 
       # Add preamble
       # add in quantities and output data R chunk
@@ -785,6 +648,7 @@ create_template <- function(
         paste0(
           # "# load converted output from asar::convert_output() \n",
           # "output <- utils::read.csv('",
+          # TODO: replace resdir with substitute object; was removed as arg
           # paste0(resdir, "/", model_results),
           # "') \n",
           # "output <- ", df_name, "\n",
@@ -905,7 +769,7 @@ create_template <- function(
           "# female SB (placeholder)", "\n"
         ),
         label = "output_and_quantities",
-        eval = ifelse(is.null(model_results), "false", "true")
+        chunk_option = c("echo: false", "warnings: false", ifelse(is.null(model_results), "eval: false", "eval: true"))
       )
 
       # extract old preamble if don't want to change
@@ -930,16 +794,32 @@ create_template <- function(
               "(?<=output\\s{0,5}<-).*",
               deparse(substitute(model_results))
             )
-            preamble <- paste(
-              append(
-                preamble,
-                prev_results,
-                after = prev_results_line)[-prev_results_line],
-              collapse = "\n"
-            )
+            # add back in pipe
+            prev_results <- paste0(prev_results, " |>")
+            preamble <- append(preamble, prev_results, after = prev_results_line)[-prev_results_line]
+
+            # change chunk eval to true
+            if (any(grepl("eval: false", preamble))) {
+              chunk_eval_line <- grep("eval: ", preamble)
+              eval_line_new <- stringr::str_replace(
+                preamble[chunk_eval_line],
+                "eval: false",
+                "eval: true"
+              )
+              preamble <- paste(
+                append(
+                  preamble,
+                  eval_line_new,
+                  after = chunk_eval_line)[-chunk_eval_line],
+                collapse = "\n"
+              )
+            }
+            preamble <- paste(preamble, collapse = "\n")
+
             # if (!grepl(".csv", model_results)) warning("Model results are not in csv format - Will not work on render")
           } else {
             message("Preamble maintained - model results not updated.")
+            preamble <- paste(preamble, collapse = "\n")
           }
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
           warning("Report template files were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder.")
@@ -1461,6 +1341,7 @@ create_template <- function(
       } else {
         author <- grep("  - name: ", prev_skeleton)
         citation <- create_citation(
+          author = author,
           ...
         )
       }
@@ -1473,11 +1354,10 @@ create_template <- function(
       print("_______Add Report Citation________")
     }
 
+
     ##### Create report outline ----
-    # Include tables and figures if desired into template
-    # at this point, files_to_copy is the most updated outline
-    # if (include_tables) files_to_copy <- c(files_to_copy, "08_tables.qmd")
-    # if (include_figures) files_to_copy <- c(files_to_copy, "09_figures.qmd")
+      # Include tables and figures in template
+      # at this point, files_to_copy is the most updated outline
 
     ###### Rerender & not custom ----
     if (rerender_skeleton & custom == FALSE) {
@@ -1581,6 +1461,7 @@ create_template <- function(
             custom_sections = sec_list1,
             subdir = subdir
           )
+
           # Create sections object to add into template
           sections <- add_child(
             sec_list2,

@@ -16,11 +16,11 @@ NOAA
 NWFSC
 ORCID
 Overleaf's
+PCFL
 PFMC's
 PIFSC
 Pomatomus
 README
-REPO
 RStudio
 Rdata
 Rmarkdown
@@ -28,6 +28,7 @@ SAR
 SBPR
 SEFSC
 SSC
+SWA
 SWFSC
 Strikethrough
 TinyTeX
@@ -35,6 +36,7 @@ YAML
 amak
 asis
 bam
+bcurrent
 birthseas
 blockquote
 cha
@@ -55,7 +57,6 @@ flextable
 frac
 gls
 gp
-img
 is’
 jpg
 knitr
@@ -66,6 +67,7 @@ modularized
 msy
 multispecies
 nmfs
+noaa
 nsim
 ost
 overline
@@ -79,7 +81,6 @@ rda
 rda's
 rdas
 rdat
-rdata
 rda’s
 readLines
 roboto
@@ -88,7 +89,6 @@ saltatrix
 sd
 se
 snakecase
-spp
 spr
 ss
 sso
@@ -106,6 +106,5 @@ tidyselect
 tinytex
 TinyTeX
 titlepage
-xlsx
 yaml
 yml

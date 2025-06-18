@@ -5,6 +5,7 @@
 \title{Create Stock Assessment Report Template}
 \usage{
 create_template(
+<<<<<<< HEAD
   new_template = TRUE,
   format = c("pdf", "docx", "html", NULL),
   office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
@@ -55,14 +56,38 @@ create_template(
   biomass_unit_label = "mt",
   catch_unit_label = "mt",
   rerender_skeleton = FALSE
+=======
+  format = "pdf",
+  type = "SAR",
+  office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
+  region = NULL,
+  species = "species",
+  spp_latin = NULL,
+  year = format(as.POSIXct(Sys.Date(), format = "\%YYYY-\%mm-\%dd"), "\%Y"),
+  author = NULL,
+  file_dir = getwd(),
+  title = "[TITLE]",
+  model_results = NULL,
+  spp_image = "",
+  bib_file = "asar_references.bib",
+  new_template = TRUE,
+  rerender_skeleton = FALSE,
+  custom = FALSE,
+  custom_sections = NULL,
+  new_section = NULL,
+  section_location = NULL,
+  parameters = TRUE,
+  param_names = NULL,
+  param_values = NULL,
+  ...
+>>>>>>> 7ec73a0 (Cleanup pkg create template (#269))
 )
 }
 \arguments{
-\item{new_template}{TRUE/FALSE; Create a new template? If true,
-will pull the last saved stock assessment report skeleton.
-Default is false.}
-
 \item{format}{Rendering format (pdf, html, or docx).}
+
+\item{type}{Type of report to build. Default is SAR (a NOAA standard "Stock
+Assessment Report").}
 
 \item{office}{Regional Fisheries Science Center producing the
 report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
@@ -71,9 +96,12 @@ report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
 evaluated (if applicable). If the region is not specified for
 your center or species, do not use this variable.}
 
+<<<<<<< HEAD
 \item{complex}{TRUE/FALSE; Is this a species complex? Default
 is false.}
 
+=======
+>>>>>>> 7ec73a0 (Cleanup pkg create template (#269))
 \item{species}{Full common name for target species. Split
 naming with a space and capitalize first letter(s). Example:
 "Dover sole".}
@@ -84,9 +112,20 @@ naming with a space and capitalize first letter(s). Example:
 \item{year}{Year the assessment is being conducted. Default
 is the year in which the report is rendered.}
 
+\item{author}{A character vector of author names with their accompanying
+affiliations. For example an Jane Doe at the NWFSC Seattle, Washington office
+would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
+is found in a database located in the package: \code{system.file("resources", "affiliation_info.csv", package = "asar")}. Keys to the office addresses
+follow the naming convention of the office acronym (ex. NWFSC) with a dash
+followed by the first initial of the city then the 2 letter abbreviation for
+the state the office is located in. If the city has 2 or more words such as
+Panama City, the first initial of each word is used in the key
+(ex. Panama City, Florida = PCFL)}
+
 \item{file_dir}{Location of stock assessment files produced
 by this function. Default is the working directory.}
 
+<<<<<<< HEAD
 \item{author}{Ordered list of authors included in the assessment.}
 
 \item{add_author}{Author that is not currently in the database
@@ -102,26 +141,40 @@ false.}
 should the office name function as the affiliation, rather
 than the full address? Default is true.}
 
+=======
+>>>>>>> 7ec73a0 (Cleanup pkg create template (#269))
 \item{title}{A custom title that is an alternative to the default title (composed
 in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
 
-\item{parameters}{TRUE/FALSE; For
-parameterization of the script. Default is true.}
-
-\item{param_names}{List of parameter names that will be called
-in the document. Parameters automatically included:
-office, region, species (each of which are listed as
-individual parameters for this function, above).}
-
-\item{param_values}{List of values associated with the order
-of parameter names. Parameters automatically included:
-office, region, species (each of which are listed as
-individual parameters for this function, above).}
-
-\item{fleet_names}{Deprecated: List of fleet names as described in BAM output
-file (abbreviations).}
-
 \item{model_results}{The name of the object in your environment that contains the data frame of converted model output from \code{asar::convert_output()}}
+
+\item{spp_image}{File path to the species' image if not
+using the image included in the project's repository.}
+
+\item{bib_file}{File path to a .bib file used for citing references in
+the report}
+
+\item{new_template}{TRUE/FALSE; Create a new template? If true,
+will pull the last saved stock assessment report skeleton.
+Default is false.}
+
+\item{rerender_skeleton}{Re-create the "skeleton.qmd" in your outline when
+changes to the main skeleton need to be made. This reproduces the
+yaml, output (if changed), preamble quantities, and restructures your
+sectioning in the skeleton if indicated. All files in your folder
+will remain as is.}
+
+\item{custom}{TRUE/FALSE; Build custom sectioning for the
+template, rather than the default for stock assessments in
+your region? Default is false.}
+
+\item{custom_sections}{List of existing sections to include in
+the custom template. Note: this only includes sections within
+list.files(system.file("templates", "skeleton",
+package = "asar")). The name of the section, rather than the
+name of the file, can be used (e.g., 'abstract' rather than
+'00_abstract.qmd'). If adding a new section, also use
+parameters 'new_section' and 'section_location'.}
 
 \item{new_section}{Names of section(s) (e.g., introduction, results) or
 subsection(s) (e.g., a section within the introduction) that will be
@@ -136,12 +189,20 @@ be created as a child document and added into the 02_introduction.qmd.
 To add >1 (sub)section, make the location a list corresponding to the
 order of (sub)section names listed in the 'new_section' parameter.}
 
+<<<<<<< HEAD
 \item{type}{Type of report to build. Default is SAR ("SAR"). New options include
 templates for PMFC ("pfmc") and NEFSC management track ("nemt").}
+=======
+\item{parameters}{TRUE/FALSE; For
+parameterization of the script. Default is true.}
+>>>>>>> 7ec73a0 (Cleanup pkg create template (#269))
 
-\item{prev_year}{Year in which the previous assessment report
-was conducted. Used to pull previous assessment template.}
+\item{param_names}{List of parameter names that will be called
+in the document. Parameters automatically included:
+office, region, species (each of which are listed as
+individual parameters for this function, above).}
 
+<<<<<<< HEAD
 \item{custom}{TRUE/FALSE; Build custom sectioning for the
 template, rather than the default for stock assessments in
 your region? Default is false.}
@@ -245,6 +306,12 @@ changes to the main skeleton need to be made. This reproduces the
 yaml, output (if changed), preamble quantities, and restructures your
 sectioning in the skeleton if indicated. All files in your folder
 will remain as is.}
+=======
+\item{param_values}{List of values associated with the order
+of parameter names. Parameters automatically included:
+office, region, species (each of which are listed as
+individual parameters for this function, above).}
+>>>>>>> 7ec73a0 (Cleanup pkg create template (#269))
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
@@ -275,8 +342,7 @@ create_template(
   spp_latin = "Microstomus pacificus",
   year = 2010,
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
-  include_affiliation = TRUE,
-  model_results = "Report.sso",
+  model_results = dover_sole_output,
   new_section = "an_additional_section",
   section_location = "after-introduction",
   rda_dir = here::here()
@@ -302,29 +368,20 @@ create_template(
   format = "pdf",
   office = "NWFSC",
   region = "my_region",
-  complex = FALSE,
   species = "Bluefish",
   spp_latin = "Pomatomus saltatrix",
   year = 2010,
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
-  add_author = "Sun E Day",
-  include_affiliation = TRUE,
-  simple_affiliation = TRUE,
   title = "Management Track Assessments Spring 2024",
   parameters = TRUE,
   param_names = c("region", "year"),
   param_values = c("my_region", "2024"),
-  fleet_names = c("fleet1", "fleet2", "fleet3"),
-  model_results = "Report.sso",
+  model_results = bluefish_output,
   new_section = "an_additional_section",
   section_location = "before-discussion",
   type = "SAR",
-  prev_year = 2021,
   custom = TRUE,
   custom_sections = c("executive_summary", "introduction", "discussion"),
-  include_figures = TRUE,
-  include_tables = TRUE,
-  add_image = TRUE,
   spp_image = "dir/containing/spp_image",
   rda_dir = "C:/Users/Documents",
   end_year = 2022,
