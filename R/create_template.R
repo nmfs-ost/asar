@@ -263,7 +263,7 @@ create_template <- function(
   if (grepl("^pdf$|^html$", tolower(format))) {
     format <- tolower(format)
   } else if (grepl("docx", tolower(format))) {
-    cli::cl_warn("The docx format is not currently supported by asar. Defaulting to pdf")
+    cli::cli_alert_warning("The docx format is not currently supported by asar. Defaulting to pdf")
     format <- "pdf"
   } else {
     cli::cli_alert("Format not compatible.")
