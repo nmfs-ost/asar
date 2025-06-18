@@ -4,14 +4,14 @@
 \alias{create_tables_doc}
 \title{Create Quarto Document of Tables}
 \usage{
-create_tables_doc(subdir = getwd(), rda_dir = getwd(), include_all = TRUE)
+create_tables_doc(
+  subdir = getwd(),
+  figures_tables_dir = getwd(),
+  include_all = TRUE
+)
 }
 \arguments{
 \item{subdir}{Location of subdirectory storing the assessment report template}
-
-\item{rda_dir}{If the user has already created .rda files containing
-figures, tables, alt text, and captions with \code{stockplotr}, rda_dir represents
-the location of the folder containing these .rda files ("rda_files").}
 
 \item{include_all}{TRUE/FALSE; Option to include all default figures (for
 create_figures_doc) or all default tables (for create_tables_doc) in the stock
@@ -42,6 +42,6 @@ asar::export_split_tbls with your preferred essential_columns value.
 \dontrun{
 create_tables_doc(
 subdir = getwd(),
-rda_dir = here::here())
+figures_tables_dir = here::here())
 }
 }
