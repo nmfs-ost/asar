@@ -5,14 +5,25 @@
 \title{Add New Section or Subsection to Template}
 \usage{
 add_section(
-  new_section = NULL,
-  section_location = NULL,
+  subdir = NULL,
   custom_sections = NULL,
-  custom = TRUE,
-  subdir = NULL
+  new_section = NULL,
+  section_location = NULL
 )
 }
 \arguments{
+\item{subdir}{Directory where the new sections will be saved. In the
+create_template function, this defaults to the location where the
+template is saved.}
+
+\item{custom_sections}{List of existing sections to include in
+the custom template. Note: this only includes sections within
+list.files(system.file("templates", "skeleton",
+package = "asar")). The name of the section, rather than the
+name of the file, can be used (e.g., 'abstract' rather than
+'00_abstract.qmd'). If adding a new section, also use
+parameters 'new_section' and 'section_location'.}
+
 \item{new_section}{Names of section(s) (e.g., introduction, results) or
 subsection(s) (e.g., a section within the introduction) that will be
 added to the document. Please make a short list if >1 section/subsection
@@ -25,22 +36,6 @@ For example, 'in-introduction' signifies that the new content would
 be created as a child document and added into the 02_introduction.qmd.
 To add >1 (sub)section, make the location a list corresponding to the
 order of (sub)section names listed in the 'new_section' parameter.}
-
-\item{custom_sections}{List of existing sections to include in
-the custom template. Note: this only includes sections within
-list.files(system.file("templates", "skeleton",
-package = "asar")). The name of the section, rather than the
-name of the file, can be used (e.g., 'abstract' rather than
-'00_abstract.qmd'). If adding a new section, also use
-parameters 'new_section' and 'section_location'.}
-
-\item{custom}{TRUE/FALSE; Build custom sectioning for the
-template, rather than the default for stock assessments in
-your region? Default is false.}
-
-\item{subdir}{Directory where the new sections will be saved. In the
-create_template function, this defaults to the location where the
-template is saved.}
 }
 \value{
 Add an additional section or subsection to the report template

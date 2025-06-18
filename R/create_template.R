@@ -22,7 +22,8 @@
 #' @param author A character vector of author names with their accompanying
 #' affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
 #' would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices 
-#' is found in a database located in the package: \code{system.file("resources", "affiliation_info.csv", package = "asar")}. Keys to the office addresses 
+#' is found in a database located in the package: \code{system.file("resources", 
+#' "affiliation_info.csv", package = "asar")}. Keys to the office addresses 
 #' follow the naming convention of the office acronym (ex. NWFSC) with a dash 
 #' followed by the first initial of the city then the 2 letter abbreviation for 
 #' the state the office is located in. If the city has 2 or more words such as 
@@ -76,6 +77,30 @@
 #'  of parameter names. Parameters automatically included:
 #'  office, region, species (each of which are listed as
 #'  individual parameters for this function, above).
+#' @param type Type of report to build. Default is SAR (NOAA Fisheries 
+#' Stock Assessment Report).
+#' @param custom TRUE/FALSE; Build custom sectioning for the
+#' template, rather than the default for stock assessments in
+#' your region? Default is false.
+#' @param custom_sections List of existing sections to include in
+#' the custom template. Note: this only includes sections within
+#'  list.files(system.file("templates", "skeleton",
+#'  package = "asar")). The name of the section, rather than the
+#'  name of the file, can be used (e.g., 'abstract' rather than
+#'  '00_abstract.qmd'). If adding a new section, also use
+#'   parameters 'new_section' and 'section_location'.
+#' @param spp_image File path to the species' image if not
+#' using the image included in the project's repository.
+#' @param bib_file File path to a .bib file used for citing references in
+#' the report
+#' @param rerender_skeleton Re-create the "skeleton.qmd" in your outline when
+#'        changes to the main skeleton need to be made. This reproduces the
+#'        yaml, output (if changed), preamble quantities, and restructures your
+#'        sectioning in the skeleton if indicated. All files in your folder
+#'        will remain as is.
+#' @param ... Additional arguments passed into functions used in create_template
+#' such as `create_citation()`, `format_quarto()`, `add_chunk()`, ect
+#' 
 #' @return Create template and pull skeleton for a stock assessment report.
 #'         Function builds a YAML specific to the region and utilizes current
 #'         resources and workflows from different U.S. Fishery Science Centers.
@@ -87,8 +112,7 @@
 #' \dontrun{
 #' create_template(
 #'   new_section = "a_new_section",
-#'   section_location = "before-introduction",
-#'   rda_dir = here::here()
+#'   section_location = "before-introduction"
 #' )
 #'
 #'
@@ -102,8 +126,7 @@
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
 #'   model_results = dover_sole_output,
 #'   new_section = "an_additional_section",
-#'   section_location = "after-introduction",
-#'   rda_dir = here::here()
+#'   section_location = "after-introduction"
 #' )
 #'
 #' asar::create_template(
@@ -117,8 +140,7 @@
 #'   new_section = c("a_new_section", "another_new_section"),
 #'   section_location = c("before-introduction", "after-introduction"),
 #'   custom = TRUE,
-#'   custom_sections = c("executive_summary", "introduction"),
-#'   rda_dir = here::here()
+#'   custom_sections = c("executive_summary", "introduction")
 #' )
 #'
 #' create_template(
@@ -140,23 +162,7 @@
 #'   type = "SAR",
 #'   custom = TRUE,
 #'   custom_sections = c("executive_summary", "introduction", "discussion"),
-#'   spp_image = "dir/containing/spp_image",
-#'   rda_dir = "C:/Users/Documents",
-#'   end_year = 2022,
-#'   n_projected_years = 10,
-#'   relative = FALSE,
-#'   recruitment_scale_amount = 10,
-#'   recruitment_unit_label = "metric tons",
-#'   ref_line = "target",
-#'   biomass_scale_amount = 100,
-#'   landings_unit_label = "metric tons",
-#'   spawning_biomass_label = "metric tons",
-#'   spawning_biomass_scale_amount = 1000,
-#'   recruitment_unit_label = "metric tons",
-#'   ref_line_sb = "target",
-#'   indices_unit_label = "CPUE",
-#'   biomass_unit_label = "mt",
-#'   catch_unit_label = "mt"
+#'   spp_image = "dir/containing/spp_image"
 #' )
 #' }
 #'
@@ -191,7 +197,7 @@ create_template <- function(
   } else if (length(office) > 1) {
     office <- ""
   }
-
+  
   if (rerender_skeleton) {
     # TODO: set up situation where species, region can be changed
     report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
@@ -491,13 +497,17 @@ create_template <- function(
       # Create YAML header for document
       # Write title based on report type and region
       if (title == "[TITLE]") {
+        # TODO: update below so title gets updated if new input is added such as region/species/office
+        if (rerender_skeleton) {
+          title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
+        } else {
           title <- create_title(
-            office = office,
-            species = species,
-            spp_latin = spp_latin,
-            region = region,
-            type = type,
-            year = year)
+            office = office, 
+            species = species, 
+            spp_latin = spp_latin, 
+            region = region, 
+            type = type, 
+            year = year) 
       }
 
       # Authors and affiliations
@@ -677,7 +687,7 @@ create_template <- function(
           "# female SB (placeholder)", "\n"
         ),
         label = "output_and_quantities",
-        chunk_option = c("echo: false", "warnings: false", ifelse(is.null(model_results), "eval: false", "eval: true"))
+        chunk_option = c("echo: false", "warning: false", ifelse(is.null(model_results), "eval: false", "eval: true"))
       )
 
       # extract old preamble if don't want to change
@@ -896,7 +906,7 @@ create_template <- function(
       # Combine template sections
       report_template <- paste(
         yaml,
-        if (format == "html") html_draft,
+        # if (format == "html") html_draft, # removed draft watermark from template
         preamble, "\n",
         disclaimer,
         citation,
@@ -965,5 +975,6 @@ create_template <- function(
     svDialogs::dlg_message("Reminder: there are changes to be made when calling an old report. Please change the year in the citation and the location and name of the results file in the first chunk of the report.",
       type = "ok"
     )
+  }
   }
 }

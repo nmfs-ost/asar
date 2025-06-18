@@ -24,13 +24,6 @@ connected by underscores).}
 \item{chunk_option}{List of chunk options to add. For example: c("output: true", "error: false)}
 
 \item{rmark_option}{List of chunk options to add after indicating the language of the chunk as used in Rmarkdown.}
-
-\item{echo}{TRUE/FALSE; Option to repeat code in the document. Default is false.}
-
-\item{warnings}{TRUE/FALSE; Option to report warnings in the console during render.
-Default is false.}
-
-\item{eval}{TRUE/FALSE; Option to evaluate the chunk. Default is true.}
 }
 \value{
 Write an additional R chunk into the template using this function.
