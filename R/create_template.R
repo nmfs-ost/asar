@@ -287,7 +287,7 @@ create_template <- function(
       question1 <- readline("Did you mean -- docx?")
       if (!interactive()) question1 <- "y"
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-        cli::cl_warn("The docx format is not currently supported by asar. Defaulting to pdf")
+        cli::cli_alert_warning("The docx format is not currently supported by asar. Defaulting to pdf")
         format <- "pdf"
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
         cli::cli_abort("Template processing stopped.")
