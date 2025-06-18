@@ -53,9 +53,9 @@ is the year in which the report is rendered.}
 \item{bib_file}{File path to a .bib file used for citing references in
 the report}
 
-\item{author_list}{A vector of strings containing pre-formatted author names
+\item{author_list}{A list of strings containing pre-formatted author names
 and affiliations that would be found in the format in a yaml of a quarto
-file when using cat(author_list[\link{i}]).}
+file when using \code{cat(author_list[[i]])}.}
 
 \item{title}{A custom title that is an alternative to the default title (composed
 in asar::create_title()). Example: "Management Track Assessments Spring 2024".}

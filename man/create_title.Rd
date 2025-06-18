@@ -36,12 +36,10 @@ is the year in which the report is rendered.}
 
 \item{complex}{TRUE/FALSE; Is this a species complex? Default
 is false.}
-
-\item{type}{Type of report to build. Default is SAR (a NOAA standard "Stock
-Assessment Report").}
-
-\item{spp_latin}{Latin name for the target species. Example:
-"Pomatomus saltatrix".}
+}
+\value{
+Return a string containing a title for a NOAA Fisheries stock
+assessment report.
 }
 \description{
 Write Stock Assessment Report Title
