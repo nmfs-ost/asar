@@ -33,7 +33,8 @@ create_template(
 \arguments{
 \item{format}{Rendering format (pdf, html, or docx).}
 
-\item{type}{Type of report to build. Default is SAR.}
+\item{type}{Type of report to build. Default is SAR (NOAA Fisheries
+Stock Assessment Report).}
 
 \item{office}{Regional Fisheries Science Center producing the
 report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
@@ -55,7 +56,8 @@ is the year in which the report is rendered.}
 \item{author}{A character vector of author names with their accompanying
 affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
-is found in a database located in the package: \code{system.file("resources", "affiliation_info.csv", package = "asar")}. Keys to the office addresses
+is found in a database located in the package: \code{system.file("resources", 
+"affiliation_info.csv", package = "asar")}. Keys to the office addresses
 follow the naming convention of the office acronym (ex. NWFSC) with a dash
 followed by the first initial of the city then the 2 letter abbreviation for
 the state the office is located in. If the city has 2 or more words such as
@@ -126,19 +128,6 @@ individual parameters for this function, above).}
 
 \item{...}{Additional arguments passed into functions used in create_template
 such as \code{create_citation()}, \code{format_quarto()}, \code{add_chunk()}, ect}
-
-\item{prev_year}{Year in which the previous assessment report
-was conducted. Used to pull previous assessment template.}
-
-\item{include_figures}{TRUE/FALSE; Should figures be
-included in the report? Default is true.}
-
-\item{include_tables}{TRUE/FALSE; Should tables be included
-in the report? Default is true.}
-
-\item{add_image}{TRUE/FALSE; Add image of species to the
-template that is not already included in the project's
-inst/resources/spp_img folder? Default is false.}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.
@@ -206,8 +195,6 @@ create_template(
   type = "SAR",
   custom = TRUE,
   custom_sections = c("executive_summary", "introduction", "discussion"),
-  include_figures = TRUE,
-  include_tables = TRUE,
   spp_image = "dir/containing/spp_image"
 )
 }

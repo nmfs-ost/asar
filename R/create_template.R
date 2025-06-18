@@ -22,7 +22,8 @@
 #' @param author A character vector of author names with their accompanying
 #' affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
 #' would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices 
-#' is found in a database located in the package: \code{system.file("resources", "affiliation_info.csv", package = "asar")}. Keys to the office addresses 
+#' is found in a database located in the package: \code{system.file("resources", 
+#' "affiliation_info.csv", package = "asar")}. Keys to the office addresses 
 #' follow the naming convention of the office acronym (ex. NWFSC) with a dash 
 #' followed by the first initial of the city then the 2 letter abbreviation for 
 #' the state the office is located in. If the city has 2 or more words such as 
@@ -76,9 +77,8 @@
 #'  of parameter names. Parameters automatically included:
 #'  office, region, species (each of which are listed as
 #'  individual parameters for this function, above).
-#' @param type Type of report to build. Default is SAR.
-#' @param prev_year Year in which the previous assessment report
-#'  was conducted. Used to pull previous assessment template.
+#' @param type Type of report to build. Default is SAR (NOAA Fisheries 
+#' Stock Assessment Report).
 #' @param custom TRUE/FALSE; Build custom sectioning for the
 #' template, rather than the default for stock assessments in
 #' your region? Default is false.
@@ -89,13 +89,6 @@
 #'  name of the file, can be used (e.g., 'abstract' rather than
 #'  '00_abstract.qmd'). If adding a new section, also use
 #'   parameters 'new_section' and 'section_location'.
-#' @param include_figures TRUE/FALSE; Should figures be
-#' included in the report? Default is true.
-#' @param include_tables TRUE/FALSE; Should tables be included
-#'  in the report? Default is true.
-#' @param add_image TRUE/FALSE; Add image of species to the
-#' template that is not already included in the project's
-#' inst/resources/spp_img folder? Default is false.
 #' @param spp_image File path to the species' image if not
 #' using the image included in the project's repository.
 #' @param bib_file File path to a .bib file used for citing references in
@@ -169,8 +162,6 @@
 #'   type = "SAR",
 #'   custom = TRUE,
 #'   custom_sections = c("executive_summary", "introduction", "discussion"),
-#'   include_figures = TRUE,
-#'   include_tables = TRUE,
 #'   spp_image = "dir/containing/spp_image"
 #' )
 #' }
@@ -915,7 +906,7 @@ create_template <- function(
       # Combine template sections
       report_template <- paste(
         yaml,
-        if (format == "html") html_draft,
+        # if (format == "html") html_draft, # removed draft watermark from template
         preamble, "\n",
         disclaimer,
         citation,
