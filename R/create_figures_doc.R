@@ -90,7 +90,7 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
             # add_option = TRUE,
             chunk_option = c(
               "echo: false",
-              "warnings: false",
+              "warning: false",
               glue::glue(
                 "eval: !expr if(eval_{fig_shortname}) {fig_shortname}_alt_text"
               ),

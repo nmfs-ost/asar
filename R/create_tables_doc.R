@@ -59,7 +59,7 @@ create_tables_doc <- function(subdir = getwd(),
         # add_option = TRUE,
         chunk_option = c(
           "echo: false",
-          "warnings: false",
+          "warning: false",
           "eval: true",
           "include: false"
         )
