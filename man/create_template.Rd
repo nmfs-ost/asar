@@ -145,12 +145,7 @@ in the console.
 \dontrun{
 create_template(
   new_section = "a_new_section",
-<<<<<<< HEAD
   section_location = "before-introduction"
-=======
-  section_location = "before-introduction",
-  figures_tables_dir = here::here()
->>>>>>> de403c2 (Replace 'rda_dir' with 'figures_tables_dir'; update documentation)
 )
 
 
@@ -164,12 +159,7 @@ create_template(
   author = c("John Snow", "Danny Phantom", "Patrick Star"),
   model_results = dover_sole_output,
   new_section = "an_additional_section",
-<<<<<<< HEAD
   section_location = "after-introduction"
-=======
-  section_location = "after-introduction",
-  figures_tables_dir = here::here()
->>>>>>> de403c2 (Replace 'rda_dir' with 'figures_tables_dir'; update documentation)
 )
 
 asar::create_template(
@@ -183,12 +173,7 @@ asar::create_template(
   new_section = c("a_new_section", "another_new_section"),
   section_location = c("before-introduction", "after-introduction"),
   custom = TRUE,
-<<<<<<< HEAD
   custom_sections = c("executive_summary", "introduction")
-=======
-  custom_sections = c("executive_summary", "introduction"),
-  figures_tables_dir = here::here()
->>>>>>> de403c2 (Replace 'rda_dir' with 'figures_tables_dir'; update documentation)
 )
 
 create_template(
@@ -210,27 +195,7 @@ create_template(
   type = "SAR",
   custom = TRUE,
   custom_sections = c("executive_summary", "introduction", "discussion"),
-<<<<<<< HEAD
   spp_image = "dir/containing/spp_image"
-=======
-  spp_image = "dir/containing/spp_image",
-  figures_tables_dir = "C:/Users/Documents",
-  end_year = 2022,
-  n_projected_years = 10,
-  relative = FALSE,
-  recruitment_scale_amount = 10,
-  recruitment_unit_label = "metric tons",
-  ref_line = "target",
-  biomass_scale_amount = 100,
-  landings_unit_label = "metric tons",
-  spawning_biomass_label = "metric tons",
-  spawning_biomass_scale_amount = 1000,
-  recruitment_unit_label = "metric tons",
-  ref_line_sb = "target",
-  indices_unit_label = "CPUE",
-  biomass_unit_label = "mt",
-  catch_unit_label = "mt"
->>>>>>> de403c2 (Replace 'rda_dir' with 'figures_tables_dir'; update documentation)
 )
 }
 
