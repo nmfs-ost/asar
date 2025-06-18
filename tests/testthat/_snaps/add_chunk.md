@@ -18,7 +18,7 @@
     Output
       ```{r} 
       #| echo:true 
-      #| warnings: false 
+      #| warning: false 
       #| eval: true
       plot(cars$speed, cars$distance)
       ``` 
