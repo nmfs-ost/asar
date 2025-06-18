@@ -22,6 +22,8 @@ changes to the main skeleton need to be made. This reproduces the
 yaml, output (if changed), preamble quantities, and restructures your
 sectioning in the skeleton if indicated. All files in your folder
 will remain as is.}
+
+\item{prev_skeleton}{A character vector of the previous skeleton file read in through \code{readLines()}}
 }
 \value{
 A list of authors formatted for a yaml in quarto. Viewable by running the

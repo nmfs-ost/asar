@@ -1,6 +1,7 @@
 #' Format authors for skeleton
 #'
 #' @inheritParams create_template
+#' @param prev_skeleton A character vector of the previous skeleton file read in through \code{readLines()}
 #'
 #' @returns A list of authors formatted for a yaml in quarto. Viewable by running the 
 #' return object inside of cat() for each part of the list.
