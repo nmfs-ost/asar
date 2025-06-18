@@ -240,8 +240,8 @@ create_template <- function(
   if (rerender_skeleton) {
     # TODO: set up situation where species, region can be changed
     report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
-    if (length(report_name) == 0) cli::cli_abort("No skeleton quarto file found in the working directory.")
-    if (length(report_name) > 1) cli::cli_abort("Multiple skeleton quarto files found in the working directory.")
+    if (length(report_name) == 0) cli::cli_abort("No skeleton quarto file found in the working directory ({getwd()}).")
+    if (length(report_name) > 1) cli::cli_abort("Multiple skeleton quarto files found in the working directory ({getwd()}).")
 
     prev_report_name <- gsub("_skeleton.qmd", "", report_name)
     # Extract type
@@ -313,12 +313,14 @@ create_template <- function(
   if (grepl("^pdf$|^html$", tolower(format))) {
     format <- tolower(format)
   } else if (grepl("docx", tolower(format))) {
-    cli::cli_alert_warning("The docx format is not currently supported by asar. Defaulting to pdf")
+    cli::cli_alert_warning("The docx format is not currently supported by asar. Defaulting to pdf.",
+                           wrap = TRUE)
     format <- "pdf"
   } else {
     cli::cli_alert("Format not compatible.")
+    cli::cli_alert_info("You entered `format` = {format}")
     if (grepl("pdf", format)) {
-      question1 <- readline("Did you mean -- pdf? (y/n)")
+      question1 <- readline("Did you mean `format` = 'pdf'? (y/n)")
       if (!interactive()) question1 <- "y"
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         format <- "pdf"
@@ -326,7 +328,7 @@ create_template <- function(
         cli::cli_abort("Template processing stopped.")
       }
     } else if (grepl("html", format)) {
-      question1 <- readline("Did you mean -- html? (y/n)")
+      question1 <- readline("Did you mean `format` = 'html'? (y/n)")
       if (!interactive()) question1 <- "y"
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         format <- "html"
@@ -334,10 +336,11 @@ create_template <- function(
         cli::cli_abort("Template processing stopped.")
       }
     } else if (grepl("docx", format)) {
-      question1 <- readline("Did you mean -- docx?")
+      question1 <- readline("Did you mean `format` = 'docx'? (y/n)")
       if (!interactive()) question1 <- "y"
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-        cli::cli_alert_warning("The docx format is not currently supported by asar. Defaulting to pdf")
+        cli::cli_alert_warning("The docx format is not currently supported by asar. Defaulting to pdf.",
+                               wrap = TRUE)
         format <- "pdf"
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
         cli::cli_abort("Template processing stopped.")
@@ -417,7 +420,8 @@ create_template <- function(
     } else {
       # check if enter file exists
       # if (!file.exists(bib_file)) stop(".bib file not found.")
-      cli::cli_alert_warning(glue::glue("Bibliography file {bib_file} is not in the report directory. The file will not be read in on render if it is not in the same path as the skeleton file."))
+      cli::cli_alert_warning("Bibliography file {bib_file} not in the report directory.")
+      cli::cli_alert_info("The file will not be read in on render if not in the same path as the skeleton file.")
 
       bib_loc <- bib_file # dirname(bib_file)
       bib_name <- stringr::str_extract(bib_file, "[^/]+$") # utils::tail(stringr::str_split(bib_file, "/")[[1]], n = 1)
@@ -460,7 +464,9 @@ create_template <- function(
           )
         }
         # year - default to current year
-        message("Undefined year:\nPlease identify year in your arguments or manually change it in the skeleton if value is incorrect.")
+        cli::cli_alert_warning("Undefined year.")
+        cli::cli_alert_info("Please identify year in your arguments or manually change it in the skeleton if value is incorrect.",
+                            wrap = TRUE)
         # copy before-body tex
         if (!file.exists(file_dir, "support_files", "before-body.tex")) file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
         # customize titlepage tex
@@ -519,7 +525,7 @@ create_template <- function(
         #   }
         # }
       } else {
-        warning("There are files in this location.")
+        cli::cli_alert_warning("There are files in this location.")
         question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
 
         # answer question1 as y if session isn't interactive
@@ -551,7 +557,9 @@ create_template <- function(
             # Copy html format file if applicable
             if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
           } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-            warning("Report template files were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder.")
+            cli::cli_alert_warning("Report template files were not copied into your directory.")
+            cli::cli_alert_info("If you wish to update the template with new parameters or output files, please edit the {report_name} in your local folder.",
+                                wrap = TRUE)
           }
         } # close check for previous files & respective copying
         prev_skeleton <- NULL
@@ -634,7 +642,7 @@ create_template <- function(
         type = type
       )
 
-      if (!rerender_skeleton) print("__________Built YAML Header______________")
+      if (!rerender_skeleton) cli::cli_alert_success("Built YAML header.")
 
       # Add preamble
       # add in quantities and output data R chunk
@@ -817,7 +825,8 @@ create_template <- function(
 
             # if (!grepl(".csv", model_results)) warning("Model results are not in csv format - Will not work on render")
           } else {
-            message("Preamble maintained - model results not updated.")
+            cli::cli_alert_info("Preamble maintained.")
+            cli::cli_alert_info("Model results not updated.")
             preamble <- paste(preamble, collapse = "\n")
           }
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
@@ -840,6 +849,7 @@ create_template <- function(
           author = author,
           ...
         )
+        cli::cli_alert_success("Added report citation.")
       }
     } else {
       citation <- create_citation(
@@ -847,7 +857,7 @@ create_template <- function(
         title = title,
         year = year
       )
-      print("_______Add Report Citation________")
+      cli::cli_alert_success("Added report citation.")
     }
 
 
@@ -948,14 +958,14 @@ create_template <- function(
       sep = "\n"
     )
 
-    print("___Created report template______")
+    cli::cli_alert_success("Created report template.")
 
     ##### Save skeleton ----
     # Save template as .qmd to render
     utils::capture.output(cat(report_template), file = file.path(subdir, ifelse(rerender_skeleton, new_report_name, report_name)), append = FALSE)
     # Delete old skeleton
     if (length(grep("skeleton.qmd", list.files(file_dir, pattern = "skeleton.qmd"))) > 1) {
-      question1 <- readline("Deleting previous skeleton file...Do you want to proceed? (Y/N)")
+      question1 <- readline("Deleting previous skeleton file... Do you want to proceed? (Y/N)")
 
       # answer question1 as y if session isn't interactive
       if (!interactive()){
@@ -965,21 +975,18 @@ create_template <- function(
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         file.remove(file.path(file_dir, report_name))
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-        message("Skeleton file retained.")
+        cli::cli_alert_info("Skeleton file retained.")
       }
     }
 
     ##### Final message ----
     # Print message
     if (rerender_skeleton) {
-      message(
-        "Updated report skeleton in directory: ", subdir, "."
-      )
+      cli::cli_alert_success("Updated report skeleton in directory {subdir}.")
     } else {
-      message(
-        "Saved report template in directory: ", subdir, "\n",
-        "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
-      )
+      cli::cli_alert_success("Saved report template in directory {subdir}.")
+      cli::cli_alert_info("To proceeed, please edit sections within the report template in order to produce a completed stock assessment report.",
+                          wrap = TRUE)
     }
     # Open file for analyst
     # file.show(file.path(subdir, report_name)) # this opens the new file, but also restarts the session
@@ -1002,8 +1009,7 @@ create_template <- function(
     # Open previous skeleton
     # file.show(file.path(subdir, report_name))
 
-    svDialogs::dlg_message("Reminder: there are changes to be made when calling an old report. Please change the year in the citation and the location and name of the results file in the first chunk of the report.",
-                           type = "ok"
-    )
+    svDialogs::dlg_message("Reminder: Changes should be made when calling an old report. Please change 1) the year in the citation and 2) the location and name of the results file in the first chunk of the report.",
+      type = "ok")
   }
 }
