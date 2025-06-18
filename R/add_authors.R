@@ -1,6 +1,7 @@
 #' Format authors for skeleton
 #'
 #' @inheritParams create_template
+#' @param prev_skeleton A character vector of the previous skeleton file read in through \code{readLines()}
 #'
 #' @returns A list of authors formatted for a yaml in quarto. Viewable by running the 
 #' return object inside of cat() for each part of the list.
@@ -27,7 +28,6 @@ add_authors <- function(
   # are repeated from the previous skeleton and those named (not just
   # additions of new names)
   if (rerender_skeleton) {
-    
     if (is.null(prev_skeleton)) {
       # attempt to find the skeleton file
       if (file.exists(file.path(getwd(), list.files(file_dir, pattern = "skeleton.qmd")))) {
@@ -50,7 +50,7 @@ add_authors <- function(
     } else {
       author_prev <- author_prev[seq(1, length(author_prev), 2)]
     }
-    
+
     # Remove everything but the name
     author_prev <- sub(
       ".*\\- name:\\s*'([^']+)'.*",

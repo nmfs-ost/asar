@@ -15,7 +15,7 @@
 #' asar::export_split_tbls with your preferred essential_columns value.
 #'
 #' @inheritParams create_figures_doc
-#'
+#' 
 #' @return Create a quarto document as part of a stock assessment outline with
 #' pre-loaded R chunks that add stock assessment tables from the nmfs-ost/stockplotr
 #' R package, or other tables in the same rda format.
@@ -28,8 +28,8 @@
 #' rda_dir = here::here())
 #' }
 create_tables_doc <- function(subdir = getwd(),
-                              include_all = TRUE,
-                              rda_dir = getwd()) {
+                              rda_dir = getwd(),
+                              include_all = TRUE) {
 
   # NOTE: essential_columns = 1 for all tables split using export_split_tbls() in
   # the code below.

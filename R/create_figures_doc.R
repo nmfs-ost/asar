@@ -1,13 +1,13 @@
 #' Create Quarto Document of Figures
 #'
+#' @param rda_dir If the user has already created .rda files containing
+#' figures, tables, alt text, and captions with `stockplotr`, rda_dir represents
+#' the location of the folder containing these .rda files ("rda_files").
 #' @param subdir Location of subdirectory storing the assessment report template
 #' @param include_all TRUE/FALSE; Option to include all default figures (for
 #' create_figures_doc) or all default tables (for create_tables_doc) in the stock
 #' assessment report. Default is true.
-#' @param rda_dir If the user has already created .rda files containing
-#' figures, tables, alt text, and captions with `stockplotr`, rda_dir represents
-#' the location of the folder containing these .rda files ("rda_files").
-#'
+#' 
 #' @return A quarto document with pre-loaded R chunk that adds the
 #' stock assessment tables from the nmfs-ost/stockplotr R package. The
 #' quarto document will become part of the stock assessment outline.
@@ -20,8 +20,8 @@
 #' rda_dir = here::here())
 #' }
 create_figures_doc <- function(subdir = getwd(),
-                               include_all = TRUE,
-                               rda_dir = getwd()) {
+                               rda_dir = getwd(),
+                               include_all = TRUE) {
 
   if (!include_all) cli::cli_abort("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")
 

@@ -1,6 +1,11 @@
 #' Create string for yml header in quarto file
 #'
 #' @inheritParams create_template
+#' @param author_list A vector of strings containing pre-formatted author names
+#' and affiliations that would be found in the format in a yaml of a quarto
+#' file when using cat(author_list[[i]]).
+#' @param bib_name Name of a bib file being added into the yaml. For example,
+#' "asar.bib".
 #' @param prev_skeleton Vector of strings containing all the lines of the
 #' previous skeleton file. File is read in using the function readLines from
 #' base R.
@@ -23,40 +28,40 @@
 #'   prev_skeleton = NULL,
 #'   title = "My title",
 #'   author_list = "  - name: 'Patrick Star'\n    affiliations:\n      - name: 'NOAA Fisheries Southeast Fisheries Science Center'\n        address: '75 Virginia Beach Drive'\n        city: 'Miami'\n        state: 'FL'\n        postal-code: '33149'\n",
-#'   author = "Patrick Star",
-#'   office = "AFSC",
-#'   spp_image = NA,
-#'   species = NA,
-#'   spp_latin = NA,
-#'   region = NA,
+#'   author = c("Patrick Star"="SEFSC"),
+#'   office = "SEFSC",
+#'   add_author = NULL,
+#'   spp_image = NULL,
+#'   species = "",
+#'   spp_latin = NULL,
+#'   region = NULL,
 #'   format = "pdf",
 #'   parameters = TRUE,
 #'   param_names = NULL,
 #'   param_values = NULL,
-#'   bib_file = "asar_references.bib",
+#'   bib_file = "path/asar_references.bib",
 #'   bib_name = "asar_references.bib",
 #'   year = 2025
 #' )
 #' }
 create_yaml <- function(
-    rerender_skeleton = FALSE,
+    format = "pdf",
     office = NULL,
-    prev_skeleton = NULL,
-    prev_format = NULL,
-    title = "[TITLE]",
-    author_list = NULL,
-    # author = NULL,
-    spp_image = "",
+    region = NULL,
     species = "species",
     spp_latin = NULL,
-    region = NULL,
-    format = "pdf",
-    parameters = TRUE,
-    param_names = NULL,
-    param_values = NULL,
+    spp_image = "",
+    year = NULL,
     bib_name = NULL,
     bib_file = "asar_references.bib",
-    year = NULL
+    author_list = NULL,
+    title = "[TITLE]",
+    rerender_skeleton = FALSE,
+    prev_skeleton = NULL,
+    prev_format = NULL,
+    parameters = TRUE,
+    param_names = NULL,
+    param_values = NULL
     ){
   # check first if want to rerender current skeleton
   if (rerender_skeleton) {

@@ -1,24 +1,26 @@
-#' Write Stock Assessment Title
+#' Write Stock Assessment Report Title
 #'
 #' @inheritParams create_template
 #' @param complex TRUE/FALSE; Is this a species complex? Default
 #'  is false.
 #'
-#' @return NULL
+#' @return Return a string containing a title for a NOAA Fisheries stock 
+#' assessment report.
 #' @export
 #'
 #' @examples create_title(
-#'   office = "SEFSC", species = "Red Snapper", region = "South Atlantic",
-#'   year = 2024, type = "SAR", spp_latin = "Lutjanus campechanus"
+#'   type = "SAR", office = "SEFSC", species = "Red Snapper", 
+#'   spp_latin = "Lutjanus campechanus", region = "South Atlantic",
+#'   year = 2024
 #' )
 create_title <- function(
+    type = "SAR",
     office = "",
     species = "species",
+    spp_latin = NULL,
     region = NULL,
     year = format(Sys.Date(), "%Y"),
-    complex = NULL,
-    type = "SAR",
-    spp_latin = NULL) {
+    complex = NULL) {
   # Species latin name with italics latex fxn
   spp_latin <- paste("\\textit{", spp_latin, "}", sep = "")
 

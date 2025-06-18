@@ -4,12 +4,7 @@
 \alias{render_lg_table}
 \title{Split an extra-wide table into multiple tables}
 \usage{
-render_lg_table(
-  report_flextable = NULL,
-  essential_columns = NULL,
-  rda_dir = NULL,
-  plot_name = NULL
-)
+render_lg_table(report_flextable, essential_columns, rda_dir, plot_name)
 }
 \arguments{
 \item{report_flextable}{The extra-wide flextable.}
