@@ -31,9 +31,28 @@ create_yaml(
 \item{office}{Regional Fisheries Science Center producing the
 report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
 
+<<<<<<< HEAD
 \item{region}{Full name of region in which the species is
 evaluated (if applicable). If the region is not specified for
 your center or species, do not use this variable.}
+=======
+\item{prev_skeleton}{Vector of strings containing all the lines of the
+previous skeleton file. File is read in using the function readLines from
+base R.}
+
+\item{prev_format}{The format that the previous skeleton was directed to
+render to. Parameter is inherited from create_template.}
+
+\item{title}{A custom title that is an alternative to the default title (composed
+in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
+
+\item{author_list}{A list of strings containing pre-formatted author names
+and affiliations that would be found in the format in a yaml of a quarto
+file when using \code{cat(author_list[[i]])}.}
+
+\item{spp_image}{File path to the species' image if not
+using the image included in the project's repository.}
+>>>>>>> 870c3bb (Update documentation)
 
 \item{species}{Full common name for target species. Split
 naming with a space and capitalize first letter(s). Example:
