@@ -14,7 +14,6 @@ create_template(
   year = format(as.POSIXct(Sys.Date(), format = "\%YYYY-\%mm-\%dd"), "\%Y"),
   author = NULL,
   file_dir = getwd(),
-<<<<<<< HEAD
   title = "[TITLE]",
   model_results = NULL,
   spp_image = "",
@@ -28,32 +27,6 @@ create_template(
   parameters = TRUE,
   param_names = NULL,
   param_values = NULL,
-=======
-  author = "",
-  add_author = NULL,
-  region = NULL,
-  complex = FALSE,
-  include_affiliation = TRUE,
-  simple_affiliation = FALSE,
-  title = NULL,
-  parameters = TRUE,
-  param_names = NULL,
-  param_values = NULL,
-  fleet_names = NULL,
-  model_results = NULL,
-  new_section = NULL,
-  section_location = NULL,
-  type = "SAR",
-  prev_year = NULL,
-  custom = FALSE,
-  custom_sections = NULL,
-  include_figures = TRUE,
-  include_tables = TRUE,
-  add_image = FALSE,
-  spp_image = "",
-  bib_file = "asar_references.bib",
-  rerender_skeleton = FALSE,
->>>>>>> eec0bb8 (Replace 'rda_dir' with 'figures_tables_dir'; update documentation)
   ...
 )
 }
