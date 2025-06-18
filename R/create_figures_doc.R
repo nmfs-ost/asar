@@ -1,9 +1,12 @@
 #' Create Quarto Document of Figures
 #'
-#' @inheritParams create_template
 #' @param subdir Location of subdirectory storing the assessment report template
-#' @param include_all TRUE/FALSE; Option to include all default
-#' figures for a stock assessment report. Default is true.
+#' @param include_all TRUE/FALSE; Option to include all default figures (for
+#' create_figures_doc) or all default tables (for create_tables_doc) in the stock
+#' assessment report. Default is true.
+#' @param rda_dir If the user has already created .rda files containing
+#' figures, tables, alt text, and captions with `stockplotr`, rda_dir represents
+#' the location of the folder containing these .rda files ("rda_files").
 #'
 #' @return A quarto document with pre-loaded R chunk that adds the
 #' stock assessment tables from the nmfs-ost/stockplotr R package. The
@@ -28,8 +31,8 @@ create_figures_doc <- function(subdir = getwd(),
     figures_doc_setup <- paste0(
       add_chunk(
         paste0("rda_dir <- '", rda_dir, "/rda_files'"),
-        label = "set-rda-dir-figs",
-        eval = "true"
+        label = "set-rda-dir-figs"
+        # eval = "true"
       ),
       "\n"
     )
@@ -71,8 +74,8 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
   eval_", fig_shortname, " <- TRUE\n
 # if the figure rda does not exist, don't evaluate the next chunk
 } else {eval_", fig_shortname, " <- FALSE}"),
-            label = paste0("fig-", fig_shortname, "-setup"),
-            eval = "true"
+            label = paste0("fig-", fig_shortname, "-setup")
+            # eval = "true"
           ),
           "\n"
         )
@@ -83,14 +86,19 @@ if (file.exists(file.path(rda_dir, '", fig, "'))){\n
           add_chunk(
             paste0(fig_shortname, "_plot"),
             label = paste0("fig-", fig_shortname),
-            eval = paste0("!expr eval_", fig_shortname),
-            add_option = TRUE,
-            chunk_op = c(
+            # eval = paste0("!expr eval_", fig_shortname),
+            # add_option = TRUE,
+            chunk_option = c(
+              "echo: false",
+              "warning: false",
               glue::glue(
-                "fig-cap: !expr if(eval_", fig_shortname, ") ", fig_shortname, "_cap"
+                "eval: !expr if(eval_{fig_shortname}) {fig_shortname}_alt_text"
               ),
               glue::glue(
-                "fig-alt: !expr if(eval_", fig_shortname, ") ", fig_shortname, "_alt_text"
+                "fig-cap: !expr if(eval_{fig_shortname}) {fig_shortname}_cap"
+              ),
+              glue::glue(
+                "fig-alt: !expr if(eval_{fig_shortname}) {fig_shortname}_alt_text"
               )
             )
           ),
