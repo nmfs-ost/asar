@@ -5,7 +5,7 @@
 #'  in the console.
 #'
 #' @param format Rendering format (pdf, html, or docx).
-#' @param type Type of report to build. Default is SAR (a NOAA standard "Stock 
+#' @param type Type of report to build. Default is SAR (a NOAA standard "Stock
 #' Assessment Report").
 #' @param office Regional Fisheries Science Center producing the
 #'  report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).
@@ -21,13 +21,13 @@
 #' is the year in which the report is rendered.
 #' @param author A character vector of author names with their accompanying
 #' affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
-#' would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices 
-#' is found in a database located in the package: \code{system.file("resources", "affiliation_info.csv", package = "asar")}. Keys to the office addresses 
-#' follow the naming convention of the office acronym (ex. NWFSC) with a dash 
-#' followed by the first initial of the city then the 2 letter abbreviation for 
-#' the state the office is located in. If the city has 2 or more words such as 
-#' Panama City, the first initial of each word is used in the key 
-#' (ex. Panama City, Florida = PCFL) 
+#' would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
+#' is found in a database located in the package: \code{system.file("resources", "affiliation_info.csv", package = "asar")}. Keys to the office addresses
+#' follow the naming convention of the office acronym (ex. NWFSC) with a dash
+#' followed by the first initial of the city then the 2 letter abbreviation for
+#' the state the office is located in. If the city has 2 or more words such as
+#' Panama City, the first initial of each word is used in the key
+#' (ex. Panama City, Florida = PCFL)
 #' @param file_dir Location of stock assessment files produced
 #' by this function. Default is the working directory.
 #' @param title A custom title that is an alternative to the default title (composed
@@ -87,8 +87,7 @@
 #' \dontrun{
 #' create_template(
 #'   new_section = "a_new_section",
-#'   section_location = "before-introduction",
-#'   rda_dir = here::here()
+#'   section_location = "before-introduction"
 #' )
 #'
 #'
@@ -99,11 +98,12 @@
 #'   species = "Dover sole",
 #'   spp_latin = "Microstomus pacificus",
 #'   year = 2010,
-#'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
+#'   author = c("John Snow" = "AFSC",
+#'              "Danny Phantom" = "NEFSC",
+#'              "Patrick Star" = "SEFSC-ML"),
 #'   model_results = dover_sole_output,
 #'   new_section = "an_additional_section",
-#'   section_location = "after-introduction",
-#'   rda_dir = here::here()
+#'   section_location = "after-introduction"
 #' )
 #'
 #' asar::create_template(
@@ -113,12 +113,11 @@
 #'   species = "Striped marlin",
 #'   spp_latin = "Kajikia audax",
 #'   year = 2018,
-#'   author = "Alba Tross",
+#'   author = c("John Snow" = "AFSC"),
 #'   new_section = c("a_new_section", "another_new_section"),
 #'   section_location = c("before-introduction", "after-introduction"),
 #'   custom = TRUE,
-#'   custom_sections = c("executive_summary", "introduction"),
-#'   rda_dir = here::here()
+#'   custom_sections = c("executive_summary", "introduction")
 #' )
 #'
 #' create_template(
@@ -140,23 +139,7 @@
 #'   type = "SAR",
 #'   custom = TRUE,
 #'   custom_sections = c("executive_summary", "introduction", "discussion"),
-#'   spp_image = "dir/containing/spp_image",
-#'   rda_dir = "C:/Users/Documents",
-#'   end_year = 2022,
-#'   n_projected_years = 10,
-#'   relative = FALSE,
-#'   recruitment_scale_amount = 10,
-#'   recruitment_unit_label = "metric tons",
-#'   ref_line = "target",
-#'   biomass_scale_amount = 100,
-#'   landings_unit_label = "metric tons",
-#'   spawning_biomass_label = "metric tons",
-#'   spawning_biomass_scale_amount = 1000,
-#'   recruitment_unit_label = "metric tons",
-#'   ref_line_sb = "target",
-#'   indices_unit_label = "CPUE",
-#'   biomass_unit_label = "mt",
-#'   catch_unit_label = "mt"
+#'   spp_image = "dir/containing/spp_image"
 #' )
 #' }
 #'
@@ -195,8 +178,8 @@ create_template <- function(
   if (rerender_skeleton) {
     # TODO: set up situation where species, region can be changed
     report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
-    if (length(report_name) == 0) cli::cli_abort("No skeleton quarto file found in the working directory.")
-    if (length(report_name) > 1) cli::cli_abort("Multiple skeleton quarto files found in the working directory.")
+    if (length(report_name) == 0) cli::cli_abort("No skeleton quarto file found in the working directory ({getwd()}).")
+    if (length(report_name) > 1) cli::cli_abort("Multiple skeleton quarto files found in the working directory ({getwd()}).")
 
     prev_report_name <- gsub("_skeleton.qmd", "", report_name)
     # Extract type
@@ -263,12 +246,14 @@ create_template <- function(
   if (grepl("^pdf$|^html$", tolower(format))) {
     format <- tolower(format)
   } else if (grepl("docx", tolower(format))) {
-    cli::cli_alert_warning("The docx format is not currently supported by asar. Defaulting to pdf")
+    cli::cli_alert_warning("The docx format is not currently supported by asar. Defaulting to pdf.",
+                           wrap = TRUE)
     format <- "pdf"
   } else {
     cli::cli_alert("Format not compatible.")
+    cli::cli_alert_info("You entered `format` = {format}")
     if (grepl("pdf", format)) {
-      question1 <- readline("Did you mean -- pdf? (y/n)")
+      question1 <- readline("Did you mean `format` = 'pdf'? (y/n)")
       if (!interactive()) question1 <- "y"
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         format <- "pdf"
@@ -276,7 +261,7 @@ create_template <- function(
         cli::cli_abort("Template processing stopped.")
       }
     } else if (grepl("html", format)) {
-      question1 <- readline("Did you mean -- html? (y/n)")
+      question1 <- readline("Did you mean `format` = 'html'? (y/n)")
       if (!interactive()) question1 <- "y"
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         format <- "html"
@@ -284,10 +269,11 @@ create_template <- function(
         cli::cli_abort("Template processing stopped.")
       }
     } else if (grepl("docx", format)) {
-      question1 <- readline("Did you mean -- docx?")
+      question1 <- readline("Did you mean `format` = 'docx'? (y/n)")
       if (!interactive()) question1 <- "y"
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-        cli::cli_alert_warning("The docx format is not currently supported by asar. Defaulting to pdf")
+        cli::cli_alert_warning("The docx format is not currently supported by asar. Defaulting to pdf.",
+                               wrap = TRUE)
         format <- "pdf"
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
         cli::cli_abort("Template processing stopped.")
@@ -360,7 +346,8 @@ create_template <- function(
       } else {
         # check if enter file exists
         # if (!file.exists(bib_file)) cli::cli_abort(".bib file not found.")
-        warning(glue::glue("Bibliography file {bib_file} is not in the report directory. The file will not be read in on render if it is not in the same path as the skeleton file."))
+        cli::cli_alert_warning("Bibliography file {bib_file} not in the report directory.")
+        cli::cli_alert_info("The file will not be read in on render if not in the same path as the skeleton file.")
 
         bib_loc <- bib_file # dirname(bib_file)
         bib_name <- stringr::str_extract(bib_file, "[^/]+$") # utils::tail(stringr::str_split(bib_file, "/")[[1]], n = 1)
@@ -398,7 +385,9 @@ create_template <- function(
             )
           }
           # year - default to current year
-          message("Undefined year:\nPlease identify year in your arguments or manually change it in the skeleton if value is incorrect.")
+          cli::cli_alert_warning("Undefined year.")
+          cli::cli_alert_info("Please identify year in your arguments or manually change it in the skeleton if value is incorrect.",
+                              wrap = TRUE)
           # copy before-body tex
           if (!file.exists(file_dir, "support_files", "before-body.tex")) file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
           # customize titlepage tex
@@ -430,7 +419,7 @@ create_template <- function(
           # Copy html format file if applicable
           if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         } else {
-          warning("There are files in this location.")
+          cli::cli_alert_warning("There are files in this location.")
           question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
 
           # answer question1 as y if session isn't interactive
@@ -462,7 +451,9 @@ create_template <- function(
             # Copy html format file if applicable
             if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
           } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-            warning("Report template files were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder.")
+            cli::cli_alert_warning("Report template files were not copied into your directory.")
+            cli::cli_alert_info("If you wish to update the template with new parameters or output files, please edit the {report_name} in your local folder.",
+                                wrap = TRUE)
           }
         } # close check for previous files & respective copying
         prev_skeleton <- NULL
@@ -529,7 +520,7 @@ create_template <- function(
         year = year
       )
 
-      if (!rerender_skeleton) print("__________Built YAML Header______________")
+      if (!rerender_skeleton) cli::cli_alert_success("Built YAML header.")
 
       # yaml_save <- capture.output(cat(yaml))
       # cat(yaml, file = here('template','yaml_header.qmd'))
@@ -726,7 +717,8 @@ create_template <- function(
 
             # if (!grepl(".csv", model_results)) warning("Model results are not in csv format - Will not work on render")
           } else {
-            message("Preamble maintained - model results not updated.")
+            cli::cli_alert_info("Preamble maintained.")
+            cli::cli_alert_info("Model results not updated.")
             preamble <- paste(preamble, collapse = "\n")
           }
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
@@ -755,7 +747,7 @@ create_template <- function(
           author = author,
           ...
         )
-        print("_______Add Report Citation________")
+        cli::cli_alert_success("Added report citation.")
       }
 
       # Create report template
@@ -904,7 +896,7 @@ create_template <- function(
         sep = "\n"
       )
 
-      print("___Created report template______")
+      cli::cli_alert_success("Created report template.")
 
       ######## |###############################################################
       ##### NEFSC MT Template####
@@ -917,7 +909,7 @@ create_template <- function(
     utils::capture.output(cat(report_template), file = file.path(subdir, ifelse(rerender_skeleton, new_report_name, report_name)), append = FALSE)
     # Delete old skeleton
     if (length(grep("skeleton.qmd", list.files(file_dir, pattern = "skeleton.qmd"))) > 1) {
-      question1 <- readline("Deleting previous skeleton file...Do you want to proceed? (Y/N)")
+      question1 <- readline("Deleting previous skeleton file... Do you want to proceed? (Y/N)")
 
       # answer question1 as y if session isn't interactive
       if (!interactive()){
@@ -927,20 +919,17 @@ create_template <- function(
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         file.remove(file.path(file_dir, report_name))
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-        message("Skeleton file retained.")
+        cli::cli_alert_info("Skeleton file retained.")
       }
     }
 
     # Print message
     if (rerender_skeleton) {
-      message(
-        "Updated report skeleton in directory: ", subdir, "."
-      )
+      cli::cli_alert_success("Updated report skeleton in directory {subdir}.")
     } else {
-      message(
-        "Saved report template in directory: ", subdir, "\n",
-        "To proceeed, please edit sections within the report template in order to produce a completed stock assessment report."
-      )
+      cli::cli_alert_success("Saved report template in directory {subdir}.")
+      cli::cli_alert_info("To proceeed, please edit sections within the report template in order to produce a completed stock assessment report.",
+                          wrap = TRUE)
     }
     # Open file for analyst
     # file.show(file.path(subdir, report_name)) # this opens the new file, but also restarts the session
@@ -962,8 +951,7 @@ create_template <- function(
     # Open previous skeleton
     # file.show(file.path(subdir, report_name))
 
-    svDialogs::dlg_message("Reminder: there are changes to be made when calling an old report. Please change the year in the citation and the location and name of the results file in the first chunk of the report.",
-      type = "ok"
-    )
+    svDialogs::dlg_message("Reminder: Changes should be made when calling an old report. Please change 1) the year in the citation and 2) the location and name of the results file in the first chunk of the report.",
+      type = "ok")
   }
 }

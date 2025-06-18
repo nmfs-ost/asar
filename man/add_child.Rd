@@ -7,9 +7,12 @@
 add_child(x, label = NULL)
 }
 \arguments{
-\item{x}{An additional section to add into the template. Options for additional sections are in the 'skeleton' folder. Appropriate files are .qmd files and are formatted as such: XX_section.qmd (i.e., not a, b, c... subfiles).}
+\item{x}{An additional section to add into the template. Options for
+additional sections are in the 'skeleton' folder. Appropriate files are .qmd
+files and are formatted as such: XX_section.qmd (i.e., not a, b, c... subfiles).}
 
-\item{label}{Description of the child document being added. It should be short- one or two words, maximum.}
+\item{label}{Description of the child document being added. It should be short-
+one or two words, maximum.}
 }
 \value{
 Formatting R chunk for child document to add section into the template/skeleton.

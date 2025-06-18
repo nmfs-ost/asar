@@ -12,7 +12,7 @@ create_citation(
 }
 \arguments{
 \item{author}{A character vector of author names with their accompanying
-affiliations. For example an Jane Doe at the NWFSC Seattle, Washington office
+affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
 is found in a database located in the package: \code{system.file("resources", "affiliation_info.csv", package = "asar")}. Keys to the office addresses
 follow the naming convention of the office acronym (ex. NWFSC) with a dash

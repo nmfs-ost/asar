@@ -273,6 +273,8 @@ eval_", tab_shortname, " <- TRUE\n
     if (length(rda_tab_list) == 0){
       cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(rda_dir, 'rda_files')}.",
                              wrap = TRUE)
+      cli::cli_alert_info("If this was unexpected, did you forget to add '_table' to your tables' filenames?",
+                          wrap = TRUE)
       tables_doc <- "## Tables {#sec-tables}"
     } else {
       cli::cli_alert_success("Found {length(final_rda_tab_list)} table{?s} in an rda format (i.e., .rda) in {fs::path(rda_dir, 'rda_files')}.",
