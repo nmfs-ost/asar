@@ -14,7 +14,7 @@
 #' @param alttext_csv_dir Directory for the csv file containing alternative
 #' text and captions generated when running stockplotr::exp_all_figs_tables
 #'
-#' @return This function runs all functions from {asar} associated with
+#' @return This function runs all functions from `asar` associated with
 #' accessibility and renders the final document. The document is tagged and
 #' includes alternative text from the captions_alt_text.csv produced from
 #' `stockplotr` package also available on GitHub.
@@ -56,13 +56,13 @@
 #' }
 #'
 add_accessibility <- function(
-  x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
-  dir = getwd(),
-  rda_dir = getwd(),
-  compile = TRUE,
-  rename = NULL,
-  alttext_csv_dir = getwd()
-  ) {
+    x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
+    dir = getwd(),
+    rda_dir = getwd(),
+    compile = TRUE,
+    rename = NULL,
+    alttext_csv_dir = getwd()
+) {
 
   # Add tagpdf pkg to template and create accessibility.tex
   add_tagging(
@@ -80,7 +80,7 @@ add_accessibility <- function(
     rename = rename,
     alttext_csv_dir = rda_dir
   )
- # Render the .tex file after edits
+  # Render the .tex file after edits
   if (compile) {
     # message("______Tagging structure added to tex file.______")
     # test if this can be done when skeleton is in different folder than the wd

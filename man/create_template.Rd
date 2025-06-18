@@ -157,7 +157,8 @@ be created as a child document and added into the 02_introduction.qmd.
 To add >1 (sub)section, make the location a list corresponding to the
 order of (sub)section names listed in the 'new_section' parameter.}
 
-\item{type}{Type of report to build. Default is SAR.}
+\item{type}{Type of report to build. Default is SAR ("SAR"). New options include
+templates for PMFC ("pfmc") and NEFSC management track ("nemt").}
 
 \item{prev_year}{Year in which the previous assessment report
 was conducted. Used to pull previous assessment template.}

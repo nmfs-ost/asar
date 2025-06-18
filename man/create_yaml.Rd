@@ -10,6 +10,7 @@ create_yaml(
   prev_skeleton = NULL,
   prev_format = NULL,
   title = NULL,
+  type = NULL,
   author_list = NULL,
   author = NULL,
   add_author = NULL,
@@ -46,6 +47,9 @@ render to. Parameter is inherited from create_template.}
 
 \item{title}{The alternative title. Example:
 "Management Track Assessments Spring 2024".}
+
+\item{type}{Type of report to build. Default is SAR ("SAR"). New options include
+templates for PMFC ("pfmc") and NEFSC management track ("nemt").}
 
 \item{author_list}{A vector of strings containing pre-formatted author names
 and affiliations that would be found in the format in a yaml of a quarto

@@ -1,0 +1,46 @@
+# Data {#sec-data}
+
+<!--- Provide temporal and spatial resolutions or sample size where appropriate for each of the subsections, below.--->
+
+<!--- Provide temporal and spatial resolutions or sample size where appropriate for each of the subsections, below.--->
+
+## Fishery-dependent data
+
+<!-- Commercial fisheries landings by state, year, and gear (PacFIN is the standard source for recent domestic commercial landings), historical catch estimates, discards, recreational fisheries catches, foreign removals; sample size information for length- and age-composition data by state, year and gear, including both the number of trips and fish sampled. Description of methods to estimate abundance indices, sample size information by survey and year. Include complete tables and figures and date of data extraction. -->
+
+### Landings
+
+
+### Discards
+
+
+### Biological data
+
+
+## Fishery-independent data
+
+
+## Ageing error
+
+
+## Biological Parameters
+
+
+### Natural Mortality
+
+
+### Weight-at-length
+
+
+### Maturity
+
+
+### Fecundity
+
+
+## Environmental and ecosystem data
+
+
+### Oceanographic Index
+
+

@@ -12,6 +12,7 @@ globvar <- c(
   "last", "affiliation", "label", "type", "caption", "alt_text", "caption",
   "name", ".", "rda", "cols_to_del", "cols_to_del_seq", "essential_cols_seq",
   "file_dir", "prev_skeleton", "prev_format", "author_list", "bib_name",
-  "input", "first", "mi", "first_initial", "bib"
-)
+  "input", "first", "mi", "first_initial", "bib", "Acronym", "All", "Definition",
+  "Label", "Meaning", "X", "across", "everything", "meaning_lower", "n",
+  "read.csv")
 if (getRversion() >= "2.15.1") utils::globalVariables(globvar)
