@@ -228,6 +228,12 @@ create_template <- function(
     type <- "skeleton"
   }
 
+  if (!is.null(office) & length(office) == 1) {
+    office <- match.arg(office, several.ok = FALSE)
+  } else if (length(office) > 1) {
+    office <- ""
+  }
+
   #### Rerender skeleton ----
   if (rerender_skeleton) {
     # TODO: set up situation where species, region can be changed
@@ -607,7 +613,8 @@ create_template <- function(
         param_values = param_values,
         bib_name = bib_name,
         bib_file = bib_file,
-        year = year
+        year = year,
+        type = type
       )
 
       if (!rerender_skeleton) print("__________Built YAML Header______________")
@@ -802,7 +809,7 @@ create_template <- function(
       } # close if rerender
 
     ##### Disclaimer ----
-    disclaimer <- "These materials do not constitute a formal publication and are for information only. They are in a pre-review, pre-decisional state and should not be formally cited or reproduced. They are to be considered provisional and do not represent any determination or policy of NOAA or the Department of Commerce."
+    disclaimer <- "These materials do not constitute a formal publication and are for information only. They are in a pre-review, pre-decisional state and should not be formally cited or reproduced. They are to be considered provisional and do not represent any determination or policy of NOAA or the Department of Commerce.\n"
 
     ##### Citation ----
     # Add page for citation of assessment report
@@ -883,7 +890,7 @@ create_template <- function(
       #   )
       # )
       sections <- add_child(
-        files_to_copy,
+        c(files_to_copy, "08_tables.qmd", "09_figures.qmd"),
         # TODO: need to remove the numbers proceeding the names as well
         label = gsub(".qmd", "", unlist(files_to_copy))
       )
@@ -936,8 +943,8 @@ create_template <- function(
 
           # Create sections object to add into template
           sections <- add_child(
-            sec_list2,
-            label = gsub(".qmd", "", unlist(sec_list2))
+            c(sec_list2, "08_tables.qmd", "09_figures.qmd"),
+            label = gsub(".qmd", "", c(unlist(sec_list2), "08_tables.qmd", "09_figures.qmd"))
           )
         } else { # custom_sections explicit
 

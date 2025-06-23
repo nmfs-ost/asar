@@ -10,8 +10,8 @@
 #' \dontrun{
 #' format_quarto(format = "pdf")
 #' }
-format_quarto <- function(format = NULL,
-                          type = NULL) {
+format_quarto <- function(format = "pdf",
+                          type = "sar") {
   if (tolower(format) == "pdf") {
     paste0(
       "format: ", "\n",
