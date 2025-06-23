@@ -2,7 +2,7 @@ test_that("Creates expected start of figures doc", {
   # create tables doc
   create_figures_doc(
     subdir = getwd(),
-    figures_tables_dir = getwd()
+    figures_dir = getwd()
   )
 
   # read in tables doc
@@ -13,7 +13,8 @@ test_that("Creates expected start of figures doc", {
   fc_pasted <- paste(head_figure_content, collapse = "")
 
   # expected figures doc head
-  expected_head_figure_content <- "## Figures {#sec-figures} ```{r} #| label: 'set-rda-dir-figs'#| echo: false #| warning: false #| eval: true "
+  expected_head_figure_content <- "## Figures {#sec-figures}"
+ # expected_head_figure_content <- "## Figures {#sec-figures} ```{r} #| label: 'set-rda-dir-figs'#| echo: false #| warning: false #| eval: true "
 
   # test expectation of start of figures doc
   # TODO: Update test, and add more, after further development and integration

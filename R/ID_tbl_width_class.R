@@ -23,10 +23,10 @@ ID_tbl_width_class <- function(
     tables_dir,
     plot_name,
     portrait_pg_width) {
-  rda_path <- file.path(paste0(rda_dir, "/tables/", plot_name))
+  tables_path <- fs::path(tables_dir, "tables", plot_name)
 
-  if (file.exists(rda_path)) {
-    load(rda_path)
+  if (file.exists(tables_path)) {
+    load(tables_path)
     table_rda <- rda
     rm(rda)
     table_width <- flextable::flextable_dim(table_rda$table)[["widths"]] |>

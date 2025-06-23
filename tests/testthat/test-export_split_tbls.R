@@ -8,11 +8,11 @@ test_that("Number of split tables is calculated correctly for converted bam mode
 
   stockplotr::table_indices(dat,
                             make_rda = TRUE,
-                            figures_tables_dir = getwd())
+                            tables_dir = getwd())
 
   # indices table
   num_tabs <- export_split_tbls(
-    figures_tables_dir = getwd(),
+    tables_dir = getwd(),
     plot_name = "indices.abundance_table.rda",
     essential_columns = 1
   )
@@ -22,14 +22,14 @@ test_that("Number of split tables is calculated correctly for converted bam mode
   expect_equal(num_tabs, expected_output)
 
   # expect to see an "indices.abundance_table_split.rda" file
-  expect_no_error("indices.abundance_table_split.rda" %in% list.files(file.path("figures_tables")))
+  expect_no_error("indices.abundance_table_split.rda" %in% list.files(file.path("tables")))
 
   # expect that an object "table_list" imported into environment
-  expect_no_error(load(file.path("figures_tables", "indices.abundance_table_split.rda")))
+  expect_no_error(load(file.path("tables", "indices.abundance_table_split.rda")))
 
   expect_equal(length(table_list), 2)
 
   # erase temporary testing files
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
-  unlink(fs::path(getwd(), "figures_tables"), recursive = T)
+  unlink(fs::path(getwd(), "tables"), recursive = T)
 })
