@@ -73,10 +73,8 @@ create_tables_doc <- function(subdir = getwd(),
     # list all files in tables
     file_list <- list.files(file.path(tables_dir, "tables"))
 
-    # create sublist of only table files
-    file_tab_list <- file_list[grepl("_table", file_list)]
     # create sublist of only rda table files
-    rda_tab_list <- file_tab_list[grepl(".rda", file_tab_list)]
+    rda_tab_list <- file_list[grepl(".rda", file_list)]
 
     # remove rda table files that have an associated "split" version
     # remove "_split" from filenames
@@ -87,7 +85,7 @@ create_tables_doc <- function(subdir = getwd(),
     final_rda_tab_list <- rda_tab_list[!(remove_split_names %in% dup_tab & !grepl("_split", rda_tab_list))]
 
     # create sublist of only non-rda table files
-    # non.rda_tab_list <- file_tab_list[!grepl(".rda", file_tab_list)]
+    # non.rda_tab_list <- file_list[!grepl(".rda", file_list)]
 
     # create two-chunk system to plot each rda figure
     create_tab_chunks <- function(tab = NA,
