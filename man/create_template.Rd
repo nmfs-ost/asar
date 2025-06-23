@@ -121,6 +121,11 @@ in the document. Parameters automatically included:
 office, region, species (each of which are listed as
 individual parameters for this function, above).}
 
+\item{param_values}{List of values associated with the order
+of parameter names. Parameters automatically included:
+office, region, species (each of which are listed as
+individual parameters for this function, above).}
+
 \item{...}{Additional arguments passed into functions used in create_template
 such as \code{create_citation()}, \code{format_quarto()}, \code{add_chunk()}, ect}
 }

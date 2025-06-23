@@ -10,7 +10,7 @@ add_authors(author, rerender_skeleton = FALSE, prev_skeleton = NULL)
 \item{author}{A character vector of author names with their accompanying
 affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
-is found in a database located in the package: \code{system.file("resources", 
+is found in a database located in the package: \code{system.file("resources",
 "affiliation_info.csv", package = "asar")}. Keys to the office addresses
 follow the naming convention of the office acronym (ex. NWFSC) with a dash
 followed by the first initial of the city then the 2 letter abbreviation for

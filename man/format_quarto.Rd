@@ -9,8 +9,8 @@ format_quarto(format = NULL, type = NULL)
 \arguments{
 \item{format}{Rendering format (pdf, html, or docx).}
 
-\item{type}{Type of report to build. Default is SAR ("SAR"). New options include
-templates for PMFC ("pfmc") and NEFSC management track ("nemt").}
+\item{type}{Type of report to build. Default is SAR (NOAA Fisheries
+Stock Assessment Report).}
 }
 \value{
 This function returns part of a quarto YAML header
