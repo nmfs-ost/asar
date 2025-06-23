@@ -4,14 +4,13 @@
 \alias{create_tables_doc}
 \title{Create Quarto Document of Tables}
 \usage{
-create_tables_doc(
-  subdir = getwd(),
-  figures_tables_dir = getwd(),
-  include_all = TRUE
-)
+create_tables_doc(subdir = getwd(), tables_dir = getwd(), include_all = TRUE)
 }
 \arguments{
 \item{subdir}{Location of subdirectory storing the assessment report template}
+
+\item{tables_dir}{The location of the "tables" folder, which contains tables
+files.}
 
 \item{include_all}{TRUE/FALSE; Option to include all default figures (for
 create_figures_doc) or all default tables (for create_tables_doc) in the stock
@@ -42,6 +41,6 @@ asar::export_split_tbls with your preferred essential_columns value.
 \dontrun{
 create_tables_doc(
 subdir = getwd(),
-figures_tables_dir = here::here())
+tables_dir = here::here())
 }
 }

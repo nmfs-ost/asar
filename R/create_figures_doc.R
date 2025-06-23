@@ -1,8 +1,7 @@
 #' Create Quarto Document of Figures
 #'
-#' @param rda_dir If the user has already created .rda files containing
-#' figures, tables, alt text, and captions with `stockplotr`, rda_dir represents
-#' the location of the folder containing these .rda files ("rda_files").
+#' @param figures_dir The location of the "figures" folder, which contains
+#' figures files.
 #' @param subdir Location of subdirectory storing the assessment report template
 #' @param include_all TRUE/FALSE; Option to include all default figures (for
 #' create_figures_doc) or all default tables (for create_tables_doc) in the stock
@@ -17,10 +16,10 @@
 #' \dontrun{
 #' create_figures_doc(
 #' subdir = getwd(),
-#' figures_tables_dir = here::here())
+#' figures_dir = here::here())
 #' }
 create_figures_doc <- function(subdir = getwd(),
-                               figures_tables_dir = getwd(),
+                               figures_dir = getwd(),
                                include_all = TRUE) {
   if (!include_all) cli::cli_abort("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")
 
@@ -61,7 +60,7 @@ create_figures_doc <- function(subdir = getwd(),
         paste0("# if the figure rda exists:
 if (file.exists(file.path(rda_dir, '", fig, "'))){\n
   # load rda
-  load(file.path(figures_tables_dir, '", fig, "'))\n
+  load(file.path(figures_dir, '", fig, "'))\n
   # save rda with plot-specific name
   ", fig_shortname, "_plot_rda <- rda\n
   # remove generic rda object

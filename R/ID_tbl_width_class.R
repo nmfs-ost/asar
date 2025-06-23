@@ -15,15 +15,15 @@
 #' \dontrun{
 #' ID_tbl_width_class(
 #'   plot_name = "indices.abundance_table.rda",
-#'   figures_tables_dir = here::here(),
+#'   tables_dir = here::here(),
 #'   portrait_pg_width = 5
 #' )
 #' }
 ID_tbl_width_class <- function(
-    figures_tables_dir,
+    tables_dir,
     plot_name,
     portrait_pg_width) {
-  rda_path <- file.path(paste0(rda_dir, "/figures_tables/", plot_name))
+  rda_path <- file.path(paste0(rda_dir, "/tables/", plot_name))
 
   if (file.exists(rda_path)) {
     load(rda_path)

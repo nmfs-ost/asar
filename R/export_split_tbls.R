@@ -8,22 +8,22 @@
 #' @examples
 #' \dontrun{
 #' export_split_tbls(
-#'   figures_tables_dir = here::here(),
+#'   tables_dir = here::here(),
 #'   plot_name = "bnc_table.rda",
 #'   essential_columns = 5
 #' )
 #'
 #' export_split_tbls(
-#'   figures_tables_dir = getwd(),
+#'   tables_dir = getwd(),
 #'   plot_name = "indices.abundance_table.rda",
 #'   essential_columns = 1:2
 #' )
 #' }
 export_split_tbls <- function(
-    figures_tables_dir = NULL,
+    tables_dir = NULL,
     plot_name = NULL,
     essential_columns = NULL) {
-  rda_path <- file.path(paste0(figures_tables_dir, "/figures_tables/", plot_name))
+  rda_path <- file.path(paste0(tables_dir, "/tables/", plot_name))
 
   load(rda_path)
   table_rda <- rda
@@ -33,7 +33,7 @@ export_split_tbls <- function(
   render_lg_table(
     report_flextable = table_rda$table,
     essential_columns = essential_columns,
-    figures_tables_dir = figures_tables_dir,
+    tables_dir = tables_dir,
     plot_name = plot_name
   )
 }

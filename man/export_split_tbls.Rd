@@ -5,13 +5,14 @@
 \title{Split extra-wide tables into smaller tables and export}
 \usage{
 export_split_tbls(
-  figures_tables_dir = NULL,
+  tables_dir = NULL,
   plot_name = NULL,
   essential_columns = NULL
 )
 }
 \arguments{
-\item{figures_tables_dir}{Folder where rda files containing alternative text is located}
+\item{tables_dir}{The location of the "tables" folder, which contains tables
+files.}
 
 \item{plot_name}{Name of the .rda file containing the table}
 
@@ -28,13 +29,13 @@ Split extra-wide tables into smaller tables and export
 \examples{
 \dontrun{
 export_split_tbls(
-  figures_tables_dir = here::here(),
+  tables_dir = here::here(),
   plot_name = "bnc_table.rda",
   essential_columns = 5
 )
 
 export_split_tbls(
-  figures_tables_dir = getwd(),
+  tables_dir = getwd(),
   plot_name = "indices.abundance_table.rda",
   essential_columns = 1:2
 )

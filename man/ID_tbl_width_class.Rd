@@ -4,10 +4,11 @@
 \alias{ID_tbl_width_class}
 \title{Identify table width class}
 \usage{
-ID_tbl_width_class(figures_tables_dir, plot_name, portrait_pg_width)
+ID_tbl_width_class(tables_dir, plot_name, portrait_pg_width)
 }
 \arguments{
-\item{figures_tables_dir}{Folder where rda files containing alternative text is located}
+\item{tables_dir}{The location of the "tables" folder, which contains tables
+files.}
 
 \item{plot_name}{Name of the .rda file containing the table}
 
@@ -28,7 +29,7 @@ Identify table width class
 \dontrun{
 ID_tbl_width_class(
   plot_name = "indices.abundance_table.rda",
-  figures_tables_dir = here::here(),
+  tables_dir = here::here(),
   portrait_pg_width = 5
 )
 }

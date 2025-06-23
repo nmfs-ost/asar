@@ -4,22 +4,17 @@
 \alias{create_figures_doc}
 \title{Create Quarto Document of Figures}
 \usage{
-create_figures_doc(
-  subdir = getwd(),
-  figures_tables_dir = getwd(),
-  include_all = TRUE
-)
+create_figures_doc(subdir = getwd(), figures_dir = getwd(), include_all = TRUE)
 }
 \arguments{
 \item{subdir}{Location of subdirectory storing the assessment report template}
 
+\item{figures_dir}{The location of the "figures" folder, which contains
+figures files.}
+
 \item{include_all}{TRUE/FALSE; Option to include all default figures (for
 create_figures_doc) or all default tables (for create_tables_doc) in the stock
 assessment report. Default is true.}
-
-\item{rda_dir}{If the user has already created .rda files containing
-figures, tables, alt text, and captions with \code{stockplotr}, rda_dir represents
-the location of the folder containing these .rda files ("rda_files").}
 }
 \value{
 A quarto document with pre-loaded R chunk that adds the
@@ -33,6 +28,6 @@ Create Quarto Document of Figures
 \dontrun{
 create_figures_doc(
 subdir = getwd(),
-figures_tables_dir = here::here())
+figures_dir = here::here())
 }
 }

@@ -76,7 +76,6 @@ asar::create_template(
   resdir = "data",
   model_results = "Petrale_sole_std_res_2023.csv",
   model = "SS3",
-  figures_tables_dir = file.path(getwd(), "report"),
   end_year = 2022
   ref_line = "msy",
   ref_line_sb = "msy",
