@@ -15,19 +15,6 @@ convert_output(output_file, model, fleet_names = NULL)
 \item{fleet_names}{Names of fleets in the assessment model as
 shortened in the output file. If fleet names are not properly read, then
 indicate the fleets names as an acronym in a vector}
-<<<<<<< HEAD
-
-\item{file_save}{TRUE/FALSE; Save the formatted object rather
-than calling the function and adding the formatted object to
-the global environment? Default is false.}
-
-\item{savedir}{Directory to save the converted output file. Defaults to
-working directory.}
-
-\item{save_name}{Name of the converted output file (do not use
-spaces).}
-=======
->>>>>>> eb1fa0f (Improvements to convert_output (#247))
 }
 \value{
 A reformatted and standardized version of assessment model results
