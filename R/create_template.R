@@ -942,20 +942,14 @@ create_template <- function(
         } else { # custom_sections explicit
 
           # Add selected sections from base
-          sec_list1 <- add_base_section(files_to_copy)
+          sec_list1 <- add_base_section(c(files_to_copy, "08_tables.qmd", "09_figures.qmd"))
           # Create new sections as .qmd in folder
           # check if sections are in custom_sections list
           if (any(stringr::str_replace(section_location, "^[a-z]+-", "") %notin% custom_sections)) {
             cli::cli_abort("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
           }
-          if (include_tables) {
-            sec_list1 <- c(sec_list1, "08_tables.qmd")
-          }
-          if (include_figures) {
-            sec_list1 <- c(sec_list1, "09_figures.qmd")
-          }
           # reorder sec_list1 alphabetically so that 11_appendix goes to end of list
-          sec_list1 <- sec_list1[order(names(setNames(sec_list1, sec_list1)))]
+          sec_list1 <- sec_list1[order(names(stats::setNames(sec_list1, sec_list1)))]
 
           sec_list2 <- add_section(
             new_section = new_section,
