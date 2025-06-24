@@ -853,46 +853,10 @@ create_template <- function(
         label = gsub(".qmd", "", unlist(sections))
       )
     } else if (custom == FALSE) {
-      # sections <- add_child(
-      #   c(
-      #     "01_executive_summary.qmd",
-      #     "02_introduction.qmd",
-      #     "03_data.qmd",
-      #     "04a_assessment-configuration.qmd",
-      #     "04b_assessment-results.qmd",
-      #     "04c_assessment-sensitivity.qmd",
-      #     "04d_assessment-benchmarks.qmd",
-      #     "04e_assessment-projections.qmd",
-      #     "05_discussion.qmd",
-      #     "06_acknowledgments.qmd",
-      #     "07_references.qmd",
-      #     "08_tables.qmd",
-      #     "09_figures.qmd",
-      #     "10_notes.qmd",
-      #     "11_appendix.qmd"
-      #   ),
-      #   label = c(
-      #     "executive_summary",
-      #     "introduction",
-      #     "data",
-      #     "assessment-configuration",
-      #     "assessment-results",
-      #     "assessment-sensitivity",
-      #     "assessment-benchmarks",
-      #     "assessment-projections",
-      #     "discussion",
-      #     "acknowledgments",
-      #     "references",
-      #     "tables",
-      #     "figures",
-      #     "notes",
-      #     "appendix"
-      #   )
-      # )
       sections <- add_child(
-        c(files_to_copy, "08_tables.qmd", "09_figures.qmd"),
+        sort(c(files_to_copy, "08_tables.qmd", "09_figures.qmd")),
         # TODO: need to remove the numbers proceeding the names as well
-        label = gsub(".qmd", "", unlist(files_to_copy))
+        label = stringr::str_extract(sort(c(files_to_copy, "08_tables.qmd", "09_figures.qmd")), "(?<=_).+(?=\\.qmd$)")
       )
     } else {
       ###### Rerender & custom ----
@@ -900,13 +864,13 @@ create_template <- function(
       # Create custom template from existing skeleton sections
       if (is.null(new_section)) {
         section_list <- add_base_section(files_to_copy)
-        sections <- add_child(c(section_list, "08_tables.qmd", "09_figures.qmd"),
+        sections <- add_child(section_list,
                               label = custom_sections # this might need to be changed
         )
         # Create sections object to add into template
         sections <- add_child(
           sections,
-          label = gsub(".qmd", "", unlist(sections))
+          label = stringr::str_extract(unlist(sections), "(?<=_).+(?=\\.qmd$)")
         )
 
       } else { # custom = TRUE
@@ -916,23 +880,7 @@ create_template <- function(
         if (is.null(custom_sections)) {
           # TODO: type - this needs to just pull all files from folder that
           # it was copying from when custom sections is null -- DONE
-          # sec_list1 <- list(
-          #   "01_executive_summary.qmd",
-          #   "02_introduction.qmd",
-          #   "03_data.qmd",
-          #   "04a_assessment-configuration.qmd",
-          #   "04b_assessment-results.qmd",
-          #   "04c_assessment-sensitivity.qmd",
-          #   "04d_assessment-benchmarks.qmd",
-          #   "04e_assessment-projections.qmd",
-          #   "05_discussion.qmd",
-          #   "06_acknowledgments.qmd",
-          #   "07_references.qmd",
-          #   "08_tables.qmd",
-          #   "09_figures.qmd",
-          #   "10_notes.qmd",
-          #   "11_appendix.qmd"
-          # )
+
           sec_list1 <- files_to_copy
           sec_list2 <- add_section(
             new_section = new_section,
@@ -943,13 +891,13 @@ create_template <- function(
 
           # Create sections object to add into template
           sections <- add_child(
-            c(sec_list2, "08_tables.qmd", "09_figures.qmd"),
-            label = gsub(".qmd", "", c(unlist(sec_list2), "08_tables.qmd", "09_figures.qmd"))
+            sort(c(sec_list2, "08_tables.qmd", "09_figures.qmd")),
+            label = stringr::str_extract(sort(c(files_to_copy, "08_tables.qmd", "09_figures.qmd")), "(?<=_).+(?=\\.qmd$)")
           )
         } else { # custom_sections explicit
 
           # Add selected sections from base
-          sec_list1 <- add_base_section(c(files_to_copy, "08_tables.qmd", "09_figures.qmd"))
+          sec_list1 <- add_base_section(sort(c(files_to_copy, "08_tables.qmd", "09_figures.qmd")))
           # Create new sections as .qmd in folder
           # check if sections are in custom_sections list
           if (any(stringr::str_replace(section_location, "^[a-z]+-", "") %notin% custom_sections)) {
@@ -967,7 +915,7 @@ create_template <- function(
           # Create sections object to add into template
           sections <- add_child(
             sec_list2,
-            label = gsub(".qmd", "", unlist(sec_list2))
+            label = stringr::str_extract(unlist(sec_list2), "(?<=_).+(?=\\.qmd$)")
           )
         } # close if statement for very specific sectioning
       } # close if statement for extra custom
