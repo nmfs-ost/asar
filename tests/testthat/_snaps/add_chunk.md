@@ -5,7 +5,7 @@
     Output
       ```{r} 
       #| echo: false 
-      #| warning: false 
+      #| warnings: false 
       #| eval: true
       plot(cars$speed, cars$distance)
       ``` 
@@ -18,7 +18,7 @@
     Output
       ```{r} 
       #| echo:true 
-      #| warning: false
+      #| warning: false 
       #| eval: true
       plot(cars$speed, cars$distance)
       ``` 
