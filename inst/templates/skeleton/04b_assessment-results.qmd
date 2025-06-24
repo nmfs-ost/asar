@@ -1,14 +1,14 @@
-### Modeling Results {#sec-assmt-results}
+## Modeling Results {#sec-assmt-results}
 
 <!-- For each of the following subsections, please describe the results for the base model. -->
 
-#### Parameter Estimates
+### Parameter Estimates
 
 
-#### Recruitment Estimates and Deviations
+### Time Series
 
 
-#### Model Fits
+### Model Fits
 
 
-#### Model Diagnostics
+### Model Diagnostics
