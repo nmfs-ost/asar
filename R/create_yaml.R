@@ -110,6 +110,15 @@ create_yaml <- function(
     #   add_params <- paste("  ", " ", param_names, ": ", "'", param_values, "'", sep = "")
     #   yaml <- append(yaml, add_params, after = grep("bibliography:", yaml) - 1)
     # }
+      
+      # add in spp image
+      if (species != "species") {
+        yaml <- stringr::str_replace(yaml, yaml[grep("cover: ", yaml)], paste("cover: ", spp_image, sep = ""))
+      }
+      
+      # Replace output-file name
+      out_name <- glue::glue("{tolower(species)}_{type}_{year}")
+      yaml <- stringr::str_replace(yaml, yaml[grep("output-file: ", yaml)], paste("output-file: ", out_name, sep = ""))
 
       # Parameters
       # office, region, and species are default parameters

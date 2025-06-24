@@ -436,6 +436,10 @@ create_template <- function(
         prev_skeleton[grep("title:", prev_skeleton)],
         "[0-9]+"
       ))
+      # Add in species image if updated in rerender
+      if (species != "species") {
+        file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
+      }
       # if it is previously html and the rerender species html then need to copy over html formatting
       if (tolower(prev_format) != "html" & tolower(format) == "html") {
         if (!file.exists(file.path(file_dir, "support_files", "theme.scss"))) file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
@@ -576,6 +580,16 @@ create_template <- function(
         # TODO: update below so title gets updated if new input is added such as region/species/office
         if (rerender_skeleton) {
           title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
+          if (title == "'Stock Assessment Report Template' " & (!is.null(office) | !is.null(species) | !is.null(region))) {
+            title <- create_title(
+              office = office,
+              species = species,
+              spp_latin = spp_latin,
+              region = region,
+              type = type,
+              year = year
+            )
+          }
         } else {
           title <- create_title(
             office = office,
@@ -897,7 +911,7 @@ create_template <- function(
         } else { # custom_sections explicit
 
           # Add selected sections from base
-          sec_list1 <- add_base_section(sort(c(files_to_copy, "08_tables.qmd", "09_figures.qmd")))
+          sec_list1 <- add_base_section(files_to_copy)
           # Create new sections as .qmd in folder
           # check if sections are in custom_sections list
           if (any(stringr::str_replace(section_location, "^[a-z]+-", "") %notin% custom_sections)) {
