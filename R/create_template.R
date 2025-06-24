@@ -823,7 +823,7 @@ create_template <- function(
       } # close if rerender
 
     ##### Disclaimer ----
-    disclaimer <- "These materials do not constitute a formal publication and are for information only. They are in a pre-review, pre-decisional state and should not be formally cited or reproduced. They are to be considered provisional and do not represent any determination or policy of NOAA or the Department of Commerce.\n"
+    disclaimer <- "{{< pagebreak >}}\n\n## Disclaimer {-}\n\nThese materials do not constitute a formal publication and are for information only. They are in a pre-review, pre-decisional state and should not be formally cited or reproduced. They are to be considered provisional and do not represent any determination or policy of NOAA or the Department of Commerce.\n"
 
     ##### Citation ----
     # Add page for citation of assessment report
