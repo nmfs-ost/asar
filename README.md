@@ -51,8 +51,8 @@ The following code will allow the user to replicate the [2023 petrale sole stock
 The SS3 Report.sso files was converted using the following code:
 
 ```r
-asar::convert_output(
-  output_file = "~/data/Report.sso",
+output <- asar::convert_output(
+  output_file = file.path(test_path("fixtures", "ss3_models"), "models", "Simple"),
   model = "ss3")
 ```
 
@@ -73,7 +73,7 @@ asar::create_template(
   simple_affiliation = FALSE,
   param_names = c("nf","sf"),
   param_values = c("North fleet", "South fleet"),
-  model_results = petrale_output
+  model_results = output
 )
 ```
 
@@ -82,11 +82,11 @@ Note: The output of this report is an example based on a real stock assessment. 
 ## Testing
 
 We encourage users to test `asar` throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. **Currently, `asar` is only setup to render to a pdf or html.** Once the user successfully executes `create_template()`, all files are created and the user can render the document from the skeleton file:
- <!--- change screenshot --->
+
 ![](man/figures/example_pop-up.PNG)
 
 All associated files will be created in a folder called `report` within the `file_dir` argument path (default working directory).
- <!--- change screenshot --->
+
 ![](man/figures/example_file_system.PNG)
 
 This is a modularized template, there is no need to make any edits to the skeleton file. To write the report, user should navigate and open each supporting section Quarto document labeled:
