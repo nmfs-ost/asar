@@ -216,7 +216,8 @@ add_alttext <- function(
     # Check that selected tex_line contains a marked figure - aka correct placement
     file_name <- stringr::str_remove(x, ".tex")
     if (!grepl(glue::glue("{file_name}_files/figure-pdf/fig-"), tex_file[fig_line])) {
-      cli::cli_alert_warning(glue::glue("Improper line for appendment: \n Skipped adding alternative text for {names(alt_text_list[i])}"))
+      cli::cli_alert_warning("Improper line for appendment.")
+      cli::cli_alert_warning("Skipped adding alternative text for {names(alt_text_list[i])}", wrap = TRUE)
       next
     }
     tex_file[fig_line] <- gsub(

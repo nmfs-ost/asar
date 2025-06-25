@@ -23,6 +23,12 @@ add_section <- function(
     custom_sections = NULL,
     new_section = NULL,
     section_location = NULL) {
+  if (is.null(new_section)) {
+    cli::cli_abort("New section name (`new_section`) is NULL.")
+  }
+  if (is.null(section_location)) {
+    cli::cli_abort("Location of new section (`section_location`) is NULL.")
+  }
   # Location options
   # before-section
   # after-section
@@ -121,6 +127,11 @@ add_section <- function(
       # cli::cli_abort("No available option for adding a new section 'in' another quarto document.", call. = FALSE)
       # recognize locality_prev file
       file_for_subsection <- list.files(file.path(subdir))[grep(local_section, list.files(file.path(subdir)))]
+      if (length(file_for_subsection) == 0) {
+        cli::cli_abort(c("Unable to find the template file containing the target location of new section file.",
+                       "i" = "Did you correctly enter the `section_location`?",
+                       "x" = "You entered `section_location` = {section_location}"))
+        }
       # create code for reading in child doc
       child_sec <- add_child(
         section_i_name,
@@ -129,12 +140,17 @@ add_section <- function(
         stringr::str_remove("\\n \\{\\{< pagebreak >\\}\\} \\n")
       # append that text to file
       # if (!file.exists(fs::path(subdir, file_for_subsection)))
-      utils::capture.output(cat(child_sec), file = fs::path(subdir, file_for_subsection), append = TRUE)
+      utils::capture.output(cat(child_sec),
+                            file = fs::path(subdir, file_for_subsection),
+                            append = TRUE)
       # section does not need to be added to appended custom sections as stated above
       # creating qmd is already done in line 48
     } else {
-      cli::cli_abort("Invalid selection for placement of section. Please name the follow the format 'placement-section_name' for adding a new section.")
+      cli::cli_abort(c("Invalid selection for section placement (`section_location`).",
+                       "i" = "Did you correctly enter the `section_location`?",
+                       "i" = "You entered `section_location` = {section_location}.",
+                       "i" = "Use the following format to add a new section, where placement = in, before, or after: 'placement-section_name'."))
     }
   } # close for loop
-  custom_sections
+  if (!is.null(custom_sections)) custom_sections
 }

@@ -44,8 +44,13 @@ add_tagging <- function(
     compile = TRUE,
     rename = NULL
 ) {
+  if (length(x) == 0){
+    cli::cli_abort(c(message = "Report .tex file not found.",
+                   "i" = "`x` entered as an empty character",
+                   "i" = "`dir` entered as {dir}"))
+  }
   # Read latex file
-  tex_file <- readLines(file.path(dir, x))
+  tex_file <- readLines(fs::path(dir, x))
 
   # Identify line where the new accessibility content should be added after
   line_after <- grep("\\PassOptionsToPackage\\{dvipsnames\\,svgnames\\,x11names\\}\\{xcolor\\}", tex_file)

@@ -7,7 +7,7 @@
 #' with `asar`.
 #' @export
 #'
-#' @examples 
+#' @examples
 #' \dontrun{
 #' create_citation(
 #'   title = "SA Report for Jellyfish",
@@ -22,7 +22,8 @@ create_citation <- function(
     year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")) {
   # Check if author is input - improved from previous fxn so did not fail
     if (is.null(author) | any(author == "")) {
-      cli::cli_alert("Authorship is not defined.")
+      cli::cli_alert_warning("Authorship not defined.")
+      cli::cli_alert_info("Did you forget to specify `author`?")
       # Define default citation - needs author editing
       citation <- paste0(
         "{{< pagebreak >}} \n",
@@ -72,7 +73,8 @@ create_citation <- function(
 
       # Check
       if (nrow(primary_author_office) < 1) {
-        cli::cli_alert_warning("No location found for primary author. Please edit the citation found in the 'skeleton.qmd'.")
+        cli::cli_alert_warning("No location found for primary author.")
+        cli::cli_alert("Please edit the citation in the 'skeleton.qmd'.")
         cit <- paste0(
           "{{< pagebreak >}} \n",
           "\n",

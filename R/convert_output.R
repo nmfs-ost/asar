@@ -73,8 +73,19 @@ convert_output <- function(
   )
   out_new <- out_new[-1, ]
 
+  if (!exists("output_file")) {
+    cli::cli_abort(c(message = "Missing `output_file`."))
+  }
+
+  if (!exists("model")) {
+    cli::cli_abort(c(message = "Missing `model`."))
+  }
+
   # check if file exists
-  if (!file.exists(output_file)) cli::cli_abort("File not found.")
+  if (!file.exists(output_file)) {
+    cli::cli_abort(c(message = "`output_file` not found.",
+                     "i" = "`output_file` entered as {output_file}"))
+  }
 
   # Recognize model through file extension
   # Uncomment later
@@ -109,6 +120,12 @@ convert_output <- function(
     if (is.null(fleet_names)){
       fleet_info <- SS3_extract_df(dat, "Fleet")[-1,]
       fleet_names <- stats::setNames(fleet_info[[ncol(fleet_info)]], fleet_info[[1]])
+    }
+
+    # Extract fleet names
+    if (is.null(fleet_names)){
+      fleet_info <- SS3_extract_df(dat, "Fleet")[-1,]
+      fleet_names <- setNames(fleet_info[[ncol(fleet_info)]], fleet_info[[1]])
     }
 
     # Extract fleet names
@@ -1585,12 +1602,14 @@ convert_output <- function(
     cli::cli_abort("File not currently compatible.")
     #### AMAK ####
   } else if (model == "amak") {
-    cli::cli_abort("File not currently compatible.")
+    cli::cli_abort("WHAM output not currently compatible.")
     #### JABBA ####
   } else if (tolower(model) == "jabba") {
-    cli::cli_abort("File not currently compatible.")
+    cli::cli_abort("JABBA output not currently compatible.")
   } else {
-    cli::cli_abort("File not compatible.")
+    cli::cli_abort(c(message = "Output file not compatible.",
+                     "i" = "`model` entered as {model}.",
+                     "i" = "Accepted `model` options: SS3, BAM, WHAM, AMAK, JABBA."))
   }
 
   #### Exporting ####
@@ -1628,7 +1647,7 @@ convert_output <- function(
       )) |>
       dplyr::select(-alt_label)
   }
-  cli::cli_alert_success("Finished!")
+  cli::cli_alert_success("Conversion finished!")
   return(out_new)
 
 } # close function

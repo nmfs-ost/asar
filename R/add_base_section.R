@@ -2,11 +2,14 @@
 #'
 #' @inheritParams create_template
 #'
-#' @return Call and copy the sections in the package templates to create an outline for a stock assessment
+#' @return Call and copy the sections in the package templates to create an
+#' outline for a stock assessment
 #' @export
 #'
 #' @examples add_base_section(c("executive summary", "assessment", "results"))
-add_base_section <- function(custom_sections) {
+add_base_section <- function(custom_sections = NULL) {
+  if (is.null(custom_sections)) cli::cli_abort("Custom sections list (`custom_sections`) is NULL.")
+
   sec_sel <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2", custom_sections)))
   section_list <- list()
   for (i in 1:length(sec_sel)) {
