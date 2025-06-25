@@ -18,8 +18,6 @@
 create_figures_doc <- function(subdir = getwd(),
                                figures_dir = getwd()) {
 
-  figures_doc_header <- "# Figures {#sec-figures}\n \n"
-
   # add chunk that creates object as the directory of all rdas
   figures_doc_setup <- paste0(
     add_chunk(
