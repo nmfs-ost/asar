@@ -4,12 +4,12 @@
 #' @param complex TRUE/FALSE; Is this a species complex? Default
 #'  is false.
 #'
-#' @return Return a string containing a title for a NOAA Fisheries stock 
+#' @return Return a string containing a title for a NOAA Fisheries stock
 #' assessment report.
 #' @export
 #'
 #' @examples create_title(
-#'   type = "SAR", office = "SEFSC", species = "Red Snapper", 
+#'   type = "SAR", office = "SEFSC", species = "Red Snapper",
 #'   spp_latin = "Lutjanus campechanus", region = "South Atlantic",
 #'   year = 2024
 #' )
@@ -21,6 +21,7 @@ create_title <- function(
     region = NULL,
     year = format(Sys.Date(), "%Y"),
     complex = NULL) {
+
   # Species latin name with italics latex fxn
   spp_latin <- paste("\\textit{", spp_latin, "}", sep = "")
 

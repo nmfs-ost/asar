@@ -3,7 +3,7 @@
 #' @inheritParams create_template
 #' @param prev_skeleton A character vector of the previous skeleton file read in through \code{readLines()}
 #'
-#' @returns A list of authors formatted for a yaml in quarto. Viewable by running the 
+#' @returns A list of authors formatted for a yaml in quarto. Viewable by running the
 #' return object inside of cat() for each part of the list.
 #' @export
 #'
@@ -22,7 +22,7 @@ add_authors <- function(
   author_names <- names(author)
   # Get authors into readable format for ordering
   authors <- data.frame(name = author_names, office = author, row.names = NULL)
-  
+
   # Check if rerender and if author is already added
   # TODO: add feature to allow removal of authors if there are ones that
   # are repeated from the previous skeleton and those named (not just
@@ -36,14 +36,14 @@ add_authors <- function(
         cli::cli_abort("No skeleton quarto file found in the working directory.")
       }
     }
-    
+
     # Pull all author names from prev_skeleton
     author_prev <- grep(
       "\\- name:\\s*'",
       prev_skeleton,
       value = TRUE
     )
-    
+
     # Remove every second occurance of "-name"
     if (length(author_prev) <= 2) {
       author_prev <- author_prev[1]
@@ -57,22 +57,22 @@ add_authors <- function(
       "\\1",
       author_prev
     )
-    
+
     setdiff(author_names, author_prev) -> author2
-    
+
     # return if null
     if (is.null(author2)) {
-      return(NULL) # this line should stop the function here 
+      return(NULL) # this line should stop the function here
     } else {
       # Continue if there are authors
       # subset authors with only ones new ones
       authors <- dplyr::filter(authors, name %in% author2)
     }
   }
-  
+
   # Load in affiliation
   affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
-  
+
   author_list <- list()
   if (any(authors$name != "1")) { # nrow(authors) > 0 |
     # print("inside author==1")
@@ -137,6 +137,6 @@ add_authors <- function(
       ) -> author_list[[1]]
     } # close rerender if else statement
   } # close if else statement
-  
+
   return(author_list)
 } # close function

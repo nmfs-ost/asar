@@ -47,7 +47,7 @@ Write Stock Assessment Report Title
 }
 \examples{
 create_title(
-  type = "SAR", office = "SEFSC", species = "Red Snapper", 
+  type = "SAR", office = "SEFSC", species = "Red Snapper",
   spp_latin = "Lutjanus campechanus", region = "South Atlantic",
   year = 2024
 )

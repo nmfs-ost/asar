@@ -14,8 +14,10 @@
 #' share the same caption. To specify a different repeated column(s), use
 #' asar::export_split_tbls with your preferred essential_columns value.
 #'
+#' @param tables_dir The location of the "tables" folder, which contains tables
+#' files.
 #' @inheritParams create_figures_doc
-#' 
+#'
 #' @return Create a quarto document as part of a stock assessment outline with
 #' pre-loaded R chunks that add stock assessment tables from the nmfs-ost/stockplotr
 #' R package, or other tables in the same rda format.
@@ -25,12 +27,10 @@
 #' \dontrun{
 #' create_tables_doc(
 #' subdir = getwd(),
-#' rda_dir = here::here())
+#' tables_dir = here::here())
 #' }
 create_tables_doc <- function(subdir = getwd(),
-                              rda_dir = getwd(),
-                              include_all = TRUE) {
-
+                              tables_dir = getwd()) {
   # NOTE: essential_columns = 1 for all tables split using export_split_tbls() in
   # the code below.
   # To customize essential_columns, the user must run export_split_tbls() manually
@@ -45,15 +45,13 @@ create_tables_doc <- function(subdir = getwd(),
   # set landscape page width (in)
   landscape_pg_width <- 8
 
-  if (!include_all) cli::cli_abort("Functionality for adding specific tables is still in development. Please set 'include_all' to true and edit the 08_tables.qmd file to remove specific tables from the report.")
-
     # add header
-    tables_doc_header <- paste0("## Tables {#sec-tables}\n \n")
+    tables_doc_header <- paste0("# Tables {#sec-tables}\n \n")
 
     # add chunk that creates object as the directory of all rdas
     tables_doc_setup <- paste0(
       add_chunk(
-        paste0("library(flextable)\nrda_dir <- '", rda_dir, "/rda_files'"),
+        glue::glue("library(flextable)\ntables_dir <- '{tables_dir}/tables'"),
         label = "set-rda-dir-tbls",
         # eval = "true",
         # add_option = TRUE,
@@ -69,13 +67,11 @@ create_tables_doc <- function(subdir = getwd(),
 
     tables_doc <- ""
 
-    # list all files in rda_files
-    file_list <- list.files(file.path(rda_dir, "rda_files"))
+    # list all files in tables
+    file_list <- list.files(file.path(tables_dir, "tables"))
 
-    # create sublist of only table files
-    file_tab_list <- file_list[grepl("_table", file_list)]
     # create sublist of only rda table files
-    rda_tab_list <- file_tab_list[grepl(".rda", file_tab_list)]
+    rda_tab_list <- file_list[grepl(".rda", file_list)]
 
     # remove rda table files that have an associated "split" version
     # remove "_split" from filenames
@@ -86,11 +82,11 @@ create_tables_doc <- function(subdir = getwd(),
     final_rda_tab_list <- rda_tab_list[!(remove_split_names %in% dup_tab & !grepl("_split", rda_tab_list))]
 
     # create sublist of only non-rda table files
-    # non.rda_tab_list <- file_tab_list[!grepl(".rda", file_tab_list)]
+    # non.rda_tab_list <- file_list[!grepl(".rda", file_list)]
 
     # create two-chunk system to plot each rda figure
     create_tab_chunks <- function(tab = NA,
-                                  rda_dir = getwd()){
+                                  tables_dir = getwd()){
 
       # test whether table has been split
       split <- grepl("split", tab)
@@ -104,18 +100,18 @@ create_tables_doc <- function(subdir = getwd(),
       tbl_orient <- ifelse(split,
                            "extra_wide",
                            ID_tbl_width_class(plot_name = tab_shortname,
-                                              rda_dir = rda_dir,
+                                              tables_dir = tables_dir,
                                               portrait_pg_width = portrait_pg_width))
 
-      ## import table, caption, alt text
+      ## import table, caption
       ## do this for all tables
       tables_doc_plot_setup1 <- paste0(
         add_chunk(
           paste0(
 "# if the table rda exists:
-if (file.exists(file.path(rda_dir, '", stringr::str_remove(tab, "_split"), "'))){\n
+if (file.exists(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))){\n
 # load rda
-load(file.path(rda_dir, '", stringr::str_remove(tab, "_split"), "'))\n
+load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
 # save rda with table-specific name\n",
 tab_shortname, "_table_rda <- rda\n
 # save table and caption as separate objects; set eval to TRUE\n",
@@ -125,7 +121,7 @@ eval_", tab_shortname, " <- TRUE\n
 # if the table rda does not exist, don't evaluate the next chunk
 } else {eval_",  tab_shortname, " <- FALSE}"
           ),
-          label = paste0("tab-", tab_shortname, "-setup")
+          label = glue::glue("tab-{tab_shortname}-setup")
           # eval = "true"
         ),
 "\n"
@@ -135,21 +131,18 @@ eval_", tab_shortname, " <- TRUE\n
       if(tbl_orient == "regular"){
           tables_doc_plot_setup2 <- paste0(
             add_chunk(
-              paste0(tab_shortname, "_table"),
-              label = paste0("tbl-", tab_shortname),
+              glue::glue("{tab_shortname}_table"),
+              label = glue::glue("tbl-{tab_shortname}"),
               # eval = paste0("!expr eval_", tab_shortname),
               # add_option = TRUE,
               chunk_option = c(
                 "echo: false",
                 "warnings: false",
                 glue::glue(
-                  "eval: !expr if(eval_{tab_shortname}) {tab_shortname}_alt_text"
+                  "tbl-cap: !expr if(eval_{tab_shortname}) {tab_shortname}_cap"
                 ),
                 glue::glue(
-                  "tbl-cap: !expr if(eval_", tab_shortname, ") ", tab_shortname, "_cap"
-                ),
-                glue::glue(
-                  "include: !expr eval_", tab_shortname
+                  "include: !expr eval_{tab_shortname}"
                 )
               )
             ),
@@ -162,24 +155,21 @@ eval_", tab_shortname, " <- TRUE\n
           # add landscape braces before R chunk
           "::: {.landscape}\n\n",
           add_chunk(
-              paste0(
-                tab_shortname, "_table |>
+              glue::glue(
+                "{tab_shortname}_table |>
                 flextable::fit_to_width(max_width = 8)"
               ),
-            label = paste0("tbl-", tab_shortname),
+            label = glue::glue("tbl-{tab_shortname}"),
             # eval = paste0("!expr eval_", tab_shortname),
             # add_option = TRUE,
             chunk_option = c(
               "echo: false",
               "warnings: false",
               glue::glue(
-                "eval: !expr if(eval_{tab_shortname}) {tab_shortname}_alt_text"
+                "tbl-cap: !expr if(eval_{tab_shortname}) {tab_shortname}_cap"
               ),
               glue::glue(
-                "tbl-cap: !expr if(eval_", tab_shortname, ") ", tab_shortname, "_cap"
-              ),
-              glue::glue(
-                "include: !expr eval_", tab_shortname
+                "include: !expr eval_{tab_shortname}"
               )
             )
           ),
@@ -192,12 +182,12 @@ eval_", tab_shortname, " <- TRUE\n
        if(tbl_orient == "extra_wide"){
         if (split) {
           # identify number of split tables
-          load(fs::path(rda_dir, "rda_files", tab))
+          load(fs::path(tables_dir, "tables", tab))
           split_tables <- length(table_list)
         } else {
           # split extra_wide tables into smaller tables and export AND
           # identify number of split tables IF not already split
-          split_tables <- export_split_tbls(rda_dir = rda_dir,
+          split_tables <- export_split_tbls(tables_dir = tables_dir,
                                           plot_name = tab,
                                           essential_columns = 1)
         }
@@ -206,21 +196,21 @@ eval_", tab_shortname, " <- TRUE\n
          tables_doc_plot_setup2_import <- paste0(
            add_chunk(
              paste0(
-               "load(file.path(rda_dir, '", tab, "'))\n
+               "load(file.path(tables_dir, '", tab, "'))\n
 # save rda with plot-specific name\n",
                tab_shortname, "_table_split_rda <- table_list\n
 # extract table caption specifiers\n",
                tab_shortname, "_cap_split <- names(", tab_shortname, "_table_split_rda)"
              )
              ,
-             label = paste0("tbl-", tab_shortname, "-labels"),
+             label = glue::glue("tbl-{tab_shortname}-labels"),
              # eval = paste0("!expr eval_", tab_shortname),
              # add_option = TRUE,
              chunk_option = c(
                "echo: false",
                "warnings: false",
                glue::glue(
-                 "eval: !expr if(eval_{tab_shortname}) {tab_shortname}_alt_text"
+                 "eval: !expr if(eval_{tab_shortname}) {tab_shortname}_cap"
                ),
                glue::glue("include: false")
              )
@@ -241,15 +231,15 @@ eval_", tab_shortname, " <- TRUE\n
                 tab_shortname, "_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
               )
               ,
-              label = paste0("tbl-", tab_shortname, i),
-              eval = paste0("!expr eval_", tab_shortname),
+              label = glue::glue("tbl-{tab_shortname}", i),
+              eval = glue::glue("!expr eval_{tab_shortname}"),
               add_option = TRUE,
               chunk_option = c(
                 glue::glue(
-                  "tbl-cap: !expr if(eval_", tab_shortname, ") paste0(", tab_shortname, "_cap, '(', ", tab_shortname, "_cap_split[[", i, "]], ')')"
+                  "tbl-cap: !expr if(eval_{tab_shortname}) paste0({tab_shortname}_cap, '(', {tab_shortname}_cap_split[[", i, "]], ')')"
                 ),
                 glue::glue(
-                  "include: !expr eval_", tab_shortname
+                  "include: !expr eval_{tab_shortname}"
                 )
               )
             ),
@@ -271,18 +261,18 @@ eval_", tab_shortname, " <- TRUE\n
     }
 
     if (length(rda_tab_list) == 0){
-      cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(rda_dir, 'rda_files')}.",
+      cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
                              wrap = TRUE)
-      tables_doc <- "## Tables {#sec-tables}"
+      tables_doc <- "# Tables {#sec-tables}"
     } else {
-      cli::cli_alert_success("Found {length(final_rda_tab_list)} table{?s} in an rda format (i.e., .rda) in {fs::path(rda_dir, 'rda_files')}.",
+      cli::cli_alert_success("Found {length(final_rda_tab_list)} table{?s} in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
                              wrap = TRUE)
       # paste rda table code chunks into one object
       if (length(final_rda_tab_list) > 0) {
         rda_tables_doc <- ""
         for (i in 1:length(final_rda_tab_list)){
           tab_chunk <- create_tab_chunks(tab = final_rda_tab_list[i],
-                                         rda_dir = rda_dir)
+                                         tables_dir = tables_dir)
 
           rda_tables_doc <- paste0(rda_tables_doc, tab_chunk)
         }
@@ -296,7 +286,7 @@ eval_", tab_shortname, " <- TRUE\n
       #     # remove "_table", if present
       #     tab_name <- sub("_table", "", tab_name)
       #     tab_chunk <- paste0(
-      #       "![Your caption here](", fs::path("rda_files",
+      #       "![Your caption here](", fs::path("tables",
       #                                         non.rda_tab_list[i]),
       #       "){#tab-",
       #       tab_name,
@@ -306,10 +296,10 @@ eval_", tab_shortname, " <- TRUE\n
       #     non.rda_tables_doc <- paste0(non.rda_tables_doc, tab_chunk)
       #   }
       # } else {
-      #   message(paste0("Note: No table files in a non-rda format (e.g., .jpg, .png) were found in '",  fs::path(rda_dir, "rda_files") , "'."))
+      #   message(paste0("Note: No table files in a non-rda format (e.g., .jpg, .png) were found in '",  fs::path(tables_dir, "tables") , "'."))
       # }
 
-      # combine figures_doc setup with figure chunks
+      # combine tables_doc setup with figure chunks
       tables_doc <- paste0(tables_doc_header,
                            tables_doc_setup,
                            ifelse(exists("rda_tables_doc"),

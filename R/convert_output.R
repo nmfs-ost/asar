@@ -111,6 +111,12 @@ convert_output <- function(
       fleet_names <- stats::setNames(fleet_info[[ncol(fleet_info)]], fleet_info[[1]])
     }
 
+    # Extract fleet names
+    if (is.null(fleet_names)){
+      fleet_info <- SS3_extract_df(dat, "Fleet")[-1,]
+      fleet_names <- setNames(fleet_info[[ncol(fleet_info)]], fleet_info[[1]])
+    }
+
     # Estimated and focal parameters to put into reformatted output df - naming conventions from SS3
     # Extract keywords from ss3 file
     # Find row where keywords start
@@ -279,6 +285,7 @@ convert_output <- function(
                  "settlement", "birthseas", "count",
                  "kind")
     errors <- c("StdDev", "sd", "se", "SE", "cv", "CV", "std")
+
     miss_parms <- c()
     out_list <- list()
     #### SS3 loop ####
@@ -698,7 +705,6 @@ convert_output <- function(
               # # Extract last year
               # endyr_row <- which(apply(dat, 1, function(row) any(row == "End_year:")))
               # end_year <- dat[endyr_row,2]
-              #
               # df4 <- df3 |>
               #   dplyr::mutate(
               #     year = seq(first_year, end_year, by = 1),
@@ -1568,6 +1574,7 @@ convert_output <- function(
         year > dat$parms$endyr ~ "fore",
         TRUE ~ NA
       ))
+
     #### WHAM ----
   } else if (model == "wham") {
     # This is how Bai read the ASAP output
@@ -1623,4 +1630,5 @@ convert_output <- function(
   }
   cli::cli_alert_success("Finished!")
   return(out_new)
+
 } # close function

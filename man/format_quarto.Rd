@@ -4,7 +4,7 @@
 \alias{format_quarto}
 \title{Add Formatting Arguments for YAML Header}
 \usage{
-format_quarto(format = NULL, type = NULL)
+format_quarto(format = "pdf", type = "sar")
 }
 \arguments{
 \item{format}{Rendering format (pdf, html, or docx).}
