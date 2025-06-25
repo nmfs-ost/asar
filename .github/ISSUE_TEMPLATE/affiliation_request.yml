@@ -1,0 +1,29 @@
+name: Request to add affiliation to database
+description: Ask developers to add a new office/affiliation to our database for new collaborator.
+title: "[Affiliation Request]: "
+labels: ["help wanted", "enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for your inquiry!
+  - type: textarea
+    id: office_name
+    attributes:
+      label: What is the affiliation you want to add?
+      placeholder: Please include the name of the office name, address, city, state, and zip code.
+    validations:
+      required: true
+  - type: textarea
+    id: acronym
+    attributes:
+      label: What is the short-hand name you want to use for this affiliation?
+      placeholder: For external collaborators, this take the form of an acronym. For NOAA internal, the format follows the science center acronym with a dash followed by the first inital of each word of the city, then the 2 letter state acronym. 
+      )
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional information
+      description: Add any other additional information such as which NOAA region you are associated with or assessemnt you are working on.
+    validations:
+      required: false
