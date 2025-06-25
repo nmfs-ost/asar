@@ -5,7 +5,7 @@
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental) [![R-CMD-check](https://github.com/nmfs-ost/asar/actions/workflows/call-r-cmd-check.yml/badge.svg)](https://github.com/nmfs-ost/asar/actions/workflows/call-r-cmd-check.yml) [![coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/nmfs-ost/asar/refs/heads/badges/coverage-badge.json)](https://github.com/nmfs-ost/asar/tree/badges)
 <!-- badges: end -->
 
-This package is currently in development. For users interested in testing, please see [Testing](#-testing-section) section below. In its current form, this package builds a  template to create a stock assessment report including NOAA Fisheries formatting and included tables and figures.
+For users interested in testing, please see [Testing](#-testing-section) section below. In its current form, this package builds a  template to create a stock assessment report including NOAA Fisheries formatting and included tables and figures.
 
 Download using the directions below and fill in `create_template.R` function with the desired parameters (follow example below) to create a template Quarto document to be rendered to create a stock assessment report.
 
@@ -68,18 +68,12 @@ asar::create_template(
   species = "Petrale sole",
   spp_latin = "Eopsetta jordani",
   year = 2023,
-  author = c("Ian G. Taylor", "Vladlena Gertseva", "Nick Tolimieri"),
+  author = c("Ian G. Taylor"="NWFSC", "Vladlena Gertseva"="NWFSC", "Nick Tolimieri"="NWFSC"),
   include_affiliation = TRUE,
   simple_affiliation = FALSE,
   param_names = c("nf","sf"),
   param_values = c("North fleet", "South fleet"),
-  resdir = "data",
-  model_results = "Petrale_sole_std_res_2023.csv",
-  model = "SS3",
-  end_year = 2022
-  ref_line = "msy",
-  ref_line_sb = "msy",
-  indices_unit_label = ""
+  model_results = petrale_output
 )
 ```
 
@@ -87,12 +81,12 @@ Note: The output of this report is an example based on a real stock assessment. 
 
 ## Testing
 
-We encourage users to test `asar` throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. **Currently, `asar` is only setup to render to a pdf.** Once the user successfully executes `create_template()`, the template Quarto file will open:
-
+We encourage users to test `asar` throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. **Currently, `asar` is only setup to render to a pdf or html.** Once the user successfully executes `create_template()`, all files are created and the user can render the document from the skeleton file:
+ <!--- change screenshot --->
 ![](man/figures/example_pop-up.PNG)
 
-All other associated files will be created in a folder called `stock_assessment_reports` within the user's documents folder. From there, a file system following the user's associated science center > species name > region (if applicable) > year. The user will have to navigate to this folder to find additional files.
-
+All associated files will be created in a folder called `report` within the `file_dir` argument path (default working directory).
+ <!--- change screenshot --->
 ![](man/figures/example_file_system.PNG)
 
 This is a modularized template, there is no need to make any edits to the skeleton file. To write the report, user should navigate and open each supporting section Quarto document labeled:
@@ -111,8 +105,6 @@ This is a modularized template, there is no need to make any edits to the skelet
 Please leave an issue for any bugs or suggestions for improvement on the [Issues Page](https://github.com/Schiano-NOAA/ASAR/issues). Please remember that this package is currently in development and we do not project to release version 1.0 until December 2024. Thank you for helping us improve this package!
 
 ## Tips
-
-If there you receive an error creating your template due to authorship. Please submit requests to be added to the national archive for assessment scientists using [this issue](https://github.com/nmfs-ost/asar/issues/19). The developers will add you to the list as soon as possible. In the meantime, you can use the argument `create_template(add_author = "First Last")` to add yourself to the template. 
 
 If you have additional questions, there is a helpful Q&A guide available in the articles section of our GitHub Page located [here](https://nmfs-ost.github.io/asar/articles/faqs.html).
 
