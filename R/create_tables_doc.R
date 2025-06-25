@@ -49,7 +49,7 @@ create_tables_doc <- function(subdir = getwd(),
   if (!include_all) cli::cli_abort("Functionality for adding specific tables is still in development. Please set 'include_all' to true and edit the 08_tables.qmd file to remove specific tables from the report.")
 
     # add header
-    tables_doc_header <- paste0("## Tables {#sec-tables}\n \n")
+    tables_doc_header <- paste0("# Tables {#sec-tables}\n \n")
 
     # add chunk that creates object as the directory of all rdas
     tables_doc_setup <- paste0(
@@ -272,7 +272,7 @@ eval_", tab_shortname, " <- TRUE\n
     if (length(rda_tab_list) == 0){
       cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
                              wrap = TRUE)
-      tables_doc <- "## Tables {#sec-tables}"
+      tables_doc <- "# Tables {#sec-tables}"
     } else {
       cli::cli_alert_success("Found {length(final_rda_tab_list)} table{?s} in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
                              wrap = TRUE)

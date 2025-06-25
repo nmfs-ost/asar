@@ -557,7 +557,7 @@ create_template <- function(
       # created tables doc
       if (!rerender_skeleton) {
         tables_doc <- paste0(
-          "## Tables \n \n",
+          "# Tables \n \n",
           "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
         )
         utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
@@ -566,7 +566,7 @@ create_template <- function(
       # Create figures qmd
       if (!rerender_skeleton) {
         figures_doc <- paste0(
-          "## Figures \n \n",
+          "# Figures \n \n",
           "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
         )
         utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
@@ -730,7 +730,7 @@ create_template <- function(
           # "  ", "  ", "is.na(age)) |>", "\n",
           # "  ", "dplyr::pull(estimate)", "\n",
           "total_landings <- output |>", "\n",
-          "  ","dplyr::filter(grepl('landings_observed', label), year == end_year) |>", "\n", # temp remove grepl('landings_weight', label) | 
+          "  ","dplyr::filter(grepl('landings_observed', label), year == end_year) |>", "\n", # temp remove grepl('landings_weight', label) |
           "  ","dplyr::group_by(year) |>", "\n",
           "  ","dplyr::summarise(total_land  = sum(estimate)) |>", "\n",
           "  ","dplyr::ungroup() |>", "\n",
