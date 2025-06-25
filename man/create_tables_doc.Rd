@@ -4,17 +4,13 @@
 \alias{create_tables_doc}
 \title{Create Quarto Document of Tables}
 \usage{
-create_tables_doc(subdir = getwd(), tables_dir = getwd(), include_all = TRUE)
+create_tables_doc(subdir = getwd(), tables_dir = getwd())
 }
 \arguments{
 \item{subdir}{Location of subdirectory storing the assessment report template}
 
 \item{tables_dir}{The location of the "tables" folder, which contains tables
 files.}
-
-\item{include_all}{TRUE/FALSE; Option to include all default figures (for
-create_figures_doc) or all default tables (for create_tables_doc) in the stock
-assessment report. Default is true.}
 }
 \value{
 Create a quarto document as part of a stock assessment outline with

@@ -4,17 +4,13 @@
 \alias{create_figures_doc}
 \title{Create Quarto Document of Figures}
 \usage{
-create_figures_doc(subdir = getwd(), figures_dir = getwd(), include_all = TRUE)
+create_figures_doc(subdir = getwd(), figures_dir = getwd())
 }
 \arguments{
 \item{subdir}{Location of subdirectory storing the assessment report template}
 
 \item{figures_dir}{The location of the "figures" folder, which contains
 figures files.}
-
-\item{include_all}{TRUE/FALSE; Option to include all default figures (for
-create_figures_doc) or all default tables (for create_tables_doc) in the stock
-assessment report. Default is true.}
 }
 \value{
 A quarto document with pre-loaded R chunk that adds the

@@ -3,9 +3,6 @@
 #' @param figures_dir The location of the "figures" folder, which contains
 #' figures files.
 #' @param subdir Location of subdirectory storing the assessment report template
-#' @param include_all TRUE/FALSE; Option to include all default figures (for
-#' create_figures_doc) or all default tables (for create_tables_doc) in the stock
-#' assessment report. Default is true.
 #'
 #' @return A quarto document with pre-loaded R chunk that adds the
 #' stock assessment tables from the nmfs-ost/stockplotr R package. The
@@ -19,9 +16,7 @@
 #' figures_dir = here::here())
 #' }
 create_figures_doc <- function(subdir = getwd(),
-                               figures_dir = getwd(),
-                               include_all = TRUE) {
-  if (!include_all) cli::cli_abort("Functionality for adding specific figures is still in development. Please set 'include_all' to true and edit the 09_figures.qmd file to remove specific figures from the report.")
+                               figures_dir = getwd()) {
 
   figures_doc_header <- "# Figures {#sec-figures}\n \n"
 

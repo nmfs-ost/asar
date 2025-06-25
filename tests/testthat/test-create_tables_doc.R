@@ -2,7 +2,6 @@ test_that("Creates expected start of tables doc", {
   # create tables doc
   create_tables_doc(
     subdir = getwd(),
-    include_all = TRUE,
     tables_dir = getwd()
   )
 
