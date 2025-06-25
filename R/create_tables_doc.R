@@ -51,7 +51,7 @@ create_tables_doc <- function(subdir = getwd(),
     # add chunk that creates object as the directory of all rdas
     tables_doc_setup <- paste0(
       add_chunk(
-        paste0("library(flextable)\ntables_dir <- '", tables_dir, "/tables'"),
+        glue::glue("library(flextable)\ntables_dir <- '{tables_dir}/tables'"),
         label = "set-rda-dir-tbls",
         # eval = "true",
         # add_option = TRUE,
@@ -103,7 +103,7 @@ create_tables_doc <- function(subdir = getwd(),
                                               tables_dir = tables_dir,
                                               portrait_pg_width = portrait_pg_width))
 
-      ## import table, caption, alt text
+      ## import table, caption
       ## do this for all tables
       tables_doc_plot_setup1 <- paste0(
         add_chunk(
@@ -121,7 +121,7 @@ eval_", tab_shortname, " <- TRUE\n
 # if the table rda does not exist, don't evaluate the next chunk
 } else {eval_",  tab_shortname, " <- FALSE}"
           ),
-          label = paste0("tab-", tab_shortname, "-setup")
+          label = glue::glue("tab-{tab_shortname}-setup")
           # eval = "true"
         ),
 "\n"
@@ -131,21 +131,18 @@ eval_", tab_shortname, " <- TRUE\n
       if(tbl_orient == "regular"){
           tables_doc_plot_setup2 <- paste0(
             add_chunk(
-              paste0(tab_shortname, "_table"),
-              label = paste0("tbl-", tab_shortname),
+              glue::glue("{tab_shortname}_table"),
+              label = glue::glue("tbl-{tab_shortname}"),
               # eval = paste0("!expr eval_", tab_shortname),
               # add_option = TRUE,
               chunk_option = c(
                 "echo: false",
                 "warnings: false",
                 glue::glue(
-                  "eval: !expr if(eval_{tab_shortname}) {tab_shortname}_alt_text"
+                  "tbl-cap: !expr if(eval_{tab_shortname}) {tab_shortname}_cap"
                 ),
                 glue::glue(
-                  "tbl-cap: !expr if(eval_", tab_shortname, ") ", tab_shortname, "_cap"
-                ),
-                glue::glue(
-                  "include: !expr eval_", tab_shortname
+                  "include: !expr eval_{tab_shortname}"
                 )
               )
             ),
@@ -158,24 +155,21 @@ eval_", tab_shortname, " <- TRUE\n
           # add landscape braces before R chunk
           "::: {.landscape}\n\n",
           add_chunk(
-              paste0(
-                tab_shortname, "_table |>
+              glue::glue(
+                "{tab_shortname}_table |>
                 flextable::fit_to_width(max_width = 8)"
               ),
-            label = paste0("tbl-", tab_shortname),
+            label = glue::glue("tbl-{tab_shortname}"),
             # eval = paste0("!expr eval_", tab_shortname),
             # add_option = TRUE,
             chunk_option = c(
               "echo: false",
               "warnings: false",
               glue::glue(
-                "eval: !expr if(eval_{tab_shortname}) {tab_shortname}_alt_text"
+                "tbl-cap: !expr if(eval_{tab_shortname}) {tab_shortname}_cap"
               ),
               glue::glue(
-                "tbl-cap: !expr if(eval_", tab_shortname, ") ", tab_shortname, "_cap"
-              ),
-              glue::glue(
-                "include: !expr eval_", tab_shortname
+                "include: !expr eval_{tab_shortname}"
               )
             )
           ),
@@ -209,14 +203,14 @@ eval_", tab_shortname, " <- TRUE\n
                tab_shortname, "_cap_split <- names(", tab_shortname, "_table_split_rda)"
              )
              ,
-             label = paste0("tbl-", tab_shortname, "-labels"),
+             label = glue::glue("tbl-{tab_shortname}-labels"),
              # eval = paste0("!expr eval_", tab_shortname),
              # add_option = TRUE,
              chunk_option = c(
                "echo: false",
                "warnings: false",
                glue::glue(
-                 "eval: !expr if(eval_{tab_shortname}) {tab_shortname}_alt_text"
+                 "eval: !expr if(eval_{tab_shortname}) {tab_shortname}_cap"
                ),
                glue::glue("include: false")
              )
@@ -237,15 +231,15 @@ eval_", tab_shortname, " <- TRUE\n
                 tab_shortname, "_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
               )
               ,
-              label = paste0("tbl-", tab_shortname, i),
-              eval = paste0("!expr eval_", tab_shortname),
+              label = glue::glue("tbl-{tab_shortname}", i),
+              eval = glue::glue("!expr eval_{tab_shortname}"),
               add_option = TRUE,
               chunk_option = c(
                 glue::glue(
-                  "tbl-cap: !expr if(eval_", tab_shortname, ") paste0(", tab_shortname, "_cap, '(', ", tab_shortname, "_cap_split[[", i, "]], ')')"
+                  "tbl-cap: !expr if(eval_{tab_shortname}) paste0({tab_shortname}_cap, '(', {tab_shortname}_cap_split[[", i, "]], ')')"
                 ),
                 glue::glue(
-                  "include: !expr eval_", tab_shortname
+                  "include: !expr eval_{tab_shortname}"
                 )
               )
             ),
