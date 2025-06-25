@@ -830,7 +830,9 @@ create_template <- function(
             preamble <- paste(preamble, collapse = "\n")
           }
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-          warning("Report template files were not copied into your directory. If you wish to update the template with new parameters or output files, please edit the ", report_name, " in your local folder.")
+          cli::cli_alert_warning("Report template files were not copied into your directory.")
+          cli::cli_alert_info("If you wish to update the template with new parameters or output files, please edit the {report_name} in your local folder.",
+                              wrap = TRUE)
         }
       } # close if rerender
 
