@@ -1,5 +1,5 @@
 
-# asar (Automated Stock Assessment Reporting)
+# asar (Automated Stock Assessment Reporting) <img src="man/figures/asar-hex.png" align="right" />
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental) [![R-CMD-check](https://github.com/nmfs-ost/asar/actions/workflows/call-r-cmd-check.yml/badge.svg)](https://github.com/nmfs-ost/asar/actions/workflows/call-r-cmd-check.yml) [![coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/nmfs-ost/asar/refs/heads/badges/coverage-badge.json)](https://github.com/nmfs-ost/asar/tree/badges)
@@ -24,32 +24,26 @@ including NOAA Fisheries formatting and included tables and figures.
 First please check to make sure `tinytex` package is installed on your machine. If not, please install using the following lines:
 
 ```r
-install.packages("tinytex")
-library(tinytex)
-
-```
-
-To determine if `TinyTex` is installed, run the following command:
-
-```r
+install.packages("pak")
 pak::pkg_install("rstudio/tinytex")
 ```
 
 Then install the package using one of the three following ways:
 
-(1) Using remotes
+(1) Using `pak`
+
+```r
+install.packages("pak")
+pak::pak("nmfs-ost/asar")
+```
+
+(2) Using `remotes`
 
 ```r
 install.packages("remotes")
 remotes::install_github("nmfs-ost/asar")
 ```
 
-(2) Occasionally, the package can not be installed using the `remotes` package. If this is the case for you, please try:
-
-```r
-install.packages("pak")
-pak::pak("nmfs-ost/asar")
-```
 (3) From the nmfs-ost r-universe
 
 ```r
@@ -122,7 +116,7 @@ This is a modularized template, there is no need to make any edits to the skelet
 -   Figures 
 -   Appendix
 
-Please leave an issue for any bugs or suggestions for improvement on the [Issues Page](https://github.com/Schiano-NOAA/ASAR/issues).
+Please leave an issue for any bugs or suggestions for improvement on the [Issues Page](https://github.com/nmfs-ost/asar/issues).
 Thank you for helping us improve this package!
 
 ## Tips
