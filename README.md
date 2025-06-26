@@ -50,7 +50,7 @@ remotes::install_github("nmfs-ost/asar")
 install.packages("asar", repos = c("https://nmfs-ost.r-universe.dev", "https://cloud.r-project.org"))
 ```
 
-We also recommend to download the `stockplotr` package. While it is listed as a dependency of the package, it sometimes does not load as intended. Use one of the previous download instructions to also install `stockplotr` by replacing 'asar' with 'stockplotr'.
+We also recommend to download the [`stockplotr` package](https://github.com/nmfs-ost/stockplotr). While it is listed as a dependency of the package, it sometimes does not load as intended. Use one of the previous download instructions to also install `stockplotr` by replacing 'asar' with 'stockplotr'.
 
 ## Example
 
