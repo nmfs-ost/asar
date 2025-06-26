@@ -1,5 +1,5 @@
 
-# asar (Automated Stock Assessment Reporting) <img src="man/figures/asar-hex.png" align="right" />
+# asar (Automated Stock Assessment Reporting) <img src="man/figures/asar-hex.png" align="right" height="200" style="float:right; height:200px;" />
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental) [![R-CMD-check](https://github.com/nmfs-ost/asar/actions/workflows/call-r-cmd-check.yml/badge.svg)](https://github.com/nmfs-ost/asar/actions/workflows/call-r-cmd-check.yml) [![coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/nmfs-ost/asar/refs/heads/badges/coverage-badge.json)](https://github.com/nmfs-ost/asar/tree/badges)
