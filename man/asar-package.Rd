@@ -12,6 +12,7 @@ Build a full or update stock assessment report for any stock assessment model. P
 Useful links:
 \itemize{
   \item \url{https://github.com/nmfs-ost/asar}
+  \item Report bugs at \url{https://github.com/nmfs-ost/asar/issues}
 }
 
 }
