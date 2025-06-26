@@ -4,42 +4,39 @@
 \alias{create_tables_doc}
 \title{Create Quarto Document of Tables}
 \usage{
-create_tables_doc(subdir = NULL, include_all = TRUE, rda_dir = NULL)
+create_tables_doc(subdir = getwd(), tables_dir = getwd())
 }
 \arguments{
-\item{subdir}{subdirectory where the assessment report template is being stored}
+\item{subdir}{Location of subdirectory storing the assessment report template}
 
-\item{include_all}{include all default tables for a stock assessment report}
-
-\item{rda_dir}{If the user has already created .rda files containing
-figures, tables, alt text, and captions with \code{stockplotr}, rda_dir represents
-the location of the folder containing these .rda files ("rda_files").
-Otherwise, if the user has not used \code{stockplotr} to make those .rda files already,
-those files will be generated automatically and placed within an "rda_files"
-folder within rda_dir. The "rda_files" folder would have been
-made with \code{stockplotr::exp_all_figs_tables()}, or by exporting files by running individual
-\code{stockplotr} figure- and table-generating functions. If you have used \code{stockplotr} to
-generate these .rda files, you can leave the arguments below blank. NOTE:
-If an "rda_files" folder is detected within rda_dir, .rda files will not be
-regenerated.}
+\item{tables_dir}{The location of the "tables" folder, which contains tables
+files.}
 }
 \value{
 Create a quarto document as part of a stock assessment outline with
-pre-loaded R chunk adding the stock assessment tables from the nmfs-ost/stockplotr
-R package. NOTE: If your table is too wide to print on a portrait-oriented page,
+pre-loaded R chunks that add stock assessment tables from the nmfs-ost/stockplotr
+R package, or other tables in the same rda format.
+}
+\description{
+Only tables in an rda format (e.g., my_table.rda) will be imported. Tables in
+other formats (e.g., .jpg, .png) are not supported; they lack text recognition.
+See \href{https://nmfs-ost.github.io/asar/articles/custom-figs-tabs.html#make-rdas}{the \code{asar} custom figures and tables vignette}
+for more information about making .rda files with custom tables.
+}
+\details{
+If your table is too wide to print on a portrait-oriented page,
 the page will be rotated to landscape view. If if is too wide to print in
 landscape view, it will be split into multiple tables. In this case, a new rda
 will be created and is identifiable by the phrase "split" in the filename (e.g.,
 indices.abundance_table.rda will generate a new indices.abundance_table_split.rda
-file). These tables will share the same caption.
-}
-\description{
-Create Quarto Document of Tables
+file), and column 1 will be repeated across split tables. These tables will
+share the same caption. To specify a different repeated column(s), use
+asar::export_split_tbls with your preferred essential_columns value.
 }
 \examples{
 \dontrun{
 create_tables_doc(
 subdir = getwd(),
-rda_dir = here::here())
+tables_dir = here::here())
 }
 }

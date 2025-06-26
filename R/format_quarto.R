@@ -10,8 +10,8 @@
 #' \dontrun{
 #' format_quarto(format = "pdf")
 #' }
-format_quarto <- function(format = NULL,
-                          type = NULL) {
+format_quarto <- function(format = "pdf",
+                          type = "sar") {
   if (tolower(format) == "pdf") {
     paste0(
       "format: ", "\n",
@@ -28,9 +28,9 @@ format_quarto <- function(format = NULL,
       "  ", "  ", "  ", "text: |", "\n",
       "  ", "  ", "  ", "  ", "\\newpage{}", "\n",
       "  ", "  ", "  ", "  ", "\\printnoidxglossaries", "\n",
-      "  ", "  ", "header-includes:", "\n",
-      "  ", "  ", "  ", "\\usepackage{draftwatermark}", "\n",
-      "  ", "  ", "  ", "\\SetWatermarkText{DRAFT}", "\n",
+      # "  ", "  ", "header-includes:", "\n",
+      # "  ", "  ", "  ", "\\usepackage{draftwatermark}", "\n",
+      # "  ", "  ", "  ", "\\SetWatermarkText{DRAFT}", "\n",
       "  ", "  ", "toc: true", "\n",
       "  ", "  ", "sansfont: 'Latin Modern Sans'", "\n",
       "  ", "  ", "lof: true", "\n",
@@ -53,16 +53,19 @@ format_quarto <- function(format = NULL,
       "  ","  ", "citations-hover: true", "\n"
     )
   } else if (tolower(format) == "docx") {
-    paste0(
-      "format: \n",
-      "  ", format, ": \n",
-      "  ", "  ", "toc: ", "true \n",
-      "  ", "  ", "toc-depth: 2", "\n",
-      "  ", "  ", "reference-doc: template.docx", "\n",
-      "  ", "  ", "always_allow_html: true", "\n",
-      "  ", "  ", "keep-tex: true", "\n"
-    )
+    # paste0(
+    #   "format: \n",
+    #   "  ", format, ": \n",
+    #   "  ", "  ", "toc: ", "true \n",
+    #   "  ", "  ", "toc-depth: 2", "\n",
+    #   "  ", "  ", "reference-doc: template.docx", "\n",
+    #   "  ", "  ", "always_allow_html: true", "\n",
+    #   "  ", "  ", "keep-tex: true", "\n"
+    # )
+    cli::cli_abort(c(message = "docx is not yet a functional format.",
+                    "i" = "Please use pdf or html."))
   } else {
-    stop("Invalid render format.")
+    cli::cli_abort(c(message = "Invalid render format.",
+                     "i" = "Please use pdf or html."))
   }
 }

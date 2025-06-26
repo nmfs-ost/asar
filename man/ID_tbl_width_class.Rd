@@ -4,12 +4,13 @@
 \alias{ID_tbl_width_class}
 \title{Identify table width class}
 \usage{
-ID_tbl_width_class(plot_name = NULL, rda_dir = NULL, portrait_pg_width = NULL)
+ID_tbl_width_class(tables_dir, plot_name, portrait_pg_width)
 }
 \arguments{
-\item{plot_name}{Name of the .rda file containing the table}
+\item{tables_dir}{The location of the "tables" folder, which contains tables
+files.}
 
-\item{rda_dir}{Folder where rda files containing alternative text is located}
+\item{plot_name}{Name of the .rda file containing the table}
 
 \item{portrait_pg_width}{The amount of space between the margins of a
 portrait-oriented page, in inches. Represents the threshold for the maximum
@@ -28,7 +29,7 @@ Identify table width class
 \dontrun{
 ID_tbl_width_class(
   plot_name = "indices.abundance_table.rda",
-  rda_dir = here::here(),
+  tables_dir = here::here(),
   portrait_pg_width = 5
 )
 }

@@ -1,17 +1,13 @@
 AFSC
-AMAK
 APA
 BAM
 Blockquote
 Bolded
 CMD
-CPUE
 CTAN
 Canelón
-CTAN
 Drs
 FIMS
-Filepath
 LaTex
 Lifecycle
 Mainpulate
@@ -20,11 +16,11 @@ NOAA
 NWFSC
 ORCID
 Overleaf's
+PCFL
 PFMC's
 PIFSC
 Pomatomus
 README
-REPO
 RStudio
 Rdata
 Rmarkdown
@@ -32,6 +28,7 @@ SAR
 SBPR
 SEFSC
 SSC
+SWA
 SWFSC
 Strikethrough
 TinyTeX
@@ -39,6 +36,7 @@ YAML
 amak
 asis
 bam
+bcurrent
 birthseas
 blockquote
 cha
@@ -50,7 +48,6 @@ cv
 dir
 documentclass
 docx
-dover
 dplyr
 ect
 eval
@@ -60,8 +57,8 @@ flextable
 frac
 gls
 gp
-img
 is’
+jpg
 knitr
 kobe
 le
@@ -70,12 +67,11 @@ modularized
 msy
 multispecies
 nmfs
+noaa
 nsim
 ost
-outdir
 overline
 params
-patrick
 petrale
 png
 pre
@@ -85,7 +81,6 @@ rda
 rda's
 rdas
 rdat
-rdata
 rda’s
 readLines
 roboto
@@ -94,7 +89,6 @@ saltatrix
 sd
 se
 snakecase
-spp
 spr
 ss
 sso
@@ -104,6 +98,7 @@ stringr
 subfiles
 subseason
 tbl
+tbls
 tex
 tibble
 tidyr
@@ -111,6 +106,5 @@ tidyselect
 tinytex
 TinyTeX
 titlepage
-xlsx
 yaml
 yml

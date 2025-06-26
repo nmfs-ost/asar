@@ -7,10 +7,10 @@
 add_accessibility(
   x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
   dir = getwd(),
-  rda_dir = getwd(),
+  figures_dir = getwd(),
+  alttext_csv_dir = getwd(),
   compile = TRUE,
-  rename = NULL,
-  alttext_csv_dir = getwd()
+  rename = NULL
 )
 }
 \arguments{
@@ -19,7 +19,11 @@ rendering the skeleton made from create_template.}
 
 \item{dir}{directory where the tex file is located that will be edited}
 
-\item{rda_dir}{folder where rda files containing alternative text is located}
+\item{figures_dir}{The location of the "figures" folder, which contains
+figures files.}
+
+\item{alttext_csv_dir}{Directory for the csv file containing alternative
+text and captions generated when running stockplotr::exp_all_figs_tables}
 
 \item{compile}{Indicate whether the document (X) should be
 rendered after these files are changed. Default TRUE.}
@@ -27,9 +31,6 @@ rendered after these files are changed. Default TRUE.}
 \item{rename}{Indicate a name for the new tex file produced from this
 function. There is no need to include ".tex" in the name. Defaults to current
 name and overwrites the current tex file.}
-
-\item{alttext_csv_dir}{Directory for the csv file containing alternative
-text and captions generated when running stockplotr::exp_all_figs_tables}
 }
 \value{
 This function runs all functions from \code{asar} associated with
@@ -50,15 +51,11 @@ Altering latex file of report to increase accessibility of the document.
   species = "Dover sole",
   spp_latin = "Microstomus pacificus",
   year = 2010,
-  author = c("John Snow", "Danny Phantom", "Patrick Star"),
-  include_affiliation = TRUE,
-  convert_output = TRUE,
-  resdir = "C:/Users/Documents/Example_Files",
-  model_results = "Report.sso",
+  author = c("John Snow"="AFSC", "Danny Phantom"="NWFSC", "Patrick Star"="SEFSC"),
+  model_results = output,
   model = "SS3",
   new_section = "an_additional_section",
-  section_location = "after-introduction",
-  rda_dir = getwd()
+  section_location = "after-introduction"
   )
 
   path <- getwd()
@@ -70,7 +67,7 @@ Altering latex file of report to increase accessibility of the document.
    add_accessibility(
      x = "SAR_USWC_Dover_sole_skeleton.tex",
      dir = getwd(),
-     rda_dir = path,
+     figures_dir = path,
      compile = TRUE)
    )
 }

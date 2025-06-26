@@ -30,14 +30,11 @@
 #'   spp_latin = "Microstomus pacificus",
 #'   year = 2010,
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
-#'   include_affiliation = TRUE,
-#'   convert_output = TRUE,
-#'   resdir = "C:/Users/Documents/Example_Files",
 #'   model_results = "Report.sso",
 #'   model = "SS3",
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction",
-#'   rda_dir = getwd()
+#'   figures_dir = getwd()
 #'   )
 #'
 #'   path <- getwd()
@@ -50,7 +47,7 @@
 #'      x = "SAR_USWC_Dover_sole_skeleton.tex",
 #'      dir = getwd(),
 #'      alttext_csv_dir = getwd(),
-#'      rda_dir = path,
+#'      figures_dir = path,
 #'      compile = FALSE,
 #'      rename = "SAR_Dover_sole_tagged")
 #'    )
@@ -59,13 +56,12 @@
 add_alttext <- function(
     x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
     dir = getwd(),
-    rda_dir = getwd(),
+    figures_dir = getwd(),
     alttext_csv_dir = getwd(),
     compile = TRUE,
-    rename = NULL
-) {
+    rename = NULL) {
   # Read latex file
-  if (!file.exists(file.path(dir, x))) stop(glue::glue("File {dir}/{x} does not exist!"))
+  if (!file.exists(file.path(dir, x))) cli::cli_abort("File {dir}/{x} does not exist!")
   tex_file <- readLines(file.path(dir, x))
 
   # Check: count instances of pattern
@@ -78,11 +74,11 @@ add_alttext <- function(
   #   )
 
   # Check if alt text csv is where indicated
-  if (!file.exists(file.path(alttext_csv_dir, "captions_alt_text.csv"))) stop(glue::glue("'captions_alt_text.csv' not found in {alttext_csv_dir}."))
+  if (!file.exists(file.path(alttext_csv_dir, "captions_alt_text.csv"))) cli::cli_abort("'captions_alt_text.csv' not found in {alttext_csv_dir}.")
 
   # Identify lines with figures
   # check if any lines have figures added
-  if (!any(grepl("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file))) stop ("No images/figures present in file.")
+  if (!any(grepl("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file))) cli::cli_abort("No images/figures present in file.")
   # this approach allows us to not mistake the replacement for other figures
   # For render to pdf
   fig_lines <- grep("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file) # -plot
@@ -101,6 +97,9 @@ add_alttext <- function(
   #   "\\pdftooltip",
   #   tex_file
   # )
+
+  # TODO:
+  # Create alternative options for render to html or docx
 
   # Replace pandocbounded with pdftooltip so alt text can be added
   # No longer using tooltip - pandocbounded will work fine with the next adjustments
@@ -143,9 +142,7 @@ add_alttext <- function(
         dplyr::pull(alt_text)
       if (is.na(label_line)) {
         alttext_i <- ""
-        warning(glue::glue(
-          "No alternative text found for {line_label}."
-        ))
+        cli::cli_alert_warning("No alternative text found for {line_label}.")
       }
       # Add selected alttext onto end of the line
       tex_file[i] <- gsub(
@@ -159,13 +156,13 @@ add_alttext <- function(
 
   # Insert alt text for figures
   # Call alt text in list with names
-  obj_files <- list.files(file.path(rda_dir, "rda_files"))
+  obj_files <- list.files(file.path(figures_dir, "figures"))
 
   # read all files in obj_files and put into list
   figures_list <- grep("figure", obj_files)
   alt_text_list <- list()
   for (i in figures_list) {
-    load(file.path(rda_dir, "rda_files", obj_files[i]))
+    load(file.path(figures_dir, "figures", obj_files[i]))
     # extract name to add into the list for placement
     rda_name <- stringr::str_replace(obj_files[i], "_figure.rda", "")
     # if name is >1 word then replace the _ with - to follow naming convention for
@@ -178,8 +175,8 @@ add_alttext <- function(
     # names(alt_text) <- tex_name
     # place obj into list
     alt_text_list[[tex_name]] <- alt_text
-      # call tex obj name using names()
-      # call alt text using list[[i]]
+    # call tex obj name using names()
+    # call alt text using list[[i]]
     # remove rda file to declutter
     rm(rda)
   }
@@ -213,13 +210,14 @@ add_alttext <- function(
     fig_line <- grep(names(alt_text_list[i]), tex_file)
     # Check that line we are adding the alt text to is for correct fig
     if (!grepl(names(alt_text_list[i]), tex_file[fig_line])) {
-      warning(glue::glue("Non-matching object name to tex file line."))
+      cli::cli_alert_warning("Non-matching object name to tex file line.")
       next
     }
     # Check that selected tex_line contains a marked figure - aka correct placement
     file_name <- stringr::str_remove(x, ".tex")
     if (!grepl(glue::glue("{file_name}_files/figure-pdf/fig-"), tex_file[fig_line])) {
-      warning(glue::glue("Improper line for appendment: \n Skipped adding alternative text for {names(alt_text_list[i])}"))
+      cli::cli_alert_warning("Improper line for appendment.")
+      cli::cli_alert_warning("Skipped adding alternative text for {names(alt_text_list[i])}", wrap = TRUE)
       next
     }
     tex_file[fig_line] <- gsub(
@@ -243,12 +241,12 @@ add_alttext <- function(
   # Save overwrite tex file
   write(unlist(tex_file), file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)))
   # utils::capture.output(cat(tex_file), file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)), append = FALSE)
-  message("______Alternative text added to tex file.______")
+  cli::cli_alert_success("______Alternative text added to tex file.______")
   # Render the .tex file after edits
   if (compile) {
-    message("______Compiling in progress - This can take a while...______")
+    cli::cli_alert_info("______Compiling in progress - This can take a while...______")
     # test if this can be done when skeleton is in different folder than the wd
     tinytex::lualatex(file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)))
-    message("______Compiling finished______")
+    cli::cli_alert_success("______Compiling finished______")
   }
 }

@@ -5,69 +5,35 @@
 \title{Create string for yml header in quarto file}
 \usage{
 create_yaml(
-  rerender_skeleton = FALSE,
+  format = "pdf",
   office = NULL,
+  region = NULL,
+  species = "species",
+  spp_latin = NULL,
+  spp_image = "",
+  year = NULL,
+  bib_name = NULL,
+  bib_file = "asar_references.bib",
+  author_list = NULL,
+  title = "[TITLE]",
+  rerender_skeleton = FALSE,
   prev_skeleton = NULL,
   prev_format = NULL,
-  title = NULL,
-  type = NULL,
-  author_list = NULL,
-  author = NULL,
-  add_author = NULL,
-  add_image = FALSE,
-  spp_image = NULL,
-  species = NULL,
-  spp_latin = NULL,
-  region = NULL,
-  format = "pdf",
   parameters = TRUE,
   param_names = NULL,
   param_values = NULL,
-  bib_name = NULL,
-  bib_file,
-  year = NULL
+  type = "SAR"
 )
 }
 \arguments{
-\item{rerender_skeleton}{Re-create the "skeleton.qmd" in your outline when
-changes to the main skeleton need to be made. This reproduces the
-yaml, output (if changed), preamble quantities, and restructures your
-sectioning in the skeleton if indicated. All files in your folder
-will remain as is.}
+\item{format}{Rendering format (pdf, html, or docx).}
 
 \item{office}{Regional Fisheries Science Center producing the
 report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
 
-\item{prev_skeleton}{Vector of strings containing all the lines of the
-previous skeleton file. File is read in using the function readLines from
-base R.}
-
-\item{prev_format}{The format that the previous skeleton was directed to
-render to. Parameter is inherited from create_template.}
-
-\item{title}{The alternative title. Example:
-"Management Track Assessments Spring 2024".}
-
-\item{type}{Type of report to build. Default is SAR ("SAR"). New options include
-templates for PMFC ("pfmc") and NEFSC management track ("nemt").}
-
-\item{author_list}{A vector of strings containing pre-formatted author names
-and affiliations that would be found in the format in a yaml of a quarto
-file when using cat(author_list).}
-
-\item{author}{Ordered list of authors included in the assessment.}
-
-\item{add_author}{Author that is not currently in the database
-and who should be temporarily added to the author list. Format
-as "First MI Last".
-Please leave a comment on the GitHub issues page to be added.}
-
-\item{add_image}{TRUE/FALSE; Add image of species to the
-template that is not already included in the project's
-inst/resources/spp_img folder? Default is false.}
-
-\item{spp_image}{File path to the species' image if not
-using the image included in the project's repository.}
+\item{region}{Full name of region in which the species is
+evaluated (if applicable). If the region is not specified for
+your center or species, do not use this variable.}
 
 \item{species}{Full common name for target species. Split
 naming with a space and capitalize first letter(s). Example:
@@ -76,11 +42,37 @@ naming with a space and capitalize first letter(s). Example:
 \item{spp_latin}{Latin name for the target species. Example:
 "Pomatomus saltatrix".}
 
-\item{region}{Full name of region in which the species is
-evaluated (if applicable). If the region is not specified for
-your center or species, do not use this variable.}
+\item{spp_image}{File path to the species' image if not
+using the image included in the project's repository.}
 
-\item{format}{Rendering format (pdf, html, or docx).}
+\item{year}{Year the assessment is being conducted. Default
+is the year in which the report is rendered.}
+
+\item{bib_name}{Name of a bib file being added into the yaml. For example,
+"asar.bib".}
+
+\item{bib_file}{File path to a .bib file used for citing references in
+the report}
+
+\item{author_list}{A list of strings containing pre-formatted author names
+and affiliations that would be found in the format in a yaml of a quarto
+file when using \code{cat(author_list[[i]])}.}
+
+\item{title}{A custom title that is an alternative to the default title (composed
+in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
+
+\item{rerender_skeleton}{Re-create the "skeleton.qmd" in your outline when
+changes to the main skeleton need to be made. This reproduces the
+yaml, output (if changed), preamble quantities, and restructures your
+sectioning in the skeleton if indicated. All files in your folder
+will remain as is.}
+
+\item{prev_skeleton}{Vector of strings containing all the lines of the
+previous skeleton file. File is read in using the function readLines from
+base R.}
+
+\item{prev_format}{The format that the previous skeleton was directed to
+render to. Parameter is inherited from create_template.}
 
 \item{parameters}{TRUE/FALSE; For
 parameterization of the script. Default is true.}
@@ -95,14 +87,8 @@ of parameter names. Parameters automatically included:
 office, region, species (each of which are listed as
 individual parameters for this function, above).}
 
-\item{bib_name}{Name of a bib file being added into the yaml. For example,
-"asar.bib".}
-
-\item{bib_file}{File path to a .bib file used for citing references in
-the report}
-
-\item{year}{Year the assessment is being conducted. Default
-is the year in which the report is rendered.}
+\item{type}{Type of report to build. Default is SAR (NOAA Fisheries
+Stock Assessment Report).}
 }
 \value{
 Create a string indicating the important formatting pieces for a
@@ -118,19 +104,18 @@ create_yaml(
   prev_skeleton = NULL,
   title = "My title",
   author_list = "  - name: 'Patrick Star'\n    affiliations:\n      - name: 'NOAA Fisheries Southeast Fisheries Science Center'\n        address: '75 Virginia Beach Drive'\n        city: 'Miami'\n        state: 'FL'\n        postal-code: '33149'\n",
-  author = "Patrick Star",
-  office = "AFSC",
+  author = c("Patrick Star"="SEFSC"),
+  office = "SEFSC",
   add_author = NULL,
-  add_image = FALSE,
-  spp_image = "",
-  species = NULL,
+  spp_image = NULL,
+  species = "",
   spp_latin = NULL,
   region = NULL,
   format = "pdf",
   parameters = TRUE,
   param_names = NULL,
   param_values = NULL,
-  bib_file = "asar_references.bib",
+  bib_file = "path/asar_references.bib",
   bib_name = "asar_references.bib",
   year = 2025
 )

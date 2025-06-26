@@ -36,7 +36,7 @@ export_glossary <- function() {
                    Acronym = "CEATTLE",
                    Meaning = "Climate enhanced Age-based model with Temperature specific Trophic linkages and Energetics",
                    Definition = NA) |>
-    dplyr::mutate(across(.cols = everything(), trimws),
+    dplyr::mutate(dplyr::across(.cols = tidyr::everything(), trimws),
                   Meaning = gsub("Nino", "Niño", Meaning),
                   meaning_lower = tolower(Meaning),
                   Shared_ac = duplicated(Acronym),
@@ -585,7 +585,8 @@ export_glossary <- function() {
                   Acronym = ifelse(Acronym == "$_{MSY}$",
                                    "$MSY$",
                                    Acronym)
-                  )
+                  ) |>
+    dplyr::arrange(tolower(Label))
 
 
   for(i in 1:dim(tex_acs)[1]) {

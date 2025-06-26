@@ -5,20 +5,21 @@
     Output
       ```{r} 
       #| echo: false 
-      #| warning: false 
-      #| eval: true 
+      #| warnings: false 
+      #| eval: true
       plot(cars$speed, cars$distance)
       ``` 
 
 ---
 
     Code
-      cat(add_chunk("plot(cars$speed, cars$distance)", echo = "true"))
+      cat(add_chunk("plot(cars$speed, cars$distance)", chunk_option = c("echo:true",
+        "warning: false", "eval: true")))
     Output
       ```{r} 
-      #| echo: true 
-      #| warning: false 
-      #| eval: true 
+      #| echo:true 
+      #| warning: false
+      #| eval: true
       plot(cars$speed, cars$distance)
       ``` 
 

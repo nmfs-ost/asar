@@ -7,20 +7,23 @@
 #' with `asar`.
 #' @export
 #'
-#' @examples create_citation(
+#' @examples
+#' \dontrun{
+#' create_citation(
 #'   title = "SA Report for Jellyfish",
 #'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
 #'   year = 2024
 #' )
+#' }
 #'
 create_citation <- function(
     author = NULL,
-    title = NULL,
-    year = NULL) {
-  if (is.null(year)) year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
+    title = "[TITLE]",
+    year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")) {
   # Check if author is input - improved from previous fxn so did not fail
-    if (any(author == "" | is.null(author))) {
-      message("Authorship is not defined.")
+    if (is.null(author) | any(author == "")) {
+      cli::cli_alert_warning("Authorship not defined.")
+      cli::cli_alert_info("Did you forget to specify `author`?")
       # Define default citation - needs author editing
       citation <- paste0(
         "{{< pagebreak >}} \n",
@@ -33,10 +36,8 @@ create_citation <- function(
       )
     } else {
       # Authored by Kelli Johnson in previous PR
-      author_data_frame <- tibble::as_tibble_col(
-        author,
-        column_name = "input"
-      ) |>
+      author_data_frame <- data.frame(office = author) |>
+        tibble::rownames_to_column("input") |>
         tidyr::separate_wider_regex(
           cols = input,
           # Caitlin Allen Akselrud is the only non-hyphenated dual last name
@@ -53,18 +54,18 @@ create_citation <- function(
         dplyr::mutate(
           first = gsub(" ", "", first),
           mi = ifelse(is.na(mi), "", paste0(mi, "."))
-        ) |>
-        dplyr::left_join(
-          y = utils::read.csv(
-            system.file(
-              "resources",
-              "authorship.csv",
-              package = "asar",
-              mustWork = TRUE
-            )
-          ),
-          by = c("first", "mi", "last")
         )
+        # dplyr::left_join(
+        #   y = utils::read.csv(
+        #     system.file(
+        #       "resources",
+        #       "authorship.csv",
+        #       package = "asar",
+        #       mustWork = TRUE
+        #     )
+        #   ),
+        #   by = c("first", "mi", "last")
+        # )
 
       # Extract location of primary author
       primary_author_office <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>
@@ -72,7 +73,8 @@ create_citation <- function(
 
       # Check
       if (nrow(primary_author_office) < 1) {
-        warning("No location found for primary author. Please edit the citation found in the 'skeleton.qmd'.")
+        cli::cli_alert_warning("No location found for primary author.")
+        cli::cli_alert("Please edit the citation in the 'skeleton.qmd'.")
         cit <- paste0(
           "{{< pagebreak >}} \n",
           "\n",
@@ -152,7 +154,7 @@ create_citation <- function(
         "\n",
         ifelse(primary_author_office[["office"]]=="SEFSC", "SEDAR.", author_list),
         " ", year, ". ",
-        ifelse(is.null(title), "[TITLE]", glue::glue("{title}")), ". ",
+        glue::glue("{title}"), ". ",
         region_specific_part,
         " \\pageref*{LastPage}{} pp."
       )

@@ -183,33 +183,43 @@ Looking for more resources for writing alt text? Check out the [NOAA Library's w
 
 When you use an acronym, it will be included in a glossary table that is automatically added to the end of your report. Below are directions for using acronyms and editing the glossary.
 
-### How to view and edit the glossary
+**Location**: The glossary ("report_glossary.tex") is located in your report folder.
 
-The glossary ("report_glossary.tex") is located in your report folder.
+**Order**: The glossary is sorted alphabetically. Case can differentiate entries (e.g., "M" (natural mortality) is different from "m" (meter(s)).)
+
+**Structure**: Each acronym has its own line, structured like this:
+
+`\newacronym{<"label" or "key">}{<"short form" or "acronym">}{<"long form">}`
+
+- "label" (or "key"): The term written in the report body. The label links the short form (see below) to the glossary entry. In our glossary, labels are typically lowercase. *Examples: bcurrent, noaa*.
+
+- "short form" (or "acronym"): The term actually shown when the report is rendered. The short form may have formatting applied to it. *Examples: \$B_{current}$* (which will render as $B_{current}$), *NOAA*.
+
+- "long form": The meaning of the short form. *Examples: current biomass of stock, National Oceanic and Atmospheric Administration*.
+
+Here are two entries using the examples mentioned above:
+
+`\newacronym{bcurrent}{$B_{current}$}{current biomass of stock}`
+
+`\newacronym{noaa}{NOAA}{National Oceanic and Atmospheric Administration}`
+
+### Editing the glossary
 
 Remember that your changes will only be reflected in your report folder's glossary .tex file, not in the file stored in the `asar` package's inst/ folder. If you regenerate your report folder, that main file will overwrite your edited version unless you have indicated otherwise.
 
 If you would like to contribute suggestions to the glossary, please open a pull request or [issue](https://github.com/nmfs-ost/asar/issues).
 
-#### How to remove a glossary entry
+### How to remove a glossary entry
 
 Delete the entire line in the file.
 
-#### How to add a glossary entry
+### How to add a glossary entry
 
 First, ensure that your new acronym is not already duplicated in the glossary as this will cause an error upon rendering.
 
-If your acronym could be read as a regular word- for example, "US" (United States) could also be read as "us" (signifying we, as in a group)- please add periods after each letter. Other examples include "A.R.M." (Adaptive Resource Management Framework) and "S.A.W." (Stock Assessment Workshop).
+Find the logical location for your acronym based on alphabetical order. Make a new line and add the appropriate information for your acronym and its meaning, based on the structure discussed above.
 
-Find the logical location for your acronym based on alphabetical order. Make a new line and add the following information for your acronym and its meaning, based on this structure:
-
-`\newacronym{<label>}{<acronym ("short form")>}{<meaning ("long form")>}`
-
-Here is an example for NOAA:
-
-`\newacronym{noaa}{NOAA}{National Oceanic and Atmospheric Administration}`
-
-#### How to edit a glossary entry
+### How to edit a glossary entry
 
 You can edit any entry as needed.
 
