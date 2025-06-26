@@ -76,7 +76,7 @@ You may be using a version of Quarto [older than v1.6](https://quarto.org/docs/b
 
 You will notice that the order of your figures and tables in their respective 08_tables.qmd and 09_figures.qmd docs will determine their numbers in the report. This might result in Table 2 being referenced before Table 1, for instance, in your report.
 
-We are encouraging users to keep the order as-is for a few reasons. First, the predictability of standardized figure and table order could prove useful when comparing reports. Second, the choice of where to prioritize the figure/table order- in the Figures and Tables sections, or in the main text- is somewhat of a personal preference, rather than a hard rule. Third, as far as we know, a fix isn't yet possible with Quarto. We are choosing to focus on building other features for {asar}.
+We are encouraging users to keep the order as-is for a few reasons. First, the predictability of standardized figure and table order could prove useful when comparing reports. Second, the choice of where to prioritize the figure/table order- in the Figures and Tables sections, or in the main text- is somewhat of a personal preference, rather than a hard rule. Third, as far as we know, a fix isn't yet possible with Quarto. We are choosing to focus on building other features for `asar`.
 
 However, we understand that some will strongly prefer to set the order of their tables and figures. You *can* try manually changing the order of the figure and table chunks in the 08_tables.qmd and 09_figures.qmd docs, but this isn't a reproducible or permanent solution.
 
