@@ -5,12 +5,23 @@
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental) [![R-CMD-check](https://github.com/nmfs-ost/asar/actions/workflows/call-r-cmd-check.yml/badge.svg)](https://github.com/nmfs-ost/asar/actions/workflows/call-r-cmd-check.yml) [![coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/nmfs-ost/asar/refs/heads/badges/coverage-badge.json)](https://github.com/nmfs-ost/asar/tree/badges)
 <!-- badges: end -->
 
+<<<<<<< Updated upstream
 For users interested in testing, please see the [Testing](#-testing-section) section below. In its current form, this package builds a  template to create a stock assessment report including NOAA Fisheries formatting and included tables and figures.
+=======
+Download using the directions below and fill in `create_template.R` function with 
+the desired parameters (follow example below) to create a template Quarto document 
+to be rendered to create a stock assessment report.
+>>>>>>> Stashed changes
 
-Download using the directions below and fill in `create_template.R` function with the desired parameters (follow example below) to create a template Quarto document to be rendered to create a stock assessment report.
+The goal of ASAR is to automate stock assessment reports for NOAA science centers
+so they are reproducible and cohesive across the agency. This project intends 
+to create a streamlined workflow that allows the analyst to create a customized 
+report tailored to their needs and requirements by the SSC, council, or other 
+regional management organizations. 
 
-
-The goal of ASAR is to automate stock assessment reports for NOAA science centers so they are reproducible and cohesive across the agency. This project intends to create a streamlined workflow that allows the analyst to create a customized report tailored to their needs and requirements by the SSC, council, or other regional management organizations. 
+For users interested in testing, please see [Testing](#-testing-section) section below. 
+In its current form, this package builds a  template to create a stock assessment report 
+including NOAA Fisheries formatting and included tables and figures.
 
 ## Installation
 
@@ -21,6 +32,13 @@ install.packages("tinytex")
 library(tinytex)
 
 ```
+
+To determine if `TinyTex` is installed, run the following command:
+
+```r
+pak::pkg_install("rstudio/tinytex")
+```
+
 Then install the package using one of the three following ways:
 
 (1) Using remotes
@@ -52,11 +70,14 @@ The SS3 Report.sso files was converted using the following code:
 
 ```r
 output <- asar::convert_output(
-  output_file = file.path(test_path("fixtures", "ss3_models"), "models", "Simple"),
+  output_file = file.path("fixtures", "ss3_models", "models", "Simple", "Report.sso"),
   model = "ss3")
 ```
 
-In this function, the users have the option to convert output files to a standardized framework from either SS3 (Report.sso) or BAM (.rdat) output files. The converted output was saved as an Rdata file and can be found in the example folder in this repository. Typically, when saving converted output from the `convert_output` function, the resulting file is a csv.
+In this function, the users have the option to convert output files to a standardized 
+framework from either SS3 (Report.sso) or BAM (.rdat) output files. `asar` uses this 
+converted output from the environment to calculate quantities in the preamble and 
+it is also used for creating plots and tables from [`stockplotr`](https://github.com/nmfs-ost/stockplotr).
 
 To proceed, the user should then run the following:
 
@@ -83,11 +104,15 @@ Note: The output of this report is an example based on a real stock assessment. 
 
 We encourage users to test `asar` throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. **Currently, `asar` is only setup to render to a pdf or html.** Once the user successfully executes `create_template()`, all files are created and the user can render the document from the skeleton file:
 
+<<<<<<< Updated upstream
 ![***Add alt text here***](man/figures/example_pop-up.PNG)
+=======
+![**Add alt text here**](man/figures/example_pop-up.PNG){alt="A basic skeleton produced by asar displaying the beginning of the quarto document called the yaml. The image shows the title, author, and other important formatting arguments to render a quarto document."}
+>>>>>>> Stashed changes
 
 All associated files will be created in a folder called `report` within the `file_dir` argument path (default working directory).
 
-![](man/figures/example_file_system.PNG)
+![](man/figures/example_file_system.PNG){alt="A screenshot of a file explorer showing the outline of quarto documents produced when running create template function from a.s.a.r. There are 15 quarto documents, a bib file, a glossary latex file, and a folder containing supprt files that dictate report format."}
 
 This is a modularized template, there is no need to make any edits to the skeleton file. To write the report, user should navigate and open each supporting section Quarto document labeled:
 
