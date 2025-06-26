@@ -160,7 +160,7 @@ test_that("create_template() creates correct files", {
 #     regexp = "Results file or model name not defined."
 #   )
 #   path <- getwd()
-# 
+#
 #   # erase temporary testing files
 #   unlink(fs::path(path, "report"), recursive = T)
 # })
@@ -188,7 +188,7 @@ test_that("warning is triggered for existing files", {
   #        file.create(file_path, showWarnings = FALSE),
   #        FALSE
   # )
-  expect_warning(
+  expect_message(
     create_template(
       new_template = TRUE,
       format = "pdf",
@@ -223,7 +223,7 @@ test_that("file_dir works", {
   office <- "NWFSC"
   species <- "Dover sole"
   year <- 2010
-  
+
   # Create false output file
   output <- data.frame(
     label = c("spawning_biomass", "fishing_mortality", "recruitment"),
@@ -260,7 +260,7 @@ test_that("file_dir works", {
 # This test does not work because no fixtures folder exists
 # TODO: uncomment once all merged into dev
 # test_that("model_results metadata file created", {
-# 
+#
 #   # identify wd on github to debug failing test there (but not locally)
 #   resdir <- fs::path(getwd(), "fixtures", "bam_models_converted")
 #   # read in model resutls
@@ -269,7 +269,7 @@ test_that("file_dir works", {
 #   print(paste0("The resdir is: ", resdir))
 #   message(paste0("The working directory is: ", getwd()))
 #   message(paste0("The resdir is: ", resdir))
-# 
+#
 #   create_template(
 #     new_template = TRUE,
 #     model_results = output,
@@ -282,15 +282,15 @@ test_that("file_dir works", {
 #     include_affiliation = TRUE,
 #     parameters = FALSEr
 #   )
-# 
+#
 #   message("create_template run")
-# 
+#
 #   file_path <- file.path(getwd(), "report")
-# 
+#
 #   message(paste0("file_path: ", file_path))
-# 
+#
 #   expect_true(file.exists(file_path))
-# 
+#
 #   expect_report_files <- c(
 #     "01_executive_summary.qmd",
 #     "02_introduction.qmd",
@@ -313,14 +313,14 @@ test_that("file_dir works", {
 #     "asar_references.bib",
 #     "support_files"
 #   )
-# 
+#
 #   object_report_files <- list.files(file_path)
-# 
+#
 #   message(paste0("object_report_files: ", object_report_files))
-# 
+#
 #   # Check if all expected report files are created
 #   expect_true(all(sort(expect_report_files) == sort(object_report_files)))
-# 
+#
 #  # erase temporary testing files
 #   unlink(file_path, recursive = T)
 #   # Neither of the following files should get created with package updates in v1.4.0
