@@ -11,15 +11,14 @@ body:
     id: office_name
     attributes:
       label: What is the affiliation you want to add?
-      placeholder: Please include the name of the office name, address, city, state, and zip code.
+      placeholder: Please include the office name, address, city, state, and zip code.
     validations:
       required: true
   - type: textarea
     id: acronym
     attributes:
       label: What is the short-hand name you want to use for this affiliation?
-      placeholder: For external collaborators, this take the form of an acronym. For NOAA internal, the format follows the science center acronym with a dash followed by the first inital of each word of the city, then the 2 letter state acronym. 
-      )
+      placeholder: For external collaborators, this can take the form of an acronym. For NOAA internal, the format follows the science center acronym with a dash followed by the first inital of each word of the city, then the 2 letter state acronym (ex. NWFSC-SWA).
   - type: textarea
     id: context
     attributes:
