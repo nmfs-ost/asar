@@ -101,7 +101,7 @@ We encourage users to test `asar` throughout its development. Please use the abo
 
 All associated files will be created in a folder called `report` within the `file_dir` argument path (default working directory).
 
-![](man/figures/example_file_system.PNG){alt="A screenshot of a file explorer showing the outline of quarto documents produced when running create template function from a.s.a.r. There are 15 quarto documents, a bib file, a glossary latex file, and a folder containing supprt files that dictate report format."}
+![](man/figures/example_file_system.PNG){alt="A screenshot of a file explorer showing the outline of quarto documents produced when running create template function from a.s.a.r. There are 15 quarto documents, a bib file, a glossary latex file, and a folder containing support files that dictate report format."}
 
 This is a modularized template, there is no need to make any edits to the skeleton file. To write the report, user should navigate and open each supporting section Quarto document labeled:
 
