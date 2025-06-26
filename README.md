@@ -5,13 +5,9 @@
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental) [![R-CMD-check](https://github.com/nmfs-ost/asar/actions/workflows/call-r-cmd-check.yml/badge.svg)](https://github.com/nmfs-ost/asar/actions/workflows/call-r-cmd-check.yml) [![coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/nmfs-ost/asar/refs/heads/badges/coverage-badge.json)](https://github.com/nmfs-ost/asar/tree/badges)
 <!-- badges: end -->
 
-<<<<<<< Updated upstream
-For users interested in testing, please see the [Testing](#-testing-section) section below. In its current form, this package builds a  template to create a stock assessment report including NOAA Fisheries formatting and included tables and figures.
-=======
 Download using the directions below and fill in `create_template.R` function with 
 the desired parameters (follow example below) to create a template Quarto document 
 to be rendered to create a stock assessment report.
->>>>>>> Stashed changes
 
 The goal of ASAR is to automate stock assessment reports for NOAA science centers
 so they are reproducible and cohesive across the agency. This project intends 
@@ -64,13 +60,16 @@ We also recommend to download the `stockplotr` package. While it is listed as a 
 
 ## Example
 
-The following code will allow the user to replicate the [2023 petrale sole stock assessment](https://www.pcouncil.org/documents/2024/02/status-of-petrale-sole-eopsetta-jordanialong-the-u-s-west-coast-in-2023.pdf/) produced by the NWFSC and made available by the Pacific Fisheries Management Council. The assessment model files are also available on the PFMC's website. A tutorial for using `asar` can be found [here](https://connect.fisheries.noaa.gov/asar_tutorial/).
+The following code will allow the user to replicate the [2023 petrale sole stock assessment](https://www.pcouncil.org/documents/2024/02/status-of-petrale-sole-eopsetta-jordanialong-the-u-s-west-coast-in-2023.pdf/) 
+produced by the NWFSC and made available by the Pacific Fisheries Management Council. 
+The assessment model files are also available on the PFMC's website. A tutorial 
+for using `asar` can be found [here](https://connect.fisheries.noaa.gov/asar_tutorial/).
 
 The SS3 Report.sso files was converted using the following code:
 
 ```r
 output <- asar::convert_output(
-  output_file = file.path("fixtures", "ss3_models", "models", "Simple", "Report.sso"),
+  output_file = system.file("data", "Report.sso", package = "asar"),
   model = "ss3")
 ```
 
@@ -104,11 +103,7 @@ Note: The output of this report is an example based on a real stock assessment. 
 
 We encourage users to test `asar` throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. **Currently, `asar` is only setup to render to a pdf or html.** Once the user successfully executes `create_template()`, all files are created and the user can render the document from the skeleton file:
 
-<<<<<<< Updated upstream
-![***Add alt text here***](man/figures/example_pop-up.PNG)
-=======
-![**Add alt text here**](man/figures/example_pop-up.PNG){alt="A basic skeleton produced by asar displaying the beginning of the quarto document called the yaml. The image shows the title, author, and other important formatting arguments to render a quarto document."}
->>>>>>> Stashed changes
+![](man/figures/example_pop-up.PNG){alt="A basic skeleton produced by asar displaying the beginning of the quarto document called the yaml. The image shows the title, author, and other important formatting arguments to render a quarto document."}
 
 All associated files will be created in a folder called `report` within the `file_dir` argument path (default working directory).
 
@@ -127,11 +122,13 @@ This is a modularized template, there is no need to make any edits to the skelet
 -   Figures 
 -   Appendix
 
-Please leave an issue for any bugs or suggestions for improvement on the [Issues Page](https://github.com/Schiano-NOAA/ASAR/issues). Please remember that this package is currently in development and we do not project to release version 1.0 until December 2024. Thank you for helping us improve this package!
+Please leave an issue for any bugs or suggestions for improvement on the [Issues Page](https://github.com/Schiano-NOAA/ASAR/issues).
+Thank you for helping us improve this package!
 
 ## Tips
 
-If you have additional questions, there is a helpful Q&A guide available in the articles section of our GitHub Page located [here](https://nmfs-ost.github.io/asar/articles/faqs.html).
+If you have additional questions, there is a helpful Q&A guide available in the 
+articles section of our GitHub Page located [here](https://nmfs-ost.github.io/asar/articles/faqs.html).
 
 ## User Community
 
