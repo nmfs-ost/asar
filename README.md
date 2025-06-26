@@ -83,7 +83,7 @@ Note: The output of this report is an example based on a real stock assessment. 
 
 We encourage users to test `asar` throughout its development. Please use the above example to get a basic understanding on how to create a stock assessment template. **Currently, `asar` is only setup to render to a pdf or html.** Once the user successfully executes `create_template()`, all files are created and the user can render the document from the skeleton file:
 
-![](man/figures/example_pop-up.PNG)
+![***Add alt text here***](man/figures/example_pop-up.PNG)
 
 All associated files will be created in a folder called `report` within the `file_dir` argument path (default working directory).
 
