@@ -662,12 +662,27 @@ create_template <- function(
       # add in quantities and output data R chunk
       # Reassign model_results as output and save into environment for user
       # assign("output", model_results, envir = .GlobalEnv)
-      df_name <- deparse(substitute(model_results))
-
+      # df_name <- deparse(substitute(model_results))
+      
+      # identify type of file and adjust load in
+      df_name <- stringr::str_extract(model_results, "(?<=/)[^/]+(?=\\.[^./]+$)") # extract the name of the data frame from the file name
+      output_file_type <- stringr::str_extract(model_results, "(?<=\\.)[a-zA-Z]+$")
+      load_method <- switch(
+        output_file_type,
+        "csv" = glue::glue("{df_name} <- utils::read.csv('{model_results}') \n"),
+        "rda" = glue::glue("load('{model_results}') \n"),
+        "rdata" = glue::glue("load('{model_results}') \n"),
+        "rds" = glue::glue("{df_name} <- readRDS('{model_results}') \n"),
+        {
+          cli::cli_abort("Model results file type {output_file_type} not recognized. Please use csv, rda, rdata, or rds.")
+        }
+      )
+      
       # standard preamble
       preamble <- add_chunk(
         paste0(
-          # "# load converted output from asar::convert_output() \n",
+          "# load converted output from asar::convert_output() \n",
+          load_method,
           # "output <- utils::read.csv('",
           # TODO: replace resdir with substitute object; was removed as arg
           # paste0(resdir, "/", model_results),
