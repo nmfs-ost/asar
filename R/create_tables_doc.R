@@ -53,12 +53,10 @@ create_tables_doc <- function(subdir = getwd(),
       add_chunk(
         glue::glue("library(flextable)\ntables_dir <- '{tables_dir}/tables'"),
         label = "set-rda-dir-tbls",
-        # eval = "true",
         # add_option = TRUE,
         chunk_option = c(
           "echo: false",
           "warning: false",
-          "eval: true",
           "include: false"
         )
       ),
@@ -108,21 +106,15 @@ create_tables_doc <- function(subdir = getwd(),
       tables_doc_plot_setup1 <- paste0(
         add_chunk(
           paste0(
-"# if the table rda exists:
-if (file.exists(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))){\n
-# load rda
+"# load rda
 load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
 # save rda with table-specific name\n",
 tab_shortname, "_table_rda <- rda\n
-# save table and caption as separate objects; set eval to TRUE\n",
+# save table and caption as separate objects\n",
 tab_shortname, "_table <- ", tab_shortname, "_table_rda$table\n",
-tab_shortname, "_cap <- ", tab_shortname, "_table_rda$cap
-eval_", tab_shortname, " <- TRUE\n
-# if the table rda does not exist, don't evaluate the next chunk
-} else {eval_",  tab_shortname, " <- FALSE}"
+tab_shortname, "_cap <- ", tab_shortname, "_table_rda$cap"
           ),
           label = glue::glue("tab-{tab_shortname}-setup")
-          # eval = "true"
         ),
 "\n"
 )
@@ -133,16 +125,12 @@ eval_", tab_shortname, " <- TRUE\n
             add_chunk(
               glue::glue("{tab_shortname}_table"),
               label = glue::glue("tbl-{tab_shortname}"),
-              # eval = paste0("!expr eval_", tab_shortname),
               # add_option = TRUE,
               chunk_option = c(
                 "echo: false",
                 "warnings: false",
                 glue::glue(
-                  "tbl-cap: !expr if(eval_{tab_shortname}) {tab_shortname}_cap"
-                ),
-                glue::glue(
-                  "include: !expr eval_{tab_shortname}"
+                  "tbl-cap: {tab_shortname}_cap"
                 )
               )
             ),
@@ -160,16 +148,12 @@ eval_", tab_shortname, " <- TRUE\n
                 flextable::fit_to_width(max_width = 8)"
               ),
             label = glue::glue("tbl-{tab_shortname}"),
-            # eval = paste0("!expr eval_", tab_shortname),
             # add_option = TRUE,
             chunk_option = c(
               "echo: false",
               "warnings: false",
               glue::glue(
-                "tbl-cap: !expr if(eval_{tab_shortname}) {tab_shortname}_cap"
-              ),
-              glue::glue(
-                "include: !expr eval_{tab_shortname}"
+                "tbl-cap: {tab_shortname}_cap"
               )
             )
           ),
@@ -201,17 +185,12 @@ eval_", tab_shortname, " <- TRUE\n
                tab_shortname, "_table_split_rda <- table_list\n
 # extract table caption specifiers\n",
                tab_shortname, "_cap_split <- names(", tab_shortname, "_table_split_rda)"
-             )
-             ,
+             ),
              label = glue::glue("tbl-{tab_shortname}-labels"),
-             # eval = paste0("!expr eval_", tab_shortname),
              # add_option = TRUE,
              chunk_option = c(
                "echo: false",
                "warnings: false",
-               glue::glue(
-                 "eval: !expr if(eval_{tab_shortname}) {tab_shortname}_cap"
-               ),
                glue::glue("include: false")
              )
            ),
@@ -232,14 +211,11 @@ eval_", tab_shortname, " <- TRUE\n
               )
               ,
               label = glue::glue("tbl-{tab_shortname}", i),
-              eval = glue::glue("!expr eval_{tab_shortname}"),
               add_option = TRUE,
               chunk_option = c(
+                "echo: false",
                 glue::glue(
-                  "tbl-cap: !expr if(eval_{tab_shortname}) paste0({tab_shortname}_cap, '(', {tab_shortname}_cap_split[[", i, "]], ')')"
-                ),
-                glue::glue(
-                  "include: !expr eval_{tab_shortname}"
+                  "tbl-cap: !expr paste0({tab_shortname}_cap, '(', {tab_shortname}_cap_split[[", i, "]], ')')"
                 )
               )
             ),
