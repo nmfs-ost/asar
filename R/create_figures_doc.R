@@ -18,12 +18,13 @@
 create_figures_doc <- function(subdir = getwd(),
                                figures_dir = getwd()) {
 
+  figures_doc_header <- "# Figures {#sec-figures}\n \n"
+
   # add chunk that creates object as the directory of all rdas
   figures_doc_setup <- paste0(
     add_chunk(
       paste0("figures_dir <- '", figures_dir, "/figures'"),
       label = "set-rda-dir-figs"
-      # eval = "true"
     ),
     "\n"
   )
@@ -50,23 +51,18 @@ create_figures_doc <- function(subdir = getwd(),
     figures_doc_plot_setup1 <- paste0(
       # figures_doc,
       add_chunk(
-        paste0("# if the figure rda exists:
-if (file.exists(file.path(figures_dir, '", fig, "'))){\n
-  # load rda
-  load(file.path(figures_dir, '", fig, "'))\n
-  # save rda with plot-specific name
-  ", fig_shortname, "_plot_rda <- rda\n
-  # remove generic rda object
-  rm(rda)\n
-  # save figure, caption, and alt text as separate objects; set eval to TRUE
-  ", fig_shortname, "_plot <- ", fig_shortname, "_plot_rda$figure
-  ", fig_shortname, "_cap <- ", fig_shortname, "_plot_rda$cap
-  ", fig_shortname, "_alt_text <- ", fig_shortname, "_plot_rda$alt_text
-  eval_", fig_shortname, " <- TRUE\n
-# if the figure rda does not exist, don't evaluate the next chunk
-} else {eval_", fig_shortname, " <- FALSE}"),
+        paste0(
+"# load rda
+load(file.path(figures_dir, '", fig, "'))\n
+# save rda with plot-specific name
+", fig_shortname, "_plot_rda <- rda\n
+# remove generic rda object
+rm(rda)\n
+# save figure, caption, and alt text as separate objects
+", fig_shortname, "_plot <- ", fig_shortname, "_plot_rda$figure
+", fig_shortname, "_cap <- ", fig_shortname, "_plot_rda$cap
+", fig_shortname, "_alt_text <- ", fig_shortname, "_plot_rda$alt_text"),
         label = glue::glue("fig-{fig_shortname}-setup")
-        # eval = "true"
       ),
       "\n"
     )
@@ -77,19 +73,15 @@ if (file.exists(file.path(figures_dir, '", fig, "'))){\n
       add_chunk(
         paste0(fig_shortname, "_plot"),
         label = glue::glue("fig-{fig_shortname}"),
-        # eval = paste0("!expr eval_", fig_shortname),
         # add_option = TRUE,
         chunk_option = c(
           "echo: false",
           "warning: false",
           glue::glue(
-            "eval: !expr if(eval_{fig_shortname}) {fig_shortname}_alt_text"
+            "fig-cap: {fig_shortname}_cap"
           ),
           glue::glue(
-            "fig-cap: !expr if(eval_{fig_shortname}) {fig_shortname}_cap"
-          ),
-          glue::glue(
-            "fig-alt: !expr if(eval_{fig_shortname}) {fig_shortname}_alt_text"
+            "fig-alt: {fig_shortname}_alt_text"
           )
         )
       ),

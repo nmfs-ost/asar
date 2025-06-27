@@ -23,7 +23,7 @@ ID_tbl_width_class <- function(
     tables_dir,
     plot_name,
     portrait_pg_width) {
-  tables_path <- fs::path(tables_dir, "tables", plot_name)
+  tables_path <- fs::path(tables_dir, "tables", paste0(plot_name, "_table.rda"))
 
   if (file.exists(tables_path)) {
     load(tables_path)
@@ -33,17 +33,17 @@ ID_tbl_width_class <- function(
       as.numeric()
 
     # determine table width class
-    if (table_width > portrait_pg_width) {
+    if (table_width <= portrait_pg_width) {
+      width_class <- "regular"
+    } else {
       if (table_width > 12) {
         width_class <- "extra-wide"
       } else {
         width_class <- "wide"
       }
-    } else {
-      width_class <- "regular"
     }
   } else {
-    width_class <- "regular"
+    cli::cli_abort(message = "Table not found at {tables_path}")
   }
 
   return(width_class)
