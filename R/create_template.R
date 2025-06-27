@@ -644,6 +644,20 @@ create_template <- function(
 
       if (!rerender_skeleton) cli::cli_alert_success("Built YAML header.")
 
+      ##### Params chunk ----
+      params_chunk <- add_chunk(
+        paste0(
+          "# Parameters \n",
+          "spp <- params$species \n",
+          "SPP <- params$spp \n",
+          "species <- params$species \n",
+          "spp_latin <- params$spp_latin \n",
+          "office <- params$office"
+        ),
+        label = "doc_parameters"
+      )
+      
+      ##### Preamble ----
       # Add preamble
       # add in quantities and output data R chunk
       # Reassign model_results as output and save into environment for user
@@ -953,7 +967,8 @@ create_template <- function(
     ###### Pull together skeleton ----
     report_template <- paste(
       yaml,
-      preamble, "\n",
+      params_chunk,
+      preamble,
       disclaimer,
       citation,
       sections,
