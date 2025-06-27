@@ -8,6 +8,7 @@
 #' @param fleet_names Names of fleets in the assessment model as
 #'  shortened in the output file. If fleet names are not properly read, then
 #'  indicate the fleets names as an acronym in a vector
+#'  @param save_dir File path to save the converted output file.
 #'
 #' @author Samantha Schiano
 #'
@@ -15,20 +16,24 @@
 #'         for application in building a stock assessment reports and to easily
 #'         adapt results among regional assessments. The resulting object is
 #'         simply a transformed and machine readable version of a model output file.
+#'         Converted data frame is always out. It will also be saved if save_dir 
+#'         is not NULL.
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' convert_output(
-#' output_file = "~/Documents/ss3_models/model1/Report.sso",
+#' output_file = here::here("model1", "Report.sso"),
 #' model = "ss3",
-#' fleet_names = c("TWL", "NONTWL"))
+#' fleet_names = c("TWL", "NONTWL"),
+#' save_dir = here::here("standard_output.rda"))
 #' }
 convert_output <- function(
     output_file,
     model,
-    fleet_names = NULL) {
+    fleet_names = NULL,
+    save_dir = NULL) {
   #### out_new ####
   # Blank dataframe and set up to mold output into
   out_new <- data.frame(
@@ -1648,6 +1653,10 @@ convert_output <- function(
       dplyr::select(-alt_label)
   }
   cli::cli_alert_success("Conversion finished!")
+  
+  # save if indicated
+  if (!is.null(save_dir)) save(out_new, file = save_dir)
+  
   return(out_new)
 
 } # close function
