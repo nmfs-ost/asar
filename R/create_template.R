@@ -33,7 +33,7 @@
 #' by this function. Default is the working directory.
 #' @param title A custom title that is an alternative to the default title (composed
 #' in asar::create_title()). Example: "Management Track Assessments Spring 2024".
-#' @param model_results The name of the object in your environment that contains the data frame of converted model output from `asar::convert_output()`
+#' @param model_results Path to standard output file made from `asar::convert_output()`
 #' @param spp_image File path to the species' image if not
 #' using the image included in the project's repository.
 #' @param bib_file File path to a .bib file used for citing references in

@@ -70,7 +70,7 @@ by this function. Default is the working directory.}
 \item{title}{A custom title that is an alternative to the default title (composed
 in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
 
-\item{model_results}{The name of the object in your environment that contains the data frame of converted model output from \code{asar::convert_output()}}
+\item{model_results}{Path to standard output file made from \code{asar::convert_output()}}
 
 \item{spp_image}{File path to the species' image if not
 using the image included in the project's repository.}
