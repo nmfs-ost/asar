@@ -505,25 +505,13 @@ create_template <- function(
         }
 
         # show message and make README stating model_results info
-        # Message is deprecated because model results are loaded from the environment rather than a file
-        # if (!is.null(model_results)){
-        #   # if resdir = null, change it to getwd() so mod_time can execute file.info()
-        #   if (is.null(resdir)){
-        #     resdir <- getwd()
-        #     resdir_null = TRUE
-        #   } else {
-        #     resdir_null = FALSE
-        #   }
-        #   mod_time <- as.character(file.info(file.path(resdir, model_results), extra_cols = F)$ctime)
-        #   mod_msg <- paste("Report is based upon model output from", model_results, "stored in folder", resdir,
-        #                    "that was last modified on:", mod_time)
-        #   message(mod_msg)
-        #   writeLines(mod_msg, fs::path(subdir, "model_results_metadata.md"))
-        #   # change resdir back to null if originally null
-        #   if(resdir_null == TRUE){
-        #     resdir <- NULL
-        #   }
-        # }
+        if (!is.null(model_results)){
+          mod_time <- as.character(file.info(fs::path(model_results), extra_cols = F)$ctime)
+          mod_msg <- paste("Report is based upon model output from", model_results,
+                           "that was last modified on:", mod_time)
+          cli::cli_alert_info(mod_msg)
+          writeLines(mod_msg, fs::path(subdir, "model_results_metadata.md"))
+        }
       } else {
         cli::cli_alert_warning("There are files in this location.")
         question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
@@ -656,7 +644,7 @@ create_template <- function(
         ),
         label = "doc_parameters"
       )
-      
+
       ##### Preamble ----
       # Add preamble
       # add in quantities and output data R chunk
@@ -756,6 +744,13 @@ create_template <- function(
           preamble <- prev_skeleton[start_line:end_line]
 
           if (!is.null(model_results)) {
+            # show message and make README stating model_results info
+            mod_time <- as.character(file.info(fs::path(model_results), extra_cols = F)$ctime)
+            mod_msg <- paste("Report is based upon model output from", model_results,
+                             "that was last modified on:", mod_time)
+            cli::cli_alert_info(mod_msg)
+            writeLines(mod_msg, fs::path(subdir, "model_results_metadata.md"))
+
             prev_results_line <- grep("output <- ", preamble)[1]
             prev_results <- stringr::str_replace(
               preamble[prev_results_line],
