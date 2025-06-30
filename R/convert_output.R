@@ -34,6 +34,17 @@ convert_output <- function(
     model,
     fleet_names = NULL,
     save_dir = NULL) {
+  
+  # check if entered save_dir exists so doesn't waste user time finding this out at the end
+  if (!is.null(save_dir)){
+    if (!dir.exists(save_dir)) {
+      cli::cli_abort("save_dir not a valid path.")
+    } else {
+      # create new save_dir with file name
+      save_dir <- file.path(save_dir, "std_output.rda")
+    }
+  }
+  
   #### out_new ####
   # Blank dataframe and set up to mold output into
   out_new <- data.frame(
@@ -1655,7 +1666,14 @@ convert_output <- function(
   cli::cli_alert_success("Conversion finished!")
   
   # save if indicated
-  if (!is.null(save_dir)) save(out_new, file = save_dir)
+  if (!is.null(save_dir)) {
+    # add check if save_dir does not end in .rda
+    if (!grepl("\\.rda$", save_dir)) {
+      cli::cli_alert_warning("save_dir does not contain .rda extension.")
+      cli::cli_alert_info("Saving file as std_output.rda")
+    }
+    save(out_new, file = save_dir)
+  }
   
   return(out_new)
 
