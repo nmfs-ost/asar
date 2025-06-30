@@ -967,6 +967,7 @@ create_template <- function(
     ###### Pull together skeleton ----
     report_template <- paste(
       yaml,
+      "\\printnoidxglossaries \n",
       params_chunk,
       preamble,
       disclaimer,
