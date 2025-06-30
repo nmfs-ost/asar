@@ -666,7 +666,7 @@ create_template <- function(
       if (!is.null(model_results)) {
         # identify type of file and adjust load in
         df_name <- stringr::str_extract(model_results, "(?<=/)[^/]+(?=\\.[^./]+$)") # extract the name of the data frame from the file name
-        # Assuming user saved converted output in the report folder
+        # Assuming user saved converted output
         load_method <- glue::glue("load({deparse(substitute(model_results))}) \n")
         # output_file_type <- stringr::str_extract(model_results, "(?<=\\.)[a-zA-Z]+$")
         # load_method <- switch(
@@ -694,7 +694,7 @@ create_template <- function(
       preamble <- add_chunk(
         paste0(
           "# load converted output from asar::convert_output() \n",
-          load_method,
+          load_method,"\n",
           # "output <- utils::read.csv('",
           # TODO: replace resdir with substitute object; was removed as arg
           # paste0(resdir, "/", model_results),
@@ -709,31 +709,32 @@ create_template <- function(
           "# Available quantities", "\n",
           "start_year", "\n",
           "end_year", "\n",
-          "# terminal fishing mortality ", "\n",
-          "Fend", "\n",
-          "# fishing mortality at msy" , "\n",
-          "# modify in source code if alternative target desired", "\n",
-          "Ftarg", "\n",
-          "# Terminal year F respective to F target ", "\n",
-          "F_Ftarg", "\n",
-          "# terminal year biomass ", "\n",
-          "Bend", "\n",
-          "# target biomass (msy)", "\n",
-          "Btarg", "\n",
-          "# total catch in the last year" , "\n",
-          "total_catch", "\n",
-          "# total landings in the last year" , "\n",
-          "total_landings", "\n",
-          "# spawning biomass in the last year", "\n",
-          "SBend", "\n",
-          "# overall natural mortality or at age" , "\n",
-          "M", "\n",
-          "# target spawning biomass(msy)" , "\n",
-          "Bmsy", "\n",
-          "# steepness" , "\n",
-          "h", "\n",
-          "# recruitment", "\n",
-          "R0"
+          
+          "Fend # terminal fishing mortality ", "\n",
+          
+          # "# modify in source code if alternative target desired", "\n",
+          "Ftarg # fishing mortality at msy" , "\n",
+          
+          "F_Ftarg # Terminal year F respective to F target ", "\n",
+          
+          "Bend # terminal year biomass ", "\n",
+          
+          "Btarg # target biomass (msy)", "\n",
+         
+          "total_catch # total catch in the last year" , "\n",
+          
+          
+          "total_landings # total landings in the last year" , "\n",
+          
+          "SBend # spawning biomass in the last year", "\n",
+          
+          "M # overall natural mortality or at age" , "\n",
+          
+          "Bmsy # target spawning biomass(msy)" , "\n",
+          
+          "h # steepness" , "\n",
+          
+          "R0 # recruitment", "\n",
         ),
         label = "output_and_quantities",
         chunk_option = c("warning: false", ifelse(is.null(model_results), "eval: false", "eval: true"), "include: false")
