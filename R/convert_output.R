@@ -2,7 +2,7 @@
 #'
 #' Format stock assessment output files to a standardized format.
 #'
-#' @param output_file Assessment model output file path
+#' @param file Assessment model output file path
 #' @param model Assessment model used in evaluation ("ss3", "bam",
 #'  "asap", "fims", "amak", "ms-java", "wham", "mas").
 #' @param fleet_names Names of fleets in the assessment model as
@@ -16,7 +16,7 @@
 #'         for application in building a stock assessment reports and to easily
 #'         adapt results among regional assessments. The resulting object is
 #'         simply a transformed and machine readable version of a model output file.
-#'         Converted data frame is always out. It will also be saved if save_dir 
+#'         Converted data frame is always returned. It will also be saved if save_dir 
 #'         is not NULL.
 #'
 #' @export
@@ -24,13 +24,13 @@
 #' @examples
 #' \dontrun{
 #' convert_output(
-#' output_file = here::here("model1", "Report.sso"),
+#' file = here::here("model1", "Report.sso"),
 #' model = "ss3",
 #' fleet_names = c("TWL", "NONTWL"),
 #' save_dir = here::here("standard_output.rda"))
 #' }
 convert_output <- function(
-    output_file,
+    file,
     model,
     fleet_names = NULL,
     save_dir = NULL) {
@@ -89,8 +89,8 @@ convert_output <- function(
   )
   out_new <- out_new[-1, ]
 
-  if (!exists("output_file")) {
-    cli::cli_abort(c(message = "Missing `output_file`."))
+  if (!exists("file")) {
+    cli::cli_abort(c(message = "Missing `file`."))
   }
 
   if (!exists("model")) {
@@ -98,15 +98,15 @@ convert_output <- function(
   }
 
   # check if file exists
-  if (!file.exists(output_file)) {
-    cli::cli_abort(c(message = "`output_file` not found.",
-                     "i" = "`output_file` entered as {output_file}"))
+  if (!file.exists(file)) {
+    cli::cli_abort(c(message = "`file` not found.",
+                     "i" = "`file` entered as {file}"))
   }
 
   # Recognize model through file extension
   # Uncomment later
   # model <- switch(
-  #   stringr::str_extract(output_file, "\\.([^.]+)$"),
+  #   stringr::str_extract(file, "\\.([^.]+)$"),
   #   ".sso" = "ss3",
   #   ".rdat" = "bam",
   #   "wham"
@@ -117,8 +117,8 @@ convert_output <- function(
   if (model %in% c("ss3", "SS3")) {
     # read SS3 report file
     dat <- utils::read.table(
-      file = output_file,
-      col.names = 1:get_ncol(output_file),
+      file = file,
+      col.names = 1:get_ncol(file),
       fill = TRUE,
       quote = "",
       colClasses = "character", # reads all data as characters
@@ -1155,7 +1155,7 @@ convert_output <- function(
   } else if (model %in% c("bam", "BAM")) {
     #### BAM ####
     # Extract values from BAM output - model file after following ADMB2R
-    dat <- dget(output_file)
+    dat <- dget(file)
 
     # Find fleet names
     if (is.null(fleet_names)) {
