@@ -49,9 +49,14 @@ create_tables_doc <- function(subdir = getwd(),
     tables_doc_header <- paste0("# Tables {#sec-tables}\n \n")
 
     # add chunk that creates object as the directory of all rdas
+    # deparse(substitute()) keeps paths as strings and allows for tables_dir to
+    # become a relative filepath in the 08_tables.qmd
     tables_doc_setup <- paste0(
       add_chunk(
-        glue::glue("library(flextable)\ntables_dir <- '{tables_dir}/tables'"),
+        glue::glue(
+          "library(flextable)
+          tables_dir <- fs::path({deparse(substitute(tables_dir))}, 'tables')"
+          ),
         label = "set-rda-dir-tbls",
         # add_option = TRUE,
         chunk_option = c(
