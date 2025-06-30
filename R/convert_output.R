@@ -2,12 +2,13 @@
 #'
 #' Format stock assessment output files to a standardized format.
 #'
-#' @param output_file Assessment model output file path
+#' @param file Assessment model output file path
 #' @param model Assessment model used in evaluation ("ss3", "bam",
 #'  "asap", "fims", "amak", "ms-java", "wham", "mas").
 #' @param fleet_names Names of fleets in the assessment model as
 #'  shortened in the output file. If fleet names are not properly read, then
 #'  indicate the fleets names as an acronym in a vector
+#'  @param save_dir File path to save the converted output file.
 #'
 #' @author Samantha Schiano
 #'
@@ -15,20 +16,35 @@
 #'         for application in building a stock assessment reports and to easily
 #'         adapt results among regional assessments. The resulting object is
 #'         simply a transformed and machine readable version of a model output file.
+#'         Converted data frame is always returned. It will also be saved if save_dir 
+#'         is not NULL.
 #'
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' convert_output(
-#' output_file = "~/Documents/ss3_models/model1/Report.sso",
+#' file = here::here("model1", "Report.sso"),
 #' model = "ss3",
-#' fleet_names = c("TWL", "NONTWL"))
+#' fleet_names = c("TWL", "NONTWL"),
+#' save_dir = here::here("standard_output.rda"))
 #' }
 convert_output <- function(
-    output_file,
+    file,
     model,
-    fleet_names = NULL) {
+    fleet_names = NULL,
+    save_dir = NULL) {
+  
+  # check if entered save_dir exists so doesn't waste user time finding this out at the end
+  if (!is.null(save_dir)){
+    if (!dir.exists(save_dir)) {
+      cli::cli_abort("save_dir not a valid path.")
+    } else {
+      # create new save_dir with file name
+      save_dir <- file.path(save_dir, "std_output.rda")
+    }
+  }
+  
   #### out_new ####
   # Blank dataframe and set up to mold output into
   out_new <- data.frame(
@@ -73,8 +89,8 @@ convert_output <- function(
   )
   out_new <- out_new[-1, ]
 
-  if (!exists("output_file")) {
-    cli::cli_abort(c(message = "Missing `output_file`."))
+  if (!exists("file")) {
+    cli::cli_abort(c(message = "Missing `file`."))
   }
 
   if (!exists("model")) {
@@ -82,15 +98,15 @@ convert_output <- function(
   }
 
   # check if file exists
-  if (!file.exists(output_file)) {
-    cli::cli_abort(c(message = "`output_file` not found.",
-                     "i" = "`output_file` entered as {output_file}"))
+  if (!file.exists(file)) {
+    cli::cli_abort(c(message = "`file` not found.",
+                     "i" = "`file` entered as {file}"))
   }
 
   # Recognize model through file extension
   # Uncomment later
   # model <- switch(
-  #   stringr::str_extract(output_file, "\\.([^.]+)$"),
+  #   stringr::str_extract(file, "\\.([^.]+)$"),
   #   ".sso" = "ss3",
   #   ".rdat" = "bam",
   #   "wham"
@@ -101,8 +117,8 @@ convert_output <- function(
   if (model %in% c("ss3", "SS3")) {
     # read SS3 report file
     dat <- utils::read.table(
-      file = output_file,
-      col.names = 1:get_ncol(output_file),
+      file = file,
+      col.names = 1:get_ncol(file),
       fill = TRUE,
       quote = "",
       colClasses = "character", # reads all data as characters
@@ -1139,7 +1155,7 @@ convert_output <- function(
   } else if (model %in% c("bam", "BAM")) {
     #### BAM ####
     # Extract values from BAM output - model file after following ADMB2R
-    dat <- dget(output_file)
+    dat <- dget(file)
 
     # Find fleet names
     if (is.null(fleet_names)) {
@@ -1648,6 +1664,17 @@ convert_output <- function(
       dplyr::select(-alt_label)
   }
   cli::cli_alert_success("Conversion finished!")
+  
+  # save if indicated
+  if (!is.null(save_dir)) {
+    # add check if save_dir does not end in .rda
+    if (!grepl("\\.rda$", save_dir)) {
+      cli::cli_alert_warning("save_dir does not contain .rda extension.")
+      cli::cli_alert_info("Saving file as std_output.rda")
+    }
+    save(out_new, file = save_dir)
+  }
+  
   return(out_new)
 
 } # close function
