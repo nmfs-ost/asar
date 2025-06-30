@@ -510,7 +510,13 @@ create_template <- function(
           mod_msg <- paste("Report is based upon model output from", model_results,
                            "that was last modified on:", mod_time)
           cli::cli_alert_info(mod_msg)
-          writeLines(mod_msg, fs::path(subdir, "model_results_metadata.md"))
+          writeLines(mod_msg,
+                     fs::path(subdir,
+                              paste0(
+                                gsub(".rda", "", basename(model_results)),
+                                "_metadata.md")
+                              )
+                     )
         }
       } else {
         cli::cli_alert_warning("There are files in this location.")
@@ -671,7 +677,7 @@ create_template <- function(
         load_method <- ""
         df_name <- "NULL"
       }
-      
+
       # standard preamble
       # copy preamble code into report folder
       file.copy(
@@ -697,31 +703,31 @@ create_template <- function(
           "# Available quantities", "\n",
           "start_year", "\n",
           "end_year", "\n",
-          
+
           "Fend # terminal fishing mortality ", "\n",
-          
+
           # "# modify in source code if alternative target desired", "\n",
           "Ftarg # fishing mortality at msy" , "\n",
-          
+
           "F_Ftarg # Terminal year F respective to F target ", "\n",
-          
+
           "Bend # terminal year biomass ", "\n",
-          
+
           "Btarg # target biomass (msy)", "\n",
-         
+
           "total_catch # total catch in the last year" , "\n",
-          
-          
+
+
           "total_landings # total landings in the last year" , "\n",
-          
+
           "SBend # spawning biomass in the last year", "\n",
-          
+
           "M # overall natural mortality or at age" , "\n",
-          
+
           "Bmsy # target spawning biomass(msy)" , "\n",
-          
+
           "h # steepness" , "\n",
-          
+
           "R0 # recruitment", "\n",
         ),
         label = "output_and_quantities",
@@ -749,8 +755,13 @@ create_template <- function(
             mod_msg <- paste("Report is based upon model output from", model_results,
                              "that was last modified on:", mod_time)
             cli::cli_alert_info(mod_msg)
-            writeLines(mod_msg, fs::path(subdir, "model_results_metadata.md"))
-
+            writeLines(mod_msg,
+                       fs::path(subdir,
+                                paste0(
+                                  gsub(".rda", "", basename(model_results)),
+                                  "_metadata.md")
+                       )
+            )
             prev_results_line <- grep("output <- ", preamble)[1]
             prev_results <- stringr::str_replace(
               preamble[prev_results_line],
