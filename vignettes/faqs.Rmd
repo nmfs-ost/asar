@@ -66,6 +66,10 @@ Please refer to [the accessibility vignette's guide ](https://nmfs-ost.github.io
 
 Please refer to the [Acronyms and Glossary section of the accessibility vignette](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#acronyms-and-glossary) for guidance on how to use acronyms and edit the glossary.
 
+## What is this R chunk in the the skeleton file labelled `output_and_quantities` used for?
+
+This chunk is what we call the preamble. It loads in commonly used estimates and quantities for the user to reference throughout their report. The calculation of these values can be found in the `preamble.R` script found within your report folder.
+
 # Tables and Figures
 
 ## Why aren't my tables and/or figures displaying on landscape-oriented pages when the landscape braces are present?

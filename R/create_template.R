@@ -33,7 +33,7 @@
 #' by this function. Default is the working directory.
 #' @param title A custom title that is an alternative to the default title (composed
 #' in asar::create_title()). Example: "Management Track Assessments Spring 2024".
-#' @param model_results The name of the object in your environment that contains the data frame of converted model output from `asar::convert_output()`
+#' @param model_results Path to standard output file made from `asar::convert_output()`
 #' @param spp_image File path to the species' image if not
 #' using the image included in the project's repository.
 #' @param bib_file File path to a .bib file used for citing references in
@@ -126,7 +126,7 @@
 #'   author = c("John Snow" = "AFSC",
 #'              "Danny Phantom" = "NEFSC",
 #'              "Patrick Star" = "SEFSC-ML"),
-#'   model_results = dover_sole_output,
+#'   model_results = here::here("folder", "std_output.rda"),
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction"
 #' )
@@ -158,7 +158,7 @@
 #'   parameters = TRUE,
 #'   param_names = c("region", "year"),
 #'   param_values = c("my_region", "2024"),
-#'   model_results = bluefish_output,
+#'   model_results = here::here("folder", "std_output.rda"),
 #'   new_section = "an_additional_section",
 #'   section_location = "before-discussion",
 #'   type = "SAR",
@@ -505,25 +505,19 @@ create_template <- function(
         }
 
         # show message and make README stating model_results info
-        # Message is deprecated because model results are loaded from the environment rather than a file
-        # if (!is.null(model_results)){
-        #   # if resdir = null, change it to getwd() so mod_time can execute file.info()
-        #   if (is.null(resdir)){
-        #     resdir <- getwd()
-        #     resdir_null = TRUE
-        #   } else {
-        #     resdir_null = FALSE
-        #   }
-        #   mod_time <- as.character(file.info(file.path(resdir, model_results), extra_cols = F)$ctime)
-        #   mod_msg <- paste("Report is based upon model output from", model_results, "stored in folder", resdir,
-        #                    "that was last modified on:", mod_time)
-        #   message(mod_msg)
-        #   writeLines(mod_msg, fs::path(subdir, "model_results_metadata.md"))
-        #   # change resdir back to null if originally null
-        #   if(resdir_null == TRUE){
-        #     resdir <- NULL
-        #   }
-        # }
+        if (!is.null(model_results)){
+          mod_time <- as.character(file.info(fs::path(model_results), extra_cols = F)$ctime)
+          mod_msg <- paste("Report is based upon model output from", model_results,
+                           "that was last modified on:", mod_time)
+          cli::cli_alert_info(mod_msg)
+          writeLines(mod_msg,
+                     fs::path(subdir,
+                              paste0(
+                                gsub(".rda", "", basename(model_results)),
+                                "_metadata.md")
+                              )
+                     )
+        }
       } else {
         cli::cli_alert_warning("There are files in this location.")
         question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
@@ -661,141 +655,87 @@ create_template <- function(
         ),
         label = "doc_parameters"
       )
-      
+
       ##### Preamble ----
       # Add preamble
       # add in quantities and output data R chunk
       # Reassign model_results as output and save into environment for user
       # assign("output", model_results, envir = .GlobalEnv)
-      df_name <- deparse(substitute(model_results))
+
+      if (!is.null(model_results)) {
+        # identify type of file and adjust load in
+        # df_name <- stringr::str_extract(model_results, "(?<=/)[^/]+(?=\\.[^./]+$)") # extract the name of the data frame from the file name
+        # Assuming user saved converted output
+        load_method <- glue::glue("load({deparse(substitute(model_results))}) \n")
+        # output_file_type <- stringr::str_extract(model_results, "(?<=\\.)[a-zA-Z]+$")
+        # load_method <- switch(
+        #   output_file_type,
+        #   "csv" = glue::glue("{df_name} <- utils::read.csv('{model_results}') \n"),
+        #   "rda" = glue::glue("load('{model_results}') \n"),
+        #   "rdata" = glue::glue("load('{model_results}') \n"),
+        #   "rds" = glue::glue("{df_name} <- readRDS('{model_results}') \n"),
+        #   {
+        #     cli::cli_abort("Model results file type {output_file_type} not recognized. Please use csv, rda, rdata, or rds.")
+        #   }
+        # )
+      } else {
+        load_method <- ""
+        # df_name <- "NULL"
+      }
 
       # standard preamble
+      # copy preamble code into report folder
+      file.copy(
+        system.file("resources", "preamble.R", package = "asar"),
+        subdir,
+        overwrite = TRUE
+      ) |> suppressWarnings()
       preamble <- add_chunk(
         paste0(
-          # "# load converted output from asar::convert_output() \n",
+          "# load converted output from asar::convert_output() \n",
+          load_method,"\n",
           # "output <- utils::read.csv('",
           # TODO: replace resdir with substitute object; was removed as arg
           # paste0(resdir, "/", model_results),
           # "') \n",
           # "output <- ", df_name, "\n",
           "# Call reference points and quantities below \n",
-          "output <- ", df_name, " |> \n",
+          "output <- out_new |> \n", # df_name
           "  ", "dplyr::mutate(estimate = as.numeric(estimate), \n",
           "  ", "  ", "uncertainty = as.numeric(uncertainty)) \n",
-          # "start_year <- as.numeric(min(output$year, na.rm = TRUE)) \n",
-          " start_year <- output |> \n",
-          "  ", "dplyr::filter(era == 'time') |> \n",
-          "  ", "dplyr::summarise(min_year = min(year)) |> \n",
-          "  ", "dplyr::pull(min_year) |> \n",
-          "  ",   "as.numeric() \n",
-          # change end year in the fxn to ifelse where is.null(year)
-          # "end_year <- (output |> \n",
-          # "  ", "dplyr::filter(!(year %in% c('Virg', 'Init', 'S/Rcurve', 'INIT')), \n",
-          # "  ", "  ", "!is.na(year)) |> \n",
-          # "  ", "dplyr::mutate(year = as.numeric(year)) |> \n",
-          # "  ", "dplyr::summarize(max_val = max(year)) |> \n",
-          # "  ", "dplyr::pull(max_val))-10", "\n",
-          "end_year <- output |> \n",
-          "  ", "dplyr::filter(era == 'time') |> \n",
-          "  ", "dplyr::summarise(max_year = max(year)) |> \n",
-          "  ", "dplyr::pull(max_year) |> \n",
-          "  ", "as.numeric() \n",
-          # is there a better way to identify this?
-          # "end_data_year <- end_year - 1", "\n",
-          # for quantities - don't want any values that are split by factor
-          "# subset output to remove quantities that are split by factor \n",
-          "output2 <- output |> \n",
-          "  ", "dplyr::filter(is.na(season), \n",
-          "  ", "  ", "is.na(fleet), \n",
-          "  ", "  ", "is.na(sex), \n",
-          "  ", "  ", "is.na(area), \n",
-          "  ", "  ", "is.na(growth_pattern), \n",
-          "  ", "  ", "is.na(subseason), \n",
-          "  ", "  ", "is.na(age))", "\n",
-          "# terminal fishing mortality \n",
-          "Fend <- output2 |> ", "\n",
-          "  ", "dplyr::filter(c(label == 'fishing_mortality' & year == end_year) | c(label == 'terminal_fishing_mortality' & is.na(year))) |>", "\n",
-          "  ", "dplyr::pull(estimate) |>", "\n",
-          "  ", "unique()", "\n",
-          "# fishing mortality at msy \n",
-          "# please change target if desired \n",
-          "Ftarg <- output2 |>", "\n",
-          "  ", "dplyr::filter(grepl('f_target', label) | grepl('f_msy', label) | c(grepl('fishing_mortality_msy', label) & is.na(year))) |>", "\n",
-          "  ", "dplyr::pull(estimate)", "\n",
-          "# Terminal year F respective to F target \n",
-          "F_Ftarg <- Fend / Ftarg", "\n",
-          "# terminal year biomass \n",
-          "Bend <- output2 |>", "\n",
-          "  ", "dplyr::filter(grepl('mature_biomass', label) | grepl('^biomass$', label),", "\n",
-          "  ", "  ", "year == end_year) |>", "\n",
-          "  ", "dplyr::pull(estimate)", "\n",
-          "# target biomass (msy) \n",
-          "# please change target if desired \n",
-          "Btarg <- output2 |>", "\n",
-          "  ", "dplyr::filter(c(grepl('biomass', label) & grepl('target', label) & estimate >1) | label == 'biomass_msy') |>", "\n",
-          "  ", "dplyr::pull(estimate)", "\n",
-          "# total catch in the last year \n",
-          # "total_catch <- output |>", "\n",
-          # "  ", "dplyr::filter(grepl('^catch$', label), \n",
-          # "  ", "year == end_year,", "\n",
-          # "  ", "  ", "is.na(fleet),", "\n",
-          # "  ", "  ", "is.na(age),", "\n",
-          # "  ", "  ", "is.na(area),", "\n",
-          # "  ", "  ", "is.na(growth_pattern)) |>", "\n",
-          # "  ", "dplyr::pull(estimate)", "\n",
-          "total_catch <- output |> \n",
-          "  ","dplyr::filter(grepl('^catch$', label), \n",
-          "  ", "  ","year == end_year) |> \n",
-          "  ", "dplyr::group_by(year) |> \n",
-          "  ", "dplyr::summarise(total_catch  = sum(estimate)) |> \n",
-          "  ", "dplyr::ungroup() |> \n",
-          "  ", "dplyr::pull(total_catch) \n",
-          # chk_c <- dplyr::filter(output2, grepl("^catch$", label), year == end_year) |>
-          #   dplyr::group_by(year) |>
-          #   dplyr::summarise(total_catch = sum(estimate))
-          "# total landings in the last year \n",
-          # "total_landings <- output |>", "\n",
-          # "  ", "dplyr::filter(grepl('landings_weight', label), year == end_year,", "\n",
-          # "  ", "  ", "is.na(fleet),", "\n",
-          # "  ", "  ", "is.na(age)) |>", "\n",
-          # "  ", "dplyr::pull(estimate)", "\n",
-          "total_landings <- output |>", "\n",
-          "  ","dplyr::filter(grepl('landings_observed', label), year == end_year) |>", "\n", # temp remove grepl('landings_weight', label) |
-          "  ","dplyr::group_by(year) |>", "\n",
-          "  ","dplyr::summarise(total_land  = sum(estimate)) |>", "\n",
-          "  ","dplyr::ungroup() |>", "\n",
-          "  ","dplyr::pull(total_land)", "\n",
-          "# spawning biomass in the last year\n", "\n",
-          "SBend <- output2 |>", "\n",
-          "  ", "dplyr::filter(grepl('spawning_biomass', label), year == end_year) |>", "\n",
-          "  ", "dplyr::pull(estimate) |>", "\n",
-          "  ", "unique()", "\n",
-          "# overall natural mortality or at age \n",
-          "M <- output |>", "\n",
-          "  ", "dplyr::filter(grepl('natural_mortality', label)) |>", "\n",
-          "  ", "dplyr::pull(estimate)", "\n",
-          "# Biomass at msy \n",
-          "# to change to another reference point, replace msy in the following lines with other label \n",
-          "Bmsy <- output2 |>", "\n",
-          "  ", "dplyr::filter(c(grepl('^biomass', label) & grepl('msy', label) & estimate >1) | grepl('^biomass_msy$', label)) |>", "\n",
-          "  ", "dplyr::pull(estimate)", "\n",
-          "# target spawning biomass(msy) \n",
-          "# please change target if desired \n",
-          "SBmsy <- output2 |>", "\n",
-          "  ", "dplyr::filter(c(grepl('spawning_biomass', label) & grepl('msy$', label) & estimate > 1) | label == 'spawning_biomass_msy$') |>", "\n",
-          "  ", "dplyr::pull(estimate)", "\n",
-          "# steepness \n",
-          "h <- output |> ", "\n",
-          "  ", "dplyr::filter(grepl('steep', label)) |> ", "\n",
-          "  ", "dplyr::pull(estimate)", "\n",
-          "# recruitment \n",
-          "R0 <- output |> ", "\n",
-          "  ", "dplyr::filter(grepl('R0$', label) | grepl('recruitment_virgin', label)) |> ", "\n",
-          "  ", "dplyr::pull(estimate)", "\n",
-          "# female SB (placeholder)", "\n"
+          # call in source code
+          "source(\"preamble.R\") \n",
+          "# Available quantities\n",
+          "start_year\n",
+          "end_year\n",
+
+          "Fend # terminal fishing mortality\n",
+
+          # "# modify in source code if alternative target desired", "\n",
+          "Ftarg # fishing mortality at msy\n",
+
+          "F_Ftarg # Terminal year F respective to F target\n",
+
+          "Bend # terminal year biomass\n",
+
+          "Btarg # target biomass (msy)\n",
+
+          "total_catch # total catch in the last year\n",
+
+          "total_landings # total landings in the last year\n",
+
+          "SBend # spawning biomass in the last year\n",
+
+          "M # overall natural mortality or at age\n",
+
+          "Bmsy # target spawning biomass(msy)\n",
+
+          "h # steepness\n",
+
+          "R0 # recruitment\n"
         ),
         label = "output_and_quantities",
-        chunk_option = c("echo: false", "warning: false", ifelse(is.null(model_results), "eval: false", "eval: true"))
+        chunk_option = c("warning: false", ifelse(is.null(model_results), "eval: false", "eval: true"), "include: false")
       )
 
       # extract old preamble if don't want to change
@@ -814,6 +754,18 @@ create_template <- function(
           preamble <- prev_skeleton[start_line:end_line]
 
           if (!is.null(model_results)) {
+            # show message and make README stating model_results info
+            mod_time <- as.character(file.info(fs::path(model_results), extra_cols = F)$ctime)
+            mod_msg <- paste("Report is based upon model output from", model_results,
+                             "that was last modified on:", mod_time)
+            cli::cli_alert_info(mod_msg)
+            writeLines(mod_msg,
+                       fs::path(subdir,
+                                paste0(
+                                  gsub(".rda", "", basename(model_results)),
+                                  "_metadata.md")
+                       )
+            )
             prev_results_line <- grep("output <- ", preamble)[1]
             prev_results <- stringr::str_replace(
               preamble[prev_results_line],

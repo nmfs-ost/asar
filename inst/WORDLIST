@@ -22,7 +22,6 @@ PIFSC
 Pomatomus
 README
 RStudio
-Rdata
 Rmarkdown
 SAR
 SBPR
@@ -31,6 +30,7 @@ SSC
 SWA
 SWFSC
 Strikethrough
+TLDR
 TinyTeX
 YAML
 amak
@@ -61,6 +61,7 @@ is’
 jpg
 knitr
 kobe
+labelled
 le
 len
 modularized
@@ -84,6 +85,7 @@ rdas
 rdat
 rda’s
 readLines
+reproducibility
 roboto
 rowid
 saltatrix
@@ -105,7 +107,6 @@ tibble
 tidyr
 tidyselect
 tinytex
-TinyTeX
 titlepage
 yaml
 yml

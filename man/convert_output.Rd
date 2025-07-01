@@ -4,10 +4,10 @@
 \alias{convert_output}
 \title{Convert Output}
 \usage{
-convert_output(output_file, model, fleet_names = NULL, save_dir = NULL)
+convert_output(file, model, fleet_names = NULL, save_dir = NULL)
 }
 \arguments{
-\item{output_file}{Assessment model output file path}
+\item{file}{Assessment model output file path}
 
 \item{model}{Assessment model used in evaluation ("ss3", "bam",
 "asap", "fims", "amak", "ms-java", "wham", "mas").}
@@ -22,7 +22,7 @@ A reformatted and standardized version of assessment model results
 for application in building a stock assessment reports and to easily
 adapt results among regional assessments. The resulting object is
 simply a transformed and machine readable version of a model output file.
-Converted data frame is always out. It will also be saved if save_dir
+Converted data frame is always returned. It will also be saved if save_dir
 is not NULL.
 }
 \description{
@@ -31,7 +31,7 @@ Format stock assessment output files to a standardized format.
 \examples{
 \dontrun{
 convert_output(
-output_file = here::here("model1", "Report.sso"),
+file = here::here("model1", "Report.sso"),
 model = "ss3",
 fleet_names = c("TWL", "NONTWL"),
 save_dir = here::here("standard_output.rda"))

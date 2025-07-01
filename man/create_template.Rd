@@ -70,7 +70,7 @@ by this function. Default is the working directory.}
 \item{title}{A custom title that is an alternative to the default title (composed
 in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
 
-\item{model_results}{The name of the object in your environment that contains the data frame of converted model output from \code{asar::convert_output()}}
+\item{model_results}{Path to standard output file made from \code{asar::convert_output()}}
 
 \item{spp_image}{File path to the species' image if not
 using the image included in the project's repository.}
@@ -159,7 +159,7 @@ create_template(
   author = c("John Snow" = "AFSC",
              "Danny Phantom" = "NEFSC",
              "Patrick Star" = "SEFSC-ML"),
-  model_results = dover_sole_output,
+  model_results = here::here("folder", "std_output.rda"),
   new_section = "an_additional_section",
   section_location = "after-introduction"
 )
@@ -191,7 +191,7 @@ create_template(
   parameters = TRUE,
   param_names = c("region", "year"),
   param_values = c("my_region", "2024"),
-  model_results = bluefish_output,
+  model_results = here::here("folder", "std_output.rda"),
   new_section = "an_additional_section",
   section_location = "before-discussion",
   type = "SAR",
