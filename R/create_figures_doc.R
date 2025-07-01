@@ -23,7 +23,7 @@ create_figures_doc <- function(subdir = getwd(),
   # add chunk that creates object as the directory of all rdas
   figures_doc_setup <- paste0(
     add_chunk(
-      glue::glue("figures_dir <- fs::path({deparse(substitute(figures_dir))}, 'figures')"),
+      glue::glue("figures_dir <- fs::path('{figures_dir}', 'figures')"),
       label = "set-rda-dir-figs"
     ),
     "\n"

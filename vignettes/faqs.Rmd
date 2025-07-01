@@ -84,6 +84,16 @@ We are encouraging users to keep the order as-is for a few reasons. First, the p
 
 However, we understand that some will strongly prefer to set the order of their tables and figures. You *can* try manually changing the order of the figure and table chunks in the 08_tables.qmd and 09_figures.qmd docs, but this isn't a reproducible or permanent solution.
 
+## Why are there absolute, rather than relative, filepaths for `tables_dir` and `figures_dir` at the tops of my figures and tables docs?
+
+We tried to implement relative filepaths for these objects but decided to return to the original workflow for two reasons.
+
+1. Hardcoding `getwd()` into the path doesn't work; when rendering your report, Quarto will recognize your "report" folder as the working directory, which probably isn't your *actual* working directory. This will result in a rendering error.
+
+2. While hardcoding `here::here()` into the path *does* work, we recognize that some users may be unfamiliar with [the `here` package](https://here.r-lib.org/) and are not able to learn another tool while already learning `asar`. We highly recommend checking out this awesome package, but in the meantime, we are not going to force its use.
+
+If you want to ensure `tables_dir` and `figures_dir` are relative filepaths (which may be essential if you are collaborating), you can directly edit these paths yourself and reset them using `getwd()`, `here::here()`, or some other option.
+
 # Rendering reports
 
 ## Why am I getting the following error message when I try to render my template?:
