@@ -70,10 +70,6 @@ Please refer to the [Acronyms and Glossary section of the accessibility vignette
 
 This chunk is what we call the preamble. It loads in commonly used estimates and quantities for the user to reference throughout their report. The calculation of these values can be found in the `preamble.R` script found within your report folder.
 
-TLDR:
-
-Reference quantities in preamble using the following notation, ``` `r start_year` ``` 
-
 # Tables and Figures
 
 ## Why aren't my tables and/or figures displaying on landscape-oriented pages when the landscape braces are present?

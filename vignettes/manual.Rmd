@@ -32,7 +32,10 @@ After generating your Figures and Tables .qmd files, there will be pre-generated
 
 TLDR:
 
-Reference quantities in preamble using the following notation, ``` `r quantity` ``` 
+Reference quantities in preamble using the following notation,
+```{verbatim}
+`r quantity`
+```
 
 After generating a report template, the "skeleton.qmd" file will contain multiple parts that control the format and outline of the report as well as helpful quantities and estimates that a user will be able to implement within their document to make it more reproducible. The chunk we call the "preamble" is an R chunk containing quantities that assessment scientists often reference throughout their document. Users should take advantage of this chunk by referencing in-line code notation throughout their document to fill in these quantities (See our [Rmarkdown article](https://nmfs-ost.github.io/asar/articles/markdown_notation.html#sec-codechunk) for more information). This allows the user to quickly and efficiently update quantities as model results change throughout the assessment process.
 
