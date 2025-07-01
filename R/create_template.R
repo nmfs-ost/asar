@@ -700,35 +700,34 @@ create_template <- function(
           "  ", "  ", "uncertainty = as.numeric(uncertainty)) \n",
           # call in source code
           "source(\"preamble.R\") \n",
-          "# Available quantities", "\n",
-          "start_year", "\n",
-          "end_year", "\n",
+          "# Available quantities\n",
+          "start_year\n",
+          "end_year\n",
 
-          "Fend # terminal fishing mortality ", "\n",
+          "Fend # terminal fishing mortality\n",
 
           # "# modify in source code if alternative target desired", "\n",
-          "Ftarg # fishing mortality at msy" , "\n",
+          "Ftarg # fishing mortality at msy\n",
 
-          "F_Ftarg # Terminal year F respective to F target ", "\n",
+          "F_Ftarg # Terminal year F respective to F target\n",
 
-          "Bend # terminal year biomass ", "\n",
+          "Bend # terminal year biomass\n",
 
-          "Btarg # target biomass (msy)", "\n",
+          "Btarg # target biomass (msy)\n",
 
-          "total_catch # total catch in the last year" , "\n",
+          "total_catch # total catch in the last year\n",
 
+          "total_landings # total landings in the last year\n",
 
-          "total_landings # total landings in the last year" , "\n",
+          "SBend # spawning biomass in the last year\n",
 
-          "SBend # spawning biomass in the last year", "\n",
+          "M # overall natural mortality or at age\n",
 
-          "M # overall natural mortality or at age" , "\n",
+          "Bmsy # target spawning biomass(msy)\n",
 
-          "Bmsy # target spawning biomass(msy)" , "\n",
+          "h # steepness\n",
 
-          "h # steepness" , "\n",
-
-          "R0 # recruitment", "\n",
+          "R0 # recruitment\n"
         ),
         label = "output_and_quantities",
         chunk_option = c("warning: false", ifelse(is.null(model_results), "eval: false", "eval: true"), "include: false")
