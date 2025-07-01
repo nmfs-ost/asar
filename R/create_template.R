@@ -866,9 +866,9 @@ create_template <- function(
       )
     } else if (custom == FALSE) {
       sections <- add_child(
-        sort(c(files_to_copy, "08_tables.qmd", "09_figures.qmd")),
+        sort(c(files_to_copy, tables_doc_name, figures_doc_name)),
         # TODO: need to remove the numbers proceeding the names as well
-        label = stringr::str_extract(sort(c(files_to_copy, "08_tables.qmd", "09_figures.qmd")), "(?<=_).+(?=\\.qmd$)")
+        label = stringr::str_extract(sort(c(files_to_copy, tables_doc_name, figures_doc_name)), "(?<=_).+(?=\\.qmd$)")
       )
     } else {
       ###### Rerender & custom ----
@@ -903,8 +903,8 @@ create_template <- function(
 
           # Create sections object to add into template
           sections <- add_child(
-            sort(c(sec_list2, "08_tables.qmd", "09_figures.qmd")),
-            label = stringr::str_extract(sort(c(files_to_copy, "08_tables.qmd", "09_figures.qmd")), "(?<=_).+(?=\\.qmd$)")
+            sort(c(sec_list2, tables_doc_name, figures_doc_name)),
+            label = stringr::str_extract(sort(c(files_to_copy, tables_doc_name, figures_doc_name)), "(?<=_).+(?=\\.qmd$)")
           )
         } else { # custom_sections explicit
 
