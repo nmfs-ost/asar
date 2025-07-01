@@ -646,7 +646,12 @@ create_template <- function(
           "SPP <- params$spp \n",
           "species <- params$species \n",
           "spp_latin <- params$spp_latin \n",
-          "office <- params$office"
+          "office <- params$office",
+          if (!is.null(param_names)) {
+            paste0("\n",
+            paste0(param_names, " <- ", "params$", param_names, collapse = " \n")
+            )
+          }
         ),
         label = "doc_parameters"
       )
