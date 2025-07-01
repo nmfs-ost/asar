@@ -126,7 +126,7 @@
 #'   author = c("John Snow" = "AFSC",
 #'              "Danny Phantom" = "NEFSC",
 #'              "Patrick Star" = "SEFSC-ML"),
-#'   model_results = dover_sole_output,
+#'   model_results = here::here("folder", "std_output.rda"),
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction"
 #' )
@@ -158,7 +158,7 @@
 #'   parameters = TRUE,
 #'   param_names = c("region", "year"),
 #'   param_values = c("my_region", "2024"),
-#'   model_results = bluefish_output,
+#'   model_results = here::here("folder", "std_output.rda"),
 #'   new_section = "an_additional_section",
 #'   section_location = "before-discussion",
 #'   type = "SAR",
