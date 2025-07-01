@@ -44,7 +44,7 @@ convert_output <- function(
     #   save_dir <- file.path(save_dir, "std_output.rda")
     # }
     if (!grepl(".rda", save_dir)) {
-      cli::cli_alert("save_dir does not contain a file name. Saved output will be namse `std_output.rda`.")
+      cli::cli_alert("save_dir does not contain a file name. Saved output will be named `std_output.rda`.")
       save_dir <- file.path(save_dir, "std_output.rda")
     }
   }
