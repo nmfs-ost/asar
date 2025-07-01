@@ -664,7 +664,7 @@ create_template <- function(
 
       if (!is.null(model_results)) {
         # identify type of file and adjust load in
-        df_name <- stringr::str_extract(model_results, "(?<=/)[^/]+(?=\\.[^./]+$)") # extract the name of the data frame from the file name
+        # df_name <- stringr::str_extract(model_results, "(?<=/)[^/]+(?=\\.[^./]+$)") # extract the name of the data frame from the file name
         # Assuming user saved converted output
         load_method <- glue::glue("load({deparse(substitute(model_results))}) \n")
         # output_file_type <- stringr::str_extract(model_results, "(?<=\\.)[a-zA-Z]+$")
@@ -680,7 +680,7 @@ create_template <- function(
         # )
       } else {
         load_method <- ""
-        df_name <- "NULL"
+        # df_name <- "NULL"
       }
 
       # standard preamble
@@ -700,7 +700,7 @@ create_template <- function(
           # "') \n",
           # "output <- ", df_name, "\n",
           "# Call reference points and quantities below \n",
-          "output <- ", df_name, " |> \n",
+          "output <- out_new |> \n", # df_name
           "  ", "dplyr::mutate(estimate = as.numeric(estimate), \n",
           "  ", "  ", "uncertainty = as.numeric(uncertainty)) \n",
           # call in source code

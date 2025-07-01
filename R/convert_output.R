@@ -37,10 +37,14 @@ convert_output <- function(
   
   # check if entered save_dir exists so doesn't waste user time finding this out at the end
   if (!is.null(save_dir)){
-    if (!dir.exists(save_dir)) {
-      cli::cli_abort("save_dir not a valid path.")
-    } else {
-      # create new save_dir with file name
+    # if (!dir.exists(stringr::str_extract(save_dir, "^.*/(?=[^/]+\\.[^/]+$)") |> stringr::str_remove("/$"))) {
+    #   cli::cli_abort("save_dir not a valid path.")
+    # } else {
+    #   # create new save_dir with file name
+    #   save_dir <- file.path(save_dir, "std_output.rda")
+    # }
+    if (!grepl(".rda", save_dir)) {
+      cli::cli_alert("save_dir does not contain a file name. Saved output will be namse `std_output.rda`.")
       save_dir <- file.path(save_dir, "std_output.rda")
     }
   }
@@ -1672,6 +1676,8 @@ convert_output <- function(
       cli::cli_alert_warning("save_dir does not contain .rda extension.")
       cli::cli_alert_info("Saving file as std_output.rda")
     }
+    # save_name <- stringr::str_extract(save_dir, "(?<=/)[^/]+(?=\\.rda$)")
+    # assign(save_name, out_new)
     save(out_new, file = save_dir)
   }
   
