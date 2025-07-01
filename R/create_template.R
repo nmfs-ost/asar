@@ -565,7 +565,7 @@ create_template <- function(
           type,
           "nemt" = "06_tables.qmd",
           "safe" = "11_tables.qmd",
-          "08_tables.qmd",
+          "08_tables.qmd"
         )
         tables_doc <- paste0(
           "# Tables \n \n",
@@ -580,7 +580,7 @@ create_template <- function(
           type,
           "nemt" = "07_figures.qmd",
           "safe" = "12_figures.qmd",
-          "09_figures.qmd",
+          "09_figures.qmd"
         )
         figures_doc <- paste0(
           "# Figures \n \n",
