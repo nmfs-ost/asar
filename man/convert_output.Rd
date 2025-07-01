@@ -14,8 +14,9 @@ convert_output(file, model, fleet_names = NULL, save_dir = NULL)
 
 \item{fleet_names}{Names of fleets in the assessment model as
 shortened in the output file. If fleet names are not properly read, then
-indicate the fleets names as an acronym in a vector
-@param save_dir File path to save the converted output file.}
+indicate the fleets names as an acronym in a vector}
+
+\item{save_dir}{File path to save the converted output file.}
 }
 \value{
 A reformatted and standardized version of assessment model results
