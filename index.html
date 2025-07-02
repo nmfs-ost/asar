@@ -173,7 +173,8 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">asar</span><span class="fu">::</span><span class="fu"><a href="reference/convert_output.html">convert_output</a></span><span class="op">(</span></span>
 <span>  output_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"Report.sso"</span>, package <span class="op">=</span> <span class="st">"asar"</span><span class="op">)</span>,</span>
-<span>  model <span class="op">=</span> <span class="st">"ss3"</span><span class="op">)</span></span></code></pre></div>
+<span>  model <span class="op">=</span> <span class="st">"ss3"</span>,</span>
+<span>  save_dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"readme_output.rda"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>In this function, the users have the option to convert output files to a standardized framework from either SS3 (Report.sso) or BAM (.rdat) output files. <code>asar</code> uses this converted output from the environment to calculate quantities in the preamble and it is also used for creating plots and tables from <a href="https://github.com/nmfs-ost/stockplotr" class="external-link"><code>stockplotr</code></a>.</p>
 <p>To proceed, the user should then run the following:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -189,7 +190,7 @@
 <span>  simple_affiliation <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  param_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nf"</span>,<span class="st">"sf"</span><span class="op">)</span>,</span>
 <span>  param_values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"North fleet"</span>, <span class="st">"South fleet"</span><span class="op">)</span>,</span>
-<span>  model_results <span class="op">=</span> <span class="va">output</span></span>
+<span>  model_results <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"readme_output.rda"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Note: The output of this report is an example based on a real stock assessment. Please refer to the link in the beginning of this section for the full assessment report.</p>
 </div>
