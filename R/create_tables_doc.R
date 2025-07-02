@@ -292,7 +292,12 @@ tab_shortname, "_cap <- ", tab_shortname, "_table_rda$cap"
 
   # Save tables doc to template folder
   utils::capture.output(cat(tables_doc),
-                        file = paste0(subdir, "/", "08_tables.qmd"),
+                        file = paste0(subdir, "/", 
+                                      ifelse(
+                                        any(grepl("_tables.qmd$", list.files(subdir))),
+                                        list.files(subdir)[grep("_tables.qmd", list.files(subdir))],
+                                        "08_tables.qmd"
+                                      )),
                         append = FALSE
   )
 }

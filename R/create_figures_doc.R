@@ -150,7 +150,12 @@ rm(rda)\n
   }
   # Save figures doc to template folder
   utils::capture.output(cat(figures_doc),
-                        file = paste0(subdir, "/", "09_figures.qmd"),
+                        file = paste0(subdir, "/", 
+                                      ifelse(
+                                        any(grepl("_figures.qmd$", list.files(subdir))),
+                                        list.files(subdir)[grep("_figures.qmd", list.files(subdir))],
+                                        "08_figures.qmd"
+                                      )),
                         append = FALSE
   )
 }

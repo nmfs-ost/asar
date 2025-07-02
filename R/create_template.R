@@ -561,20 +561,32 @@ create_template <- function(
 
       # created tables doc
       if (!rerender_skeleton) {
+        tables_doc_name <- switch(
+          type,
+          "nemt" = "05_tables.qmd",
+          "safe" = "11_tables.qmd",
+          "08_tables.qmd"
+        )
         tables_doc <- paste0(
           "# Tables \n \n",
           "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
         )
-        utils::capture.output(cat(tables_doc), file = fs::path(subdir, "08_tables.qmd"), append = FALSE)
+        utils::capture.output(cat(tables_doc), file = fs::path(subdir, tables_doc_name), append = FALSE)
       }
 
       # Create figures qmd
       if (!rerender_skeleton) {
+        figures_doc_name <- switch(
+          type,
+          "nemt" = "06_figures.qmd",
+          "safe" = "12_figures.qmd",
+          "09_figures.qmd"
+        )
         figures_doc <- paste0(
           "# Figures \n \n",
           "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
         )
-        utils::capture.output(cat(figures_doc), file = fs::path(subdir, "09_figures.qmd"), append = FALSE)
+        utils::capture.output(cat(figures_doc), file = fs::path(subdir, figures_doc_name), append = FALSE)
       }
 
       # Part I
@@ -854,9 +866,9 @@ create_template <- function(
       )
     } else if (custom == FALSE) {
       sections <- add_child(
-        sort(c(files_to_copy, "08_tables.qmd", "09_figures.qmd")),
+        sort(c(files_to_copy, tables_doc_name, figures_doc_name)),
         # TODO: need to remove the numbers proceeding the names as well
-        label = stringr::str_extract(sort(c(files_to_copy, "08_tables.qmd", "09_figures.qmd")), "(?<=_).+(?=\\.qmd$)")
+        label = stringr::str_extract(sort(c(files_to_copy, tables_doc_name, figures_doc_name)), "(?<=_).+(?=\\.qmd$)")
       )
     } else {
       ###### Rerender & custom ----
@@ -891,8 +903,8 @@ create_template <- function(
 
           # Create sections object to add into template
           sections <- add_child(
-            sort(c(sec_list2, "08_tables.qmd", "09_figures.qmd")),
-            label = stringr::str_extract(sort(c(files_to_copy, "08_tables.qmd", "09_figures.qmd")), "(?<=_).+(?=\\.qmd$)")
+            sort(c(sec_list2, tables_doc_name, figures_doc_name)),
+            label = stringr::str_extract(sort(c(files_to_copy, tables_doc_name, figures_doc_name)), "(?<=_).+(?=\\.qmd$)")
           )
         } else { # custom_sections explicit
 
