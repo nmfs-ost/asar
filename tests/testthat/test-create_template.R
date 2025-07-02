@@ -41,7 +41,7 @@ test_that("create_template() creates correct files", {
     # "10_notes.qmd",
     "11_appendix.qmd",
     "SAR_species_skeleton.qmd",
- #   "model_results_metadata.md",
+    #   "model_results_metadata.md",
     "report_glossary.tex",
     "asar_references.bib",
     "support_files"
@@ -86,13 +86,15 @@ test_that("create_template() creates correct files", {
     species = species,
     spp_latin = "Pomatomus saltatrix",
     year = year,
-    author = c("John Snow"="AFSC", "Danny Phantom"="SWFSC", "Patrick Star"="SEFSC"),
+    author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
     parameters = FALSE
     # resdir = "data",
     # model_results = "Report.sso",
     # model = "SS3"
-  ) |> suppressWarnings() |> suppressMessages()
+  ) |>
+    suppressWarnings() |>
+    suppressMessages()
 
   long_inputs_output_path <- file.path(path, "report")
   object_report_files <- list.files(long_inputs_output_path)
@@ -173,7 +175,7 @@ test_that("warning is triggered for existing files", {
     species = "Dover sole",
     spp_latin = "Pomatomus saltatrix",
     year = 2010,
-    author = c("John Snow"="AFSC", "Danny Phantom"="SWFSC", "Patrick Star"="SEFSC"),
+    author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
     parameters = FALSE
     # resdir = "data",
@@ -196,7 +198,7 @@ test_that("warning is triggered for existing files", {
       species = "Dover sole",
       spp_latin = "Pomatomus saltatrix",
       year = 2010,
-      author = c("John Snow"="AFSC", "Danny Phantom"="SWFSC", "Patrick Star"="SEFSC"),
+      author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
       include_affiliation = TRUE,
       parameters = FALSE
       # resdir = "data",
@@ -238,7 +240,7 @@ test_that("file_dir works", {
     species = species,
     spp_latin = "Pomatomus saltatrix",
     year = year,
-    author = c("John Snow"="AFSC", "Danny Phantom"="SWFSC", "Patrick Star"="SEFSC"),
+    author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
     parameters = FALSE,
     # resdir = "data",

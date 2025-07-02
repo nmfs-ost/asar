@@ -123,9 +123,11 @@
 #'   species = "Dover sole",
 #'   spp_latin = "Microstomus pacificus",
 #'   year = 2010,
-#'   author = c("John Snow" = "AFSC",
-#'              "Danny Phantom" = "NEFSC",
-#'              "Patrick Star" = "SEFSC-ML"),
+#'   author = c(
+#'     "John Snow" = "AFSC",
+#'     "Danny Phantom" = "NEFSC",
+#'     "Patrick Star" = "SEFSC-ML"
+#'   ),
 #'   model_results = here::here("folder", "std_output.rda"),
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction"
@@ -192,11 +194,9 @@ create_template <- function(
     param_names = NULL,
     param_values = NULL,
     ...) {
-
   # Check input type
   if (interactive()) {
-    type <- switch(
-      type,
+    type <- switch(type,
       "Northeast Management Track" = "nemt",
       "Pacific Fishery Management Council" = "pfmc",
       "Stock Assessment and Fishery Evaluation" = "safe",
@@ -211,8 +211,7 @@ create_template <- function(
             title = "Unrecognized template type. Please select an option below: ",
             choices = c("Default", "PFMC", "NEMT", "SAFE")
           )
-          type <- switch (
-            as.character(selection),
+          type <- switch(as.character(selection),
             "1" = "skeleton",
             "2" = "pfmc",
             "3" = "nemt",
@@ -251,9 +250,10 @@ create_template <- function(
     # report name without type and region
     report_name_1 <- gsub(glue::glue("{type}_"), "", prev_report_name)
     # Extract species
-    species <- gsub("_",
-                    " ",
-                    gsub(glue::glue("{region}_"), "", report_name_1)
+    species <- gsub(
+      "_",
+      " ",
+      gsub(glue::glue("{region}_"), "", report_name_1)
     )
 
 
@@ -292,11 +292,11 @@ create_template <- function(
     #
     # )
     # if (!is.null(species)) {
-      report_name <- paste0(
-        report_name,
-        gsub(" ", "_", species),
-        "_skeleton.qmd"
-      )
+    report_name <- paste0(
+      report_name,
+      gsub(" ", "_", species),
+      "_skeleton.qmd"
+    )
     # } else {
     #   report_name <- paste0(
     #     report_name, "species_skeleton.qmd"
@@ -314,7 +314,8 @@ create_template <- function(
     format <- tolower(format)
   } else if (grepl("docx", tolower(format))) {
     cli::cli_alert_warning("The docx format is not currently supported by asar. Defaulting to pdf.",
-                           wrap = TRUE)
+      wrap = TRUE
+    )
     format <- "pdf"
   } else {
     cli::cli_alert("Format not compatible.")
@@ -340,7 +341,8 @@ create_template <- function(
       if (!interactive()) question1 <- "y"
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         cli::cli_alert_warning("The docx format is not currently supported by asar. Defaulting to pdf.",
-                               wrap = TRUE)
+          wrap = TRUE
+        )
         format <- "pdf"
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
         cli::cli_abort("Template processing stopped.")
@@ -409,8 +411,8 @@ create_template <- function(
 
     #### Links to files for yaml ----
     spp_image <- ifelse(spp_image == "",
-                        system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar"),
-                        spp_image
+      system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar"),
+      spp_image
     )
 
     # Add bib file
@@ -466,7 +468,8 @@ create_template <- function(
         # year - default to current year
         cli::cli_alert_warning("Undefined year.")
         cli::cli_alert_info("Please identify year in your arguments or manually change it in the skeleton if value is incorrect.",
-                            wrap = TRUE)
+          wrap = TRUE
+        )
         # copy before-body tex
         if (!file.exists(file_dir, "support_files", "before-body.tex")) file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
         # customize titlepage tex
@@ -505,319 +508,321 @@ create_template <- function(
         }
 
         # show message and make README stating model_results info
-        if (!is.null(model_results)){
+        if (!is.null(model_results)) {
           mod_time <- as.character(file.info(fs::path(model_results), extra_cols = F)$ctime)
-          mod_msg <- paste("Report is based upon model output from", model_results,
-                           "that was last modified on:", mod_time)
+          mod_msg <- paste(
+            "Report is based upon model output from", model_results,
+            "that was last modified on:", mod_time
+          )
           cli::cli_alert_info(mod_msg)
-          writeLines(mod_msg,
-                     fs::path(subdir,
-                              paste0(
-                                gsub(".rda", "", basename(model_results)),
-                                "_metadata.md")
-                              )
-                     )
+          writeLines(
+            mod_msg,
+            fs::path(
+              subdir,
+              paste0(
+                gsub(".rda", "", basename(model_results)),
+                "_metadata.md"
+              )
+            )
+          )
         }
       } else {
         cli::cli_alert_warning("There are files in this location.")
         question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
 
         # answer question1 as y if session isn't interactive
-          if (!interactive()){
-            question1 <- "y"
+        if (!interactive()) {
+          question1 <- "y"
+        }
+
+        if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+          # remove old skeleton if present
+          if (any(grepl("_skeleton.qmd", list.files(subdir)))) {
+            file.remove(file.path(subdir, (list.files(subdir)[grep("_skeleton.qmd", list.files(subdir))])))
           }
+          # copy quarto files
+          file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = TRUE) |> suppressWarnings()
+          # copy before-body tex
+          file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
+          # customize titlepage tex
+          create_titlepage_tex(office = office, subdir = supdir, species = species)
+          # customize in-header tex
+          create_inheader_tex(species = species, year = year, subdir = supdir)
+          # Copy species image from package
+          file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
+          # Copy bib file
+          file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
+          # Copy us doc logo
+          file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+          # Copy glossary
+          file.copy(system.file("glossary", "report_glossary.tex", package = "asar"), subdir, overwrite = FALSE) |> suppressWarnings()
+          # Copy html format file if applicable
+          if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+        } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+          cli::cli_alert_warning("Report template files were not copied into your directory.")
+          cli::cli_alert_info("If you wish to update the template with new parameters or output files, please edit the {report_name} in your local folder.",
+            wrap = TRUE
+          )
+        }
+      } # close check for previous files & respective copying
+      prev_skeleton <- NULL
+    } # close if rerender
 
-          if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-            # remove old skeleton if present
-            if (any(grepl("_skeleton.qmd", list.files(subdir)))) {
-              file.remove(file.path(subdir, (list.files(subdir)[grep("_skeleton.qmd", list.files(subdir))])))
-            }
-            # copy quarto files
-            file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = TRUE) |> suppressWarnings()
-            # copy before-body tex
-            file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
-            # customize titlepage tex
-            create_titlepage_tex(office = office, subdir = supdir, species = species)
-            # customize in-header tex
-            create_inheader_tex(species = species, year = year, subdir = supdir)
-            # Copy species image from package
-            file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
-            # Copy bib file
-            file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
-            # Copy us doc logo
-            file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
-            # Copy glossary
-            file.copy(system.file("glossary", "report_glossary.tex", package = "asar"), subdir, overwrite = FALSE) |> suppressWarnings()
-            # Copy html format file if applicable
-            if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
-          } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-            cli::cli_alert_warning("Report template files were not copied into your directory.")
-            cli::cli_alert_info("If you wish to update the template with new parameters or output files, please edit the {report_name} in your local folder.",
-                                wrap = TRUE)
-          }
-        } # close check for previous files & respective copying
-        prev_skeleton <- NULL
-      } # close if rerender
+    # created tables doc
+    if (!rerender_skeleton) {
+      tables_doc_name <- switch(type,
+        "nemt" = "05_tables.qmd",
+        "safe" = "11_tables.qmd",
+        "08_tables.qmd"
+      )
+      tables_doc <- paste0(
+        "# Tables \n \n",
+        "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
+      )
+      utils::capture.output(cat(tables_doc), file = fs::path(subdir, tables_doc_name), append = FALSE)
+    }
 
-      # created tables doc
-      if (!rerender_skeleton) {
-        tables_doc_name <- switch(
-          type,
-          "nemt" = "05_tables.qmd",
-          "safe" = "11_tables.qmd",
-          "08_tables.qmd"
-        )
-        tables_doc <- paste0(
-          "# Tables \n \n",
-          "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
-        )
-        utils::capture.output(cat(tables_doc), file = fs::path(subdir, tables_doc_name), append = FALSE)
-      }
+    # Create figures qmd
+    if (!rerender_skeleton) {
+      figures_doc_name <- switch(type,
+        "nemt" = "06_figures.qmd",
+        "safe" = "12_figures.qmd",
+        "09_figures.qmd"
+      )
+      figures_doc <- paste0(
+        "# Figures \n \n",
+        "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
+      )
+      utils::capture.output(cat(figures_doc), file = fs::path(subdir, figures_doc_name), append = FALSE)
+    }
 
-      # Create figures qmd
-      if (!rerender_skeleton) {
-        figures_doc_name <- switch(
-          type,
-          "nemt" = "06_figures.qmd",
-          "safe" = "12_figures.qmd",
-          "09_figures.qmd"
-        )
-        figures_doc <- paste0(
-          "# Figures \n \n",
-          "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
-        )
-        utils::capture.output(cat(figures_doc), file = fs::path(subdir, figures_doc_name), append = FALSE)
-      }
-
-      # Part I
-      # Create a report template file to render for the region and species
-      # Create YAML header for document
-      # Write title based on report type and region
-      if (title == "[TITLE]") {
-        # TODO: update below so title gets updated if new input is added such as region/species/office
-        if (rerender_skeleton) {
-          title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
-          if (title == "'Stock Assessment Report Template' " & (!is.null(office) | !is.null(species) | !is.null(region))) {
-            title <- create_title(
-              office = office,
-              species = species,
-              spp_latin = spp_latin,
-              region = region,
-              type = type,
-              year = year
-            )
-          }
-        } else {
+    # Part I
+    # Create a report template file to render for the region and species
+    # Create YAML header for document
+    # Write title based on report type and region
+    if (title == "[TITLE]") {
+      # TODO: update below so title gets updated if new input is added such as region/species/office
+      if (rerender_skeleton) {
+        title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
+        if (title == "'Stock Assessment Report Template' " & (!is.null(office) | !is.null(species) | !is.null(region))) {
           title <- create_title(
             office = office,
             species = species,
             spp_latin = spp_latin,
             region = region,
             type = type,
-            year = year)
+            year = year
+          )
         }
-      }
-
-      # Authors and affiliations
-      # Parameters to add authorship to YAML
-      author_list <- add_authors(
-        prev_skeleton = ifelse(rerender_skeleton, prev_skeleton, NULL),
-        author = author, # need to put this in case there is a rerender otherwise it would not use the correct argument
-        rerender_skeleton = rerender_skeleton
-      )
-
-      # Create yaml
-      yaml <- create_yaml(
-        prev_format = prev_format,
-        format = format,
-        prev_skeleton = prev_skeleton,
-        author_list = author_list,
-        title = title,
-        rerender_skeleton = rerender_skeleton,
-        office = office,
-        spp_image = spp_image,
-        species = species,
-        spp_latin = spp_latin,
-        region = region,
-        parameters = parameters,
-        param_names = param_names,
-        param_values = param_values,
-        bib_name = bib_name,
-        bib_file = bib_file,
-        year = year,
-        type = type
-      )
-
-      if (!rerender_skeleton) cli::cli_alert_success("Built YAML header.")
-
-      ##### Params chunk ----
-      params_chunk <- add_chunk(
-        paste0(
-          "# Parameters \n",
-          "spp <- params$species \n",
-          "SPP <- params$spp \n",
-          "species <- params$species \n",
-          "spp_latin <- params$spp_latin \n",
-          "office <- params$office",
-          if (!is.null(param_names)) {
-            paste0("\n",
-            paste0(param_names, " <- ", "params$", param_names, collapse = " \n")
-            )
-          }
-        ),
-        label = "doc_parameters"
-      )
-
-      ##### Preamble ----
-      # Add preamble
-      # add in quantities and output data R chunk
-      # Reassign model_results as output and save into environment for user
-      # assign("output", model_results, envir = .GlobalEnv)
-
-      if (!is.null(model_results)) {
-        # identify type of file and adjust load in
-        # df_name <- stringr::str_extract(model_results, "(?<=/)[^/]+(?=\\.[^./]+$)") # extract the name of the data frame from the file name
-        # Assuming user saved converted output
-        load_method <- glue::glue("load({deparse(substitute(model_results))}) \n")
-        # output_file_type <- stringr::str_extract(model_results, "(?<=\\.)[a-zA-Z]+$")
-        # load_method <- switch(
-        #   output_file_type,
-        #   "csv" = glue::glue("{df_name} <- utils::read.csv('{model_results}') \n"),
-        #   "rda" = glue::glue("load('{model_results}') \n"),
-        #   "rdata" = glue::glue("load('{model_results}') \n"),
-        #   "rds" = glue::glue("{df_name} <- readRDS('{model_results}') \n"),
-        #   {
-        #     cli::cli_abort("Model results file type {output_file_type} not recognized. Please use csv, rda, rdata, or rds.")
-        #   }
-        # )
       } else {
-        load_method <- ""
-        # df_name <- "NULL"
+        title <- create_title(
+          office = office,
+          species = species,
+          spp_latin = spp_latin,
+          region = region,
+          type = type,
+          year = year
+        )
       }
+    }
 
-      # standard preamble
-      # copy preamble code into report folder
-      file.copy(
-        system.file("resources", "preamble.R", package = "asar"),
-        subdir,
-        overwrite = TRUE
-      ) |> suppressWarnings()
-      preamble <- add_chunk(
-        paste0(
-          "# load converted output from asar::convert_output() \n",
-          load_method,"\n",
-          # "output <- utils::read.csv('",
-          # TODO: replace resdir with substitute object; was removed as arg
-          # paste0(resdir, "/", model_results),
-          # "') \n",
-          # "output <- ", df_name, "\n",
-          "# Call reference points and quantities below \n",
-          "output <- out_new |> \n", # df_name
-          "  ", "dplyr::mutate(estimate = as.numeric(estimate), \n",
-          "  ", "  ", "uncertainty = as.numeric(uncertainty)) \n",
-          # call in source code
-          "source(\"preamble.R\") \n",
-          "# Available quantities\n",
-          "start_year\n",
-          "end_year\n",
+    # Authors and affiliations
+    # Parameters to add authorship to YAML
+    author_list <- add_authors(
+      prev_skeleton = ifelse(rerender_skeleton, prev_skeleton, NULL),
+      author = author, # need to put this in case there is a rerender otherwise it would not use the correct argument
+      rerender_skeleton = rerender_skeleton
+    )
 
-          "Fend # terminal fishing mortality\n",
+    # Create yaml
+    yaml <- create_yaml(
+      prev_format = prev_format,
+      format = format,
+      prev_skeleton = prev_skeleton,
+      author_list = author_list,
+      title = title,
+      rerender_skeleton = rerender_skeleton,
+      office = office,
+      spp_image = spp_image,
+      species = species,
+      spp_latin = spp_latin,
+      region = region,
+      parameters = parameters,
+      param_names = param_names,
+      param_values = param_values,
+      bib_name = bib_name,
+      bib_file = bib_file,
+      year = year,
+      type = type
+    )
 
-          # "# modify in source code if alternative target desired", "\n",
-          "Ftarg # fishing mortality at msy\n",
+    if (!rerender_skeleton) cli::cli_alert_success("Built YAML header.")
 
-          "F_Ftarg # Terminal year F respective to F target\n",
-
-          "Bend # terminal year biomass\n",
-
-          "Btarg # target biomass (msy)\n",
-
-          "total_catch # total catch in the last year\n",
-
-          "total_landings # total landings in the last year\n",
-
-          "SBend # spawning biomass in the last year\n",
-
-          "M # overall natural mortality or at age\n",
-
-          "Bmsy # target spawning biomass(msy)\n",
-
-          "h # steepness\n",
-
-          "R0 # recruitment\n"
-        ),
-        label = "output_and_quantities",
-        chunk_option = c("warning: false", ifelse(is.null(model_results), "eval: false", "eval: true"), "include: false")
-      )
-
-      # extract old preamble if don't want to change
-      if (rerender_skeleton) {
-        question1 <- readline("Do you want to keep the current preamble? (Y/N)")
-
-        # answer question1 as y if session isn't interactive
-        if (!interactive()){
-          question1 <- "y"
+    ##### Params chunk ----
+    params_chunk <- add_chunk(
+      paste0(
+        "# Parameters \n",
+        "spp <- params$species \n",
+        "SPP <- params$spp \n",
+        "species <- params$species \n",
+        "spp_latin <- params$spp_latin \n",
+        "office <- params$office",
+        if (!is.null(param_names)) {
+          paste0(
+            "\n",
+            paste0(param_names, " <- ", "params$", param_names, collapse = " \n")
+          )
         }
-        if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-          start_line <- grep("output_and_quantities", prev_skeleton) - 1
-          # find next trailing "```"` in case it was edited at the end
-          end_line <- grep("```", prev_skeleton)[grep("```", prev_skeleton) > start_line][1]
-          # preamble <- paste(prev_skeleton[start_line:end_line], collapse = "\n")
-          preamble <- prev_skeleton[start_line:end_line]
+      ),
+      label = "doc_parameters"
+    )
 
-          if (!is.null(model_results)) {
-            # show message and make README stating model_results info
-            mod_time <- as.character(file.info(fs::path(model_results), extra_cols = F)$ctime)
-            mod_msg <- paste("Report is based upon model output from", model_results,
-                             "that was last modified on:", mod_time)
-            cli::cli_alert_info(mod_msg)
-            writeLines(mod_msg,
-                       fs::path(subdir,
-                                paste0(
-                                  gsub(".rda", "", basename(model_results)),
-                                  "_metadata.md")
-                       )
-            )
-            prev_results_line <- grep("output <- ", preamble)[1]
-            prev_results <- stringr::str_replace(
-              preamble[prev_results_line],
-              "(?<=output\\s{0,5}<-).*",
-              deparse(substitute(model_results))
-            )
-            # add back in pipe
-            prev_results <- paste0(prev_results, " |>")
-            preamble <- append(preamble, prev_results, after = prev_results_line)[-prev_results_line]
+    ##### Preamble ----
+    # Add preamble
+    # add in quantities and output data R chunk
+    # Reassign model_results as output and save into environment for user
+    # assign("output", model_results, envir = .GlobalEnv)
 
-            # change chunk eval to true
-            if (any(grepl("eval: false", preamble))) {
-              chunk_eval_line <- grep("eval: ", preamble)
-              eval_line_new <- stringr::str_replace(
-                preamble[chunk_eval_line],
-                "eval: false",
-                "eval: true"
+    if (!is.null(model_results)) {
+      # identify type of file and adjust load in
+      # df_name <- stringr::str_extract(model_results, "(?<=/)[^/]+(?=\\.[^./]+$)") # extract the name of the data frame from the file name
+      # Assuming user saved converted output
+      load_method <- glue::glue("load({deparse(substitute(model_results))}) \n")
+      # output_file_type <- stringr::str_extract(model_results, "(?<=\\.)[a-zA-Z]+$")
+      # load_method <- switch(
+      #   output_file_type,
+      #   "csv" = glue::glue("{df_name} <- utils::read.csv('{model_results}') \n"),
+      #   "rda" = glue::glue("load('{model_results}') \n"),
+      #   "rdata" = glue::glue("load('{model_results}') \n"),
+      #   "rds" = glue::glue("{df_name} <- readRDS('{model_results}') \n"),
+      #   {
+      #     cli::cli_abort("Model results file type {output_file_type} not recognized. Please use csv, rda, rdata, or rds.")
+      #   }
+      # )
+    } else {
+      load_method <- ""
+      # df_name <- "NULL"
+    }
+
+    # standard preamble
+    # copy preamble code into report folder
+    file.copy(
+      system.file("resources", "preamble.R", package = "asar"),
+      subdir,
+      overwrite = TRUE
+    ) |> suppressWarnings()
+    preamble <- add_chunk(
+      paste0(
+        "# load converted output from asar::convert_output() \n",
+        load_method, "\n",
+        # "output <- utils::read.csv('",
+        # TODO: replace resdir with substitute object; was removed as arg
+        # paste0(resdir, "/", model_results),
+        # "') \n",
+        # "output <- ", df_name, "\n",
+        "# Call reference points and quantities below \n",
+        "output <- out_new |> \n", # df_name
+        "  ", "dplyr::mutate(estimate = as.numeric(estimate), \n",
+        "  ", "  ", "uncertainty = as.numeric(uncertainty)) \n",
+        # call in source code
+        "source(\"preamble.R\") \n",
+        "# Available quantities\n",
+        "start_year\n",
+        "end_year\n",
+        "Fend # terminal fishing mortality\n",
+
+        # "# modify in source code if alternative target desired", "\n",
+        "Ftarg # fishing mortality at msy\n",
+        "F_Ftarg # Terminal year F respective to F target\n",
+        "Bend # terminal year biomass\n",
+        "Btarg # target biomass (msy)\n",
+        "total_catch # total catch in the last year\n",
+        "total_landings # total landings in the last year\n",
+        "SBend # spawning biomass in the last year\n",
+        "M # overall natural mortality or at age\n",
+        "Bmsy # target spawning biomass(msy)\n",
+        "h # steepness\n",
+        "R0 # recruitment\n"
+      ),
+      label = "output_and_quantities",
+      chunk_option = c("warning: false", ifelse(is.null(model_results), "eval: false", "eval: true"), "include: false")
+    )
+
+    # extract old preamble if don't want to change
+    if (rerender_skeleton) {
+      question1 <- readline("Do you want to keep the current preamble? (Y/N)")
+
+      # answer question1 as y if session isn't interactive
+      if (!interactive()) {
+        question1 <- "y"
+      }
+      if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+        start_line <- grep("output_and_quantities", prev_skeleton) - 1
+        # find next trailing "```"` in case it was edited at the end
+        end_line <- grep("```", prev_skeleton)[grep("```", prev_skeleton) > start_line][1]
+        # preamble <- paste(prev_skeleton[start_line:end_line], collapse = "\n")
+        preamble <- prev_skeleton[start_line:end_line]
+
+        if (!is.null(model_results)) {
+          # show message and make README stating model_results info
+          mod_time <- as.character(file.info(fs::path(model_results), extra_cols = F)$ctime)
+          mod_msg <- paste(
+            "Report is based upon model output from", model_results,
+            "that was last modified on:", mod_time
+          )
+          cli::cli_alert_info(mod_msg)
+          writeLines(
+            mod_msg,
+            fs::path(
+              subdir,
+              paste0(
+                gsub(".rda", "", basename(model_results)),
+                "_metadata.md"
               )
-              preamble <- paste(
-                append(
-                  preamble,
-                  eval_line_new,
-                  after = chunk_eval_line)[-chunk_eval_line],
-                collapse = "\n"
-              )
-            }
-            preamble <- paste(preamble, collapse = "\n")
+            )
+          )
+          prev_results_line <- grep("output <- ", preamble)[1]
+          prev_results <- stringr::str_replace(
+            preamble[prev_results_line],
+            "(?<=output\\s{0,5}<-).*",
+            deparse(substitute(model_results))
+          )
+          # add back in pipe
+          prev_results <- paste0(prev_results, " |>")
+          preamble <- append(preamble, prev_results, after = prev_results_line)[-prev_results_line]
 
-            # if (!grepl(".csv", model_results)) warning("Model results are not in csv format - Will not work on render")
-          } else {
-            cli::cli_alert_info("Preamble maintained.")
-            cli::cli_alert_info("Model results not updated.")
-            preamble <- paste(preamble, collapse = "\n")
+          # change chunk eval to true
+          if (any(grepl("eval: false", preamble))) {
+            chunk_eval_line <- grep("eval: ", preamble)
+            eval_line_new <- stringr::str_replace(
+              preamble[chunk_eval_line],
+              "eval: false",
+              "eval: true"
+            )
+            preamble <- paste(
+              append(
+                preamble,
+                eval_line_new,
+                after = chunk_eval_line
+              )[-chunk_eval_line],
+              collapse = "\n"
+            )
           }
-        } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-          cli::cli_alert_warning("Report template files were not copied into your directory.")
-          cli::cli_alert_info("If you wish to update the template with new parameters or output files, please edit the {report_name} in your local folder.",
-                              wrap = TRUE)
+          preamble <- paste(preamble, collapse = "\n")
+
+          # if (!grepl(".csv", model_results)) warning("Model results are not in csv format - Will not work on render")
+        } else {
+          cli::cli_alert_info("Preamble maintained.")
+          cli::cli_alert_info("Model results not updated.")
+          preamble <- paste(preamble, collapse = "\n")
         }
-      } # close if rerender
+      } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+        cli::cli_alert_warning("Report template files were not copied into your directory.")
+        cli::cli_alert_info("If you wish to update the template with new parameters or output files, please edit the {report_name} in your local folder.",
+          wrap = TRUE
+        )
+      }
+    } # close if rerender
 
     ##### Disclaimer ----
     disclaimer <- "{{< pagebreak >}}\n\n## Disclaimer {.unnumbered .unlisted}\n\nThese materials do not constitute a formal publication and are for information only. They are in a pre-review, pre-decisional state and should not be formally cited or reproduced. They are to be considered provisional and do not represent any determination or policy of NOAA or the Department of Commerce.\n"
@@ -847,8 +852,8 @@ create_template <- function(
 
 
     ##### Create report outline ----
-      # Include tables and figures in template
-      # at this point, files_to_copy is the most updated outline
+    # Include tables and figures in template
+    # at this point, files_to_copy is the most updated outline
 
     ###### Rerender & not custom ----
     if (rerender_skeleton & custom == FALSE) {
@@ -877,14 +882,13 @@ create_template <- function(
       if (is.null(new_section)) {
         section_list <- add_base_section(files_to_copy)
         sections <- add_child(section_list,
-                              label = custom_sections # this might need to be changed
+          label = custom_sections # this might need to be changed
         )
         # Create sections object to add into template
         sections <- add_child(
           sections,
           label = stringr::str_extract(unlist(sections), "(?<=_).+(?=\\.qmd$)")
         )
-
       } else { # custom = TRUE
         # Create custom template using existing sections and new sections from analyst
         # Add sections from package options
@@ -955,7 +959,7 @@ create_template <- function(
       question1 <- readline("Deleting previous skeleton file... Do you want to proceed? (Y/N)")
 
       # answer question1 as y if session isn't interactive
-      if (!interactive()){
+      if (!interactive()) {
         question1 <- "y"
       }
 
@@ -973,7 +977,8 @@ create_template <- function(
     } else {
       cli::cli_alert_success("Saved report template in directory {subdir}.")
       cli::cli_alert_info("To proceeed, please edit sections within the report template in order to produce a completed stock assessment report.",
-                          wrap = TRUE)
+        wrap = TRUE
+      )
     }
     # Open file for analyst
     # file.show(file.path(subdir, report_name)) # this opens the new file, but also restarts the session
@@ -997,6 +1002,7 @@ create_template <- function(
     # file.show(file.path(subdir, report_name))
 
     svDialogs::dlg_message("Reminder: Changes should be made when calling an old report. Please change 1) the year in the citation and 2) the location and name of the results file in the first chunk of the report.",
-      type = "ok")
+      type = "ok"
+    )
   }
 }

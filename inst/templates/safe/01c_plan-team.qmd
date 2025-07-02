@@ -7,23 +7,27 @@
 #| echo: false
 ptdata <- safe::ptdata
 
-    flextable::font(
-    flextable::footnote( flextable::flextable(ptdata), 
-                         j=3, part="header", ref_symbols = "1", 
-                        value = flextable::as_paragraph('Total biomass (age 4+) estimates from age-structured model.')),
-        fontname = "Times New Roman",
-        part = "all") %>% 
-      flextable::footnote(i=2, j=7, part="body", ref_symbols = "2", 
-                        value = flextable::as_paragraph(
-                              flextable::as_chunk(paste0(paste0('Current as of ', date, ' . Source: NMFS Alaska Regional Office Catch Accounting System
-via the AKFIN database (http://www.akfin.org).'))))) %>% 
-      flextable::set_formatter(Year = function(x) sprintf("%s", x)) %>% 
-      flextable::merge_at(i=1:4, j=1) %>% 
-      flextable::hrule(rule = "exact") %>% 
-      flextable::hline_top(part='all') %>% 
-      flextable::hline_bottom() %>% 
-      flextable::fix_border_issues()
-      
+flextable::font(
+  flextable::footnote(flextable::flextable(ptdata),
+    j = 3, part = "header", ref_symbols = "1",
+    value = flextable::as_paragraph("Total biomass (age 4+) estimates from age-structured model.")
+  ),
+  fontname = "Times New Roman",
+  part = "all"
+) %>%
+  flextable::footnote(
+    i = 2, j = 7, part = "body", ref_symbols = "2",
+    value = flextable::as_paragraph(
+      flextable::as_chunk(paste0(paste0("Current as of ", date, " . Source: NMFS Alaska Regional Office Catch Accounting System
+via the AKFIN database (http://www.akfin.org).")))
+    )
+  ) %>%
+  flextable::set_formatter(Year = function(x) sprintf("%s", x)) %>%
+  flextable::merge_at(i = 1:4, j = 1) %>%
+  flextable::hrule(rule = "exact") %>%
+  flextable::hline_top(part = "all") %>%
+  flextable::hline_bottom() %>%
+  flextable::fix_border_issues()
 ```
 
 {{< pagebreak >}} 
@@ -34,38 +38,50 @@ via the AKFIN database (http://www.akfin.org).'))))) %>%
 ptdata2 <- safe::ptdata2
 
 flextable::font(
-    flextable::footnote( flextable::flextable(ptdata2[-1,]), 
-                         j=6, part="header", ref_symbols = "2", 
-                        value = flextable::as_paragraph(flextable::as_chunk(
-                        paste0(paste0('Current as of ', date, 
-                        ' . Source: NMFS Alaska Regional Office Catch Accounting System
-via the AKFIN database (http://www.akfin.org).'))))),
-fontname = "Times New Roman",
-        part = "all") %>% 
-  flextable::add_header(values = ptdata2[1,]) %>% 
-  flextable::border_remove() %>% 
-    flextable::merge_at(j=1) %>% 
-    flextable::compose(i = 1, j = 3:6, 
-                       value = flextable::as_paragraph(as.character(year-1)), 
-                       part = "header") %>% 
-      flextable::compose(i = 1, j = 7:8, 
-                       value = flextable::as_paragraph(as.character(year)), 
-                       part = "header") %>% 
-      flextable::compose(i = 1, j = 9:10, 
-                       value = flextable::as_paragraph(as.character(year+1)), 
-                       part = "header") %>% 
-  flextable::merge_at(i=1,j=3:6, part='header') %>% 
-  flextable::merge_at(i=1,j=7:8, part='header') %>% 
-  flextable::merge_at(i=1,j=9:10, part='header') %>%
-  flextable::align(i=1, part='header', align='center') %>% 
-  flextable::compose(i = 2, j = 7:10, 
-                       value = flextable::as_paragraph(rep(c('ABC', 'OFL'), 2)), 
-                       part = "header") %>% 
-  flextable::hline_top(part='body') %>% 
-  flextable::hline_top(part='header') %>% 
-  flextable::vline(j=c(2, 6, 8)) %>% 
-  flextable::hline_bottom(part='body') %>% 
-  flextable::fix_border_issues(part='all') %>% 
+  flextable::footnote(flextable::flextable(ptdata2[-1, ]),
+    j = 6, part = "header", ref_symbols = "2",
+    value = flextable::as_paragraph(flextable::as_chunk(
+      paste0(paste0(
+        "Current as of ", date,
+        " . Source: NMFS Alaska Regional Office Catch Accounting System
+via the AKFIN database (http://www.akfin.org)."
+      ))
+    ))
+  ),
+  fontname = "Times New Roman",
+  part = "all"
+) %>%
+  flextable::add_header(values = ptdata2[1, ]) %>%
+  flextable::border_remove() %>%
+  flextable::merge_at(j = 1) %>%
+  flextable::compose(
+    i = 1, j = 3:6,
+    value = flextable::as_paragraph(as.character(year - 1)),
+    part = "header"
+  ) %>%
+  flextable::compose(
+    i = 1, j = 7:8,
+    value = flextable::as_paragraph(as.character(year)),
+    part = "header"
+  ) %>%
+  flextable::compose(
+    i = 1, j = 9:10,
+    value = flextable::as_paragraph(as.character(year + 1)),
+    part = "header"
+  ) %>%
+  flextable::merge_at(i = 1, j = 3:6, part = "header") %>%
+  flextable::merge_at(i = 1, j = 7:8, part = "header") %>%
+  flextable::merge_at(i = 1, j = 9:10, part = "header") %>%
+  flextable::align(i = 1, part = "header", align = "center") %>%
+  flextable::compose(
+    i = 2, j = 7:10,
+    value = flextable::as_paragraph(rep(c("ABC", "OFL"), 2)),
+    part = "header"
+  ) %>%
+  flextable::hline_top(part = "body") %>%
+  flextable::hline_top(part = "header") %>%
+  flextable::vline(j = c(2, 6, 8)) %>%
+  flextable::hline_bottom(part = "body") %>%
+  flextable::fix_border_issues(part = "all") %>%
   flextable::set_table_properties(width = .5, layout = "autofit")
-  
 ```

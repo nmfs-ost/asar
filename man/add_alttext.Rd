@@ -53,7 +53,7 @@ Add alternative text into latex
 }
 \examples{
 \dontrun{
-  create_template(
+create_template(
   new_template = TRUE,
   format = "pdf",
   office = "NWFSC",
@@ -67,22 +67,23 @@ Add alternative text into latex
   new_section = "an_additional_section",
   section_location = "after-introduction",
   figures_dir = getwd()
-  )
+)
 
-  path <- getwd()
+path <- getwd()
 
-  quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
+quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
 
-  withr::with_dir(
+withr::with_dir(
   file.path(path, "report"),
-   add_alttext(
-     x = "SAR_USWC_Dover_sole_skeleton.tex",
-     dir = getwd(),
-     alttext_csv_dir = getwd(),
-     figures_dir = path,
-     compile = FALSE,
-     rename = "SAR_Dover_sole_tagged")
-   )
+  add_alttext(
+    x = "SAR_USWC_Dover_sole_skeleton.tex",
+    dir = getwd(),
+    alttext_csv_dir = getwd(),
+    figures_dir = path,
+    compile = FALSE,
+    rename = "SAR_Dover_sole_tagged"
+  )
+)
 }
 
 }

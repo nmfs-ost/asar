@@ -12,27 +12,35 @@ The following table summarizes the data used in the stock assessment model for n
 ```{r}
 #| echo: false
 #| eval: false
-data.frame(Source = c(rep("NMFS Groundfish survey", 2),
-                      rep("U.S. trawl fishery", 3)),
-           Data = c("Survey biomass",
-                    "Age composition",
-                    "Catch",
-                    "Age composition",
-                    "Length composition"),
-           Years = c("1984-1999 (triennial), 2001-2019 (biennial)",
-                     "1984, 1987, 1990, 1993, 1996, 1999, 2003, 2005, 2007, 2009, 2011, 2013, 2015, 2017, 2019",
-                     "1961-2020",
-                     "1998-2002, 2004-2006, 2008, 2010, 2012, 2014, 2016, 2018",
-                     "1991-1997, 2003, 2007, 2009, 2011, 2013, 2015, 2017, 2019")) |>
-  flextable::flextable()  |> 
-  flextable::width(j = ~ Source, width = 1)  |>
-  flextable::width(j = ~ Data, width = 1.5)  |>
-  flextable::width(j = ~ Years, width = 4)  |>
-  flextable::merge_v(j = 1)  |> 
-  flextable::font(fontname = "Times", part = "all")  |> 
-  flextable::fontsize(size = 10)  |> 
-  flextable::theme_vanilla()  |> 
-  flextable::fix_border_issues() 
+data.frame(
+  Source = c(
+    rep("NMFS Groundfish survey", 2),
+    rep("U.S. trawl fishery", 3)
+  ),
+  Data = c(
+    "Survey biomass",
+    "Age composition",
+    "Catch",
+    "Age composition",
+    "Length composition"
+  ),
+  Years = c(
+    "1984-1999 (triennial), 2001-2019 (biennial)",
+    "1984, 1987, 1990, 1993, 1996, 1999, 2003, 2005, 2007, 2009, 2011, 2013, 2015, 2017, 2019",
+    "1961-2020",
+    "1998-2002, 2004-2006, 2008, 2010, 2012, 2014, 2016, 2018",
+    "1991-1997, 2003, 2007, 2009, 2011, 2013, 2015, 2017, 2019"
+  )
+) |>
+  flextable::flextable() |>
+  flextable::width(j = ~Source, width = 1) |>
+  flextable::width(j = ~Data, width = 1.5) |>
+  flextable::width(j = ~Years, width = 4) |>
+  flextable::merge_v(j = 1) |>
+  flextable::font(fontname = "Times", part = "all") |>
+  flextable::fontsize(size = 10) |>
+  flextable::theme_vanilla() |>
+  flextable::fix_border_issues()
 ```
 
 ## Fishery

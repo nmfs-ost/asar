@@ -23,7 +23,8 @@ Create Quarto Document of Figures
 \examples{
 \dontrun{
 create_figures_doc(
-subdir = getwd(),
-figures_dir = here::here())
+  subdir = getwd(),
+  figures_dir = here::here()
+)
 }
 }

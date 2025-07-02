@@ -24,5 +24,4 @@ test_that("convert_output works for SS3", {
     model = "ss3"
   )
   expect_equal(dim(output)[2], 36)
-
 })

@@ -17,6 +17,7 @@ Description: Build a full or update stock assessment report for any stock
     based on their regional science center, species, area, ect.
 License: MIT + file LICENSE
 URL: https://github.com/nmfs-ost/asar
+BugReports: https://github.com/nmfs-ost/asar/issues
 Depends: 
     R (>= 2.10)
 Imports: 
@@ -65,4 +66,3 @@ Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-BugReports: https://github.com/nmfs-ost/asar/issues

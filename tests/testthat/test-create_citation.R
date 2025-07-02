@@ -1,10 +1,10 @@
 test_that("citation generated properly for SWFSC", {
   fxn_test <- create_citation(
     author = c(
-      "Peter T. Kuriyama"="SWFSC",
-      "Caitlin Allen Akselrud"="SWFSC",
-      "Juan P. Zwolinski"="SWFSC",
-      "Kevin T. Hill"="SWFSC"
+      "Peter T. Kuriyama" = "SWFSC",
+      "Caitlin Allen Akselrud" = "SWFSC",
+      "Juan P. Zwolinski" = "SWFSC",
+      "Kevin T. Hill" = "SWFSC"
     ),
     title = "Check",
     year = 2024

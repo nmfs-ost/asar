@@ -1,7 +1,6 @@
 #' Create and export glossary
 #'
 export_glossary <- function() {
-
   # set up fxn that capitalizes first letter of string
   first_capitalize <- function(x) {
     substr(x, 1, 1) <- toupper(substr(x, 1, 1))
@@ -15,32 +14,42 @@ export_glossary <- function() {
   all_entries <- ac_dir |>
     fs::dir_ls(regexp = "\\.csv$") |>
     purrr::map_dfr(read.csv, .id = "source") |>
-    dplyr::mutate(source = gsub(".*acronym_lists/","",source),
-                  source = gsub("_.*","",source))
+    dplyr::mutate(
+      source = gsub(".*acronym_lists/", "", source),
+      source = gsub("_.*", "", source)
+    )
 
   acronyms <- all_entries |>
     dplyr::select(-c(All, X)) |>
-    dplyr::filter(!is.na(Acronym),
-                  Acronym != "") |>
-    dplyr::mutate_all(dplyr::na_if,"") |>
+    dplyr::filter(
+      !is.na(Acronym),
+      Acronym != ""
+    ) |>
+    dplyr::mutate_all(dplyr::na_if, "") |>
     # add additional entries
-    dplyr::add_row(source = NA,
-                   Acronym = "JABBA",
-                   Meaning = "Just Another Bayesian Biomass Assessment",
-                   Definition = NA) |>
-    dplyr::add_row(source = NA,
-                   Acronym = "AMAK",
-                   Meaning = "Assessment model for Alaska",
-                   Definition = NA) |>
-    dplyr::add_row(source = NA,
-                   Acronym = "CEATTLE",
-                   Meaning = "Climate enhanced Age-based model with Temperature specific Trophic linkages and Energetics",
-                   Definition = NA) |>
+    dplyr::add_row(
+      source = NA,
+      Acronym = "JABBA",
+      Meaning = "Just Another Bayesian Biomass Assessment",
+      Definition = NA
+    ) |>
+    dplyr::add_row(
+      source = NA,
+      Acronym = "AMAK",
+      Meaning = "Assessment model for Alaska",
+      Definition = NA
+    ) |>
+    dplyr::add_row(
+      source = NA,
+      Acronym = "CEATTLE",
+      Meaning = "Climate enhanced Age-based model with Temperature specific Trophic linkages and Energetics",
+      Definition = NA
+    ) |>
     dplyr::mutate(dplyr::across(.cols = tidyr::everything(), trimws),
-                  Meaning = gsub("Nino", "Niño", Meaning),
-                  meaning_lower = tolower(Meaning),
-                  Shared_ac = duplicated(Acronym),
-                  Shared_mean = duplicated(meaning_lower)
+      Meaning = gsub("Nino", "Niño", Meaning),
+      meaning_lower = tolower(Meaning),
+      Shared_ac = duplicated(Acronym),
+      Shared_mean = duplicated(meaning_lower)
     )
 
   # min length of consolidated acronyms: ~818
@@ -51,7 +60,7 @@ export_glossary <- function() {
   # row has a definition, then keep the row with the definition
   has_definitions_unique <- acronyms |>
     dplyr::group_by(Acronym, meaning_lower) |>
-    dplyr::filter(dplyr::if_any(Definition, ~!is.na(.))) |>
+    dplyr::filter(dplyr::if_any(Definition, ~ !is.na(.))) |>
     dplyr::slice_max(order_by = !is.na(Definition), n = 1) |>
     dplyr::ungroup()
 
@@ -65,41 +74,60 @@ export_glossary <- function() {
     dplyr::distinct(Acronym, meaning_lower, n, .keep_all = T)
 
   # join the two dfs
-  unique_all <- dplyr::full_join(has_definitions_unique,
-                                 no_definitions_unique) |>
+  unique_all <- dplyr::full_join(
+    has_definitions_unique,
+    no_definitions_unique
+  ) |>
     dplyr::arrange(Acronym) |>
     dplyr::select(source:meaning_lower) |>
-
     # manually clean rows to make some extremely similar rows identical
-    dplyr::filter(Acronym != "?",
-                  # ACE is already used for multiple acronyms; will use ACOE
-                  !(Acronym == "ACE" & Meaning == "Army Corps of Engineers"),
-                  # Longer duplicate of AFSC
-                  !Meaning %in% "Alaska Fisheries Science Center (National Marine Fisheries Service)",
-                  # Duplicate without a definition
-                  !Meaning %in% "Administrative Procedure Act") |>
-    dplyr::mutate(Meaning = stringr::str_replace_all(Meaning,
-                                                     "Administrative Procedures Act",
-                                                     "Administrative Procedure Act"),
-                  Acronym = stringr::str_replace_all(Acronym,
-                                                     "BRDs",
-                                                     "BRD"),
-                  Meaning = stringr::str_replace_all(Meaning,
-                                                     "Bycatch reduction devices",
-                                                     "Bycatch reduction device"),
-                  Acronym = stringr::str_replace_all(Acronym,
-                                                     "Bi Op",
-                                                     "BiOp")) |>
+    dplyr::filter(
+      Acronym != "?",
+      # ACE is already used for multiple acronyms; will use ACOE
+      !(Acronym == "ACE" & Meaning == "Army Corps of Engineers"),
+      # Longer duplicate of AFSC
+      !Meaning %in% "Alaska Fisheries Science Center (National Marine Fisheries Service)",
+      # Duplicate without a definition
+      !Meaning %in% "Administrative Procedure Act"
+    ) |>
+    dplyr::mutate(
+      Meaning = stringr::str_replace_all(
+        Meaning,
+        "Administrative Procedures Act",
+        "Administrative Procedure Act"
+      ),
+      Acronym = stringr::str_replace_all(
+        Acronym,
+        "BRDs",
+        "BRD"
+      ),
+      Meaning = stringr::str_replace_all(
+        Meaning,
+        "Bycatch reduction devices",
+        "Bycatch reduction device"
+      ),
+      Acronym = stringr::str_replace_all(
+        Acronym,
+        "Bi Op",
+        "BiOp"
+      )
+    ) |>
     # duplicates without a definition or with nearly identical definitions
-    dplyr::filter(!Meaning %in% c("Biomass (in either weight or other appropriate unit)",
-                                  "Biomass at maximum sustainable yield",
-                                  "Biomass at MSY"),
-                  !Acronym %in% "BMSY (B sub MSY)") |>
+    dplyr::filter(
+      !Meaning %in% c(
+        "Biomass (in either weight or other appropriate unit)",
+        "Biomass at maximum sustainable yield",
+        "Biomass at MSY"
+      ),
+      !Acronym %in% "BMSY (B sub MSY)"
+    ) |>
     # remove ACOE ac without definition, and make entry with def ("COE" --> ACOE)
     dplyr::filter(Acronym != "ACOE") |>
-    dplyr::mutate(Acronym = stringr::str_replace(Acronym,
-                                                 "COE",
-                                                 "ACOE")) |>
+    dplyr::mutate(Acronym = stringr::str_replace(
+      Acronym,
+      "COE",
+      "ACOE"
+    )) |>
     # near-duplicate
     dplyr::filter(
       !Meaning %in% c(
@@ -178,30 +206,39 @@ export_glossary <- function() {
         "Nautical miles",
         "Atlantic States Marine Fisheries Commission (ASMFC)",
         "Distinct Population Segment",
-        "Socioeconomic Panel (of the Scientific and Statistical Committee)"),
-      !Acronym %in% c("E.O.",
-                      "FAG",
-                      "F=0",
-                      "NS #",
-                      "NS1",
-                      "NS2",
-                      "NS8",
-                      "NSGs",
-                      "BO",
-                      "DAR",
-                      "ITA",
-                      "NS#"),
+        "Socioeconomic Panel (of the Scientific and Statistical Committee)"
+      ),
+      !Acronym %in% c(
+        "E.O.",
+        "FAG",
+        "F=0",
+        "NS #",
+        "NS1",
+        "NS2",
+        "NS8",
+        "NSGs",
+        "BO",
+        "DAR",
+        "ITA",
+        "NS#"
+      ),
       !(is.na(Definition) & Meaning == "Marine Recreational Fishing Statistical Survey"),
       !(is.na(Definition) & Acronym == "P*"),
       !(source == "GMFMC" & Acronym == "P*"),
       !(is.na(Definition) & Acronym == "RFA")
     ) |> # correct meaning
-    dplyr::mutate(Meaning = stringr::str_replace(Meaning,
-                                                 "Marine Recreational Fisheries Statistical Survey",
-                                                 "Marine Recreational Fisheries Statistics Survey"),
-                  Meaning = stringr::str_replace(Meaning,
-                                                 "National Standards Guidelines",
-                                                 "National Standard Guidelines")) |>
+    dplyr::mutate(
+      Meaning = stringr::str_replace(
+        Meaning,
+        "Marine Recreational Fisheries Statistical Survey",
+        "Marine Recreational Fisheries Statistics Survey"
+      ),
+      Meaning = stringr::str_replace(
+        Meaning,
+        "National Standards Guidelines",
+        "National Standard Guidelines"
+      )
+    ) |>
     dplyr::filter(!Definition %in% "An advisory committee of the PFMC made up of scientists and economists. The Magnuson-Stevens Act requires that each council maintain an SSC to assist in gathering and analyzing statistical, biological, ecological, economic, social, and other scientific information that is relevant to the management of Council fisheries.") |>
     # recreate meaning_lower after updates
     dplyr::mutate(meaning_lower = tolower(Meaning))
@@ -321,120 +358,155 @@ export_glossary <- function() {
       !(source == "PFMC" & Acronym == "mt"),
       !(source == "Spawning Stock Biomass at MSY" & Acronym == "SBMSY")
     ) |>
-    dplyr::mutate(Definition = stringr::str_replace_all(Definition,
-                                                        "An annual catch level recommended by a Council's SSC. The Council's ACL for a stock may not exceed the ABC recommendation of the SSC for that stock. The SSC's ABC recommendation should incorporate consideration of the stock's life history and reproductive potential, vulnerability to overfishing, and the degree of uncertainty in the science upon which the ABC recommendation is based.",
-                                                        "A scientific calculation of the annual catch level recommended by a Council's SSC and is used to set the upper limit of the annual total allowable catch. It is calculated by applying the estimated (or proxy) harvest rate that produces maximum sustainable yield to the estimated exploitable stock biomass (the portion of the fish population that can be harvested)."),
-                  Definition = stringr::str_replace_all(Definition,
-                                                        "The level of annual catch of a stock or stock complex that serves as the basis for invoking [accountability measures]. ACL cannot exceed the ABC, but may be divided into sector-ACLs.",
-                                                        "The level of annual catch, set equal to or below the OFL, of a stock or stock complex that serves as the basis for invoking accountability measures. ACL cannot exceed the ABC, but may be divided into sector-ACLs."),
-                  Meaning = stringr::str_replace(Meaning, "Annual Catch Limits", "Annual Catch Limit"),
-                  Meaning = stringr::str_replace(Meaning,
-                                                 "\\(commercial fishing statistics\\)",
-                                                 ""),
-                  Definition = stringr::str_replace_all(Definition,
-                                                        "panel of members made up of individuals with knowledge and first-hand experience of harvesting Gulf of Mexico managed species and are interested in the conservation and best practices for management of these fishery resources",
-                                                        "A group of stakeholders with experience and knowledge of the regional fisheries who provide input into the management process."),
-                  Meaning = stringr::str_replace(Meaning, "stock biomass level", "Biomass"),
-                  Definition = stringr::str_replace(Definition,
-                                                    "unintended capture of marine mammals",
-                                                    "unintended capture of non-target species"),
-                  Definition = stringr::str_replace(Definition,
-                                                    "issued by various NOAA regional offices",
-                                                    "A scientific assessment issued by various NOAA regional offices"),
-                  Meaning = stringr::str_replace(Meaning, "Average Catch", "Catch"),
-                  Meaning = stringr::str_replace(Meaning, "ecosystem component species", "Ecosystem component"),
-                  Definition = stringr::str_replace(Definition,
-                                                    "U.S. federal waters that extend from 3 to 200 miles from shore. The U.S. has sole management authority of the natural resources found therein.",
-                                                    "An area of the ocean, generally extending 200 nautical miles (230 miles) beyond a nation's territorial sea, within which a coastal nation has jurisdiction over both living and nonliving resources."),
-                  Definition = stringr::str_replace(Definition,
-                                                    "The instantaneous rate at which fish in a stock die because of fishing. Typically includes measured bycatch, if data are available.",
-                                                    "The rate at which fish die due to fishing activities."),
-                  Meaning = stringr::str_replace(Meaning, "FMSY", "Fishing Mortality at MSY"),
-                  Meaning = stringr::str_replace(Meaning, "FOY", "Fishing Mortality Rate Yielding OY"),
-                  Definition = stringr::str_replace(Definition,
-                                                    "fishing mortality rate corresponding to an equilibrium yield at optimum",
-                                                    "fishing mortality rate corresponding to an equilibrium yield that balances ecological, economic, and social goals."),
-                  Definition = ifelse(Acronym == "ID",
-                                      "Process defining the spatial and temporal extent of a fish population that will be assessed.",
-                                      Definition),
-                  Definition = ifelse(Acronym == "MSST",
-                                      "A threshold biomass used to determine if a stock is overfished.",
-                                      Definition),
-                  Definition = ifelse(Acronym == "NMFS",
-                                      "A division of the U.S. Department of Commerce, National Oceanic and Atmospheric Administration (NOAA). NMFS is responsible for conservation and management of offshore fisheries (and inland salmon) and ecosystems. The NMFS Regional Director is a voting member of the Council.",
-                                      Definition),
-                  Definition = ifelse(Acronym == "NOAA",
-                                      "A federal agency within the Department of Commerce focused on the condition of the oceans and the atmosphere.",
-                                      Definition),
-                  Definition = ifelse(Acronym == "NWR",
-                                      "A network of protected areas in the United States, managed by the U.S. Fish and Wildlife Service, dedicated to the conservation, management, and restoration of fish, wildlife, and plant resources and their habitats.",
-                                      Definition),
-                  Definition = ifelse(Acronym == "OA",
-                                      "A fishery for which entry is not controlled by a limited entry permitting program.",
-                                      Definition),
-                  Definition = ifelse(Acronym == "PSC",
-                                      "The incidental capture of species that must be returned to the sea by law, and cannot be retained for sale or personal use.",
-                                      Definition),
-                  Definition = ifelse(Acronym == "SA",
-                                      "The number of mature fish contributing to the estimate of recruitment.",
-                                      Definition),
-                  Definition = ifelse(Acronym == "SEDAR",
-                                      "The cooperative peer-reviewed process by which stock assessment projects are conducted in NOAA Fisheries’ Southeast Region.",
-                                      Definition),
-                  Definition = ifelse(Acronym == "SEFSC",
-                                      "The center that provides the scientific advice and data needed to effectively manage the living resources of the Southeast Region and Atlantic high seas.",
-                                      Definition),
-                  Definition = ifelse(Acronym == "SOI",
-                                      NA,
-                                      Definition),
-                  Meaning = ifelse(Acronym == "SOI",
-                                   "Statistics of income",
-                                   Meaning),
-                  Definition = ifelse(Acronym == "SPR",
-                                      "The ratio of the number of eggs that could be produced by a fish over its lifetime that has recruited to a fishery, over the number of eggs that could be produced by an average fish in a stock that is unfished. It can be used to measure the effects of fishing pressure on a stock by expressing the spawning potential of the fished biomass as a percentage of the unfished virgin spawning biomass.",
-                                      Definition),
-                  Definition = ifelse(Acronym == "SB",
-                                      "The total weight of the mature females, or mature females and males, depending on the species, that are reproducing in a given season (sometimes measured in egg production).",
-                                      Definition),
-                  Definition = ifelse(Acronym == "SSC",
-                                      "An advisory committee of a regional fishery management council composed of scientists, economists, and other technical experts that peer review statistical, biological, ecological, economic, social, and other scientific information that is relevant to the management of council fisheries, and provides preliminary policy language to the full council for consideration.",
-                                      Definition),
-                  Meaning = ifelse(Acronym == "mt", "Metric ton", Meaning),
-                  Acronym = ifelse(Acronym == "SS", "SS3", Acronym),
-                  Definition = ifelse(Acronym == "VPA",
-                                      "A fisheries stock assessment cohort modeling method that reconstructs historical fish population structure by analyzing catch data and mortality rates to estimate past population sizes and fishing mortality rates.",
-                                      Definition),
-                  Acronym = ifelse(Acronym == "Bo (B sub zero)", "B0", Acronym),
-                  Acronym = ifelse(Acronym == "BCURRENT", "Bcurrent", Acronym),
-                  Acronym = ifelse(Acronym == "BFLAG", "Bflag", Acronym),
-                  Acronym = ifelse(Acronym == "B MAX", "Bmax", Acronym),
-                  Acronym = ifelse(Acronym == "B MSY", "Bmsy", Acronym),
-                  Acronym = ifelse(Acronym == "F MAX", "Fmax", Acronym),
-                  Acronym = ifelse(Acronym == "FCURR", "Fcurrent", Acronym),
-                  Acronym = ifelse(Acronym == "FMSY", "Fmsy", Acronym),
-                  Acronym = ifelse(Acronym == "L MAX", "Lmax", Acronym),
-                  Acronym = ifelse(Acronym == "SBTarget", "SBtarget", Acronym),
-                  Acronym = ifelse(Acronym == "SBThreshold", "SBthreshold", Acronym),
-                  Acronym = ifelse(Acronym == "SSBTarget", "SSBtarget", Acronym),
-                  Acronym = ifelse(Acronym == "SSBThreshold", "SSBthreshold", Acronym),
-                  Acronym = ifelse(Acronym == "TMAX", "Tmax", Acronym),
-                  Acronym = ifelse(Acronym == "TMIN", "Tmin", Acronym),
-                  Acronym = ifelse(Acronym == "TTARGET", "Ttarget", Acronym),
-                  Meaning = ifelse(Meaning == "#VALUE!", NA, Meaning),
-                  Acronym = ifelse(Acronym == "TnS/TNS", "TNS", Acronym),
-                  Meaning = ifelse(Meaning == "Climate and Commununities Initiative", "Climate and Communities Initiative", Meaning),
-                  Meaning = ifelse(Acronym == "DMIS", "Data Matching Imputation System", Meaning),
-                  Definition = ifelse(Definition == "#VALUE!", NA, Definition),
-                  Definition = ifelse(Definition == "(Charter boat)", "Charter boat", Definition),
-                  Meaning = ifelse(Meaning == "Fishing Mortality at MSY", "fishing mortality at MSY", Meaning),
-                  Meaning = ifelse(Meaning == "Fishing Mortality Rate Yielding OY", "fishing mortality rate yielding OY", Meaning),
-                  Meaning = ifelse(Meaning == "General Additive Models", "General Additive Model", Meaning),
-                  Meaning = ifelse(Meaning == "Northwest Atlantic Fisheries Organization viii", "Northwest Atlantic Fisheries Organization", Meaning),
-                  Meaning = ifelse(Meaning == "Optimum sustainable production, Oregon State Police", "optimum sustainable production", Meaning),
-                  Meaning = ifelse(Meaning == "Spawning Abundance at MSY", "spawning abundance at MSY", Meaning),
-                  Meaning = ifelse(Meaning == "Spawning Stock Biomass at MSY", "spawning stock biomass at MSY", Meaning),
-                  Meaning = ifelse(Acronym == "R", "Programming environment for statistical processing and presentation", Meaning)
-                   ) |>
+    dplyr::mutate(
+      Definition = stringr::str_replace_all(
+        Definition,
+        "An annual catch level recommended by a Council's SSC. The Council's ACL for a stock may not exceed the ABC recommendation of the SSC for that stock. The SSC's ABC recommendation should incorporate consideration of the stock's life history and reproductive potential, vulnerability to overfishing, and the degree of uncertainty in the science upon which the ABC recommendation is based.",
+        "A scientific calculation of the annual catch level recommended by a Council's SSC and is used to set the upper limit of the annual total allowable catch. It is calculated by applying the estimated (or proxy) harvest rate that produces maximum sustainable yield to the estimated exploitable stock biomass (the portion of the fish population that can be harvested)."
+      ),
+      Definition = stringr::str_replace_all(
+        Definition,
+        "The level of annual catch of a stock or stock complex that serves as the basis for invoking [accountability measures]. ACL cannot exceed the ABC, but may be divided into sector-ACLs.",
+        "The level of annual catch, set equal to or below the OFL, of a stock or stock complex that serves as the basis for invoking accountability measures. ACL cannot exceed the ABC, but may be divided into sector-ACLs."
+      ),
+      Meaning = stringr::str_replace(Meaning, "Annual Catch Limits", "Annual Catch Limit"),
+      Meaning = stringr::str_replace(
+        Meaning,
+        "\\(commercial fishing statistics\\)",
+        ""
+      ),
+      Definition = stringr::str_replace_all(
+        Definition,
+        "panel of members made up of individuals with knowledge and first-hand experience of harvesting Gulf of Mexico managed species and are interested in the conservation and best practices for management of these fishery resources",
+        "A group of stakeholders with experience and knowledge of the regional fisheries who provide input into the management process."
+      ),
+      Meaning = stringr::str_replace(Meaning, "stock biomass level", "Biomass"),
+      Definition = stringr::str_replace(
+        Definition,
+        "unintended capture of marine mammals",
+        "unintended capture of non-target species"
+      ),
+      Definition = stringr::str_replace(
+        Definition,
+        "issued by various NOAA regional offices",
+        "A scientific assessment issued by various NOAA regional offices"
+      ),
+      Meaning = stringr::str_replace(Meaning, "Average Catch", "Catch"),
+      Meaning = stringr::str_replace(Meaning, "ecosystem component species", "Ecosystem component"),
+      Definition = stringr::str_replace(
+        Definition,
+        "U.S. federal waters that extend from 3 to 200 miles from shore. The U.S. has sole management authority of the natural resources found therein.",
+        "An area of the ocean, generally extending 200 nautical miles (230 miles) beyond a nation's territorial sea, within which a coastal nation has jurisdiction over both living and nonliving resources."
+      ),
+      Definition = stringr::str_replace(
+        Definition,
+        "The instantaneous rate at which fish in a stock die because of fishing. Typically includes measured bycatch, if data are available.",
+        "The rate at which fish die due to fishing activities."
+      ),
+      Meaning = stringr::str_replace(Meaning, "FMSY", "Fishing Mortality at MSY"),
+      Meaning = stringr::str_replace(Meaning, "FOY", "Fishing Mortality Rate Yielding OY"),
+      Definition = stringr::str_replace(
+        Definition,
+        "fishing mortality rate corresponding to an equilibrium yield at optimum",
+        "fishing mortality rate corresponding to an equilibrium yield that balances ecological, economic, and social goals."
+      ),
+      Definition = ifelse(Acronym == "ID",
+        "Process defining the spatial and temporal extent of a fish population that will be assessed.",
+        Definition
+      ),
+      Definition = ifelse(Acronym == "MSST",
+        "A threshold biomass used to determine if a stock is overfished.",
+        Definition
+      ),
+      Definition = ifelse(Acronym == "NMFS",
+        "A division of the U.S. Department of Commerce, National Oceanic and Atmospheric Administration (NOAA). NMFS is responsible for conservation and management of offshore fisheries (and inland salmon) and ecosystems. The NMFS Regional Director is a voting member of the Council.",
+        Definition
+      ),
+      Definition = ifelse(Acronym == "NOAA",
+        "A federal agency within the Department of Commerce focused on the condition of the oceans and the atmosphere.",
+        Definition
+      ),
+      Definition = ifelse(Acronym == "NWR",
+        "A network of protected areas in the United States, managed by the U.S. Fish and Wildlife Service, dedicated to the conservation, management, and restoration of fish, wildlife, and plant resources and their habitats.",
+        Definition
+      ),
+      Definition = ifelse(Acronym == "OA",
+        "A fishery for which entry is not controlled by a limited entry permitting program.",
+        Definition
+      ),
+      Definition = ifelse(Acronym == "PSC",
+        "The incidental capture of species that must be returned to the sea by law, and cannot be retained for sale or personal use.",
+        Definition
+      ),
+      Definition = ifelse(Acronym == "SA",
+        "The number of mature fish contributing to the estimate of recruitment.",
+        Definition
+      ),
+      Definition = ifelse(Acronym == "SEDAR",
+        "The cooperative peer-reviewed process by which stock assessment projects are conducted in NOAA Fisheries’ Southeast Region.",
+        Definition
+      ),
+      Definition = ifelse(Acronym == "SEFSC",
+        "The center that provides the scientific advice and data needed to effectively manage the living resources of the Southeast Region and Atlantic high seas.",
+        Definition
+      ),
+      Definition = ifelse(Acronym == "SOI",
+        NA,
+        Definition
+      ),
+      Meaning = ifelse(Acronym == "SOI",
+        "Statistics of income",
+        Meaning
+      ),
+      Definition = ifelse(Acronym == "SPR",
+        "The ratio of the number of eggs that could be produced by a fish over its lifetime that has recruited to a fishery, over the number of eggs that could be produced by an average fish in a stock that is unfished. It can be used to measure the effects of fishing pressure on a stock by expressing the spawning potential of the fished biomass as a percentage of the unfished virgin spawning biomass.",
+        Definition
+      ),
+      Definition = ifelse(Acronym == "SB",
+        "The total weight of the mature females, or mature females and males, depending on the species, that are reproducing in a given season (sometimes measured in egg production).",
+        Definition
+      ),
+      Definition = ifelse(Acronym == "SSC",
+        "An advisory committee of a regional fishery management council composed of scientists, economists, and other technical experts that peer review statistical, biological, ecological, economic, social, and other scientific information that is relevant to the management of council fisheries, and provides preliminary policy language to the full council for consideration.",
+        Definition
+      ),
+      Meaning = ifelse(Acronym == "mt", "Metric ton", Meaning),
+      Acronym = ifelse(Acronym == "SS", "SS3", Acronym),
+      Definition = ifelse(Acronym == "VPA",
+        "A fisheries stock assessment cohort modeling method that reconstructs historical fish population structure by analyzing catch data and mortality rates to estimate past population sizes and fishing mortality rates.",
+        Definition
+      ),
+      Acronym = ifelse(Acronym == "Bo (B sub zero)", "B0", Acronym),
+      Acronym = ifelse(Acronym == "BCURRENT", "Bcurrent", Acronym),
+      Acronym = ifelse(Acronym == "BFLAG", "Bflag", Acronym),
+      Acronym = ifelse(Acronym == "B MAX", "Bmax", Acronym),
+      Acronym = ifelse(Acronym == "B MSY", "Bmsy", Acronym),
+      Acronym = ifelse(Acronym == "F MAX", "Fmax", Acronym),
+      Acronym = ifelse(Acronym == "FCURR", "Fcurrent", Acronym),
+      Acronym = ifelse(Acronym == "FMSY", "Fmsy", Acronym),
+      Acronym = ifelse(Acronym == "L MAX", "Lmax", Acronym),
+      Acronym = ifelse(Acronym == "SBTarget", "SBtarget", Acronym),
+      Acronym = ifelse(Acronym == "SBThreshold", "SBthreshold", Acronym),
+      Acronym = ifelse(Acronym == "SSBTarget", "SSBtarget", Acronym),
+      Acronym = ifelse(Acronym == "SSBThreshold", "SSBthreshold", Acronym),
+      Acronym = ifelse(Acronym == "TMAX", "Tmax", Acronym),
+      Acronym = ifelse(Acronym == "TMIN", "Tmin", Acronym),
+      Acronym = ifelse(Acronym == "TTARGET", "Ttarget", Acronym),
+      Meaning = ifelse(Meaning == "#VALUE!", NA, Meaning),
+      Acronym = ifelse(Acronym == "TnS/TNS", "TNS", Acronym),
+      Meaning = ifelse(Meaning == "Climate and Commununities Initiative", "Climate and Communities Initiative", Meaning),
+      Meaning = ifelse(Acronym == "DMIS", "Data Matching Imputation System", Meaning),
+      Definition = ifelse(Definition == "#VALUE!", NA, Definition),
+      Definition = ifelse(Definition == "(Charter boat)", "Charter boat", Definition),
+      Meaning = ifelse(Meaning == "Fishing Mortality at MSY", "fishing mortality at MSY", Meaning),
+      Meaning = ifelse(Meaning == "Fishing Mortality Rate Yielding OY", "fishing mortality rate yielding OY", Meaning),
+      Meaning = ifelse(Meaning == "General Additive Models", "General Additive Model", Meaning),
+      Meaning = ifelse(Meaning == "Northwest Atlantic Fisheries Organization viii", "Northwest Atlantic Fisheries Organization", Meaning),
+      Meaning = ifelse(Meaning == "Optimum sustainable production, Oregon State Police", "optimum sustainable production", Meaning),
+      Meaning = ifelse(Meaning == "Spawning Abundance at MSY", "spawning abundance at MSY", Meaning),
+      Meaning = ifelse(Meaning == "Spawning Stock Biomass at MSY", "spawning stock biomass at MSY", Meaning),
+      Meaning = ifelse(Acronym == "R", "Programming environment for statistical processing and presentation", Meaning)
+    ) |>
     # add periods to end of Definition
     dplyr::mutate(
       Definition = ifelse(
@@ -444,62 +516,68 @@ export_glossary <- function() {
       )
     ) |>
     dplyr::mutate(Definition = first_capitalize(Definition)) |>
-    dplyr::mutate_if(is.character, ~stringr::str_replace(., "U.S.", "US")) |>
+    dplyr::mutate_if(is.character, ~ stringr::str_replace(., "U.S.", "US")) |>
     # instance in LEC won't update unless done twice
-    dplyr::mutate_if(is.character, ~stringr::str_replace(., "U.S.", "US")) |>
-    dplyr::mutate_if(is.character, ~stringr::str_replace(., "SBMSY", "SBmsy")) |>
+    dplyr::mutate_if(is.character, ~ stringr::str_replace(., "U.S.", "US")) |>
+    dplyr::mutate_if(is.character, ~ stringr::str_replace(., "SBMSY", "SBmsy")) |>
     dplyr::select(2:4)
 
-    # take rows where SSB is in the acronym, change it to SB
+  # take rows where SSB is in the acronym, change it to SB
   ssb_rows <- unique_all_cleaning |>
-    dplyr::filter(grepl('SSB', Acronym)) |>
+    dplyr::filter(grepl("SSB", Acronym)) |>
     dplyr::mutate(Acronym = stringr::str_replace_all(Acronym, "SSB", "SB"))
 
-  unique_all_cleaning2 <- rbind(unique_all_cleaning,
-                                         ssb_rows) |>
+  unique_all_cleaning2 <- rbind(
+    unique_all_cleaning,
+    ssb_rows
+  ) |>
     # make label column
     dplyr::mutate(Label = tolower(Acronym)) |>
     dplyr::relocate(Label, .after = Acronym) |>
     # keep certain labels uppercase to differentiate from labels with same lowercase acronym
-    dplyr::mutate(Label = ifelse(Acronym == "CM", "CM", Label),
-                  Label = ifelse(Acronym == "M", "M", Label),
-                  Label = ifelse(Acronym == "PPT", "PPT", Label)) |>
+    dplyr::mutate(
+      Label = ifelse(Acronym == "CM", "CM", Label),
+      Label = ifelse(Acronym == "M", "M", Label),
+      Label = ifelse(Acronym == "PPT", "PPT", Label)
+    ) |>
     dplyr::arrange(Label) |>
     as.data.frame()
 
   # rows with meanings that should be all lowercase, labelled by label
-  rows_to_lower <- c("M",
-                     "aa", "abc", "abm", "ace", "acl", "adp", "aeq", "ais", "alj", "aop", "ap", "ar", "arm", "asc", "atm",
-                     "b", "b-oy", "b1", "b2", "ba", "bb", "bc", "bcurrent", "beg", "bet", "bflag", "bkc", "bmsy", "brp", "bts",
-                     "c", "cams", "cas", "cdq", "cea", "cfa", "cfs", "cm", "cml", "cmm", "co2", "cp", "cpdf", "cs", "cvoa", "cy",
-                     "das", "dea", "deis", "dgn", "dic", "dps", "dtl", "dts", "dwfn",
-                     "eam", "ebm", "ebfm", "ec", "ed", "edr", "eej", "ef", "efh", "efh-hapc", "efhca", "eir", "eis", "elaps", "em", "eo", "epr", "esd", "esp", "ewg",
-                     "f", "f/v", "fad", "fcurrent", "feis", "fep", "fes", "fis", "fl", "fll", "fm", "fmc", "fmp", "fmu", "fonsi", "fpr", "frfa",
-                     "gac", "gam", "gdp", "gf", "ghl", "gis", "gkc", "gm", "gni", "gnp", "goes", "grt",
-                     "haccp", "hapc", "hbs", "hc", "hcr", "hg", "hms", "hp",
-                     "iba", "ibq", "ica", "id", "iea", "int", "ipa", "ipq", "ipt", "iq", "iqf", "irfa", "iriu", "itq", "iuu",
-                     "jai", "jam",
-                     "laa", "lc", "le", "lk", "llp", "lng", "loa", "loc", "lof",
-                     "m", "m&si", "mc", "mca", "mcd", "mfmt", "mhhw", "mm", "moa", "mou", "mpcc", "mra", "ms", "mse", "msst", "msvpa", "msy", "mt", "mus", "mw",
-                     "ne", "ngo", "nlaa",
-                     "oa", "oeg", "ofl", "oswag", "otec", "oy",
-                     "p*", "pbf", "pbr", "pce", "pdt", "peec", "pid", "pie rule", "ppa", "ppm", "prt", "psc", "pse", "pt",
-                     "qa/qc", "qp", "qs",
-                     "r/v", "rer", "rffa", "rfma", "rfmo", "rhl", "rir", "rkc", "rkm", "roa", "rod", "rofr", "rov", "rpa", "rpb", "rqe", "rsw", "rta", "rvc",
-                     "s-r", "sa", "sap", "sar", "sac", "saw", "sb", "sb", "sbrm", "sbtarget", "sca", "scs", "seg", "sep", "set", "sfm", "sg", "sia", "sir", "smp", "snp", "sofi", "soi", "sopp", "srd", "srkw", "srt", "ssbtarget", "ssc", "ssl", "sst", "star", "star panel", "std", "stf", "swac", "swo",
-                     "ta", "tac", "tal", "tc", "tk", "tla", "tlas", "tmct", "total catch oy",
-                     "u/a",
-                     "vpa", "vtr",
-                     "wets", "wpue",
-                     "xbt",
-                     "yfs", "ypr",
-                     "z"
-                     )
+  rows_to_lower <- c(
+    "M",
+    "aa", "abc", "abm", "ace", "acl", "adp", "aeq", "ais", "alj", "aop", "ap", "ar", "arm", "asc", "atm",
+    "b", "b-oy", "b1", "b2", "ba", "bb", "bc", "bcurrent", "beg", "bet", "bflag", "bkc", "bmsy", "brp", "bts",
+    "c", "cams", "cas", "cdq", "cea", "cfa", "cfs", "cm", "cml", "cmm", "co2", "cp", "cpdf", "cs", "cvoa", "cy",
+    "das", "dea", "deis", "dgn", "dic", "dps", "dtl", "dts", "dwfn",
+    "eam", "ebm", "ebfm", "ec", "ed", "edr", "eej", "ef", "efh", "efh-hapc", "efhca", "eir", "eis", "elaps", "em", "eo", "epr", "esd", "esp", "ewg",
+    "f", "f/v", "fad", "fcurrent", "feis", "fep", "fes", "fis", "fl", "fll", "fm", "fmc", "fmp", "fmu", "fonsi", "fpr", "frfa",
+    "gac", "gam", "gdp", "gf", "ghl", "gis", "gkc", "gm", "gni", "gnp", "goes", "grt",
+    "haccp", "hapc", "hbs", "hc", "hcr", "hg", "hms", "hp",
+    "iba", "ibq", "ica", "id", "iea", "int", "ipa", "ipq", "ipt", "iq", "iqf", "irfa", "iriu", "itq", "iuu",
+    "jai", "jam",
+    "laa", "lc", "le", "lk", "llp", "lng", "loa", "loc", "lof",
+    "m", "m&si", "mc", "mca", "mcd", "mfmt", "mhhw", "mm", "moa", "mou", "mpcc", "mra", "ms", "mse", "msst", "msvpa", "msy", "mt", "mus", "mw",
+    "ne", "ngo", "nlaa",
+    "oa", "oeg", "ofl", "oswag", "otec", "oy",
+    "p*", "pbf", "pbr", "pce", "pdt", "peec", "pid", "pie rule", "ppa", "ppm", "prt", "psc", "pse", "pt",
+    "qa/qc", "qp", "qs",
+    "r/v", "rer", "rffa", "rfma", "rfmo", "rhl", "rir", "rkc", "rkm", "roa", "rod", "rofr", "rov", "rpa", "rpb", "rqe", "rsw", "rta", "rvc",
+    "s-r", "sa", "sap", "sar", "sac", "saw", "sb", "sb", "sbrm", "sbtarget", "sca", "scs", "seg", "sep", "set", "sfm", "sg", "sia", "sir", "smp", "snp", "sofi", "soi", "sopp", "srd", "srkw", "srt", "ssbtarget", "ssc", "ssl", "sst", "star", "star panel", "std", "stf", "swac", "swo",
+    "ta", "tac", "tal", "tc", "tk", "tla", "tlas", "tmct", "total catch oy",
+    "u/a",
+    "vpa", "vtr",
+    "wets", "wpue",
+    "xbt",
+    "yfs", "ypr",
+    "z"
+  )
 
   unique_all_cleaning3 <- unique_all_cleaning2 |>
     dplyr::mutate(Meaning = ifelse(Label %in% rows_to_lower,
-                  tolower(Meaning),
-                  Meaning))
+      tolower(Meaning),
+      Meaning
+    ))
 
   # keep cleaning by:
   # -adding new definitions
@@ -528,68 +606,81 @@ export_glossary <- function() {
     dplyr::select(-Definition) |>
     # remove rows causing issues for now
     dplyr::filter(!Acronym %in% c("B25%", "B40%", "F30% SPR")) |>
-   # purrr::map_df(~ gsub("%", "\\%", .x, fixed = TRUE)) |>
+    # purrr::map_df(~ gsub("%", "\\%", .x, fixed = TRUE)) |>
     dplyr::filter(!is.na(Meaning)) |>
     # properly format terms with sub/superscripts
     dplyr::mutate(
       Acronym = stringr::str_replace_all(Acronym, stringr::regex("msy", ignore_case = TRUE), "_{MSY}"),
       Acronym = ifelse(grepl("\\{MSY\\}", Acronym),
-                       paste0("$", Acronym, "$"),
-                       Acronym)
+        paste0("$", Acronym, "$"),
+        Acronym
+      )
     ) |>
     dplyr::mutate(
       Acronym = stringr::str_replace_all(Acronym, stringr::regex("current", ignore_case = TRUE), "_{current}"),
       Acronym = ifelse(grepl("\\{current\\}", Acronym),
-                       paste0("$", Acronym, "$"),
-                       Acronym)
+        paste0("$", Acronym, "$"),
+        Acronym
+      )
     ) |>
     dplyr::mutate(
       Acronym = stringr::str_replace_all(Acronym, stringr::regex("target", ignore_case = TRUE), "_{target}"),
       Acronym = ifelse(grepl("\\{target\\}", Acronym),
-                       paste0("$", Acronym, "$"),
-                       Acronym)
+        paste0("$", Acronym, "$"),
+        Acronym
+      )
     ) |>
     dplyr::mutate(
       Acronym = stringr::str_replace_all(Acronym, stringr::regex("proxy", ignore_case = TRUE), "_{proxy}"),
       Acronym = ifelse(grepl("\\{proxy\\}", Acronym),
-                       paste0("$", Acronym, "$"),
-                       Acronym)
+        paste0("$", Acronym, "$"),
+        Acronym
+      )
     ) |>
     dplyr::mutate(
       Acronym = stringr::str_replace_all(Acronym, stringr::regex("threshold", ignore_case = TRUE), "_{threshold}"),
       Acronym = ifelse(grepl("\\{threshold\\}", Acronym),
-                       paste0("$", Acronym, "$"),
-                       Acronym)
+        paste0("$", Acronym, "$"),
+        Acronym
+      )
     ) |>
     dplyr::mutate(
       Acronym = stringr::str_replace_all(Acronym, stringr::regex("max", ignore_case = TRUE), "_{max}"),
       Acronym = ifelse(grepl("\\{max\\}", Acronym),
-                       paste0("$", Acronym, "$"),
-                       Acronym)
+        paste0("$", Acronym, "$"),
+        Acronym
+      )
     ) |>
-    dplyr::mutate(Acronym = ifelse(Acronym == "$$SSB_{MSY} _{proxy}$$",
-                                   "$SSB_{MSY proxy}$",
-                                   Acronym),
-                  Acronym = ifelse(Acronym == "$$SB_{MSY} _{proxy}$$",
-                                   "$SB_{MSY proxy}$",
-                                   Acronym),
-                  Acronym = ifelse(Acronym == "SSBR",
-                                   "$SSB_{R}$",
-                                   Acronym),
-                  Acronym = ifelse(Acronym == "CO2",
-                                   "$CO_{2}$",
-                                   Acronym),
-                  Meaning = ifelse(Meaning == "C. opilio Bycatch Limitation Zone",
-                                   "\\textit{C. opilio} Bycatch Limitation Zone",
-                                   Meaning),
-                  Acronym = ifelse(Acronym == "$_{MSY}$",
-                                   "$MSY$",
-                                   Acronym)
-                  ) |>
+    dplyr::mutate(
+      Acronym = ifelse(Acronym == "$$SSB_{MSY} _{proxy}$$",
+        "$SSB_{MSY proxy}$",
+        Acronym
+      ),
+      Acronym = ifelse(Acronym == "$$SB_{MSY} _{proxy}$$",
+        "$SB_{MSY proxy}$",
+        Acronym
+      ),
+      Acronym = ifelse(Acronym == "SSBR",
+        "$SSB_{R}$",
+        Acronym
+      ),
+      Acronym = ifelse(Acronym == "CO2",
+        "$CO_{2}$",
+        Acronym
+      ),
+      Meaning = ifelse(Meaning == "C. opilio Bycatch Limitation Zone",
+        "\\textit{C. opilio} Bycatch Limitation Zone",
+        Meaning
+      ),
+      Acronym = ifelse(Acronym == "$_{MSY}$",
+        "$MSY$",
+        Acronym
+      )
+    ) |>
     dplyr::arrange(tolower(Label))
 
 
-  for(i in 1:dim(tex_acs)[1]) {
+  for (i in 1:dim(tex_acs)[1]) {
     cat(
       paste0(
         "\\newacronym{",
@@ -604,5 +695,4 @@ export_glossary <- function() {
     cat("\n")
   }
   sink()
-
 }

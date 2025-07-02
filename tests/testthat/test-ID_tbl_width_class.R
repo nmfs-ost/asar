@@ -1,5 +1,4 @@
 test_that("Table widths calculated correctly", {
-
   # These tests won't work until stockplotr is updated too
 
   # # convert sample dataset

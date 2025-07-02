@@ -156,9 +156,11 @@ create_template(
   species = "Dover sole",
   spp_latin = "Microstomus pacificus",
   year = 2010,
-  author = c("John Snow" = "AFSC",
-             "Danny Phantom" = "NEFSC",
-             "Patrick Star" = "SEFSC-ML"),
+  author = c(
+    "John Snow" = "AFSC",
+    "Danny Phantom" = "NEFSC",
+    "Patrick Star" = "SEFSC-ML"
+  ),
   model_results = here::here("folder", "std_output.rda"),
   new_section = "an_additional_section",
   section_location = "after-introduction"

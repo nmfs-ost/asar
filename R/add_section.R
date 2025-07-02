@@ -36,17 +36,20 @@ add_section <- function(
   for (i in 1:length(new_section)) {
     section_i_name <- paste0(gsub(" ", "_", tolower(new_section[i])), ".qmd")
     local_section <- forstringr::str_extract_part(
-      section_location[i], "-", before = FALSE
+      section_location[i], "-",
+      before = FALSE
     )
     # looking at the section identified for the previous entry
     local_section_prev <- forstringr::str_extract_part(
-      section_location[i - 1], "-", before = FALSE
+      section_location[i - 1], "-",
+      before = FALSE
     )
 
     # Extracting where the new section should be place in relation to a base section
     if (any("TRUE" %in% grepl("-", section_location))) {
       locality <- forstringr::str_extract_part(
-        section_location[i], "-", before = TRUE
+        section_location[i], "-",
+        before = TRUE
       )
       # run again in case there are double -
       if (grepl("-", locality)) {
@@ -57,11 +60,13 @@ add_section <- function(
       }
 
       locality_prev <- forstringr::str_extract_part(
-        section_location[i - 1], "-", before = TRUE
+        section_location[i - 1], "-",
+        before = TRUE
       )
     } else if (any("TRUE" %in% grepl(" ", section_location))) {
       locality <- forstringr::str_extract_part(
-        section_location[i], " ", before = TRUE
+        section_location[i], " ",
+        before = TRUE
       )
       # run again in case there are double -
       if (grepl("-", locality)) {
@@ -72,12 +77,13 @@ add_section <- function(
       }
 
       locality_prev <- forstringr::str_extract_part(
-        section_location[i - 1], "-", before = TRUE
+        section_location[i - 1], "-",
+        before = TRUE
       )
     }
 
     section_i <- paste0(
-      ifelse(locality == "in", "### ","## "), stringr::str_to_title(sub("_", " ", tolower(new_section[i]))), "\n",
+      ifelse(locality == "in", "### ", "## "), stringr::str_to_title(sub("_", " ", tolower(new_section[i]))), "\n",
       "\n",
       "[Insert text here]", "\n",
       "\n",
@@ -91,7 +97,7 @@ add_section <- function(
           cat(section_i),
           file = paste0(subdir, "/", section_i_name),
           append = FALSE
-          )
+        )
         # TRUE
       },
       error = function(e) {
@@ -113,8 +119,8 @@ add_section <- function(
           section_i_name,
           after = which(grepl(
             gsub(" ", "_", tolower(new_section[i - 1])),
-            custom_sections)
-          )
+            custom_sections
+          ))
         )
       } else {
         custom_sections <- append(
@@ -129,9 +135,10 @@ add_section <- function(
       file_for_subsection <- list.files(file.path(subdir))[grep(local_section, list.files(file.path(subdir)))]
       if (length(file_for_subsection) == 0) {
         cli::cli_abort(c("Unable to find the template file containing the target location of new section file.",
-                       "i" = "Did you correctly enter the `section_location`?",
-                       "x" = "You entered `section_location` = {section_location}"))
-        }
+          "i" = "Did you correctly enter the `section_location`?",
+          "x" = "You entered `section_location` = {section_location}"
+        ))
+      }
       # create code for reading in child doc
       child_sec <- add_child(
         section_i_name,
@@ -141,15 +148,17 @@ add_section <- function(
       # append that text to file
       # if (!file.exists(fs::path(subdir, file_for_subsection)))
       utils::capture.output(cat(child_sec),
-                            file = fs::path(subdir, file_for_subsection),
-                            append = TRUE)
+        file = fs::path(subdir, file_for_subsection),
+        append = TRUE
+      )
       # section does not need to be added to appended custom sections as stated above
       # creating qmd is already done in line 48
     } else {
       cli::cli_abort(c("Invalid selection for section placement (`section_location`).",
-                       "i" = "Did you correctly enter the `section_location`?",
-                       "i" = "You entered `section_location` = {section_location}.",
-                       "i" = "Use the following format to add a new section, where placement = in, before, or after: 'placement-section_name'."))
+        "i" = "Did you correctly enter the `section_location`?",
+        "i" = "You entered `section_location` = {section_location}.",
+        "i" = "Use the following format to add a new section, where placement = in, before, or after: 'placement-section_name'."
+      ))
     }
   } # close for loop
   if (!is.null(custom_sections)) custom_sections

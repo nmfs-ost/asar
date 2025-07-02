@@ -1,7 +1,7 @@
 ```{r}
 #| eval: false
 #| echo: false
-# using built in example data 
+# using built in example data
 data <- safe::tier3
-safe::main_table(data, year, tier=3, c1, c2, c3)
+safe::main_table(data, year, tier = 3, c1, c2, c3)
 ```

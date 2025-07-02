@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' \dontrun{
-#'   create_template(
+#' create_template(
 #'   new_template = TRUE,
 #'   format = "pdf",
 #'   office = "NWFSC",
@@ -23,31 +23,33 @@
 #'   include_affiliation = TRUE,
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction"
-#'   )
+#' )
 #'
-#'   path <- getwd()
+#' path <- getwd()
 #'
-#'   quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
+#' quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
 #'
-#'   withr::with_dir(
+#' withr::with_dir(
 #'   file.path(path, "report"),
-#'    add_tagging(
-#'      x = "SAR_USWC_Dover_sole_skeleton.tex",
-#'      dir = getwd(),
-#'      compile = TRUE)
-#'    )
+#'   add_tagging(
+#'     x = "SAR_USWC_Dover_sole_skeleton.tex",
+#'     dir = getwd(),
+#'     compile = TRUE
+#'   )
+#' )
 #' }
 #'
 add_tagging <- function(
     x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
     dir = getwd(),
     compile = TRUE,
-    rename = NULL
-) {
-  if (length(x) == 0){
-    cli::cli_abort(c(message = "Report .tex file not found.",
-                   "i" = "`x` entered as an empty character",
-                   "i" = "`dir` entered as {dir}"))
+    rename = NULL) {
+  if (length(x) == 0) {
+    cli::cli_abort(c(
+      message = "Report .tex file not found.",
+      "i" = "`x` entered as an empty character",
+      "i" = "`dir` entered as {dir}"
+    ))
   }
   # Read latex file
   tex_file <- readLines(fs::path(dir, x))
@@ -64,9 +66,11 @@ add_tagging <- function(
   if (length(issue_color) > 1) {
     cli::cli_alert_warning("Failed to solve ~ ! LaTeX Error: Unknown color ''.")
   } else {
-    tex_file[issue_color] <- gsub("(linkcolor=)",
-                                  "\\1.",
-                                  tex_file[issue_color])
+    tex_file[issue_color] <- gsub(
+      "(linkcolor=)",
+      "\\1.",
+      tex_file[issue_color]
+    )
   }
   # Export file
   write(tex_file, file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)))
@@ -76,7 +80,7 @@ add_tagging <- function(
     "\\DocumentMetadata{%", "\n",
     "  ", "testphase={phase-III,math,table,title},", "\n",
     "  ", "pdfversion=2.0,", "\n",
-    "  ", "pdfstandard=ua-2,","\n",
+    "  ", "pdfstandard=ua-2,", "\n",
     "  ", "pdfstandard=a-4f", "\n",
     "  ", "% testphase={phase-II, tabular, graphic}%", "\n",
     "  ", "% testphase={phase-II,math, tabular, graphic}% TOC Does not work", "\n",

@@ -23,7 +23,7 @@
 #'
 #' @examples
 #' \dontrun{
-#'   create_template(
+#' create_template(
 #'   new_template = TRUE,
 #'   format = "pdf",
 #'   office = "NWFSC",
@@ -31,36 +31,35 @@
 #'   species = "Dover sole",
 #'   spp_latin = "Microstomus pacificus",
 #'   year = 2010,
-#'   author = c("John Snow"="AFSC", "Danny Phantom"="NWFSC", "Patrick Star"="SEFSC"),
+#'   author = c("John Snow" = "AFSC", "Danny Phantom" = "NWFSC", "Patrick Star" = "SEFSC"),
 #'   model_results = output,
 #'   model = "SS3",
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction"
-#'   )
+#' )
 #'
-#'   path <- getwd()
+#' path <- getwd()
 #'
-#'   quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
+#' quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
 #'
-#'   withr::with_dir(
+#' withr::with_dir(
 #'   file.path(path, "report"),
-#'    add_accessibility(
-#'      x = "SAR_USWC_Dover_sole_skeleton.tex",
-#'      dir = getwd(),
-#'      figures_dir = path,
-#'      compile = TRUE)
-#'    )
+#'   add_accessibility(
+#'     x = "SAR_USWC_Dover_sole_skeleton.tex",
+#'     dir = getwd(),
+#'     figures_dir = path,
+#'     compile = TRUE
+#'   )
+#' )
 #' }
 #'
 add_accessibility <- function(
-  x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
-  dir = getwd(),
-  figures_dir = getwd(),
-  alttext_csv_dir = getwd(),
-  compile = TRUE,
-  rename = NULL
-  ) {
-
+    x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
+    dir = getwd(),
+    figures_dir = getwd(),
+    alttext_csv_dir = getwd(),
+    compile = TRUE,
+    rename = NULL) {
   # Add tagpdf pkg to template and create accessibility.tex
   add_tagging(
     x = x,

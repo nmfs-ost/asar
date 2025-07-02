@@ -36,7 +36,8 @@ asar::export_split_tbls with your preferred essential_columns value.
 \examples{
 \dontrun{
 create_tables_doc(
-subdir = getwd(),
-tables_dir = here::here())
+  subdir = getwd(),
+  tables_dir = here::here()
+)
 }
 }
