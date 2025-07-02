@@ -171,7 +171,7 @@ rm(rda)\n
       ifelse(
         any(grepl("_figures.qmd$", list.files(subdir))),
         list.files(subdir)[grep("_figures.qmd", list.files(subdir))],
-        "08_figures.qmd"
+        "09_figures.qmd"
       )
     ),
     append = FALSE
