@@ -64,7 +64,8 @@ The SS3 Report.sso files was converted using the following code:
 ```r
 output <- asar::convert_output(
   output_file = system.file("extdata", "Report.sso", package = "asar"),
-  model = "ss3")
+  model = "ss3",
+  save_dir = here::here("readme_output.rda"))
 ```
 
 In this function, the users have the option to convert output files to a standardized 
@@ -87,7 +88,7 @@ asar::create_template(
   simple_affiliation = FALSE,
   param_names = c("nf","sf"),
   param_values = c("North fleet", "South fleet"),
-  model_results = output
+  model_results = here::here("readme_output.rda")
 )
 ```
 
