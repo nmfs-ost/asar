@@ -1,0 +1,6 @@
+# Acknowledgements {#sec-acknowledgements}
+
+
+<!--- Please leave in the following: --->
+
+This document was produced using the R package asar [@asar_2025], which is free to use and publicly available on GitHub.

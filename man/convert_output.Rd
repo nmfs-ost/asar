@@ -4,22 +4,10 @@
 \alias{convert_output}
 \title{Convert Output}
 \usage{
-convert_output(
-  output_file = NULL,
-  outdir = getwd(),
-  model = NULL,
-  fleet_names = NULL,
-  file_save = FALSE,
-  savedir = getwd(),
-  save_name = "std_model_output"
-)
+convert_output(file, model, fleet_names = NULL, save_dir = NULL)
 }
 \arguments{
-\item{output_file}{Assessment model output file (e.g., the
-Report.sso file for SS3, the rdat file for BAM, etc.)}
-
-\item{outdir}{Directory of the assessment model output file. Defaults to
-working directory.}
+\item{file}{Assessment model output file path}
 
 \item{model}{Assessment model used in evaluation ("ss3", "bam",
 "asap", "fims", "amak", "ms-java", "wham", "mas").}
@@ -28,24 +16,15 @@ working directory.}
 shortened in the output file. If fleet names are not properly read, then
 indicate the fleets names as an acronym in a vector}
 
-\item{file_save}{TRUE/FALSE; Save the formatted object rather
-than calling the function and adding the formatted object to
-the global environment? Default is false.}
-
-\item{savedir}{Directory to save the converted output file. Defaults to
-working directory.}
-
-\item{save_name}{Name of the converted output file (do not use
-spaces).}
+\item{save_dir}{File path to save the converted output file.}
 }
 \value{
 A reformatted and standardized version of assessment model results
 for application in building a stock assessment reports and to easily
 adapt results among regional assessments. The resulting object is
 simply a transformed and machine readable version of a model output file.
-There are 2 options for adding data to the function. (1) Add the full
-path with the file name in output.file or (2) output.file is the file
-name and outdir is the path to the file without a trailing forward slash.
+Converted data frame is always returned. It will also be saved if save_dir
+is not NULL.
 }
 \description{
 Format stock assessment output files to a standardized format.
@@ -53,11 +32,10 @@ Format stock assessment output files to a standardized format.
 \examples{
 \dontrun{
 convert_output(
-output_file = "Report.sso",
-outdir = "data",
+file = here::here("model1", "Report.sso"),
 model = "ss3",
-savedir = getwd(),
-save_name = "converted_model_output")
+fleet_names = c("TWL", "NONTWL"),
+save_dir = here::here("standard_output.rda"))
 }
 }
 \author{

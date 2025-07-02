@@ -4,10 +4,13 @@
 \alias{format_quarto}
 \title{Add Formatting Arguments for YAML Header}
 \usage{
-format_quarto(format = NULL)
+format_quarto(format = "pdf", type = "sar")
 }
 \arguments{
 \item{format}{Rendering format (pdf, html, or docx).}
+
+\item{type}{Type of report to build. Default is SAR (NOAA Fisheries
+Stock Assessment Report).}
 }
 \value{
 This function returns part of a quarto YAML header
@@ -17,5 +20,7 @@ involved in formatting the document during rendering.
 Add Formatting Arguments for YAML Header
 }
 \examples{
+\dontrun{
 format_quarto(format = "pdf")
+}
 }

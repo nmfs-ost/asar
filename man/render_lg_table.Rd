@@ -4,12 +4,7 @@
 \alias{render_lg_table}
 \title{Split an extra-wide table into multiple tables}
 \usage{
-render_lg_table(
-  report_flextable = NULL,
-  essential_columns = NULL,
-  rda_dir = NULL,
-  plot_name = NULL
-)
+render_lg_table(report_flextable, essential_columns, tables_dir, plot_name)
 }
 \arguments{
 \item{report_flextable}{The extra-wide flextable.}
@@ -18,7 +13,8 @@ render_lg_table(
 tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
 column. Example: for the indices table, this could be the year column.}
 
-\item{rda_dir}{Folder where rda files containing alternative text is located}
+\item{tables_dir}{The location of the "tables" folder, which contains tables
+files.}
 
 \item{plot_name}{Name of the .rda file containing the table}
 }
@@ -33,13 +29,13 @@ Split an extra-wide table into multiple tables
 render_lg_table(
 report_flextable = indices_table,
 essential_columns = 1,
-rda_dir = here::here(),
+tables_dir = here::here(),
 plot_name = "indices.abundance_table.rda")
 
 render_lg_table(
 report_flextable = important_table,
 essential_columns = 1:3,
-rda_dir = "data",
+tables_dir = "data",
 plot_name = "bnc_table.rda")
 }
 }

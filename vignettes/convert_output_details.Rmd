@@ -44,7 +44,7 @@ The converter was designed so that it would manipulate the output file from the 
 
 The converter manipulates data sets by recognizing patterns based on the assessment model (SS3, BAM, etc.) and organizes it by expanding all data as single columns. This makes the data frame more machine readable allowing users to plot the data or place it into tables. The format also helps us as developers create other standardized procedures and automation due to its ease of use.
 
-The data is manipulated to follow the format in @tbl-cols. The majority of the code in the function is specific for how one would manipulate the output with the following exceptions. The code in the converter creates an empty data frame with the columns referenced in @tbl-cols (See [code](https://github.com/nmfs-ost/asar/blob/c8db61f325e9926461c70ef2d62349eb8d2bf2dd/R/convert_output.R#L45-L81)). At the end of the function, standard naming conventions are applied to rename labels of parameters or quantities as followed in @sec-namecon. Currently, we have files to use as examples to change the names of labels following our convention. One of the example files can be downloaded [here](https://github.com/nmfs-ost/asar/blob/main/inst/resources/ss3_var_names.xlsx). The final data frame is saved as a csv or exported to the users environment if assigned.
+The data is manipulated to follow the format in @tbl-cols. The majority of the code in the function is specific for how one would manipulate the output with the following exceptions. The code in the converter creates an empty data frame with the columns referenced in @tbl-cols (See [code](https://github.com/nmfs-ost/asar/blob/c8db61f325e9926461c70ef2d62349eb8d2bf2dd/R/convert_output.R#L45-L81)). At the end of the function, standard naming conventions are applied to rename labels of parameters or quantities as followed in @sec-namecon. Currently, we have files to use as examples to change the names of labels following our convention. One of the example files can be downloaded [here](https://github.com/nmfs-ost/asar/blob/main/inst/resources/ss3_var_names.xlsx). The final data frame is exported to the user's environment as an object, if it is assigned an object name (e.g., `my_converted_output <- convert_output(...)`).
 
 
 ```{r, echo=TRUE}
@@ -139,6 +139,8 @@ Another hurdle to tackle is naming conventions. We have attempted to create a st
 ## Final Formatting
 
 [`convert_output()`](https://github.com/nmfs-ost/asar/blob/main/R/convert_output.R) exports data frames as a csv. While this is not necessary to the function of {asar} and {stockplotr} packages as a whole due to their setup, we recommend continuing this practice to remain consistent with the function.
+
+*UPDATE*: we no longer offer the option to save the data frame as a csv. This was removed in a current version of {asar}. We now recommend either converting each time you want the data frame in your environment or save as desired. The function does not take long to run, but can take a long time to save due to its size.
 
 The final data frame does not manipulate column typing (character, numeric, etc.). We have left that to the analyst or other functions since there can be conflicts within the estimates due to NAs. Ideally, all columns beside the following with remain as characters or factors and the following will be converted to numeric:
 

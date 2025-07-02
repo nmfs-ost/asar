@@ -27,3 +27,36 @@ Here will be the location for the workflow and navigation of using this R packag
 ### Editing Captions and Alternative Text
 
 After generating your Figures and Tables .qmd files, there will be pre-generated captions for your figures and tables, and alternative text for your figures. Please be sure to double-check that these captions and alternative text are 1) accurate and 2) complete. To learn how to edit and update these elements, please refer to [the accessibility vignette's guide ](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#how-to-edit-your-reports-alt-text-and-captions).
+
+### Preamble
+
+TLDR:
+
+Reference quantities in preamble using the following notation,
+```{verbatim}
+`r quantity`
+```
+
+After generating a report template, the "skeleton.qmd" file will contain multiple parts that control the format and outline of the report as well as helpful quantities and estimates that a user will be able to implement within their document to make it more reproducible. The chunk we call the "preamble" is an R chunk containing quantities that assessment scientists often reference throughout their document. Users should take advantage of this chunk by referencing in-line code notation throughout their document to fill in these quantities (See our [Rmarkdown article](https://nmfs-ost.github.io/asar/articles/markdown_notation.html#sec-codechunk) for more information). This allows the user to quickly and efficiently update quantities as model results change throughout the assessment process.
+
+The preamble quantities are calculated from the preamble.R file found in your "report" folder and include the following quantities:
+
+- model start year
+- model end year
+- terminal fishing mortality
+- fishing mortality at msy
+- terminal year biomass
+- target biomass (msy)
+- total catch in the last year
+- total landings in the last year
+- total spawning biomass in the last year
+- overall natural mortality or at age
+- biomass at msy
+- target spawning biomass (pre-calculated at msy)
+- target biomass (pre-calculated at msy)
+- steepness
+- R0
+
+We encourage users to either adjust these quantities or add more as needed. If added new quantities, they will still be available in the document even if they aren't located in the "preamble" chunk; however, we highly encourage users to add them for better reproducibility and tracking.
+
+

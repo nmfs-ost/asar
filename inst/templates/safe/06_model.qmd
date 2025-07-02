@@ -1,0 +1,43 @@
+# Analytical approach
+
+## General Model Structure
+
+<!--- Description of overall modeling approach (e.g., age/size structured versus biomass dynamic, maximum likelihood versus Bayesian)
+If standardized software (e.g., Stock Synthesis) is used, give reference to technical documentation where variables and equations are described.  If standardized software is not used, then list variables and equations used in the assessment model(s) in tables or appendices as appropriate.
+--->
+
+
+
+## Description of Alternative Models
+
+<!--- Description of alternative models included in the assessment, if any (e.g., alternative M values or likelihood weights); note that the base model (i.e., the model most recently accepted by the SSC, either after reviewing the previous year’s final assessment or the current year’s preliminary assessment) must be included
+Per recommendation of the SSC (10/15), please use the following convention for numbering models:
+When a model constituting a “major change” from the original version of the base model is introduced, it is given a label of the form “Model *yy.j*,” where *yy* is the year (designated by the last two digits) that the model was introduced, and *j* is an integer distinguishing this particular “major change” model from other “major change” models introduced in the same year.
+When a model constituting only a “minor change” from the original version of the base model is introduced, it is given a label of the form “Model *yy.jx*,” where *x* is a letter distinguishing this particular “minor change” model from other “minor change” models derived from the original version of the same base model.
+Specifically, please use one of the following four options to distinguish “major” from “minor” changes:
+--->
+
+
+## Parameters Estimated Outside the Assessment Model
+
+<!---
+(Use the above heading for Tiers 1-3)
+--->
+
+## Parameter Estimates
+
+<!---
+(Use the above heading for Tiers 4-6)  
+List of parameters that are estimated independently of others (e.g., the natural mortality rate, parameters governing the maturity schedule, parameters governing growth [length at age, weight at length or age]—if not estimated inside the assessment model)
+
+Description of how these parameters are estimated (methods do not necessarily have to be statistical; e.g., *M* could be estimated by referencing a previously published value)
+--->
+
+## Parameters Estimated Inside the Assessment Model
+
+<!---
+(This section should be omitted for Tiers 4-6)  
+List of parameters that are estimated conditionally on those described above (e.g., full-selection fishing mortality rates, parameters governing the selectivity schedule, parameters governing growth if estimated inside the assessment model)
+Description of how these parameters are estimated (e.g., error structures assumed, prior distributions used, list of likelihood components)
+--->
+

@@ -15,35 +15,35 @@
 #' \dontrun{
 #' ID_tbl_width_class(
 #'   plot_name = "indices.abundance_table.rda",
-#'   rda_dir = here::here(),
+#'   tables_dir = here::here(),
 #'   portrait_pg_width = 5
 #' )
 #' }
 ID_tbl_width_class <- function(
-    plot_name = NULL,
-    rda_dir = NULL,
-    portrait_pg_width = NULL) {
-  rda_path <- file.path(paste0(rda_dir, "/rda_files/", plot_name))
+    tables_dir,
+    plot_name,
+    portrait_pg_width) {
+  tables_path <- fs::path(tables_dir, "tables", paste0(plot_name, "_table.rda"))
 
-  if (file.exists(rda_path)) {
-    load(rda_path)
+  if (file.exists(tables_path)) {
+    load(tables_path)
     table_rda <- rda
     rm(rda)
     table_width <- flextable::flextable_dim(table_rda$table)[["widths"]] |>
       as.numeric()
 
     # determine table width class
-    if (table_width > portrait_pg_width) {
+    if (table_width <= portrait_pg_width) {
+      width_class <- "regular"
+    } else {
       if (table_width > 12) {
         width_class <- "extra-wide"
       } else {
         width_class <- "wide"
       }
-    } else {
-      width_class <- "regular"
     }
   } else {
-    width_class <- "regular"
+    cli::cli_abort(message = "Table not found at {tables_path}")
   }
 
   return(width_class)

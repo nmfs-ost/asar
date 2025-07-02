@@ -66,6 +66,10 @@ Please refer to [the accessibility vignette's guide ](https://nmfs-ost.github.io
 
 Please refer to the [Acronyms and Glossary section of the accessibility vignette](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#acronyms-and-glossary) for guidance on how to use acronyms and edit the glossary.
 
+## What is this R chunk in the the skeleton file labelled `output_and_quantities` used for?
+
+This chunk is what we call the preamble. It loads in commonly used estimates and quantities for the user to reference throughout their report. The calculation of these values can be found in the `preamble.R` script found within your report folder.
+
 # Tables and Figures
 
 ## Why aren't my tables and/or figures displaying on landscape-oriented pages when the landscape braces are present?
@@ -74,7 +78,21 @@ You may be using a version of Quarto [older than v1.6](https://quarto.org/docs/b
 
 ## My figure and table references aren't in chronological order in the report. How do I fix this?
 
-As far as we know, a fix isn't possible with Quarto. The order of your figures and tables in their respective 08_tables.qmd and 09_figures.qmd docs will determine their numbers in the report. This might result in Table 2 being referenced before Table 1, for instance, in your report. You *can* try manually changing the order of the figure and table chunks in the 08_tables.qmd and 09_figures.qmd docs, but this isn't a reproducible or permanent solution. If you know of a long-term solution, [please let us know](https://github.com/nmfs-ost/asar/issues) or submit a pull request!
+You will notice that the order of your figures and tables in their respective 08_tables.qmd and 09_figures.qmd docs will determine their numbers in the report. This might result in Table 2 being referenced before Table 1, for instance, in your report.
+
+We are encouraging users to keep the order as-is for a few reasons. First, the predictability of standardized figure and table order could prove useful when comparing reports. Second, the choice of where to prioritize the figure/table order- in the Figures and Tables sections, or in the main text- is somewhat of a personal preference, rather than a hard rule. Third, as far as we know, a fix isn't yet possible with Quarto. We are choosing to focus on building other features for `asar`.
+
+However, we understand that some will strongly prefer to set the order of their tables and figures. You *can* try manually changing the order of the figure and table chunks in the 08_tables.qmd and 09_figures.qmd docs, but this isn't a reproducible or permanent solution.
+
+## Why are there absolute, rather than relative, filepaths for `tables_dir` and `figures_dir` at the tops of my figures and tables docs?
+
+We tried to implement relative filepaths for these objects but decided to return to the original workflow for two reasons.
+
+1. Hardcoding `getwd()` into the path doesn't work; when rendering your report, Quarto will recognize your "report" folder as the working directory, which probably isn't your *actual* working directory. This will result in a rendering error.
+
+2. While hardcoding `here::here()` into the path *does* work, we recognize that some users may be unfamiliar with [the `here` package](https://here.r-lib.org/) and are not able to learn another tool while already learning `asar`. We highly recommend checking out this awesome package, but in the meantime, we are not going to force its use.
+
+If you want to ensure `tables_dir` and `figures_dir` are relative filepaths (which may be essential if you are collaborating), you can directly edit these paths yourself and reset them using `getwd()`, `here::here()`, or some other option.
 
 # Rendering reports
 
@@ -107,19 +125,4 @@ Notably, this command will install TinyTeX-1 bundle (the default), then install 
 
 ## I'm getting an error. How do I fix it?
 
-When getting to know `asar`, you'll probably encounter some errors. We highly recommend checking out our [Issues page](https://github.com/nmfs-ost/asar/issues) to see if someone else has already asked (and maybe solved!) your question. We've also included some errors we've encountered, and what they mean/ideas for solving them.
-
-### Error #1
-
-```{verbatim}
-`Error in`dplyr::mutate()`:
-ℹ In argument:`across(...)`.
-Caused by error in`across()`:
-! Can't compute column`label`.
-Caused by error in`stringr::str_replace_all()`:
-! Can't recycle`string`(size 46) to match`replacement`(size 0).
-```
-
-### Solution #1
-
-You may have encountered this error when running `create_template`. Check your arguments for `ref_line` and `ref_line_sb`; they aren't being found in the dataset. This error should disappear once these arguments are accurate.
+When getting to know `asar`, you'll probably encounter some errors. We highly recommend checking out our [Issues page](https://github.com/nmfs-ost/asar/issues) to see if someone else has already asked (and maybe solved!) your question.

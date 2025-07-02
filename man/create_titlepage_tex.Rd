@@ -4,7 +4,7 @@
 \alias{create_titlepage_tex}
 \title{Create a title page latex document}
 \usage{
-create_titlepage_tex(office = "", subdir, species)
+create_titlepage_tex(office = "", subdir, species = "")
 }
 \arguments{
 \item{office}{primary science center writing the document}

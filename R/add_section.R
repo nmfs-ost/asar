@@ -19,11 +19,16 @@
 #'   subdir = tempdir()
 #' )
 add_section <- function(
-    new_section = NULL,
-    section_location = NULL,
+    subdir = NULL,
     custom_sections = NULL,
-    custom = TRUE,
-    subdir = NULL) {
+    new_section = NULL,
+    section_location = NULL) {
+  if (is.null(new_section)) {
+    cli::cli_abort("New section name (`new_section`) is NULL.")
+  }
+  if (is.null(section_location)) {
+    cli::cli_abort("Location of new section (`section_location`) is NULL.")
+  }
   # Location options
   # before-section
   # after-section
@@ -78,10 +83,21 @@ add_section <- function(
       "\n",
       add_chunk("# Insert code", label = paste0("example_chunk_", i)), "\n"
     )
-    utils::capture.output(
-      cat(section_i),
-      file = paste0(subdir, "/", section_i_name),
-      append = FALSE
+
+    # Export new section .qmd - catch when this fails so that the user can adjust
+    tryCatch(
+      {
+        utils::capture.output(
+          cat(section_i),
+          file = paste0(subdir, "/", section_i_name),
+          append = FALSE
+          )
+        # TRUE
+      },
+      error = function(e) {
+        cli::cli_abort("Unable to create new section. Please check your file path (file_dir).")
+        # FALSE
+      }
     )
 
     if (locality == "before") {
@@ -108,9 +124,14 @@ add_section <- function(
         )
       }
     } else if (locality == "in") {
-      # stop("No available option for adding a new section 'in' another quarto document.", call. = FALSE)
+      # cli::cli_abort("No available option for adding a new section 'in' another quarto document.", call. = FALSE)
       # recognize locality_prev file
       file_for_subsection <- list.files(file.path(subdir))[grep(local_section, list.files(file.path(subdir)))]
+      if (length(file_for_subsection) == 0) {
+        cli::cli_abort(c("Unable to find the template file containing the target location of new section file.",
+                       "i" = "Did you correctly enter the `section_location`?",
+                       "x" = "You entered `section_location` = {section_location}"))
+        }
       # create code for reading in child doc
       child_sec <- add_child(
         section_i_name,
@@ -119,12 +140,17 @@ add_section <- function(
         stringr::str_remove("\\n \\{\\{< pagebreak >\\}\\} \\n")
       # append that text to file
       # if (!file.exists(fs::path(subdir, file_for_subsection)))
-      utils::capture.output(cat(child_sec), file = fs::path(subdir, file_for_subsection), append = TRUE)
+      utils::capture.output(cat(child_sec),
+                            file = fs::path(subdir, file_for_subsection),
+                            append = TRUE)
       # section does not need to be added to appended custom sections as stated above
       # creating qmd is already done in line 48
     } else {
-      stop("Invalid selection for placement of section. Please name the follow the format 'placement-section_name' for adding a new section.")
+      cli::cli_abort(c("Invalid selection for section placement (`section_location`).",
+                       "i" = "Did you correctly enter the `section_location`?",
+                       "i" = "You entered `section_location` = {section_location}.",
+                       "i" = "Use the following format to add a new section, where placement = in, before, or after: 'placement-section_name'."))
     }
   } # close for loop
-  custom_sections
+  if (!is.null(custom_sections)) custom_sections
 }

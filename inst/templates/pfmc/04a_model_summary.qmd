@@ -1,0 +1,32 @@
+# Assessment model
+
+
+## History of modeling approaches
+
+<!-- Very brief text here for (IT will do) -->
+
+## Response to most recent STAR panel and SSC recommendations
+
+<!-- Response to the most recent previous STAR panel and SSC recommendations for remedying deficiencies in the most recent previous full assessment. This is not required for an update assessment.  
+Is this required if there are no "deficiencies"? -->
+
+## Model Structure and Assumptions
+
+
+### Model Changes from the Last Assessment
+
+<!-- Description of new modeling approaches and changes made from the last assessment, with rationale. This should include bridging analyses that highlight the data and model changes that were most influential with respect to changes between the assessment being reviewed and the most recent adopted assessment.  -->
+
+
+### Modeling Platform and Structure
+
+<!-- Assessment program and its version used for the assessment (i.e., date executable program file was compiled), description of model structure, definitions of fleets and areas. Description of how the first year that is included in the model was selected and how the population state at the time is defined (e.g., B0, stable age structure). -->
+
+
+### Model Parameters
+
+<!-- Model parameters: estimated and fixed parameters, constraints on parameters, selectivity assumptions, natural mortality, treatment of age reading bias and/or imprecision, and other fixed parameters, description of stock-recruitment constraints or components, critical assumptions, and consequences of assumption failures.  -->
+
+### Key Assumptions and Structural Choices
+
+<!-- Evidence of search for balance between model realism and parsimony. Key model assumptions and structural choices (e.g., asymptotic vs. domed selectivities, constant vs. time-varying selectivities). Summary of alternate model configurations that were examined but rejected. This is not required for an update assessment.### Bridging analysis -->
