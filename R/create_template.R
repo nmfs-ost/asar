@@ -563,7 +563,7 @@ create_template <- function(
       if (!rerender_skeleton) {
         tables_doc_name <- switch(
           type,
-          "nemt" = "06_tables.qmd",
+          "nemt" = "05_tables.qmd",
           "safe" = "11_tables.qmd",
           "08_tables.qmd"
         )
@@ -578,7 +578,7 @@ create_template <- function(
       if (!rerender_skeleton) {
         figures_doc_name <- switch(
           type,
-          "nemt" = "07_figures.qmd",
+          "nemt" = "06_figures.qmd",
           "safe" = "12_figures.qmd",
           "09_figures.qmd"
         )
