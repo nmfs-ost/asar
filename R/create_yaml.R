@@ -28,7 +28,7 @@
 #'   prev_skeleton = NULL,
 #'   title = "My title",
 #'   author_list = "  - name: 'Patrick Star'\n    affiliations:\n      - name: 'NOAA Fisheries Southeast Fisheries Science Center'\n        address: '75 Virginia Beach Drive'\n        city: 'Miami'\n        state: 'FL'\n        postal-code: '33149'\n",
-#'   author = c("Patrick Star"="SEFSC"),
+#'   author = c("Patrick Star" = "SEFSC"),
 #'   office = "SEFSC",
 #'   add_author = NULL,
 #'   spp_image = NULL,
@@ -62,8 +62,7 @@ create_yaml <- function(
     parameters = TRUE,
     param_names = NULL,
     param_values = NULL,
-    type = "SAR"
-    ){
+    type = "SAR") {
   # check first if want to rerender current skeleton
   if (rerender_skeleton) {
     # Extract yaml from current template
@@ -80,79 +79,79 @@ create_yaml <- function(
 
     # add authors
     # if (any(!is.null(author))) {
-      # add_authors <- NULL
-      # for (i in 1:length(author_list)) {
-      #   toad <- paste(author_list[[i]], sep = ",")
-      #   add_authors <- paste0(add_authors, toad) # -> add_authors
-      # }
-      add_authors <- unlist(stringr::str_split(author_list, "\n"))
-      # remove trailing \n from each author entry
-      add_authors <- gsub("\n", "", add_authors)
-      # check if the template was blank before
-      author_line <- grep("author:", yaml)
-      # Replacing the empty author if template was made before adding any authors
-      if (grepl("- name: 'FIRST LAST'", yaml[author_line + 1])) {
-        yaml <- yaml[-((author_line + 1):(author_line + 8))]
-        yaml <- append(yaml, add_authors, after = utils::tail(grep("author:", yaml), n = 1))
-      } else {
-        yaml <- append(yaml, add_authors, after = utils::tail(grep("postal-code:", yaml), n = 1))
-      }
+    # add_authors <- NULL
+    # for (i in 1:length(author_list)) {
+    #   toad <- paste(author_list[[i]], sep = ",")
+    #   add_authors <- paste0(add_authors, toad) # -> add_authors
+    # }
+    add_authors <- unlist(stringr::str_split(author_list, "\n"))
+    # remove trailing \n from each author entry
+    add_authors <- gsub("\n", "", add_authors)
+    # check if the template was blank before
+    author_line <- grep("author:", yaml)
+    # Replacing the empty author if template was made before adding any authors
+    if (grepl("- name: 'FIRST LAST'", yaml[author_line + 1])) {
+      yaml <- yaml[-((author_line + 1):(author_line + 8))]
+      yaml <- append(yaml, add_authors, after = utils::tail(grep("author:", yaml), n = 1))
+    } else {
+      yaml <- append(yaml, add_authors, after = utils::tail(grep("postal-code:", yaml), n = 1))
+    }
     # }
 
     # replace title
     # DOES NOT WORK when latin latex notation is in the title
     # TODO: replace {} in the latex notation
-      yaml <- stringr::str_replace(yaml, yaml[grep("title:", yaml)], paste("title: ", title, sep = ""))
+    yaml <- stringr::str_replace(yaml, yaml[grep("title:", yaml)], paste("title: ", title, sep = ""))
 
     # add add'l param names
-      # this occurs below
+    # this occurs below
     # if (!is.null(param_names) & !is.null(param_values)) {
     #   add_params <- paste("  ", " ", param_names, ": ", "'", param_values, "'", sep = "")
     #   yaml <- append(yaml, add_params, after = grep("bibliography:", yaml) - 1)
     # }
 
-      # add in spp image
-      if (species != "species") {
-        yaml <- stringr::str_replace(yaml, yaml[grep("cover: ", yaml)], paste("cover: ", spp_image, sep = ""))
+    # add in spp image
+    if (species != "species") {
+      yaml <- stringr::str_replace(yaml, yaml[grep("cover: ", yaml)], paste("cover: ", spp_image, sep = ""))
+    }
+
+    # Replace output-file name
+    out_name <- glue::glue("{tolower(species)}_{type}_{year}")
+    yaml <- stringr::str_replace(yaml, yaml[grep("output-file: ", yaml)], paste("output-file: ", out_name, sep = ""))
+
+    # Parameters
+    # office, region, and species are default parameters
+    if (parameters) {
+      # check if params is already in yaml, if not then add in params: following with the other lines
+      if (!grep("params:", yaml)) {
+        yaml <- append(yaml, "params:", after = grep("output-file:", yaml))
       }
-
-      # Replace output-file name
-      out_name <- glue::glue("{tolower(species)}_{type}_{year}")
-      yaml <- stringr::str_replace(yaml, yaml[grep("output-file: ", yaml)], paste("output-file: ", out_name, sep = ""))
-
-      # Parameters
-      # office, region, and species are default parameters
-      if (parameters) {
-        # check if params is already in yaml, if not then add in params: following with the other lines
-        if (!grep("params:", yaml)) {
-          yaml <- append(yaml, "params:", after = grep("output-file:", yaml))
-        }
-        # if species, office, and latin are updated - replace in space
-        if (!is.null(species) & any(grepl("species: ''", yaml))) {
-          yaml <- stringr::str_replace(yaml, yaml[grep("species: ''", yaml)], paste("  ", " ", "species: ", "'", species, "'", sep = ""))
-        }
-        if (length(office) == 1 & !is.null(office) & any(grepl("office: ''", yaml))) {
-          yaml <- stringr::str_replace(yaml, yaml[grep("office: ''", yaml)], paste("  ", " ", "office: ", "'", office, "'", sep = ""))
-        }
-        if (!is.null(spp_latin) & any(grepl("spp_latin: ''", yaml))) {
-          yaml <- stringr::str_replace(yaml, yaml[grep("spp_latin: ''", yaml)], paste("  ", " ", "spp_latin: ", "'", spp_latin, "'", sep = ""))
-        }
-        # if params are not entered - use previous ones else change
-        # TODO: add check for params not being replicated of default
-        if (!is.null(param_names) | !is.null(param_values)) {
-          if (length(param_names) != length(param_values)) {
-            print("Please define ALL parameter names (param_names) and values (param_values).")
-          } else {
-            add_params <- NULL
-            for (i in 1:length(param_names)) {
-              toad <- paste("  ", " ", param_names[i], ": ", "'", param_values[i], "'", sep = "")
-              add_params <- c(add_params, toad)
-            } # close loop
-            # add params into yaml
-            yaml <- append(yaml, add_params, after = grep("params: ", yaml))
-          } # close check
-        } # close if adding add'l params
-      } # close if params to be included in template
+      # if species, office, and latin are updated - replace in space
+      if (!is.null(species) & any(grepl("species: ''", yaml))) {
+        yaml <- stringr::str_replace(yaml, yaml[grep("species: ''", yaml)], paste("  ", " ", "species: ", "'", species, "'", sep = ""))
+      }
+      if (length(office) == 1 & !is.null(office) & any(grepl("office: ''", yaml))) {
+        yaml <- stringr::str_replace(yaml, yaml[grep("office: ''", yaml)], paste("  ", " ", "office: ", "'", office, "'", sep = ""))
+      }
+      if (!is.null(spp_latin) & any(grepl("spp_latin: ''", yaml))) {
+        yaml <- stringr::str_replace(yaml, yaml[grep("spp_latin: ''", yaml)], paste("  ", " ", "spp_latin: ", "'", spp_latin, "'", sep = ""))
+      }
+      # if params are not entered - use previous ones else change
+      # TODO: add check for params not being replicated of default
+      if (!is.null(param_names) | !is.null(param_values)) {
+        if (length(param_names) != length(param_values)) {
+          print("Please define ALL parameter names (param_names) and values (param_values).")
+        } else {
+          add_params <- NULL
+          for (i in 1:length(param_names)) {
+            toad <- paste("  ", " ", param_names[i], ": ", "'", param_values[i], "'", sep = "")
+            add_params <- c(add_params, toad)
+          } # close loop
+          # add params into yaml
+          yaml <- append(yaml, add_params, after = grep("params: ", yaml))
+        } # close check
+      } # close if adding add'l params
+    } # close if params to be included in template
 
     # add bib file name
     if (bib_name != "asar_references.bib") {
@@ -164,7 +163,8 @@ create_yaml <- function(
         bib_format <- paste("-  ", bib_name, sep = "")
       } else if (!file.exists(file.path(file_dir, bib_file))) {
         cli::cli_alert_warning("Bibliography file {bib_file} is not in the report directory. The file will not be read in on render if it is not in the same path as the skeleton file.",
-                               wrap = TRUE)
+          wrap = TRUE
+        )
         bib_format <- paste("-  ", bib_name, sep = "")
       }
     }
@@ -229,7 +229,8 @@ create_yaml <- function(
       yaml,
       format_quarto(
         format = format,
-        type = type),
+        type = type
+      ),
       # Add in output file name (Rendered name of pdf)
       "output-file: '", stringr::str_replace_all(species, " ", "_"), ifelse(is.null(species), "SAR_", "_SAR_"), year, "'", " \n"
     )

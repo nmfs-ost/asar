@@ -32,10 +32,11 @@ Format stock assessment output files to a standardized format.
 \examples{
 \dontrun{
 convert_output(
-file = here::here("model1", "Report.sso"),
-model = "ss3",
-fleet_names = c("TWL", "NONTWL"),
-save_dir = here::here("standard_output.rda"))
+  file = here::here("model1", "Report.sso"),
+  model = "ss3",
+  fleet_names = c("TWL", "NONTWL"),
+  save_dir = here::here("standard_output.rda")
+)
 }
 }
 \author{

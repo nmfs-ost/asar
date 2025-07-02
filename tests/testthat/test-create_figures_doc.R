@@ -15,7 +15,7 @@ test_that("Creates expected start of nearly empty figures doc", {
   # expected figures doc head
   expected_head_figure_content <- "# Figures {#sec-figures}"
 
- # expected_head_figure_content <- "## Figures {#sec-figures} ```{r} #| label: 'set-rda-dir-figs'#| echo: false #| warning: false #| eval: true "
+  # expected_head_figure_content <- "## Figures {#sec-figures} ```{r} #| label: 'set-rda-dir-figs'#| echo: false #| warning: false #| eval: true "
 
   # test expectation of start of figures doc
   # TODO: Update test, and add more, after further development and integration

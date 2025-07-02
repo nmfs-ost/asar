@@ -23,7 +23,9 @@ format_quarto <- function(format = "pdf",
       "  ", "  ", "  ", "- 'support_files/_titlepage.tex'", "\n",
       "  ", "  ", "include-in-header:", "\n",
       "  ", "  ", "  ", "- 'support_files/in-header.tex'", "\n",
-      if (tolower(type) == "pfmc") {paste0("  ", "  ", "  ", "- 'support_files/pfmc.tex' \n")},
+      if (tolower(type) == "pfmc") {
+        paste0("  ", "  ", "  ", "- 'support_files/pfmc.tex' \n")
+      },
       # "  ", "  ", "include-after-body:", "\n",
       # "  ", "  ", "  ", "text: |", "\n",
       # "  ", "  ", "  ", "  ", "\\newpage{}", "\n",
@@ -50,7 +52,7 @@ format_quarto <- function(format = "pdf",
       "  ", "  ", "number-sections: true", "\n",
       "  ", "  ", "toc: true", "\n",
       "  ", "  ", "toc-depth: 3", "\n",
-      "  ","  ", "citations-hover: true", "\n"
+      "  ", "  ", "citations-hover: true", "\n"
     )
   } else if (tolower(format) == "docx") {
     # paste0(
@@ -62,10 +64,14 @@ format_quarto <- function(format = "pdf",
     #   "  ", "  ", "always_allow_html: true", "\n",
     #   "  ", "  ", "keep-tex: true", "\n"
     # )
-    cli::cli_abort(c(message = "docx is not yet a functional format.",
-                    "i" = "Please use pdf or html."))
+    cli::cli_abort(c(
+      message = "docx is not yet a functional format.",
+      "i" = "Please use pdf or html."
+    ))
   } else {
-    cli::cli_abort(c(message = "Invalid render format.",
-                     "i" = "Please use pdf or html."))
+    cli::cli_abort(c(
+      message = "Invalid render format.",
+      "i" = "Please use pdf or html."
+    ))
   }
 }

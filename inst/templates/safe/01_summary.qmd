@@ -24,7 +24,7 @@ List of changes (if any) in the assessment methodology. This is one of the most 
 #| echo: false
 #| warning: false
 a <- knitr::knit_child("01a_main-table.qmd", quiet = TRUE)
-cat(a, sep = '\n')
+cat(a, sep = "\n")
 ```
 
 <!---
@@ -37,7 +37,7 @@ Text table of area apportionments (if any) for the recommended one- and two-year
 #| echo: false
 #| warning: false
 a <- knitr::knit_child("01b_apportionment.qmd", quiet = TRUE)
-cat(a, sep = '\n')
+cat(a, sep = "\n")
 ```
 
 <!---
@@ -50,5 +50,5 @@ If so are so kind as to provide tables for the plan team, place them here
 #| echo: false
 #| warning: false
 a <- knitr::knit_child("01c_plan-team.qmd", quiet = TRUE)
-cat(a, sep = '\n')
+cat(a, sep = "\n")
 ```

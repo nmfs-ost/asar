@@ -27,15 +27,17 @@ Split an extra-wide table into multiple tables
 \examples{
 \dontrun{
 render_lg_table(
-report_flextable = indices_table,
-essential_columns = 1,
-tables_dir = here::here(),
-plot_name = "indices.abundance_table.rda")
+  report_flextable = indices_table,
+  essential_columns = 1,
+  tables_dir = here::here(),
+  plot_name = "indices.abundance_table.rda"
+)
 
 render_lg_table(
-report_flextable = important_table,
-essential_columns = 1:3,
-tables_dir = "data",
-plot_name = "bnc_table.rda")
+  report_flextable = important_table,
+  essential_columns = 1:3,
+  tables_dir = "data",
+  plot_name = "bnc_table.rda"
+)
 }
 }

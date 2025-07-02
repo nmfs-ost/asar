@@ -96,7 +96,7 @@ create_inheader_tex <- function(species = NULL, year = NULL, subdir) {
     )
     lines <- append(lines, to_add)
   }
-  
+
   # Add in notation to add glossary
   # Notation permenantly added in the initial in-header.tex doc
   # gloss <- paste(
@@ -106,7 +106,7 @@ create_inheader_tex <- function(species = NULL, year = NULL, subdir) {
   #   sep = ""
   # )
   # lines <- append(lines, gloss)
-  
+
   write(lines, file = paste(subdir, "/in-header.tex", sep = ""))
 }
 

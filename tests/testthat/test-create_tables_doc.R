@@ -15,7 +15,7 @@ test_that("Creates expected start of nearly empty tables doc", {
   # expected tables doc head
   expected_head_table_content <- "# Tables {#sec-tables}"
 
- # expected_head_table_content <- "## Tables {#sec-tables} ```{r} #| label: 'set-rda-dir-tbls'#| echo: false #| warning: false #| eval: true #| include: false"
+  # expected_head_table_content <- "## Tables {#sec-tables} ```{r} #| label: 'set-rda-dir-tbls'#| echo: false #| warning: false #| eval: true #| include: false"
 
   # test expectation of start of tables doc
   testthat::expect_equal(

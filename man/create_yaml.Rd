@@ -104,7 +104,7 @@ create_yaml(
   prev_skeleton = NULL,
   title = "My title",
   author_list = "  - name: 'Patrick Star'\n    affiliations:\n      - name: 'NOAA Fisheries Southeast Fisheries Science Center'\n        address: '75 Virginia Beach Drive'\n        city: 'Miami'\n        state: 'FL'\n        postal-code: '33149'\n",
-  author = c("Patrick Star"="SEFSC"),
+  author = c("Patrick Star" = "SEFSC"),
   office = "SEFSC",
   add_author = NULL,
   spp_image = NULL,

@@ -12,12 +12,12 @@
 #' @examples
 #' \dontrun{
 #' create_figures_doc(
-#' subdir = getwd(),
-#' figures_dir = here::here())
+#'   subdir = getwd(),
+#'   figures_dir = here::here()
+#' )
 #' }
 create_figures_doc <- function(subdir = getwd(),
                                figures_dir = getwd()) {
-
   figures_doc_header <- "# Figures {#sec-figures}\n \n"
 
   # add chunk that creates object as the directory of all rdas
@@ -43,8 +43,7 @@ create_figures_doc <- function(subdir = getwd(),
 
   # create two-chunk system to plot each rda figure
   create_fig_chunks <- function(fig = NA,
-                                figures_dir = getwd()){
-
+                                figures_dir = getwd()) {
     fig_shortname <- stringr::str_remove(fig, "_figure.rda")
 
     ## import plot, caption, alt text
@@ -52,7 +51,7 @@ create_figures_doc <- function(subdir = getwd(),
       # figures_doc,
       add_chunk(
         paste0(
-"# load rda
+          "# load rda
 load(file.path(figures_dir, '", fig, "'))\n
 # save rda with plot-specific name
 ", fig_shortname, "_plot_rda <- rda\n
@@ -61,7 +60,8 @@ rm(rda)\n
 # save figure, caption, and alt text as separate objects
 ", fig_shortname, "_plot <- ", fig_shortname, "_plot_rda$figure
 ", fig_shortname, "_cap <- ", fig_shortname, "_plot_rda$cap
-", fig_shortname, "_alt_text <- ", fig_shortname, "_plot_rda$alt_text"),
+", fig_shortname, "_alt_text <- ", fig_shortname, "_plot_rda$alt_text"
+        ),
         label = glue::glue("fig-{fig_shortname}-setup")
       ),
       "\n"
@@ -88,43 +88,55 @@ rm(rda)\n
       "\n"
     )
 
-    return(paste0(figures_doc_plot_setup1,
-                  figures_doc_plot_setup2))
+    return(paste0(
+      figures_doc_plot_setup1,
+      figures_doc_plot_setup2
+    ))
   }
 
-  if (length(file_fig_list) == 0){
+  if (length(file_fig_list) == 0) {
     cli::cli_alert_warning("Found zero figure files in {fs::path(figures_dir, 'figures')}.",
-                           wrap = TRUE)
+      wrap = TRUE
+    )
     figures_doc <- "# Figures {#sec-figures}"
   } else {
     # paste rda figure code chunks into one object
     if (length(rda_fig_list) > 0) {
       cli::cli_alert_success("Found {length(rda_fig_list)} figure{?s} in an rda format (i.e., .rda) in {fs::path(figures_dir, 'figures')}.",
-                             wrap = TRUE)
+        wrap = TRUE
+      )
       rda_figures_doc <- ""
-      for (i in 1:length(rda_fig_list)){
-        fig_chunk <- create_fig_chunks(fig = rda_fig_list[i],
-                                       figures_dir = figures_dir)
+      for (i in 1:length(rda_fig_list)) {
+        fig_chunk <- create_fig_chunks(
+          fig = rda_fig_list[i],
+          figures_dir = figures_dir
+        )
 
         rda_figures_doc <- paste0(rda_figures_doc, fig_chunk)
       }
     } else {
       cli::cli_alert_warning("Found zero figures in an rda format (i.e., .rda) in {fs::path(figures_dir, 'figures')}.",
-                             wrap = TRUE)
+        wrap = TRUE
+      )
     }
-    if (length(non.rda_fig_list) > 0){
+    if (length(non.rda_fig_list) > 0) {
       cli::cli_alert_success("Found {length(non.rda_fig_list)} figure{?s} in a non-rda format (e.g., .jpg, .png) in {fs::path(figures_dir, 'figures')}.",
-                             wrap = TRUE)
+        wrap = TRUE
+      )
       non.rda_figures_doc <- ""
-      for (i in 1:length(non.rda_fig_list)){
+      for (i in 1:length(non.rda_fig_list)) {
         # remove file extension
-        fig_name <- stringr::str_extract(non.rda_fig_list[i],
-                                         "^[^.]+")
+        fig_name <- stringr::str_extract(
+          non.rda_fig_list[i],
+          "^[^.]+"
+        )
         # remove "_figure", if present
         fig_name <- sub("_figure", "", fig_name)
         fig_chunk <- paste0(
-          "![Your caption here](", fs::path("figures",
-                                            non.rda_fig_list[i]),
+          "![Your caption here](", fs::path(
+            "figures",
+            non.rda_fig_list[i]
+          ),
           "){#fig-",
           fig_name,
           "}\n\n"
@@ -134,28 +146,34 @@ rm(rda)\n
       }
     } else {
       cli::cli_alert_warning("Found zero figure files in a non-rda format (e.g., .jpg, .png) in {fs::path(figures_dir, 'figures')}.",
-                             wrap = TRUE)
+        wrap = TRUE
+      )
     }
 
     # combine figures_doc setup with figure chunks
-    figures_doc <- paste0(figures_doc_header,
-                          figures_doc_setup,
-                          ifelse(exists("rda_figures_doc"),
-                                 rda_figures_doc,
-                                 ""),
-                          ifelse(exists("non.rda_figures_doc"),
-                                 non.rda_figures_doc,
-                                 "")
+    figures_doc <- paste0(
+      figures_doc_header,
+      figures_doc_setup,
+      ifelse(exists("rda_figures_doc"),
+        rda_figures_doc,
+        ""
+      ),
+      ifelse(exists("non.rda_figures_doc"),
+        non.rda_figures_doc,
+        ""
+      )
     )
   }
   # Save figures doc to template folder
   utils::capture.output(cat(figures_doc),
-                        file = paste0(subdir, "/", 
-                                      ifelse(
-                                        any(grepl("_figures.qmd$", list.files(subdir))),
-                                        list.files(subdir)[grep("_figures.qmd", list.files(subdir))],
-                                        "08_figures.qmd"
-                                      )),
-                        append = FALSE
+    file = paste0(
+      subdir, "/",
+      ifelse(
+        any(grepl("_figures.qmd$", list.files(subdir))),
+        list.files(subdir)[grep("_figures.qmd", list.files(subdir))],
+        "08_figures.qmd"
+      )
+    ),
+    append = FALSE
   )
 }

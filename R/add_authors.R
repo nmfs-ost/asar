@@ -10,7 +10,7 @@
 #' @examples
 #' \dontrun{
 #' add_authors(
-#'   author = c("Danny Phantom"="SWFSC-LJCA","John Snow"="AFSC-ABL","Jane Doe"="NWFSC-SWA"),
+#'   author = c("Danny Phantom" = "SWFSC-LJCA", "John Snow" = "AFSC-ABL", "Jane Doe" = "NWFSC-SWA"),
 #'   rerender_skeleton = FALSE
 #' )
 #' }
