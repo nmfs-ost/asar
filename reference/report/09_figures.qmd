@@ -1,3 +1,0 @@
-## Figures 
- 
-Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures.

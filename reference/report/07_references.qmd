@@ -1,4 +1,0 @@
-## References {#sec-refs}
-
-::: {#refs} 
-:::
