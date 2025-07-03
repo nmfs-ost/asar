@@ -29,14 +29,11 @@ test_that("Creates expected start of nearly empty figures doc", {
 
 test_that("Creates expected start of figures doc with figure", {
 
-  # convert sample dataset
-  dat <- convert_output(
-    file = file.path("fixtures", "ss3_models", "models", "Hake_2018",
-                            "Report.sso"),
-    model = "ss3"
-  )
+  # load sample dataset
+  load(file.path("fixtures", "ss3_models_converted", "Hake_2018",
+                 "std_output.rda"))
 
-  stockplotr::plot_landings(dat,
+  stockplotr::plot_landings(out_new,
                             make_rda = TRUE)
 
   # create tables doc
