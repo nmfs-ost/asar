@@ -10,14 +10,14 @@ test_that("Table widths calculated correctly", {
                             make_rda = TRUE,
                             tables_dir = getwd())
 
-  # extra-wide width
+  # wide width
   tbl_width <- ID_tbl_width_class(
-    plot_name = "indices.abundance_table.rda",
+    plot_name = "indices.abundance",
     tables_dir = getwd(),
     portrait_pg_width = 5
     )
 
-  expected_output <- "extra-wide"
+  expected_output <- "wide"
   expect_equal(tbl_width, expected_output)
 
 
@@ -27,7 +27,7 @@ test_that("Table widths calculated correctly", {
                             tables_dir = getwd())
 
   tbl_width2 <- ID_tbl_width_class(
-    plot_name = "bnc_table.rda",
+    plot_name = "bnc",
     tables_dir = getwd(),
     portrait_pg_width = 5
   )
