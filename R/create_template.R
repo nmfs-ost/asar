@@ -234,6 +234,20 @@ create_template <- function(
   } else if (length(office) > 1) {
     office <- ""
   }
+  
+  if (new_template == FALSE) {
+    # Copy previous assessment files over
+    previous_files <- list.files(prev_dir)
+    file.copy(glue::glue("{prev_dir}/{list.files(prev_dir)}"), subdir)
+    # Copy support files
+    prev_support_files_folder <- file.path(prev_dir, 'support_files')
+    previous_support_files <- list.files(prev_support_files_folder)
+    file.copy(
+      glue::glue("{prev_support_files_folder}/{previous_support_files}"),
+      supdir
+    )
+    rerender_skeleton = TRUE
+  }
 
   #### Rerender skeleton ----
   if (rerender_skeleton) {
@@ -985,19 +999,14 @@ create_template <- function(
     # Open the file so path to other docs is clear
     # utils::browseURL(subdir)
   } else {
-    #### Previous template call ----
-    # Copy old template and rename for new year
-    # Create copy of previous assessment
-    if (!is.null(region)) {
-      olddir <- fs::path(file_dir, "report")
-      invisible(file.copy(file.path(olddir, list.files(olddir)), subdir, recursive = FALSE))
-    } else {
-      olddir <- fs::path(file_dir, "report")
-      invisible(file.copy(file.path(olddir, list.files(olddir)), subdir, recursive = FALSE))
-    }
-
-    # Edit skeleton to update year and results file
-    skeleton <- list.files(subdir, pattern = "skeleton.qmd")
+    #### Call previous template ----
+    
+    
+    # For editing the skeleton, set rerender_skeleton = TRUE
+    rerender_skeleton <- TRUE # overwrite default
+    
+    
+    
     # Open previous skeleton
     # file.show(file.path(subdir, report_name))
 
