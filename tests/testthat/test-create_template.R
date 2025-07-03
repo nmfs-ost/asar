@@ -181,44 +181,41 @@ test_that("warning is triggered for existing files", {
   unlink(fs::path(path, "report"), recursive = T)
 })
 
-# TODO: Fix this test
-# The error messsage is:
-# Error in `file.copy(file.path(current_folder, files_to_copy), new_folder,
-#                     overwrite = FALSE)`: more 'from' files than 'to' files
-# test_that("file_dir works", {
-#   dir <- fs::path(getwd(), "data")
-#   on.exit(unlink(dir, recursive = TRUE), add = TRUE)
-#   ifelse(!dir.exists(dir),
-#     dir.create(dir, showWarnings = FALSE),
-#     FALSE
-#   )
-#
-#   # read in sample dataset
-#   dat <- asar::convert_output(
-#     file = fs::path("fixtures", "ss3_models", "models", "Hake_2018", "Report.sso"),
-#     model = "ss3",
-#     save_dir = dir
-#   )
-#
-#   create_template(
-#     format = "pdf",
-#     office = "NWFSC",
-#     species = "Dover sole",
-#     spp_latin = "Pomatomus saltatrix",
-#     year = 2010,
-#     author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
-#     include_affiliation = TRUE,
-#     parameters = FALSE,
-#     model_results = dat,
-#     file_dir = fs::path(dir, "std_output.rda")
-#   )
-#
-#   file_path <- file.path(dir, "report")
-#   expect_gt(length(list.files(file_path)), 1)
-#
-#   expect_gte(length(list.files(dir)), 1)
-#
-# })
+
+test_that("file_dir works", {
+  dir <- fs::path(getwd(), "data")
+  on.exit(unlink(dir, recursive = TRUE), add = TRUE)
+  ifelse(!dir.exists(dir),
+    dir.create(dir, showWarnings = FALSE),
+    FALSE
+  )
+
+  # read in sample dataset
+  dat <- asar::convert_output(
+    file = fs::path("fixtures", "ss3_models", "models", "Hake_2018", "Report.sso"),
+    model = "ss3",
+    save_dir = dir
+  )
+
+  create_template(
+    format = "pdf",
+    office = "NWFSC",
+    species = "Dover sole",
+    spp_latin = "Pomatomus saltatrix",
+    year = 2010,
+    author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
+    include_affiliation = TRUE,
+    parameters = FALSE,
+    model_results = file.path(dir, "std_output.rda"),
+    file_dir = dir
+  )
+
+  file_path <- file.path(dir, "report")
+  expect_gt(length(list.files(file_path)), 1)
+
+  expect_gte(length(list.files(dir)), 1)
+
+})
 
 test_that("model_results metadata file created", {
 
