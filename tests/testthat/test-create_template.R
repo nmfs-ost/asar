@@ -40,6 +40,7 @@ test_that("create_template() creates correct files", {
     "09_figures.qmd",
     # "10_notes.qmd",
     "11_appendix.qmd",
+    "preamble.R",
     "SAR_species_skeleton.qmd",
     #   "model_results_metadata.md",
     "report_glossary.tex",
@@ -89,9 +90,6 @@ test_that("create_template() creates correct files", {
     author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
     parameters = FALSE
-    # resdir = "data",
-    # model_results = "Report.sso",
-    # model = "SS3"
   ) |>
     suppressWarnings() |>
     suppressMessages()
@@ -119,6 +117,7 @@ test_that("create_template() creates correct files", {
     "11_appendix.qmd",
     "SAR_Dover_sole_skeleton.qmd",
     "asar_references.bib",
+    "preamble.R",
     "report_glossary.tex",
     "support_files"
   )
@@ -141,32 +140,6 @@ test_that("create_template() creates correct files", {
   unlink(fs::path(path, "report"), recursive = T)
 })
 
-# Test no longer applies bc warning was removed
-# test_that("warning is triggered for missing models", {
-#   # Test if warning is triggered when resdir is NULL and results or model name is not defined
-#   expect_warning(
-#     create_template(
-#       new_template = TRUE,
-#       format = "pdf",
-#       office = "NWFSC",
-#       species = "Dover sole",
-#       spp_latin = "Pomatomus saltatrix",
-#       year = 2010,
-#       author = c("John Snow", "Danny Phantom", "Patrick Star"),
-#       include_affiliation = TRUE,
-#       parameters = FALSE,
-#       # resdir = NULL,
-#       model_results = NULL
-#       # model = NULL
-#     ),
-#     regexp = "Results file or model name not defined."
-#   )
-#   path <- getwd()
-#
-#   # erase temporary testing files
-#   unlink(fs::path(path, "report"), recursive = T)
-# })
-
 test_that("warning is triggered for existing files", {
   create_template(
     new_template = TRUE,
@@ -178,9 +151,6 @@ test_that("warning is triggered for existing files", {
     author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
     parameters = FALSE
-    # resdir = "data",
-    # model_results = "Report.sso",
-    # model = "SS3"
   )
 
   # Test if warning is triggered when there are existing files in the provided location
@@ -201,9 +171,6 @@ test_that("warning is triggered for existing files", {
       author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
       include_affiliation = TRUE,
       parameters = FALSE
-      # resdir = "data",
-      # model_results = "Report.sso",
-      # model = "SS3"
     ),
     regexp = "There are files in this location."
   )
@@ -215,37 +182,29 @@ test_that("warning is triggered for existing files", {
 })
 
 test_that("file_dir works", {
-  dir <- tempdir()
+  dir <- here::here("data")
   on.exit(unlink(dir, recursive = TRUE), add = TRUE)
   ifelse(!dir.exists(dir),
     dir.create(dir, showWarnings = FALSE),
     FALSE
   )
 
-  office <- "NWFSC"
-  species <- "Dover sole"
-  year <- 2010
-
-  # Create false output file
-  output <- data.frame(
-    label = c("spawning_biomass", "fishing_mortality", "recruitment"),
-    estimate = c(1000, 0.2, 50000),
-    year = c(2010, 2010, 2010)
+  # read in sample dataset
+  dat <- asar::convert_output(
+    file = fs::path("fixtures", "ss3_models", "models", "Hake_2018", "Report.sso"),
+    model = "ss3"
   )
 
   create_template(
-    new_template = TRUE,
     format = "pdf",
-    office = office,
-    species = species,
+    office = "NWFSC",
+    species = "Dover sole",
     spp_latin = "Pomatomus saltatrix",
-    year = year,
+    year = 2010,
     author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
     parameters = FALSE,
-    # resdir = "data",
-    model_results = output,
-    # model = "SS3",
+    model_results = dat,
     file_dir = dir
   )
 
@@ -254,78 +213,72 @@ test_that("file_dir works", {
 
   expect_gte(length(list.files(dir)), 1)
 
-  # erase temporary testing files
-  unlink(file_path, recursive = T)
 })
 
+test_that("model_results metadata file created", {
 
-# This test does not work because no fixtures folder exists
-# TODO: uncomment once all merged into dev
-# test_that("model_results metadata file created", {
-#
-#   # identify wd on github to debug failing test there (but not locally)
-#   resdir <- fs::path(getwd(), "fixtures", "bam_models_converted")
-#   # read in model resutls
-#   output <- read.csv(resdir, "bsb_conout.csv")
-#   print(paste0("The working directory is: ", getwd()))
-#   print(paste0("The resdir is: ", resdir))
-#   message(paste0("The working directory is: ", getwd()))
-#   message(paste0("The resdir is: ", resdir))
-#
-#   create_template(
-#     new_template = TRUE,
-#     model_results = output,
-#     format = "pdf",
-#     office = "NWFSC",
-#    # species = "Dover sole",
-#     spp_latin = "Pomatomus saltatrix",
-#     year = 2010,
-#     author = c("John Snow"="AFSC", "Danny Phantom"="SWFSC", "Patrick Star"="SEFSC"),
-#     include_affiliation = TRUE,
-#     parameters = FALSEr
-#   )
-#
-#   message("create_template run")
-#
-#   file_path <- file.path(getwd(), "report")
-#
-#   message(paste0("file_path: ", file_path))
-#
-#   expect_true(file.exists(file_path))
-#
-#   expect_report_files <- c(
-#     "01_executive_summary.qmd",
-#     "02_introduction.qmd",
-#     "03_data.qmd",
-#     "04a_assessment-configuration.qmd",
-#     "04b_assessment-results.qmd",
-#     "04c_assessment-sensitivity.qmd",
-#     "04d_assessment-benchmarks.qmd",
-#     "04e_assessment-projections.qmd",
-#     "05_discussion.qmd",
-#     "06_acknowledgments.qmd",
-#     "07_references.qmd",
-#     "08_tables.qmd",
-#     "09_figures.qmd",
-#     # "10_notes.qmd",
-#     "11_appendix.qmd",
-#     "SAR_species_skeleton.qmd",
-#     "model_results_metadata.md",
-#     "report_glossary.tex",
-#     "asar_references.bib",
-#     "support_files"
-#   )
-#
-#   object_report_files <- list.files(file_path)
-#
-#   message(paste0("object_report_files: ", object_report_files))
-#
-#   # Check if all expected report files are created
-#   expect_true(all(sort(expect_report_files) == sort(object_report_files)))
-#
-#  # erase temporary testing files
-#   unlink(file_path, recursive = T)
-#   # Neither of the following files should get created with package updates in v1.4.0
-#   # unlink(file.path(getwd(), "rda_files"), recursive = T)
-#   # unlink(file.path(getwd(), "captions_alt_text.csv"), recursive = T)
-# })
+  # identify wd on github to debug failing test there (but not locally)
+    dat <- asar::convert_output(
+      file = fs::path("fixtures", "ss3_models", "models", "Hake_2018", "Report.sso"),
+      model = "ss3",
+      save_dir = getwd()
+    )
+  print(paste0("The working directory is: ", getwd()))
+  message(paste0("The working directory is: ", getwd()))
+
+  create_template(
+    model_results = here::here("std_output.rda"),
+    format = "pdf",
+    office = "NWFSC",
+   # species = "Dover sole",
+    spp_latin = "Pomatomus saltatrix",
+    year = 2010,
+    author = c("John Snow"="AFSC", "Danny Phantom"="SWFSC", "Patrick Star"="SEFSC"),
+    include_affiliation = TRUE,
+    parameters = FALSE
+  )
+
+  message("create_template run")
+
+  file_path <- file.path(getwd(), "report")
+
+  message(paste0("file_path: ", file_path))
+
+  expect_true(file.exists(file_path))
+
+  expect_report_files <- c(
+    "01_executive_summary.qmd",
+    "02_introduction.qmd",
+    "03_data.qmd",
+    "04a_assessment-configuration.qmd",
+    "04b_assessment-results.qmd",
+    "04c_assessment-sensitivity.qmd",
+    "04d_assessment-benchmarks.qmd",
+    "04e_assessment-projections.qmd",
+    "05_discussion.qmd",
+    "06_acknowledgments.qmd",
+    "07_references.qmd",
+    "08_tables.qmd",
+    "09_figures.qmd",
+    # "10_notes.qmd",
+    "11_appendix.qmd",
+    "SAR_species_skeleton.qmd",
+    "preamble.R",
+    "std_output_metadata.md",
+    "report_glossary.tex",
+    "asar_references.bib",
+    "support_files"
+  )
+
+  object_report_files <- list.files(file_path)
+
+  message(paste0("object_report_files: ", object_report_files))
+
+  # Check if all expected report files are created
+  expect_true(all(sort(expect_report_files) == sort(object_report_files)))
+
+ # erase temporary testing files
+  unlink(file_path, recursive = T)
+  file.remove(fs::path(getwd(), "std_output.rda"))
+
+})
