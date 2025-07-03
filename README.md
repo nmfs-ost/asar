@@ -63,7 +63,7 @@ The SS3 Report.sso files was converted using the following code:
 
 ```r
 output <- asar::convert_output(
-  output_file = system.file("extdata", "Report.sso", package = "asar"),
+  file = system.file("extdata", "Report.sso", package = "asar"),
   model = "ss3",
   save_dir = here::here("readme_output.rda"))
 ```
