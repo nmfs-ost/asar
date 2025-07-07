@@ -14,7 +14,7 @@
 #'   year = 2024
 #' )
 create_title <- function(
-    type = "SAR",
+    type = "skeleton",
     office = "",
     species = "species",
     spp_latin = NULL,
@@ -41,9 +41,7 @@ create_title <- function(
     } else if (as.numeric(format(Sys.Date(), "%m")) %in% c(12, 1, 2)) {
       season <- "Winter"
     }
-    if (type == "SAR" | is.null(type)) {
-      title <- paste0("Management Track Assessment of ", species, ifelse(is.null(spp_latin), " ", glue::glue(" ({spp_latin}) ")), season, " ", year)
-    }
+    title <- paste0("Management Track Assessment of ", species, ifelse(is.null(spp_latin), " ", glue::glue(" ({spp_latin}) ")), season, " ", year)
   } else if (office == "NWFSC") {
     if (is.null(region)) {
       title <- paste0("Status of ", species, " stock along the U.S. West Coast in ", year)
