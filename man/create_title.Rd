@@ -5,7 +5,7 @@
 \title{Write Stock Assessment Report Title}
 \usage{
 create_title(
-  type = "SAR",
+  type = "skeleton",
   office = "",
   species = "species",
   spp_latin = NULL,
