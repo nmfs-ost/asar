@@ -137,7 +137,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
             "echo: false",
             "warnings: false",
             glue::glue(
-              "tbl-cap: {tab_shortname}_cap"
+              "tbl-cap: !expr {tab_shortname}_cap"
             )
           )
         ),
@@ -160,7 +160,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
             "echo: false",
             "warnings: false",
             glue::glue(
-              "tbl-cap: {tab_shortname}_cap"
+              "tbl-cap: !expr {tab_shortname}_cap"
             )
           )
         ),
