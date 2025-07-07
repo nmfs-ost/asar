@@ -214,17 +214,15 @@ test_that("file_dir works", {
   expect_gt(length(list.files(file_path)), 1)
 
   expect_gte(length(list.files(dir)), 1)
-
 })
 
 test_that("model_results metadata file created", {
-
   # identify wd on github to debug failing test there (but not locally)
-    dat <- asar::convert_output(
-      file = fs::path("fixtures", "ss3_models", "models", "Hake_2018", "Report.sso"),
-      model = "ss3",
-      save_dir = getwd()
-    )
+  dat <- asar::convert_output(
+    file = fs::path("fixtures", "ss3_models", "models", "Hake_2018", "Report.sso"),
+    model = "ss3",
+    save_dir = getwd()
+  )
   # print(paste0("The working directory is: ", getwd()))
   # message(paste0("The working directory is: ", getwd()))
 
@@ -232,10 +230,10 @@ test_that("model_results metadata file created", {
     model_results = here::here("std_output.rda"),
     format = "pdf",
     office = "NWFSC",
-   # species = "Dover sole",
+    # species = "Dover sole",
     spp_latin = "Pomatomus saltatrix",
     year = 2010,
-    author = c("John Snow"="AFSC", "Danny Phantom"="SWFSC", "Patrick Star"="SEFSC"),
+    author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
     parameters = FALSE
   )
@@ -279,8 +277,7 @@ test_that("model_results metadata file created", {
   # Check if all expected report files are created
   expect_true(all(sort(expect_report_files) == sort(object_report_files)))
 
- # erase temporary testing files
+  # erase temporary testing files
   unlink(file_path, recursive = T)
   file.remove(fs::path(getwd(), "std_output.rda"))
-
 })

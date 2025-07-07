@@ -39,5 +39,4 @@ test_that("convert_output saves model ss3 hake output file", {
   )
 
   expect_true(list.files(fs::path("fixtures", "ss3_models_converted", "Hake_2018")) == "std_output.rda")
-
 })
