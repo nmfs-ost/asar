@@ -28,13 +28,15 @@ test_that("Creates expected start of nearly empty tables doc", {
 })
 
 test_that("Creates expected start of tables doc with table", {
-
   # load sample dataset
-  load(file.path("fixtures", "ss3_models_converted", "Hake_2018",
-                 "std_output.rda"))
+  load(file.path(
+    "fixtures", "ss3_models_converted", "Hake_2018",
+    "std_output.rda"
+  ))
 
   stockplotr::table_landings(out_new,
-                            make_rda = TRUE)
+    make_rda = TRUE
+  )
 
   # create tables doc
   create_tables_doc(

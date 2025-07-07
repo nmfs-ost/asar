@@ -6,5 +6,6 @@ test_that("add_chunk() generates correct R Markdown chunk", {
   expect_snapshot(cat(add_chunk("plot(cars$speed, cars$distance)")))
 
   expect_snapshot(cat(add_chunk("plot(cars$speed, cars$distance)",
-                                chunk_option = c("echo:true", "warning: false", "eval: true"))))
+    chunk_option = c("echo:true", "warning: false", "eval: true")
+  )))
 })
