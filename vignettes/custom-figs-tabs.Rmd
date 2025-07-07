@@ -515,7 +515,7 @@ Then, add this chunk to display the table in your .qmd when it's rendered:
 #| label: 'tbl-custom1' # choose a label
 #| echo: false
 #| warning: false
-#| tbl-cap: example_cap
+#| tbl-cap: !expr example_cap
 example_table
 ``` 
 ````
@@ -564,7 +564,7 @@ Then, add this chunk to display the table in your .qmd when it's rendered:
 #| label: 'tbl-custom1' # choose a label
 #| echo: false
 #| warning: false
-#| tbl-cap: example_cap
+#| tbl-cap: !expr example_cap
 example_table |>
   flextable::fit_to_width(max_width = 8) # this extra line ensures the table will be resized to a maximum of 8" wide
 ``` 
@@ -636,7 +636,7 @@ Now, you'll add as many chunks as you have split tables. Here's what the first o
 #| label: 'tbl-custom1' # choose a label
 #| echo: false
 #| warning: false
-#| tbl-cap: paste0(example_cap, '(', example_cap_split[[1]], ')') # this pastes the original table caption with the specifiers associated with table 1
+#| tbl-cap: !expr paste0(example_cap, '(', example_cap_split[[1]], ')') # this pastes the original table caption with the specifiers associated with table 1
 
 # plot split table 1
 example_table_rda_split[[1]] |>
@@ -702,8 +702,8 @@ Then, add this chunk to display the figure in your .qmd when it's rendered:
 #| label: 'fig-custom1' # choose a label
 #| echo: false
 #| warning: false
-#| fig-cap: example_cap
-#| fig-alt: example_alt_text
+#| fig-cap: !expr example_cap
+#| fig-alt: !expr example_alt_text
 example_plot
 ``` 
 ````
@@ -731,7 +731,7 @@ Add the following chunk to display the table in your .qmd when it's rendered:
 #| label: 'tbl-custom1' # choose a label
 #| echo: false
 #| warning: false
-#| tbl-cap: This is your table caption.
+#| tbl-cap: !expr This is your table caption.
 
 # Import your data
 your_df <- data.frame(
@@ -772,7 +772,7 @@ Then, add the following chunk to display the table in your .qmd when it's render
 #| label: 'tbl-custom1' # choose a label
 #| echo: false
 #| warning: false
-#| tbl-cap: This is your table caption.
+#| tbl-cap: !expr This is your table caption.
 
 # Import your data
 your_df <- data.frame(
@@ -818,8 +818,8 @@ In your figures doc, add the following chunk to display the figure in your .qmd 
 #| label: 'fig-custom1' # choose a label
 #| echo: false
 #| warning: false
-#| fig-cap: This is your figure caption.
-#| fig-alt: This is your figure alternative text.
+#| fig-cap: !expr This is your figure caption.
+#| fig-alt: !expr This is your figure alternative text.
 # Import your data
 your_df <- data.frame(
   "x" = c(1, 2, 3),

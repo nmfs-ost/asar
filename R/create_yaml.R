@@ -194,7 +194,7 @@ create_yaml <- function(
       yaml,
       # Date
       "date: today", "\n",
-      "lang: en \n",
+      # "lang: en \n",
       "keep-tex: true \n",
       "mainfont: 'Latin Modern Sans' \n"
     )

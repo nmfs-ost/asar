@@ -78,10 +78,10 @@ rm(rda)\n
           "echo: false",
           "warning: false",
           glue::glue(
-            "fig-cap: {fig_shortname}_cap"
+            "fig-cap: !expr {fig_shortname}_cap"
           ),
           glue::glue(
-            "fig-alt: {fig_shortname}_alt_text"
+            "fig-alt: !expr {fig_shortname}_alt_text"
           )
         )
       ),
