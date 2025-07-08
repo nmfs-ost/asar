@@ -38,9 +38,6 @@
 #' using the image included in the project's repository.
 #' @param bib_file File path to a .bib file used for citing references in
 #' the report
-#' @param new_template TRUE/FALSE; Create a new template? If true,
-#' will pull the last saved stock assessment report skeleton.
-#' Default is false.
 #' @param rerender_skeleton Re-create the "skeleton.qmd" in your outline when
 #'        changes to the main skeleton need to be made. This reproduces the
 #'        yaml, output (if changed), preamble quantities, and restructures your
@@ -117,7 +114,6 @@
 #'
 #'
 #' create_template(
-#'   new_template = TRUE,
 #'   format = "pdf",
 #'   office = "NWFSC",
 #'   species = "Dover sole",
@@ -134,7 +130,6 @@
 #' )
 #'
 #' asar::create_template(
-#'   new_template = TRUE,
 #'   format = "pdf",
 #'   office = "PIFSC",
 #'   species = "Striped marlin",
@@ -148,7 +143,6 @@
 #' )
 #'
 #' create_template(
-#'   new_template = TRUE,
 #'   format = "pdf",
 #'   office = "NWFSC",
 #'   region = "my_region",
@@ -184,7 +178,6 @@ create_template <- function(
     model_results = NULL,
     spp_image = "",
     bib_file = "asar_references.bib",
-    new_template = TRUE,
     rerender_skeleton = FALSE,
     custom = FALSE,
     custom_sections = NULL,
@@ -233,20 +226,6 @@ create_template <- function(
     office <- match.arg(office, several.ok = FALSE)
   } else if (length(office) > 1) {
     office <- ""
-  }
-  
-  if (new_template == FALSE) {
-    # Copy previous assessment files over
-    previous_files <- list.files(prev_dir)
-    file.copy(glue::glue("{prev_dir}/{list.files(prev_dir)}"), subdir)
-    # Copy support files
-    prev_support_files_folder <- file.path(prev_dir, 'support_files')
-    previous_support_files <- list.files(prev_support_files_folder)
-    file.copy(
-      glue::glue("{prev_support_files_folder}/{previous_support_files}"),
-      supdir
-    )
-    rerender_skeleton = TRUE
   }
 
   #### Rerender skeleton ----
@@ -392,8 +371,7 @@ create_template <- function(
   }
   # }
 
-  #### New template ----
-  if (new_template) {
+  #### Start creating the template ----
     ##### Pull sections based on type ----
     # Pull skeleton for sections
 
@@ -998,20 +976,4 @@ create_template <- function(
     # file.show(file.path(subdir, report_name)) # this opens the new file, but also restarts the session
     # Open the file so path to other docs is clear
     # utils::browseURL(subdir)
-  } else {
-    #### Call previous template ----
-    
-    
-    # For editing the skeleton, set rerender_skeleton = TRUE
-    rerender_skeleton <- TRUE # overwrite default
-    
-    
-    
-    # Open previous skeleton
-    # file.show(file.path(subdir, report_name))
-
-    svDialogs::dlg_message("Reminder: Changes should be made when calling an old report. Please change 1) the year in the citation and 2) the location and name of the results file in the first chunk of the report.",
-      type = "ok"
-    )
-  }
 }
