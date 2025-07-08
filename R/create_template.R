@@ -228,35 +228,35 @@ create_template <- function(
     office <- ""
   }
 
-  #### Rerender skeleton ----
-  if (rerender_skeleton) {
-    # TODO: set up situation where species, region can be changed
-    report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
-    if (length(report_name) == 0) cli::cli_abort("No skeleton quarto file found in the `file_dir` ({file_dir}).")
-    if (length(report_name) > 1) cli::cli_abort("Multiple skeleton quarto files found in the `file_dir` ({file_dir}).")
-
-    prev_report_name <- gsub("_skeleton.qmd", "", report_name)
-    # Extract type
-    type <- stringr::str_extract(prev_report_name, "^[A-Z]+")
-    # Extract region
-    region <- stringr::str_extract(prev_report_name, "(?<=_)[A-Z]+(?=_)")
-    # report name without type and region
-    report_name_1 <- gsub(glue::glue("{type}_"), "", prev_report_name)
-    # Extract species
-    species <- gsub(
-      "_",
-      " ",
-      gsub(glue::glue("{region}_"), "", report_name_1)
-    )
-
-
-    new_report_name <- paste0(
-      type, "_",
-      ifelse(is.null(region), "", paste(gsub("(\\b[A-Z])[^A-Z]+", "\\1", region), "_", sep = "")),
-      ifelse(is.null(species), "species", stringr::str_replace_all(species, " ", "_")), "_",
-      "skeleton.qmd"
-    )
-  } else {
+  # #### Rerender skeleton ----
+  # if (rerender_skeleton) {
+  #   # TODO: set up situation where species, region can be changed
+  #   report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
+  #   if (length(report_name) == 0) cli::cli_abort("No skeleton quarto file found in the `file_dir` ({file_dir}).")
+  #   if (length(report_name) > 1) cli::cli_abort("Multiple skeleton quarto files found in the `file_dir` ({file_dir}).")
+  # 
+  #   prev_report_name <- gsub("_skeleton.qmd", "", report_name)
+  #   # Extract type
+  #   type <- stringr::str_extract(prev_report_name, "^[A-Z]+")
+  #   # Extract region
+  #   region <- stringr::str_extract(prev_report_name, "(?<=_)[A-Z]+(?=_)")
+  #   # report name without type and region
+  #   report_name_1 <- gsub(glue::glue("{type}_"), "", prev_report_name)
+  #   # Extract species
+  #   species <- gsub(
+  #     "_",
+  #     " ",
+  #     gsub(glue::glue("{region}_"), "", report_name_1)
+  #   )
+  # 
+  # 
+  #   new_report_name <- paste0(
+  #     type, "_",
+  #     ifelse(is.null(region), "", paste(gsub("(\\b[A-Z])[^A-Z]+", "\\1", region), "_", sep = "")),
+  #     ifelse(is.null(species), "species", stringr::str_replace_all(species, " ", "_")), "_",
+  #     "skeleton.qmd"
+  #   )
+  # } else {
     # Name report
     if (!is.null(type)) {
       report_name <- paste0(
@@ -295,7 +295,7 @@ create_template <- function(
     #     report_name, "species_skeleton.qmd"
     #   )
     # }
-  } # close if rerender skeleton for naming
+  # } # close if rerender skeleton for naming
 
   # Select format
   # if (length(format) > 1) {
@@ -423,55 +423,55 @@ create_template <- function(
 
     #### Read in previous skeleton if rerender ----
     # Check if this is a rerender of the skeleton file
-    if (rerender_skeleton) {
-      # read format in skeleton & check if format is identified in the rerender call
-      if (!file.exists(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))) stop("No skeleton quarto file found in the working directory.")
-      prev_skeleton <- readLines(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))
-      # extract previous format
-      prev_format <- stringr::str_extract(
-        prev_skeleton[grep("format:", prev_skeleton) + 1],
-        "[a-z]+"
-      )
-      year <- as.numeric(stringr::str_extract(
-        prev_skeleton[grep("title:", prev_skeleton)],
-        "[0-9]+"
-      ))
-      # Add in species image if updated in rerender
-      if (species != "species") {
-        file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
-      }
-      # if it is previously html and the rerender species html then need to copy over html formatting
-      if (tolower(prev_format) != "html" & tolower(format) == "html") {
-        if (!file.exists(file.path(file_dir, "support_files", "theme.scss"))) file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
-      }
-      if (tolower(prev_format != "pdf" & tolower(format) == "pdf")) {
-        if (is.null(species)) {
-          species <- tolower(stringr::str_extract(
-            prev_skeleton[grep("species: ", prev_skeleton)],
-            "(?<=')[^']+(?=')"
-          ))
-        }
-        if (is.null(office)) {
-          office <- stringr::str_extract(
-            prev_skeleton[grep("office: ", prev_skeleton)],
-            "(?<=')[^']+(?=')"
-          )
-        }
-        # year - default to current year
-        cli::cli_alert_warning("Undefined year.")
-        cli::cli_alert_info("Please identify year in your arguments or manually change it in the skeleton if value is incorrect.",
-          wrap = TRUE
-        )
-        # copy before-body tex
-        if (!file.exists(file_dir, "support_files", "before-body.tex")) file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
-        # customize titlepage tex
-        if (!file.exists(file_dir, "support_files", "_titlepage.tex") | !is.null(species)) create_titlepage_tex(office = office, subdir = supdir, species = species)
-        # customize in-header tex
-        if (!file.exists(file_dir, "support_files", "in-header.tex") | !is.null(species)) create_inheader_tex(species = species, year = year, subdir = supdir)
-        # copy new spp image if updated
-        if (!is.null(species)) file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
-      }
-    } else {
+    # if (rerender_skeleton) {
+    #   # read format in skeleton & check if format is identified in the rerender call
+    #   if (!file.exists(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))) stop("No skeleton quarto file found in the working directory.")
+    #   prev_skeleton <- readLines(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))
+    #   # extract previous format
+    #   prev_format <- stringr::str_extract(
+    #     prev_skeleton[grep("format:", prev_skeleton) + 1],
+    #     "[a-z]+"
+    #   )
+    #   year <- as.numeric(stringr::str_extract(
+    #     prev_skeleton[grep("title:", prev_skeleton)],
+    #     "[0-9]+"
+    #   ))
+    #   # Add in species image if updated in rerender
+    #   if (species != "species") {
+    #     file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
+    #   }
+    #   # if it is previously html and the rerender species html then need to copy over html formatting
+    #   if (tolower(prev_format) != "html" & tolower(format) == "html") {
+    #     if (!file.exists(file.path(file_dir, "support_files", "theme.scss"))) file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+    #   }
+    #   if (tolower(prev_format != "pdf" & tolower(format) == "pdf")) {
+    #     if (is.null(species)) {
+    #       species <- tolower(stringr::str_extract(
+    #         prev_skeleton[grep("species: ", prev_skeleton)],
+    #         "(?<=')[^']+(?=')"
+    #       ))
+    #     }
+    #     if (is.null(office)) {
+    #       office <- stringr::str_extract(
+    #         prev_skeleton[grep("office: ", prev_skeleton)],
+    #         "(?<=')[^']+(?=')"
+    #       )
+    #     }
+    #     # year - default to current year
+    #     cli::cli_alert_warning("Undefined year.")
+    #     cli::cli_alert_info("Please identify year in your arguments or manually change it in the skeleton if value is incorrect.",
+    #       wrap = TRUE
+    #     )
+    #     # copy before-body tex
+    #     if (!file.exists(file_dir, "support_files", "before-body.tex")) file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
+    #     # customize titlepage tex
+    #     if (!file.exists(file_dir, "support_files", "_titlepage.tex") | !is.null(species)) create_titlepage_tex(office = office, subdir = supdir, species = species)
+    #     # customize in-header tex
+    #     if (!file.exists(file_dir, "support_files", "in-header.tex") | !is.null(species)) create_inheader_tex(species = species, year = year, subdir = supdir)
+    #     # copy new spp image if updated
+    #     if (!is.null(species)) file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
+    #   }
+    # } else {
       #### Copy template files to report folder ----
       # Check if there are already files in the folder
       if (length(list.files(subdir)) < 2) {
@@ -558,7 +558,7 @@ create_template <- function(
         }
       } # close check for previous files & respective copying
       prev_skeleton <- NULL
-    } # close if rerender
+    # } # close if rerender
 
     # created tables doc
     if (!rerender_skeleton) {
@@ -594,19 +594,19 @@ create_template <- function(
     # Write title based on report type and region
     if (title == "[TITLE]") {
       # TODO: update below so title gets updated if new input is added such as region/species/office
-      if (rerender_skeleton) {
-        title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
-        if (title == "'Stock Assessment Report Template' " & (!is.null(office) | !is.null(species) | !is.null(region))) {
-          title <- create_title(
-            office = office,
-            species = species,
-            spp_latin = spp_latin,
-            region = region,
-            type = type,
-            year = year
-          )
-        }
-      } else {
+      # if (rerender_skeleton) {
+      #   title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
+      #   if (title == "'Stock Assessment Report Template' " & (!is.null(office) | !is.null(species) | !is.null(region))) {
+      #     title <- create_title(
+      #       office = office,
+      #       species = species,
+      #       spp_latin = spp_latin,
+      #       region = region,
+      #       type = type,
+      #       year = year
+      #     )
+      #   }
+      # } else {
         title <- create_title(
           office = office,
           species = species,
@@ -615,15 +615,20 @@ create_template <- function(
           type = type,
           year = year
         )
-      }
+      # }
     }
 
     # Authors and affiliations
     # Parameters to add authorship to YAML
+    # author_list <- add_authors(
+    #   prev_skeleton = ifelse(rerender_skeleton, prev_skeleton, NULL),
+    #   author = author, # need to put this in case there is a rerender otherwise it would not use the correct argument
+    #   rerender_skeleton = rerender_skeleton
+    # )
     author_list <- add_authors(
-      prev_skeleton = ifelse(rerender_skeleton, prev_skeleton, NULL),
-      author = author, # need to put this in case there is a rerender otherwise it would not use the correct argument
-      rerender_skeleton = rerender_skeleton
+      prev_skeleton = NULL,
+      author = author,
+      rerender_skeleton = FALSE
     )
 
     # Create yaml
@@ -648,7 +653,8 @@ create_template <- function(
       type = type
     )
 
-    if (!rerender_skeleton) cli::cli_alert_success("Built YAML header.")
+    # if (!rerender_skeleton) 
+    cli::cli_alert_success("Built YAML header.")
 
     ##### Params chunk ----
     params_chunk <- add_chunk(
