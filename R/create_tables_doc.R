@@ -14,9 +14,9 @@
 #' share the same caption. To specify a different repeated column(s), use
 #' asar::export_split_tbls with your preferred essential_columns value.
 #'
+#' @inheritParams create_figures_doc
 #' @param tables_dir The location of the "tables" folder, which contains tables
 #' files.
-#' @inheritParams create_figures_doc
 #'
 #' @return Create a quarto document as part of a stock assessment outline with
 #' pre-loaded R chunks that add stock assessment tables from the nmfs-ost/stockplotr
@@ -249,7 +249,13 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
       wrap = TRUE
     )
-    tables_doc <- "# Tables {#sec-tables}"
+    cli::cli_alert_info("For `create_tables_doc` to run properly, there must be:",
+                        wrap = TRUE)
+    cli::cli_ol(c("a 'tables' folder in {fs::path(tables_dir)}",
+                  ".rda files in the 'tables' folder")
+    )
+    tables_doc <- paste0("# Tables {#sec-tables}\n\n",
+                         "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables.")
   } else {
     cli::cli_alert_success("Found {length(final_rda_tab_list)} table{?s} in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
       wrap = TRUE

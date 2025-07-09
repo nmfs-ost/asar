@@ -16,6 +16,8 @@ create_template(
   file_dir = getwd(),
   title = "[TITLE]",
   model_results = NULL,
+  tables_dir = getwd(),
+  figures_dir = getwd(),
   spp_image = "",
   bib_file = "asar_references.bib",
   new_template = TRUE,
@@ -71,6 +73,12 @@ by this function. Default is the working directory.}
 in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
 
 \item{model_results}{Path to standard output file made from \code{asar::convert_output()}}
+
+\item{tables_dir}{The location of the "tables" folder, which contains tables
+files. Default is the working directory.}
+
+\item{figures_dir}{The location of the "figures" folder, which contains
+figures files. Default is the working directory.}
 
 \item{spp_image}{File path to the species' image if not
 using the image included in the project's repository.}
@@ -162,6 +170,8 @@ create_template(
     "Patrick Star" = "SEFSC-ML"
   ),
   model_results = here::here("folder", "std_output.rda"),
+  figures_dir = here::here(),
+  tables_dir = here::here("tables_folder_location"),
   new_section = "an_additional_section",
   section_location = "after-introduction"
 )
