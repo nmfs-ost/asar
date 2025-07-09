@@ -259,7 +259,11 @@ create_template <- function(
 
     new_report_name <- paste0(
       type, "_",
-      ifelse(is.null(region), "", paste(gsub("(\\b[A-Z])[^A-Z]+", "\\1", region), "_", sep = "")),
+      ifelse(
+        is.null(region), 
+        "",  
+        paste(toupper(substr(strsplit(region, " ")[[1]], 1, 1)), collapse = "")
+        ),
       ifelse(is.null(species), "species", stringr::str_replace_all(species, " ", "_")), "_",
       "skeleton.qmd"
     )
