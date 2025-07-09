@@ -34,6 +34,10 @@
 #' @param title A custom title that is an alternative to the default title (composed
 #' in asar::create_title()). Example: "Management Track Assessments Spring 2024".
 #' @param model_results Path to standard output file made from `asar::convert_output()`
+#' @param tables_dir The location of the "tables" folder, which contains tables
+#' files. Default is the working directory.
+#' @param figures_dir The location of the "figures" folder, which contains
+#' figures files. Default is the working directory.
 #' @param spp_image File path to the species' image if not
 #' using the image included in the project's repository.
 #' @param bib_file File path to a .bib file used for citing references in
@@ -42,10 +46,10 @@
 #' will pull the last saved stock assessment report skeleton.
 #' Default is false.
 #' @param rerender_skeleton Re-create the "skeleton.qmd" in your outline when
-#'        changes to the main skeleton need to be made. This reproduces the
-#'        yaml, output (if changed), preamble quantities, and restructures your
-#'        sectioning in the skeleton if indicated. All files in your folder
-#'        will remain as is.
+#' changes to the main skeleton need to be made. This reproduces the
+#' yaml, output (if changed), preamble quantities, and restructures your
+#' sectioning in the skeleton if indicated. All files in your folder
+#' will remain as is.
 #' @param custom TRUE/FALSE; Build custom sectioning for the
 #' template, rather than the default for stock assessments in
 #' your region? Default is false.
@@ -93,11 +97,6 @@
 #' using the image included in the project's repository.
 #' @param bib_file File path to a .bib file used for citing references in
 #' the report
-#' @param rerender_skeleton Re-create the "skeleton.qmd" in your outline when
-#'        changes to the main skeleton need to be made. This reproduces the
-#'        yaml, output (if changed), preamble quantities, and restructures your
-#'        sectioning in the skeleton if indicated. All files in your folder
-#'        will remain as is.
 #' @param ... Additional arguments passed into functions used in create_template
 #' such as `create_citation()`, `format_quarto()`, `add_chunk()`, ect
 #'
@@ -129,6 +128,8 @@
 #'     "Patrick Star" = "SEFSC-ML"
 #'   ),
 #'   model_results = here::here("folder", "std_output.rda"),
+#'   figures_dir = here::here(),
+#'   tables_dir = here::here("tables_folder_location"),
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction"
 #' )
@@ -182,6 +183,8 @@ create_template <- function(
     file_dir = getwd(),
     title = "[TITLE]",
     model_results = NULL,
+    tables_dir = getwd(),
+    figures_dir = getwd(),
     spp_image = "",
     bib_file = "asar_references.bib",
     new_template = TRUE,
@@ -575,12 +578,14 @@ create_template <- function(
         "safe" = "11_tables.qmd",
         "08_tables.qmd"
       )
-      tables_doc <- paste0(
-        "# Tables \n \n",
-        "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
-      )
-      utils::capture.output(cat(tables_doc), file = fs::path(subdir, tables_doc_name), append = FALSE)
-    }
+      tables_doc <- ""
+      utils::capture.output(cat(tables_doc), 
+                            file = fs::path(subdir, tables_doc_name), 
+                            append = FALSE)
+  
+      create_tables_doc(subdir = subdir,
+                        tables_dir = tables_dir)
+      }
 
     # Create figures qmd
     if (!rerender_skeleton) {
@@ -589,11 +594,13 @@ create_template <- function(
         "safe" = "12_figures.qmd",
         "09_figures.qmd"
       )
-      figures_doc <- paste0(
-        "# Figures \n \n",
-        "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
-      )
-      utils::capture.output(cat(figures_doc), file = fs::path(subdir, figures_doc_name), append = FALSE)
+      figures_doc <- ""
+      utils::capture.output(cat(figures_doc), 
+                            file = fs::path(subdir, figures_doc_name),
+                            append = FALSE)
+      
+      create_figures_doc(subdir = subdir,
+                         figures_dir = figures_dir)
     }
 
     # Part I
