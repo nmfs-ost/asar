@@ -97,6 +97,11 @@ create_inheader_tex <- function(species = NULL, year = NULL, subdir) {
     lines <- append(lines, to_add)
   }
 
+  # add soul package directly so error goes away
+  lines <- append(
+    lines,
+    "% add soul package to remove latex error\n\\usepackage{soul}\n",
+  )
   # Add in notation to add glossary
   # Notation permenantly added in the initial in-header.tex doc
   # gloss <- paste(
