@@ -585,7 +585,7 @@ create_template <- function(
   
       create_tables_doc(subdir = subdir,
                         tables_dir = tables_dir)
-      }
+      } |> suppressMessages() |> suppressWarnings()
 
     # Create figures qmd
     if (!rerender_skeleton) {
