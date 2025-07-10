@@ -85,7 +85,7 @@ add_tagging <- function(
     "  ", "tagging = on,", "\n",
     "  ", "tagging-setup = {math/setup=mathml-SE}", "\n",
     # "  ", "pdfstandard=a-4f", "\n",
-    
+
     # "  ", "% testphase={phase-II, tabular, graphic}%", "\n",
     # "  ", "% testphase={phase-II,math, tabular, graphic}% TOC Does not work", "\n",
     # "  ", "% testphase={phase-III,math}% TOC works", "\n",
