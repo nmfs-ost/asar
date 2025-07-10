@@ -96,7 +96,9 @@ If you want to ensure `tables_dir` and `figures_dir` are relative filepaths (whi
 
 # Rendering reports
 
-## Why am I getting the following error message when I try to render my template?:
+## Why am I getting the following error message when I try to render my template?
+
+### "Missing item" error
 
 ``` error:
 compilation failed- error
@@ -112,6 +114,18 @@ l.419 \end{CSLReferences}
 The above error message is created due to a bug introduced in Quarto in the last year where the notation in *07_references.qmd* creates an issue when there is no in-text reference in the text. To correct this, please add this sentence temporarily to any of the quarto files in the outlined document (*only if you are using the default asar_references.bib file*):
 
 `Here is an example of an in text citation (@methot_stock_2013).`
+
+### "DocumentMetadata" error
+
+`! LaTeX Error: No support files for \DocumentMetadata found.`
+
+The above error message occurs when LaTeX packages necessary for rendering haven't been installed. Usually, if you've installed the default tinytex bundle ("TinyTeX-1", installed via `tinytex::install_tinytex()`), the LaTeX packages needed for rendering that were excluded from the main bundle should install *while your report is rendering the first time* (e.g., 'tagpdf'). However, this doesn't always happen; we don't know why.
+
+Try to resolve the error by installing the full tinytex bundle:
+
+`tinytex::install_tinytex(bundle = "TinyTeX-2")`
+
+Then, render your report once more.
 
 ## When rendering, why does my report hang on the figures doc?
 
