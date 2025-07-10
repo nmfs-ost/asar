@@ -72,6 +72,13 @@ add_tagging <- function(
       tex_file[issue_color]
     )
   }
+  # Comment out microtype package
+  microtype_line1 <- grep("\\IfFileExists\\{microtype.sty\\}\\{\\% use microtype if available", tex_file)
+  microtype_chunk <- paste0(
+    "% ", tex_file[microtype_line1:(microtype_line1 + 3)]
+  )
+  tex_file[microtype_line1:(microtype_line1 + 3)] <- microtype_chunk
+  
   # Export file
   write(tex_file, file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)))
 
