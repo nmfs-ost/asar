@@ -17,9 +17,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            var msg = `# Instructions for code reviewer
-
-            ## Checklist
+            var msg = `# Checklist
 
             - [ ] PR base branch is accurate
             - [ ] Is the code concise?
