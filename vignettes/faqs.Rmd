@@ -135,6 +135,12 @@ Try this: Uninstall tinytex (`tinytex::uninstall_tinytex()`), then reinstall it 
 
 Notably, this command will install TinyTeX-1 bundle (the default), then install the necessary LaTeX packages needed for rendering *while your report is rendering the first time*. 
 
+## Why can't my report `find support_files/before-body.tex`?
+
+This error can occasionally occur to some users when they are working on a remote or shared drive that does not originate from their local machine. Due to constraints of Quarto, the user must render their skeleton document when the support files and child documents are found somewhere locally.
+
+We suggest users who encounter this problem to store their files made from `asar` on their local computer and push them to a GitHub repo to store and share.
+
 # General errors
 
 ## I'm getting an error. How do I fix it?
