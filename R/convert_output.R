@@ -1687,5 +1687,5 @@ convert_output <- function(
     save(out_new, file = save_dir)
   }
 
-  return(out_new)
+  out_new
 } # close function

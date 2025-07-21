@@ -138,5 +138,5 @@ add_authors <- function(
     } # close rerender if else statement
   } # close if else statement
 
-  return(author_list)
+  author_list
 } # close function
