@@ -287,7 +287,7 @@ create_template <- function(
       !is.null(region),
       paste0(
         report_name,
-        gsub("(\\b[A-Z])[^A-Z]+", "\\1", region),
+        toupper(stringr::str_c(stringr::str_extract_all(region, "\\b[A-Za-z]")[[1]], collapse = "")),
         "_"
       ),
       report_name
