@@ -50,5 +50,5 @@ ID_tbl_width_class <- function(
     cli::cli_abort(message = "Table not found at {tables_path}")
   }
 
-  return(width_class)
+  width_class
 }

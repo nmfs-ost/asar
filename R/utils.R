@@ -10,7 +10,7 @@ get_ncol <- function(file, skip = 0) {
     skip = skip, quote = "",
     comment.char = ""
   )) + 1
-  return(nummax)
+  nummax
 }
 
 #---- SS3_extract_df ----
@@ -38,7 +38,7 @@ SS3_extract_df <- function(dat, label) {
     naniar::replace_with_na_all(condition = ~ .x == "")
   clean_df <- Filter(function(x) !all(is.na(x)), clean_df)
 
-  return(clean_df)
+  clean_df
 }
 
 # create notin operator

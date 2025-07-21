@@ -239,10 +239,10 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
       )
     }
 
-    return(paste0(
+    paste0(
       tables_doc_plot_setup1,
       tables_doc_plot_setup2
-    ))
+    )
   }
 
   if (length(rda_tab_list) == 0) {

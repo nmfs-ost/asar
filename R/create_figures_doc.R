@@ -88,10 +88,10 @@ rm(rda)\n
       "\n"
     )
 
-    return(paste0(
+    paste0(
       figures_doc_plot_setup1,
       figures_doc_plot_setup2
-    ))
+    )
   }
 
   if (length(file_fig_list) == 0) {
