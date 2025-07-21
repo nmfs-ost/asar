@@ -683,7 +683,7 @@ create_template <- function(
             "\n",
             "region <- params$region"
           )
-        }
+        },
         if (!is.null(param_names)) {
           paste0(
             "\n",
