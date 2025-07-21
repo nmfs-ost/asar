@@ -678,6 +678,12 @@ create_template <- function(
         "species <- params$species \n",
         "spp_latin <- params$spp_latin \n",
         "office <- params$office",
+        if (!is.null(region)) {
+          paste0(
+            "\n",
+            "region <- params$region"
+          )
+        }
         if (!is.null(param_names)) {
           paste0(
             "\n",
