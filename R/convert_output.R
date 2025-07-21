@@ -472,7 +472,7 @@ convert_output <- function(
             if (any(colnames(df4) %in% c("value"))) df4 <- dplyr::rename(df4, estimate = value)
 
             # Check if error values are in the labels column and extract out
-            if (any(sapply(paste0("(^|[_.])", errors, "($|[_.])"), function(x) grepl(x, unique(df4$label))))) {
+            if (any(vapply(paste0("(^|[_.])", errors, "($|[_.])"), function(x) grepl(x, unique(df4$label)), FUN.VALUE = logical(1)))) {
               err_names <- unique(df4$label)[grepl(paste(paste0("(^|[_.])", errors, "($|[_.])"), collapse = "|"), unique(df4$label)) & !unique(df4$label) %in% errors]
               if (any(grepl("sel", err_names))) {
                 df4 <- df4
@@ -512,13 +512,14 @@ convert_output <- function(
                   }
                   # Find overlapping error values if still present
                   find_error_value <- function(column_names, to_match_vector) {
-                    vals <- sapply(column_names, function(col_name) {
-                      match <- sapply(to_match_vector, function(err) {
+                    vapply(column_names, function(col_name) {
+                      match <- vapply(to_match_vector, function(err) {
                         pattern <- paste0("(^|[_.])", err, "($|[_.])")
-                        if (grepl(pattern, col_name)) err else NA
-                      })
+                        if (grepl(pattern, col_name)) err else NA_character_
+                      }, FUN.VALUE = character(1))
                       stats::na.omit(match)[1]
-                    })
+                    }, FUN.VALUE = character(1))
+                  }
                     # only unique values and those that intersect with values vector
                     intersect(unique(vals), to_match_vector)
                   }
@@ -1211,7 +1212,7 @@ convert_output <- function(
       # is the object class matrix, list, or vector
       if (is.vector(extract[[1]])) {
         if (is.list(extract[[1]])) { # indicates vector and list
-          if (any(sapply(extract[[1]], is.matrix))) {
+          if (any(vapply(extract[[1]], is.matrix, FUN.VALUE = logical(1)))){
             extract_list <- list()
             for (i in 1:length(extract[[1]])) {
               if (is.vector(extract[[1]][[i]])) {
@@ -1280,7 +1281,7 @@ convert_output <- function(
             } # close for loop
             new_df <- Reduce(rbind, extract_list)
             out_list[[names(extract)]] <- new_df
-          } else if (any(sapply(extract[[1]], is.vector))) { # all must be a vector to work - so there must be conditions for dfs with a mix
+          } else if (any(vapply(extract[[1]], is.vector, FUN.VALUE = logical(1)))) { # all must be a vector to work - so there must be conditions for dfs with a mix
             df <- data.frame(extract[[1]])
             if (length(intersect(colnames(df), c(factors, errors))) > 0) {
               df2 <- df |>
@@ -1399,7 +1400,7 @@ convert_output <- function(
           out_list[[names(extract)]] <- df
         }
       } else if (is.list(extract[[1]])) { # list only
-        if (any(sapply(extract[[1]], is.matrix))) {
+        if (any(vapply(extract[[1]], is.matrix, FUN.VALUE = logical(1)))) {
           extract_list <- list()
           for (i in 1:length(extract[[1]])) {
             if (is.vector(extract[[1]][[i]])) {
@@ -1461,7 +1462,7 @@ convert_output <- function(
           } # close for loop
           new_df <- Reduce(rbind, extract_list)
           out_list[[names(extract)]] <- new_df
-        } else if (any(sapply(extract[[1]], is.vector))) { # all must be a vector to work - so there must be conditions for dfs with a mix
+        } else if (any(vapply(extract[[1]], is.matrix, FUN.VALUE = logical(1)))) { # all must be a vector to work - so there must be conditions for dfs with a mix
           df <- data.frame(extract[[1]])
           if (max(as.numeric(row.names(df))) < 1000) {
             fac <- "age"
