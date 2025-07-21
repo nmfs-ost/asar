@@ -72,14 +72,8 @@ add_accessibility <- function(
     x = ifelse(is.null(rename), x, glue::glue("{rename}.tex")),
     dir = dir,
     figures_dir = figures_dir,
-    compile = FALSE,
+    compile = compile,
     rename = rename,
     alttext_csv_dir = figures_dir
   )
-  # Render the .tex file after edits
-  if (compile) {
-    # message("______Tagging structure added to tex file.______")
-    # test if this can be done when skeleton is in different folder than the wd
-    tinytex::lualatex(file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)))
-  }
 }
