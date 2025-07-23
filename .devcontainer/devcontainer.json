@@ -6,7 +6,9 @@
    	"image": "ghcr.io/rocker-org/devcontainer/tidyverse:4.3",
 
 	"features": {
-		"ghcr.io/rocker-org/devcontainer-features/quarto-cli:1": {},
+		"ghcr.io/rocker-org/devcontainer-features/quarto-cli:1": {
+			"installTinyTex": true
+		},
 		"ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
             	"packages": "qpdf"
 		},
