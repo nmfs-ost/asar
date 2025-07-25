@@ -15,7 +15,7 @@ get_ncol <- function(file, skip = 0) {
 
 #---- SS3_extract_df ----
 # Helper for SS3 output converter
-# Function to extract rows, identify the dfs, and clean them up
+# Function to extract rows then identify and clean up the dfs
 SS3_extract_df <- function(dat, label) {
   # Locate the row containing the specified value from the df
   value_row <- which(apply(dat, 1, function(row) any(row == label)))[2]
