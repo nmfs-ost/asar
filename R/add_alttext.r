@@ -82,7 +82,7 @@ add_alttext <- function(
   if (!any(grepl("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file))) cli::cli_abort("No images/figures present in file.")
   # this approach allows us to not mistake the replacement for other figures
   # For render to pdf
-  fig_lines <- grep("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file) # -plot
+  fig_lines <- grep("fig-([a-z]+|[a-z]+_[a-z]+|[a-z]+.[a-z]+)-1.pdf", tex_file) # -plot
   # Find images from previous naming conventions after quarto render
   # TODO: this might need to be take out in the future - aka not needed
   fig_lines <- c(fig_lines, grep("fig-([a-z]+|[a-z]+_[a-z]+)-plot-1.pdf", tex_file))
@@ -212,7 +212,7 @@ add_alttext <- function(
   # Find where figure is located and append the alt. text
   # TODO: make checks so only adds to images that don't already have alt text included in them
   for (i in seq_along(alt_text_list)) {
-    fig_line <- grep(names(alt_text_list[i]), tex_file)
+    fig_line <- grep(names(alt_text_list[i]), tex_file) # BUG: if renamed and tagging was run first, this will not work
     # Check that line we are adding the alt text to is for correct fig
     if (!grepl(names(alt_text_list[i]), tex_file[fig_line])) {
       cli::cli_alert_warning("Non-matching object name to tex file line.")
