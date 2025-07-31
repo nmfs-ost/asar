@@ -513,7 +513,8 @@ create_template <- function(
           # file.copy(system.file("resources", "formatting_files", "sa4ss_glossaries.tex", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
           file.copy(system.file("resources", "formatting_files", "pfmc.tex", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         }
-
+        # copy csl file
+        file.copy(system.file("resources", "cjfas.csl", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         # show message and make README stating model_results info
         if (!is.null(model_results)) {
           mod_time <- as.character(file.info(fs::path(model_results), extra_cols = F)$ctime)

@@ -288,6 +288,11 @@ create_yaml <- function(
     bib_all <- paste0("  ", "- ", bib_file, "\n", collapse = "")
     bib <- glue::glue("{bib} \n {bib_all}")
     yaml <- paste(yaml, bib, sep = "")
+    # add citation style
+    yaml <- paste0(
+      yaml,
+      "csl: support_files/cjfas.csl\n"
+    )
     # }
     # add in else statement once a national .bib file is made
 
