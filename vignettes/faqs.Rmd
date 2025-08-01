@@ -20,7 +20,11 @@ knitr::opts_chunk$set(
 
 ## How can I download the package?
 
-Our README page provides a lot of basic directions to prepare you to successfully download the package. Please consult the page for downloading. In the case you are having troubles downloading, and receiving the following error:
+Please consult [the README page](https://nmfs-ost.github.io/asar/index.html#installation) for installation instructions.
+
+## Alternative instructions
+
+If you are receiving the following error when trying to download the package:
 
 ```         
 Using GitHub PAT from the git credential store.
@@ -30,7 +34,9 @@ Error: Failed to install 'unknown package' from GitHub:
   Resource protected by organization SAML enforcement. You must grant your OAuth token access to this organization.
 ```
 
-Please download the package using this code:
+If you're a member of the NMFS OST organization, you can [authorize your token](https://docs.github.com/en/enterprise-cloud@latest/authentication/authenticating-with-single-sign-on/authorizing-a-personal-access-token-for-use-with-single-sign-on) to solve this issue.
+
+Otherwise, please download the package using this code:
 
 ```         
 install.packages("asar", repos = c("https://nmfs-ost.r-universe.dev", "https://cloud.r-project.org"))
@@ -40,7 +46,7 @@ install.packages("asar", repos = c("https://nmfs-ost.r-universe.dev", "https://c
 
 ## create_template isn't working. What do I do?
 
-This could mean a lot of things. Most of the time, when create_template is not working, it means you are missing a key argument to the function. Make sure to read the error message(s) clearly and check the 'report' folder where all of the file were created. If you have exhausted your options and double checked that you have all of the correct arguments, then please leave an [issue](https://github.com/nmfs-ost/asar/issues).
+This could mean a lot of things. Most of the time, when create_template is not working, it means you are missing a key argument to the function. Make sure to read the error message(s) clearly and check the 'report' folder where all of the file were created. If you have exhausted your options and double checked that you have all of the correct arguments, then please open an [issue](https://github.com/nmfs-ost/asar/issues).
 
 ## What should I do if I have a species complex/multispecies assessment?
 
