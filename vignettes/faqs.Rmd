@@ -44,25 +44,44 @@ install.packages("asar", repos = c("https://nmfs-ost.r-universe.dev", "https://c
 
 # Setting up the report skeleton
 
-## create_template isn't working. What do I do?
+## `create_template()` isn't working. What do I do?
 
-This could mean a lot of things. Most of the time, when create_template is not working, it means you are missing a key argument to the function. Make sure to read the error message(s) clearly and check the 'report' folder where all of the file were created. If you have exhausted your options and double checked that you have all of the correct arguments, then please open an [issue](https://github.com/nmfs-ost/asar/issues).
+This could mean a lot of things. Most of the time, when `create_template()` is not working, it means you are missing a key argument to the function. Make sure to read the error message(s) clearly and check the 'report' folder where all of the file were created. If you have exhausted your options and double checked that you have all of the correct arguments, then please open an [issue](https://github.com/nmfs-ost/asar/issues).
 
 ## What should I do if I have a species complex/multispecies assessment?
 
-`asar` was not developed with the intention to use it for multiple species in one go. While in testing, users have simply combined the species using "and" in the species argument of create_template. The report can be written as desired after the fact. The beauty of asar is that it is still a template and highly customizable. User's familiar with Quarto can make edits to the YAML, chunk options, and other important components controlling the production of the document. We highly discourage making changes to the formatting or adding large additions of sections to the document that stray too far from the intended "NOAA" formatting.
+`asar` was designed to create reports for single species. As a workaround, you can  combine multiple species using "and" in the `species` argument of `create_template()`. 
+For example, the following code will produce a report with two species in the title, though a cover image must be added manually since cover images are matched to single species:
+
+`create_template(species = "Species A and Species B")`
+
+We encourage users writing species complex/multispecies assessments to remember that the reports are highly customizable both before and after the skeleton is created. For example, the `create_template()` command allows for customization by providing custom section options. After the skeleton has been created, advanced Quarto users can edit the YAML, chunk options, and other components of the report, and everyone can customize the report's text.
+
+While we have striven to add sufficient options for customization, we highly discourage changing the formatting or adding many sections so that the final document does not stray far from the intended, standardized format.
 
 # Editing reports
 
+## What is the purpose of the R chunk labelled `output_and_quantities` in the the skeleton?
+
+This chunk is what we call the preamble. It loads in commonly-used estimates and quantities that you can reference throughout your report, making the document dynamic. By updating the values calculated in your report folder's [preamble.R script](https://github.com/nmfs-ost/asar/blob/d3070f349f12a49ad6e6ae10aa2865de104b5581/inst/resources/preamble.R#L4) file, you can easily update the values throughout your report.
+
 ## How do I reference one of the quantities in the preamble in my text?
 
-You can use the quantities in the preamble to make dynamic reports that can easily be changed within the text by changing the output file. To reference these quantities in your text please use the following notation:
+To reference these quantities in your text, please use the following notation:
 
 ```{verbatim}
-`r Fend`
+`r start_year`
 ```
 
-For more help with using quarto (and using it efficiently), please see our [markdown guide](markdown_notation.html) to learn the in's and out's of writing a stock assessment report in quarto.
+For example, if `start_year` = 2025 and your report contained this text:
+
+> The current year is <code>&grave;r start_year&grave;</code>.
+
+It would render as:
+
+> The current year is 2025.
+
+For more help using Quarto efficiently, please see our [markdown guide](https://nmfs-ost.github.io/asar/articles/markdown_notation.html).
 
 ## How can I edit my report's alt text and captions?
 
@@ -72,9 +91,6 @@ Please refer to [the accessibility vignette's guide ](https://nmfs-ost.github.io
 
 Please refer to the [Acronyms and Glossary section of the accessibility vignette](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#acronyms-and-glossary) for guidance on how to use acronyms and edit the glossary.
 
-## What is this R chunk in the the skeleton file labelled `output_and_quantities` used for?
-
-This chunk is what we call the preamble. It loads in commonly used estimates and quantities for the user to reference throughout their report. The calculation of these values can be found in the `preamble.R` script found within your report folder.
 
 # Tables and Figures
 
