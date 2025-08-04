@@ -15,7 +15,7 @@ navbar:
     issue:
       text: Issues
       icon: fas fa-question-circle fa-lg
-      href: https://github.com/nmfs-fish-tools/pkgdownTemplate/issues/
+      href: https://github.com/nmfs-ost/asar/issues
 
     articles:
       text: Articles
