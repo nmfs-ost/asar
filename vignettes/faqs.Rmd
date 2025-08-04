@@ -61,7 +61,7 @@ While we have striven to add sufficient options for customization, we highly dis
 
 # Editing reports
 
-## What is the purpose of the R chunk labelled `output_and_quantities` in the the skeleton?
+## What is the purpose of the R chunk labelled `output_and_quantities` in the skeleton?
 
 This chunk is what we call the preamble. It loads in commonly-used estimates and quantities that you can reference throughout your report, making the document dynamic. By updating the values calculated in your report folder's [preamble.R script](https://github.com/nmfs-ost/asar/blob/d3070f349f12a49ad6e6ae10aa2865de104b5581/inst/resources/preamble.R#L4) file, you can easily update the values throughout your report.
 
@@ -133,17 +133,19 @@ Type  H <return>  for immediate help.
 l.419 \end{CSLReferences}
 ```
 
-The above error message is created due to a bug introduced in Quarto in the last year where the notation in *07_references.qmd* creates an issue when there is no in-text reference in the text. To correct this, please add this sentence temporarily to any of the quarto files in the outlined document (*only if you are using the default asar_references.bib file*):
+The above error message is created due to a bug introduced in Quarto in the last year where the notation in *07_references.qmd* creates an issue when there is no in-text reference in the text. To correct this, please add a temporary reference to any of the Quarto files in the outlined document (*only if you are using the default asar_references.bib file*), then replace it with real references when ready. Here is an example "temporary reference":
 
-`Here is an example of an in text citation (@methot_stock_2013).`
+`Here is an example of an in-text citation (@methot_stock_2013).`
 
-### "DocumentMetadata" error
+### "DocumentMetadata" error {#sec-docmetadata}
 
 `! LaTeX Error: No support files for \DocumentMetadata found.`
 
-The above error message occurs when LaTeX packages necessary for rendering haven't been installed. Usually, if you've installed the default tinytex bundle ("TinyTeX-1", installed via `tinytex::install_tinytex()`), the LaTeX packages needed for rendering that were excluded from the main bundle should install *while your report is rendering the first time* (e.g., 'tagpdf'). However, this doesn't always happen; we don't know why.
+The above error message occurs when LaTeX packages necessary for rendering haven't been installed.
 
-Try to resolve the error by installing the full tinytex bundle:
+We typically encourage users to [install the default tinytex bundle](https://github.com/nmfs-ost/asar?tab=readme-ov-file#installation) ("TinyTeX-1", installed via `tinytex::install_tinytex()`). This bundle contains most, but not all, LaTeX packages needed for rendering `asar` reports. Then, when you render your report for the first time, those missing LaTeX packages needed for rendering should install automatically (e.g., 'tagpdf'). However, this doesn't always happen; we don't know why.
+
+Try to resolve the error by installing the full TinyTeX bundle in the R console. Since this TinyTeX bundle contains every LaTeX package you could install from CTAN ([TinyTeX-2](https://github.com/rstudio/tinytex-releases?tab=readme-ov-file#releases)), it should contain every LaTeX package needed for rendering (hence its large size):
 
 `tinytex::install_tinytex(bundle = "TinyTeX-2")`
 
@@ -153,9 +155,9 @@ Then, render your report once more.
 
 When rendering your report, it may hang when processing the figures file. If this occurs, it probably means that your tinytex installation isn't working properly. This may occur even if you've installed the TinyTeX bundle with every LaTeX package you could install from CTAN ([TinyTeX-2](https://github.com/rstudio/tinytex-releases?tab=readme-ov-file#releases)).
 
-Try this: Uninstall tinytex (`tinytex::uninstall_tinytex()`), then reinstall it in the terminal (`quarto install tinytex`).
+Try this: Uninstall tinytex in the R console (`tinytex::uninstall_tinytex()`), then reinstall it in the terminal (`quarto install tinytex`).
 
-Notably, this command will install TinyTeX-1 bundle (the default), then install the necessary LaTeX packages needed for rendering *while your report is rendering the first time*. 
+Notably, this command will install TinyTeX-1 bundle (the default), then install the necessary LaTeX packages needed for rendering *while your report is rendering the first time*. See the ["DocumentMetadata" error](#sec-docmetadata) section for more information.
 
 ## Why can't my report `find support_files/before-body.tex`?
 
@@ -165,6 +167,8 @@ We suggest users who encounter this problem to store their files made from `asar
 
 # General errors
 
-## I'm getting an error. How do I fix it?
+## I'm getting an error not explained in this FAQ. How do I fix it?
 
-When getting to know `asar`, you'll probably encounter some errors. We highly recommend checking out our [Issues page](https://github.com/nmfs-ost/asar/issues) to see if someone else has already asked (and maybe solved!) your question.
+When getting to know `asar`, you'll probably encounter some errors. We highly recommend checking out our [issues page](https://github.com/nmfs-ost/asar/issues) and [discussion board](https://github.com/nmfs-ost/asar/discussions) to see if someone else has already asked (and maybe solved!) your question.
+
+If you cannot find an answer, feel free to report your issue or question to the [issues page](https://github.com/nmfs-ost/asar/issues) or [discussion board](https://github.com/nmfs-ost/asar/discussions). There are multiple issue templates to choose from: request to add author affiliation, bug report, feature request, and more.
