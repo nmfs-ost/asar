@@ -117,7 +117,10 @@ This is a modularized template, there is no need to make any edits to the skelet
 -   Figures 
 -   Appendix
 
-Please leave an issue for any bugs or suggestions for improvement on the [Issues Page](https://github.com/nmfs-ost/asar/issues).
+## Contributions
+
+Have you identified any suggestions for improvement, bugs, or questions? Please see our [Contributing page](https://github.com/nmfs-ost/asar/blob/main/CONTRIBUTING.md) for more information on how to make effective contributions to `asar`.
+
 Thank you for helping us improve this package!
 
 ## Tips
