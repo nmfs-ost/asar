@@ -330,7 +330,7 @@ convert_output <- function(
     miss_parms <- c()
     out_list <- list()
     #### SS3 loop ####
-    for (i in 1:length(param_names)) {
+    for (i in seq_len(param_names)) {
       # Processing data frame
       parm_sel <- param_names[i]
       if (parm_sel %in% c(std, std2, cha, rand, aa.al)) {

@@ -190,7 +190,7 @@ add_alttext <- function(
   img_path <- file.path(dir, gsub(".tex", "_files/figure-pdf", x))
   if (dir.exists(img_path)) {
     imgs <- list.files(img_path)
-    for (i in 1:length(imgs)) {
+    for (i in seq_len(imgs)) {
       img_file <- imgs[i]
       if (grepl(".png", img_file)) next
       img_file_con <- gsub(".pdf", ".png", img_file)

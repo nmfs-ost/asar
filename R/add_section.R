@@ -33,7 +33,7 @@ add_section <- function(
   # before-section
   # after-section
   # in-section (will always append to the end of the section)
-  for (i in 1:length(new_section)) {
+  for (i in seq_len(new_section)) {
     section_i_name <- paste0(gsub(" ", "_", tolower(new_section[i])), ".qmd")
     local_section <- forstringr::str_extract_part(
       section_location[i], "-",

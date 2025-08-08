@@ -16,7 +16,7 @@ add_child <- function(x,
   if (is.null(x)) cli::cli_abort("Child document selection (`x`) is NULL.")
 
   child <- c()
-  for (i in 1:length(x)) {
+  for (i in seq_len(x)) {
     sec_num <- x[i]
     child_loop <- paste0(
       "\n",
