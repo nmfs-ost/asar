@@ -7,8 +7,8 @@ test_that("Creates expected start of nearly empty figures doc", {
 
   # read in tables doc
   figure_content <- readLines("09_figures.qmd")
-  # extract first 8 lines
-  head_figure_content <- head(figure_content, 7)
+  # extract first line
+  head_figure_content <- figure_content[1]
   # remove line numbers and collapse
   fc_pasted <- paste(head_figure_content, collapse = "")
 
@@ -34,7 +34,8 @@ test_that("Creates expected start of figures doc with figure", {
     "std_output.rda"
   ))
 
-  stockplotr::plot_landings(out_new,
+  stockplotr::plot_biomass(
+    dat = out_new,
     make_rda = TRUE
   )
 

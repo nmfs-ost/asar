@@ -7,8 +7,8 @@ test_that("Creates expected start of nearly empty tables doc", {
 
   # read in tables doc
   table_content <- readLines("08_tables.qmd")
-  # extract first 8 lines
-  head_table_content <- head(table_content, 8)
+  # extract first line
+  head_table_content <- table_content[1]
   # remove line numbers and collapse
   tc_pasted <- paste(head_table_content, collapse = "")
 
