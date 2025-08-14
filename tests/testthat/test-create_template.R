@@ -229,7 +229,7 @@ test_that("model_results metadata file created", {
   # message(paste0("The working directory is: ", getwd()))
 
   create_template(
-    model_results = here::here("std_output.rda"),
+    model_results = "std_output.rda",
     format = "pdf",
     office = "NWFSC",
     # species = "Dover sole",
