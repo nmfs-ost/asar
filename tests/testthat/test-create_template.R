@@ -183,7 +183,6 @@ test_that("warning is triggered for existing files", {
   unlink(fs::path(path, "report"), recursive = T)
 })
 
-
 test_that("file_dir works", {
   dir <- fs::path(getwd(), "data")
   on.exit(unlink(dir, recursive = TRUE), add = TRUE)
@@ -282,4 +281,33 @@ test_that("model_results metadata file created", {
   # erase temporary testing files
   unlink(file_path, recursive = T)
   file.remove(fs::path(getwd(), "std_output.rda"))
+})
+
+test_that("function aborts if `authors` improperly formatted", {
+  # multiple authors
+  expect_error(
+    create_template(
+      authors = c("John Snow",
+                  "Danny Phantom" = "SWFSC",
+                  "Patrick Star" = "SEFSC")
+    ),
+    "format is incorrect")
+  
+  path <- getwd()
+  
+  # erase temporary testing files
+  unlink(fs::path(path, "report"), recursive = T)
+  
+  
+  # one author
+  expect_error(
+    create_template(
+      authors = c("Patrick Star")
+    ),
+    "format is incorrect")
+  
+  path <- getwd()
+  
+  # erase temporary testing files
+  unlink(fs::path(path, "report"), recursive = T)
 })

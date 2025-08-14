@@ -18,7 +18,7 @@ add_authors <- function(
     authors,
     rerender_skeleton = FALSE,
     prev_skeleton = NULL) {
-  if (any(!nzchar(names(authors)))){
+  if (any(!nzchar(names(authors))) | is.null(names(authors))){
   cli::cli_abort(c(
   "x" = "{.var authors} format is incorrect.",
   "i" = "Check that {.var authors} includes names and affiliations for all authors.",
