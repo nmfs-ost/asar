@@ -18,8 +18,17 @@ add_authors <- function(
     authors,
     rerender_skeleton = FALSE,
     prev_skeleton = NULL) {
+  if (any(!nzchar(names(authors)))){
+  cli::cli_abort(c(
+  "x" = "{.var authors} format is incorrect.",
+  "i" = "Check that {.var authors} includes names and affiliations for all authors.",
+  "i" = "Example: Jane Doe at the NWFSC Seattle, Washington office is formatted as `c('Jane Doe'='NWFSC-SWA')`."
+  ))
+  } else {
   # Set author into proper format - will get overwritten later if rerender = T
-  author_names <- names(authors)
+  author_names <- names(authors)    
+  }
+
   # Get authors into readable format for ordering
   authors <- data.frame(name = author_names, office = authors, row.names = NULL)
 
