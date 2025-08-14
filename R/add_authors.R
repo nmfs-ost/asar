@@ -10,20 +10,20 @@
 #' @examples
 #' \dontrun{
 #' add_authors(
-#'   author = c("Danny Phantom" = "SWFSC-LJCA", "John Snow" = "AFSC-ABL", "Jane Doe" = "NWFSC-SWA"),
+#'   authors = c("Danny Phantom" = "SWFSC-LJCA", "John Snow" = "AFSC-ABL", "Jane Doe" = "NWFSC-SWA"),
 #'   rerender_skeleton = FALSE
 #' )
 #' }
 add_authors <- function(
-    author,
+    authors,
     rerender_skeleton = FALSE,
     prev_skeleton = NULL) {
   # Set author into proper format - will get overwritten later if rerender = T
-  author_names <- names(author)
+  author_names <- names(authors)
   # Get authors into readable format for ordering
-  authors <- data.frame(name = author_names, office = author, row.names = NULL)
+  authors <- data.frame(name = author_names, office = authors, row.names = NULL)
 
-  # Check if rerender and if author is already added
+  # Check if rerender and if authors is already added
   # TODO: add feature to allow removal of authors if there are ones that
   # are repeated from the previous skeleton and those named (not just
   # additions of new names)

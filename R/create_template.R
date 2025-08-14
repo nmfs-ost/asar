@@ -122,7 +122,7 @@
 #'   species = "Dover sole",
 #'   spp_latin = "Microstomus pacificus",
 #'   year = 2010,
-#'   author = c(
+#'   authors = c(
 #'     "John Snow" = "AFSC",
 #'     "Danny Phantom" = "NEFSC",
 #'     "Patrick Star" = "SEFSC-ML"
@@ -141,7 +141,7 @@
 #'   species = "Striped marlin",
 #'   spp_latin = "Kajikia audax",
 #'   year = 2018,
-#'   author = c("John Snow" = "AFSC"),
+#'   authors = c("John Snow" = "AFSC"),
 #'   new_section = c("a_new_section", "another_new_section"),
 #'   section_location = c("before-introduction", "after-introduction"),
 #'   custom = TRUE,
@@ -156,7 +156,7 @@
 #'   species = "Bluefish",
 #'   spp_latin = "Pomatomus saltatrix",
 #'   year = 2010,
-#'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
+#'   authors = c("John Snow", "Danny Phantom", "Patrick Star"),
 #'   title = "Management Track Assessments Spring 2024",
 #'   parameters = TRUE,
 #'   param_names = c("region", "year"),
@@ -179,7 +179,7 @@ create_template <- function(
     species = "species",
     spp_latin = NULL,
     year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
-    author = NULL,
+    authors = NULL,
     file_dir = getwd(),
     title = "[TITLE]",
     model_results = NULL,
@@ -642,7 +642,7 @@ create_template <- function(
     # Parameters to add authorship to YAML
     author_list <- add_authors(
       prev_skeleton = ifelse(rerender_skeleton, prev_skeleton, NULL),
-      author = author, # need to put this in case there is a rerender otherwise it would not use the correct argument
+      authors = authors, # need to put this in case there is a rerender otherwise it would not use the correct argument
       rerender_skeleton = rerender_skeleton
     )
 
@@ -854,14 +854,14 @@ create_template <- function(
       } else {
         author <- grep("  - name: ", prev_skeleton)
         citation <- create_citation(
-          author = author,
+          authors = authors,
           ...
         )
         cli::cli_alert_success("Added report citation.")
       }
     } else {
       citation <- create_citation(
-        author = author,
+        authors = authors,
         title = title,
         year = year
       )

@@ -88,7 +88,7 @@ test_that("create_template() creates correct files", {
     species = species,
     spp_latin = "Pomatomus saltatrix",
     year = year,
-    author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
+    authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
     parameters = FALSE
   ) |>
@@ -150,7 +150,7 @@ test_that("warning is triggered for existing files", {
     species = "Dover sole",
     spp_latin = "Pomatomus saltatrix",
     year = 2010,
-    author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
+    authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
     parameters = FALSE
   )
@@ -170,7 +170,7 @@ test_that("warning is triggered for existing files", {
       species = "Dover sole",
       spp_latin = "Pomatomus saltatrix",
       year = 2010,
-      author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
+      authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
       include_affiliation = TRUE,
       parameters = FALSE
     ),
@@ -205,7 +205,7 @@ test_that("file_dir works", {
     species = "Dover sole",
     spp_latin = "Pomatomus saltatrix",
     year = 2010,
-    author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
+    authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
     parameters = FALSE,
     model_results = file.path(dir, "std_output.rda"),
@@ -235,7 +235,7 @@ test_that("model_results metadata file created", {
     # species = "Dover sole",
     spp_latin = "Pomatomus saltatrix",
     year = 2010,
-    author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
+    authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
     parameters = FALSE
   )

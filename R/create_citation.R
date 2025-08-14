@@ -11,20 +11,20 @@
 #' \dontrun{
 #' create_citation(
 #'   title = "SA Report for Jellyfish",
-#'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
+#'   authors = c("John Snow", "Danny Phantom", "Patrick Star"),
 #'   year = 2024
 #' )
 #' }
 #'
 create_citation <- function(
-    author = NULL,
+    authors = NULL,
     title = "[TITLE]",
     year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")) {
-  # Check if author is input - improved from previous fxn so did not fail
-  if (is.null(author) | any(author == "")) {
+  # Check if authors is input - improved from previous fxn so did not fail
+  if (is.null(authors) | any(authors == "")) {
     cli::cli_alert_warning("Authorship not defined.")
-    cli::cli_alert_info("Did you forget to specify `author`?")
-    # Define default citation - needs author editing
+    cli::cli_alert_info("Did you forget to specify `authors`?")
+    # Define default citation - needs authors editing
     citation <- paste0(
       "{{< pagebreak >}} \n",
       "\n",
@@ -36,7 +36,7 @@ create_citation <- function(
     )
   } else {
     # Authored by Kelli Johnson in previous PR
-    author_data_frame <- data.frame(office = author) |>
+    author_data_frame <- data.frame(office = authors) |>
       tibble::rownames_to_column("input") |>
       tidyr::separate_wider_regex(
         cols = input,
