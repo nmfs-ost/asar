@@ -881,13 +881,9 @@ create_template <- function(
       # Create custom template from existing skeleton sections
       if (is.null(new_section)) {
         section_list <- add_base_section(files_to_copy)
-        sections <- add_child(section_list,
-          label = custom_sections # this might need to be changed
-        )
         # Create sections object to add into template
-        sections <- add_child(
-          sections,
-          label = stringr::str_extract(unlist(sections), "(?<=_).+(?=\\.qmd$)")
+        sections <- add_child(section_list,
+          label = stringr::str_extract(unlist(section_list), "(?<=_).+(?=\\.qmd$)")
         )
       } else { # custom = TRUE
         # Create custom template using existing sections and new sections from analyst
