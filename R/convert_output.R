@@ -144,18 +144,6 @@ convert_output <- function(
       fleet_names <- stats::setNames(fleet_info[[ncol(fleet_info)]], fleet_info[[1]])
     }
 
-    # Extract fleet names
-    if (is.null(fleet_names)) {
-      fleet_info <- SS3_extract_df(dat, "Fleet")[-1, ]
-      fleet_names <- stats::setNames(fleet_info[[ncol(fleet_info)]], fleet_info[[1]])
-    }
-
-    # Extract fleet names
-    if (is.null(fleet_names)) {
-      fleet_info <- SS3_extract_df(dat, "Fleet")[-1, ]
-      fleet_names <- stats::setNames(fleet_info[[ncol(fleet_info)]], fleet_info[[1]])
-    }
-
     # Estimated and focal parameters to put into reformatted output df - naming conventions from SS3
     # Extract keywords from ss3 file
     # Find row where keywords start
@@ -325,7 +313,7 @@ convert_output <- function(
       "settlement", "birthseas", "count",
       "kind"
     )
-    errors <- c("StdDev", "sd", "se", "SE", "cv", "CV", "std")
+    errors <- c("StdDev", "sd", "se", "SE", "cv", "CV", "std", "stddev")
 
     miss_parms <- c()
     out_list <- list()
@@ -472,7 +460,7 @@ convert_output <- function(
             if (any(colnames(df4) %in% c("value"))) df4 <- dplyr::rename(df4, estimate = value)
 
             # Check if error values are in the labels column and extract out
-            if (any(vapply(paste0("(^|[_.])", errors, "($|[_.])"), function(x) grepl(x, unique(df4$label)), FUN.VALUE = logical(1)))) {
+            if (any(sapply(paste0("(^|[_.])", errors, "($|[_.])"), function(x) grepl(x, unique(df4$label))))) {
               err_names <- unique(df4$label)[grepl(paste(paste0("(^|[_.])", errors, "($|[_.])"), collapse = "|"), unique(df4$label)) & !unique(df4$label) %in% errors]
               if (any(grepl("sel", err_names))) {
                 df4 <- df4
@@ -512,14 +500,14 @@ convert_output <- function(
                   }
                   # Find overlapping error values if still present
                   find_error_value <- function(column_names, to_match_vector) {
-                    vapply(column_names, function(col_name) {
+                    vals <- vapply(column_names, function(col_name) {
                       match <- vapply(to_match_vector, function(err) {
                         pattern <- paste0("(^|[_.])", err, "($|[_.])")
                         if (grepl(pattern, col_name)) err else NA_character_
                       }, FUN.VALUE = character(1))
                       stats::na.omit(match)[1]
                     }, FUN.VALUE = character(1))
-                  }
+                  # }
                     # only unique values and those that intersect with values vector
                     intersect(unique(vals), to_match_vector)
                   }
@@ -587,7 +575,7 @@ convert_output <- function(
             } else {
               out_list[[parm_sel]] <- df5
             }
-            #### STD2 ####
+            ##### STD2 ####
           } else if (parm_sel %in% std2) {
             # 4, 8
             # remove first row - naming
@@ -1198,7 +1186,7 @@ convert_output <- function(
     out_list <- list()
 
     factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo", "growth_pattern", "gp", "nsim", "age_a")
-    errors <- c("StdDev", "sd", "se", "SE", "cv", "CV")
+    errors <- c("StdDev", "sd", "se", "SE", "cv", "CV", "stddev")
     # argument for function when model == BAM
     # fleet_names <- c("cl", "cL","cp","mrip","ct", "hb", "HB", "comm","Mbft","CVID")
 
