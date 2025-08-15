@@ -318,7 +318,7 @@ convert_output <- function(
     miss_parms <- c()
     out_list <- list()
     #### SS3 loop ####
-    for (i in 1:length(param_names)) {
+    for (i in seq_along(param_names)) {
       # Processing data frame
       parm_sel <- param_names[i]
       if (parm_sel %in% c(std, std2, cha, rand, aa.al)) {
@@ -595,7 +595,7 @@ convert_output <- function(
               df_list <- list(df_sel)
             }
             comps_list <- list()
-            for (i in 1:length(df_list)) {
+            for (i in seq_along(df_list)) {
               df2 <- df_list[[i]]
               # identify first row
               row <- tolower(df2[1, ])
@@ -1202,7 +1202,7 @@ convert_output <- function(
         if (is.list(extract[[1]])) { # indicates vector and list
           if (any(vapply(extract[[1]], is.matrix, FUN.VALUE = logical(1)))){
             extract_list <- list()
-            for (i in 1:length(extract[[1]])) {
+            for (i in seq_along(extract[[1]])) {
               if (is.vector(extract[[1]][[i]])) {
                 df <- as.data.frame(extract[[1]][i]) |>
                   tibble::rownames_to_column(var = "age") |>
@@ -1390,7 +1390,7 @@ convert_output <- function(
       } else if (is.list(extract[[1]])) { # list only
         if (any(vapply(extract[[1]], is.matrix, FUN.VALUE = logical(1)))) {
           extract_list <- list()
-          for (i in 1:length(extract[[1]])) {
+          for (i in seq_along(extract[[1]])) {
             if (is.vector(extract[[1]][[i]])) {
               df <- as.data.frame(extract[[1]][i]) |>
                 tibble::rownames_to_column(var = "age") |>

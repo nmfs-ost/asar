@@ -106,7 +106,7 @@ rm(rda)\n
         wrap = TRUE
       )
       rda_figures_doc <- ""
-      for (i in 1:length(rda_fig_list)) {
+      for (i in seq_along(rda_fig_list)) {
         fig_chunk <- create_fig_chunks(
           fig = rda_fig_list[i],
           figures_dir = figures_dir
@@ -124,7 +124,7 @@ rm(rda)\n
         wrap = TRUE
       )
       non.rda_figures_doc <- ""
-      for (i in 1:length(non.rda_fig_list)) {
+      for (i in seq_along(non.rda_fig_list)) {
         # remove file extension
         fig_name <- stringr::str_extract(
           non.rda_fig_list[i],

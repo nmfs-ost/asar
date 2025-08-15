@@ -35,7 +35,7 @@ snowfall::sfInit(parallel = TRUE, cpus = core_num)
 
 # Run the SS3 models in parallel using the snowfall library
 snowfall::sfLapply(
-  1:length(all_models),
+  seq_along(all_models),
   run_ss3_models,
   all_models,
   test_path("fixtures", "ss3_models")

@@ -12,7 +12,7 @@ add_base_section <- function(custom_sections = NULL) {
 
   sec_sel <- gsub(" ", "_", tolower(gsub("(.)([A-Z])", "\\1 \\2", custom_sections)))
   section_list <- list()
-  for (i in 1:length(sec_sel)) {
+  for (i in seq_along(sec_sel)) {
     sec_file <- grep(
       list.files(system.file("templates", "skeleton", package = "asar")),
       pattern = sec_sel[i],

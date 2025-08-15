@@ -257,7 +257,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     # paste rda table code chunks into one object
     if (length(final_rda_tab_list) > 0) {
       rda_tables_doc <- ""
-      for (i in 1:length(final_rda_tab_list)) {
+      for (i in seq_along(final_rda_tab_list)) {
         tab_chunk <- create_tab_chunks(
           tab = final_rda_tab_list[i],
           tables_dir = tables_dir
@@ -268,7 +268,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     }
     # if (length(non.rda_tab_list) > 0){
     #   non.rda_tables_doc <- ""
-    #   for (i in 1:length(non.rda_tab_list)){
+    #   for (i in seq_along(non.rda_tab_list)){
     #     # remove file extension
     #     tab_name <- stringr::str_extract(non.rda_tab_list[i],
     #                                      "^[^.]+")
