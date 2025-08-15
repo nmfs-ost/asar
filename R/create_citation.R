@@ -11,7 +11,7 @@
 #' \dontrun{
 #' create_citation(
 #'   title = "SA Report for Jellyfish",
-#'   authors = c("John Snow", "Danny Phantom", "Patrick Star"),
+#'   authors = c("Danny Phantom" = "SWFSC-LJCA", "John Snow" = "AFSC-ABL", "Jane Doe" = "NWFSC-SWA"),
 #'   year = 2024
 #' )
 #' }
