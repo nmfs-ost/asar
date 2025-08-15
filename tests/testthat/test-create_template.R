@@ -88,7 +88,7 @@ test_that("create_template() creates correct files", {
     species = species,
     spp_latin = "Pomatomus saltatrix",
     year = year,
-    author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
+    authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
     parameters = FALSE
   ) |>
@@ -150,7 +150,7 @@ test_that("warning is triggered for existing files", {
     species = "Dover sole",
     spp_latin = "Pomatomus saltatrix",
     year = 2010,
-    author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
+    authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
     parameters = FALSE
   )
@@ -170,7 +170,7 @@ test_that("warning is triggered for existing files", {
       species = "Dover sole",
       spp_latin = "Pomatomus saltatrix",
       year = 2010,
-      author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
+      authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
       include_affiliation = TRUE,
       parameters = FALSE
     ),
@@ -182,7 +182,6 @@ test_that("warning is triggered for existing files", {
   # erase temporary testing files
   unlink(fs::path(path, "report"), recursive = T)
 })
-
 
 test_that("file_dir works", {
   dir <- fs::path(getwd(), "data")
@@ -205,7 +204,7 @@ test_that("file_dir works", {
     species = "Dover sole",
     spp_latin = "Pomatomus saltatrix",
     year = 2010,
-    author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
+    authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
     parameters = FALSE,
     model_results = file.path(dir, "std_output.rda"),
@@ -235,7 +234,7 @@ test_that("model_results metadata file created", {
     # species = "Dover sole",
     spp_latin = "Pomatomus saltatrix",
     year = 2010,
-    author = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
+    authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
     parameters = FALSE
   )
@@ -282,4 +281,33 @@ test_that("model_results metadata file created", {
   # erase temporary testing files
   unlink(file_path, recursive = T)
   file.remove(fs::path(getwd(), "std_output.rda"))
+})
+
+test_that("function aborts if `authors` improperly formatted", {
+  # multiple authors
+  expect_error(
+    create_template(
+      authors = c("John Snow",
+                  "Danny Phantom" = "SWFSC",
+                  "Patrick Star" = "SEFSC")
+    ),
+    "format is incorrect")
+  
+  path <- getwd()
+  
+  # erase temporary testing files
+  unlink(fs::path(path, "report"), recursive = T)
+  
+  
+  # one author
+  expect_error(
+    create_template(
+      authors = c("Patrick Star")
+    ),
+    "format is incorrect")
+  
+  path <- getwd()
+  
+  # erase temporary testing files
+  unlink(fs::path(path, "report"), recursive = T)
 })
