@@ -55,6 +55,17 @@ naming with a space and capitalize first letter(s). Example:
 \item{year}{Year the assessment is being conducted. Default
 is the year in which the report is rendered.}
 
+\item{authors}{A character vector of author names with their accompanying
+affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
+would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
+is found in a database located in the package: \code{system.file("resources",
+"affiliation_info.csv", package = "asar")}. Keys to the office addresses
+follow the naming convention of the office acronym (ex. NWFSC) with a dash
+followed by the first initial of the city then the 2 letter abbreviation for
+the state the office is located in. If the city has 2 or more words such as
+Panama City, the first initial of each word is used in the key
+(ex. Panama City, Florida = PCFL)}
+
 \item{file_dir}{Location of stock assessment files produced
 by this function. Default is the working directory.}
 
@@ -125,17 +136,6 @@ individual parameters for this function, above).}
 
 \item{...}{Additional arguments passed into functions used in create_template
 such as \code{create_citation()}, \code{format_quarto()}, \code{add_chunk()}, ect}
-
-\item{author}{A character vector of author names with their accompanying
-affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
-would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
-is found in a database located in the package: \code{system.file("resources",
-"affiliation_info.csv", package = "asar")}. Keys to the office addresses
-follow the naming convention of the office acronym (ex. NWFSC) with a dash
-followed by the first initial of the city then the 2 letter abbreviation for
-the state the office is located in. If the city has 2 or more words such as
-Panama City, the first initial of each word is used in the key
-(ex. Panama City, Florida = PCFL)}
 }
 \value{
 Create template and pull skeleton for a stock assessment report.

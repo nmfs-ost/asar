@@ -19,7 +19,7 @@
 #' "Pomatomus saltatrix".
 #' @param year Year the assessment is being conducted. Default
 #' is the year in which the report is rendered.
-#' @param author A character vector of author names with their accompanying
+#' @param authors A character vector of author names with their accompanying
 #' affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
 #' would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
 #' is found in a database located in the package: \code{system.file("resources",
