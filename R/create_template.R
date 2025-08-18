@@ -517,7 +517,7 @@ create_template <- function(
         file.copy(system.file("resources", "cjfas.csl", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         # show message and make README stating model_results info
         if (!is.null(model_results)) {
-          mod_time <- as.character(file.info(fs::path(model_results), extra_cols = F)$ctime)
+          mod_time <- as.character(file.info(fs::path(model_results), extra_cols = FALSE)$ctime)
           mod_msg <- paste(
             "Report is based upon model output from", model_results,
             "that was last modified on:", mod_time
@@ -783,7 +783,7 @@ create_template <- function(
 
         if (!is.null(model_results)) {
           # show message and make README stating model_results info
-          mod_time <- as.character(file.info(fs::path(model_results), extra_cols = F)$ctime)
+          mod_time <- as.character(file.info(fs::path(model_results), extra_cols = FALSE)$ctime)
           mod_msg <- paste(
             "Report is based upon model output from", model_results,
             "that was last modified on:", mod_time

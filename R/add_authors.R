@@ -71,7 +71,7 @@ add_authors <- function(
       author_prev
     )
 
-    setdiff(author_names, author_prev) -> author2
+    author2 <- setdiff(author_names, author_prev)
 
     # return if null
     if (is.null(author2)) {
@@ -105,12 +105,12 @@ add_authors <- function(
       authors <- authors |>
         dplyr::filter(name %in% author_to_add)
     }
-    for (i in 1:nrow(authors)) {
+    for (i in seq_along(authors)) {
       auth <- authors[i, ]
       aff <- affil |>
         dplyr::filter(affiliation == auth$office)
       if (is.na(auth$office) | auth$office == "") {
-        paste(
+        author_list[[i]] <- paste(
           "  ", "- name: ", "'", auth$name, "'", "\n",
           "  ", "  ", "affiliations:", "\n",
           "  ", "  ", "  ", "- name: '[organization]'", "\n", # "NOAA Fisheries ",
@@ -119,9 +119,9 @@ add_authors <- function(
           "  ", "  ", "  ", "  ", "state: '[state]'", "\n",
           "  ", "  ", "  ", "  ", "postal-code: '[postal code]'", "\n",
           sep = ""
-        ) -> author_list[[i]]
+        )
       } else {
-        paste(
+        author_list[[i]] <- paste(
           "  ", "- name: ", "'", auth$name, "'", "\n",
           "  ", "  ", "affiliations:", "\n",
           "  ", "  ", "  ", "- name: ", "'", aff$name, "'", "\n", # "NOAA Fisheries ",
@@ -131,14 +131,14 @@ add_authors <- function(
           "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
           "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n",
           sep = ""
-        ) -> author_list[[i]]
+        )
       }
     }
   } else {
     if (rerender_skeleton) {
       author_list <- NULL
     } else {
-      paste0(
+      author_list[[1]] <- paste0(
         "  ", "- name: ", "'FIRST LAST'", "\n",
         "  ", "  ", "affiliations: \n",
         "  ", "  ", "  ", "- name: 'NOAA Fisheries' \n",
@@ -147,7 +147,7 @@ add_authors <- function(
         "  ", "  ", "  ", "  ", "state: 'STATE' \n",
         "  ", "  ", "  ", "  ", "postal-code: 'POSTAL CODE' \n"
         # sep = " "
-      ) -> author_list[[1]]
+      )
     } # close rerender if else statement
   } # close if else statement
 
