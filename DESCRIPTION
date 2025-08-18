@@ -19,7 +19,7 @@ License: MIT + file LICENSE
 URL: https://github.com/nmfs-ost/asar
 BugReports: https://github.com/nmfs-ost/asar/issues
 Depends: 
-    R (>= 2.10)
+    R (>= 4.1.0)
 Imports: 
     cli,
     dplyr,
@@ -47,7 +47,7 @@ Suggests:
     kableExtra,
     knitr,
     parallel,
-    quarto,
+    quarto (>= 1.6.0),
     r4ss,
     rmarkdown,
     snowfall,
