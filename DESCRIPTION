@@ -47,7 +47,7 @@ Suggests:
     kableExtra,
     knitr,
     parallel,
-    quarto (>= 1.6.0),
+    quarto,
     r4ss,
     rmarkdown,
     snowfall,
