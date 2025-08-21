@@ -1,3 +1,4 @@
+# TODO: Add tests if rerender_skeleton = TRUE
 test_that("Can trace template files from package", {
   path <- system.file("templates", "skeleton", package = "asar")
   base_temp_files <- c(
@@ -292,22 +293,74 @@ test_that("function aborts if `authors` improperly formatted", {
                   "Patrick Star" = "SEFSC")
     ),
     "format is incorrect")
-  
+
   path <- getwd()
-  
+
   # erase temporary testing files
   unlink(fs::path(path, "report"), recursive = T)
-  
-  
+
+
   # one author
   expect_error(
     create_template(
       authors = c("Patrick Star")
     ),
     "format is incorrect")
-  
+
   path <- getwd()
+
+  # erase temporary testing files
+  unlink(fs::path(path, "report"), recursive = T)
+})
+
+test_that("Incompatible formats are recognized, produce warnings/errors", {
+
+  path <- getwd()
+  
+  expect_message(
+    create_template(
+      format = "docx"
+    ),
+    "The docx format")
+
+  # erase temporary testing files
+  unlink(fs::path(path, "report"), recursive = T)
+
+
+  expect_error(
+    create_template(
+      format = "other_format"
+    ),
+    "Format not recognized")
+
+  # erase temporary testing files
+  unlink(fs::path(path, "report"), recursive = T)
+
+  expect_message(
+    create_template(
+      format = "qpdf"
+    ),
+    "Format not compatible")
+
+  # erase temporary testing files
+  unlink(fs::path(path, "report"), recursive = T)
+
+  expect_message(
+    create_template(
+      format = "qhtml"
+    ),
+    "Format not compatible")
+
+  # erase temporary testing files
+  unlink(fs::path(path, "report"), recursive = T)
+
+  expect_message(
+    create_template(
+      format = "qdocx"
+    ),
+    "The docx format is not currently")
   
   # erase temporary testing files
   unlink(fs::path(path, "report"), recursive = T)
+  
 })
