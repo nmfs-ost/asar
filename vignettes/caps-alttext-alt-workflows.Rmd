@@ -1,0 +1,29 @@
+---
+title: "Implement captions and alt text in alternative workflows"
+output:
+  html_document:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Implement captions and alt text in alternative workflows}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Purpose
+
+We've designed `asar` so that our recommended workflow automatically adds captions and alternative text for tables and figures into reports. But what if your report has been generated with another kind of workflow? For example, what if you've created tables and/or figures without `stockplotr`? Or have customized your skeleton with other features that have impacted your tables and figures?
+
+**The purpose of this vignette is to explain how to ensure that your alt text and captions appear in your report, even when using an altered workflow.**
+
+This vignette will be updated as we encounter more varieties of customized workflows.
+
+# When you've created plots without `stockplotr`
+
+As explained in the `stockplotr` ["How captions and alternative text are generated" tutorial](https://nmfs-ost.github.io/stockplotr/articles/how-caps-alttext-are-made.html), exporting at least one figure or table will produce a 'captions_alt_text_template.csv' file, which contains the templates for each table or figure's caption/alternative text. 
+
+* If you've created **all of your tables and figures without `stockplotr`**, then you will not have a version of this csv at all.
+
+* If you've created **at least one table/figure without `stockplotr`**, then *you will have a version of this csv*, but you will be missing the caption/alt text for the plots made without `stockplotr`.
+
+
+
