@@ -21,9 +21,14 @@ This vignette will be updated as we encounter more varieties of customized workf
 
 As explained in the `stockplotr` ["How captions and alternative text are generated" tutorial](https://nmfs-ost.github.io/stockplotr/articles/how-caps-alttext-are-made.html), exporting at least one figure or table will produce a 'captions_alt_text_template.csv' file, which contains the templates for each table or figure's caption/alternative text. 
 
-* If you've created **all of your tables and figures without `stockplotr`**, then you will not have a version of this csv at all.
+* If you've created **all of your tables and figures without `stockplotr`**, then you will not have a version of this csv at all. Move onto the [Create new template file](#sec-create-new-template) section.
 
-* If you've created **at least one table/figure without `stockplotr`**, then *you will have a version of this csv*, but you will be missing the caption/alt text for the plots made without `stockplotr`.
+* If you've created **at least one table/figure without `stockplotr`**, then *you will have a version of this csv*, but you will be missing the caption/alt text for the plots made without `stockplotr`. Move onto the [Add to existing template file](#sec-add-to-template) section.
 
+## Create new template file {#sec-create-new-template}
 
+You will need to create a csv containing your plots' captions and alternative text. Follow the steps in the ["Write captions and alternative text" section of the "Adding Custom Tables and Figures" vignette](https://nmfs-ost.github.io/asar/articles/custom-figs-tabs.html#sec-write-caps-alttext) for instructions. Stop when you reach the ["Export your custom tables and figures" section](https://nmfs-ost.github.io/asar/articles/custom-figs-tabs.html#export-your-custom-tables-and-figures).
 
+## Add to existing template file {#sec-add-to-template}
+
+Follow the instructions in the [Create new template file](#sec-create-new-template) section, with one exception: you do not have to create a new 'captions_alt_text_template.csv' file. Simply add to your existing file.
