@@ -21,9 +21,9 @@ This vignette will be updated as we encounter more varieties of customized workf
 
 As explained in the `stockplotr` ["How captions and alternative text are generated" tutorial](https://nmfs-ost.github.io/stockplotr/articles/how-caps-alttext-are-made.html), exporting at least one figure or table will produce a 'captions_alt_text_template.csv' file, which contains the templates for each table or figure's caption/alternative text. 
 
-* If you've created **all of your tables and figures without `stockplotr`**, then you will not have a version of this csv at all. Move onto the [Create new template file](#sec-create-new-template) section.
+* If you've created **all of your tables and figures without `stockplotr`**, then you will not have a version of this csv at all. Navigate to the [Create new template file](#sec-create-new-template) section.
 
-* If you've created **at least one table/figure without `stockplotr`**, then *you will have a version of this csv*, but you will be missing the caption/alt text for the plots made without `stockplotr`. Move onto the [Add to existing template file](#sec-add-to-template) section.
+* If you've created **at least one table/figure without `stockplotr`**, then *you will have a version of this csv*, but you will be missing the caption/alt text for the plots made without `stockplotr`. Navigate to the [Add to existing template file](#sec-add-to-template) section.
 
 ## Create new template file {#sec-create-new-template}
 
