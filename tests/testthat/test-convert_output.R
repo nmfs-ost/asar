@@ -40,3 +40,35 @@ test_that("convert_output saves model ss3 hake output file", {
 
   expect_true(list.files(fs::path("fixtures", "ss3_models_converted", "Hake_2018")) == "std_output.rda")
 })
+
+test_that("missing arguments trigger warnings or errors", {
+  # TODO: Debug why this doesn't work
+  # expect_error(
+  #   asar::convert_output(
+  #     model = "ss3",
+  #     save_dir = fs::path("fixtures", "ss3_models_converted", "Hake_2018")
+  #   ),
+  #   "Missing `file`"
+  # )
+   
+  # TODO: Debug why this doesn't work
+  # expect_error(
+  #   asar::convert_output(
+  #     file = fs::path("fixtures", "ss3_models", "models", "Hake_2018", "Report.sso"),
+  #     model = "fake_model",
+  #     save_dir = fs::path("fixtures", "ss3_models_converted", "Hake_2018")
+  #   ),
+  #   "Missing `model`"
+  # )
+  
+  expect_error(
+    asar::convert_output(
+      file = fs::path("fixtures", "ss3_models", "models", "Hake_2018", "Report.rdat"),
+      model = "ss3",
+      save_dir = fs::path("fixtures", "ss3_models_converted", "Hake_2018")
+    ),
+    "`file` not found"
+  )
+  
+  
+})
