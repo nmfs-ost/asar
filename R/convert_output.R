@@ -1634,9 +1634,22 @@ convert_output <- function(
   # Combind DFs into one
   out_new <- out_new |>
     dplyr::mutate(
-      estimate = as.numeric(estimate),
-      uncertainty = as.numeric(uncertainty),
-      initial = as.numeric(initial),
+      estimate = dplyr::case_when(
+        is.na(estimate) ~ NA_real_,
+        TRUE ~ as.numeric(estimate)
+      ),
+      uncertainty = plyr::case_when(
+        is.na(uncertainty) ~ NA_real_,
+        TRUE ~ as.numeric(uncertainty)
+      ),
+      initial = dplyr::case_when(
+        is.na(initial) ~ NA_real_,
+        TRUE ~ as.numeric(initial)
+      ),
+      year = dplyr::case_when(
+        is.na(year) ~ NA_real_,
+        TRUE ~ as.numeric(year)
+      ),
       # change era name to keep standard
       era = dplyr::case_when(
         era == "Main" ~ "time",
