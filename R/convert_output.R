@@ -1172,7 +1172,7 @@ convert_output <- function(
           dplyr::contains("log.F.dev.") & dplyr::contains(".D"))
       # fleets_parm_D <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+(?=\\.D)")
       fleets_parm <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+")
-      fleets <- unique(c(fleets_ind, fleets_land, fleets_disc, fleets_parm))
+      fleets <- unique(tolower(c(fleets_ind, fleets_land, fleets_disc, fleets_parm)))
       fleet_names <- fleets[!is.na(fleets)]
       if (any(is.na(fleet_names))) {
         cli::cli_abort("No fleet names found in dataframe. Please indicate the abbreviations of fleet names using fleet_names arg.")
@@ -1547,7 +1547,10 @@ convert_output <- function(
             df2 <- df2 |>
               dplyr::mutate(
                 fleet = ifelse(any(colnames(df2) %in% c("fleet")), fleet, NA),
-                age = ifelse(any(colnames(df2) %in% c("age")), age, NA),
+                age = dplyr::case_when(
+                  any(colnames(df2) %in% c("age")) ~ age,
+                  TRUE ~ NA
+                ),
                 label = label,
                 module_name = names(extract)
               )
