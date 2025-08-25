@@ -52,44 +52,44 @@ convert_output <- function(
   #### out_new ####
   # Blank dataframe and set up to mold output into
   out_new <- data.frame(
+    module_name = NA,
     label = NA,
     time = NA,
     era = NA,
     year = NA,
-    fleet = NA,
-    area = NA,
+    month = NA,
     season = NA,
     subseason = NA,
-    age = NA,
-    sex = NA,
-    growth_pattern = NA,
-    len_bins = NA,
+    birthseas = NA,
     initial = NA,
     estimate = NA,
     uncertainty = NA,
     uncertainty_label = NA,
     likelihood = NA,
-    gradient = NA,
-    estimated = NA, # TRUE/FALSE
-    module_name = NA,
+    fleet = NA,
+    platoon = NA,
+    area = NA,
+    age = NA,
+    sex = NA,
+    growth_pattern = NA,
+    # gradient = NA,
+    # estimated = NA, # TRUE/FALSE
     # Additional factors from SS3
     bio_pattern = NA,
-    birthseas = NA,
     settlement = NA,
     morph = NA,
     # beg/mid = NA, # need to identify df where this is applicable
     type = NA,
     factor = NA,
-    platoon = NA,
-    month = NA,
     sexes = NA,
     part = NA,
-    bin = NA,
     kind = NA,
     nsim = NA,
+    # TODO: add age_a and len_bins into just bins - add the age value in age
+    bin = NA,
     age_a = NA,
-    count = NA,
-    morph = NA
+    len_bins = NA,
+    count = NA
   )
   out_new <- out_new[-1, ]
 
