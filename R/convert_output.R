@@ -121,6 +121,7 @@ convert_output <- function(
       ".sso" = "ss3",
       ".rdat" = "bam",
       ".rds" = "wham",
+      ".RDS" = "fims",
       NULL
     )
   }
@@ -1631,6 +1632,12 @@ convert_output <- function(
     #### JABBA ####
   } else if (tolower(model) == "jabba") {
     cli::cli_abort("JABBA output not currently compatible.")
+  } else if (model == "fims") {
+    if (grepl(".RDS", file)) {
+      out_new <- readRDS(file)
+    } else {
+      out_new <- file
+    }
   } else {
     cli::cli_abort(c(
       message = "Output file not compatible.",
@@ -1672,6 +1679,9 @@ convert_output <- function(
   } else if (tolower(model) == "bam") {
     con_file <- system.file("resources", "bam_var_names.xlsx", package = "asar", mustWork = TRUE)
     var_names_sheet <- openxlsx::read.xlsx(con_file)
+  } else if (tolower(model) == "fims") {
+    con_file <- system.file("resources", "fims_var_names.xlsx", package = "asar", mustWork = TRUE)
+    var_names_sheet <- openxlsx::read.xlsx(con_file)
   }
   if (file.exists(con_file)) {
     out_new <- dplyr::left_join(out_new, var_names_sheet, by = c("module_name", "label")) |>
@@ -1700,6 +1710,5 @@ convert_output <- function(
     # assign(save_name, out_new)
     save(out_new, file = save_dir)
   }
-
   out_new
 } # close function
