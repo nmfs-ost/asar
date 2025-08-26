@@ -63,6 +63,7 @@ convert_output <- function(
     birthseas = NA,
     initial = NA,
     estimate = NA,
+    units = NA,
     uncertainty = NA,
     uncertainty_label = NA,
     likelihood = NA,
@@ -93,30 +94,38 @@ convert_output <- function(
   )
   out_new <- out_new[-1, ]
 
-  if (!exists("file")) {
+  # check if file input
+  if (!exists(file)) {
     cli::cli_abort(c(message = "Missing `file`."))
   }
 
-  if (!exists("model")) {
-    cli::cli_abort(c(message = "Missing `model`."))
-  }
-
-  # check if file exists
-  if (!file.exists(file)) {
-    cli::cli_abort(c(
-      message = "`file` not found.",
-      "i" = "`file` entered as {file}"
-    ))
+  # Check if path links to a valid file
+  url_pattern <- "^(https?|ftp|file):\\/\\/[-A-Za-z0-9+&@#\\/%?=~_|!:,.;]*[-A-Za-z0-9+&@#\\/%=~_|]$"
+  if (grepl(url_pattern, file)) {
+    check <- httr::HEAD(file)
+    url <- httr::status_code(check)
+    if(url == 404) cli::cli_abort(c(message = "Invalid URL."))
+  } else {
+    if (!file.exists(file)) {
+      cli::cli_abort(c(
+        message = "`file` not found.",
+        "i" = "`file` entered as {file}"
+      ))
+    }
   }
 
   # Recognize model through file extension
-  # Uncomment later
-  # model <- switch(
-  #   stringr::str_extract(file, "\\.([^.]+)$"),
-  #   ".sso" = "ss3",
-  #   ".rdat" = "bam",
-  #   "wham"
-  # )
+  if (is.null(model)) {
+    model <- switch(
+      stringr::str_extract(file, "\\.([^.]+)$"),
+      ".sso" = "ss3",
+      ".rdat" = "bam",
+      ".rds" = "wham",
+      NULL
+    )
+  }
+
+  if (is.null(model)) cli::cli_abort("Unknown file type. Please indicate model.")
 
   #### SS3 ####
   # Convert SS3 output Report.sso file
