@@ -32,7 +32,7 @@
 #' }
 convert_output <- function(
     file,
-    model,
+    model = NULL,
     fleet_names = NULL,
     save_dir = NULL) {
   # check if entered save_dir exists so doesn't waste user time finding this out at the end
@@ -113,10 +113,22 @@ convert_output <- function(
   if (is.null(model)) {
     model <- switch(
       stringr::str_extract(file, "\\.([^.]+)$"),
-      ".sso" = "ss3",
-      ".rdat" = "bam",
-      ".rds" = "wham",
-      ".RDS" = "fims",
+      ".sso" = {
+        cli::cli_message("Processing Stock Synthesis output file...")
+        "ss3"
+      },
+      ".rdat" = {
+        cli::cli_message("Processing BAM output file...")
+        "bam"
+      },
+      ".rds" = {
+        cli::cli_message("Processing WHAM output file...")
+        "wham"
+      },
+      ".RDS" = {
+        cli::cli_message("Processing FIMS output file...")
+        "fims"
+      },
       NULL
     )
   }
@@ -177,78 +189,7 @@ convert_output <- function(
       dplyr::filter(output == "Y") |>
       dplyr::pull(keyword)
 
-    # Below the parameters are grouped and narrowed down into priority to reach deadline.
-    # Other parameters will be developed into the future
-    # param_names <- c(
-    #   # "DEFINITIONS",
-    #   "DERIVED_QUANTITIES",
-    #   "ENVIRONMENTAL_DATA",
-    #   # "Input_Variance_Adjustment",
-    #   "LIKELIHOOD",
-    #   "MGparm_By_Year_after_adjustments",
-    #   # "MORPH_INDEXING",
-    #   "OVERALL_COMPS",
-    #   "PARAMETERS",
-    #   "Parm_devs_detail",
-    #   "BIOMASS_AT_AGE",
-    #   "BIOMASS_AT_LENGTH",
-    #   "CATCH",
-    #   "DISCARD_AT_AGE",
-    #   # "EXPLOITATION",
-    #   "CATCH_AT_AGE",
-    #   "F_AT_AGE",
-    #   "MEAN_SIZE_TIMESERIES",
-    #   "NUMBERS_AT_AGE",
-    #   "NUMBERS_AT_LENGTH",
-    #   "SPAWN_RECRUIT",
-    #   "SPAWN_RECR_CURVE",
-    #   # "SPR_SERIES",
-    #   "TIME_SERIES",
-    #   # "COMPOSITION_DATABASE",
-    #   # "DISCARD_SPECIFICATION",
-    #   "DISCARD_OUTPUT",
-    #   "INDEX_1",
-    #   "INDEX_2",
-    #   "INDEX_3",
-    #   "FIT_LEN_COMPS",
-    #   "FIT_AGE_COMPS",
-    #   "FIT_SIZE_COMPS",
-    #   "MEAN_BODY_WT_OUTPUT",
-    #   # "TAG_Recapture",
-    #   "AGE_SELEX",
-    #   "LEN_SELEX",
-    #   "selparm(Size)_By_Year_after_adjustments",
-    #   "selparm(Age)_By_Year_after_adjustments",
-    #   # "SELEX_database",
-    #   # "AGE_AGE_KEY",
-    #   # "AGE_LENGTH_KEY",
-    #   # "AGE_SPECIFIC_K",
-    #   # "BIOLOGY",
-    #   # "Biology_at_age_in_endyr",
-    #   "Growth_Parameters",
-    #   # "MEAN_BODY_WT(Begin)",
-    #   "MOVEMENT",
-    #   "Natural_Mortality",
-    #   # "RECRUITMENT_DIST",
-    #   # "Seas_Effects",
-    #   # "SIZEFREQ_TRANSLATION",
-    #   "Dynamic_Bzero",
-    #   # "GLOBAL_MSY",
-    #   "Kobe_Plot",
-    #   "SPR/YPR_Profile"
-    # )
-    # SS3 Groupings - manually done
-    # Notes on the side indicate those removed since the information is not needed
-    # std_set <- c(2,6,13,21,23,24,27,29,31,32,33,38,40,45,46,55) # Removing - 7
-    # std2_set <- c(4,8) # can I make it so it falls into above set?
-    # cha_set <- 53
-    # rand_set <- c(9,10,22,28,30,39)
-    # unkn_set <- c(3,25,34,48,51,52) # needs to be found and recategorized
-    # info_set <- c(1,5,15,26,35)
-    # aa.al_set <- c(11,12,14,16,17,18,19,20,36,37,47,49)
-    # nn_set <- c(41,42,43,44,50,54,56)
-
-    # First release will converted output for SS3 will only include the below parameters
+    # Group parameters base on table pattern
     std <- c(
       "DERIVED_QUANTITIES",
       "MGparm_By_Year_after_adjustments",
@@ -317,7 +258,12 @@ convert_output <- function(
       "settlement", "birthseas", "count",
       "kind"
     )
-    errors <- c("StdDev", "sd", "se", "SE", "cv", "CV", "std", "stddev")
+    
+    errors <- c(
+      "StdDev", "sd", "std", 
+      "se","SE", 
+      "cv", "CV"
+    )
 
     miss_parms <- c()
     out_list <- list()
@@ -1060,7 +1006,11 @@ convert_output <- function(
             colnames(df3) <- tolower(row)
 
             # aa.al names
-            naming <- c("biomass", "discard", "catch", "f", "mean_size", "numbers", "sel", "mean_body_wt", "natural_mortality")
+            naming <- c(
+              "biomass", "discard", "catch",
+              "f", "mean_size", "numbers", "sel",
+              "mean_body_wt", "natural_mortality"
+            )
             if (stringr::str_detect(tolower(parm_sel), paste(naming, collapse = "|"))) {
               label <- stringr::str_extract(tolower(parm_sel), paste(naming, collapse = "|"))
               if (length(label) > 1) cli::cli_alert_warning("Length of label is > 1.")
@@ -1096,8 +1046,19 @@ convert_output <- function(
             # Change all columns to chatacters to a avoid issues in pivoting - this will be changed in final df anyway
             df3 <- df3 |>
               dplyr::mutate(dplyr::across(tidyselect::everything(), as.character))
+            # Set all columns after factors as numeric
+            # Identify last factor col
+            other_factors <- c(
+              "bio_pattern", "birthseas", 
+              "settlement", "morph", "beg/mid", 
+              "type", "label", "factor", 
+              "platoon", "month", 
+              "sexes", "part", "bin", "kind"
+            )
+            num_cols <- setdiff(colnames(df3), c(factors, other_factors))
+            df3 <- df3 |>
+              dplyr::mutate(dplyr::across(dplyr::all_of(num_cols), as.numeric))
             # Pivot table long
-            other_factors <- c("bio_pattern", "birthseas", "settlement", "morph", "beg/mid", "type", "label", "factor", "platoon", "month", "sexes", "part", "bin", "kind")
             df4 <- df3 |>
               tidyr::pivot_longer(
                 cols = -intersect(c(factors, errors, other_factors), colnames(df3)),
@@ -1111,6 +1072,24 @@ convert_output <- function(
             if (any(grepl("morph", colnames(df4)))) {
               df4 <- df4 |>
                 dplyr::rename(growth_pattern = morph)
+            }
+            # Check if likelihood is in the df
+            if (any(grepl("like", colnames(df4)))) {
+              df4 <- df4 |>
+                dplyr::rename(likelihood = like)
+            }
+            # Check for error in the df
+            if (any(grepl(paste0("^", errors, "$", collapse = "|"), colnames(df4)))) {
+              error_col <- colnames(df4)[grep(paste0("^", errors, "$", collapse = "|"), colnames(df4))]
+              if (length(error_col) > 1) {
+                cli::cli_alert("Multiple error columns present. Error will not be added to module.")
+              } else {
+                df4 <- df4 |>
+                  dplyr::mutate(
+                    uncertainty_label = tolower(unique(error_col)),
+                    uncertainty = df4[[error_col]]
+                  )
+              } 
             }
             if ("label" %in% colnames(df4) & "factor" %in% colnames(df4)) {
               df4 <- df4 |>
