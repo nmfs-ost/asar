@@ -45,10 +45,20 @@ navbar:
       - text: Petrale Example
         href: SAR_USWC_Petrale_sole_skeleton.pdf
 
+    cheatsheet:
+      text: Cheatsheet
+      href: assets/asar-cheatsheet.pdf
+      icon: fa-solid fa-key
+      # Make the link open in a new tab
+      target: "_blank"
+      
     tutorial:
       text: Tutorial
+      icon: fa-regular fa-map
       href: https://connect.fisheries.noaa.gov/asar_tutorial/
-
+      # Make the link open in a new tab
+      target: "_blank"
+      
   structure:
-    left: [home, reference, sourcecode, tutorial, articles, documents, news]
+    left: [home, reference, sourcecode, cheatsheet, tutorial, articles, documents, news]
     right: [search, issue, github]
