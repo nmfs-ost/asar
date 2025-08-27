@@ -114,26 +114,24 @@ convert_output <- function(
     model <- switch(
       stringr::str_extract(file, "\\.([^.]+)$"),
       ".sso" = {
-        cli::cli_message("Processing Stock Synthesis output file...")
+        cli::cli_alert_info("Processing Stock Synthesis output file...")
         "ss3"
       },
       ".rdat" = {
-        cli::cli_message("Processing BAM output file...")
+        cli::cli_alert_info("Processing BAM output file...")
         "bam"
       },
       ".rds" = {
-        cli::cli_message("Processing WHAM output file...")
+        cli::cli_alert_info("Processing WHAM output file...")
         "wham"
       },
       ".RDS" = {
-        cli::cli_message("Processing FIMS output file...")
+        cli::cli_alert_info("Processing FIMS output file...")
         "fims"
       },
-      NULL
+      cli::cli_abort("Unknown file type. Please indicate model.")
     )
   }
-
-  if (is.null(model)) cli::cli_abort("Unknown file type. Please indicate model.")
 
   #### SS3 ####
   # Convert SS3 output Report.sso file
@@ -150,7 +148,7 @@ convert_output <- function(
       blank.lines.skip = FALSE
     )
     # Check SS3 model version
-    vers <- stringr::str_extract(dat[1, 1], "[0-9].[0-9][0-9].[0-9][0-9].[0-9][0-9]")
+    vers <- stringr::str_extract(dat[1, 1], "[0-9].[0-9][0-9].[0-9][0-9].[0-9]")
     if (vers < 3.3) {
       cli::cli_abort("This function in its current state can not process the data.")
     }
@@ -201,7 +199,7 @@ convert_output <- function(
       "FIT_LEN_COMPS",
       "FIT_AGE_COMPS",
       "FIT_SIZE_COMPS",
-      "SELEX_database",
+      # "SELEX_database",
       "Growth_Parameters",
       "Kobe_Plot"
     )
