@@ -95,7 +95,7 @@ convert_output <- function(
   out_new <- out_new[-1, ]
 
   # check if file input
-  if (!exists(file)) {
+  if (!file.exists(file)) {
     cli::cli_abort(c(message = "Missing `file`."))
   }
 
