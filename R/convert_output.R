@@ -94,11 +94,6 @@ convert_output <- function(
   )
   out_new <- out_new[-1, ]
 
-  # check if file input
-  if (!file.exists(file)) {
-    cli::cli_abort(c(message = "Missing `file`."))
-  }
-
   # Check if path links to a valid file
   url_pattern <- "^(https?|ftp|file):\\/\\/[-A-Za-z0-9+&@#\\/%?=~_|!:,.;]*[-A-Za-z0-9+&@#\\/%=~_|]$"
   if (grepl(url_pattern, file)) {
@@ -130,7 +125,7 @@ convert_output <- function(
 
   #### SS3 ####
   # Convert SS3 output Report.sso file
-  if (model %in% c("ss3", "SS3")) {
+  if (tolower(model) == "ss3") {
     # read SS3 report file
     dat <- utils::read.table(
       file = file,
@@ -143,15 +138,14 @@ convert_output <- function(
       blank.lines.skip = FALSE
     )
     # Check SS3 model version
-    vers <- as.numeric(stringr::str_extract(dat[1, 1], "[0-9].[0-9][0-9]"))
+    vers <- stringr::str_extract(dat[1, 1], "[0-9].[0-9][0-9].[0-9][0-9].[0-9][0-9]")
     if (vers < 3.3) {
       cli::cli_abort("This function in its current state can not process the data.")
     }
 
     # Extract fleet names
     if (is.null(fleet_names)) {
-      fleet_info <- SS3_extract_df(dat, "Fleet")[-1, ]
-      fleet_names <- stats::setNames(fleet_info[[ncol(fleet_info)]], fleet_info[[1]])
+      fleet_names <- SS3_extract_fleet(dat, vers)
     }
 
     # Estimated and focal parameters to put into reformatted output df - naming conventions from SS3
