@@ -201,4 +201,33 @@ rm(rda)\n
     ),
     append = append
   )
+  
+  # Read through figures doc and warn about identical labels
+  new_figs_doc <- readLines(
+    ifelse(
+      any(grepl("_figures.qmd$", list.files(subdir))),
+      list.files(subdir)[grep("_figures.qmd", list.files(subdir))],
+      "09_figures.qmd"
+      )
+  ) |>
+    as.list()
+  
+  label_line_nums <- grep("\\label", new_figs_doc)
+  labels <- new_figs_doc[label_line_nums]
+  names(labels) <- label_line_nums
+  labels <- lapply(labels, function(x) {
+    gsub("#\\| label: ", "", x)
+  })
+  
+  repeated_labels <- labels[duplicated(labels)]
+  repeated_labels <- as.vector(unlist(repeated_labels))
+  
+  if (length(repeated_labels) > 0){
+    cli::cli_alert_danger("Figures doc contains chunks with identical labels: {repeated_labels}.")
+    cli::cli_alert_info("Open figures doc and check for:")
+    cli::cli_bullets(c("*" = "Identical, repeated figures",
+                     "*" = "Different figures with identical labels"))
+    cli::cli_alert_warning("Figures doc will not render if chunks have identical labels.")
+  }
+  
 }
