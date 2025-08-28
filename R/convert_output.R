@@ -199,7 +199,7 @@ convert_output <- function(
       "FIT_LEN_COMPS",
       "FIT_AGE_COMPS",
       "FIT_SIZE_COMPS",
-      # "SELEX_database",
+      "SELEX_database",
       "Growth_Parameters",
       "Kobe_Plot"
     )
@@ -271,7 +271,7 @@ convert_output <- function(
       parm_sel <- param_names[i]
       if (parm_sel %in% c(std, std2, cha, rand, aa.al)) {
         cli::cli_alert(glue::glue("Processing {parm_sel}"))
-        extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
+        extract <- SS3_extract_df(dat, parm_sel)
         if (!is.data.frame(extract)) {
           miss_parms <- c(miss_parms, parm_sel)
           cli::cli_alert(glue::glue("Skipped {parm_sel}"))
@@ -1625,7 +1625,7 @@ convert_output <- function(
         is.na(estimate) ~ NA_real_,
         TRUE ~ as.numeric(estimate)
       ),
-      uncertainty = plyr::case_when(
+      uncertainty = dplyr::case_when(
         is.na(uncertainty) ~ NA_real_,
         TRUE ~ as.numeric(uncertainty)
       ),
