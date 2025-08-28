@@ -45,9 +45,26 @@ create_tables_doc <- function(subdir = getwd(),
 
   # set landscape page width (in)
   landscape_pg_width <- 8
+  
+  # append table-producing code to non-empty tables doc, if it exists, vs. overwriting it
+  append <- FALSE
+  if (length(file.path(subdir, list.files(subdir, pattern = "tables.qmd"))) == 1) {
+    existing_tables_doc <- file.path(subdir, list.files(subdir, pattern = "tables.qmd"))
+    table_content <- readLines(existing_tables_doc) |>
+      suppressWarnings()
+    empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
+    if ((empty_doc_text %in% table_content)){
+      cli::cli_alert_info("Empty tables doc will be overwritten to include tables in `tables_dir`.")
+    } else {
+      append <- TRUE
+      cli::cli_alert_info("tables doc will be appended to include tables in `tables_dir`.")
+    }
+  }
 
   # add header
-  tables_doc_header <- paste0("# Tables {#sec-tables}\n \n")
+  tables_doc_header <- ifelse(append,
+                              "",
+                              "# Tables {#sec-tables}\n \n")
 
   # add chunk that creates object as the directory of all rdas
   tables_doc_setup <- paste0(
@@ -86,7 +103,7 @@ create_tables_doc <- function(subdir = getwd(),
   # create sublist of only non-rda table files
   # non.rda_tab_list <- file_list[!grepl(".rda", file_list)]
 
-  # create two-chunk system to plot each rda figure
+  # create two-chunk system to plot each rda table
   create_tab_chunks <- function(tab = NA,
                                 tables_dir = getwd()) {
     # test whether table has been split
@@ -294,7 +311,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     #   message(paste0("Note: No table files in a non-rda format (e.g., .jpg, .png) were found in '",  fs::path(tables_dir, "tables") , "'."))
     # }
 
-    # combine tables_doc setup with figure chunks
+    # combine tables_doc setup with table chunks
     tables_doc <- paste0(
       tables_doc_header,
       tables_doc_setup,
@@ -318,6 +335,35 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
         "08_tables.qmd"
       )
     ),
-    append = FALSE
+    append = append
   )
+  
+  # Read through tables doc and warn about identical labels
+  new_tables_doc <- readLines(
+    ifelse(
+      any(grepl("_tables.qmd$", list.files(subdir))),
+      list.files(subdir)[grep("_tables.qmd", list.files(subdir))],
+      "09_tables.qmd"
+    )
+  ) |>
+    suppressWarnings() |>
+    as.list()
+  
+  label_line_nums <- grep("\\label", new_tables_doc)
+  labels <- new_tables_doc[label_line_nums]
+  names(labels) <- label_line_nums
+  labels <- lapply(labels, function(x) {
+    gsub("#\\| label: ", "", x)
+  })
+  
+  repeated_labels <- labels[duplicated(labels)]
+  repeated_labels <- as.vector(unlist(repeated_labels))
+  
+  if (length(repeated_labels) > 0){
+    cli::cli_alert_danger("Tables doc contains chunks with identical labels: {repeated_labels}.")
+    cli::cli_alert_info("Open tables doc and check for:")
+    cli::cli_bullets(c("*" = "Identical, repeated tables",
+                       "*" = "Different tables with identical labels"))
+    cli::cli_alert_warning("Tables doc will not render if chunks have identical labels.")
+  }
 }
