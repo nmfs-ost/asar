@@ -63,7 +63,7 @@ convert_output <- function(
     birthseas = NA,
     initial = NA,
     estimate = NA,
-    units = NA,
+    # units = NA,
     uncertainty = NA,
     uncertainty_label = NA,
     likelihood = NA,
@@ -157,6 +157,9 @@ convert_output <- function(
     if (is.null(fleet_names)) {
       fleet_names <- SS3_extract_fleet(dat, vers)
     }
+
+    # Extract units
+    
 
     # Estimated and focal parameters to put into reformatted output df - naming conventions from SS3
     # Extract keywords from ss3 file

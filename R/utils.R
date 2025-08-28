@@ -139,5 +139,17 @@ SS3_extract_fleet <- function(dat, vers) {
 
 #----------------------------------------------------------
 
+# # Baseline units for models
+# baseline_units <- function() {
+#   labels <- c(
+#     "spawning_biomass",
+#     "biomass",
+#     "recruitment",
+#     "weight"
+#   )
+# }
+
+#----------------------------------------------------------
+
 # create notin operator
 `%notin%` <- Negate(`%in%`)
