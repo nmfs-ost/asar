@@ -316,7 +316,7 @@ test_that("function aborts if `authors` improperly formatted", {
 test_that("Incompatible formats are recognized, produce warnings/errors", {
 
   path <- getwd()
-  
+
   expect_message(
     create_template(
       format = "docx"
@@ -359,8 +359,8 @@ test_that("Incompatible formats are recognized, produce warnings/errors", {
       format = "qdocx"
     ),
     "The docx format is not currently")
-  
+
   # erase temporary testing files
   unlink(fs::path(path, "report"), recursive = T)
-  
+
 })

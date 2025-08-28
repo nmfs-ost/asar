@@ -342,8 +342,8 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
   new_tables_doc <- readLines(
     ifelse(
       any(grepl("_tables.qmd$", list.files(subdir))),
-      list.files(subdir)[grep("_tables.qmd", list.files(subdir))],
-      "09_tables.qmd"
+      fs::path(subdir, list.files(subdir)[grep("_tables.qmd", list.files(subdir))]),
+      fs::path(subdir, "08_tables.qmd")
     )
   ) |>
     suppressWarnings() |>

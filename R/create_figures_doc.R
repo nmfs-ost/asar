@@ -206,10 +206,11 @@ rm(rda)\n
   new_figs_doc <- readLines(
     ifelse(
       any(grepl("_figures.qmd$", list.files(subdir))),
-      list.files(subdir)[grep("_figures.qmd", list.files(subdir))],
-      "09_figures.qmd"
-      )
+      fs::path(subdir, list.files(subdir)[grep("_figures.qmd", list.files(subdir))]),
+      fs::path(subdir, "09_figures.qmd")
+    )
   ) |>
+    suppressWarnings() |>
     as.list()
   
   label_line_nums <- grep("\\label", new_figs_doc)
