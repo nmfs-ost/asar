@@ -26,9 +26,7 @@ create_figures_doc <- function(subdir = getwd(),
     figure_content <- readLines(existing_figs_doc) |>
       suppressWarnings()
     empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
-    if ((empty_doc_text %in% figure_content)){
-      cli::cli_alert_info("Empty figures doc will be overwritten to include figures in `figures_dir`.")
-    } else {
+    if (!(empty_doc_text %in% figure_content)){
       append <- TRUE
       cli::cli_alert_info("Figures doc will be appended to include figures in `figures_dir`.")
     }

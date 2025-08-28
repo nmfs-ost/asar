@@ -53,11 +53,9 @@ create_tables_doc <- function(subdir = getwd(),
     table_content <- readLines(existing_tables_doc) |>
       suppressWarnings()
     empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
-    if ((empty_doc_text %in% table_content)){
-      cli::cli_alert_info("Empty tables doc will be overwritten to include tables in `tables_dir`.")
-    } else {
+    if (!(empty_doc_text %in% table_content)){
       append <- TRUE
-      cli::cli_alert_info("tables doc will be appended to include tables in `tables_dir`.")
+      cli::cli_alert_info("Tables doc will be appended to include tables in `tables_dir`.")
     }
   }
 
