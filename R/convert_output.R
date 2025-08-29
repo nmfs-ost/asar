@@ -287,7 +287,11 @@ convert_output <- function(
             df1 <- extract[-1, ]
             # Find first row without NAs = headers
             # temp fix for catch df
-            df2 <- df1[stats::complete.cases(df1), ]
+            # if (parm_sel == "CATCH") {
+            #   df2 <- df1[-1, ]
+            # } else {
+              df2 <- df1[stats::complete.cases(df1), ]
+            # }
             if (any(c("#") %in% df2[, 1])) {
               full_row <- which(apply(df1, 1, function(row) is.na(row) | row == " " | row == "-" | row == "#"))[1]
               df1 <- df1[-full_row[1], ]
@@ -296,13 +300,16 @@ convert_output <- function(
             }
             # identify first row
             row <- df2[1, ]
+            # find row number that matches 'row'
+            rownum <- prodlim::row.match(as.vector(row), df1)
             # make row the header names for first df
             colnames(df1) <- row
-            # find row number that matches 'row'
-            rownum <- prodlim::row.match(row, df1)
             # Subset data frame
             df3 <- df1[-c(1:rownum), ]
             colnames(df3) <- tolower(row)
+            # Remove any leftover NA columns if still present
+            NA_cols <- which(sapply(df3, function(x) all(is.na(x))))
+            if (length(NA_cols) > 0) df3 <- df3[ , -NA_cols]
             # Remove suprper + use from df
             if (any(grepl("suprper|use", colnames(df3)))) {
               df3 <- df3 |>
@@ -929,7 +936,8 @@ convert_output <- function(
                   ),
                   # fix remaining labels
                   label = ifelse(grepl("_GP$", label), stringr::str_remove(label, "_GP$"), label),
-                  label = ifelse(grepl("_Fem|_Mal", label), stringr::str_remove(label, "_Fem$|_Mal$"), label)
+                  label = ifelse(grepl("_Fem|_Mal", label), stringr::str_remove(label, "_Fem$|_Mal$"), label),
+                  module_name = parm_sel
                 )
               # match to out_new
               df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
