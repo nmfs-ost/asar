@@ -82,7 +82,7 @@ convert_output <- function(
     # beg/mid = NA, # need to identify df where this is applicable
     type = NA,
     factor = NA,
-    sexes = NA,
+    # sexes = NA, # remove sexes to see how it impacts the results
     part = NA,
     kind = NA,
     nsim = NA,
