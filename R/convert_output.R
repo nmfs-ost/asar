@@ -157,6 +157,9 @@ convert_output <- function(
     if (is.null(fleet_names)) {
       fleet_names <- SS3_extract_fleet(dat, vers)
     }
+    # Output fleet names in console
+    cli::cli_alert_info("Identified fleet names:")
+    cli::cli_alert_info("{fleet_names}")
 
     # Extract units
     
@@ -261,7 +264,7 @@ convert_output <- function(
     )
     
     errors <- c(
-      "StdDev", "sd", "std", 
+      "StdDev", "sd", "std", "stddev",
       "se","SE", 
       "cv", "CV"
     )
@@ -1174,11 +1177,15 @@ convert_output <- function(
     #   # if (any(is.na(fleet_names))) {
     #   fleet_names <- fleet_names
     # }
+    # Output fleet names in console
+    cli::cli_alert_info("Identified fleet names:")
+    cli::cli_alert_info("{fleet_names}")
     # Create list for morphed dfs to go into (for rbind later)
     out_list <- list()
 
     factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo", "growth_pattern", "gp", "nsim", "age_a")
     errors <- c("StdDev", "sd", "se", "SE", "cv", "CV", "stddev")
+    units <- c("mt", "lbs", "eggs")
     # argument for function when model == BAM
     # fleet_names <- c("cl", "cL","cp","mrip","ct", "hb", "HB", "comm","Mbft","CVID")
 
@@ -1244,16 +1251,21 @@ convert_output <- function(
                   ) |>
                   dplyr::mutate(
                     module_name = names(extract),
-                    label = names(extract[[1]][1]),
-                    # label_init = names(extract[[1]][i]),
+                    label = names(extract[[1]][i]),
                     fleet = dplyr::case_when(
-                      grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(label, paste(fleet_names, collapse = "|")),
+                      grepl(paste(fleet_names, collapse = "|"), tolower(label)) ~ stringr::str_extract(tolower(label), paste(fleet_names, collapse = "|")),
                       TRUE ~ NA
                     ), # stringr::str_extract(module_name, "(?<=\\.)\\w+(?=\\.)"),
                     label = dplyr::case_when(
-                      is.na(fleet) ~ names(extract[[1]][1]),
-                      TRUE ~ stringr::str_replace(label, paste(".", fleet_names, sep = "", collapse = "|"), "")
+                      grepl(paste0(fleet_names, collapse = "|"), tolower(label)) ~ stringr::str_replace(tolower(label), paste0(".", fleet_names, collapse = "|"), ""),
+                      TRUE ~ names(extract[[1]][i])
                     )
+                    # label_init = names(extract[[1]][i]),
+                    
+                    # label = dplyr::case_when(
+                    #   is.na(fleet) ~ names(extract[[1]][i]),
+                    #   TRUE ~ stringr::str_replace(tolower(label), paste(".", fleet_names, sep = "", collapse = "|"), "")
+                    # )
                   ) # stringr::str_replace(module_name, "\\.[^.]+\\.", "."))
                 df2[setdiff(tolower(names(out_new)), tolower(names(df2)))] <- NA
                 extract_list[[names(extract[[1]][i])]] <- df2
@@ -1296,10 +1308,11 @@ convert_output <- function(
                   ),
                   label = dplyr::case_when(
                     # below will only work properly if there are age varying parameters without fleet names in it
-                    module_name == "parms" & !grepl(paste(".", fleet_names, sep = "", collapse = "|"), label) ~ label,
-                    grepl(paste(".", fleet_names, "d[0-9]+", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "d[0-9]+", sep = "", collapse = "|"), ".d"),
-                    grepl(paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "[0-9]+", sep = "", collapse = "|"), ""),
-                    grepl(paste(".", fleet_names, "$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, sep = "", collapse = "|"), ""),
+                    module_name == "parms" & !grepl(paste(".", fleet_names, sep = "", collapse = "|"), tolower(label)) ~ label,
+                    grepl(paste(".", fleet_names, "d[0-9]+", sep = "", collapse = "|"), tolower(label)) ~ stringr::str_replace(tolower(label), paste(".", fleet_names, "d[0-9]+", sep = "", collapse = "|"), ".d"),
+                    grepl(paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), tolower(label)) ~ stringr::str_replace(tolower(label), paste(fleet_names, sep = "", collapse = "|"), ""), # "[0-9]+",
+                    grepl(paste(".", fleet_names, "$", sep = "", collapse = "|"), tolower(label)) ~ stringr::str_replace(tolower(label), paste(".", fleet_names, sep = "", collapse = "|"), ""),
+                    grepl(paste(".", fleet_names, ".d$", sep = "", collapse = "|"), tolower(label)) ~ stringr::str_replace(tolower(label), paste(".", fleet_names, sep = "", collapse = "|"), ""),
                     grepl(".Age[0-9]+.[a-z]+", label) ~ stringr::str_replace(label, ".Age[0-9]+.[a-z]+", ""),
                     grepl("[0-9]+$", label) ~ stringr::str_replace(label, "[0-9]+$", ""),
                     # !is.na(fleet) | !is.na(age) ~ stringr::str_replace(label, paste(c(paste(".", fleet_names, "[0-9]+", sep = ""), ".Age[0-9]+.[a-z]+", "[0-9]+$"), collapse = "|"), ""),
@@ -1484,7 +1497,7 @@ convert_output <- function(
               ) |>
               dplyr::mutate(module_name = names(extract))
           }
-          if (any(grepl(paste(fleet_names, collapse = "|"), unique(df2$label)))) {
+          if (any(grepl(paste(fleet_names, collapse = "|"), tolower(unique(df2$label))))) {
             if ("age" %in% colnames(df2)) {
               df2 <- df2
             } else {
@@ -1493,6 +1506,7 @@ convert_output <- function(
             }
             df2 <- df2 |>
               dplyr::mutate(
+                label = tolower(label),
                 fleet = dplyr::case_when(
                   grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(label, paste(fleet_names, collapse = "|")),
                   # grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(ex, paste(fleet_names,collapse="|")),
@@ -1506,12 +1520,20 @@ convert_output <- function(
                 ),
                 # area = dplyr::case_when(is.na(age) & grepl("[0-9]+$", label) ~ stringr::str_extract(label, "[0-9]+$"), # this is not age
                 #                         TRUE ~ NA),
+                # Uncomment when units gets added in
+                # units = dplyr::case_when(
+                #   grepl(paste(units, collapse = "|"), label) ~ stringr::str_extract(label, paste(units, collapse = "|")),
+                #   TRUE ~ NA
+                # ),
                 label = dplyr::case_when(
-                  grepl("_age[0-9]_", label) & grepl(paste("_", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_age[0-9]+_", fleet_names, sep = "", collapse = "|"), ""),
-                  grepl("_age[0-9]_", label) ~ stringr::str_replace(label, "_age[0-9]+_", ""),
-                  grepl(paste(fleet_names, ".", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(fleet_names, ".", sep = "", collapse = "|"), ""),
+                  # grepl("_age[0-9]_", label) & grepl(paste("_", fleet_names, "[0-9]+", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_age[0-9]+_", fleet_names, "[0-9]+", sep = "", collapse = "|"), ""),
+                  # grepl("_age[0-9]_", label) & grepl(paste("_", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_age[0-9]+_", fleet_names, sep = "", collapse = "|"), ""),
+                  # grepl("_age[0-9]_", label) ~ stringr::str_replace(label, "_age[0-9]+_", ""),
+                  # grepl(paste0(rep(fleet_names, times = length(units)), ".", units, collapse = "|"), label) ~ stringr::str_replace(label, paste0(".", rep(fleet_names, times = length(units)), ".", units, collapse = "|"), ""),
+                  grepl(paste("_", fleet_names, "[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_", fleet_names, "[0-9]+$", sep = "", collapse = "|"), ""),
                   grepl(paste("_", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_", fleet_names, sep = "", collapse = "|"), ""),
-                  grepl(paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), ""),
+                  grepl(paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(fleet_names, sep = "", collapse = "|"), ""),
+                  grepl(paste(fleet_names, ".", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(fleet_names, ".", sep = "", collapse = "|"), ""),
                   grepl(paste(".", fleet_names, "d[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "d[0-9]+$", sep = "", collapse = "|"), ""),
                   grepl(paste(".", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, sep = "", collapse = "|"), ""),
                   grepl(paste(fleet_names, "[0-9]+$", collapse = "|"), label) ~ stringr::str_replace(label, "[0-9]+$", ""),
@@ -1539,10 +1561,7 @@ convert_output <- function(
             df2 <- df2 |>
               dplyr::mutate(
                 fleet = ifelse(any(colnames(df2) %in% c("fleet")), fleet, NA),
-                age = dplyr::case_when(
-                  any(colnames(df2) %in% c("age")) ~ age,
-                  TRUE ~ NA
-                ),
+                age = ifelse(any(colnames(df2) %in% c("age")), fleet, NA),
                 label = label,
                 module_name = names(extract)
               )
@@ -1593,12 +1612,16 @@ convert_output <- function(
     # VIRG, INIT, TIME, FORE
     out_new <- Reduce(rbind, out_list) |>
       # Add era as factor into BAM conout
-      dplyr::mutate(era = dplyr::case_when(
-        year < dat$parms$styr ~ "init",
-        year >= dat$parms$styr & year <= dat$parms$endyr ~ "time",
-        year > dat$parms$endyr ~ "fore",
-        TRUE ~ NA
-      ))
+      dplyr::mutate(
+        era = dplyr::case_when(
+          year < dat$parms$styr ~ "init",
+          year >= dat$parms$styr & year <= dat$parms$endyr ~ "time",
+          year > dat$parms$endyr ~ "fore",
+          TRUE ~ NA
+        ),
+        # Replace all periods with underscore if naming convention is different
+        label = tolower(label)
+      )
 
     #### WHAM ----
   } else if (model == "wham") {
@@ -1660,7 +1683,10 @@ convert_output <- function(
     var_names_sheet <- openxlsx::read.xlsx(con_file)
   } else if (tolower(model) == "bam") {
     con_file <- system.file("resources", "bam_var_names.xlsx", package = "asar", mustWork = TRUE)
-    var_names_sheet <- openxlsx::read.xlsx(con_file)
+    var_names_sheet <- openxlsx::read.xlsx(con_file) |>
+      dplyr::mutate(
+        label = tolower(label)
+      )
   } else if (tolower(model) == "fims") {
     con_file <- system.file("resources", "fims_var_names.xlsx", package = "asar", mustWork = TRUE)
     var_names_sheet <- openxlsx::read.xlsx(con_file)
