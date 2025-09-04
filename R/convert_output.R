@@ -289,12 +289,15 @@ convert_output <- function(
             # remove first row - naming
             df1 <- extract[-1, ]
             # Find first row without NAs = headers
-            # temp fix for catch df
-            # if (parm_sel == "CATCH") {
-            #   df2 <- df1[-1, ]
-            # } else {
+            # temp fix for catch df - I have only seen this issue for Hake example
+            if (any(is.na(df1[1,])) & parm_sel == "CATCH") {
+              df1 <- df1[-1, ]
+              cols_to_keep <- which(sapply(df1, function(x) !all(is.na(x))))
+              df1 <- df1 |> dplyr::select(dplyr::all_of(c(names(cols_to_keep))))
+              df2 <- df1
+            } else {
               df2 <- df1[stats::complete.cases(df1), ]
-            # }
+            }
             if (any(c("#") %in% df2[, 1])) {
               full_row <- which(apply(df1, 1, function(row) is.na(row) | row == " " | row == "-" | row == "#"))[1]
               df1 <- df1[-full_row[1], ]
