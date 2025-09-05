@@ -4,7 +4,7 @@
 \alias{convert_output}
 \title{Convert Output}
 \usage{
-convert_output(file, model, fleet_names = NULL, save_dir = NULL)
+convert_output(file, model = NULL, fleet_names = NULL, save_dir = NULL)
 }
 \arguments{
 \item{file}{Assessment model output file path}
