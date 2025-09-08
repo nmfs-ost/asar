@@ -28,6 +28,7 @@ Imports:
     forstringr,
     fs,
     glue,
+    httr,
     naniar,
     officer,
     openxlsx,
