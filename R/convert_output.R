@@ -1646,6 +1646,10 @@ convert_output <- function(
     } else {
       out_new <- file
     }
+    # TEMPORARY -- add in era to df
+    if ("era" %notin% colnames(out_new)) {
+      out_new$era <- NA
+    }
   } else {
     cli::cli_abort(c(
       message = "Output file not compatible.",
