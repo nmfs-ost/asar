@@ -1686,17 +1686,17 @@ convert_output <- function(
     ) |>
     suppressWarnings()
   if (tolower(model) == "ss3") {
-    con_file <- system.file("resources", "ss3_var_names.xlsx", package = "asar", mustWork = TRUE)
-    var_names_sheet <- openxlsx::read.xlsx(con_file)
+    con_file <- system.file("resources", "ss3_var_names.csv", package = "asar", mustWork = TRUE)
+    var_names_sheet <- utils::read.csv(con_file)
   } else if (tolower(model) == "bam") {
-    con_file <- system.file("resources", "bam_var_names.xlsx", package = "asar", mustWork = TRUE)
-    var_names_sheet <- openxlsx::read.xlsx(con_file) |>
+    con_file <- system.file("resources", "bam_var_names.csv", package = "asar", mustWork = TRUE)
+    var_names_sheet <- utils::read.csv(con_file) |>
       dplyr::mutate(
         label = tolower(label)
       )
   } else if (tolower(model) == "fims") {
-    con_file <- system.file("resources", "fims_var_names.xlsx", package = "asar", mustWork = TRUE)
-    var_names_sheet <- openxlsx::read.xlsx(con_file)
+    con_file <- system.file("resources", "fims_var_names.csv", package = "asar", mustWork = TRUE)
+    var_names_sheet <- utils::read.csv(con_file)
   }
   if (file.exists(con_file)) {
     out_new <- dplyr::left_join(out_new, var_names_sheet, by = c("module_name", "label")) |>
