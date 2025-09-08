@@ -22,11 +22,13 @@ Depends:
     R (>= 4.1.0)
 Imports: 
     cli,
+    data.table,
     dplyr,
     flextable,
     forstringr,
     fs,
     glue,
+    httr,
     naniar,
     officer,
     openxlsx,

@@ -32,7 +32,7 @@
 #' }
 convert_output <- function(
     file,
-    model,
+    model = NULL,
     fleet_names = NULL,
     save_dir = NULL) {
   # check if entered save_dir exists so doesn't waste user time finding this out at the end
@@ -52,75 +52,90 @@ convert_output <- function(
   #### out_new ####
   # Blank dataframe and set up to mold output into
   out_new <- data.frame(
+    module_name = NA,
     label = NA,
     time = NA,
     era = NA,
     year = NA,
-    fleet = NA,
-    area = NA,
+    month = NA,
     season = NA,
     subseason = NA,
-    age = NA,
-    sex = NA,
-    growth_pattern = NA,
-    len_bins = NA,
+    birthseas = NA,
     initial = NA,
     estimate = NA,
+    # units = NA,
     uncertainty = NA,
     uncertainty_label = NA,
     likelihood = NA,
-    gradient = NA,
-    estimated = NA, # TRUE/FALSE
-    module_name = NA,
+    fleet = NA,
+    platoon = NA,
+    area = NA,
+    age = NA,
+    sex = NA,
+    growth_pattern = NA,
+    # gradient = NA,
+    # estimated = NA, # TRUE/FALSE
     # Additional factors from SS3
     bio_pattern = NA,
-    birthseas = NA,
     settlement = NA,
     morph = NA,
     # beg/mid = NA, # need to identify df where this is applicable
     type = NA,
     factor = NA,
-    platoon = NA,
-    month = NA,
-    sexes = NA,
+    # sexes = NA, # remove sexes to see how it impacts the results
     part = NA,
-    bin = NA,
     kind = NA,
     nsim = NA,
+    # TODO: add age_a and len_bins into just bins - add the age value in age
+    bin = NA,
     age_a = NA,
-    count = NA,
-    morph = NA
+    len_bins = NA,
+    count = NA
   )
   out_new <- out_new[-1, ]
 
-  if (!exists("file")) {
-    cli::cli_abort(c(message = "Missing `file`."))
-  }
-
-  if (!exists("model")) {
-    cli::cli_abort(c(message = "Missing `model`."))
-  }
-
-  # check if file exists
-  if (!file.exists(file)) {
-    cli::cli_abort(c(
-      message = "`file` not found.",
-      "i" = "`file` entered as {file}"
-    ))
+  # Check if path links to a valid file
+  url_pattern <- "^(https?|ftp|file):\\/\\/[-A-Za-z0-9+&@#\\/%?=~_|!:,.;]*[-A-Za-z0-9+&@#\\/%=~_|]$"
+  if (grepl(url_pattern, file)) {
+    check <- httr::HEAD(file)
+    url <- httr::status_code(check)
+    if(url == 404) cli::cli_abort(c(message = "Invalid URL."))
+  } else {
+    if (!file.exists(file)) {
+      cli::cli_abort(c(
+        message = "`file` not found.",
+        "i" = "`file` entered as {file}"
+      ))
+    }
   }
 
   # Recognize model through file extension
-  # Uncomment later
-  # model <- switch(
-  #   stringr::str_extract(file, "\\.([^.]+)$"),
-  #   ".sso" = "ss3",
-  #   ".rdat" = "bam",
-  #   "wham"
-  # )
+  if (is.null(model)) {
+    model <- switch(
+      stringr::str_extract(file, "\\.([^.]+)$"),
+      ".sso" = {
+        cli::cli_alert_info("Processing Stock Synthesis output file...")
+        "ss3"
+      },
+      ".rdat" = {
+        cli::cli_alert_info("Processing BAM output file...")
+        "bam"
+      },
+      ".rds" = {
+        cli::cli_alert_info("Processing WHAM output file...")
+        "wham"
+      },
+      ".RDS" = {
+        cli::cli_alert_info("Processing FIMS output file...")
+        "fims"
+      },
+      cli::cli_abort("Unknown file type. Please indicate model.")
+    )
+  }
 
   #### SS3 ####
   # Convert SS3 output Report.sso file
-  if (model %in% c("ss3", "SS3")) {
+  if (tolower(model) == "ss3") {
     # read SS3 report file
     dat <- utils::read.table(
       file = file,
@@ -133,16 +148,21 @@ convert_output <- function(
       blank.lines.skip = FALSE
     )
     # Check SS3 model version
-    vers <- as.numeric(stringr::str_extract(dat[1, 1], "[0-9].[0-9][0-9]"))
+    vers <- stringr::str_extract(dat[1, 1], "[0-9].[0-9][0-9].[0-9][0-9].[0-9]")
     if (vers < 3.3) {
       cli::cli_abort("This function in its current state can not process the data.")
     }
 
     # Extract fleet names
     if (is.null(fleet_names)) {
-      fleet_info <- SS3_extract_df(dat, "Fleet")[-1, ]
-      fleet_names <- stats::setNames(fleet_info[[ncol(fleet_info)]], fleet_info[[1]])
+      fleet_names <- SS3_extract_fleet(dat, vers)
     }
+    # Output fleet names in console
+    cli::cli_alert_info("Identified fleet names:")
+    cli::cli_alert_info("{fleet_names}")
+
+    # Extract units
+    
 
     # Estimated and focal parameters to put into reformatted output df - naming conventions from SS3
     # Extract keywords from ss3 file
@@ -173,78 +193,7 @@ convert_output <- function(
       dplyr::filter(output == "Y") |>
       dplyr::pull(keyword)
 
-    # Below the parameters are grouped and narrowed down into priority to reach deadline.
-    # Other parameters will be developed into the future
-    # param_names <- c(
-    #   # "DEFINITIONS",
-    #   "DERIVED_QUANTITIES",
-    #   "ENVIRONMENTAL_DATA",
-    #   # "Input_Variance_Adjustment",
-    #   "LIKELIHOOD",
-    #   "MGparm_By_Year_after_adjustments",
-    #   # "MORPH_INDEXING",
-    #   "OVERALL_COMPS",
-    #   "PARAMETERS",
-    #   "Parm_devs_detail",
-    #   "BIOMASS_AT_AGE",
-    #   "BIOMASS_AT_LENGTH",
-    #   "CATCH",
-    #   "DISCARD_AT_AGE",
-    #   # "EXPLOITATION",
-    #   "CATCH_AT_AGE",
-    #   "F_AT_AGE",
-    #   "MEAN_SIZE_TIMESERIES",
-    #   "NUMBERS_AT_AGE",
-    #   "NUMBERS_AT_LENGTH",
-    #   "SPAWN_RECRUIT",
-    #   "SPAWN_RECR_CURVE",
-    #   # "SPR_SERIES",
-    #   "TIME_SERIES",
-    #   # "COMPOSITION_DATABASE",
-    #   # "DISCARD_SPECIFICATION",
-    #   "DISCARD_OUTPUT",
-    #   "INDEX_1",
-    #   "INDEX_2",
-    #   "INDEX_3",
-    #   "FIT_LEN_COMPS",
-    #   "FIT_AGE_COMPS",
-    #   "FIT_SIZE_COMPS",
-    #   "MEAN_BODY_WT_OUTPUT",
-    #   # "TAG_Recapture",
-    #   "AGE_SELEX",
-    #   "LEN_SELEX",
-    #   "selparm(Size)_By_Year_after_adjustments",
-    #   "selparm(Age)_By_Year_after_adjustments",
-    #   # "SELEX_database",
-    #   # "AGE_AGE_KEY",
-    #   # "AGE_LENGTH_KEY",
-    #   # "AGE_SPECIFIC_K",
-    #   # "BIOLOGY",
-    #   # "Biology_at_age_in_endyr",
-    #   "Growth_Parameters",
-    #   # "MEAN_BODY_WT(Begin)",
-    #   "MOVEMENT",
-    #   "Natural_Mortality",
-    #   # "RECRUITMENT_DIST",
-    #   # "Seas_Effects",
-    #   # "SIZEFREQ_TRANSLATION",
-    #   "Dynamic_Bzero",
-    #   # "GLOBAL_MSY",
-    #   "Kobe_Plot",
-    #   "SPR/YPR_Profile"
-    # )
-    # SS3 Groupings - manually done
-    # Notes on the side indicate those removed since the information is not needed
-    # std_set <- c(2,6,13,21,23,24,27,29,31,32,33,38,40,45,46,55) # Removing - 7
-    # std2_set <- c(4,8) # can I make it so it falls into above set?
-    # cha_set <- 53
-    # rand_set <- c(9,10,22,28,30,39)
-    # unkn_set <- c(3,25,34,48,51,52) # needs to be found and recategorized
-    # info_set <- c(1,5,15,26,35)
-    # aa.al_set <- c(11,12,14,16,17,18,19,20,36,37,47,49)
-    # nn_set <- c(41,42,43,44,50,54,56)
-
-    # First release will converted output for SS3 will only include the below parameters
+    # Group parameters base on table pattern
     std <- c(
       "DERIVED_QUANTITIES",
       "MGparm_By_Year_after_adjustments",
@@ -313,7 +262,12 @@ convert_output <- function(
       "settlement", "birthseas", "count",
       "kind"
     )
-    errors <- c("StdDev", "sd", "se", "SE", "cv", "CV", "std", "stddev")
+    
+    errors <- c(
+      "StdDev", "sd", "std", "stddev",
+      "se","SE", 
+      "cv", "CV"
+    )
 
     miss_parms <- c()
     out_list <- list()
@@ -323,7 +277,7 @@ convert_output <- function(
       parm_sel <- param_names[i]
       if (parm_sel %in% c(std, std2, cha, rand, aa.al)) {
         cli::cli_alert(glue::glue("Processing {parm_sel}"))
-        extract <- suppressMessages(SS3_extract_df(dat, parm_sel))
+        extract <- SS3_extract_df(dat, parm_sel)
         if (!is.data.frame(extract)) {
           miss_parms <- c(miss_parms, parm_sel)
           cli::cli_alert(glue::glue("Skipped {parm_sel}"))
@@ -335,8 +289,15 @@ convert_output <- function(
             # remove first row - naming
             df1 <- extract[-1, ]
             # Find first row without NAs = headers
-            # temp fix for catch df
-            df2 <- df1[stats::complete.cases(df1), ]
+            # temp fix for catch df - I have only seen this issue for Hake example
+            if (any(is.na(df1[1,])) & parm_sel == "CATCH") {
+              df1 <- df1[-1, ]
+              cols_to_keep <- which(sapply(df1, function(x) !all(is.na(x))))
+              df1 <- df1 |> dplyr::select(dplyr::all_of(c(names(cols_to_keep))))
+              df2 <- df1
+            } else {
+              df2 <- df1[stats::complete.cases(df1), ]
+            }
             if (any(c("#") %in% df2[, 1])) {
               full_row <- which(apply(df1, 1, function(row) is.na(row) | row == " " | row == "-" | row == "#"))[1]
               df1 <- df1[-full_row[1], ]
@@ -345,13 +306,16 @@ convert_output <- function(
             }
             # identify first row
             row <- df2[1, ]
+            # find row number that matches 'row'
+            rownum <- prodlim::row.match(as.vector(row), df1)
             # make row the header names for first df
             colnames(df1) <- row
-            # find row number that matches 'row'
-            rownum <- prodlim::row.match(row, df1)
             # Subset data frame
             df3 <- df1[-c(1:rownum), ]
             colnames(df3) <- tolower(row)
+            # Remove any leftover NA columns if still present
+            NA_cols <- which(sapply(df3, function(x) all(is.na(x))))
+            if (length(NA_cols) > 0) df3 <- df3[ , -NA_cols]
             # Remove suprper + use from df
             if (any(grepl("suprper|use", colnames(df3)))) {
               df3 <- df3 |>
@@ -978,7 +942,8 @@ convert_output <- function(
                   ),
                   # fix remaining labels
                   label = ifelse(grepl("_GP$", label), stringr::str_remove(label, "_GP$"), label),
-                  label = ifelse(grepl("_Fem|_Mal", label), stringr::str_remove(label, "_Fem$|_Mal$"), label)
+                  label = ifelse(grepl("_Fem|_Mal", label), stringr::str_remove(label, "_Fem$|_Mal$"), label),
+                  module_name = parm_sel
                 )
               # match to out_new
               df4[setdiff(tolower(names(out_new)), tolower(names(df4)))] <- NA
@@ -1056,7 +1021,11 @@ convert_output <- function(
             colnames(df3) <- tolower(row)
 
             # aa.al names
-            naming <- c("biomass", "discard", "catch", "f", "mean_size", "numbers", "sel", "mean_body_wt", "natural_mortality")
+            naming <- c(
+              "biomass", "discard", "catch",
+              "f", "mean_size", "numbers", "sel",
+              "mean_body_wt", "natural_mortality"
+            )
             if (stringr::str_detect(tolower(parm_sel), paste(naming, collapse = "|"))) {
               label <- stringr::str_extract(tolower(parm_sel), paste(naming, collapse = "|"))
               if (length(label) > 1) cli::cli_alert_warning("Length of label is > 1.")
@@ -1092,8 +1061,19 @@ convert_output <- function(
             # Change all columns to chatacters to a avoid issues in pivoting - this will be changed in final df anyway
             df3 <- df3 |>
               dplyr::mutate(dplyr::across(tidyselect::everything(), as.character))
+            # Set all columns after factors as numeric
+            # Identify last factor col
+            other_factors <- c(
+              "bio_pattern", "birthseas", 
+              "settlement", "morph", "beg/mid", 
+              "type", "label", "factor", 
+              "platoon", "month", 
+              "sexes", "part", "bin", "kind"
+            )
+            num_cols <- setdiff(colnames(df3), c(factors, other_factors))
+            df3 <- df3 |>
+              dplyr::mutate(dplyr::across(dplyr::all_of(num_cols), as.numeric))
             # Pivot table long
-            other_factors <- c("bio_pattern", "birthseas", "settlement", "morph", "beg/mid", "type", "label", "factor", "platoon", "month", "sexes", "part", "bin", "kind")
             df4 <- df3 |>
               tidyr::pivot_longer(
                 cols = -intersect(c(factors, errors, other_factors), colnames(df3)),
@@ -1107,6 +1087,24 @@ convert_output <- function(
             if (any(grepl("morph", colnames(df4)))) {
               df4 <- df4 |>
                 dplyr::rename(growth_pattern = morph)
+            }
+            # Check if likelihood is in the df
+            if (any(grepl("like", colnames(df4)))) {
+              df4 <- df4 |>
+                dplyr::rename(likelihood = like)
+            }
+            # Check for error in the df
+            if (any(grepl(paste0("^", errors, "$", collapse = "|"), colnames(df4)))) {
+              error_col <- colnames(df4)[grep(paste0("^", errors, "$", collapse = "|"), colnames(df4))]
+              if (length(error_col) > 1) {
+                cli::cli_alert("Multiple error columns present. Error will not be added to module.")
+              } else {
+                df4 <- df4 |>
+                  dplyr::mutate(
+                    uncertainty_label = tolower(unique(error_col)),
+                    uncertainty = df4[[error_col]]
+                  )
+              } 
             }
             if ("label" %in% colnames(df4) & "factor" %in% colnames(df4)) {
               df4 <- df4 |>
@@ -1172,7 +1170,7 @@ convert_output <- function(
           dplyr::contains("log.F.dev.") & dplyr::contains(".D"))
       # fleets_parm_D <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+(?=\\.D)")
       fleets_parm <- stringr::str_extract(as.vector(colnames(parm)), "(?<=log\\.F\\.dev\\.)\\w+")
-      fleets <- unique(c(fleets_ind, fleets_land, fleets_disc, fleets_parm))
+      fleets <- unique(tolower(c(fleets_ind, fleets_land, fleets_disc, fleets_parm)))
       fleet_names <- fleets[!is.na(fleets)]
       if (any(is.na(fleet_names))) {
         cli::cli_abort("No fleet names found in dataframe. Please indicate the abbreviations of fleet names using fleet_names arg.")
@@ -1182,11 +1180,15 @@ convert_output <- function(
     #   # if (any(is.na(fleet_names))) {
     #   fleet_names <- fleet_names
     # }
+    # Output fleet names in console
+    cli::cli_alert_info("Identified fleet names:")
+    cli::cli_alert_info("{fleet_names}")
     # Create list for morphed dfs to go into (for rbind later)
     out_list <- list()
 
     factors <- c("year", "fleet", "fleet_name", "age", "sex", "area", "seas", "season", "time", "era", "subseas", "subseason", "platoon", "platoo", "growth_pattern", "gp", "nsim", "age_a")
     errors <- c("StdDev", "sd", "se", "SE", "cv", "CV", "stddev")
+    units <- c("mt", "lbs", "eggs")
     # argument for function when model == BAM
     # fleet_names <- c("cl", "cL","cp","mrip","ct", "hb", "HB", "comm","Mbft","CVID")
 
@@ -1252,16 +1254,21 @@ convert_output <- function(
                   ) |>
                   dplyr::mutate(
                     module_name = names(extract),
-                    label = names(extract[[1]][1]),
-                    # label_init = names(extract[[1]][i]),
+                    label = names(extract[[1]][i]),
                     fleet = dplyr::case_when(
-                      grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(label, paste(fleet_names, collapse = "|")),
+                      grepl(paste(fleet_names, collapse = "|"), tolower(label)) ~ stringr::str_extract(tolower(label), paste(fleet_names, collapse = "|")),
                       TRUE ~ NA
                     ), # stringr::str_extract(module_name, "(?<=\\.)\\w+(?=\\.)"),
                     label = dplyr::case_when(
-                      is.na(fleet) ~ names(extract[[1]][1]),
-                      TRUE ~ stringr::str_replace(label, paste(".", fleet_names, sep = "", collapse = "|"), "")
+                      grepl(paste0(fleet_names, collapse = "|"), tolower(label)) ~ stringr::str_replace(tolower(label), paste0(".", fleet_names, collapse = "|"), ""),
+                      TRUE ~ names(extract[[1]][i])
                     )
+                    # label_init = names(extract[[1]][i]),
+                    
+                    # label = dplyr::case_when(
+                    #   is.na(fleet) ~ names(extract[[1]][i]),
+                    #   TRUE ~ stringr::str_replace(tolower(label), paste(".", fleet_names, sep = "", collapse = "|"), "")
+                    # )
                   ) # stringr::str_replace(module_name, "\\.[^.]+\\.", "."))
                 df2[setdiff(tolower(names(out_new)), tolower(names(df2)))] <- NA
                 extract_list[[names(extract[[1]][i])]] <- df2
@@ -1304,10 +1311,11 @@ convert_output <- function(
                   ),
                   label = dplyr::case_when(
                     # below will only work properly if there are age varying parameters without fleet names in it
-                    module_name == "parms" & !grepl(paste(".", fleet_names, sep = "", collapse = "|"), label) ~ label,
-                    grepl(paste(".", fleet_names, "d[0-9]+", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "d[0-9]+", sep = "", collapse = "|"), ".d"),
-                    grepl(paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "[0-9]+", sep = "", collapse = "|"), ""),
-                    grepl(paste(".", fleet_names, "$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, sep = "", collapse = "|"), ""),
+                    module_name == "parms" & !grepl(paste(".", fleet_names, sep = "", collapse = "|"), tolower(label)) ~ label,
+                    grepl(paste(".", fleet_names, "d[0-9]+", sep = "", collapse = "|"), tolower(label)) ~ stringr::str_replace(tolower(label), paste(".", fleet_names, "d[0-9]+", sep = "", collapse = "|"), ".d"),
+                    grepl(paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), tolower(label)) ~ stringr::str_replace(tolower(label), paste(fleet_names, sep = "", collapse = "|"), ""), # "[0-9]+",
+                    grepl(paste(".", fleet_names, "$", sep = "", collapse = "|"), tolower(label)) ~ stringr::str_replace(tolower(label), paste(".", fleet_names, sep = "", collapse = "|"), ""),
+                    grepl(paste(".", fleet_names, ".d$", sep = "", collapse = "|"), tolower(label)) ~ stringr::str_replace(tolower(label), paste(".", fleet_names, sep = "", collapse = "|"), ""),
                     grepl(".Age[0-9]+.[a-z]+", label) ~ stringr::str_replace(label, ".Age[0-9]+.[a-z]+", ""),
                     grepl("[0-9]+$", label) ~ stringr::str_replace(label, "[0-9]+$", ""),
                     # !is.na(fleet) | !is.na(age) ~ stringr::str_replace(label, paste(c(paste(".", fleet_names, "[0-9]+", sep = ""), ".Age[0-9]+.[a-z]+", "[0-9]+$"), collapse = "|"), ""),
@@ -1492,7 +1500,7 @@ convert_output <- function(
               ) |>
               dplyr::mutate(module_name = names(extract))
           }
-          if (any(grepl(paste(fleet_names, collapse = "|"), unique(df2$label)))) {
+          if (any(grepl(paste(fleet_names, collapse = "|"), tolower(unique(df2$label))))) {
             if ("age" %in% colnames(df2)) {
               df2 <- df2
             } else {
@@ -1501,6 +1509,7 @@ convert_output <- function(
             }
             df2 <- df2 |>
               dplyr::mutate(
+                label = tolower(label),
                 fleet = dplyr::case_when(
                   grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(label, paste(fleet_names, collapse = "|")),
                   # grepl(paste(fleet_names, collapse = "|"), label) ~ stringr::str_extract(ex, paste(fleet_names,collapse="|")),
@@ -1514,12 +1523,20 @@ convert_output <- function(
                 ),
                 # area = dplyr::case_when(is.na(age) & grepl("[0-9]+$", label) ~ stringr::str_extract(label, "[0-9]+$"), # this is not age
                 #                         TRUE ~ NA),
+                # Uncomment when units gets added in
+                # units = dplyr::case_when(
+                #   grepl(paste(units, collapse = "|"), label) ~ stringr::str_extract(label, paste(units, collapse = "|")),
+                #   TRUE ~ NA
+                # ),
                 label = dplyr::case_when(
-                  grepl("_age[0-9]_", label) & grepl(paste("_", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_age[0-9]+_", fleet_names, sep = "", collapse = "|"), ""),
-                  grepl("_age[0-9]_", label) ~ stringr::str_replace(label, "_age[0-9]+_", ""),
-                  grepl(paste(fleet_names, ".", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(fleet_names, ".", sep = "", collapse = "|"), ""),
+                  # grepl("_age[0-9]_", label) & grepl(paste("_", fleet_names, "[0-9]+", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_age[0-9]+_", fleet_names, "[0-9]+", sep = "", collapse = "|"), ""),
+                  # grepl("_age[0-9]_", label) & grepl(paste("_", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_age[0-9]+_", fleet_names, sep = "", collapse = "|"), ""),
+                  # grepl("_age[0-9]_", label) ~ stringr::str_replace(label, "_age[0-9]+_", ""),
+                  # grepl(paste0(rep(fleet_names, times = length(units)), ".", units, collapse = "|"), label) ~ stringr::str_replace(label, paste0(".", rep(fleet_names, times = length(units)), ".", units, collapse = "|"), ""),
+                  grepl(paste("_", fleet_names, "[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_", fleet_names, "[0-9]+$", sep = "", collapse = "|"), ""),
                   grepl(paste("_", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste("_", fleet_names, sep = "", collapse = "|"), ""),
-                  grepl(paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), ""),
+                  grepl(paste(".", fleet_names, "[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(fleet_names, sep = "", collapse = "|"), ""),
+                  grepl(paste(fleet_names, ".", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(fleet_names, ".", sep = "", collapse = "|"), ""),
                   grepl(paste(".", fleet_names, "d[0-9]+$", sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, "d[0-9]+$", sep = "", collapse = "|"), ""),
                   grepl(paste(".", fleet_names, sep = "", collapse = "|"), label) ~ stringr::str_replace(label, paste(".", fleet_names, sep = "", collapse = "|"), ""),
                   grepl(paste(fleet_names, "[0-9]+$", collapse = "|"), label) ~ stringr::str_replace(label, "[0-9]+$", ""),
@@ -1547,7 +1564,7 @@ convert_output <- function(
             df2 <- df2 |>
               dplyr::mutate(
                 fleet = ifelse(any(colnames(df2) %in% c("fleet")), fleet, NA),
-                age = ifelse(any(colnames(df2) %in% c("age")), age, NA),
+                age = ifelse(any(colnames(df2) %in% c("age")), fleet, NA),
                 label = label,
                 module_name = names(extract)
               )
@@ -1598,12 +1615,16 @@ convert_output <- function(
     # VIRG, INIT, TIME, FORE
     out_new <- Reduce(rbind, out_list) |>
       # Add era as factor into BAM conout
-      dplyr::mutate(era = dplyr::case_when(
-        year < dat$parms$styr ~ "init",
-        year >= dat$parms$styr & year <= dat$parms$endyr ~ "time",
-        year > dat$parms$endyr ~ "fore",
-        TRUE ~ NA
-      ))
+      dplyr::mutate(
+        era = dplyr::case_when(
+          year < dat$parms$styr ~ "init",
+          year >= dat$parms$styr & year <= dat$parms$endyr ~ "time",
+          year > dat$parms$endyr ~ "fore",
+          TRUE ~ NA
+        ),
+        # Replace all periods with underscore if naming convention is different
+        label = tolower(label)
+      )
 
     #### WHAM ----
   } else if (model == "wham") {
@@ -1619,6 +1640,18 @@ convert_output <- function(
     #### JABBA ####
   } else if (tolower(model) == "jabba") {
     cli::cli_abort("JABBA output not currently compatible.")
+  } else if (model == "fims") {
+    if (grepl(".RDS", file)) {
+      fims_output <- readRDS(file)
+    } else {
+      fims_output <- file
+    }
+    # TEMPORARY -- add in era to df
+    if ("era" %notin% colnames(fims_output)) {
+      fims_output$era <- NA
+    }
+    fims_output[setdiff(tolower(names(out_new)), tolower(names(fims_output)))] <- NA
+    out_new <- fims_output
   } else {
     cli::cli_abort(c(
       message = "Output file not compatible.",
@@ -1631,9 +1664,22 @@ convert_output <- function(
   # Combind DFs into one
   out_new <- out_new |>
     dplyr::mutate(
-      estimate = as.numeric(estimate),
-      uncertainty = as.numeric(uncertainty),
-      initial = as.numeric(initial),
+      estimate = dplyr::case_when(
+        is.na(estimate) ~ NA_real_,
+        TRUE ~ as.numeric(estimate)
+      ),
+      uncertainty = dplyr::case_when(
+        is.na(uncertainty) ~ NA_real_,
+        TRUE ~ as.numeric(uncertainty)
+      ),
+      initial = dplyr::case_when(
+        is.na(initial) ~ NA_real_,
+        TRUE ~ as.numeric(initial)
+      ),
+      year = dplyr::case_when(
+        is.na(year) ~ NA_real_,
+        TRUE ~ as.numeric(year)
+      ),
       # change era name to keep standard
       era = dplyr::case_when(
         era == "Main" ~ "time",
@@ -1642,11 +1688,17 @@ convert_output <- function(
     ) |>
     suppressWarnings()
   if (tolower(model) == "ss3") {
-    con_file <- system.file("resources", "ss3_var_names.xlsx", package = "asar", mustWork = TRUE)
-    var_names_sheet <- openxlsx::read.xlsx(con_file)
+    con_file <- system.file("resources", "ss3_var_names.csv", package = "asar", mustWork = TRUE)
+    var_names_sheet <- utils::read.csv(con_file)
   } else if (tolower(model) == "bam") {
-    con_file <- system.file("resources", "bam_var_names.xlsx", package = "asar", mustWork = TRUE)
-    var_names_sheet <- openxlsx::read.xlsx(con_file)
+    con_file <- system.file("resources", "bam_var_names.csv", package = "asar", mustWork = TRUE)
+    var_names_sheet <- utils::read.csv(con_file) |>
+      dplyr::mutate(
+        label = tolower(label)
+      )
+  } else if (tolower(model) == "fims") {
+    con_file <- system.file("resources", "fims_var_names.csv", package = "asar", mustWork = TRUE)
+    var_names_sheet <- utils::read.csv(con_file)
   }
   if (file.exists(con_file)) {
     out_new <- dplyr::left_join(out_new, var_names_sheet, by = c("module_name", "label")) |>
@@ -1675,6 +1727,5 @@ convert_output <- function(
     # assign(save_name, out_new)
     save(out_new, file = save_dir)
   }
-
   out_new
 } # close function
