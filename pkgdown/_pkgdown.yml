@@ -47,7 +47,7 @@ navbar:
 
     cheatsheet:
       text: Cheatsheet
-      href: assets/asar-cheatsheet.pdf
+      href: asar-cheatsheet.pdf
       icon: fa-solid fa-key
       # Make the link open in a new tab
       target: "_blank"
