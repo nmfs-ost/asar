@@ -10,20 +10,33 @@
 #' @examples
 #' \dontrun{
 #' add_authors(
-#'   author = c("Danny Phantom" = "SWFSC-LJCA", "John Snow" = "AFSC-ABL", "Jane Doe" = "NWFSC-SWA"),
+#'   authors = c("Danny Phantom" = "SWFSC-LJCA", "John Snow" = "AFSC-ABL", "Jane Doe" = "NWFSC-SWA"),
 #'   rerender_skeleton = FALSE
 #' )
 #' }
 add_authors <- function(
-    author,
+    authors,
     rerender_skeleton = FALSE,
     prev_skeleton = NULL) {
+  # TODO: convert error message into a warning and update workflow so that a missing affiliation ultimately yields a blank affiliation in the skeleton, as in `authors = NULL`. This will affect create_citation() and create_template() too.
   # Set author into proper format - will get overwritten later if rerender = T
-  author_names <- names(author)
-  # Get authors into readable format for ordering
-  authors <- data.frame(name = author_names, office = author, row.names = NULL)
+  author_names <- names(authors)
+  
+  if (!is.null(authors)) {
+    if (any(!nzchar(names(authors))) | is.null(names(authors))){
+    cli::cli_abort(c(
+    "x" = "{.var authors} format is incorrect.",
+    "i" = "Check that {.var authors} includes names and affiliations for all authors.",
+    "i" = "Example: Jane Doe at the NWFSC Seattle, Washington office is formatted as `c('Jane Doe'='NWFSC-SWA')`."
+     )
+    )
+   } 
+  }
 
-  # Check if rerender and if author is already added
+  # Get authors into readable format for ordering
+  authors <- data.frame(name = author_names, office = authors, row.names = NULL)
+
+  # Check if rerender and if authors is already added
   # TODO: add feature to allow removal of authors if there are ones that
   # are repeated from the previous skeleton and those named (not just
   # additions of new names)
@@ -58,7 +71,7 @@ add_authors <- function(
       author_prev
     )
 
-    setdiff(author_names, author_prev) -> author2
+    author2 <- setdiff(author_names, author_prev)
 
     # return if null
     if (is.null(author2)) {
@@ -92,12 +105,12 @@ add_authors <- function(
       authors <- authors |>
         dplyr::filter(name %in% author_to_add)
     }
-    for (i in 1:nrow(authors)) {
+    for (i in seq_along(authors)) {
       auth <- authors[i, ]
       aff <- affil |>
         dplyr::filter(affiliation == auth$office)
       if (is.na(auth$office) | auth$office == "") {
-        paste(
+        author_list[[i]] <- paste(
           "  ", "- name: ", "'", auth$name, "'", "\n",
           "  ", "  ", "affiliations:", "\n",
           "  ", "  ", "  ", "- name: '[organization]'", "\n", # "NOAA Fisheries ",
@@ -106,9 +119,9 @@ add_authors <- function(
           "  ", "  ", "  ", "  ", "state: '[state]'", "\n",
           "  ", "  ", "  ", "  ", "postal-code: '[postal code]'", "\n",
           sep = ""
-        ) -> author_list[[i]]
+        )
       } else {
-        paste(
+        author_list[[i]] <- paste(
           "  ", "- name: ", "'", auth$name, "'", "\n",
           "  ", "  ", "affiliations:", "\n",
           "  ", "  ", "  ", "- name: ", "'", aff$name, "'", "\n", # "NOAA Fisheries ",
@@ -118,14 +131,14 @@ add_authors <- function(
           "  ", "  ", "  ", "  ", "state: ", "'", aff$state, "'", "\n",
           "  ", "  ", "  ", "  ", "postal-code: ", "'", aff$postal.code, "'", "\n",
           sep = ""
-        ) -> author_list[[i]]
+        )
       }
     }
   } else {
     if (rerender_skeleton) {
       author_list <- NULL
     } else {
-      paste0(
+      author_list[[1]] <- paste0(
         "  ", "- name: ", "'FIRST LAST'", "\n",
         "  ", "  ", "affiliations: \n",
         "  ", "  ", "  ", "- name: 'NOAA Fisheries' \n",
@@ -134,9 +147,9 @@ add_authors <- function(
         "  ", "  ", "  ", "  ", "state: 'STATE' \n",
         "  ", "  ", "  ", "  ", "postal-code: 'POSTAL CODE' \n"
         # sep = " "
-      ) -> author_list[[1]]
+      )
     } # close rerender if else statement
   } # close if else statement
 
-  return(author_list)
+  author_list
 } # close function

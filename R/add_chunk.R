@@ -38,7 +38,7 @@ add_chunk <- function(
     ifelse(add_option & !is.null(chunk_option), paste0(paste0("#| ", chunk_option, collapse = " \n"), "\n"), "")
   )
   # if (add_option == TRUE) {
-  #   for (i in 1:length(chunk_option)) {
+  #   for (i in seq_along(chunk_option)) {
   #     chunk <- paste0(chunk, "#| ", chunk_option[i], " \n")
   #   }
   # }

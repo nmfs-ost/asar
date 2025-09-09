@@ -14,9 +14,9 @@
 #' share the same caption. To specify a different repeated column(s), use
 #' asar::export_split_tbls with your preferred essential_columns value.
 #'
+#' @inheritParams create_figures_doc
 #' @param tables_dir The location of the "tables" folder, which contains tables
 #' files.
-#' @inheritParams create_figures_doc
 #'
 #' @return Create a quarto document as part of a stock assessment outline with
 #' pre-loaded R chunks that add stock assessment tables from the nmfs-ost/stockplotr
@@ -45,9 +45,24 @@ create_tables_doc <- function(subdir = getwd(),
 
   # set landscape page width (in)
   landscape_pg_width <- 8
+  
+  # append table-producing code to non-empty tables doc, if it exists, vs. overwriting it
+  append <- FALSE
+  if (length(file.path(subdir, list.files(subdir, pattern = "tables.qmd"))) == 1) {
+    existing_tables_doc <- file.path(subdir, list.files(subdir, pattern = "tables.qmd"))
+    table_content <- readLines(existing_tables_doc) |>
+      suppressWarnings()
+    empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
+    if (!(empty_doc_text %in% table_content)){
+      append <- TRUE
+      cli::cli_alert_info("Tables doc will be appended to include tables in `tables_dir`.")
+    }
+  }
 
   # add header
-  tables_doc_header <- paste0("# Tables {#sec-tables}\n \n")
+  tables_doc_header <- ifelse(append,
+                              "",
+                              "# Tables {#sec-tables}\n \n")
 
   # add chunk that creates object as the directory of all rdas
   tables_doc_setup <- paste0(
@@ -86,7 +101,7 @@ create_tables_doc <- function(subdir = getwd(),
   # create sublist of only non-rda table files
   # non.rda_tab_list <- file_list[!grepl(".rda", file_list)]
 
-  # create two-chunk system to plot each rda figure
+  # create two-chunk system to plot each rda table
   create_tab_chunks <- function(tab = NA,
                                 tables_dir = getwd()) {
     # test whether table has been split
@@ -239,17 +254,23 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
       )
     }
 
-    return(paste0(
+    paste0(
       tables_doc_plot_setup1,
       tables_doc_plot_setup2
-    ))
+    )
   }
 
   if (length(rda_tab_list) == 0) {
     cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
       wrap = TRUE
     )
-    tables_doc <- "# Tables {#sec-tables}"
+    cli::cli_alert_info("For `create_tables_doc` to run properly, there must be:",
+                        wrap = TRUE)
+    cli::cli_ol(c("a 'tables' folder in {fs::path(tables_dir)}",
+                  ".rda files in the 'tables' folder")
+    )
+    tables_doc <- paste0("# Tables {#sec-tables}\n\n",
+                         "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables.")
   } else {
     cli::cli_alert_success("Found {length(final_rda_tab_list)} table{?s} in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
       wrap = TRUE
@@ -257,7 +278,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     # paste rda table code chunks into one object
     if (length(final_rda_tab_list) > 0) {
       rda_tables_doc <- ""
-      for (i in 1:length(final_rda_tab_list)) {
+      for (i in seq_along(final_rda_tab_list)) {
         tab_chunk <- create_tab_chunks(
           tab = final_rda_tab_list[i],
           tables_dir = tables_dir
@@ -268,7 +289,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     }
     # if (length(non.rda_tab_list) > 0){
     #   non.rda_tables_doc <- ""
-    #   for (i in 1:length(non.rda_tab_list)){
+    #   for (i in seq_along(non.rda_tab_list)){
     #     # remove file extension
     #     tab_name <- stringr::str_extract(non.rda_tab_list[i],
     #                                      "^[^.]+")
@@ -288,7 +309,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     #   message(paste0("Note: No table files in a non-rda format (e.g., .jpg, .png) were found in '",  fs::path(tables_dir, "tables") , "'."))
     # }
 
-    # combine tables_doc setup with figure chunks
+    # combine tables_doc setup with table chunks
     tables_doc <- paste0(
       tables_doc_header,
       tables_doc_setup,
@@ -312,6 +333,35 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
         "08_tables.qmd"
       )
     ),
-    append = FALSE
+    append = append
   )
+  
+  # Read through tables doc and warn about identical labels
+  new_tables_doc <- readLines(
+    ifelse(
+      any(grepl("_tables.qmd$", list.files(subdir))),
+      fs::path(subdir, list.files(subdir)[grep("_tables.qmd", list.files(subdir))]),
+      fs::path(subdir, "08_tables.qmd")
+    )
+  ) |>
+    suppressWarnings() |>
+    as.list()
+  
+  label_line_nums <- grep("\\label", new_tables_doc)
+  labels <- new_tables_doc[label_line_nums]
+  names(labels) <- label_line_nums
+  labels <- lapply(labels, function(x) {
+    gsub("#\\| label: ", "", x)
+  })
+  
+  repeated_labels <- labels[duplicated(labels)]
+  repeated_labels <- as.vector(unlist(repeated_labels))
+  
+  if (length(repeated_labels) > 0){
+    cli::cli_alert_danger("Tables doc contains chunks with identical labels: {repeated_labels}.")
+    cli::cli_alert_info("Open tables doc and check for:")
+    cli::cli_bullets(c("*" = "Identical, repeated tables",
+                       "*" = "Different tables with identical labels"))
+    cli::cli_alert_warning("Tables doc will not render if chunks have identical labels.")
+  }
 }

@@ -191,5 +191,5 @@ render_lg_table <- function(report_flextable,
     )
   )
 
-  return(num_tables)
+  num_tables
 }

@@ -6,6 +6,7 @@ Bolded
 CMD
 CTAN
 Canelón
+DocumentMetadata
 Drs
 FIMS
 Hardcoding
@@ -13,9 +14,11 @@ LaTex
 Lifecycle
 Mainpulate
 NEFSC
+NMFS
 NOAA
 NWFSC
 ORCID
+OST
 Overleaf's
 PCFL
 PFMC's
@@ -33,7 +36,6 @@ SWFSC
 Strikethrough
 TLDR
 TinyTeX
-YAML
 amak
 asis
 bam
@@ -44,15 +46,11 @@ cha
 conf
 cpue
 csv
-customizable
 cv
-dir
 documentclass
 docx
 dplyr
 ect
-eval
-filepath
 fims
 flextable
 frac
@@ -74,7 +72,6 @@ noaa
 nsim
 ost
 overline
-param
 params
 petrale
 png
@@ -87,13 +84,13 @@ rdas
 rdat
 rda’s
 readLines
-reproducibility
 roboto
 rowid
 saltatrix
 sd
 se
 snakecase
+socio
 spr
 ss
 sso
@@ -102,6 +99,7 @@ str
 stringr
 subfiles
 subseason
+tagpdf
 tbl
 tbls
 tex

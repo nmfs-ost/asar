@@ -190,7 +190,7 @@ add_alttext <- function(
   img_path <- file.path(dir, gsub(".tex", "_files/figure-pdf", x))
   if (dir.exists(img_path)) {
     imgs <- list.files(img_path)
-    for (i in 1:length(imgs)) {
+    for (i in seq_along(imgs)) {
       img_file <- imgs[i]
       if (grepl(".png", img_file)) next
       img_file_con <- gsub(".pdf", ".png", img_file)
@@ -249,9 +249,24 @@ add_alttext <- function(
   cli::cli_alert_success("______Alternative text added to tex file.______")
   # Render the .tex file after edits
   if (compile) {
+    # Find name for the previously rendered report
+    prev_report_name <- list.files(dir, pattern = ".pdf")
+    if (length(prev_report_name) > 1) {
+      cli::cli_alert_info("______Multiple pdfs found in directory, defaulting to the tex file name______")
+      pdf_report_name <- NULL
+    }
+    pdf_report_name <- ifelse(is.null(rename), prev_report_name, glue::glue("{rename}.pdf"))
+    if (length(prev_report_name) == 0) {
+      cli::cli_alert_info("______No previous report found, defaulting to the tex file name______")
+      pdf_report_name <- NULL
+    }
+    # Render the report
     cli::cli_alert_info("______Compiling in progress - This can take a while...______")
     # test if this can be done when skeleton is in different folder than the wd
-    tinytex::lualatex(file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)))
+    tinytex::lualatex(
+      file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)),
+      pdf_file = pdf_report_name
+    )
     cli::cli_alert_success("______Compiling finished______")
   }
 }

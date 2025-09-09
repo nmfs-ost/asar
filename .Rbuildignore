@@ -13,3 +13,4 @@
 ^inst/glossary/raw_acronym_lists$
 ^\.octocov\.yml$
 ^\.devcontainer$
+^CODE_OF_CONDUCT\.md$

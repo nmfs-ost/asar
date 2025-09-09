@@ -15,7 +15,7 @@ navbar:
     issue:
       text: Issues
       icon: fas fa-question-circle fa-lg
-      href: https://github.com/nmfs-fish-tools/pkgdownTemplate/issues/
+      href: https://github.com/nmfs-ost/asar/issues
 
     articles:
       text: Articles
@@ -35,6 +35,8 @@ navbar:
         href: articles/convert_output_details.html
       - text: Frequently Asked Questions (FAQs)
         href: articles/faqs.html
+      - text: Captions/alt text in Alternative Workflows
+        href: articles/caps-alttext-alt-workflows.html
 
     documents:
       text: References
@@ -43,10 +45,20 @@ navbar:
       - text: Petrale Example
         href: SAR_USWC_Petrale_sole_skeleton.pdf
 
+    cheatsheet:
+      text: Cheatsheet
+      href: assets/asar-cheatsheet.pdf
+      icon: fa-solid fa-key
+      # Make the link open in a new tab
+      target: "_blank"
+      
     tutorial:
       text: Tutorial
+      icon: fa-regular fa-map
       href: https://connect.fisheries.noaa.gov/asar_tutorial/
-
+      # Make the link open in a new tab
+      target: "_blank"
+      
   structure:
-    left: [home, reference, sourcecode, tutorial, articles, documents, news]
+    left: [home, reference, sourcecode, cheatsheet, tutorial, articles, documents, news]
     right: [search, issue, github]

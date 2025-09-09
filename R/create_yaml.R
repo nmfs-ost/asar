@@ -80,7 +80,7 @@ create_yaml <- function(
     # add authors
     # if (any(!is.null(author))) {
     # add_authors <- NULL
-    # for (i in 1:length(author_list)) {
+    # for (i in seq_along(author_list)) {
     #   toad <- paste(author_list[[i]], sep = ",")
     #   add_authors <- paste0(add_authors, toad) # -> add_authors
     # }
@@ -143,7 +143,7 @@ create_yaml <- function(
           print("Please define ALL parameter names (param_names) and values (param_values).")
         } else {
           add_params <- NULL
-          for (i in 1:length(param_names)) {
+          for (i in seq_along(param_names)) {
             toad <- paste("  ", " ", param_names[i], ": ", "'", param_values[i], "'", sep = "")
             add_params <- c(add_params, toad)
           } # close loop
@@ -183,7 +183,7 @@ create_yaml <- function(
     )
     # Add authors
     add_authors <- NULL
-    for (i in 1:length(author_list)) {
+    for (i in seq_along(author_list)) {
       toad <- paste(author_list[[i]], sep = ",")
       add_authors <- paste0(add_authors, toad) # -> add_authors
     }
@@ -263,7 +263,7 @@ create_yaml <- function(
           print("Please define ALL parameter names (param_names) and values (param_values).")
         } else {
           add_params <- NULL
-          for (i in 1:length(param_names)) {
+          for (i in seq_along(param_names)) {
             toad <- paste("  ", " ", param_names[i], ": ", "'", param_values[i], "'", "\n", sep = "")
             add_params <- paste0(add_params, toad)
           } # close loop
@@ -288,6 +288,11 @@ create_yaml <- function(
     bib_all <- paste0("  ", "- ", bib_file, "\n", collapse = "")
     bib <- glue::glue("{bib} \n {bib_all}")
     yaml <- paste(yaml, bib, sep = "")
+    # add citation style
+    yaml <- paste0(
+      yaml,
+      "csl: support_files/cjfas.csl\n"
+    )
     # }
     # add in else statement once a national .bib file is made
 

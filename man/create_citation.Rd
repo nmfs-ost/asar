@@ -5,13 +5,13 @@
 \title{Generate Citation for Stock Assessment Report}
 \usage{
 create_citation(
-  author = NULL,
+  authors = NULL,
   title = "[TITLE]",
   year = format(as.POSIXct(Sys.Date(), format = "\%YYYY-\%mm-\%dd"), "\%Y")
 )
 }
 \arguments{
-\item{author}{A character vector of author names with their accompanying
+\item{authors}{A character vector of author names with their accompanying
 affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
 is found in a database located in the package: \code{system.file("resources",
@@ -40,7 +40,7 @@ Generate Citation for Stock Assessment Report
 \dontrun{
 create_citation(
   title = "SA Report for Jellyfish",
-  author = c("John Snow", "Danny Phantom", "Patrick Star"),
+  authors = c("Danny Phantom" = "SWFSC-LJCA", "John Snow" = "AFSC-ABL", "Jane Doe" = "NWFSC-SWA"),
   year = 2024
 )
 }

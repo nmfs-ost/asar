@@ -12,10 +12,12 @@ create_template(
   species = "species",
   spp_latin = NULL,
   year = format(as.POSIXct(Sys.Date(), format = "\%YYYY-\%mm-\%dd"), "\%Y"),
-  author = NULL,
+  authors = NULL,
   file_dir = getwd(),
   title = "[TITLE]",
   model_results = NULL,
+  tables_dir = getwd(),
+  figures_dir = getwd(),
   spp_image = "",
   bib_file = "asar_references.bib",
   new_template = TRUE,
@@ -53,7 +55,7 @@ naming with a space and capitalize first letter(s). Example:
 \item{year}{Year the assessment is being conducted. Default
 is the year in which the report is rendered.}
 
-\item{author}{A character vector of author names with their accompanying
+\item{authors}{A character vector of author names with their accompanying
 affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
 is found in a database located in the package: \code{system.file("resources",
@@ -71,6 +73,12 @@ by this function. Default is the working directory.}
 in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
 
 \item{model_results}{Path to standard output file made from \code{asar::convert_output()}}
+
+\item{tables_dir}{The location of the "tables" folder, which contains tables
+files. Default is the working directory.}
+
+\item{figures_dir}{The location of the "figures" folder, which contains
+figures files. Default is the working directory.}
 
 \item{spp_image}{File path to the species' image if not
 using the image included in the project's repository.}
@@ -156,12 +164,14 @@ create_template(
   species = "Dover sole",
   spp_latin = "Microstomus pacificus",
   year = 2010,
-  author = c(
+  authors = c(
     "John Snow" = "AFSC",
     "Danny Phantom" = "NEFSC",
     "Patrick Star" = "SEFSC-ML"
   ),
   model_results = here::here("folder", "std_output.rda"),
+  figures_dir = here::here(),
+  tables_dir = here::here("tables_folder_location"),
   new_section = "an_additional_section",
   section_location = "after-introduction"
 )
@@ -173,7 +183,7 @@ asar::create_template(
   species = "Striped marlin",
   spp_latin = "Kajikia audax",
   year = 2018,
-  author = c("John Snow" = "AFSC"),
+  authors = c("John Snow" = "AFSC"),
   new_section = c("a_new_section", "another_new_section"),
   section_location = c("before-introduction", "after-introduction"),
   custom = TRUE,
@@ -188,7 +198,7 @@ create_template(
   species = "Bluefish",
   spp_latin = "Pomatomus saltatrix",
   year = 2010,
-  author = c("John Snow", "Danny Phantom", "Patrick Star"),
+  authors = c("John Snow", "Danny Phantom", "Patrick Star"),
   title = "Management Track Assessments Spring 2024",
   parameters = TRUE,
   param_names = c("region", "year"),

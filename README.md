@@ -117,7 +117,10 @@ This is a modularized template, there is no need to make any edits to the skelet
 -   Figures 
 -   Appendix
 
-Please leave an issue for any bugs or suggestions for improvement on the [Issues Page](https://github.com/nmfs-ost/asar/issues).
+## Contributions
+
+Have you identified any suggestions for improvement, bugs, or questions? Please see our [Contributing page](https://github.com/nmfs-ost/asar/blob/main/CONTRIBUTING.md) for more information on how to make effective contributions to `asar`.
+
 Thank you for helping us improve this package!
 
 ## Tips
@@ -131,6 +134,11 @@ This package is intended for use by stock assessment analysts across NOAA Fisher
 
 Feel free to report any issues with the package to the [GitHub Issues Page](https://github.com/nmfs-ost/asar/issues) and any questions regarding the package on the [GitHub discussion board](https://github.com/nmfs-ost/asar/discussions). Before you create an issue, please see the status at the beginning of this page to check if the package is operational or still in early stages of development.
 
+## Code of Conduct
+
+We as members, contributors, and leaders pledge to make participation in our community a harassment-free experience for everyone, regardless of age, body size, visible or invisible disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, caste, color, religion, or sexual identity and orientation. We pledge to act and interact in ways that contribute to an open, welcoming, diverse, inclusive, and healthy community.
+
+All contributors participating and contributing to the asar project are expected to adhere to the [Code of Conduct](https://github.com/nmfs-ost/asar/blob/main/CODE_OF_CONDUCT.md).
 
 ## Disclaimer
 

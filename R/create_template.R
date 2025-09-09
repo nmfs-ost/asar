@@ -19,7 +19,7 @@
 #' "Pomatomus saltatrix".
 #' @param year Year the assessment is being conducted. Default
 #' is the year in which the report is rendered.
-#' @param author A character vector of author names with their accompanying
+#' @param authors A character vector of author names with their accompanying
 #' affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
 #' would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
 #' is found in a database located in the package: \code{system.file("resources",
@@ -34,6 +34,10 @@
 #' @param title A custom title that is an alternative to the default title (composed
 #' in asar::create_title()). Example: "Management Track Assessments Spring 2024".
 #' @param model_results Path to standard output file made from `asar::convert_output()`
+#' @param tables_dir The location of the "tables" folder, which contains tables
+#' files. Default is the working directory.
+#' @param figures_dir The location of the "figures" folder, which contains
+#' figures files. Default is the working directory.
 #' @param spp_image File path to the species' image if not
 #' using the image included in the project's repository.
 #' @param bib_file File path to a .bib file used for citing references in
@@ -42,10 +46,10 @@
 #' will pull the last saved stock assessment report skeleton.
 #' Default is false.
 #' @param rerender_skeleton Re-create the "skeleton.qmd" in your outline when
-#'        changes to the main skeleton need to be made. This reproduces the
-#'        yaml, output (if changed), preamble quantities, and restructures your
-#'        sectioning in the skeleton if indicated. All files in your folder
-#'        will remain as is.
+#' changes to the main skeleton need to be made. This reproduces the
+#' yaml, output (if changed), preamble quantities, and restructures your
+#' sectioning in the skeleton if indicated. All files in your folder
+#' will remain as is.
 #' @param custom TRUE/FALSE; Build custom sectioning for the
 #' template, rather than the default for stock assessments in
 #' your region? Default is false.
@@ -93,11 +97,6 @@
 #' using the image included in the project's repository.
 #' @param bib_file File path to a .bib file used for citing references in
 #' the report
-#' @param rerender_skeleton Re-create the "skeleton.qmd" in your outline when
-#'        changes to the main skeleton need to be made. This reproduces the
-#'        yaml, output (if changed), preamble quantities, and restructures your
-#'        sectioning in the skeleton if indicated. All files in your folder
-#'        will remain as is.
 #' @param ... Additional arguments passed into functions used in create_template
 #' such as `create_citation()`, `format_quarto()`, `add_chunk()`, ect
 #'
@@ -123,12 +122,14 @@
 #'   species = "Dover sole",
 #'   spp_latin = "Microstomus pacificus",
 #'   year = 2010,
-#'   author = c(
+#'   authors = c(
 #'     "John Snow" = "AFSC",
 #'     "Danny Phantom" = "NEFSC",
 #'     "Patrick Star" = "SEFSC-ML"
 #'   ),
 #'   model_results = here::here("folder", "std_output.rda"),
+#'   figures_dir = here::here(),
+#'   tables_dir = here::here("tables_folder_location"),
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction"
 #' )
@@ -140,7 +141,7 @@
 #'   species = "Striped marlin",
 #'   spp_latin = "Kajikia audax",
 #'   year = 2018,
-#'   author = c("John Snow" = "AFSC"),
+#'   authors = c("John Snow" = "AFSC"),
 #'   new_section = c("a_new_section", "another_new_section"),
 #'   section_location = c("before-introduction", "after-introduction"),
 #'   custom = TRUE,
@@ -155,7 +156,7 @@
 #'   species = "Bluefish",
 #'   spp_latin = "Pomatomus saltatrix",
 #'   year = 2010,
-#'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
+#'   authors = c("John Snow", "Danny Phantom", "Patrick Star"),
 #'   title = "Management Track Assessments Spring 2024",
 #'   parameters = TRUE,
 #'   param_names = c("region", "year"),
@@ -178,10 +179,12 @@ create_template <- function(
     species = "species",
     spp_latin = NULL,
     year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
-    author = NULL,
+    authors = NULL,
     file_dir = getwd(),
     title = "[TITLE]",
     model_results = NULL,
+    tables_dir = getwd(),
+    figures_dir = getwd(),
     spp_image = "",
     bib_file = "asar_references.bib",
     new_template = TRUE,
@@ -259,7 +262,11 @@ create_template <- function(
 
     new_report_name <- paste0(
       type, "_",
-      ifelse(is.null(region), "", paste(gsub("(\\b[A-Z])[^A-Z]+", "\\1", region), "_", sep = "")),
+      ifelse(
+        is.null(region), 
+        "",  
+        paste(toupper(substr(strsplit(region, " ")[[1]], 1, 1)), collapse = "")
+        ),
       ifelse(is.null(species), "species", stringr::str_replace_all(species, " ", "_")), "_",
       "skeleton.qmd"
     )
@@ -280,7 +287,7 @@ create_template <- function(
       !is.null(region),
       paste0(
         report_name,
-        gsub("(\\b[A-Z])[^A-Z]+", "\\1", region),
+        toupper(stringr::str_c(stringr::str_extract_all(region, "\\b[A-Za-z]")[[1]], collapse = "")),
         "_"
       ),
       report_name
@@ -506,10 +513,11 @@ create_template <- function(
           # file.copy(system.file("resources", "formatting_files", "sa4ss_glossaries.tex", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
           file.copy(system.file("resources", "formatting_files", "pfmc.tex", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         }
-
+        # copy csl file
+        file.copy(system.file("resources", "cjfas.csl", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         # show message and make README stating model_results info
         if (!is.null(model_results)) {
-          mod_time <- as.character(file.info(fs::path(model_results), extra_cols = F)$ctime)
+          mod_time <- as.character(file.info(fs::path(model_results), extra_cols = FALSE)$ctime)
           mod_msg <- paste(
             "Report is based upon model output from", model_results,
             "that was last modified on:", mod_time
@@ -575,12 +583,14 @@ create_template <- function(
         "safe" = "11_tables.qmd",
         "08_tables.qmd"
       )
-      tables_doc <- paste0(
-        "# Tables \n \n",
-        "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
-      )
-      utils::capture.output(cat(tables_doc), file = fs::path(subdir, tables_doc_name), append = FALSE)
-    }
+      tables_doc <- ""
+      utils::capture.output(cat(tables_doc), 
+                            file = fs::path(subdir, tables_doc_name), 
+                            append = FALSE) |> suppressMessages() |> suppressWarnings()
+  
+      create_tables_doc(subdir = subdir,
+                        tables_dir = tables_dir)
+      } |> suppressMessages() |> suppressWarnings()
 
     # Create figures qmd
     if (!rerender_skeleton) {
@@ -589,11 +599,13 @@ create_template <- function(
         "safe" = "12_figures.qmd",
         "09_figures.qmd"
       )
-      figures_doc <- paste0(
-        "# Figures \n \n",
-        "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
-      )
-      utils::capture.output(cat(figures_doc), file = fs::path(subdir, figures_doc_name), append = FALSE)
+      figures_doc <- ""
+      utils::capture.output(cat(figures_doc), 
+                            file = fs::path(subdir, figures_doc_name),
+                            append = FALSE)
+      
+      create_figures_doc(subdir = subdir,
+                         figures_dir = figures_dir)
     }
 
     # Part I
@@ -630,7 +642,7 @@ create_template <- function(
     # Parameters to add authorship to YAML
     author_list <- add_authors(
       prev_skeleton = ifelse(rerender_skeleton, prev_skeleton, NULL),
-      author = author, # need to put this in case there is a rerender otherwise it would not use the correct argument
+      authors = authors, # need to put this in case there is a rerender otherwise it would not use the correct argument
       rerender_skeleton = rerender_skeleton
     )
 
@@ -667,6 +679,12 @@ create_template <- function(
         "species <- params$species \n",
         "spp_latin <- params$spp_latin \n",
         "office <- params$office",
+        if (!is.null(region)) {
+          paste0(
+            "\n",
+            "region <- params$region"
+          )
+        },
         if (!is.null(param_names)) {
           paste0(
             "\n",
@@ -765,7 +783,7 @@ create_template <- function(
 
         if (!is.null(model_results)) {
           # show message and make README stating model_results info
-          mod_time <- as.character(file.info(fs::path(model_results), extra_cols = F)$ctime)
+          mod_time <- as.character(file.info(fs::path(model_results), extra_cols = FALSE)$ctime)
           mod_msg <- paste(
             "Report is based upon model output from", model_results,
             "that was last modified on:", mod_time
@@ -836,14 +854,14 @@ create_template <- function(
       } else {
         author <- grep("  - name: ", prev_skeleton)
         citation <- create_citation(
-          author = author,
+          authors = authors,
           ...
         )
         cli::cli_alert_success("Added report citation.")
       }
     } else {
       citation <- create_citation(
-        author = author,
+        authors = authors,
         title = title,
         year = year
       )

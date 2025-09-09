@@ -4,10 +4,10 @@
 \alias{add_authors}
 \title{Format authors for skeleton}
 \usage{
-add_authors(author, rerender_skeleton = FALSE, prev_skeleton = NULL)
+add_authors(authors, rerender_skeleton = FALSE, prev_skeleton = NULL)
 }
 \arguments{
-\item{author}{A character vector of author names with their accompanying
+\item{authors}{A character vector of author names with their accompanying
 affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
 is found in a database located in the package: \code{system.file("resources",
@@ -36,7 +36,7 @@ Format authors for skeleton
 \examples{
 \dontrun{
 add_authors(
-  author = c("Danny Phantom" = "SWFSC-LJCA", "John Snow" = "AFSC-ABL", "Jane Doe" = "NWFSC-SWA"),
+  authors = c("Danny Phantom" = "SWFSC-LJCA", "John Snow" = "AFSC-ABL", "Jane Doe" = "NWFSC-SWA"),
   rerender_skeleton = FALSE
 )
 }

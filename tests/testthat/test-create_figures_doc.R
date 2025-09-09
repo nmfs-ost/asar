@@ -1,14 +1,14 @@
 test_that("Creates expected start of nearly empty figures doc", {
-  # create tables doc
+  # create figures doc
   create_figures_doc(
     subdir = getwd(),
     figures_dir = getwd()
   )
 
-  # read in tables doc
+  # read in figures doc
   figure_content <- readLines("09_figures.qmd")
-  # extract first 8 lines
-  head_figure_content <- head(figure_content, 7)
+  # extract first line
+  head_figure_content <- figure_content[1]
   # remove line numbers and collapse
   fc_pasted <- paste(head_figure_content, collapse = "")
 
@@ -34,17 +34,18 @@ test_that("Creates expected start of figures doc with figure", {
     "std_output.rda"
   ))
 
-  stockplotr::plot_landings(out_new,
+  stockplotr::plot_biomass(
+    dat = out_new,
     make_rda = TRUE
   )
 
-  # create tables doc
+  # create figures doc
   create_figures_doc(
     subdir = getwd(),
     figures_dir = getwd()
   )
 
-  # read in tables doc
+  # read in figures doc
   figure_content <- readLines("09_figures.qmd")
   # extract first 7 lines
   head_figure_content <- head(figure_content, 7)
@@ -60,6 +61,39 @@ test_that("Creates expected start of figures doc with figure", {
     expected_head_figure_content
   )
 
+  # erase temporary testing files
+  file.remove(fs::path(getwd(), "09_figures.qmd"))
+  file.remove(fs::path(getwd(), "captions_alt_text.csv"))
+  unlink(fs::path(getwd(), "figures"), recursive = T)
+})
+
+
+test_that("Throws warning if chunks with identical labels", {
+  # load sample dataset
+  load(file.path(
+    "fixtures", "ss3_models_converted", "Hake_2018",
+    "std_output.rda"
+  ))
+  
+  stockplotr::plot_biomass(
+    dat = out_new,
+    make_rda = TRUE
+  )
+  
+  # create figures doc
+  create_figures_doc(
+    subdir = getwd(),
+    figures_dir = getwd()
+  )
+  
+  expect_message(
+    create_figures_doc(
+      subdir = getwd(),
+      figures_dir = getwd()
+    ),
+    "Figures doc will not render if chunks have identical labels."
+  )
+  
   # erase temporary testing files
   file.remove(fs::path(getwd(), "09_figures.qmd"))
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
