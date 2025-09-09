@@ -263,10 +263,10 @@ create_template <- function(
     new_report_name <- paste0(
       type, "_",
       ifelse(
-        is.null(region), 
-        "",  
+        is.null(region),
+        "",
         paste(toupper(substr(strsplit(region, " ")[[1]], 1, 1)), collapse = "")
-        ),
+      ),
       ifelse(is.null(species), "species", stringr::str_replace_all(species, " ", "_")), "_",
       "skeleton.qmd"
     )
@@ -578,19 +578,28 @@ create_template <- function(
 
     # created tables doc
     if (!rerender_skeleton) {
-      tables_doc_name <- switch(type,
-        "nemt" = "05_tables.qmd",
-        "safe" = "11_tables.qmd",
-        "08_tables.qmd"
-      )
-      tables_doc <- ""
-      utils::capture.output(cat(tables_doc), 
-                            file = fs::path(subdir, tables_doc_name), 
-                            append = FALSE) |> suppressMessages() |> suppressWarnings()
-  
-      create_tables_doc(subdir = subdir,
-                        tables_dir = tables_dir)
-      } |> suppressMessages() |> suppressWarnings()
+      {
+        tables_doc_name <- switch(type,
+          "nemt" = "05_tables.qmd",
+          "safe" = "11_tables.qmd",
+          "08_tables.qmd"
+        )
+        tables_doc <- ""
+        utils::capture.output(cat(tables_doc),
+          file = fs::path(subdir, tables_doc_name),
+          append = FALSE
+        ) |>
+          suppressMessages() |>
+          suppressWarnings()
+
+        create_tables_doc(
+          subdir = subdir,
+          tables_dir = tables_dir
+        )
+      } |>
+        suppressMessages() |>
+        suppressWarnings()
+    }
 
     # Create figures qmd
     if (!rerender_skeleton) {
@@ -600,12 +609,15 @@ create_template <- function(
         "09_figures.qmd"
       )
       figures_doc <- ""
-      utils::capture.output(cat(figures_doc), 
-                            file = fs::path(subdir, figures_doc_name),
-                            append = FALSE)
-      
-      create_figures_doc(subdir = subdir,
-                         figures_dir = figures_dir)
+      utils::capture.output(cat(figures_doc),
+        file = fs::path(subdir, figures_doc_name),
+        append = FALSE
+      )
+
+      create_figures_doc(
+        subdir = subdir,
+        figures_dir = figures_dir
+      )
     }
 
     # Part I

@@ -45,7 +45,7 @@ create_tables_doc <- function(subdir = getwd(),
 
   # set landscape page width (in)
   landscape_pg_width <- 8
-  
+
   # append table-producing code to non-empty tables doc, if it exists, vs. overwriting it
   append <- FALSE
   if (length(file.path(subdir, list.files(subdir, pattern = "tables.qmd"))) == 1) {
@@ -53,7 +53,7 @@ create_tables_doc <- function(subdir = getwd(),
     table_content <- readLines(existing_tables_doc) |>
       suppressWarnings()
     empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
-    if (!(empty_doc_text %in% table_content)){
+    if (!(empty_doc_text %in% table_content)) {
       append <- TRUE
       cli::cli_alert_info("Tables doc will be appended to include tables in `tables_dir`.")
     }
@@ -61,8 +61,9 @@ create_tables_doc <- function(subdir = getwd(),
 
   # add header
   tables_doc_header <- ifelse(append,
-                              "",
-                              "# Tables {#sec-tables}\n \n")
+    "",
+    "# Tables {#sec-tables}\n \n"
+  )
 
   # add chunk that creates object as the directory of all rdas
   tables_doc_setup <- paste0(
@@ -265,12 +266,16 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
       wrap = TRUE
     )
     cli::cli_alert_info("For `create_tables_doc` to run properly, there must be:",
-                        wrap = TRUE)
-    cli::cli_ol(c("a 'tables' folder in {fs::path(tables_dir)}",
-                  ".rda files in the 'tables' folder")
+      wrap = TRUE
     )
-    tables_doc <- paste0("# Tables {#sec-tables}\n\n",
-                         "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables.")
+    cli::cli_ol(c(
+      "a 'tables' folder in {fs::path(tables_dir)}",
+      ".rda files in the 'tables' folder"
+    ))
+    tables_doc <- paste0(
+      "# Tables {#sec-tables}\n\n",
+      "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
+    )
   } else {
     cli::cli_alert_success("Found {length(final_rda_tab_list)} table{?s} in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
       wrap = TRUE
@@ -335,7 +340,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     ),
     append = append
   )
-  
+
   # Read through tables doc and warn about identical labels
   new_tables_doc <- readLines(
     ifelse(
@@ -346,22 +351,24 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
   ) |>
     suppressWarnings() |>
     as.list()
-  
+
   label_line_nums <- grep("\\label", new_tables_doc)
   labels <- new_tables_doc[label_line_nums]
   names(labels) <- label_line_nums
   labels <- lapply(labels, function(x) {
     gsub("#\\| label: ", "", x)
   })
-  
+
   repeated_labels <- labels[duplicated(labels)]
   repeated_labels <- as.vector(unlist(repeated_labels))
-  
-  if (length(repeated_labels) > 0){
+
+  if (length(repeated_labels) > 0) {
     cli::cli_alert_danger("Tables doc contains chunks with identical labels: {repeated_labels}.")
     cli::cli_alert_info("Open tables doc and check for:")
-    cli::cli_bullets(c("*" = "Identical, repeated tables",
-                       "*" = "Different tables with identical labels"))
+    cli::cli_bullets(c(
+      "*" = "Identical, repeated tables",
+      "*" = "Different tables with identical labels"
+    ))
     cli::cli_alert_warning("Tables doc will not render if chunks have identical labels.")
   }
 }

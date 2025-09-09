@@ -72,17 +72,17 @@ test_that("Throws warning if chunks with identical labels", {
     "fixtures", "ss3_models_converted", "Hake_2018",
     "std_output.rda"
   ))
-  
+
   stockplotr::table_landings(out_new,
-                             make_rda = TRUE
+    make_rda = TRUE
   )
-  
+
   # create tables doc
   create_tables_doc(
     subdir = getwd(),
     tables_dir = getwd()
   )
-  
+
   expect_message(
     create_tables_doc(
       subdir = getwd(),
@@ -90,7 +90,7 @@ test_that("Throws warning if chunks with identical labels", {
     ),
     "Tables doc will not render if chunks have identical labels."
   )
-  
+
   # erase temporary testing files
   file.remove(fs::path(getwd(), "08_tables.qmd"))
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))

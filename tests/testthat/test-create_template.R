@@ -289,10 +289,12 @@ test_that("function aborts if `authors` improperly formatted", {
   expect_error(
     create_template(
       authors = c("John Snow",
-                  "Danny Phantom" = "SWFSC",
-                  "Patrick Star" = "SEFSC")
+        "Danny Phantom" = "SWFSC",
+        "Patrick Star" = "SEFSC"
+      )
     ),
-    "format is incorrect")
+    "format is incorrect"
+  )
 
   path <- getwd()
 
@@ -305,7 +307,8 @@ test_that("function aborts if `authors` improperly formatted", {
     create_template(
       authors = c("Patrick Star")
     ),
-    "format is incorrect")
+    "format is incorrect"
+  )
 
   path <- getwd()
 
@@ -314,14 +317,14 @@ test_that("function aborts if `authors` improperly formatted", {
 })
 
 test_that("Incompatible formats are recognized, produce warnings/errors", {
-
   path <- getwd()
 
   expect_message(
     create_template(
       format = "docx"
     ),
-    "The docx format")
+    "The docx format"
+  )
 
   # erase temporary testing files
   unlink(fs::path(path, "report"), recursive = T)
@@ -331,7 +334,8 @@ test_that("Incompatible formats are recognized, produce warnings/errors", {
     create_template(
       format = "other_format"
     ),
-    "Format not recognized")
+    "Format not recognized"
+  )
 
   # erase temporary testing files
   unlink(fs::path(path, "report"), recursive = T)
@@ -340,7 +344,8 @@ test_that("Incompatible formats are recognized, produce warnings/errors", {
     create_template(
       format = "qpdf"
     ),
-    "Format not compatible")
+    "Format not compatible"
+  )
 
   # erase temporary testing files
   unlink(fs::path(path, "report"), recursive = T)
@@ -349,7 +354,8 @@ test_that("Incompatible formats are recognized, produce warnings/errors", {
     create_template(
       format = "qhtml"
     ),
-    "Format not compatible")
+    "Format not compatible"
+  )
 
   # erase temporary testing files
   unlink(fs::path(path, "report"), recursive = T)
@@ -358,9 +364,9 @@ test_that("Incompatible formats are recognized, produce warnings/errors", {
     create_template(
       format = "qdocx"
     ),
-    "The docx format is not currently")
+    "The docx format is not currently"
+  )
 
   # erase temporary testing files
   unlink(fs::path(path, "report"), recursive = T)
-
 })

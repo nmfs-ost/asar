@@ -21,16 +21,15 @@ add_authors <- function(
   # TODO: convert error message into a warning and update workflow so that a missing affiliation ultimately yields a blank affiliation in the skeleton, as in `authors = NULL`. This will affect create_citation() and create_template() too.
   # Set author into proper format - will get overwritten later if rerender = T
   author_names <- names(authors)
-  
+
   if (!is.null(authors)) {
-    if (any(!nzchar(names(authors))) | is.null(names(authors))){
-    cli::cli_abort(c(
-    "x" = "{.var authors} format is incorrect.",
-    "i" = "Check that {.var authors} includes names and affiliations for all authors.",
-    "i" = "Example: Jane Doe at the NWFSC Seattle, Washington office is formatted as `c('Jane Doe'='NWFSC-SWA')`."
-     )
-    )
-   } 
+    if (any(!nzchar(names(authors))) | is.null(names(authors))) {
+      cli::cli_abort(c(
+        "x" = "{.var authors} format is incorrect.",
+        "i" = "Check that {.var authors} includes names and affiliations for all authors.",
+        "i" = "Example: Jane Doe at the NWFSC Seattle, Washington office is formatted as `c('Jane Doe'='NWFSC-SWA')`."
+      ))
+    }
   }
 
   # Get authors into readable format for ordering

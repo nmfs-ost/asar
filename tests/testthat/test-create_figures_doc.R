@@ -74,18 +74,18 @@ test_that("Throws warning if chunks with identical labels", {
     "fixtures", "ss3_models_converted", "Hake_2018",
     "std_output.rda"
   ))
-  
+
   stockplotr::plot_biomass(
     dat = out_new,
     make_rda = TRUE
   )
-  
+
   # create figures doc
   create_figures_doc(
     subdir = getwd(),
     figures_dir = getwd()
   )
-  
+
   expect_message(
     create_figures_doc(
       subdir = getwd(),
@@ -93,7 +93,7 @@ test_that("Throws warning if chunks with identical labels", {
     ),
     "Figures doc will not render if chunks have identical labels."
   )
-  
+
   # erase temporary testing files
   file.remove(fs::path(getwd(), "09_figures.qmd"))
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))

@@ -48,7 +48,7 @@ test_that("missing arguments trigger warnings or errors", {
   #   ),
   #   "Missing `file`"
   # )
-   
+
   # TODO: Debug why this doesn't work
   # expect_error(
   #   asar::convert_output(
@@ -58,7 +58,7 @@ test_that("missing arguments trigger warnings or errors", {
   #   ),
   #   "Missing `model`"
   # )
-  
+
   expect_error(
     asar::convert_output(
       file = fs::path("fixtures", "ss3_models", "models", "Hake_2018", "Report.rdat"),
@@ -67,6 +67,4 @@ test_that("missing arguments trigger warnings or errors", {
     ),
     "`file` not found"
   )
-  
-  
 })
