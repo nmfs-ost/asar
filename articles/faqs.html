@@ -52,7 +52,18 @@
   </a>
 </li>
 <li>
-  <a href="https://connect.fisheries.noaa.gov/asar_tutorial/" class="external-link">Tutorial</a>
+  <a href="../assets/asar-cheatsheet.pdf">
+    <span class="fa fa-solid fa-key"></span>
+
+    Cheatsheet
+  </a>
+</li>
+<li>
+  <a href="https://connect.fisheries.noaa.gov/asar_tutorial/" class="external-link">
+    <span class="fa fa-regular fa-map"></span>
+
+    Tutorial
+  </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -84,6 +95,9 @@
     <li>
       <a href="../articles/faqs.html">Frequently Asked Questions (FAQs)</a>
     </li>
+    <li>
+      <a href="../articles/caps-alttext-alt-workflows.html">Captions/alt text in Alternative Workflows</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -103,7 +117,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/nmfs-fish-tools/pkgdownTemplate/issues/" class="external-link">
+  <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">
     <span class="fas fa-question-circle fa-lg"></span>
 
     Issues
@@ -144,16 +158,22 @@
 <div class="section level3">
 <h3 id="how-can-i-download-the-package">How can I download the package?<a class="anchor" aria-label="anchor" href="#how-can-i-download-the-package"></a>
 </h3>
-<p>Our README page provides a lot of basic directions to prepare you to
-successfully download the package. Please consult the page for
-downloading. In the case you are having troubles downloading, and
-receiving the following error:</p>
+<p>Please consult <a href="https://nmfs-ost.github.io/asar/index.html#installation">the
+README page</a> for installation instructions.</p>
+</div>
+<div class="section level3">
+<h3 id="alternative-instructions">Alternative instructions<a class="anchor" aria-label="anchor" href="#alternative-instructions"></a>
+</h3>
+<p>If you are receiving the following error when trying to download the
+package:</p>
 <pre><code>Using GitHub PAT from the git credential store.
 Initiating curl with CURL_SSL_BACKEND: openssl
 Error: Failed to install 'unknown package' from GitHub:
   HTTP error 403.
   Resource protected by organization SAML enforcement. You must grant your OAuth token access to this organization.</code></pre>
-<p>Please download the package using this code:</p>
+<p>If you’re a member of the NMFS OST organization, you can <a href="https://docs.github.com/en/enterprise-cloud@latest/authentication/authenticating-with-single-sign-on/authorizing-a-personal-access-token-for-use-with-single-sign-on" class="external-link">authorize
+your token</a> to solve this issue.</p>
+<p>Otherwise, please download the package using this code:</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"asar"</span>, repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"https://nmfs-ost.r-universe.dev"</span>, <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span><span class="op">)</span></span></code></pre>
 </div>
 </div>
@@ -161,46 +181,73 @@ Error: Failed to install 'unknown package' from GitHub:
 <h2 id="setting-up-the-report-skeleton">Setting up the report skeleton<a class="anchor" aria-label="anchor" href="#setting-up-the-report-skeleton"></a>
 </h2>
 <div class="section level3">
-<h3 id="create_template-isnt-working--what-do-i-do">create_template isn’t working. What do I do?<a class="anchor" aria-label="anchor" href="#create_template-isnt-working--what-do-i-do"></a>
+<h3 id="create_template-isnt-working--what-do-i-do">
+<code>create_template()</code> isn’t working. What do I do?<a class="anchor" aria-label="anchor" href="#create_template-isnt-working--what-do-i-do"></a>
 </h3>
 <p>This could mean a lot of things. Most of the time, when
-create_template is not working, it means you are missing a key argument
-to the function. Make sure to read the error message(s) clearly and
-check the ‘report’ folder where all of the file were created. If you
-have exhausted your options and double checked that you have all of the
-correct arguments, then please leave an <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issue</a>.</p>
+<code><a href="../reference/create_template.html">create_template()</a></code> is not working, it means you are missing
+a key argument to the function. Make sure to read the error message(s)
+clearly and check the ‘report’ folder where all of the file were
+created. If you have exhausted your options and double checked that you
+have all of the correct arguments, then please open an <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issue</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="what-should-i-do-if-i-have-a-species-complexmultispecies-assessment">What should I do if I have a species complex/multispecies
 assessment?<a class="anchor" aria-label="anchor" href="#what-should-i-do-if-i-have-a-species-complexmultispecies-assessment"></a>
 </h3>
-<p><code>asar</code> was not developed with the intention to use it for
-multiple species in one go. While in testing, users have simply combined
-the species using “and” in the species argument of create_template. The
-report can be written as desired after the fact. The beauty of asar is
-that it is still a template and highly customizable. User’s familiar
-with Quarto can make edits to the YAML, chunk options, and other
-important components controlling the production of the document. We
-highly discourage making changes to the formatting or adding large
-additions of sections to the document that stray too far from the
-intended “NOAA” formatting.</p>
+<p><code>asar</code> was designed to create reports for single species.
+As a workaround, you can combine multiple species using “and” in the
+<code>species</code> argument of <code><a href="../reference/create_template.html">create_template()</a></code>. For
+example, the following code will produce a report with two species in
+the title, though a cover image must be added manually since cover
+images are matched to single species:</p>
+<p><code>create_template(species = "Species A and Species B")</code></p>
+<p>We encourage users writing species complex/multispecies assessments
+to remember that the reports are highly customizable both before and
+after the skeleton is created. For example, the
+<code><a href="../reference/create_template.html">create_template()</a></code> command allows for customization by
+providing custom section options. After the skeleton has been created,
+advanced Quarto users can edit the YAML, chunk options, and other
+components of the report, and everyone can customize the report’s
+text.</p>
+<p>While we have striven to add sufficient options for customization, we
+highly discourage changing the formatting or adding many sections so
+that the final document does not stray far from the intended,
+standardized format.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="editing-reports">Editing reports<a class="anchor" aria-label="anchor" href="#editing-reports"></a>
 </h2>
 <div class="section level3">
+<h3 id="what-is-the-purpose-of-the-r-chunk-labelled-output_and_quantities-in-the-skeleton">What is the purpose of the R chunk labelled
+<code>output_and_quantities</code> in the skeleton?<a class="anchor" aria-label="anchor" href="#what-is-the-purpose-of-the-r-chunk-labelled-output_and_quantities-in-the-skeleton"></a>
+</h3>
+<p>This chunk is what we call the preamble. It loads in commonly-used
+estimates and quantities that you can reference throughout your report,
+making the document dynamic. By updating the values calculated in your
+report folder’s <a href="https://github.com/nmfs-ost/asar/blob/d3070f349f12a49ad6e6ae10aa2865de104b5581/inst/resources/preamble.R#L4" class="external-link">preamble.R
+script</a> file, you can easily update the values throughout your
+report.</p>
+</div>
+<div class="section level3">
 <h3 id="how-do-i-reference-one-of-the-quantities-in-the-preamble-in-my-text">How do I reference one of the quantities in the preamble in my
 text?<a class="anchor" aria-label="anchor" href="#how-do-i-reference-one-of-the-quantities-in-the-preamble-in-my-text"></a>
 </h3>
-<p>You can use the quantities in the preamble to make dynamic reports
-that can easily be changed within the text by changing the output file.
-To reference these quantities in your text please use the following
+<p>To reference these quantities in your text, please use the following
 notation:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>`r Fend`</span></code></pre></div>
-<p>For more help with using quarto (and using it efficiently), please
-see our <a href="markdown_notation.html">markdown guide</a> to learn the
-in’s and out’s of writing a stock assessment report in quarto.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>`r start_year`</span></code></pre></div>
+<p>For example, if <code>start_year</code> = 2025 and your report
+contained this text:</p>
+<blockquote>
+<p>The current year is <code>`r start_year`</code>.</p>
+</blockquote>
+<p>It would render as:</p>
+<blockquote>
+<p>The current year is 2025.</p>
+</blockquote>
+<p>For more help using Quarto efficiently, please see our <a href="https://nmfs-ost.github.io/asar/articles/markdown_notation.html">markdown
+guide</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="how-can-i-edit-my-reports-alt-text-and-captions">How can I edit my report’s alt text and captions?<a class="anchor" aria-label="anchor" href="#how-can-i-edit-my-reports-alt-text-and-captions"></a>
@@ -214,15 +261,6 @@ accessibility vignette’s guide</a> on editing alt text and captions.</p>
 <p>Please refer to the <a href="https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#acronyms-and-glossary">Acronyms
 and Glossary section of the accessibility vignette</a> for guidance on
 how to use acronyms and edit the glossary.</p>
-</div>
-<div class="section level3">
-<h3 id="what-is-this-r-chunk-in-the-the-skeleton-file-labelled-output_and_quantities-used-for">What is this R chunk in the the skeleton file labelled
-<code>output_and_quantities</code> used for?<a class="anchor" aria-label="anchor" href="#what-is-this-r-chunk-in-the-the-skeleton-file-labelled-output_and_quantities-used-for"></a>
-</h3>
-<p>This chunk is what we call the preamble. It loads in commonly used
-estimates and quantities for the user to reference throughout their
-report. The calculation of these values can be found in the
-<code>preamble.R</code> script found within your report folder.</p>
 </div>
 </div>
 <div class="section level2">
@@ -291,8 +329,11 @@ some other option.</p>
 </h2>
 <div class="section level3">
 <h3 id="why-am-i-getting-the-following-error-message-when-i-try-to-render-my-template">Why am I getting the following error message when I try to render my
-template?:<a class="anchor" aria-label="anchor" href="#why-am-i-getting-the-following-error-message-when-i-try-to-render-my-template"></a>
+template?<a class="anchor" aria-label="anchor" href="#why-am-i-getting-the-following-error-message-when-i-try-to-render-my-template"></a>
 </h3>
+<div class="section level4">
+<h4 id="missing-item-error">“Missing item” error<a class="anchor" aria-label="anchor" href="#missing-item-error"></a>
+</h4>
 <pre class="error:"><code>compilation failed- error
 LaTeX Error: Something's wrong--perhaps a missing \item.
 
@@ -304,10 +345,33 @@ l.419 \end{CSLReferences}</code></pre>
 <p>The above error message is created due to a bug introduced in Quarto
 in the last year where the notation in <em>07_references.qmd</em>
 creates an issue when there is no in-text reference in the text. To
-correct this, please add this sentence temporarily to any of the quarto
+correct this, please add a temporary reference to any of the Quarto
 files in the outlined document (<em>only if you are using the default
-asar_references.bib file</em>):</p>
-<p><code>Here is an example of an in text citation (@methot_stock_2013).</code></p>
+asar_references.bib file</em>), then replace it with real references
+when ready. Here is an example “temporary reference”:</p>
+<p><code>Here is an example of an in-text citation (@methot_stock_2013).</code></p>
+</div>
+<div class="section level4">
+<h4 id="sec-docmetadata">“DocumentMetadata” error<a class="anchor" aria-label="anchor" href="#sec-docmetadata"></a>
+</h4>
+<p><code>! LaTeX Error: No support files for \DocumentMetadata found.</code></p>
+<p>The above error message occurs when LaTeX packages necessary for
+rendering haven’t been installed.</p>
+<p>We typically encourage users to <a href="https://github.com/nmfs-ost/asar?tab=readme-ov-file#installation" class="external-link">install
+the default tinytex bundle</a> (“TinyTeX-1”, installed via
+<code><a href="https://rdrr.io/pkg/tinytex/man/install_tinytex.html" class="external-link">tinytex::install_tinytex()</a></code>). This bundle contains most, but
+not all, LaTeX packages needed for rendering <code>asar</code> reports.
+Then, when you render your report for the first time, those missing
+LaTeX packages needed for rendering should install automatically (e.g.,
+‘tagpdf’). However, this doesn’t always happen; we don’t know why.</p>
+<p>Try to resolve the error by installing the full TinyTeX bundle in the
+R console. Since this TinyTeX bundle contains every LaTeX package you
+could install from CTAN (<a href="https://github.com/rstudio/tinytex-releases?tab=readme-ov-file#releases" class="external-link">TinyTeX-2</a>),
+it should contain every LaTeX package needed for rendering (hence its
+large size):</p>
+<p><code>tinytex::install_tinytex(bundle = "TinyTeX-2")</code></p>
+<p>Then, render your report once more.</p>
+</div>
 </div>
 <div class="section level3">
 <h3 id="when-rendering-why-does-my-report-hang-on-the-figures-doc">When rendering, why does my report hang on the figures doc?<a class="anchor" aria-label="anchor" href="#when-rendering-why-does-my-report-hang-on-the-figures-doc"></a>
@@ -316,23 +380,44 @@ asar_references.bib file</em>):</p>
 file. If this occurs, it probably means that your tinytex installation
 isn’t working properly. This may occur even if you’ve installed the
 TinyTeX bundle with every LaTeX package you could install from CTAN (<a href="https://github.com/rstudio/tinytex-releases?tab=readme-ov-file#releases" class="external-link">TinyTeX-2</a>).</p>
-<p>Try this: Uninstall tinytex
+<p>Try this: Uninstall tinytex in the R console
 (<code><a href="https://rdrr.io/pkg/tinytex/man/install_tinytex.html" class="external-link">tinytex::uninstall_tinytex()</a></code>), then reinstall it in the
 terminal (<code>quarto install tinytex</code>).</p>
 <p>Notably, this command will install TinyTeX-1 bundle (the default),
 then install the necessary LaTeX packages needed for rendering <em>while
-your report is rendering the first time</em>.</p>
+your report is rendering the first time</em>. See the <a href="#sec-docmetadata">“DocumentMetadata” error</a> section for more
+information.</p>
+</div>
+<div class="section level3">
+<h3 id="why-cant-my-report-find-support_filesbefore-body-tex">Why can’t my report
+<code>find support_files/before-body.tex</code>?<a class="anchor" aria-label="anchor" href="#why-cant-my-report-find-support_filesbefore-body-tex"></a>
+</h3>
+<p>This error can occasionally occur to some users when they are working
+on a remote or shared drive that does not originate from their local
+machine. Due to constraints of Quarto, the user must render their
+skeleton document when the support files and child documents are found
+somewhere locally.</p>
+<p>We suggest users who encounter this problem to store their files made
+from <code>asar</code> on their local computer and push them to a GitHub
+repo to store and share.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="general-errors">General errors<a class="anchor" aria-label="anchor" href="#general-errors"></a>
 </h2>
 <div class="section level3">
-<h3 id="im-getting-an-error--how-do-i-fix-it">I’m getting an error. How do I fix it?<a class="anchor" aria-label="anchor" href="#im-getting-an-error--how-do-i-fix-it"></a>
+<h3 id="im-getting-an-error-not-explained-in-this-faq--how-do-i-fix-it">I’m getting an error not explained in this FAQ. How do I fix
+it?<a class="anchor" aria-label="anchor" href="#im-getting-an-error-not-explained-in-this-faq--how-do-i-fix-it"></a>
 </h3>
 <p>When getting to know <code>asar</code>, you’ll probably encounter
-some errors. We highly recommend checking out our <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">Issues page</a> to see if
-someone else has already asked (and maybe solved!) your question.</p>
+some errors. We highly recommend checking out our <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issues page</a> and <a href="https://github.com/nmfs-ost/asar/discussions" class="external-link">discussion board</a>
+to see if someone else has already asked (and maybe solved!) your
+question.</p>
+<p>If you cannot find an answer, feel free to report your issue or
+question to the <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issues
+page</a> or <a href="https://github.com/nmfs-ost/asar/discussions" class="external-link">discussion
+board</a>. There are multiple issue templates to choose from: request to
+add author affiliation, bug report, feature request, and more.</p>
 </div>
 </div>
   </div>

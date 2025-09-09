@@ -38,7 +38,18 @@ in the console."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/
   </a>
 </li>
 <li>
-  <a href="https://connect.fisheries.noaa.gov/asar_tutorial/" class="external-link">Tutorial</a>
+  <a href="../assets/asar-cheatsheet.pdf">
+    <span class="fa fa-solid fa-key"></span>
+
+    Cheatsheet
+  </a>
+</li>
+<li>
+  <a href="https://connect.fisheries.noaa.gov/asar_tutorial/" class="external-link">
+    <span class="fa fa-regular fa-map"></span>
+
+    Tutorial
+  </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -69,6 +80,9 @@ in the console."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/
     <li>
       <a href="../articles/faqs.html">Frequently Asked Questions (FAQs)</a>
     </li>
+    <li>
+      <a href="../articles/caps-alttext-alt-workflows.html">Captions/alt text in Alternative Workflows</a>
+    </li>
   </ul></li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -83,7 +97,7 @@ in the console."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/
     </li>
   </ul></li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
-  <a href="https://github.com/nmfs-fish-tools/pkgdownTemplate/issues/" class="external-link">
+  <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">
     <span class="fas fa-question-circle fa-lg"></span>
 
     Issues
@@ -124,10 +138,12 @@ in the console.</p>
 <span>  species <span class="op">=</span> <span class="st">"species"</span>,</span>
 <span>  spp_latin <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.Date</a></span><span class="op">(</span><span class="op">)</span>, format <span class="op">=</span> <span class="st">"%YYYY-%mm-%dd"</span><span class="op">)</span>, <span class="st">"%Y"</span><span class="op">)</span>,</span>
-<span>  author <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  authors <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  file_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"[TITLE]"</span>,</span>
 <span>  model_results <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tables_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  figures_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  spp_image <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  bib_file <span class="op">=</span> <span class="st">"asar_references.bib"</span>,</span>
 <span>  new_template <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -183,7 +199,7 @@ naming with a space and capitalize first letter(s). Example:
 is the year in which the report is rendered.</p></dd>
 
 
-<dt id="arg-author">author<a class="anchor" aria-label="anchor" href="#arg-author"></a></dt>
+<dt id="arg-authors">authors<a class="anchor" aria-label="anchor" href="#arg-authors"></a></dt>
 <dd><p>A character vector of author names with their accompanying
 affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
@@ -208,6 +224,16 @@ in asar::create_title()). Example: "Management Track Assessments Spring 2024".</
 
 <dt id="arg-model-results">model_results<a class="anchor" aria-label="anchor" href="#arg-model-results"></a></dt>
 <dd><p>Path to standard output file made from <code><a href="convert_output.html">asar::convert_output()</a></code></p></dd>
+
+
+<dt id="arg-tables-dir">tables_dir<a class="anchor" aria-label="anchor" href="#arg-tables-dir"></a></dt>
+<dd><p>The location of the "tables" folder, which contains tables
+files. Default is the working directory.</p></dd>
+
+
+<dt id="arg-figures-dir">figures_dir<a class="anchor" aria-label="anchor" href="#arg-figures-dir"></a></dt>
+<dd><p>The location of the "figures" folder, which contains
+figures files. Default is the working directory.</p></dd>
 
 
 <dt id="arg-spp-image">spp_image<a class="anchor" aria-label="anchor" href="#arg-spp-image"></a></dt>
@@ -316,12 +342,14 @@ each of the child documents should be edited separately.</p>
 <span class="r-in"><span>  species <span class="op">=</span> <span class="st">"Dover sole"</span>,</span></span>
 <span class="r-in"><span>  spp_latin <span class="op">=</span> <span class="st">"Microstomus pacificus"</span>,</span></span>
 <span class="r-in"><span>  year <span class="op">=</span> <span class="fl">2010</span>,</span></span>
-<span class="r-in"><span>  author <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  authors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="st">"John Snow"</span> <span class="op">=</span> <span class="st">"AFSC"</span>,</span></span>
 <span class="r-in"><span>    <span class="st">"Danny Phantom"</span> <span class="op">=</span> <span class="st">"NEFSC"</span>,</span></span>
 <span class="r-in"><span>    <span class="st">"Patrick Star"</span> <span class="op">=</span> <span class="st">"SEFSC-ML"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
 <span class="r-in"><span>  model_results <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"folder"</span>, <span class="st">"std_output.rda"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  figures_dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  tables_dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"tables_folder_location"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  new_section <span class="op">=</span> <span class="st">"an_additional_section"</span>,</span></span>
 <span class="r-in"><span>  section_location <span class="op">=</span> <span class="st">"after-introduction"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -333,7 +361,7 @@ each of the child documents should be edited separately.</p>
 <span class="r-in"><span>  species <span class="op">=</span> <span class="st">"Striped marlin"</span>,</span></span>
 <span class="r-in"><span>  spp_latin <span class="op">=</span> <span class="st">"Kajikia audax"</span>,</span></span>
 <span class="r-in"><span>  year <span class="op">=</span> <span class="fl">2018</span>,</span></span>
-<span class="r-in"><span>  author <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"John Snow"</span> <span class="op">=</span> <span class="st">"AFSC"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  authors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"John Snow"</span> <span class="op">=</span> <span class="st">"AFSC"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  new_section <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a_new_section"</span>, <span class="st">"another_new_section"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  section_location <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"before-introduction"</span>, <span class="st">"after-introduction"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  custom <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
@@ -348,7 +376,7 @@ each of the child documents should be edited separately.</p>
 <span class="r-in"><span>  species <span class="op">=</span> <span class="st">"Bluefish"</span>,</span></span>
 <span class="r-in"><span>  spp_latin <span class="op">=</span> <span class="st">"Pomatomus saltatrix"</span>,</span></span>
 <span class="r-in"><span>  year <span class="op">=</span> <span class="fl">2010</span>,</span></span>
-<span class="r-in"><span>  author <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"John Snow"</span>, <span class="st">"Danny Phantom"</span>, <span class="st">"Patrick Star"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  authors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"John Snow"</span>, <span class="st">"Danny Phantom"</span>, <span class="st">"Patrick Star"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  title <span class="op">=</span> <span class="st">"Management Track Assessments Spring 2024"</span>,</span></span>
 <span class="r-in"><span>  parameters <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  param_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"region"</span>, <span class="st">"year"</span><span class="op">)</span>,</span></span>
