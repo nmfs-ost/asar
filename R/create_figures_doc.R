@@ -18,7 +18,6 @@
 #' }
 create_figures_doc <- function(subdir = getwd(),
                                figures_dir = getwd()) {
-  
   # append figure-producing code to non-empty figures doc, if it exists, vs. overwriting it
   append <- FALSE
   if (length(file.path(subdir, list.files(subdir, pattern = "figures.qmd"))) == 1) {
@@ -26,15 +25,15 @@ create_figures_doc <- function(subdir = getwd(),
     figure_content <- readLines(existing_figs_doc) |>
       suppressWarnings()
     empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
-    if (!(empty_doc_text %in% figure_content)){
+    if (!(empty_doc_text %in% figure_content)) {
       append <- TRUE
       cli::cli_alert_info("Figures doc will be appended to include figures in `figures_dir`.")
     }
   }
-  
+
   figures_doc_header <- ifelse(append,
-                               "",
-                               "# Figures {#sec-figures}\n \n"
+    "",
+    "# Figures {#sec-figures}\n \n"
   )
 
   # add chunk that creates object as the directory of all rdas
@@ -114,10 +113,12 @@ rm(rda)\n
       wrap = TRUE
     )
     cli::cli_alert_info("For `create_figures_doc` to run properly, there must be:",
-      wrap = TRUE)
-    cli::cli_ol(c("a 'figures' folder in {fs::path(figures_dir)}",
-                  "files in appropriate formats (e.g., .rda, .png, .jpg) in the 'figures' folder")
+      wrap = TRUE
     )
+    cli::cli_ol(c(
+      "a 'figures' folder in {fs::path(figures_dir)}",
+      "files in appropriate formats (e.g., .rda, .png, .jpg) in the 'figures' folder"
+    ))
     figures_doc <- paste0(
       "# Figures {#sec-figures}\n\n",
       "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
@@ -199,7 +200,7 @@ rm(rda)\n
     ),
     append = append
   )
-  
+
   # Read through figures doc and warn about identical labels
   new_figs_doc <- readLines(
     ifelse(
@@ -210,23 +211,24 @@ rm(rda)\n
   ) |>
     suppressWarnings() |>
     as.list()
-  
+
   label_line_nums <- grep("\\label", new_figs_doc)
   labels <- new_figs_doc[label_line_nums]
   names(labels) <- label_line_nums
   labels <- lapply(labels, function(x) {
     gsub("#\\| label: ", "", x)
   })
-  
+
   repeated_labels <- labels[duplicated(labels)]
   repeated_labels <- as.vector(unlist(repeated_labels))
-  
-  if (length(repeated_labels) > 0){
+
+  if (length(repeated_labels) > 0) {
     cli::cli_alert_danger("Figures doc contains chunks with identical labels: {repeated_labels}.")
     cli::cli_alert_info("Open figures doc and check for:")
-    cli::cli_bullets(c("*" = "Identical, repeated figures",
-                     "*" = "Different figures with identical labels"))
+    cli::cli_bullets(c(
+      "*" = "Identical, repeated figures",
+      "*" = "Different figures with identical labels"
+    ))
     cli::cli_alert_warning("Figures doc will not render if chunks have identical labels.")
   }
-  
 }

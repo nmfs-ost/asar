@@ -46,7 +46,7 @@ SS3_extract_df <- function(dat, label) {
   if (!inherits(dat, "data.table")) {
     dat <- data.table::as.data.table(dat)
   }
-  
+
   # Identify all values to be treated as NA
   na_values <- c("", "-", "#")
 
@@ -61,7 +61,7 @@ SS3_extract_df <- function(dat, label) {
 
   # Find the next blank row after the starting row
   next_blank_rows <- which(apply(dat, 1, function(row) all(is.na(row) | row %in% na_values)))
-  
+
   # Find the first blank row that appears after the start_row
   end_row <- next_blank_rows[which(next_blank_rows > start_row)[1]]
   if (is.na(end_row) || length(end_row) == 0) {
@@ -69,7 +69,7 @@ SS3_extract_df <- function(dat, label) {
   }
 
   # Extract the subset
-  clean_dt <- data.table::as.data.table(dat[start_row:(end_row - 1),])
+  clean_dt <- data.table::as.data.table(dat[start_row:(end_row - 1), ])
 
   # Efficiently replace specified values with NA
   for (j in names(clean_dt)) {
@@ -91,9 +91,9 @@ SS3_extract_fleet <- function(dat, vers) {
   # TODO: test other SS3 models and/or write converter based on r4ss::ss_output
   vers <- as.numeric(stringr::str_replace(vers, "3.30.", ""))
   if (vers < 20.00) {
-    i = 1
+    i <- 1
   } else {
-    i = 2
+    i <- 2
   }
   # Locate the row containing the specified value from the df
   value_row <- which(apply(dat, 1, function(row) any(row == "Fleet")))[i]
@@ -114,15 +114,14 @@ SS3_extract_fleet <- function(dat, vers) {
   # Extract the metric using the rows from above as a guide and clean up empty columns
   clean_df <- dat[rows[1]:(rows[2] - 1), ] |>
     naniar::replace_with_na_all(condition = ~ .x == "")
-  fleets <- switch(
-    i,
+  fleets <- switch(i,
     "1" = {
-      Filter(function(x) !all(is.na(x)), clean_df)[-1,1]$X1
+      Filter(function(x) !all(is.na(x)), clean_df)[-1, 1]$X1
     },
     {
       clean_df <- dat[rows[1]:(rows[2] - 1), ] |>
         naniar::replace_with_na_all(condition = ~ .x == "")
-      fleet_info <- Filter(function(x) !all(is.na(x)), clean_df)[-1,]
+      fleet_info <- Filter(function(x) !all(is.na(x)), clean_df)[-1, ]
       stats::setNames(fleet_info[[ncol(fleet_info)]], fleet_info[[1]])
     }
   )

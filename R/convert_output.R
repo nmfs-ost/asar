@@ -99,7 +99,7 @@ convert_output <- function(
   if (grepl(url_pattern, file)) {
     check <- httr::HEAD(file)
     url <- httr::status_code(check)
-    if(url == 404) cli::cli_abort(c(message = "Invalid URL."))
+    if (url == 404) cli::cli_abort(c(message = "Invalid URL."))
   } else {
     if (!file.exists(file)) {
       cli::cli_abort(c(
@@ -111,8 +111,7 @@ convert_output <- function(
 
   # Recognize model through file extension
   if (is.null(model)) {
-    model <- switch(
-      stringr::str_extract(file, "\\.([^.]+)$"),
+    model <- switch(stringr::str_extract(file, "\\.([^.]+)$"),
       ".sso" = {
         cli::cli_alert_info("Processing Stock Synthesis output file...")
         "ss3"
@@ -162,7 +161,7 @@ convert_output <- function(
     cli::cli_alert_info("{fleet_names}")
 
     # Extract units
-    
+
 
     # Estimated and focal parameters to put into reformatted output df - naming conventions from SS3
     # Extract keywords from ss3 file
@@ -262,10 +261,10 @@ convert_output <- function(
       "settlement", "birthseas", "count",
       "kind"
     )
-    
+
     errors <- c(
       "StdDev", "sd", "std", "stddev",
-      "se","SE", 
+      "se", "SE",
       "cv", "CV"
     )
 
@@ -290,7 +289,7 @@ convert_output <- function(
             df1 <- extract[-1, ]
             # Find first row without NAs = headers
             # temp fix for catch df - I have only seen this issue for Hake example
-            if (any(is.na(df1[1,])) & parm_sel == "CATCH") {
+            if (any(is.na(df1[1, ])) & parm_sel == "CATCH") {
               df1 <- df1[-1, ]
               cols_to_keep <- which(sapply(df1, function(x) !all(is.na(x))))
               df1 <- df1 |> dplyr::select(dplyr::all_of(c(names(cols_to_keep))))
@@ -315,7 +314,7 @@ convert_output <- function(
             colnames(df3) <- tolower(row)
             # Remove any leftover NA columns if still present
             NA_cols <- which(sapply(df3, function(x) all(is.na(x))))
-            if (length(NA_cols) > 0) df3 <- df3[ , -NA_cols]
+            if (length(NA_cols) > 0) df3 <- df3[, -NA_cols]
             # Remove suprper + use from df
             if (any(grepl("suprper|use", colnames(df3)))) {
               df3 <- df3 |>
@@ -471,7 +470,7 @@ convert_output <- function(
                       }, FUN.VALUE = character(1))
                       stats::na.omit(match)[1]
                     }, FUN.VALUE = character(1))
-                  # }
+                    # }
                     # only unique values and those that intersect with values vector
                     intersect(unique(vals), to_match_vector)
                   }
@@ -1064,10 +1063,10 @@ convert_output <- function(
             # Set all columns after factors as numeric
             # Identify last factor col
             other_factors <- c(
-              "bio_pattern", "birthseas", 
-              "settlement", "morph", "beg/mid", 
-              "type", "label", "factor", 
-              "platoon", "month", 
+              "bio_pattern", "birthseas",
+              "settlement", "morph", "beg/mid",
+              "type", "label", "factor",
+              "platoon", "month",
               "sexes", "part", "bin", "kind"
             )
             num_cols <- setdiff(colnames(df3), c(factors, other_factors))
@@ -1104,7 +1103,7 @@ convert_output <- function(
                     uncertainty_label = tolower(unique(error_col)),
                     uncertainty = df4[[error_col]]
                   )
-              } 
+              }
             }
             if ("label" %in% colnames(df4) & "factor" %in% colnames(df4)) {
               df4 <- df4 |>
@@ -1202,7 +1201,7 @@ convert_output <- function(
       # is the object class matrix, list, or vector
       if (is.vector(extract[[1]])) {
         if (is.list(extract[[1]])) { # indicates vector and list
-          if (any(vapply(extract[[1]], is.matrix, FUN.VALUE = logical(1)))){
+          if (any(vapply(extract[[1]], is.matrix, FUN.VALUE = logical(1)))) {
             extract_list <- list()
             for (i in seq_along(extract[[1]])) {
               if (is.vector(extract[[1]][[i]])) {
@@ -1264,7 +1263,7 @@ convert_output <- function(
                       TRUE ~ names(extract[[1]][i])
                     )
                     # label_init = names(extract[[1]][i]),
-                    
+
                     # label = dplyr::case_when(
                     #   is.na(fleet) ~ names(extract[[1]][i]),
                     #   TRUE ~ stringr::str_replace(tolower(label), paste(".", fleet_names, sep = "", collapse = "|"), "")

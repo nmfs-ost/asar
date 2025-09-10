@@ -6,7 +6,7 @@ test_that("AFSC report given accurate title", {
     year = 2024
   )
   expect_equal(title_ex, "Assessment of the Alaskan Pollock Stock in the Gulf of Alaska")
-  
+
   title_ex <- create_title(
     office = "AFSC",
     species = "Alaskan Pollock",
@@ -15,7 +15,6 @@ test_that("AFSC report given accurate title", {
     complex = TRUE
   )
   expect_equal(title_ex, "Assessment of the Alaskan Pollock Stock Complex in the Gulf of Alaska")
-  
 })
 
 test_that("NEFSC report given accurate title", {
@@ -48,14 +47,14 @@ test_that("NWFSC report given accurate title", {
     year = 2024
   )
   expect_equal(title_ex, "Status of Sablefish stock in U.S. waters off the coast of Washington in 2024")
-  
+
   title_ex <- create_title(
     office = "NWFSC",
     species = "Sablefish",
     year = 2024
   )
   expect_equal(title_ex, "Status of Sablefish stock along the U.S. West Coast in 2024")
-  
+
   title_ex <- create_title(
     office = "NWFSC",
     species = "Sablefish",
@@ -73,7 +72,7 @@ test_that("PIFSC report given accurate title", {
     year = 2024
   )
   expect_equal(title_ex, "Stock Assessment for Big7 (\\textit{Latin name}) along the main Hawaiian Islands in 2024")
-  
+
   title_ex <- create_title(
     office = "PIFSC",
     species = "Big7",
@@ -93,7 +92,7 @@ test_that("SEFSC report given accurate title", {
     year = 2024
   )
   expect_equal(title_ex, "SEDAR XX Assessment Report for Red Snapper (\\textit{Lutjanus campechanus}) in the South Atlantic in 2024")
-  
+
   title_ex <- create_title(
     office = "SEFSC",
     species = "Red Snapper",
@@ -111,7 +110,7 @@ test_that("SWFSC report given accurate title", {
     year = 2024
   )
   expect_equal(title_ex, "Status of the Sardine stock in U.S. waters off the coast of California in 2024")
-  
+
   title_ex <- create_title(
     office = "SWFSC",
     species = "Sardine",
@@ -126,7 +125,7 @@ test_that("general report given accurate title", {
     year = 2024
   )
   expect_equal(title_ex, "Stock Assessment Report Template")
-  
+
   title_ex <- create_title(
     species = "bluefin tuna",
     region = "east coast",

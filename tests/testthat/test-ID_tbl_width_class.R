@@ -1,19 +1,19 @@
 test_that("Table widths calculated correctly for wide table", {
-
   # make sample dataset
   library(flextable)
-  test_table <- data.frame(year = rep(seq(1987, 2024, 1), times = 3),
-                     estimate = rep(rnorm(38, mean = 1000, sd = 100), times = 6),
-                     label = rep(c("spawning_biomass", "catch", "abundance", "new_col1", "new_col2", "new_col3"), each = 38)
+  test_table <- data.frame(
+    year = rep(seq(1987, 2024, 1), times = 3),
+    estimate = rep(rnorm(38, mean = 1000, sd = 100), times = 6),
+    label = rep(c("spawning_biomass", "catch", "abundance", "new_col1", "new_col2", "new_col3"), each = 38)
   ) |>
     tidyr::pivot_wider(id_cols = year, names_from = label, values_from = estimate) |>
     flextable()
-  
+
   rda <- list(
     "table" = test_table,
     "cap" = "test_caption"
   )
-  
+
   tbl_path <- fs::path(getwd(), "tables")
   dir.create(tbl_path)
   save(rda, file = fs::path(getwd(), "tables", "indices.abundance_table.rda"))
@@ -27,13 +27,12 @@ test_that("Table widths calculated correctly for wide table", {
 
   expected_output <- "wide"
   expect_equal(tbl_width, expected_output)
-  
+
   # erase temporary testing files
   unlink(tbl_path, recursive = T)
 })
 
 test_that("Table widths calculated correctly for extra-wide table", {
-
   # make sample dataset
   library(flextable)
   test_table <- data.frame(
@@ -60,7 +59,8 @@ test_that("Table widths calculated correctly for extra-wide table", {
       "Hawaiian_Islands",
       "Sargasso_Sea"
     ),
-    is_tagged = sample(c(TRUE, FALSE), 20, replace = TRUE)  )|>
+    is_tagged = sample(c(TRUE, FALSE), 20, replace = TRUE)
+  ) |>
     tidyr::pivot_wider(id_cols = species, names_from = location, values_from = is_tagged) |>
     flextable()
 
