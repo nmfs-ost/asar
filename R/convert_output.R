@@ -1457,7 +1457,7 @@ convert_output <- function(
           } # close for loop
           new_df <- Reduce(rbind, extract_list)
           out_list[[names(extract)]] <- new_df
-        } else if (any(vapply(extract[[1]], is.matrix, FUN.VALUE = logical(1)))) { # all must be a vector to work - so there must be conditions for dfs with a mix
+        } else if (any(sapply(extract[[1]], is.vector))) { # all must be a vector to work - so there must be conditions for dfs with a mix
           df <- data.frame(extract[[1]])
           if (max(as.numeric(row.names(df))) < 1000) {
             fac <- "age"
