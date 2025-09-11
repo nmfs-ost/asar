@@ -130,3 +130,11 @@ AGE_SELEX,dead*wt,
 Kobe_Plot,b/bmsy,b_bmsy
 Kobe_Plot,f/fmsy,f_fmsy
 ,Fstd_Btgt,
+AGE_SELEX,Asel,selectivity
+AGE_SELEX,Fecund,fecundity
+AGE_SELEX,Asel2,size_selectivity_size_at_age
+AGE_SELEX,sel*wt,
+AGE_SELEX,sel*ret*wt,
+AGE_SELEX,sel_nums,
+AGE_SELEX,sel*ret_nums,
+AGE_SELEX,Aret,retention

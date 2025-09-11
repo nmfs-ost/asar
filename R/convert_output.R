@@ -1029,7 +1029,7 @@ convert_output <- function(
               label <- stringr::str_extract(tolower(parm_sel), paste(naming, collapse = "|"))
               if (length(label) > 1) cli::cli_alert_warning("Length of label is > 1.")
               if (label == "f") {
-                label <- "F"
+                label <- "fishing_mortality"
               }
             }
             if (grepl("age", tolower(parm_sel))) {
@@ -1054,8 +1054,16 @@ convert_output <- function(
               df3 <- df3 |>
                 dplyr::rename(subseason = subseas)
             }
-            if ("label" %in% colnames(df3)) {
-              df3 <- dplyr::select(df3, -tidyselect::any_of("label"))
+            # if ("label" %in% colnames(df3)) {
+            #   df3 <- dplyr::select(df3, -tidyselect::any_of("label"))
+            # }
+            # If factor exists, set to label
+            if ("factor" %in% colnames(df3)) {
+              df3 <- df3 |>
+                dplyr::select(-tidyselect::any_of("label")) |>
+                dplyr::rename(label = factor)
+            } else {
+              df3 <- dplyr::mutate(df3, label = label[1])
             }
             # Change all columns to chatacters to a avoid issues in pivoting - this will be changed in final df anyway
             df3 <- df3 |>
@@ -1065,7 +1073,7 @@ convert_output <- function(
             other_factors <- c(
               "bio_pattern", "birthseas",
               "settlement", "morph", "beg/mid",
-              "type", "label", "factor",
+              "type", "label", "label",
               "platoon", "month",
               "sexes", "part", "bin", "kind"
             )
@@ -1080,7 +1088,7 @@ convert_output <- function(
                 values_to = "estimate"
               ) |>
               dplyr::mutate(
-                label = label[1],
+                # label = label[1],
                 module_name = parm_sel[1]
               )
             if (any(grepl("morph", colnames(df4)))) {
