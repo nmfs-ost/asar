@@ -90,7 +90,8 @@ convert_output <- function(
     bin = NA,
     age_a = NA,
     len_bins = NA,
-    count = NA
+    count = NA,
+    block = NA
   )
   out_new <- out_new[-1, ]
 
@@ -377,6 +378,9 @@ convert_output <- function(
                     grepl("_sx:2$", label) ~ "male",
                     grepl("_sx:1_", label) ~ "female",
                     grepl("_sx:2_", label) ~ "male",
+                    sex == 1 ~ "female",
+                    sex == 2 ~ "male",
+                    sex == 3 ~ "both",
                     TRUE ~ sex
                   ),
                   growth_pattern = dplyr::case_when(
@@ -862,6 +866,7 @@ convert_output <- function(
               # Subset data frame
               df3 <- df1[-c(1:rownum), ]
               colnames(df3) <- tolower(row)
+              # Pull out indexing variables and remove from labels
               df4 <- df3 |>
                 dplyr::select(intersect(colnames(df3), c("label", "value", "init", "parm_stdev"))) |>
                 dplyr::rename(
@@ -892,6 +897,8 @@ convert_output <- function(
                     grepl("_sx:2$", label) ~ "male",
                     grepl("_sx:1_", label) ~ "female",
                     grepl("_sx:2_", label) ~ "male",
+                    grepl("Male", label) ~ "male",
+                    grepl("Female", label) ~ "female",
                     TRUE ~ NA
                   ),
                   growth_pattern = dplyr::case_when(
@@ -913,6 +920,7 @@ convert_output <- function(
                   ),
                   year = dplyr::case_when(
                     grepl("RecrDev", label) ~ stringr::str_extract(label, "(?<=RecrDev_)[0-9]+$"),
+                    grepl("_[0-9]{4}$", label) ~ stringr::str_extract(label, "[0-9]{4}$"),
                     TRUE ~ NA
                   ),
                   era = dplyr::case_when(
@@ -930,13 +938,27 @@ convert_output <- function(
                     ) ~ stringr::str_extract(label, paste0("(^.*?_)?<=|", paste(fleet_names, collapse = "|"))),
                     TRUE ~ NA
                   ),
+                  block = dplyr::case_when(
+                    grepl("_BLK[0-9]repl_[0-9]{4}$", label) ~ stringr::str_extract(label, "(?<=_BLK)[0-9](?=repl_[0-9]{4}$)"),
+                    TRUE ~ NA
+                  ),
                   # Must be last step in mutate bc all info comes from the
                   label = dplyr::case_when(
                     grepl("?_month_[0-9]_?", label) ~ stringr::str_replace(label, "_?month_\\d?", ""),
                     grepl("?_area_[0-9]_?", label) ~ stringr::str_replace(label, "_?area_\\d?", ""),
                     grepl("InitAge", label) ~ "initial_age",
                     grepl("RecrDev", label) ~ "recruitment_deviations",
-                    grepl(paste0(paste0("_", fleet_names, collapse = "|"), "\\([0-9]+\\)"), label) ~ stringr::str_remove(label, paste0(paste0("_", fleet_names, "\\([0-9]+\\)", collapse = "|"), paste0("_", fleet_names, collapse = "|"))),
+                    grepl(
+                      paste0(
+                        paste0(
+                          "_",
+                          fleet_names,
+                          collapse = "|"
+                          ), 
+                        "\\([0-9]+\\)_BLK[0-9]repl_[0-9]{4}$"),
+                      label) ~ stringr::str_remove_all(label, "(Male_|Female_)|(_[[:alnum:]]+\\([0-9]+\\))|(_BLK[0-9]repl_[0-9]{4})"),
+                    grepl("Male_|Female_", label) & grepl(paste0(paste0("_", fleet_names, collapse = "|"), "\\([0-9]+\\)"), label) ~ stringr::str_remove_all(label, "(Male_|Female_)|(_[[:alnum:]]+\\([0-9]+\\))"),
+                    grepl(paste0(paste0("_", fleet_names, collapse = "|"),"\\([0-9]+\\)"), label) ~ stringr::str_remove(label, paste0(paste0("_", fleet_names, "\\([0-9]+\\)", collapse = "|"))), # , paste0("_", fleet_names, collapse = "|")
                     TRUE ~ stringr::str_extract(label, "^.*?(?=_\\d|_gp|_fem|_mal|_sx|:|$)")
                   ),
                   # fix remaining labels
@@ -1091,6 +1113,15 @@ convert_output <- function(
                 # label = label[1],
                 module_name = parm_sel[1]
               )
+            if ("sex" %in% colnames(df4)) {
+              df4 <- df4 |>
+                dplyr::mutate(
+                  sex = dplyr::case_when(
+                    "sex" %in% colnames(df3) & sex == 1 ~ "female",
+                    "sex" %in% colnames(df3) & sex == 2 ~ "male"
+                  )
+                )
+            }
             if (any(grepl("morph", colnames(df4)))) {
               df4 <- df4 |>
                 dplyr::rename(growth_pattern = morph)
@@ -1623,15 +1654,20 @@ convert_output <- function(
     out_new <- Reduce(rbind, out_list) |>
       # Add era as factor into BAM conout
       dplyr::mutate(
+        # TODO: replace all periods with underscore if naming convention is different
+        label = tolower(label)
+      )
+    if (model == "bam") {
+      out_new <- dplyr::mutate(
+        out_new,
         era = dplyr::case_when(
           year < dat$parms$styr ~ "init",
           year >= dat$parms$styr & year <= dat$parms$endyr ~ "time",
           year > dat$parms$endyr ~ "fore",
           TRUE ~ NA
-        ),
-        # Replace all periods with underscore if naming convention is different
-        label = tolower(label)
+        )
       )
+    }
 
     #### WHAM ----
   } else if (model == "wham") {
@@ -1696,16 +1732,16 @@ convert_output <- function(
     suppressWarnings()
   if (tolower(model) == "ss3") {
     con_file <- system.file("resources", "ss3_var_names.csv", package = "asar", mustWork = TRUE)
-    var_names_sheet <- utils::read.csv(con_file)
+    var_names_sheet <- utils::read.csv(con_file, na.strings = "")
   } else if (tolower(model) == "bam") {
     con_file <- system.file("resources", "bam_var_names.csv", package = "asar", mustWork = TRUE)
-    var_names_sheet <- utils::read.csv(con_file) |>
+    var_names_sheet <- utils::read.csv(con_file, na.strings = "") |>
       dplyr::mutate(
         label = tolower(label)
       )
   } else if (tolower(model) == "fims") {
     con_file <- system.file("resources", "fims_var_names.csv", package = "asar", mustWork = TRUE)
-    var_names_sheet <- utils::read.csv(con_file)
+    var_names_sheet <- utils::read.csv(con_file, na.strings = "")
   }
   if (file.exists(con_file)) {
     out_new <- dplyr::left_join(out_new, var_names_sheet, by = c("module_name", "label")) |>
@@ -1719,7 +1755,8 @@ convert_output <- function(
         label == "dev" & module_name == "DISCARD_OUTPUT" ~ "discard_deviation",
         TRUE ~ label
       )) |>
-      dplyr::select(-alt_label)
+      dplyr::select(-alt_label) |>
+      dplyr::rename(length_bins = len_bins)
   }
   cli::cli_alert_success("Conversion finished!")
 
@@ -1734,5 +1771,5 @@ convert_output <- function(
     # assign(save_name, out_new)
     save(out_new, file = save_dir)
   }
-  out_new
+  tibble::as_tibble(out_new)
 } # close function
