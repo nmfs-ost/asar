@@ -96,7 +96,11 @@ SS3_extract_fleet <- function(dat, vers) {
     i <- 2
   }
   # Locate the row containing the specified value from the df
-  value_row <- which(apply(dat, 1, function(row) any(row == "Fleet")))[i]
+  value_row <- switch(
+    i,
+    "1" = which(apply(dat, 1, function(row) any(row == "Fleet")))[1],
+    "2" = which(apply(dat, 1, function(row) any(row == "Fleet_name")))[1]
+  )
 
   # If the parameter value is not found, return NA
   if (is.na(value_row)) {
@@ -114,9 +118,10 @@ SS3_extract_fleet <- function(dat, vers) {
   # Extract the metric using the rows from above as a guide and clean up empty columns
   clean_df <- dat[rows[1]:(rows[2] - 1), ] |>
     naniar::replace_with_na_all(condition = ~ .x == "")
-  fleets <- switch(i,
+  fleets <- switch(
+    i,
     "1" = {
-      Filter(function(x) !all(is.na(x)), clean_df)[-1, 1]$X1
+      Filter(function(x) !all(is.na(x)), clean_df)[-1, 9]$X9
     },
     {
       clean_df <- dat[rows[1]:(rows[2] - 1), ] |>
