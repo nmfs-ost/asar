@@ -3,7 +3,7 @@
 #' @inheritParams create_template
 #' @param author_list A vector of strings containing pre-formatted author names
 #' and affiliations that would be found in the format in a yaml of a quarto
-#' file when using cat(author_list[[i]]).
+#' file when using `cat(author_list[[i]])`.
 #' @param bib_name Name of a bib file being added into the yaml. For example,
 #' "asar.bib".
 #' @param prev_skeleton Vector of strings containing all the lines of the
