@@ -13,8 +13,8 @@ test_that("convert_output works for SS3", {
       file = file.path(all_models[i], "Report.sso")
     ))
 
-    # Check that the result has exactly 31 columns
-    expect_equal(dim(result)[2], 32)
+    # Check that the result has exactly 33 columns
+    expect_equal(dim(result)[2], 33)
   }
 
   # Test saving the output in a global environment
@@ -22,7 +22,7 @@ test_that("convert_output works for SS3", {
     file = file.path(all_models[1], "Report.sso")
   )
 
-  expect_equal(dim(output)[2], 32)
+  expect_equal(dim(output)[2], 33)
 })
 
 

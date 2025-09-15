@@ -1743,7 +1743,11 @@ convert_output <- function(
     con_file <- system.file("resources", "fims_var_names.csv", package = "asar", mustWork = TRUE)
     var_names_sheet <- utils::read.csv(con_file, na.strings = "")
   }
+  
   if (file.exists(con_file)) {
+    # Remove 'X' column if it exists
+    var_names_sheet <- var_names_sheet |>
+      dplyr::select(-dplyr::any_of("X"))
     out_new <- dplyr::left_join(out_new, var_names_sheet, by = c("module_name", "label")) |>
       dplyr::mutate(label = dplyr::case_when(
         !is.na(alt_label) ~ alt_label,
