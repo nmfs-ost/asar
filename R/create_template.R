@@ -608,7 +608,7 @@ create_template <- function(
         "safe" = "12_figures.qmd",
         "09_figures.qmd"
       )
-      figures_doc <- ""
+      figures_doc <- "# Figures {#sec-figures}\n \n"
       utils::capture.output(cat(figures_doc),
         file = fs::path(subdir, figures_doc_name),
         append = FALSE
