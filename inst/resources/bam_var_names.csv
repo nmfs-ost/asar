@@ -149,8 +149,8 @@ sel.parms,selpar.A50.d,selectivity_parameter_A50_discard
 sel.parms,selpar.slope.d,selectivity_parameter_slope_discard
 sel.parms,selpar.A502.d,selectivity_parameter_A50_2_discard
 sel.parms,selpar.slope2.d,selectivity_parameter_slope_2_discard
-parm.tvec,log.rec.dev,log_recruitment_devitations
-parm.tvec.cons,log.rec.dev,log_recruitment_devitations
+parm.tvec,log.rec.dev,log_recruitment_deviations
+parm.tvec.cons,log.rec.dev,log_recruitment_deviations
 parm.tvec,log.F.dev,log_F_deviations
 parm.tvec.cons,log.F.dev,log_F_deviations
 ,log.F.dev.cP,log_F_dev_cP
