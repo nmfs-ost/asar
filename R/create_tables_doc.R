@@ -47,16 +47,16 @@ create_tables_doc <- function(subdir = getwd(),
   landscape_pg_width <- 8
 
   empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
-  
+
   tab_header <- "# Tables {#sec-tables}\n \n"
-  
+
   # append table-producing code to non-empty tables doc, if it exists, vs. overwriting it
   append <- FALSE
   if (length(file.path(subdir, list.files(subdir, pattern = "tables.qmd"))) == 1) {
     existing_tables_doc <- file.path(subdir, list.files(subdir, pattern = "tables.qmd"))
     table_content <- readLines(existing_tables_doc) |>
       suppressWarnings()
-   
+
     if ("# Tables {#sec-tables}" %in% table_content) {
       append <- TRUE
       cli::cli_alert_info("Tables doc will be appended to include tables in `tables_dir`.")
