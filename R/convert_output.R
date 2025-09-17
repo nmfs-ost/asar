@@ -954,11 +954,13 @@ convert_output <- function(
                           "_",
                           fleet_names,
                           collapse = "|"
-                          ), 
-                        "\\([0-9]+\\)_BLK[0-9]repl_[0-9]{4}$"),
-                      label) ~ stringr::str_remove_all(label, "(Male_|Female_)|(_[[:alnum:]]+\\([0-9]+\\))|(_BLK[0-9]repl_[0-9]{4})"),
+                        ),
+                        "\\([0-9]+\\)_BLK[0-9]repl_[0-9]{4}$"
+                      ),
+                      label
+                    ) ~ stringr::str_remove_all(label, "(Male_|Female_)|(_[[:alnum:]]+\\([0-9]+\\))|(_BLK[0-9]repl_[0-9]{4})"),
                     grepl("Male_|Female_", label) & grepl(paste0(paste0("_", fleet_names, collapse = "|"), "\\([0-9]+\\)"), label) ~ stringr::str_remove_all(label, "(Male_|Female_)|(_[[:alnum:]]+\\([0-9]+\\))"),
-                    grepl(paste0(paste0("_", fleet_names, collapse = "|"),"\\([0-9]+\\)"), label) ~ stringr::str_remove(label, paste0(paste0("_", fleet_names, "\\([0-9]+\\)", collapse = "|"))), # , paste0("_", fleet_names, collapse = "|")
+                    grepl(paste0(paste0("_", fleet_names, collapse = "|"), "\\([0-9]+\\)"), label) ~ stringr::str_remove(label, paste0(paste0("_", fleet_names, "\\([0-9]+\\)", collapse = "|"))), # , paste0("_", fleet_names, collapse = "|")
                     TRUE ~ stringr::str_extract(label, "^.*?(?=_\\d|_gp|_fem|_mal|_sx|:|$)")
                   ),
                   # fix remaining labels
@@ -1743,7 +1745,7 @@ convert_output <- function(
     con_file <- system.file("resources", "fims_var_names.csv", package = "asar", mustWork = TRUE)
     var_names_sheet <- utils::read.csv(con_file, na.strings = "")
   }
-  
+
   if (file.exists(con_file)) {
     # Remove 'X' column if it exists
     var_names_sheet <- var_names_sheet |>
