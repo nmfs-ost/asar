@@ -56,7 +56,7 @@ the report}
 
 \item{author_list}{A list of strings containing pre-formatted author names
 and affiliations that would be found in the format in a yaml of a quarto
-file when using \code{cat(author_list[[i]])}.}
+file when using base R function \code{cat()}.}
 
 \item{title}{A custom title that is an alternative to the default title (composed
 in asar::create_title()). Example: "Management Track Assessments Spring 2024".}

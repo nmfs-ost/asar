@@ -23,14 +23,15 @@ output2 <- output |>
 
 # terminal fishing mortality 
 Fend <- output2 |> 
-  dplyr::filter(c(label == 'fishing_mortality' & year == end_year) | c(label == 'terminal_fishing_mortality' & is.na(year))) |>
+  dplyr::filter((label == 'fishing_mortality' & year == end_year) | (label == 'terminal_fishing_mortality' & is.na(year))) |>
   dplyr::pull(estimate) |>
-  unique()
+  # unique() |>
+  dplyr::first()
 
 # fishing mortality at msy 
 # please change target if desired 
 Ftarg <- output2 |>
-  dplyr::filter(grepl('f_target', label) | grepl('f_msy', label) | c(grepl('fishing_mortality_msy', label) & is.na(year))) |>
+  dplyr::filter(grepl('f_target', label) | grepl('f_msy', label) | (grepl('fishing_mortality_msy', label) & is.na(year))) |>
   dplyr::pull(estimate)
 
 # Terminal year F respective to F target 
@@ -38,14 +39,16 @@ F_Ftarg <- Fend / Ftarg
 
 # terminal year biomass 
 Bend <- output2 |>
-  dplyr::filter(grepl('mature_biomass', label) | grepl('^biomass$', label),
+  dplyr::filter(grepl('^biomass$', label),
                 year == end_year) |>
   dplyr::pull(estimate)
 
 # target biomass (msy) 
 # please change target if desired 
 Btarg <- output2 |>
-  dplyr::filter(c(grepl('biomass', label) & grepl('target', label) & estimate >1) | label == 'biomass_msy') |>
+  dplyr::filter(
+    !grepl("spawning|catch", label),
+    (grepl('biomass', label) & grepl('target', label) & estimate >1) | label == 'biomass_msy') |>
   dplyr::pull(estimate)
 
 # total catch in the last year 
@@ -67,25 +70,29 @@ total_landings <- output |>
 
 # spawning biomass in the last year
 SBend <- output2 |>
-  dplyr::filter(grepl('spawning_biomass', label), year == end_year) |>
+  dplyr::filter(
+    grepl('spawning_biomass$', label), year == end_year,
+    !is.na(estimate)
+  ) |>
   dplyr::pull(estimate) |>
   unique()
 
 # overall natural mortality or at age 
 M <- output |>
   dplyr::filter(grepl('natural_mortality', label)) |>
-  dplyr::pull(estimate)
+  dplyr::pull(estimate) |>
+  unique()
 
 # Biomass at msy 
 # to change to another reference point, replace msy in the following lines with other label 
 Bmsy <- output2 |>
-  dplyr::filter(c(grepl('^biomass', label) & grepl('msy', label) & estimate >1) | grepl('^biomass_msy$', label)) |>
+  dplyr::filter((grepl('^biomass', label) & grepl('msy', label) & estimate >1) | grepl('^biomass_msy$', label)) |>
   dplyr::pull(estimate)
 
 # target spawning biomass(msy) 
 # please change target if desired 
 SBmsy <- output2 |>
-  dplyr::filter(c(grepl('spawning_biomass', label) & grepl('msy$', label) & estimate > 1) | label == 'spawning_biomass_msy$') |>
+  dplyr::filter((grepl('spawning_biomass', label) & grepl('msy$', label) & estimate > 1) | label == 'spawning_biomass_msy$') |>
   dplyr::pull(estimate)
 
 # steepness 
@@ -95,5 +102,5 @@ h <- output |>
 
 # recruitment 
 R0 <- output |> 
-  dplyr::filter(grepl('R0$', label) | grepl('recruitment_virgin', label)) |> 
+  dplyr::filter(grepl('recruitment_unfished$', label)) |> 
   dplyr::pull(estimate)

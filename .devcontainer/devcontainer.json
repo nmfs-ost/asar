@@ -13,7 +13,7 @@
             	"packages": "qpdf"
 		},
 	    	"ghcr.io/rocker-org/devcontainer-features/r-packages:1": {
-			"packages": "usethis,pak,qpdf,cli,flextable,forstringr,fs,naniar,officer,openxlsx,pdftools,prodlim,svDialogs,tidyselect,tinytex",
+			"packages": "usethis,pak,qpdf,cli,flextable,forstringr,fs,naniar,officer,pdftools,prodlim,svDialogs,tidyselect,tinytex",
 			"installSystemRequirements": true
 		},
 		// option to run rstudio. you can type rserver into the command line to
