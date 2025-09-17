@@ -18,14 +18,18 @@
 #' }
 create_figures_doc <- function(subdir = getwd(),
                                figures_dir = getwd()) {
+  
+  empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
+  
+  fig_header <- "# Figures {#sec-figures}\n \n"
+  
   # append figure-producing code to non-empty figures doc, if it exists, vs. overwriting it
   append <- FALSE
   if (length(file.path(subdir, list.files(subdir, pattern = "figures.qmd"))) == 1) {
     existing_figs_doc <- file.path(subdir, list.files(subdir, pattern = "figures.qmd"))
     figure_content <- readLines(existing_figs_doc) |>
       suppressWarnings()
-    empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
-    if (!(empty_doc_text %in% figure_content)) {
+    if ("# Figures {#sec-figures}" %in% figure_content) {
       append <- TRUE
       cli::cli_alert_info("Figures doc will be appended to include figures in `figures_dir`.")
     }
@@ -33,9 +37,9 @@ create_figures_doc <- function(subdir = getwd(),
 
   figures_doc_header <- ifelse(append,
     "",
-    "# Figures {#sec-figures}\n \n"
+    fig_header
   )
-
+  
   # add chunk that creates object as the directory of all rdas
   figures_doc_setup <- paste0(
     add_chunk(
@@ -120,8 +124,8 @@ rm(rda)\n
       "files in appropriate formats (e.g., .rda, .png, .jpg) in the 'figures' folder"
     ))
     figures_doc <- paste0(
-      "# Figures {#sec-figures}\n\n",
-      "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
+      figures_doc_header,
+      empty_doc_text
     )
   } else {
     # paste rda figure code chunks into one object
