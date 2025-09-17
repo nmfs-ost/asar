@@ -29,7 +29,7 @@ create_figures_doc <- function(subdir = getwd(),
     existing_figs_doc <- file.path(subdir, list.files(subdir, pattern = "figures.qmd"))
     figure_content <- readLines(existing_figs_doc) |>
       suppressWarnings()
-    if (fig_header %in% figure_content) {
+    if ("# Figures {#sec-figures}" %in% figure_content) {
       append <- TRUE
       cli::cli_alert_info("Figures doc will be appended to include figures in `figures_dir`.")
     }

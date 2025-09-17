@@ -57,7 +57,7 @@ create_tables_doc <- function(subdir = getwd(),
     table_content <- readLines(existing_tables_doc) |>
       suppressWarnings()
    
-    if (tab_header %in% table_content) {
+    if ("# Tables {#sec-tables}" %in% table_content) {
       append <- TRUE
       cli::cli_alert_info("Tables doc will be appended to include tables in `tables_dir`.")
     }
