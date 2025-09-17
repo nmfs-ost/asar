@@ -46,14 +46,18 @@ create_tables_doc <- function(subdir = getwd(),
   # set landscape page width (in)
   landscape_pg_width <- 8
 
+  empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
+  
+  tab_header <- "# Tables {#sec-tables}\n \n"
+  
   # append table-producing code to non-empty tables doc, if it exists, vs. overwriting it
   append <- FALSE
   if (length(file.path(subdir, list.files(subdir, pattern = "tables.qmd"))) == 1) {
     existing_tables_doc <- file.path(subdir, list.files(subdir, pattern = "tables.qmd"))
     table_content <- readLines(existing_tables_doc) |>
       suppressWarnings()
-    empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
-    if (!(empty_doc_text %in% table_content)) {
+   
+    if (tab_header %in% table_content) {
       append <- TRUE
       cli::cli_alert_info("Tables doc will be appended to include tables in `tables_dir`.")
     }
@@ -62,7 +66,7 @@ create_tables_doc <- function(subdir = getwd(),
   # add header
   tables_doc_header <- ifelse(append,
     "",
-    "# Tables {#sec-tables}\n \n"
+    tab_header
   )
 
   # add chunk that creates object as the directory of all rdas
@@ -273,8 +277,8 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
       ".rda files in the 'tables' folder"
     ))
     tables_doc <- paste0(
-      "# Tables {#sec-tables}\n\n",
-      "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
+      tables_doc_header,
+      empty_doc_text
     )
   } else {
     cli::cli_alert_success("Found {length(final_rda_tab_list)} table{?s} in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
