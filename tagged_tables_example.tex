@@ -1,0 +1,29 @@
+\DocumentMetadata{
+  lang        = en,
+  pdfstandard = ua-2,
+  pdfstandard = a-4f, %or a-4
+  tagging=on,
+  tagging-setup={math/setup=mathml-SE} 
+}
+\documentclass{article}
+\begin{document}
+\section{Start}
+
+% 1. Start the table environment
+\begin{table}
+% 2. Add your caption and a label for referencing
+\caption{This is an example caption for the table.}
+\label{tab:example}
+
+\tagpdfsetup{table/header-rows={1,2}}
+\begin{tabular}{lr}
+\multicolumn{2}{c}{Example}\\
+Name&Value\\
+This& 11 \\
+That & 2
+\end{tabular}
+
+% 3. End the table environment
+\end{table}
+
+\end{document}
