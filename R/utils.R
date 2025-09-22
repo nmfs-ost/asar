@@ -119,7 +119,10 @@ SS3_extract_fleet <- function(dat, vers) {
     naniar::replace_with_na_all(condition = ~ .x == "")
   fleets <- switch(i,
     "1" = {
-      Filter(function(x) !all(is.na(x)), clean_df)[-1, 9]$X9
+      fleet_names <- Filter(function(x) !all(is.na(x)), clean_df)[-1, 9]$X9
+      fleet_length <- seq_along(fleet_names)
+      names(fleet_names) <- fleet_length
+      fleet_length
     },
     {
       clean_df <- dat[rows[1]:(rows[2] - 1), ] |>
