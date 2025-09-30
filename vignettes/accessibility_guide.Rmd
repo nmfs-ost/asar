@@ -246,7 +246,7 @@ For specialized commands that enable capitalization, reference to acronyms' mean
 Please do not place figures inside tables. Doing so makes it very difficult for software to properly identify the structure of (i.e., *tag*) the table and its inner elements.
 
 # Status of accessibility features
-*Date updated: 9/15/2025*
+*Date updated: 9/29/2025*
 
 ## Tagging ⚠️
 
@@ -267,14 +267,17 @@ Please do not place figures inside tables. Doing so makes it very difficult for 
 2. Figure captions
 3. Lists
 4. Other textual aspects of reports (e.g., headers, sections, parts)
+5. Math
 
-### HTML ✅️
+### HTML
 
 HTML reports more readily pass several accessibility criteria.
 
 ## Alternative text ❌
 
 `add_alttext()` is currently failing to add alternative text to images, though *it was successful in the past*. We are investigating why this feature is failing.
+
+Currently, it adds the figure's filepath as the alt text.
 
 ## Adding tags and alt text in the same function ✅
 
@@ -283,6 +286,3 @@ HTML reports more readily pass several accessibility criteria.
 ## Glossary ✅
 
 The glossary is fully functional. 
-
-## Evaluation of criteria in Section 508 compliance checklist
-
