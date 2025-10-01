@@ -316,10 +316,10 @@ This section states the status of `asar` reports' accessibility features that ar
 
 HTML reports more readily pass several accessibility criteria.
 
-## Adding tags and alt text in the same function
+### Adding tags and alt text in the same function
 
 `add_accessibility()` is functional. It combines `add_tagging()` and `add_alttext()`, allowing the user to add tagging and alternative text at once.
 
-## Glossary
+### Glossary
 
 The glossary is functional. 
