@@ -252,7 +252,7 @@ Please do not place figures inside tables. Doing so makes it very difficult for 
 
 This section states the status of `asar` reports' accessibility features as compared to [the NOAA "Big 5" Section 508 compliance requirements](https://library.noaa.gov/Section508/QuickStart).
 
-### 1. Tagged content ⚠️
+### 1. Tagged content 🚧
 
 **Expectation:** The PDF is a tagged PDF.
 
