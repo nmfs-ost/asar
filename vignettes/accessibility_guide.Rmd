@@ -256,20 +256,23 @@ For specialized commands that enable capitalization, reference to acronyms' mean
 Please do not place figures inside tables. Doing so makes it very difficult for software to properly identify the structure of (i.e., *tag*) the table and its inner elements.
 
 # Status of accessibility features
-*Date updated: 9/29/2025*
+*Date updated: 10/1/2025*
 
-## Tagging ⚠️
+## NOAA institutional repository submission requirements
 
-### PDFs
+This section states the status of `asar` reports' accessibility features as compared to [the NOAA "Big 5" Section 508 compliance requirements](https://library.noaa.gov/Section508/QuickStart).
 
-`add_tagging()` adds tags to *some* PDFs. Keep reading for an explanation.
+### 1. Tagged content ⚠️
+
+**Expectation:** The PDF is a tagged PDF.
+
+**Status**: `add_tagging()` adds tags to *some* PDFs. Keep reading for an explanation.
 
 #### What isn't working
 
-1. Tables
-  - **Report compilation will fail unless the report does not contain tables.**
-  - More context: Tagging tables is a known issue among developers. It's very challenging.
-  - In the meantime, we suggest two workarounds: 1) placing your tables in a separate document, or 2) adding your tables as raw LaTeX code inside the 08_tables.qmd file. We are working on adding option #2 as a feature in a future `asar` release.
+##### Tables
+
+**Report compilation will fail unless the report does not contain tables.** Generally, tagging tables is a known issue among developers. It's very challenging. In the meantime, we suggest two workarounds: 1) placing your tables in a separate document, or 2) adding your tables as raw LaTeX code inside the 08_tables.qmd file. We are working on adding option #2 as a feature in a future `asar` release.
 
 #### What's functional
 
@@ -279,20 +282,44 @@ Please do not place figures inside tables. Doing so makes it very difficult for 
 4. Other textual aspects of reports (e.g., headers, sections, parts)
 5. Math
 
+### 2. Bookmarks ✅
+
+**Expectation:** Bookmarks are present on documents over 20 pages and illustrate the structure of the document.
+
+**Expectation:** If a Table of Contents is present, bookmarks should reflect this.
+
+**Status**: Both expectations are met.
+
+### 3. Alternative Text ❌
+
+**Expectation:** Alt text is present for all figures, charts, maps, etc.
+
+**Status**: `add_alttext()` is currently failing to add alternative text to images, though *it was successful in the past*. Currently, it adds the figure's filepath as the alt text. We are investigating why this feature is failing.
+
+### 4. Logical reading order ✅
+
+**Expectation:** The reading order of the elements is logical and follows the flow of the document.
+
+**Status**: This expectation is met.
+
+### 5. Document properties ✅
+
+**Expectation:** Title and Language are present.
+
+**Status**: This expectation is met.
+
+## Other accessibility considerations
+
+This section states the status of `asar` reports' accessibility features that are not explicitly referenced by the NOAA IR submission "Big 5" list.
+
 ### HTML
 
 HTML reports more readily pass several accessibility criteria.
 
-## Alternative text ❌
-
-`add_alttext()` is currently failing to add alternative text to images, though *it was successful in the past*. We are investigating why this feature is failing.
-
-Currently, it adds the figure's filepath as the alt text.
-
-## Adding tags and alt text in the same function ✅
+## Adding tags and alt text in the same function
 
 `add_accessibility()` is functional. It combines `add_tagging()` and `add_alttext()`, allowing the user to add tagging and alternative text at once.
 
-## Glossary ✅
+## Glossary
 
-The glossary is fully functional. 
+The glossary is functional. 
