@@ -313,3 +313,66 @@ HTML reports more readily pass several accessibility criteria.
 ### Glossary
 
 The glossary is functional. 
+
+## NOAA Central Library Accessibility Checklist: PDF Documents
+
+This section states the status of `asar` reports' accessibility features as compared to the more extensive [NOAA Central Library's accessibility checklist for PDFs](https://library.noaa.gov/ld.php?content_id=61618926).
+
+The checklist reflects the results from a report made with a basic, exemplary `asar` workflow (such as that in the README).
+
+### General Accessibility
+
+| Element | Pass | Fail | Not Applicable |
+| :----------- | :-: | :-: | :---: |
+| File name is concise and free of spaces or special characters. |X| | |
+| Document properties for Title and Language are added. |X| | |
+| Track changes have been accepted and/or turned off. All comments have been removed/resolved. |X| | |
+| If there is a Table of Contents (TOC), it was created using the TOC Command. | | |X (The TOC was created externally from Adobe but are constructed such that TOC is inserted appropriately)|
+| Page numbering codes are used (as opposed to manually entering page numbers). |X| | |
+| Footnotes have been created via the Insert Footnote tool. | | |X (Footnotes are created externally from Adobe but are constructed such that footnes are inserted appropriately)|
+| Links contain descriptive text informing the user of the context and content of the linked page. Avoid linking terms such as “Click Here” or “Website.” |X| | |
+| All hyperlinks are working and linking to their intended destination. | X| | |
+| All information that is conveyed through the use of color is also available without color. |X| | |
+| All color for images, text, etc. avoids red-green contrast when possible. (For colorblind viewers). |X| | |
+
+### Headings & Fonts
+
+| Element | Pass | Fail | Not Applicable |
+| :----------- | :-: | :-: | :---: |
+| The document uses recommended font styles (Arial, Veranda, Times New Roman, Georgia, Calibri). |X| | |
+| Text is easy to read against the background of the document (Recommended color contrast ratio of 4.5:1). |X| | |
+| The document has been formatted using the style elements for Headings and is presented hierarchically (i.e., Heading 1 to Heading 2 leading into body text). |X| | |
+
+### Image Requirements
+
+| Element | Pass | Fail | Not Applicable |
+| :----------- | :-: | :-: | :---: |
+| The document should be free of background images, watermarks, and scanned images of text. |X| | |
+| All images and graphics should appear crisp and clear. |X| | |
+| All images and non-text elements have alternative text. ||X (We are working on fixing the erraneous alt text.) | |
+| Multiple associated images on the same page are grouped together and alternative text for the images has been added. | | |X|
+| Multilayered objects (such as charts or graphs) have been flattened into a single image and alternative text for the image has been added. | |X (We are working on fixing the erraneous alt text.)| |
+| Complex images include descriptive text like captions. |X| | |
+
+### Lists & Tables
+
+As stated above, we are still working on solutions to properly tag tables.
+
+| Element | Pass | Fail | Not Applicable |
+| :----------- | :-: | :-: | :---: |
+| All tables were made using the Insert Table option. | | |X (Tables will be created externally from Adobe but will be constructed such that tables are inserted appropriately)|
+| No blank or merged cells are present in the table(s). | |X| |
+| Data tables should have the first row designated as “Header Row” within the Table Properties. | |X| |
+| Under Table Properties, “Allow row to break across pages” should not be checked. (This impacts reading order.) | |X| |
+| Tables are labeled and/or described as necessary. | |X| |
+| No layout tables are present in the document. | |X| |
+| All lists have been appropriately tagged using all four tags: L, LI, Lbl, and LBody. |X| | |
+
+### Bookmarks, Tagging & Table of Contents
+
+| Element | Pass | Fail | Not Applicable |
+| :----------- | :-: | :-: | :---: |
+| All documents more than 20 pages have logical bookmarks. These should reflect the structure of the document and often time may mirror the Table of Contents (TOC). |X| | |
+| Items in the TOC are linked appropriately, and page numbers are correct. |X| | |
+| PDF tags have been added to the document (auto-tagging is acceptable, but may require touch-up work). |X| | |
+| Reading order is logical and correct based on the PDF tags. |X| | |
