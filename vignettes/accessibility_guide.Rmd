@@ -34,6 +34,14 @@ We have built `asar` so that the produced documents uphold several [federal acce
 2.  **Write the final component** of each figure's alt text.
 
     -   This prewritten alt text usually contains 3/4 essential ingredients for well-written alt text. The remaining ingredient (#4): *the relationship between the variables shown (i.e., what the figure is conveying).* Since we can't program `asar` to analyze the figure's meaning, *you must provide this*.
+    
+3. **Add tagging and alternative text** to your final PDF.
+
+    -   When you are ready to compile your final report, you will run one more function: `add_accessibility()`. This function will take the LaTeX version of your report, which was created when you rendered your skeleton, and activate tagging and add alternative text. Please refer to the [`add_accessibility()` example](https://nmfs-ost.github.io/asar/reference/add_accessibility.html) for guidance in how to run this function.
+    
+4. *Optional, but encouraged*: Use acronyms in your report.
+
+    -   While writing your report, [refer to acronyms using a straightforward format explained in the Acronyms and Glossary section](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#acronyms-and-glossary). Then, when you render, your report will contain a glossary with your acronyms and their meanings. This system also ensures your acronyms' meanings will be added upon their first usage in the text, which means that you don't have to keep track of that anymore!
 
 # Guidance and resources
 
@@ -262,7 +270,7 @@ This section states the status of `asar` reports' accessibility features as comp
 
 ##### Tables
 
-**Report compilation will fail unless the report does not contain tables.** Generally, tagging tables is a known issue among developers. It's very challenging. In the meantime, we suggest two workarounds: 1) placing your tables in a separate document, or 2) adding your tables as raw LaTeX code inside the 08_tables.qmd file. We are working on adding option #2 as a feature in a future `asar` release.
+**Report compilation will fail unless the report does not contain tables.** Generally, tagging tables is a known issue among developers. It's very challenging. In the meantime, we suggest two workarounds: 1) placing your tables in a separate document, or 2) adding your tables as raw LaTeX code inside the 08_tables.qmd file. We are developing a workflow for option #2 for a future `stockplotr` release (which will be then integrated into an `asar` workflow).
 
 #### What's functional
 
@@ -282,7 +290,7 @@ This section states the status of `asar` reports' accessibility features as comp
 
 ### 3. Alternative Text ❌
 
-**Expectation:** Alt text is present for all figures, charts, maps, etc.
+**Expectation:** Alternative text is present for all figures, charts, maps, etc.
 
 **Status**: `add_alttext()` is currently failing to add alternative text to images, though *it was successful in the past*. Currently, it adds the figure's filepath as the alt text. We are investigating why this feature is failing.
 
@@ -300,7 +308,7 @@ This section states the status of `asar` reports' accessibility features as comp
 
 ## Other accessibility considerations
 
-This section states the status of `asar` reports' accessibility features that are not explicitly referenced by the NOAA IR submission "Big 5" list.
+This section states the status of `asar` reports' accessibility features that are not explicitly referenced by the NOAA institutional repository submission "Big 5" list.
 
 ### HTML
 
