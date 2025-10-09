@@ -309,7 +309,7 @@ decided to return to the original workflow for two reasons.</p>
 rendering your report, Quarto will recognize your “report” folder as the
 working directory, which probably isn’t your <em>actual</em> working
 directory. This will result in a rendering error.</p></li>
-<li><p>While hardcoding <code><a href="https://here.r-lib.org/reference/here.html" class="external-link">here::here()</a></code> into the path
+<li><p>While hardcoding <code>here::here()</code> into the path
 <em>does</em> work, we recognize that some users may be unfamiliar with
 <a href="https://here.r-lib.org/" class="external-link">the <code>here</code> package</a> and
 are not able to learn another tool while already learning
@@ -320,7 +320,7 @@ use.</p></li>
 <p>If you want to ensure <code>tables_dir</code> and
 <code>figures_dir</code> are relative filepaths (which may be essential
 if you are collaborating), you can directly edit these paths yourself
-and reset them using <code><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd()</a></code>, <code><a href="https://here.r-lib.org/reference/here.html" class="external-link">here::here()</a></code>, or
+and reset them using <code><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd()</a></code>, <code>here::here()</code>, or
 some other option.</p>
 </div>
 </div>
