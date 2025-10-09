@@ -1539,6 +1539,12 @@ convert_output <- function(
               cli::cli_alert_warning("Not compatible")
             }
           }
+          # # Check if any col names contain error then select
+          # if (any(grepl(paste0(errors, collapse = "|"), colnames(df)))) {
+          #   error_cols <- grep(paste0(errors, ".", collapse = "|"), colnames(df))
+          # } else {
+          #   error_cols <- NULL
+          # }
           if (length(intersect(colnames(df), c(factors, errors))) > 0) {
             df2 <- df |>
               tidyr::pivot_longer(
@@ -1624,6 +1630,23 @@ convert_output <- function(
                 label = label,
                 module_name = names(extract)
               )
+          }
+          # Move error into column
+          if (any(grepl(paste0("^", errors, "\\.", collapse = "|"), unique(df2$label)))) {
+            # Pivot wider only the cv labels and align with their counter part estimate label
+            error_data <- df2 |>
+              dplyr::filter(stringr::str_detect(label, paste0("^", errors, ".", collapse = "|"))) |>
+              dplyr::mutate(match_key = stringr::str_remove(label, paste0("^", errors, ".", collapse = "|"))) |>
+              dplyr::mutate(uncertainty_label = stringr::str_extract(label, paste0(errors, collapse = "|"))) |>
+              dplyr::select(year, fleet, match_key, uncertainty = estimate, uncertainty_label)
+            # filter out error labels
+            df2_filtered <- df2 |>
+              dplyr::filter(!stringr::str_detect(label, paste0("^", errors, collapse = "|"))) |>
+              dplyr::mutate(match_key = stringr::str_extract(label, "^[A-Za-z]+"))
+            # Join the errors to the final df
+            df2 <- df2_filtered |>
+              dplyr::left_join(error_data, by = c("year", "fleet", "match_key")) |>
+              dplyr::select(-match_key)
           }
           df2[setdiff(tolower(names(out_new)), tolower(names(df2)))] <- NA
           out_list[[names(extract)]] <- df2
