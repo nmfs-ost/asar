@@ -1,0 +1,32 @@
+# This workflow lives in Repository A (the one with the new release)
+
+name: 1. Dispatch Release to Repo B
+
+on:
+  release:
+    # Trigger ONLY when a new release is published
+    types: [published]
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send repository_dispatch to Repository B (stockplotr)
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          # This token is required to talk to the GitHub API.
+          # It must be a PAT stored in Repo A's secrets with 'repo' scope.
+          token: ${{ secrets.REPO_B_PAT }}
+          
+          # The target repository where the action will run
+          repository: 'nmfs-ost/stockplotr' 
+          
+          # This is the event name that Repo B's workflow will listen for.
+          event-type: 'release_trigger'
+          
+          # Pass data needed by Repo B in the client-payload
+          client-payload: |
+            {
+              "release_tag": "${{ github.event.release.tag_name }}",
+              "repository_a_name": "${{ github.repository }}"
+            }
