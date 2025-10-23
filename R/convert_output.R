@@ -1764,6 +1764,10 @@ convert_output <- function(
         is.na(year) ~ NA_real_,
         TRUE ~ as.numeric(year)
       ),
+      likelihood = dplyr::case_when(
+        is.na(likelihood) ~ NA_real_,
+        TRUE ~ as.numeric(likelihood)
+      ),
       # change era name to keep standard
       era = dplyr::case_when(
         era == "Main" ~ "time",
