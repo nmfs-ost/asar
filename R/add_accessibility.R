@@ -19,7 +19,6 @@
 #' accessibility and renders the final document. The document is tagged and
 #' includes alternative text from the captions_alt_text.csv produced from
 #' `stockplotr` package also available on GitHub.
-#' @export
 #'
 #' @examples
 #' \dontrun{
