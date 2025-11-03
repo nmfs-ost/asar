@@ -572,12 +572,27 @@ export_glossary <- function() {
     "yfs", "ypr",
     "z"
   )
-
+  
+  # Add new acronyms from survey names table
+  survey_acs <- data.frame(
+    "Acronym" = c("SEAMAP",
+                  "MARMAP",
+                  "CCFRP"),
+    "Label" = c("SEAMAP",
+                "MARMAP",
+                "CCFRP"),
+    "Meaning" = c("Southeast Area Monitoring and Assessment Program",
+                  "The Marine Resources Monitoring, Assessment, and Prediction Program",
+                  "California Collaborative Fisheries Research Program"),
+    "Definition" = NA
+  )
+  
   unique_all_cleaning3 <- unique_all_cleaning2 |>
     dplyr::mutate(Meaning = ifelse(Label %in% rows_to_lower,
       tolower(Meaning),
       Meaning
-    ))
+    )) |>
+    dplyr::left_join(survey_acs)
 
   # keep cleaning by:
   # -adding new definitions
