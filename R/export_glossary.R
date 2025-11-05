@@ -587,12 +587,44 @@ export_glossary <- function() {
     "Definition" = NA
   )
   
+  # take survey names and add shortened versions of the formal name (Meaning) as new Acronyms
+  survey_shorts <- read.csv(fs::path("inst", "glossary", "formatted_acronym_lists", "survey_names.csv")) |>
+    # extract unique Meanings
+    dplyr::group_by(Meaning) |> 
+    dplyr::slice(1) |> # takes the first occurrence if there is a tie
+    dplyr::ungroup() |>
+    # create shortened acronym for each meaning
+    dplyr::mutate(ac_short = gsub('(?<=^|[^\\pL])(\\pL)\\pL{2,}|.', '\\U\\1', Meaning, perl = TRUE)) |>
+    # extract first 6 letters of each ac_short, if longer than 6 chars
+    dplyr::mutate(ac_short = substr(ac_short, 1, 6)) |>
+    dplyr::group_by(ac_short) |>
+    # add numbers to differentiate identical ac_short values
+    dplyr::mutate(
+      ac_short = if (dplyr::n() > 1) {
+        paste(ac_short, dplyr::row_number(), sep = "_")
+      } else {
+        ac_short
+      }) |>
+    dplyr::ungroup() |>
+    dplyr::select(-Acronym) |>
+    dplyr::rename(Acronym = ac_short)
+  
   unique_all_cleaning3 <- unique_all_cleaning2 |>
     dplyr::mutate(Meaning = ifelse(Label %in% rows_to_lower,
       tolower(Meaning),
       Meaning
     )) |>
-    dplyr::left_join(survey_acs)
+    dplyr::left_join(survey_acs) |>
+    dplyr::left_join(survey_shorts)
+  
+  duplicate_acronyms <- unique_all_cleaning3 |>
+    dplyr::add_count(Acronym) |>
+    dplyr::filter(n>1) |>
+    dplyr::distinct()
+  
+  if(dim(duplicate_acronyms)[1] > 0){
+    cli::cli_abort("Duplicate acronyms exist. Edit export_glossary() to ensure the glossary's acronyms are all distinct.")
+  }
 
   # keep cleaning by:
   # -adding new definitions
