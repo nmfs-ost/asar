@@ -203,6 +203,16 @@ Here are two entries using the examples mentioned above:
 
 `\newacronym{noaa}{NOAA}{National Oceanic and Atmospheric Administration}`
 
+### Survey names
+
+Many people refer to surveys with nicknames or "informal" names that do not match up with administrative documentation. For example, the "Atlantic Surf Clam & Ocean Quahog Dredge" is sometimes called the "clam survey". To facilitate communication in the reporting process, **we have added survey names to the glossary**.
+
+*Informal survey names* (i.e., nicknames used to refer to surveys that are not correct) are listed in the "Acronym" column.
+
+*Formal survey names* (i.e., the correct survey names) are listed in the "Meaning" column.
+
+If you would like us to add more survey name pairs to our table, please make an [issue](https://github.com/nmfs-ost/asar/issues) or, even better, submit a [pull request](https://github.com/nmfs-ost/asar/pulls). Please see the [GitHub Docs' "Contributing to a project" page](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project) for step-by-step guidance in making a pull request. Thank you!
+
 ### Editing the glossary
 
 Remember that your changes will only be reflected in your report folder's glossary .tex file, not in the file stored in the `asar` package's inst/ folder. If you regenerate your report folder, that main file will overwrite your edited version unless you have indicated otherwise.
