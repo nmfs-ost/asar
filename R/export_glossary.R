@@ -629,7 +629,8 @@ export_glossary <- function() {
       !(Definition == "The Marine Resources Monitoring, Assessment, and Prediction Program" & Acronym == "MARMAP"),
       !(Meaning == "CalCOFI_Spring" & Acronym == "CS"),
       !(Meaning == "Northern CalCOFI" & Acronym == "NC"),
-      !(is.na(Definition) & Acronym == "SEAMAP")
+      !(is.na(Definition) & Acronym == "SEAMAP"),
+      !(Meaning == "Connecticut Long Island Sound Trawl Survey" & Label == "ct lists")
     )
 
   duplicate_acronyms <- unique_all_cleaning3 |>
