@@ -117,6 +117,16 @@ This is a modularized template, there is no need to make any edits to the skelet
 -   Figures 
 -   Appendix
 
+## Accessibility
+
+Did you know that `asar` reports contain several accessibility features, many of which are required as per Section 508 compliance standards?
+
+We strongly encourage all users to check out the [Increasing Report Accessibility vignette](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) to learn:
+
+1. Which accessibility features are 100% built-in, and [which features require input from *you* to complete them](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#your-to-do-list)
+2. How to add the features requiring your effort (e.g., [alternative text](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#alternative-text))
+3. [The development status of the features](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#status-of-accessibility-features) that are required for submission as per two relevant NOAA checklists
+
 ## Contributions
 
 Have you identified any suggestions for improvement, bugs, or questions? Please see our [Contributing page](https://github.com/nmfs-ost/asar/blob/main/CONTRIBUTING.md) for more information on how to make effective contributions to `asar`.

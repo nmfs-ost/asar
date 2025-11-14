@@ -27,7 +27,7 @@ navbar:
         href: articles/markdown_notation.html
       - text: Regional Workflows
         href: articles/regional_workflows.html
-      - text: Accessibility
+      - text: Increasing Report Accessibility
         href: articles/accessibility_guide.html
       - text: Custom Figures & Tables
         href: articles/custom-figs-tabs.html
