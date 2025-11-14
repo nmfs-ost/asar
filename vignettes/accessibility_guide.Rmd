@@ -264,7 +264,7 @@ For specialized commands that enable capitalization, reference to acronyms' mean
 Please do not place figures inside tables. Doing so makes it very difficult for software to properly identify the structure of (i.e., *tag*) the table and its inner elements.
 
 # Status of accessibility features
-*Date updated: 10/1/2025*
+*Date updated: 11/14/2025*
 
 ## NOAA institutional repository submission requirements
 
