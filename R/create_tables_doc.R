@@ -17,7 +17,8 @@
 #' @inheritParams create_figures_doc
 #' @param tables_dir The location of the "tables" folder, which contains tables
 #' files.
-#'
+#' @param latex TRUE/FALSE: Should all rda-based tables be plotted using the stockplotr LaTeX output, rather than flextable? Default is TRUE.
+#' 
 #' @return Create a quarto document as part of a stock assessment outline with
 #' pre-loaded R chunks that add stock assessment tables from the nmfs-ost/stockplotr
 #' R package, or other tables in the same rda format.
@@ -31,7 +32,8 @@
 #' )
 #' }
 create_tables_doc <- function(subdir = getwd(),
-                              tables_dir = getwd()) {
+                              tables_dir = getwd(),
+                              latex = TRUE) {
   # NOTE: essential_columns = 1 for all tables split using export_split_tbls() in
   # the code below.
   # To customize essential_columns, the user must run export_split_tbls() manually
@@ -105,8 +107,22 @@ create_tables_doc <- function(subdir = getwd(),
 
   # create sublist of only non-rda table files
   # non.rda_tab_list <- file_list[!grepl(".rda", file_list)]
-
-  # create two-chunk system to plot each rda table
+  
+  if (latex){
+    latex_output <- list()
+    for (i in seq_along(rda_tab_list)){
+      load(fs::path(tables_dir, "tables", rda_tab_list[i]))
+      latex_output <- c(latex_output, rda$latex_table)
+      rm(rda)
+    }
+    latex_output <- paste(latex_output, collapse = "\n\n<!-- New Table -->\n\n")
+    tables_doc <- paste0(
+      tables_doc_header,
+      latex_output
+    )
+  }
+  
+  # create two-chunk system to plot each rda flextable
   create_tab_chunks <- function(tab = NA,
                                 tables_dir = getwd()) {
     # test whether table has been split
@@ -284,8 +300,9 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     cli::cli_alert_success("Found {length(final_rda_tab_list)} table{?s} in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
       wrap = TRUE
     )
+    
     # paste rda table code chunks into one object
-    if (length(final_rda_tab_list) > 0) {
+    if (length(final_rda_tab_list) > 0 & isFALSE(latex)) {
       rda_tables_doc <- ""
       for (i in seq_along(final_rda_tab_list)) {
         tab_chunk <- create_tab_chunks(
@@ -319,6 +336,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     # }
 
     # combine tables_doc setup with table chunks
+    if (isFALSE(latex)){
     tables_doc <- paste0(
       tables_doc_header,
       tables_doc_setup,
@@ -329,7 +347,8 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
       # ifelse(exists("non.rda_tables_doc"),
       #        non.rda_tables_doc,
       #        "")
-    )
+    )      
+    }
   }
 
   # Save tables doc to template folder

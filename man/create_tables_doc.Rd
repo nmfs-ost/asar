@@ -4,13 +4,15 @@
 \alias{create_tables_doc}
 \title{Create Quarto Document of Tables}
 \usage{
-create_tables_doc(subdir = getwd(), tables_dir = getwd())
+create_tables_doc(subdir = getwd(), tables_dir = getwd(), latex = TRUE)
 }
 \arguments{
 \item{subdir}{Location of subdirectory storing the assessment report template}
 
 \item{tables_dir}{The location of the "tables" folder, which contains tables
 files.}
+
+\item{latex}{TRUE/FALSE: Should all rda-based tables be plotted using the stockplotr LaTeX output, rather than flextable? Default is TRUE.}
 }
 \value{
 Create a quarto document as part of a stock assessment outline with
