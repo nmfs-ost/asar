@@ -35,6 +35,7 @@ Imports:
     prodlim,
     purrr,
     stats,
+    stringi,
     stringr,
     svDialogs,
     tibble,
