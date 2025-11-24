@@ -347,7 +347,7 @@ The checklist reflects the results from a report made with a basic, exemplary `a
 | Track changes have been accepted and/or turned off. All comments have been removed/resolved. |X| | |
 | If there is a Table of Contents (TOC), it was created using the TOC Command. | | |X (The TOC was created externally from Adobe but are constructed such that TOC is inserted appropriately)|
 | Page numbering codes are used (as opposed to manually entering page numbers). |X| | |
-| Footnotes have been created via the Insert Footnote tool. | | |X (Footnotes are created externally from Adobe but are constructed such that footnes are inserted appropriately)|
+| Footnotes have been created via the Insert Footnote tool. | | |X (Footnotes are created externally from Adobe but are constructed such that footnotes are inserted appropriately)|
 | Links contain descriptive text informing the user of the context and content of the linked page. Avoid linking terms such as “Click Here” or “Website.” |X| | |
 | All hyperlinks are working and linking to their intended destination. | X| | |
 | All information that is conveyed through the use of color is also available without color. |X| | |
@@ -367,9 +367,9 @@ The checklist reflects the results from a report made with a basic, exemplary `a
 | :----------- | :-: | :-: | :---: |
 | The document should be free of background images, watermarks, and scanned images of text. |X| | |
 | All images and graphics should appear crisp and clear. |X| | |
-| All images and non-text elements have alternative text. ||X (We are working on fixing the erraneous alt text.) | |
+| All images and non-text elements have alternative text. ||X (We are working on fixing the erroneous alt text.) | |
 | Multiple associated images on the same page are grouped together and alternative text for the images has been added. | | |X|
-| Multilayered objects (such as charts or graphs) have been flattened into a single image and alternative text for the image has been added. | |X (We are working on fixing the erraneous alt text.)| |
+| Multilayered objects (such as charts or graphs) have been flattened into a single image and alternative text for the image has been added. | |X (We are working on fixing the erroneous alt text.)| |
 | Complex images include descriptive text like captions. |X| | |
 
 ### Lists & Tables
