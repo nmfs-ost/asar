@@ -280,7 +280,7 @@ This section states the status of `asar` reports' accessibility features as comp
 
 ##### Tables
 
-**Report compilation will fail unless the report does not contain tables.** Generally, tagging tables is a known issue among developers. It's very challenging. In the meantime, we suggest two workarounds: 1) placing your tables in a separate document, or 2) adding your tables as raw LaTeX code inside the 08_tables.qmd file. We are developing a workflow for option #2 for a future `stockplotr` release (which will be then integrated into an `asar` workflow).
+**Report compilation will fail unless the report does not contain tables.** Generally, tagging tables is a known issue among developers. It's very challenging. In the meantime, we suggest two workarounds: 1) placing your tables in a separate document, or 2) adding your tables as raw LaTeX code inside the 08_tables.qmd file. We are enthusiastically developing a workflow for option #2 for a future `stockplotr` release (which will be then integrated into an `asar` workflow).
 
 #### What's functional
 
@@ -298,11 +298,11 @@ This section states the status of `asar` reports' accessibility features as comp
 
 **Status**: Both expectations are met.
 
-### 3. Alternative Text ❌
+### 3. Alternative Text ✅
 
 **Expectation:** Alternative text is present for all figures, charts, maps, etc.
 
-**Status**: `add_alttext()` is currently failing to add alternative text to images, though *it was successful in the past*. Currently, it adds the figure's filepath as the alt text. We are investigating why this feature is failing.
+**Status**: This expectation is met. `add_tagging()` adds alternative text to images.
 
 ### 4. Logical reading order ✅
 
@@ -367,9 +367,9 @@ The checklist reflects the results from a report made with a basic, exemplary `a
 | :----------- | :-: | :-: | :---: |
 | The document should be free of background images, watermarks, and scanned images of text. |X| | |
 | All images and graphics should appear crisp and clear. |X| | |
-| All images and non-text elements have alternative text. ||X (We are working on fixing the erroneous alt text.) | |
+| All images and non-text elements have alternative text. |X| | |
 | Multiple associated images on the same page are grouped together and alternative text for the images has been added. | | |X|
-| Multilayered objects (such as charts or graphs) have been flattened into a single image and alternative text for the image has been added. | |X (We are working on fixing the erroneous alt text.)| |
+| Multilayered objects (such as charts or graphs) have been flattened into a single image and alternative text for the image has been added. |X| | |
 | Complex images include descriptive text like captions. |X| | |
 
 ### Lists & Tables
