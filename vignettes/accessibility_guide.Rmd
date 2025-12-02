@@ -17,6 +17,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+> Having issues with `add_tagging()`, `add_alttext()`, or `add_accessibility()`? Check out our [FAQs vignette](faqs.html#sec-a11y-issues).
+
 When someone reads your document, they may read it with a [screen reader](https://www.afb.org/blindness-and-low-vision/using-technology/assistive-technology-products/screen-readers). To ensure that they are able to interpret your document as intended, the document must contain some essential features, like tagged elements, alternative text, and metadata.
 
 We have built `asar` so that the produced documents uphold several [federal accessibility standards](https://www.section508.gov/test/documents/). However, to achieve our goal of producing accessible documents, **you must complete a few tasks yourself**. But don't fret! We will help you. Below, we provide several resources to help you achieve this important goal.
@@ -264,7 +266,7 @@ For specialized commands that enable capitalization, reference to acronyms' mean
 Please do not place figures inside tables. Doing so makes it very difficult for software to properly identify the structure of (i.e., *tag*) the table and its inner elements.
 
 # Status of accessibility features
-*Date updated: 11/14/2025*
+*Date updated: 12/2/2025*
 
 ## NOAA institutional repository submission requirements
 
