@@ -181,6 +181,20 @@ If that doesn't solve your problem:
 2. Check out our [issues page](https://github.com/nmfs-ost/asar/issues) and [discussion board](https://github.com/nmfs-ost/asar/discussions) to see if someone else has already asked (and maybe solved!) your question.
 3. If you're still struggling, [make an issue](https://github.com/nmfs-ost/asar/issues).
 
+## I think [specific LaTeX package] is causing an issue. How do I investigate further?
+
+If you've identified a specific LaTeX package that may be causing issues (you may be tipped off by console messages), try reinstalling the package by typing the following in the console:
+
+`tinytex::tlmgr_install("<LaTeX package name>")`
+
+For example, to reinstall `pdfcomment`, you'd enter `tinytex::tlmgr_install("pdfcomment")`.
+
+Quarto *should be* installing LaTeX packages that it can't find, but sometimes it doesn't. This is a frustrating back-end issue with Quarto.
+
+You can also verify that your package has *actually been downloaded* by typing the following:
+
+`tinytex::tlmgr_search("<LaTeX package name>")`
+
 # General errors
 
 ## I'm getting an error not explained in this FAQ. How do I fix it?
