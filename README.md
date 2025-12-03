@@ -44,10 +44,10 @@ install.packages("remotes")
 remotes::install_github("nmfs-ost/asar")
 ```
 
-(3) From the nmfs-ost r-universe
+(3) From the noaa-fisheries-integrated-toolbox r-universe:
 
 ```r
-install.packages("asar", repos = c("https://nmfs-ost.r-universe.dev", "https://cloud.r-project.org"))
+install.packages('asar', repos = c('https://noaa-fisheries-integrated-toolbox.r-universe.dev', 'https://cloud.r-project.org'))
 ```
 
 We also recommend to download the [`stockplotr` package](https://github.com/nmfs-ost/stockplotr). Use one of the previous download instructions to also install `stockplotr` by replacing 'asar' with 'stockplotr'.
