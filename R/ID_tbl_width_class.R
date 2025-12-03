@@ -20,9 +20,10 @@
 #' )
 #' }
 ID_tbl_width_class <- function(
-    tables_dir,
-    plot_name,
-    portrait_pg_width) {
+  tables_dir,
+  plot_name,
+  portrait_pg_width
+) {
   tables_path <- fs::path(
     tables_dir,
     "tables",

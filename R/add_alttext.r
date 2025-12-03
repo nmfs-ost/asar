@@ -55,12 +55,13 @@
 #' }
 #'
 add_alttext <- function(
-    x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
-    dir = getwd(),
-    figures_dir = getwd(),
-    alttext_csv_dir = getwd(),
-    compile = TRUE,
-    rename = NULL) {
+  x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
+  dir = getwd(),
+  figures_dir = getwd(),
+  alttext_csv_dir = getwd(),
+  compile = TRUE,
+  rename = NULL
+) {
   # Read latex file
   if (!file.exists(file.path(dir, x))) cli::cli_abort("File {dir}/{x} does not exist!")
   tex_file <- readLines(file.path(dir, x))

@@ -54,12 +54,13 @@
 #' }
 #'
 add_accessibility <- function(
-    x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
-    dir = getwd(),
-    figures_dir = getwd(),
-    alttext_csv_dir = getwd(),
-    compile = TRUE,
-    rename = NULL) {
+  x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
+  dir = getwd(),
+  figures_dir = getwd(),
+  alttext_csv_dir = getwd(),
+  compile = TRUE,
+  rename = NULL
+) {
   # Add tagpdf pkg to template and create accessibility.tex
   add_tagging(
     x = x,

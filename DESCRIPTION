@@ -16,7 +16,8 @@ Description: Build a full or update stock assessment report for any stock
     assessment model. Parameterization allows the user to call a template
     based on their regional science center, species, area, ect.
 License: MIT + file LICENSE
-URL: https://github.com/nmfs-ost/asar, https://noaa-fisheries-integrated-toolbox.r-universe.dev/asar
+URL: https://github.com/nmfs-ost/asar,
+    https://noaa-fisheries-integrated-toolbox.r-universe.dev/asar
 BugReports: https://github.com/nmfs-ost/asar/issues
 Depends: 
     R (>= 4.1.0)

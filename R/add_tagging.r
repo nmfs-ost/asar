@@ -40,10 +40,11 @@
 #' }
 #'
 add_tagging <- function(
-    x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
-    dir = getwd(),
-    compile = TRUE,
-    rename = NULL) {
+  x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
+  dir = getwd(),
+  compile = TRUE,
+  rename = NULL
+) {
   if (length(x) == 0) {
     cli::cli_abort(c(
       message = "Report .tex file not found.",
