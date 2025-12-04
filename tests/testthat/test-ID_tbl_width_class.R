@@ -11,7 +11,7 @@ test_that("Table widths calculated correctly for wide table", {
 
   rda <- list(
     "table" = test_table,
-    "cap" = "test_caption"
+    "caption" = "test_caption"
   )
 
   tbl_path <- fs::path(getwd(), "tables")
@@ -66,7 +66,7 @@ test_that("Table widths calculated correctly for extra-wide table", {
 
   rda <- list(
     "table" = test_table,
-    "cap" = "test_caption"
+    "caption" = "test_caption"
   )
 
   tbl_path <- fs::path(getwd(), "tables")

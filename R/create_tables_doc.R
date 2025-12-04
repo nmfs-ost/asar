@@ -139,7 +139,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
           tab_shortname, "_table_rda <- rda\n
 # save table and caption as separate objects\n",
           tab_shortname, "_table <- ", tab_shortname, "_table_rda$table\n",
-          tab_shortname, "_cap <- ", tab_shortname, "_table_rda$cap"
+          tab_shortname, "_cap <- ", tab_shortname, "_table_rda$caption"
         ),
         label = glue::glue("tab-{tab_shortname}-setup")
       ),
