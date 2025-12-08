@@ -97,7 +97,7 @@ add_tagging <- function(
     # "  ", "% testphase={phase-II,math, tabular, graphic}% TOC Does not work", "\n",
     # "  ", "% testphase={phase-III,math}% TOC works", "\n",
     "}", "\n",
-    "\\tagpdfsetup{activate, tabsorder=structure}", "\n",
+    "\\tagpdfsetup{activate, page/tabsorder=structure}", "\n",
     "% Use the following to fix bug in November 2023 download of LaTeX", "\n",
     "% \\ExplSyntaxOn", "\n",
     "% \\cs_generate_variant:Nn__tag_prop_gput:Nnn{cnx}", "\n",
