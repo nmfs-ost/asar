@@ -14,6 +14,8 @@
 #' @param rename Indicate a name for the new tex file produced from this
 #' function. There is no need to include ".tex" in the name. Defaults to current
 #' name and overwrites the current tex file.
+#' @param tagged Indicate if the input tex file from dir has the latex package 
+#' \tagpdf used so that tagging is present.
 #'
 #' @return This function runs all functions from `asar` associated with
 #' accessibility and renders the final document. The document is tagged and
