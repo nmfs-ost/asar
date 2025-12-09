@@ -140,6 +140,10 @@ id_num_headers <- function(tex_file) {
     header_start <- grep("\\\\toprule", table_chunk) # this might not be tried and true
     header_end <- grep("\\\\midrule", table_chunk)
     # number of header rows
+    if (length(header_start) == 0 || length(header_end) == 0) {
+      warning("Could not find \\toprule or \\midrule in table chunk; skipping header row tagging for this table.")
+      next
+    }
     n_header_rows <- header_end - header_start - 1
     # notation for header
     tag_header <- paste0("\\tagpdfsetup{table/header-rows={", n_header_rows, "}}")
