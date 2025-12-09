@@ -7,10 +7,10 @@
 add_alttext(
   x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
   dir = getwd(),
-  figures_dir = getwd(),
-  alttext_csv_dir = getwd(),
+  alttext_csv = file.path(getwd(), "captions_alt_text.csv"),
   compile = TRUE,
-  rename = NULL
+  rename = NULL,
+  tagged = TRUE
 )
 }
 \arguments{
@@ -19,18 +19,15 @@ rendering the skeleton made from create_template.}
 
 \item{dir}{directory where the tex file is located that will be edited}
 
-\item{figures_dir}{The location of the "figures" folder, which contains
-figures files.}
-
-\item{alttext_csv_dir}{Directory for the csv file containing alternative
-text and captions generated when running stockplotr::exp_all_figs_tables}
-
 \item{compile}{Indicate whether the document (X) should be
 rendered after these files are changed. Default TRUE.}
 
 \item{rename}{Indicate a name for the new tex file produced from this
 function. There is no need to include ".tex" in the name. Defaults to current
 name and overwrites the current tex file.}
+
+\item{tagged}{Indicate if the input tex file from dir has the latex package
+\tagpdf used so that tagging is present.}
 }
 \value{
 This function was made to help add in
@@ -46,7 +43,7 @@ exact label name when referencing the image/figure in text. The label is
 very important as it provides a way for the function to match where the
 alternative text gets placed. When compile is set to TRUE, the alternative
 text using this format will not be available and must be used in conjunction
-with \code{asar::add_tagging()}.
+with \code{asar::add_tagging()} unless tagged is set to FALSE.
 }
 \description{
 Add alternative text into latex
@@ -79,7 +76,6 @@ withr::with_dir(
     x = "SAR_USWC_Dover_sole_skeleton.tex",
     dir = getwd(),
     alttext_csv_dir = getwd(),
-    figures_dir = path,
     compile = FALSE,
     rename = "SAR_Dover_sole_tagged"
   )
