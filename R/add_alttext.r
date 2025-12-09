@@ -98,7 +98,7 @@ add_alttext <- function(
       paste0("\\\\caption\\{\\\\label\\{", label, "\\}"),
       tex_file
     )
-    # Skip to next row is label is not in the doc
+    # Skip to next row if label is not in the doc
     if (length(label_line_idx) == 0) next
     
     # Find which figure is right before this from fig_lines
