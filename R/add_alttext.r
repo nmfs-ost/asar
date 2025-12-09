@@ -104,7 +104,7 @@ add_alttext <- function(
     # Find which figure is right before this from fig_lines
     # only select the number closest to label_line_idx
     fig_line_idx <- max(fig_lines[fig_lines < label_line_idx])
-    # Identify the line where the figure is names and loaded in
+    # Identify the line where the figure is named and loaded in
     # This is the line that will contain the alt text
     line <- tex_file[fig_line_idx]
     
