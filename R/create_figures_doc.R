@@ -76,7 +76,7 @@ load(file.path(figures_dir, '", fig, "'))\n
 rm(rda)\n
 # save figure, caption, and alt text as separate objects
 ", fig_shortname, "_plot <- ", fig_shortname, "_plot_rda$figure
-", fig_shortname, "_cap <- ", fig_shortname, "_plot_rda$cap
+", fig_shortname, "_cap <- ", fig_shortname, "_plot_rda$caption
 ", fig_shortname, "_alt_text <- ", fig_shortname, "_plot_rda$alt_text"
         ),
         label = glue::glue("fig-{fig_shortname}-setup")
