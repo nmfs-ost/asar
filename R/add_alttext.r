@@ -57,34 +57,20 @@
 #' }
 #'
 add_alttext <- function(
-    dir = file.path(getwd(), list.files(getwd())[grep("skeleton.tex", list.files(getwd()))]),
+    x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
+    dir = getwd(),
     figures_dir = getwd(),
-    alttext_csv = getwd(),
+    alttext_csv = file.path(getwd(), "captions_alt_text.csv"),
     compile = TRUE,
     rename = NULL,
     tagged = TRUE) {
   # Read latex file
-  if (!file.exists(dir)) cli::cli_abort("File {dir}/{x} does not exist!")
-  tex_file <- readLines(dir)
+  if (!file.exists(file.path(dir, x))) cli::cli_abort("File {dir}/{x} does not exist!")
+  tex_file <- readLines(file.path(dir, x))
 
   # Check if alt text csv is where indicated
-  if (!file.exists(file.path(alttext_csv_dir, "captions_alt_text.csv"))) cli::cli_abort("'captions_alt_text.csv' not found in {alttext_csv_dir}.")
+  if (!file.exists(alttext_csv)) cli::cli_abort("'captions_alt_text.csv' not found in {alttext_csv_dir}.")
 
-  # Identify lines with figures
-  # # check if any lines have figures added
-  # if (!any(grepl("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file))) cli::cli_abort("No images/figures present in file.")
-  # # this approach allows us to not mistake the replacement for other figures
-  # # For render to pdf
-  # fig_lines <- grep("fig-([a-z]+|[a-z]+_[a-z]+)-1.pdf", tex_file) # -plot
-  # # Find images from previous naming conventions after quarto render
-  # # TODO: this might need to be take out in the future - aka not needed
-  # fig_lines <- c(fig_lines, grep("fig-([a-z]+|[a-z]+_[a-z]+)-plot-1.pdf", tex_file))
-  # # for html render or external images
-  # fig_lines <- c(
-  #   fig_lines,
-  #   grep("fig-([a-z]+|[a-z]+_[a-z]+)-1.png", tex_file)
-  # )
-  
   fig_lines <- grep("\\\\includegraphics", tex_file) # [-(1:3)]
   lines_to_remove <- c()
   # Remove lines from fig_lines that don't contain pandocbounded
@@ -129,33 +115,14 @@ add_alttext <- function(
     # This is the line that will contain the alt text
     line <- tex_file[fig_line_idx]
     
-    # Add selected alttext onto end of the line
-    # tex_file[fig_line_idx] <- paste(
-    #   line,
-    #   "{",
-    #   alttext$alt_text[i],
-    #   "}",
-    #   sep = ""
-    # )
-    
     # Add selected alt text after keepaspectratio
-    tex_file[i] <- gsub(
+    tex_file[fig_line_idx] <- gsub(
       "keepaspectratio",
       paste0("keepaspectratio,alt={'", alttext$alt_text[i], "'}"),
-      tex_file[i]
+      tex_file[fig_line_idx]
     )
     # tex_file[i] <- paste(tex_file[i], "{", alttext$alt_text[i], "}", sep = "")
   }
-  
-  # Replace pandocbounded with pdftooltip so alt text can be added
-  # This only works when not tagging documents
-  # This is an older method of applying alt text
-  # tex_file[fig_lines] <- lapply(
-  #   tex_file[fig_lines],
-  #   function(line) {
-  #     gsub("\\pandocbounded", "\\pdftooltip", line)
-  #   }
-  # )
   
   # Save overwrite tex file
   write(
@@ -181,147 +148,4 @@ add_alttext <- function(
     )
     message("______Compiling finished______")
   }
-
-  # # Add alt text to custom images
-  # # read in alt text csv file to match with labels
-  # alttext <- utils::read.csv(file.path(alttext_csv_dir, "captions_alt_text.csv"))
-  # if (length(addl_figs) > 0) {
-  #   for (i in addl_figs) {
-  #     # Find line label
-  #     line <- tex_file[i]
-  #     # Find line following target to extract label
-  #     matches <- grep("\\label", tex_file)
-  #     label_line <- matches[matches > i][1]
-  #     line_label <- stringr::str_extract(tex_file[label_line], "\\\\label\\{([^}]*)\\}") |>
-  #       stringr::str_remove_all("^\\\\label\\{|\\}$")
-  #     # Match label name to label in csv and extract alttext
-  #     alttext_i <- alttext |>
-  #       dplyr::filter(label == line_label) |>
-  #       dplyr::pull(alt_text)
-  #     if (is.na(label_line)) {
-  #       alttext_i <- ""
-  #       cli::cli_alert_warning("No alternative text found for {line_label}.")
-  #     }
-  #     # Add selected alttext onto end of the line
-  #     tex_file[i] <- gsub(
-  #       "keepaspectratio",
-  #       paste0("keepaspectratio,alt={'", alttext_i, "'}"),
-  #       tex_file[i]
-  #     )
-  #     # tex_file[i] <- paste(tex_file[i], "{", alttext_i, "}", sep = "")
-  #   }
-  # }
-  # 
-  # # Insert alt text for figures
-  # # Call alt text in list with names
-  # obj_files <- list.files(file.path(figures_dir, "figures"))
-  # 
-  # # read all files in obj_files and put into list
-  # figures_list <- grep("figure", obj_files)
-  # alt_text_list <- list()
-  # for (i in figures_list) {
-  #   load(file.path(figures_dir, "figures", obj_files[i]))
-  #   # extract name to add into the list for placement
-  #   rda_name <- stringr::str_replace(obj_files[i], "_figure.rda", "")
-  #   # if name is >1 word then replace the _ with - to follow naming convention for
-  #   # figures in tex file
-  #   if (grepl("_", rda_name)) rda_name <- stringr::str_replace(rda_name, "_", "-")
-  #   # convert to name in tex file to find where the line is located
-  #   tex_name <- glue::glue("fig-{rda_name}-1.png") # replacing pdf - img ext are changed in next step
-  #   # extract alt. text with figure
-  #   alt_text <- rda$alt_text
-  #   # names(alt_text) <- tex_name
-  #   # place obj into list
-  #   alt_text_list[[tex_name]] <- alt_text
-  #   # call tex obj name using names()
-  #   # call alt text using list[[i]]
-  #   # remove rda file to declutter
-  #   rm(rda)
-  # }
-  # 
-  # # Convert all pdf images to png if render was to pdf
-  # # extract all files from render folder
-  # # TODO: add check if this has already been done then move to next img in the folder
-  # img_path <- file.path(dir, gsub(".tex", "_files/figure-pdf", x))
-  # if (dir.exists(img_path)) {
-  #   imgs <- list.files(img_path)
-  #   for (i in seq_along(imgs)) {
-  #     img_file <- imgs[i]
-  #     if (grepl(".png", img_file)) next
-  #     img_file_con <- gsub(".pdf", ".png", img_file)
-  #     if (!file.exists(file.path(img_path, img_file_con))) {
-  #       pdftools::pdf_convert(
-  #         file.path(img_path, img_file),
-  #         format = "png",
-  #         dpi = 300,
-  #         filenames = file.path(img_path, img_file_con)
-  #       ) |>
-  #         suppressWarnings() |>
-  #         suppressMessages()
-  #     }
-  #     # Replace names in the tex file
-  #     tex_file <- gsub(img_file, img_file_con, tex_file)
-  #   }
-  # }
-  # 
-  # # Find where figure is located and append the alt. text
-  # # TODO: make checks so only adds to images that don't already have alt text included in them
-  # for (i in seq_along(alt_text_list)) {
-  #   fig_line <- grep(names(alt_text_list[i]), tex_file)
-  #   # Check that line we are adding the alt text to is for correct fig
-  #   if (!grepl(names(alt_text_list[i]), tex_file[fig_line])) {
-  #     cli::cli_alert_warning("Non-matching object name to tex file line.")
-  #     next
-  #   }
-  #   # Check that selected tex_line contains a marked figure - aka correct placement
-  #   file_name <- stringr::str_remove(x, ".tex")
-  #   if (!grepl(glue::glue("{file_name}_files/figure-pdf/fig-"), tex_file[fig_line])) {
-  #     cli::cli_alert_warning("Improper line for appendment.")
-  #     cli::cli_alert_warning("Skipped adding alternative text for {names(alt_text_list[i])}", wrap = TRUE)
-  #     next
-  #   }
-  #   tex_file[fig_line] <- gsub(
-  #     "keepaspectratio",
-  #     paste0("keepaspectratio,alt={'", alt_text_list[[i]], "'}"),
-  #     tex_file[fig_line]
-  #   )
-  #   # tex_file[fig_line] <- paste(tex_file[fig_line], "{", alt_text_list[[i]], "}", sep = "")
-  #   # tex_file[fig_line] <- strwrap(paste(tex_file[fig_line], "{", alt_text_list[[1]], "}", sep = ""))  # remove strwrap if does not render
-  # }
-  # 
-  # # Checks
-  # # add check if there are more plots that did not have alt text added
-  # # if (length(obj_files) != length(fig_lines)) {
-  # #   # Find which ones were not changed
-  # #   # figs_miss_alt <-
-  # #   warning("Missing alternative text for the followiing figures:")
-  # # }
-  # # TODO: test case where additional figure is added into the .tex file that is not included in the rda files
-  # 
-  # # Save overwrite tex file
-  # write(unlist(tex_file), file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)))
-  # # utils::capture.output(cat(tex_file), file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)), append = FALSE)
-  # cli::cli_alert_success("______Alternative text added to tex file.______")
-  # # Render the .tex file after edits
-  # if (compile) {
-  #   # Find name for the previously rendered report
-  #   prev_report_name <- list.files(dir, pattern = ".pdf")
-  #   if (length(prev_report_name) > 1) {
-  #     cli::cli_alert_info("______Multiple pdfs found in directory, defaulting to the tex file name______")
-  #     pdf_report_name <- NULL
-  #   }
-  #   pdf_report_name <- ifelse(is.null(rename), prev_report_name, glue::glue("{rename}.pdf"))
-  #   if (length(prev_report_name) == 0) {
-  #     cli::cli_alert_info("______No previous report found, defaulting to the tex file name______")
-  #     pdf_report_name <- NULL
-  #   }
-  #   # Render the report
-  #   cli::cli_alert_info("______Compiling in progress - This can take a while...______")
-  #   # test if this can be done when skeleton is in different folder than the wd
-  #   tinytex::lualatex(
-  #     file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)),
-  #     pdf_file = pdf_report_name
-  #   )
-  #   cli::cli_alert_success("______Compiling finished______")
-  # }
 }
