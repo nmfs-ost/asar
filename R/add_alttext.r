@@ -66,7 +66,7 @@ add_alttext <- function(
   tex_file <- readLines(file.path(dir, x))
 
   # Check if alt text csv is where indicated
-  if (!file.exists(alttext_csv)) cli::cli_abort("'captions_alt_text.csv' not found in {alttext_csv_dir}.")
+  if (!file.exists(alttext_csv)) cli::cli_abort("'captions_alt_text.csv' not found in {alttext_csv}.")
 
   fig_lines <- grep("\\\\includegraphics", tex_file) # [-(1:3)]
   lines_to_remove <- c()
