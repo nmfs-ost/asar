@@ -116,3 +116,8 @@ create_inheader_tex <- function(species = NULL, year = NULL, subdir) {
 }
 
 #------------------------------------------------------------------------------
+
+# Check for tables and id number of headers for header tagging
+id_num_headers <- function() {
+  
+}
