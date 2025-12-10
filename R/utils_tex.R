@@ -136,7 +136,7 @@ id_num_headers <- function(tex_file) {
     table_end <- grep("\\\\end\\{table\\}|\\\\end\\{longtable\\}", tex_file)[grep("\\\\end\\{table\\}|\\\\end\\{longtable\\}", tex_file) > i][1]
     table_chunk <- tex_file[i:table_end]
     # Find rows that indicate formatting before and after header(s)
-    # this will not work for flextable or kbl tables only kable and gt
+    # this will not work for flextable
     header_start <- grep("\\\\toprule", table_chunk) # this might not be tried and true
     header_end <- grep("\\\\midrule", table_chunk)
     if (length(header_start) == 0 | length(header_end) == 0) {

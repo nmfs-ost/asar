@@ -8,7 +8,7 @@ add_accessibility(
   x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
   dir = getwd(),
   figures_dir = getwd(),
-  alttext_csv_dir = getwd(),
+  alttext_csv = getwd(),
   compile = TRUE,
   rename = NULL
 )
@@ -22,7 +22,7 @@ rendering the skeleton made from create_template.}
 \item{figures_dir}{The location of the "figures" folder, which contains
 figures files.}
 
-\item{alttext_csv_dir}{Directory for the csv file containing alternative
+\item{alttext_csv}{Directory for the csv file containing alternative
 text and captions generated when running stockplotr::exp_all_figs_tables}
 
 \item{compile}{Indicate whether the document (X) should be

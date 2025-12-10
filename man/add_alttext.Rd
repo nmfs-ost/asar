@@ -19,6 +19,9 @@ rendering the skeleton made from create_template.}
 
 \item{dir}{directory where the tex file is located that will be edited}
 
+\item{alttext_csv}{Directory for the csv file containing alternative
+text and captions generated when running stockplotr::exp_all_figs_tables}
+
 \item{compile}{Indicate whether the document (X) should be
 rendered after these files are changed. Default TRUE.}
 

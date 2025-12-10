@@ -29,6 +29,7 @@ This function was made to help add in
 latex packages and content associated with PDF
 tagging. Quarto does not allow the user to edit anything
 before documentclass, so this function alters the rendered .tex file.
+Flextable made tables will not be tagged as the package is not compatible.
 }
 \description{
 Add tagging structure to latex documents produced from quarto
