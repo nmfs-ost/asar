@@ -1,6 +1,8 @@
 #' Add alternative text into latex
 #'
 #' @inheritParams add_accessibility
+#' @param tagged Indicate if the input tex file from dir has the latex package, 
+#' tagpdf, used so that tagging is present.
 #'
 #' @return This function was made to help add in
 #' alternative text to latex documents generated from
