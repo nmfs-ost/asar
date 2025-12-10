@@ -179,10 +179,10 @@ add_alttext <- function(
     )
   )
   # utils::capture.output(cat(tex_file), file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)), append = FALSE)
-  message("______Alternative text added to tex file.______")
+  cli::cli_alert_success("______Alternative text added to tex file.______")
   # Render the .tex file after edits
   if (compile) {
-    message("______Compiling in progress - This can take a while...______")
+    cli::cli_alert_info("______Compiling in progress - This can take a while...______")
     withr::with_dir(
       # changes the working directory only for rendering the tex file
       dir,
@@ -192,6 +192,6 @@ add_alttext <- function(
         x
       )))
     )
-    message("______Compiling finished______")
+    cli::cli_alert_success("______Compiling finished______")
   }
 }

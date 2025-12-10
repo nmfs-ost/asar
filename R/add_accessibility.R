@@ -5,8 +5,6 @@
 #' @param x .tex file containing report. Typically produced after initially
 #' rendering the skeleton made from create_template.
 #' @param dir directory where the tex file is located that will be edited
-#' @param figures_dir The location of the "figures" folder, which contains
-#' figures files.
 #' @param alttext_csv Directory for the csv file containing alternative
 #' text and captions generated when running stockplotr::exp_all_figs_tables
 #' @param compile Indicate whether the document (X) should be
@@ -57,8 +55,7 @@
 add_accessibility <- function(
     x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
     dir = getwd(),
-    figures_dir = getwd(),
-    alttext_csv = getwd(),
+    alttext_csv = file.path(getwd(), "captions_alt_text.csv"),
     compile = TRUE,
     rename = NULL) {
   # Add tagpdf pkg to template and create accessibility.tex
@@ -72,9 +69,8 @@ add_accessibility <- function(
   add_alttext(
     x = ifelse(is.null(rename), x, glue::glue("{rename}.tex")),
     dir = dir,
-    figures_dir = figures_dir,
     compile = compile,
-    rename = rename,
-    alttext_csv = figures_dir
+    rename = NULL,
+    alttext_csv = alttext_csv
   )
 }
