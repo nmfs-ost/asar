@@ -5,7 +5,8 @@
 #' @return This function was made to help add in
 #' latex packages and content associated with PDF
 #' tagging. Quarto does not allow the user to edit anything
-#' before documentclass, so this function alters the rendered .tex file.
+#' before documentclass, so this function alters the rendered .tex file. 
+#' Flextable made tables will not be tagged as the package is not compatible.
 #'
 #' @export
 #'
@@ -78,6 +79,9 @@ add_tagging <- function(
     "% ", tex_file[microtype_line1:(microtype_line1 + 3)]
   )
   tex_file[microtype_line1:(microtype_line1 + 3)] <- microtype_chunk
+  
+  # add in tagpdf notation for tables if tables exist
+  tex_file <- id_num_headers(tex_file)
 
   # Export file
   write(tex_file, file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)))
