@@ -150,27 +150,33 @@ add_alttext <- function(
     }
   }
   
-  if (tagged) {
-    # Convert pdf images to png and replace file type in tex so alt text appears in the document
-    # Use this method if you want to physically see the alt text (otherwise it's embedded)
-    pdf_figures <- fig_lines[grep(".pdf", tex_file[fig_lines])]
-    for (j in pdf_figures) {
-      # replace file extension from pdf to png
-      tex_file[j] <- gsub("\\.pdf", ".png", tex_file[j])
-      # convert and save image to png
-      img_path <- stringr::str_match(tex_file[j], "\\\\includegraphics\\[.*?\\]\\{(.*?)\\}")[1, 2]
-      pdftools::pdf_convert(
-        img_path,
-        format = "png",
-        dpi = 300,
-        filenames = gsub("\\.pdf", ".png", img_path)
-                         # fun tip: you can use the function basename() to pull out the file name from a path
-      ) |>
-        suppressWarnings() |>
-        suppressMessages()
-    }
-  }
+  # Commenting this out for now -- without this part of the function the alt text
+  # can not be visually seen when hovering the mouse over the image
+  # HOWEVER; the alt text is embedded when document is tagged. You can check by
+  # going to the figure tag, right click > properties and you should see the alt
+  # text box filled in
   
+  # if (tagged) {
+  #   # Convert pdf images to png and replace file type in tex so alt text appears in the document
+  #   # Use this method if you want to physically see the alt text (otherwise it's embedded)
+  #   pdf_figures <- fig_lines[grep(".pdf", tex_file[fig_lines])]
+  #   for (j in pdf_figures) {
+  #     # ID image to replace
+  #     img_path <- file.path(dir, stringr::str_match(tex_file[j], "\\\\includegraphics\\[.*?\\]\\{(.*?)\\}")[1, 2])
+  #     # replace file extension from pdf to png
+  #     tex_file[j] <- gsub("\\.pdf", ".png", tex_file[j])
+  #     # convert and save image to png
+  #     pdftools::pdf_convert(
+  #       img_path,
+  #       format = "png",
+  #       dpi = 300,
+  #       filenames = gsub("\\.pdf", ".png", normalizePath(img_path, mustWork = FALSE))
+  #                        # fun tip: you can use the function basename() to pull out the file name from a path
+  #     ) |>
+  #       suppressWarnings() |>
+  #       suppressMessages()
+  #   }
+  # }
   
   # Save overwrite tex file
   write(
