@@ -29,8 +29,8 @@ rendered after these files are changed. Default TRUE.}
 function. There is no need to include ".tex" in the name. Defaults to current
 name and overwrites the current tex file.}
 
-\item{tagged}{Indicate if the input tex file from dir has the latex package
-\tagpdf used so that tagging is present.}
+\item{tagged}{Indicate if the input tex file from dir has the latex package,
+tagpdf, used so that tagging is present.}
 }
 \value{
 This function was made to help add in
