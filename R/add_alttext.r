@@ -56,7 +56,6 @@
 add_alttext <- function(
     x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
     dir = getwd(),
-    # figures_dir = getwd(),
     alttext_csv = file.path(getwd(), "captions_alt_text.csv"),
     compile = TRUE,
     rename = NULL,
@@ -128,7 +127,6 @@ add_alttext <- function(
         paste0("keepaspectratio,alt={'", alttext$alt_text[i], "'}"),
         tex_file[fig_line_idx]
       )
-      # tex_file[i] <- paste(tex_file[i], "{", alttext$alt_text[i], "}", sep = "")
     } else {
       # Add selected alttext onto end of the line
       tex_file[fig_line_idx] <- paste(
@@ -147,6 +145,27 @@ add_alttext <- function(
           gsub("\\pandocbounded", "\\pdftooltip", line)
         }
       )
+    }
+  }
+  
+  if (tagged) {
+    # Convert pdf images to png and replace file type in tex so alt text appears in the document
+    # Use this method if you want to physically see the alt text (otherwise it's embedded)
+    pdf_figures <- fig_lines[grep(".pdf", tex_file[fig_lines])]
+    for (j in pdf_figures) {
+      # replace file extension from pdf to png
+      tex_file[j] <- gsub("\\.pdf", ".png", tex_file[j])
+      # convert and save image to png
+      img_path <- stringr::str_match(tex_file[j], "\\\\includegraphics\\[.*?\\]\\{(.*?)\\}")[1, 2]
+      pdftools::pdf_convert(
+        img_path,
+        format = "png",
+        dpi = 300,
+        filenames = gsub("\\.pdf", ".png", img_path)
+                         # fun tip: you can use the function basename() to pull out the file name from a path
+      ) |>
+        suppressWarnings() |>
+        suppressMessages()
     }
   }
   
