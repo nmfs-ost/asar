@@ -75,7 +75,7 @@ add_alttext <- function(
   for (i in seq_along(fig_lines)) {
     # find line
     line <- tex_file[fig_lines[i]]
-    # identify  if there is pandocbouded in line -- indicating it's a figure added not by the template
+    # identify  if there is pandocbounded in line -- indicating it's a figure added not by the template
     # added in pdftooltip as well if previous runs occurred
     if (grepl("pandocbounded|pdftooltip", line)) next
     # Indicate which position(s) to remove from fig_lines
