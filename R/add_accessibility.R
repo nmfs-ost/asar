@@ -5,7 +5,7 @@
 #' @param x .tex file containing report. Typically produced after initially
 #' rendering the skeleton made from create_template.
 #' @param dir directory where the tex file is located that will be edited
-#' @param alttext_csv Directory for the csv file containing alternative
+#' @param alttext_csv File path for the csv file containing alternative
 #' text and captions generated when running stockplotr::exp_all_figs_tables
 #' @param compile Indicate whether the document (X) should be
 #' rendered after these files are changed. Default TRUE.
