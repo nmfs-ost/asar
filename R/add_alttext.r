@@ -82,7 +82,9 @@ add_alttext <- function(
     lines_to_remove <- c(lines_to_remove, i)
   }
   # Remove lines that do not contain pandocbounded
-  fig_lines <- fig_lines[-lines_to_remove]
+  if (length(lines_to_remove) > 0) {
+    fig_lines <- fig_lines[-lines_to_remove]
+  }
   
   # read in alt text csv file to match with labels
   alttext <- utils::read.csv(alttext_csv)
