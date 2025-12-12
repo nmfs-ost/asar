@@ -144,12 +144,12 @@ id_num_headers <- function(tex_file) {
     #   header_start <- grep("\\\\hline", table_chunk)[1]
     #   header_end <- grep("\\\\hline", table_chunk)[2]
     # }
-    
-    # number of header rows
-    if (length(header_start) == 0 || length(header_end) == 0) {
-      warning("Could not find \\toprule or \\midrule in table chunk; skipping header row tagging for this table.")
-      next
-    }
+    # 
+    # # number of header rows
+    # if (length(header_start) == 0 || length(header_end) == 0) {
+    #   warning("Could not find \\toprule or \\midrule in table chunk; skipping header row tagging for this table.")
+    #   next
+    # }
     # For now setting all number of headers to 1
     n_header_rows <- 1
     # n_header_rows <- header_end - header_start - 1
