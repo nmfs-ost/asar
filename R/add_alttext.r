@@ -17,7 +17,7 @@
 #'  very important as it provides a way for the function to match where the
 #'  alternative text gets placed. When compile is set to TRUE, the alternative
 #'  text using this format will not be available and must be used in conjunction
-#'  with `asar::add_tagging()` unless tagged is set to FALSE.
+#'  with `asar::add_tagging()` unless tagged is set to FALSE. Default is TRUE.
 #'
 #' @export
 #'
