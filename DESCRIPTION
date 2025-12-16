@@ -31,7 +31,6 @@ Imports:
     httr,
     naniar,
     officer,
-    pdftools,
     prodlim,
     purrr,
     stats,
