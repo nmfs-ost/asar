@@ -31,7 +31,7 @@
 #'   species = "Dover sole",
 #'   spp_latin = "Microstomus pacificus",
 #'   year = 2010,
-#'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
+#'   authors = c("John Snow" = "AFSC", "Danny Phantom" = "NEFSC", "Patrick Star" = "SEFSC-ML"),
 #'   model_results = "Report.sso",
 #'   model = "SS3",
 #'   new_section = "an_additional_section",
