@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Achieve Greater Accessibility • asar</title>
+<title>Increasing Report Accessibility • asar</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Achieve Greater Accessibility">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Increasing Report Accessibility">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -84,7 +84,7 @@
       <a href="../articles/regional_workflows.html">Regional Workflows</a>
     </li>
     <li>
-      <a href="../articles/accessibility_guide.html">Accessibility</a>
+      <a href="../articles/accessibility_guide.html">Increasing Report Accessibility</a>
     </li>
     <li>
       <a href="../articles/custom-figs-tabs.html">Custom Figures &amp; Tables</a>
@@ -142,16 +142,21 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Achieve Greater Accessibility</h1>
+      <h1 data-toc-skip>Increasing Report Accessibility</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/vignettes/accessibility_guide.Rmd" class="external-link"><code>vignettes/accessibility_guide.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/v1.6.0/vignettes/accessibility_guide.Rmd" class="external-link"><code>vignettes/accessibility_guide.Rmd</code></a></small>
       <div class="hidden name"><code>accessibility_guide.Rmd</code></div>
 
     </div>
 
     
     
+<blockquote>
+<p>Having issues with <code><a href="../reference/add_tagging.html">add_tagging()</a></code>,
+<code><a href="../reference/add_alttext.html">add_alttext()</a></code>, or <code><a href="../reference/add_accessibility.html">add_accessibility()</a></code>? Check
+out our <a href="faqs.html#sec-a11y-issues">FAQs vignette</a>.</p>
+</blockquote>
 <p>When someone reads your document, they may read it with a <a href="https://www.afb.org/blindness-and-low-vision/using-technology/assistive-technology-products/screen-readers" class="external-link">screen
 reader</a>. To ensure that they are able to interpret your document as
 intended, the document must contain some essential features, like tagged
@@ -201,10 +206,35 @@ conveying).</em> Since we can’t program <code>asar</code> to analyze the
 figure’s meaning, <em>you must provide this</em>.</li>
 </ul>
 </li>
+<li>
+<p><strong>Add tagging and alternative text</strong> to your final
+PDF.</p>
+<ul>
+<li>When you are ready to compile your final report, you will run one
+more function: <code><a href="../reference/add_accessibility.html">add_accessibility()</a></code>. This function will take
+the LaTeX version of your report, which was created when you rendered
+your skeleton, and activate tagging and add alternative text. Please
+refer to the <a href="https://nmfs-ost.github.io/asar/reference/add_accessibility.html"><code>add_accessibility()</code>
+example</a> for guidance in how to run this function.</li>
+</ul>
+</li>
+<li>
+<p><em>Optional, but encouraged</em>: Use acronyms in your
+report.</p>
+<ul>
+<li>While writing your report, <a href="https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#acronyms-and-glossary">refer
+to acronyms using a straightforward format explained in the Acronyms and
+Glossary section</a>. Then, when you render, your report will contain a
+glossary with your acronyms and their meanings. This system also ensures
+your acronyms’ meanings will be added upon their first usage in the
+text, which means that you don’t have to keep track of that
+anymore!</li>
+</ul>
+</li>
 </ol>
 </div>
 <div class="section level2">
-<h2 id="guidance-and-resources">Guidance and Resources<a class="anchor" aria-label="anchor" href="#guidance-and-resources"></a>
+<h2 id="guidance-and-resources">Guidance and resources<a class="anchor" aria-label="anchor" href="#guidance-and-resources"></a>
 </h2>
 <div class="section level3">
 <h3 id="alternative-text">Alternative text<a class="anchor" aria-label="anchor" href="#alternative-text"></a>
@@ -404,15 +434,14 @@ file, but not within the rda file itself. To directly edit the rda
 file’s alt text or caption, assign a new value to the text you wish to
 change. For example, if your rda is called <code>rda</code> and you want
 to change the caption to “my new caption”, you’d enter the following
-command: <code>rda[["cap"]] &lt;- "my new caption"</code>. To change the
-alt text, you’d change “cap” to “alt_text” (e.g.,
+command: <code>rda[["caption"]] &lt;- "my new caption"</code>. To change
+the alt text, you’d change “caption” to “alt_text” (e.g.,
 <code>rda[["alt_text"]] &lt;- "my new alt text"</code>.). Save the
 changes to the rda’s file by entering the following command (in this
 example, our rda is called “biomass_figure.rda”):
 <code>save(rda, file = 'biomass_figure.rda')</code>.</p></li>
 <li><p>Edit figure and table captions with the same process. Just
-substitute mentions of alt text with caption or cap, depending on the
-context.</p></li>
+substitute mentions of alt text with caption.</p></li>
 <li><p>As stated earlier, if you see text that looks like a placeholder
 (e.g., “The x axis, showing the year, spans from B.start.year to
 B.end.year…”), that means that there was at least one instance where our
@@ -464,6 +493,25 @@ Administration</em>.</p></li>
 <p>Here are two entries using the examples mentioned above:</p>
 <p><code>\newacronym{bcurrent}{$B_{current}$}{current biomass of stock}</code></p>
 <p><code>\newacronym{noaa}{NOAA}{National Oceanic and Atmospheric Administration}</code></p>
+<div class="section level4">
+<h4 id="survey-names">Survey names<a class="anchor" aria-label="anchor" href="#survey-names"></a>
+</h4>
+<p>Many people refer to surveys with nicknames or “informal” names that
+do not match up with administrative documentation. For example, the
+“Atlantic Surf Clam &amp; Ocean Quahog Dredge” is sometimes called the
+“clam survey”. To facilitate communication in the reporting process,
+<strong>we have added survey names to the glossary</strong>.</p>
+<p><em>Informal survey names</em> (i.e., nicknames used to refer to
+surveys that are not correct) are listed in the “Acronym” column.</p>
+<p><em>Formal survey names</em> (i.e., the correct survey names) are
+listed in the “Meaning” column.</p>
+<p>If you would like us to add more survey name pairs to our table,
+please make an <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issue</a> or, even
+better, submit a <a href="https://github.com/nmfs-ost/asar/pulls" class="external-link">pull
+request</a>. Please see the <a href="https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project" class="external-link">GitHub
+Docs’ “Contributing to a project” page</a> for step-by-step guidance in
+making a pull request. Thank you!</p>
+</div>
 <div class="section level4">
 <h4 id="editing-the-glossary">Editing the glossary<a class="anchor" aria-label="anchor" href="#editing-the-glossary"></a>
 </h4>
@@ -520,7 +568,7 @@ Here, ABC is used a second time.</p>
 </blockquote>
 <p>For specialized commands that enable capitalization, reference to
 acronyms’ meanings, and more, check out the Command Summary (pg 46)
-within <a href="https://ctan.math.illinois.edu/macros/latex/contrib/glossaries/glossariesbegin.pdf" class="external-link">the
+within <a href="https://ctan.math.illinois.edu/macros/LaTeX/contrib/glossaries/glossariesbegin.pdf" class="external-link">the
 <code>glossaries</code> package’s beginners’ guide</a>.</p>
 </div>
 </div>
@@ -530,6 +578,445 @@ within <a href="https://ctan.math.illinois.edu/macros/latex/contrib/glossaries/g
 <p>Please do not place figures inside tables. Doing so makes it very
 difficult for software to properly identify the structure of (i.e.,
 <em>tag</em>) the table and its inner elements.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="status-of-accessibility-features">Status of accessibility features<a class="anchor" aria-label="anchor" href="#status-of-accessibility-features"></a>
+</h2>
+<p><em>Date updated: 12/16/2025</em></p>
+<p>In December 2025, we performed extensive testing on accessibility
+features in PDFs. This <a href="https://github.com/Schiano-NOAA/a11y-sandbox/" class="external-link">“a11y-sandbox”
+repository</a> contains many examples of features and table types that
+were tested for success in tagging, passing Adobe Accessibility Checker
+tests, and more. Please check out the <a href="https://github.com/Schiano-NOAA/a11y-sandbox/blob/main/README.md" class="external-link">README</a>
+for findings related to topics such as:</p>
+<ul>
+<li>Why some Adobe Accessibility checks fail, why some failures are
+incorrect, and how to manually fix the tags in Adobe</li>
+<li>Differences in tagging behavior for tables produced with
+<code>gt</code>, <code>kableExtra</code>, <code>flextable</code>, and
+raw LaTeX</li>
+<li>How to avoid package conflicts between the LaTeX package that
+enables tagging (<code>tagpdf</code>) and other packages (e.g.,
+<code>scrartcl</code>)</li>
+</ul>
+<div class="section level3">
+<h3 id="noaa-institutional-repository-submission-requirements">NOAA institutional repository submission requirements<a class="anchor" aria-label="anchor" href="#noaa-institutional-repository-submission-requirements"></a>
+</h3>
+<p>This section states the status of <code>asar</code> reports’
+accessibility features as compared to <a href="https://library.noaa.gov/Section508/QuickStart" class="external-link">the NOAA “Big 5”
+Section 508 compliance requirements</a>.</p>
+<div class="section level4">
+<h4 id="tagged-content">1. Tagged content 🚧<a class="anchor" aria-label="anchor" href="#tagged-content"></a>
+</h4>
+<p><strong>Expectation:</strong> The PDF is a tagged PDF.</p>
+<p><strong>Status</strong>: <code><a href="../reference/add_tagging.html">add_tagging()</a></code> adds tags to PDFs
+with a variety of features including figures, figure captions, lists,
+math, and other textual aspects of reports such as headers and sections.
+The function also works for reports with tables made with:</p>
+<ul>
+<li>Raw LaTeX (<a href="https://github.com/Schiano-NOAA/a11y-sandbox/blob/main/LaTeX-compatible-table-pkgs/custom_LaTeX.qmd" class="external-link">example
+here</a>)</li>
+<li>the <code>gt</code> package (<a href="https://github.com/Schiano-NOAA/a11y-sandbox/blob/main/LaTeX-compatible-table-pkgs/gt.qmd" class="external-link">example
+here</a>)</li>
+<li>the <code>kableExtra</code> package’s <code>kbl</code> or
+<code>kable</code> functions (<a href="https://github.com/Schiano-NOAA/a11y-sandbox/blob/main/LaTeX-compatible-table-pkgs/kableextra.qmd" class="external-link">examples
+here</a>)</li>
+<li>potentially other packages</li>
+</ul>
+<p><strong>Reports containing tables made with the
+<code>flextable</code> package are not taggable at this time.</strong>
+The issue seems to be that flextables are not converted to LaTeX well by
+Pandoc while a Quarto report is being rendered to PDF. We are in the
+process of redeveloping <code>stockplotr</code> tables so that the basis
+of each is <code>gt</code>, not <code>flextable</code>. Please let us
+know if you’d like help converting any <code>flextable</code>-based
+tables to a different format.</p>
+</div>
+<div class="section level4">
+<h4 id="bookmarks">2. Bookmarks ✅<a class="anchor" aria-label="anchor" href="#bookmarks"></a>
+</h4>
+<p><strong>Expectation:</strong> Bookmarks are present on documents over
+20 pages and illustrate the structure of the document.</p>
+<p><strong>Expectation:</strong> If a Table of Contents is present,
+bookmarks should reflect this.</p>
+<p><strong>Status</strong>: Both expectations are met.</p>
+</div>
+<div class="section level4">
+<h4 id="alternative-text-1">3. Alternative Text ✅<a class="anchor" aria-label="anchor" href="#alternative-text-1"></a>
+</h4>
+<p><strong>Expectation:</strong> Alternative text is present for all
+figures, charts, maps, etc.</p>
+<p><strong>Status</strong>: This expectation is met.
+<code><a href="../reference/add_tagging.html">add_tagging()</a></code> adds alternative text to images.</p>
+</div>
+<div class="section level4">
+<h4 id="logical-reading-order">4. Logical reading order ✅<a class="anchor" aria-label="anchor" href="#logical-reading-order"></a>
+</h4>
+<p><strong>Expectation:</strong> The reading order of the elements is
+logical and follows the flow of the document.</p>
+<p><strong>Status</strong>: This expectation is met.</p>
+</div>
+<div class="section level4">
+<h4 id="document-properties">5. Document properties ✅<a class="anchor" aria-label="anchor" href="#document-properties"></a>
+</h4>
+<p><strong>Expectation:</strong> Title and Language are present.</p>
+<p><strong>Status</strong>: This expectation is met.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="other-accessibility-considerations">Other accessibility considerations<a class="anchor" aria-label="anchor" href="#other-accessibility-considerations"></a>
+</h3>
+<p>This section states the status of <code>asar</code> reports’
+accessibility features that are not explicitly referenced by the NOAA
+institutional repository submission “Big 5” list.</p>
+<div class="section level4">
+<h4 id="html">HTML<a class="anchor" aria-label="anchor" href="#html"></a>
+</h4>
+<p>HTML reports more readily pass several accessibility criteria.</p>
+</div>
+<div class="section level4">
+<h4 id="adding-tags-and-alt-text-in-the-same-function">Adding tags and alt text in the same function<a class="anchor" aria-label="anchor" href="#adding-tags-and-alt-text-in-the-same-function"></a>
+</h4>
+<p><code><a href="../reference/add_accessibility.html">add_accessibility()</a></code> is functional. It combines
+<code><a href="../reference/add_tagging.html">add_tagging()</a></code> and <code><a href="../reference/add_alttext.html">add_alttext()</a></code>, allowing the
+user to add tagging and alternative text at once.</p>
+</div>
+<div class="section level4">
+<h4 id="glossary">Glossary<a class="anchor" aria-label="anchor" href="#glossary"></a>
+</h4>
+<p>The glossary is functional.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="noaa-central-library-accessibility-checklist-pdf-documents">NOAA Central Library Accessibility Checklist: PDF Documents<a class="anchor" aria-label="anchor" href="#noaa-central-library-accessibility-checklist-pdf-documents"></a>
+</h3>
+<p>This section states the status of <code>asar</code> reports’
+accessibility features as compared to the more extensive <a href="https://library.noaa.gov/ld.php?content_id=61618926" class="external-link">NOAA Central
+Library’s accessibility checklist for PDFs</a>.</p>
+<p>The checklist reflects the results from a report made with a basic,
+exemplary <code>asar</code> workflow (such as that in the README).</p>
+<div class="section level4">
+<h4 id="general-accessibility">General Accessibility<a class="anchor" aria-label="anchor" href="#general-accessibility"></a>
+</h4>
+<table class="table">
+<colgroup>
+<col width="52%">
+<col width="13%">
+<col width="13%">
+<col width="21%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Element</th>
+<th align="center">Pass</th>
+<th align="center">Fail</th>
+<th align="center">Not Applicable</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">File name is concise and free of spaces or special
+characters.</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">Document properties for Title and Language are
+added.</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">Track changes have been accepted and/or turned off. All
+comments have been removed/resolved.</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">If there is a Table of Contents (TOC), it was created
+using the TOC Command.</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">X (The TOC was created externally from Adobe but are
+constructed such that TOC is inserted appropriately)</td>
+</tr>
+<tr class="odd">
+<td align="left">Page numbering codes are used (as opposed to manually
+entering page numbers).</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">Footnotes have been created via the Insert Footnote
+tool.</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">X (Footnotes are created externally from Adobe but
+are constructed such that footnotes are inserted appropriately)</td>
+</tr>
+<tr class="odd">
+<td align="left">Links contain descriptive text informing the user of
+the context and content of the linked page. Avoid linking terms such as
+“Click Here” or “Website.”</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">All hyperlinks are working and linking to their
+intended destination.</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">All information that is conveyed through the use of
+color is also available without color.</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">All color for images, text, etc. avoids red-green
+contrast when possible. (For colorblind viewers).</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level4">
+<h4 id="headings-fonts">Headings &amp; Fonts<a class="anchor" aria-label="anchor" href="#headings-fonts"></a>
+</h4>
+<table class="table">
+<colgroup>
+<col width="52%">
+<col width="13%">
+<col width="13%">
+<col width="21%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Element</th>
+<th align="center">Pass</th>
+<th align="center">Fail</th>
+<th align="center">Not Applicable</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">The document uses recommended font styles (Arial,
+Veranda, Times New Roman, Georgia, Calibri).</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">Text is easy to read against the background of the
+document (Recommended color contrast ratio of 4.5:1).</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">The document has been formatted using the style
+elements for Headings and is presented hierarchically (i.e., Heading 1
+to Heading 2 leading into body text).</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level4">
+<h4 id="image-requirements">Image Requirements<a class="anchor" aria-label="anchor" href="#image-requirements"></a>
+</h4>
+<table class="table">
+<colgroup>
+<col width="52%">
+<col width="13%">
+<col width="13%">
+<col width="21%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Element</th>
+<th align="center">Pass</th>
+<th align="center">Fail</th>
+<th align="center">Not Applicable</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">The document should be free of background images,
+watermarks, and scanned images of text.</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">All images and graphics should appear crisp and
+clear.</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">All images and non-text elements have alternative
+text.</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">Multiple associated images on the same page are grouped
+together and alternative text for the images has been added.</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">X</td>
+</tr>
+<tr class="odd">
+<td align="left">Multilayered objects (such as charts or graphs) have
+been flattened into a single image and alternative text for the image
+has been added.</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">Complex images include descriptive text like
+captions.</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level4">
+<h4 id="lists-tables">Lists &amp; Tables<a class="anchor" aria-label="anchor" href="#lists-tables"></a>
+</h4>
+<table class="table">
+<colgroup>
+<col width="52%">
+<col width="13%">
+<col width="13%">
+<col width="21%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Element</th>
+<th align="center">Pass</th>
+<th align="center">Fail</th>
+<th align="center">Not Applicable</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">All tables were made using the Insert Table
+option.</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">X (Tables will be created externally from Adobe but
+will be constructed such that tables are inserted appropriately)</td>
+</tr>
+<tr class="even">
+<td align="left">No blank or merged cells are present in the
+table(s).</td>
+<td align="center">X (We are redeveloping our <code>stockplotr</code>
+tables to meet this criterion. Users must check that tables made with
+other packages meet this criterion.)</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">Data tables should have the first row designated as
+“Header Row” within the Table Properties.</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">Under Table Properties, “Allow row to break across
+pages” should not be checked. (This impacts reading order.)</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">X (This criterion seems written for Word documents in
+particular, which is not applicable with the <code>asar</code>-based
+workflow)</td>
+</tr>
+<tr class="odd">
+<td align="left">Tables are labeled and/or described as necessary.</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">No layout tables are present in the document.</td>
+<td align="center">X (Tables made with <code>stockplotr</code> tables
+meet this criterion. Users must check that tables made with other
+packages meet this criterion.)</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">All lists have been appropriately tagged using all four
+tags: L, LI, Lbl, and LBody.</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section level4">
+<h4 id="bookmarks-tagging-table-of-contents">Bookmarks, Tagging &amp; Table of Contents<a class="anchor" aria-label="anchor" href="#bookmarks-tagging-table-of-contents"></a>
+</h4>
+<table class="table">
+<colgroup>
+<col width="52%">
+<col width="13%">
+<col width="13%">
+<col width="21%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Element</th>
+<th align="center">Pass</th>
+<th align="center">Fail</th>
+<th align="center">Not Applicable</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">All documents more than 20 pages have logical
+bookmarks. These should reflect the structure of the document and often
+time may mirror the Table of Contents (TOC).</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">Items in the TOC are linked appropriately, and page
+numbers are correct.</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left">PDF tags have been added to the document (auto-tagging
+is acceptable, but may require touch-up work).</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left">Reading order is logical and correct based on the PDF
+tags.</td>
+<td align="center">X</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <div class="footnotes footnotes-end-of-document">

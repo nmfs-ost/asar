@@ -84,7 +84,7 @@
       <a href="../articles/regional_workflows.html">Regional Workflows</a>
     </li>
     <li>
-      <a href="../articles/accessibility_guide.html">Accessibility</a>
+      <a href="../articles/accessibility_guide.html">Increasing Report Accessibility</a>
     </li>
     <li>
       <a href="../articles/custom-figs-tabs.html">Custom Figures &amp; Tables</a>
@@ -145,7 +145,7 @@
       <h1 data-toc-skip>Frequently Asked Questions (FAQs)</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/vignettes/faqs.Rmd" class="external-link"><code>vignettes/faqs.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/v1.6.0/vignettes/faqs.Rmd" class="external-link"><code>vignettes/faqs.Rmd</code></a></small>
       <div class="hidden name"><code>faqs.Rmd</code></div>
 
     </div>
@@ -377,7 +377,7 @@ large size):</p>
 <h3 id="when-rendering-why-does-my-report-hang-on-the-figures-doc">When rendering, why does my report hang on the figures doc?<a class="anchor" aria-label="anchor" href="#when-rendering-why-does-my-report-hang-on-the-figures-doc"></a>
 </h3>
 <p>When rendering your report, it may hang when processing the figures
-file. If this occurs, it probably means that your tinytex installation
+file. If this occurs, it probably means that your TinyTeX installation
 isn’t working properly. This may occur even if you’ve installed the
 TinyTeX bundle with every LaTeX package you could install from CTAN (<a href="https://github.com/rstudio/tinytex-releases?tab=readme-ov-file#releases" class="external-link">TinyTeX-2</a>).</p>
 <p>Try this: Uninstall tinytex in the R console
@@ -400,6 +400,49 @@ somewhere locally.</p>
 <p>We suggest users who encounter this problem to store their files made
 from <code>asar</code> on their local computer and push them to a GitHub
 repo to store and share.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="sec-a11y-issues">Adding tagging and alternative text<a class="anchor" aria-label="anchor" href="#sec-a11y-issues"></a>
+</h2>
+<div class="section level3">
+<h3 id="when-i-compile-my-report-after-adding-tagging-or-alt-text-i-get-an-error--why">When I compile my report after adding tagging or alt text, I get an
+error. Why?<a class="anchor" aria-label="anchor" href="#when-i-compile-my-report-after-adding-tagging-or-alt-text-i-get-an-error--why"></a>
+</h3>
+<p>We have experienced several seemingly random errors when developing
+this package. Oftentimes, these errors arise when LaTeX packages are
+updated and end up conflicting with one another. As a first attempt to
+debug, we strongly advise updating your LaTeX packages with the
+following command:</p>
+<p><code><a href="https://rdrr.io/pkg/tinytex/man/tlmgr.html" class="external-link">tinytex::tlmgr_update()</a></code></p>
+<p>Close RStudio and open it again. Try again to compile your
+report.</p>
+<p>If that doesn’t solve your problem:</p>
+<ol style="list-style-type: decimal">
+<li>Reinstall your TinyTeX installation (we recommend <a href="@sec-docmetadata">bundle 2</a>, though bundle 1 may suffice).
+Update the packages and try compiling again.</li>
+<li>Check out our <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issues page</a> and <a href="https://github.com/nmfs-ost/asar/discussions" class="external-link">discussion board</a>
+to see if someone else has already asked (and maybe solved!) your
+question.</li>
+<li>If you’re still struggling, <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">make an issue</a>.</li>
+</ol>
+</div>
+<div class="section level3">
+<h3 id="i-think-specific-latex-package-is-causing-an-issue--how-do-i-investigate-further">I think [specific LaTeX package] is causing an issue. How do I
+investigate further?<a class="anchor" aria-label="anchor" href="#i-think-specific-latex-package-is-causing-an-issue--how-do-i-investigate-further"></a>
+</h3>
+<p>If you’ve identified a specific LaTeX package that may be causing
+issues (you may be tipped off by console messages), try reinstalling the
+package by typing the following in the console:</p>
+<p><code>tinytex::tlmgr_install("&lt;LaTeX package name&gt;")</code></p>
+<p>For example, to reinstall <code>pdfcomment</code>, you’d enter
+<code>tinytex::tlmgr_install("pdfcomment")</code>.</p>
+<p>Quarto <em>should be</em> installing LaTeX packages that it can’t
+find, but sometimes it doesn’t. This is a frustrating back-end issue
+with Quarto.</p>
+<p>You can also verify that your package has <em>actually been
+downloaded</em> by typing the following:</p>
+<p><code>tinytex::tlmgr_search("&lt;LaTeX package name&gt;")</code></p>
 </div>
 </div>
 <div class="section level2">

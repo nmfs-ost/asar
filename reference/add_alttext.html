@@ -67,7 +67,7 @@
       <a href="../articles/regional_workflows.html">Regional Workflows</a>
     </li>
     <li>
-      <a href="../articles/accessibility_guide.html">Accessibility</a>
+      <a href="../articles/accessibility_guide.html">Increasing Report Accessibility</a>
     </li>
     <li>
       <a href="../articles/custom-figs-tabs.html">Custom Figures &amp; Tables</a>
@@ -117,7 +117,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Add alternative text into latex</h1>
-    <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/R/add_alttext.r" class="external-link"><code>R/add_alttext.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/v1.6.0/R/add_alttext.r" class="external-link"><code>R/add_alttext.r</code></a></small>
     <div class="hidden name"><code>add_alttext.Rd</code></div>
     </div>
 
@@ -129,10 +129,10 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">add_alttext</span><span class="op">(</span></span>
 <span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"skeleton.tex"</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">]</span>,</span>
 <span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  figures_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  alttext_csv_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  alttext_csv <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"captions_alt_text.csv"</span><span class="op">)</span>,</span>
 <span>  compile <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  rename <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  rename <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  tagged <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -149,13 +149,8 @@ rendering the skeleton made from create_template.</p></dd>
 <dd><p>directory where the tex file is located that will be edited</p></dd>
 
 
-<dt id="arg-figures-dir">figures_dir<a class="anchor" aria-label="anchor" href="#arg-figures-dir"></a></dt>
-<dd><p>The location of the "figures" folder, which contains
-figures files.</p></dd>
-
-
-<dt id="arg-alttext-csv-dir">alttext_csv_dir<a class="anchor" aria-label="anchor" href="#arg-alttext-csv-dir"></a></dt>
-<dd><p>Directory for the csv file containing alternative
+<dt id="arg-alttext-csv">alttext_csv<a class="anchor" aria-label="anchor" href="#arg-alttext-csv"></a></dt>
+<dd><p>File path for the csv file containing alternative
 text and captions generated when running stockplotr::exp_all_figs_tables</p></dd>
 
 
@@ -168,6 +163,11 @@ rendered after these files are changed. Default TRUE.</p></dd>
 <dd><p>Indicate a name for the new tex file produced from this
 function. There is no need to include ".tex" in the name. Defaults to current
 name and overwrites the current tex file.</p></dd>
+
+
+<dt id="arg-tagged">tagged<a class="anchor" aria-label="anchor" href="#arg-tagged"></a></dt>
+<dd><p>Indicate if the input tex file from dir has the latex package,
+tagpdf, used so that tagging is present.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -185,7 +185,7 @@ exact label name when referencing the image/figure in text. The label is
 very important as it provides a way for the function to match where the
 alternative text gets placed. When compile is set to TRUE, the alternative
 text using this format will not be available and must be used in conjunction
-with <code><a href="add_tagging.html">asar::add_tagging()</a></code>.</p>
+with <code><a href="add_tagging.html">asar::add_tagging()</a></code> unless tagged is set to FALSE. Default is TRUE.</p>
     </div>
 
     <div id="ref-examples">
@@ -199,7 +199,7 @@ with <code><a href="add_tagging.html">asar::add_tagging()</a></code>.</p>
 <span class="r-in"><span>  species <span class="op">=</span> <span class="st">"Dover sole"</span>,</span></span>
 <span class="r-in"><span>  spp_latin <span class="op">=</span> <span class="st">"Microstomus pacificus"</span>,</span></span>
 <span class="r-in"><span>  year <span class="op">=</span> <span class="fl">2010</span>,</span></span>
-<span class="r-in"><span>  author <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"John Snow"</span>, <span class="st">"Danny Phantom"</span>, <span class="st">"Patrick Star"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  authors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"John Snow"</span> <span class="op">=</span> <span class="st">"AFSC"</span>, <span class="st">"Danny Phantom"</span> <span class="op">=</span> <span class="st">"NEFSC"</span>, <span class="st">"Patrick Star"</span> <span class="op">=</span> <span class="st">"SEFSC-ML"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  model_results <span class="op">=</span> <span class="st">"Report.sso"</span>,</span></span>
 <span class="r-in"><span>  model <span class="op">=</span> <span class="st">"SS3"</span>,</span></span>
 <span class="r-in"><span>  new_section <span class="op">=</span> <span class="st">"an_additional_section"</span>,</span></span>
@@ -216,8 +216,7 @@ with <code><a href="add_tagging.html">asar::add_tagging()</a></code>.</p>
 <span class="r-in"><span>  <span class="fu">add_alttext</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    x <span class="op">=</span> <span class="st">"SAR_USWC_Dover_sole_skeleton.tex"</span>,</span></span>
 <span class="r-in"><span>    dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    alttext_csv_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    figures_dir <span class="op">=</span> <span class="va">path</span>,</span></span>
+<span class="r-in"><span>    alttext_csv <span class="op">=</span> <span class="st">"my_alttext_file.csv"</span>,</span></span>
 <span class="r-in"><span>    compile <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>    rename <span class="op">=</span> <span class="st">"SAR_Dover_sole_tagged"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
