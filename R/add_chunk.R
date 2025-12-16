@@ -15,11 +15,12 @@
 #'
 #' @examples add_chunk("plot(cars$speed, cars$distance)")
 add_chunk <- function(
-    x,
-    label = NULL,
-    add_option = TRUE,
-    chunk_option = c("echo: false", "warnings: false", "eval: true"),
-    rmark_option = NULL) {
+  x,
+  label = NULL,
+  add_option = TRUE,
+  chunk_option = c("echo: false", "warnings: false", "eval: true"),
+  rmark_option = NULL
+) {
   chunk <- paste0(
     "```{r", ifelse(add_option, paste0(c("", rmark_option), collapse = ", "), ""), "} \n"
   )

@@ -17,9 +17,10 @@
 #' }
 #'
 create_citation <- function(
-    authors = NULL,
-    title = "[TITLE]",
-    year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")) {
+  authors = NULL,
+  title = "[TITLE]",
+  year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
+) {
   # Check if authors is input - improved from previous fxn so did not fail
   if (is.null(authors) | any(authors == "")) {
     cli::cli_alert_warning("Authorship not defined.")

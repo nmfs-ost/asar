@@ -45,24 +45,25 @@
 #' )
 #' }
 create_yaml <- function(
-    format = "pdf",
-    office = NULL,
-    region = NULL,
-    species = "species",
-    spp_latin = NULL,
-    spp_image = "",
-    year = NULL,
-    bib_name = NULL,
-    bib_file = "asar_references.bib",
-    author_list = NULL,
-    title = "[TITLE]",
-    rerender_skeleton = FALSE,
-    prev_skeleton = NULL,
-    prev_format = NULL,
-    parameters = TRUE,
-    param_names = NULL,
-    param_values = NULL,
-    type = "SAR") {
+  format = "pdf",
+  office = NULL,
+  region = NULL,
+  species = "species",
+  spp_latin = NULL,
+  spp_image = "",
+  year = NULL,
+  bib_name = NULL,
+  bib_file = "asar_references.bib",
+  author_list = NULL,
+  title = "[TITLE]",
+  rerender_skeleton = FALSE,
+  prev_skeleton = NULL,
+  prev_format = NULL,
+  parameters = TRUE,
+  param_names = NULL,
+  param_values = NULL,
+  type = "SAR"
+) {
   # check first if want to rerender current skeleton
   if (rerender_skeleton) {
     # Extract yaml from current template

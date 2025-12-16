@@ -19,10 +19,11 @@
 #'   subdir = tempdir()
 #' )
 add_section <- function(
-    subdir = NULL,
-    custom_sections = NULL,
-    new_section = NULL,
-    section_location = NULL) {
+  subdir = NULL,
+  custom_sections = NULL,
+  new_section = NULL,
+  section_location = NULL
+) {
   if (is.null(new_section)) {
     cli::cli_abort("New section name (`new_section`) is NULL.")
   }

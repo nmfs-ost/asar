@@ -27,7 +27,6 @@ test_that("accurate number of split tables identified", {
   expect_equal(tables_test2, 5)
 
 
-
   # make very very wide table
   ft <- as.data.frame(faithful) |>
     t() |>

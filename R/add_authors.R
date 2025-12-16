@@ -15,9 +15,10 @@
 #' )
 #' }
 add_authors <- function(
-    authors,
-    rerender_skeleton = FALSE,
-    prev_skeleton = NULL) {
+  authors,
+  rerender_skeleton = FALSE,
+  prev_skeleton = NULL
+) {
   # TODO: convert error message into a warning and update workflow so that a missing affiliation ultimately yields a blank affiliation in the skeleton, as in `authors = NULL`. This will affect create_citation() and create_template() too.
   # Set author into proper format - will get overwritten later if rerender = T
   author_names <- names(authors)
