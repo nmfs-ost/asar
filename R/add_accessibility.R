@@ -46,7 +46,7 @@
 #'   add_accessibility(
 #'     x = "SAR_USWC_Dover_sole_skeleton.tex",
 #'     dir = getwd(),
-#'     figures_dir = path,
+#'     alttext_csv = file.path(getwd(), "captions_alt_text.csv"),
 #'     compile = TRUE
 #'   )
 #' )

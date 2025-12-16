@@ -47,7 +47,7 @@ create_template(
   species = "Dover sole",
   spp_latin = "Microstomus pacificus",
   year = 2010,
-  author = c("John Snow" = "AFSC", "Danny Phantom" = "NWFSC", "Patrick Star" = "SEFSC"),
+  author = c("John Snow" = "AFSC", "Danny Phantom" = "NWFSC", "Patrick Star" = "SEFSC-ML"),
   model_results = output,
   model = "SS3",
   new_section = "an_additional_section",
@@ -63,7 +63,7 @@ withr::with_dir(
   add_accessibility(
     x = "SAR_USWC_Dover_sole_skeleton.tex",
     dir = getwd(),
-    figures_dir = path,
+    alttext_csv = file.path(getwd(), "captions_alt_text.csv"),
     compile = TRUE
   )
 )

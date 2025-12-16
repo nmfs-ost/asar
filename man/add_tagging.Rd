@@ -44,7 +44,7 @@ create_template(
   species = "Dover sole",
   spp_latin = "Microstomus pacificus",
   year = 2010,
-  author = c("John Snow", "Danny Phantom", "Patrick Star"),
+  authors = c("John Snow" = "AFSC", "Danny Phantom" = "NEFSC", "Patrick Star" = "SEFSC-ML"),
   include_affiliation = TRUE,
   new_section = "an_additional_section",
   section_location = "after-introduction"
