@@ -17,7 +17,7 @@
 #' accessibility and renders the final document. The document is tagged and
 #' includes alternative text from the captions_alt_text.csv produced from
 #' `stockplotr` package also available on GitHub.
-#' 
+#'
 #' @export
 #'
 #' @examples
@@ -53,11 +53,12 @@
 #' }
 #'
 add_accessibility <- function(
-    x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
-    dir = getwd(),
-    alttext_csv = file.path(getwd(), "captions_alt_text.csv"),
-    compile = TRUE,
-    rename = NULL) {
+  x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
+  dir = getwd(),
+  alttext_csv = file.path(getwd(), "captions_alt_text.csv"),
+  compile = TRUE,
+  rename = NULL
+) {
   # Add tagpdf pkg to template and create accessibility.tex
   add_tagging(
     x = x,

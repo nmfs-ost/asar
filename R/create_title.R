@@ -14,13 +14,14 @@
 #'   year = 2024
 #' )
 create_title <- function(
-    type = "skeleton",
-    office = "",
-    species = "species",
-    spp_latin = NULL,
-    region = NULL,
-    year = format(Sys.Date(), "%Y"),
-    complex = NULL) {
+  type = "skeleton",
+  office = "",
+  species = "species",
+  spp_latin = NULL,
+  region = NULL,
+  year = format(Sys.Date(), "%Y"),
+  complex = NULL
+) {
   # Species latin name with italics latex fxn
   spp_latin <- paste("\\textit{", spp_latin, "}", sep = "")
 

@@ -572,33 +572,40 @@ export_glossary <- function() {
     "yfs", "ypr",
     "z"
   )
-  
+
   # Add new acronyms from survey names table
   survey_acs <- data.frame(
-    "Acronym" = c("SEAMAP",
-                  "MARMAP",
-                  "CCFRP"),
-    "Label" = c("seamap",
-                "marmap",
-                "ccfrp"),
-    "Meaning" = c("Southeast Area Monitoring and Assessment Program",
-                  "The Marine Resources Monitoring, Assessment, and Prediction Program",
-                  "California Collaborative Fisheries Research Program"),
+    "Acronym" = c(
+      "SEAMAP",
+      "MARMAP",
+      "CCFRP"
+    ),
+    "Label" = c(
+      "seamap",
+      "marmap",
+      "ccfrp"
+    ),
+    "Meaning" = c(
+      "Southeast Area Monitoring and Assessment Program",
+      "The Marine Resources Monitoring, Assessment, and Prediction Program",
+      "California Collaborative Fisheries Research Program"
+    ),
     "Definition" = NA
   )
-  
+
   # take survey names and add shortened versions of the formal name (Meaning) as new Acronyms
   surveys <- read.csv(fs::path("inst", "glossary", "formatted_acronym_lists", "survey_names.csv")) |>
     # extract unique Meanings
-    dplyr::group_by(Meaning) |> 
+    dplyr::group_by(Meaning) |>
     # take first occurrence if there is a tie
-    dplyr::slice(1) |> 
+    dplyr::slice(1) |>
     dplyr::ungroup() |>
     dplyr::mutate(word_count = stringi::stri_count_words(Acronym)) |>
-  # create shortened acronym for meanings with > 3 words
+    # create shortened acronym for meanings with > 3 words
     dplyr::mutate(ac_short = dplyr::if_else(word_count > 3,
-                                            gsub('(?<=^|[^\\pL])(\\pL)\\pL{2,}|.', '\\U\\1', Meaning, perl = TRUE),
-                                            Acronym)) |>
+      gsub("(?<=^|[^\\pL])(\\pL)\\pL{2,}|.", "\\U\\1", Meaning, perl = TRUE),
+      Acronym
+    )) |>
     dplyr::group_by(ac_short) |>
     # add numbers to differentiate identical ac_short values
     dplyr::mutate(
@@ -606,11 +613,12 @@ export_glossary <- function() {
         paste(ac_short, dplyr::row_number(), sep = "_")
       } else {
         ac_short
-      }) |>
+      }
+    ) |>
     dplyr::ungroup() |>
     dplyr::select(-c(Acronym, word_count)) |>
     dplyr::rename(Acronym = ac_short)
-  
+
   unique_all_cleaning3 <- unique_all_cleaning2 |>
     dplyr::mutate(Meaning = ifelse(Label %in% rows_to_lower,
       tolower(Meaning),
@@ -618,10 +626,11 @@ export_glossary <- function() {
     )) |>
     dplyr::full_join(survey_acs) |>
     dplyr::full_join(surveys) |>
-  # create labels for those with NAs
+    # create labels for those with NAs
     dplyr::mutate(Label = dplyr::if_else(is.na(Label),
-                         tolower(Acronym),
-                         Label)) |> 
+      tolower(Acronym),
+      Label
+    )) |>
     # remove duplicates
     dplyr::filter(
       !(Definition == "Aggregated Survey on US chartered and State-Owned boats" & Acronym == "ASOUCA"),
@@ -635,10 +644,10 @@ export_glossary <- function() {
 
   duplicate_acronyms <- unique_all_cleaning3 |>
     dplyr::add_count(Acronym) |>
-    dplyr::filter(n>1) |>
+    dplyr::filter(n > 1) |>
     dplyr::distinct()
-  
-  if(dim(duplicate_acronyms)[1] > 0){
+
+  if (dim(duplicate_acronyms)[1] > 0) {
     cli::cli_abort("Duplicate acronyms exist. Edit export_glossary() to ensure the glossary's acronyms are all distinct.")
   }
 

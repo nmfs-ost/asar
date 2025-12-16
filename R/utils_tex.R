@@ -126,11 +126,11 @@ id_num_headers <- function(tex_file) {
   # id how many header rows there are
   # add tagpdf commands accordingly
   table_lines <- grep("\\\\begin\\{table\\}|\\\\begin\\{longtable\\}", tex_file)
-  
+
   if (length(table_lines) == 0) {
     return(tex_file)
   }
-  
+
   for (i in rev(table_lines)) {
     # Find table chunk
     table_end <- grep("\\\\end\\{table\\}|\\\\end\\{longtable\\}", tex_file)[grep("\\\\end\\{table\\}|\\\\end\\{longtable\\}", tex_file) > i][1]
@@ -144,7 +144,7 @@ id_num_headers <- function(tex_file) {
     #   header_start <- grep("\\\\hline", table_chunk)[1]
     #   header_end <- grep("\\\\hline", table_chunk)[2]
     # }
-    # 
+    #
     # # number of header rows
     # if (length(header_start) == 0 || length(header_end) == 0) {
     #   warning("Could not find \\toprule or \\midrule in table chunk; skipping header row tagging for this table.")
@@ -155,7 +155,7 @@ id_num_headers <- function(tex_file) {
     # n_header_rows <- header_end - header_start - 1
     # notation for header
     tag_header <- paste0("\\tagpdfsetup{table/header-rows={", n_header_rows, "}}")
-    
+
     # update tex_file
     tex_file <- append(
       tex_file,

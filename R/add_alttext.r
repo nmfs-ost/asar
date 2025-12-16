@@ -1,7 +1,7 @@
 #' Add alternative text into latex
 #'
 #' @inheritParams add_accessibility
-#' @param tagged Indicate if the input tex file from dir has the latex package, 
+#' @param tagged Indicate if the input tex file from dir has the latex package,
 #' tagpdf, used so that tagging is present.
 #'
 #' @return This function was made to help add in
@@ -56,12 +56,13 @@
 #' }
 #'
 add_alttext <- function(
-    x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
-    dir = getwd(),
-    alttext_csv = file.path(getwd(), "captions_alt_text.csv"),
-    compile = TRUE,
-    rename = NULL,
-    tagged = TRUE) {
+  x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
+  dir = getwd(),
+  alttext_csv = file.path(getwd(), "captions_alt_text.csv"),
+  compile = TRUE,
+  rename = NULL,
+  tagged = TRUE
+) {
   # Read latex file
   if (!file.exists(file.path(dir, x))) cli::cli_abort("File {dir}/{x} does not exist!")
   tex_file <- readLines(file.path(dir, x))
@@ -85,7 +86,7 @@ add_alttext <- function(
   if (length(lines_to_remove) > 0) {
     fig_lines <- fig_lines[-lines_to_remove]
   }
-  
+
   # read in alt text csv file to match with labels
   alttext <- utils::read.csv(alttext_csv)
 
@@ -103,14 +104,14 @@ add_alttext <- function(
     )
     # Skip to next row if label is not in the doc
     if (length(label_line_idx) == 0) next
-    
+
     # Find which figure is right before this from fig_lines
     # only select the number closest to label_line_idx
     fig_line_idx <- max(fig_lines[fig_lines < label_line_idx])
     # Identify the line where the figure is named and loaded in
     # This is the line that will contain the alt text
     line <- tex_file[fig_line_idx]
-    
+
     # determine which method alttext should be added
     if (tagged) {
       # check if alt text was previously added
@@ -151,13 +152,13 @@ add_alttext <- function(
       )
     }
   }
-  
+
   # Commenting this out for now -- without this part of the function the alt text
   # can not be visually seen when hovering the mouse over the image
   # HOWEVER; the alt text is embedded when document is tagged. You can check by
   # going to the figure tag, right click > properties and you should see the alt
   # text box filled in
-  
+
   # if (tagged) {
   #   # Convert pdf images to png and replace file type in tex so alt text appears in the document
   #   # Use this method if you want to physically see the alt text (otherwise it's embedded)
@@ -179,7 +180,7 @@ add_alttext <- function(
   #       suppressMessages()
   #   }
   # }
-  
+
   # Save overwrite tex file
   write(
     unlist(tex_file),

@@ -20,9 +20,10 @@
 #' )
 #' }
 export_split_tbls <- function(
-    tables_dir = NULL,
-    plot_name = NULL,
-    essential_columns = NULL) {
+  tables_dir = NULL,
+  plot_name = NULL,
+  essential_columns = NULL
+) {
   rda_path <- file.path(paste0(tables_dir, "/tables/", plot_name))
 
   load(rda_path)
