@@ -1,16 +1,21 @@
 AFSC
 APA
+Arial
 BAM
 Blockquote
 Bolded
 CMD
 CTAN
+Calibri
 Canelón
 DocumentMetadata
 Drs
 FIMS
+Flextable
 Hardcoding
+LBody
 LaTex
+Lbl
 Lifecycle
 Mainpulate
 NEFSC
@@ -23,6 +28,7 @@ Overleaf's
 PCFL
 PFMC's
 PIFSC
+Pandoc
 Pomatomus
 README
 RStudio
@@ -35,6 +41,7 @@ SWA
 SWFSC
 Strikethrough
 TLDR
+TOC
 TinyTeX
 amak
 asis
@@ -53,6 +60,7 @@ dplyr
 ect
 fims
 flextable
+flextables
 frac
 gls
 gp
@@ -99,6 +107,7 @@ str
 stringr
 subfiles
 subseason
+taggable
 tagpdf
 tbl
 tbls

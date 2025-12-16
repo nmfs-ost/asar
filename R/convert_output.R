@@ -1399,8 +1399,8 @@ convert_output <- function(
             } else {
               df2 <- df2 |>
                 dplyr::mutate(
-                  fleet = NA,
-                  age = NA,
+                  fleet = ifelse("age" %in% colnames(df2), fleet, NA),
+                  age = ifelse("age" %in% colnames(df2), age, NA),
                   label = label,
                   module_name = names(extract)
                 )
@@ -1763,6 +1763,10 @@ convert_output <- function(
       year = dplyr::case_when(
         is.na(year) ~ NA_real_,
         TRUE ~ as.numeric(year)
+      ),
+      likelihood = dplyr::case_when(
+        is.na(likelihood) ~ NA_real_,
+        TRUE ~ as.numeric(likelihood)
       ),
       # change era name to keep standard
       era = dplyr::case_when(

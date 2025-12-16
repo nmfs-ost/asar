@@ -116,3 +116,52 @@ create_inheader_tex <- function(species = NULL, year = NULL, subdir) {
 }
 
 #------------------------------------------------------------------------------
+
+# Check for tables and id number of headers for header tagging
+id_num_headers <- function(tex_file) {
+  # input = tex file (lines from add_tagging)
+  # also add option provide it as a tex file? -- no bc it needs tagpdf
+  # output = edited tex file (or lines)
+  # recognize locations of table(s)
+  # id how many header rows there are
+  # add tagpdf commands accordingly
+  table_lines <- grep("\\\\begin\\{table\\}|\\\\begin\\{longtable\\}", tex_file)
+  
+  if (length(table_lines) == 0) {
+    return(tex_file)
+  }
+  
+  for (i in rev(table_lines)) {
+    # Find table chunk
+    table_end <- grep("\\\\end\\{table\\}|\\\\end\\{longtable\\}", tex_file)[grep("\\\\end\\{table\\}|\\\\end\\{longtable\\}", tex_file) > i][1]
+    table_chunk <- tex_file[i:table_end]
+    # Find rows that indicate formatting before and after header(s)
+    # this will not work for flextable
+    # header_start <- grep("\\\\toprule", table_chunk) # this might not be tried and true
+    # header_end <- grep("\\\\midrule", table_chunk)
+    # if (length(header_start) == 0 | length(header_end) == 0) {
+    #   # find first and second hline
+    #   header_start <- grep("\\\\hline", table_chunk)[1]
+    #   header_end <- grep("\\\\hline", table_chunk)[2]
+    # }
+    # 
+    # # number of header rows
+    # if (length(header_start) == 0 || length(header_end) == 0) {
+    #   warning("Could not find \\toprule or \\midrule in table chunk; skipping header row tagging for this table.")
+    #   next
+    # }
+    # For now setting all number of headers to 1
+    n_header_rows <- 1
+    # n_header_rows <- header_end - header_start - 1
+    # notation for header
+    tag_header <- paste0("\\tagpdfsetup{table/header-rows={", n_header_rows, "}}")
+    
+    # update tex_file
+    tex_file <- append(
+      tex_file,
+      tag_header,
+      after = i - 1
+    )
+  }
+  tex_file
+}

@@ -153,7 +153,7 @@ Then, render your report once more.
 
 ## When rendering, why does my report hang on the figures doc?
 
-When rendering your report, it may hang when processing the figures file. If this occurs, it probably means that your tinytex installation isn't working properly. This may occur even if you've installed the TinyTeX bundle with every LaTeX package you could install from CTAN ([TinyTeX-2](https://github.com/rstudio/tinytex-releases?tab=readme-ov-file#releases)).
+When rendering your report, it may hang when processing the figures file. If this occurs, it probably means that your TinyTeX installation isn't working properly. This may occur even if you've installed the TinyTeX bundle with every LaTeX package you could install from CTAN ([TinyTeX-2](https://github.com/rstudio/tinytex-releases?tab=readme-ov-file#releases)).
 
 Try this: Uninstall tinytex in the R console (`tinytex::uninstall_tinytex()`), then reinstall it in the terminal (`quarto install tinytex`).
 
@@ -164,6 +164,36 @@ Notably, this command will install TinyTeX-1 bundle (the default), then install 
 This error can occasionally occur to some users when they are working on a remote or shared drive that does not originate from their local machine. Due to constraints of Quarto, the user must render their skeleton document when the support files and child documents are found somewhere locally.
 
 We suggest users who encounter this problem to store their files made from `asar` on their local computer and push them to a GitHub repo to store and share.
+
+# Adding tagging and alternative text {#sec-a11y-issues}
+
+## When I compile my report after adding tagging or alt text, I get an error. Why?
+
+We have experienced several seemingly random errors when developing this package. Oftentimes, these errors arise when LaTeX packages are updated and end up conflicting with one another. As a first attempt to debug, we strongly advise updating your LaTeX packages with the following command:
+
+`tinytex::tlmgr_update()`
+
+Close RStudio and open it again. Try again to compile your report.
+
+If that doesn't solve your problem:
+
+1. Reinstall your TinyTeX installation (we recommend [bundle 2](@sec-docmetadata), though bundle 1 may suffice). Update the packages and try compiling again.
+2. Check out our [issues page](https://github.com/nmfs-ost/asar/issues) and [discussion board](https://github.com/nmfs-ost/asar/discussions) to see if someone else has already asked (and maybe solved!) your question.
+3. If you're still struggling, [make an issue](https://github.com/nmfs-ost/asar/issues).
+
+## I think [specific LaTeX package] is causing an issue. How do I investigate further?
+
+If you've identified a specific LaTeX package that may be causing issues (you may be tipped off by console messages), try reinstalling the package by typing the following in the console:
+
+`tinytex::tlmgr_install("<LaTeX package name>")`
+
+For example, to reinstall `pdfcomment`, you'd enter `tinytex::tlmgr_install("pdfcomment")`.
+
+Quarto *should be* installing LaTeX packages that it can't find, but sometimes it doesn't. This is a frustrating back-end issue with Quarto.
+
+You can also verify that your package has *actually been downloaded* by typing the following:
+
+`tinytex::tlmgr_search("<LaTeX package name>")`
 
 # General errors
 

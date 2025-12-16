@@ -5,7 +5,8 @@
 #' @return This function was made to help add in
 #' latex packages and content associated with PDF
 #' tagging. Quarto does not allow the user to edit anything
-#' before documentclass, so this function alters the rendered .tex file.
+#' before documentclass, so this function alters the rendered .tex file. 
+#' Flextable-based tables will not be tagged as flextable is not compatible with tagpdf.
 #'
 #' @export
 #'
@@ -19,7 +20,7 @@
 #'   species = "Dover sole",
 #'   spp_latin = "Microstomus pacificus",
 #'   year = 2010,
-#'   author = c("John Snow", "Danny Phantom", "Patrick Star"),
+#'   authors = c("John Snow" = "AFSC", "Danny Phantom" = "NEFSC", "Patrick Star" = "SEFSC-ML"),
 #'   include_affiliation = TRUE,
 #'   new_section = "an_additional_section",
 #'   section_location = "after-introduction"
@@ -78,6 +79,9 @@ add_tagging <- function(
     "% ", tex_file[microtype_line1:(microtype_line1 + 3)]
   )
   tex_file[microtype_line1:(microtype_line1 + 3)] <- microtype_chunk
+  
+  # add in tagpdf notation for tables if tables exist
+  tex_file <- id_num_headers(tex_file)
 
   # Export file
   write(tex_file, file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)))
@@ -97,7 +101,7 @@ add_tagging <- function(
     # "  ", "% testphase={phase-II,math, tabular, graphic}% TOC Does not work", "\n",
     # "  ", "% testphase={phase-III,math}% TOC works", "\n",
     "}", "\n",
-    "\\tagpdfsetup{activate, tabsorder=structure}", "\n",
+    "\\tagpdfsetup{activate, page/tabsorder=structure}", "\n",
     "% Use the following to fix bug in November 2023 download of LaTeX", "\n",
     "% \\ExplSyntaxOn", "\n",
     "% \\cs_generate_variant:Nn__tag_prop_gput:Nnn{cnx}", "\n",
@@ -110,22 +114,31 @@ add_tagging <- function(
   cli::cli_alert_success("______Tagging structure added to tex file.______")
   if (compile) {
     # Find name for the previously rendered report
-    prev_report_name <- list.files(dir, pattern = ".pdf")
-    if (length(prev_report_name) > 1) {
-      cli::cli_alert_info("______Multiple pdfs found in directory, defaulting to the tex file name______")
-      pdf_report_name <- NULL
-    }
-    pdf_report_name <- ifelse(is.null(rename), prev_report_name, glue::glue("{rename}.pdf"))
-    if (length(prev_report_name) == 0) {
-      cli::cli_alert_info("______No previous report found, defaulting to the tex file name______")
-      pdf_report_name <- NULL
-    }
+    # prev_report_name <- list.files(dir, pattern = ".pdf")
+    # if (length(prev_report_name) > 1) {
+    #   cli::cli_alert_info("______Multiple pdfs found in directory, defaulting to the tex file name______")
+    #   pdf_report_name <- NULL
+    # }
+    # pdf_report_name <- ifelse(is.null(rename), prev_report_name, glue::glue("{rename}.pdf"))
+    # if (length(prev_report_name) == 0) {
+    #   cli::cli_alert_info("______No previous report found, defaulting to the tex file name______")
+    #   pdf_report_name <- NULL
+    # }
     # Render the report
     cli::cli_alert_info("______Compiling in progress - This can take a while...______")
     # test if this can be done when skeleton is in different folder than the wd
-    tinytex::lualatex(
-      file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)),
-      pdf_file = pdf_report_name
+    # tinytex::lualatex(
+    #   file = file.path(dir, ifelse(!is.null(rename), glue::glue("{rename}.tex"), x)),
+    #   pdf_file = pdf_report_name
+    # )
+    withr::with_dir(
+      # changes the working directory only for rendering the tex file
+      dir,
+      tinytex::lualatex(file.path(ifelse(
+        !is.null(rename),
+        glue::glue("{rename}.tex"),
+        x
+      )))
     )
     cli::cli_alert_success("______Compiling finished______")
   }

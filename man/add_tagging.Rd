@@ -29,6 +29,7 @@ This function was made to help add in
 latex packages and content associated with PDF
 tagging. Quarto does not allow the user to edit anything
 before documentclass, so this function alters the rendered .tex file.
+Flextable-based tables will not be tagged as flextable is not compatible with tagpdf.
 }
 \description{
 Add tagging structure to latex documents produced from quarto
@@ -43,7 +44,7 @@ create_template(
   species = "Dover sole",
   spp_latin = "Microstomus pacificus",
   year = 2010,
-  author = c("John Snow", "Danny Phantom", "Patrick Star"),
+  authors = c("John Snow" = "AFSC", "Danny Phantom" = "NEFSC", "Patrick Star" = "SEFSC-ML"),
   include_affiliation = TRUE,
   new_section = "an_additional_section",
   section_location = "after-introduction"

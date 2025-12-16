@@ -237,7 +237,7 @@ Your rdas will contain your table or figure, caption, and alternative text (if i
 ```{r eval=F}
 rda <- list(
   "table" = your_table, # your table object
-  "cap" = my_table_cap # your table caption
+  "caption" = my_table_cap # your table caption
 )
 ```
 
@@ -246,7 +246,7 @@ rda <- list(
 ```{r eval=F}
 rda <- list(
   "figure" = your_figure, # your figure object
-  "cap" = my_figure_cap, # your figure caption
+  "caption" = my_figure_cap, # your figure caption
   "alt_text" = my_figure_alt_text # your figure alternative text
 )
 ```
@@ -504,7 +504,7 @@ rm(rda)
 
 # save table, caption as separate objects
 example_table <- example_table_rda$table
-example_cap <- example_table_rda$cap
+example_cap <- example_table_rda$caption
 ``` 
 ````
 
@@ -547,7 +547,7 @@ rm(rda)
 
 # save table, caption as separate objects
 example_table <- example_table_rda$table
-example_cap <- example_table_rda$cap
+example_cap <- example_table_rda$caption
 ``` 
 ````
 
@@ -609,7 +609,7 @@ example_table_rda <- rda
 rm(rda)
 
 # save caption as separate object
-example_cap <- example_table_rda$cap
+example_cap <- example_table_rda$caption
 
 # load split table rda and save with a table-specific name, then delete "table_list"
 load(file.path(tables_dir, "example_table_split.rda"))
@@ -690,7 +690,7 @@ rm(rda)
 
 # save figure, caption, and alternative text as separate objects
 example_plot <- example_figure_rda$figure
-example_cap <- example_figure_rda$cap
+example_cap <- example_figure_rda$caption
 example_alt_text <- example_figure_rda$alt_text
 ``` 
 ````
