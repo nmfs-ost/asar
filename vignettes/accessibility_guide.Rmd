@@ -259,14 +259,20 @@ And it will render like this:
 
 > This is the first instance of Acceptable Biological Catch (ABC). Here, ABC is used a second time.
 
-For specialized commands that enable capitalization, reference to acronyms' meanings, and more, check out the Command Summary (pg 46) within [the `glossaries` package's beginners' guide](https://ctan.math.illinois.edu/macros/latex/contrib/glossaries/glossariesbegin.pdf).
+For specialized commands that enable capitalization, reference to acronyms' meanings, and more, check out the Command Summary (pg 46) within [the `glossaries` package's beginners' guide](https://ctan.math.illinois.edu/macros/LaTeX/contrib/glossaries/glossariesbegin.pdf).
 
 ## Tables
 
 Please do not place figures inside tables. Doing so makes it very difficult for software to properly identify the structure of (i.e., *tag*) the table and its inner elements.
 
 # Status of accessibility features
-*Date updated: 12/2/2025*
+*Date updated: 12/16/2025*
+
+In December 2025, we performed extensive testing on accessibility features in PDFs. This ["a11y-sandbox" repository](https://github.com/Schiano-NOAA/a11y-sandbox/) contains many examples of features and table types that were tested for success in tagging, passing Adobe Accessibility Checker tests, and more. Please check out the [README](https://github.com/Schiano-NOAA/a11y-sandbox/blob/main/README.md) for findings related to topics such as:
+
+* Why some Adobe Accessibility checks fail, why some failures are incorrect, and how to manually fix the tags in Adobe
+* Differences in tagging behavior for tables produced with `gt`, `kableExtra`, `flextable`, and raw LaTeX
+* How to avoid package conflicts between the LaTeX package that enables tagging (`tagpdf`) and other packages (e.g., `scrartcl`)
 
 ## NOAA institutional repository submission requirements
 
@@ -276,21 +282,14 @@ This section states the status of `asar` reports' accessibility features as comp
 
 **Expectation:** The PDF is a tagged PDF.
 
-**Status**: `add_tagging()` adds tags to *some* PDFs. Keep reading for an explanation.
+**Status**: `add_tagging()` adds tags to PDFs with a variety of features including figures, figure captions, lists, math, and other textual aspects of reports such as headers and sections. The function also works for reports with tables made with:
 
-#### What isn't working
+* Raw LaTeX ([example here](https://github.com/Schiano-NOAA/a11y-sandbox/blob/main/LaTeX-compatible-table-pkgs/custom_LaTeX.qmd))
+* the `gt` package ([example here](https://github.com/Schiano-NOAA/a11y-sandbox/blob/main/LaTeX-compatible-table-pkgs/gt.qmd))
+* the `kableExtra` package's `kbl` or `kable` functions ([examples here](https://github.com/Schiano-NOAA/a11y-sandbox/blob/main/LaTeX-compatible-table-pkgs/kableextra.qmd))
+* potentially other packages
 
-##### Tables
-
-**Report compilation will fail unless the report does not contain tables.** Generally, tagging tables is a known issue among developers. It's very challenging. In the meantime, we suggest two workarounds: 1) placing your tables in a separate document, or 2) adding your tables as raw LaTeX code inside the 08_tables.qmd file. We are enthusiastically developing a workflow for option #2 for a future `stockplotr` release (which will be then integrated into an `asar` workflow).
-
-#### What's functional
-
-1. Figures
-2. Figure captions
-3. Lists
-4. Other textual aspects of reports (e.g., headers, sections, parts)
-5. Math
+**Reports containing tables made with the `flextable` package are not taggable at this time.** The issue seems to be that flextables are not converted to LaTeX well by Pandoc while a Quarto report is being rendered to PDF. We are in the process of redeveloping `stockplotr` tables so that the basis of each is `gt`, not `flextable`. Please let us know if you'd like help converting any `flextable`-based tables to a different format.
 
 ### 2. Bookmarks ✅
 
@@ -350,7 +349,7 @@ The checklist reflects the results from a report made with a basic, exemplary `a
 | If there is a Table of Contents (TOC), it was created using the TOC Command. | | |X (The TOC was created externally from Adobe but are constructed such that TOC is inserted appropriately)|
 | Page numbering codes are used (as opposed to manually entering page numbers). |X| | |
 | Footnotes have been created via the Insert Footnote tool. | | |X (Footnotes are created externally from Adobe but are constructed such that footnotes are inserted appropriately)|
-| Links contain descriptive text informing the user of the context and content of the linked page. Avoid linking terms such as “Click Here” or “Website.” |X| | |
+| Links contain descriptive text informing the user of the context and content of the linked page. Avoid linking terms such as "Click Here" or "Website." |X| | |
 | All hyperlinks are working and linking to their intended destination. | X| | |
 | All information that is conveyed through the use of color is also available without color. |X| | |
 | All color for images, text, etc. avoids red-green contrast when possible. (For colorblind viewers). |X| | |
@@ -376,16 +375,14 @@ The checklist reflects the results from a report made with a basic, exemplary `a
 
 ### Lists & Tables
 
-As stated above, we are still working on solutions to properly tag tables.
-
 | Element | Pass | Fail | Not Applicable |
 | :----------- | :-: | :-: | :---: |
 | All tables were made using the Insert Table option. | | |X (Tables will be created externally from Adobe but will be constructed such that tables are inserted appropriately)|
-| No blank or merged cells are present in the table(s). | |X| |
-| Data tables should have the first row designated as “Header Row” within the Table Properties. | |X| |
-| Under Table Properties, “Allow row to break across pages” should not be checked. (This impacts reading order.) | |X| |
-| Tables are labeled and/or described as necessary. | |X| |
-| No layout tables are present in the document. | |X| |
+| No blank or merged cells are present in the table(s). |X (We are redeveloping our `stockplotr` tables to meet this criterion. Users must check that tables made with other packages meet this criterion.) | | |
+| Data tables should have the first row designated as "Header Row" within the Table Properties. |X| | |
+| Under Table Properties, "Allow row to break across pages" should not be checked. (This impacts reading order.) | ||X (This criterion seems written for Word documents in particular, which is not applicable with the `asar`-based workflow)|
+| Tables are labeled and/or described as necessary. |X| | |
+| No layout tables are present in the document. |X (Tables made with `stockplotr` tables meet this criterion. Users must check that tables made with other packages meet this criterion.)| | |
 | All lists have been appropriately tagged using all four tags: L, LI, Lbl, and LBody. |X| | |
 
 ### Bookmarks, Tagging & Table of Contents
