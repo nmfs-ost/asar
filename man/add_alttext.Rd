@@ -46,7 +46,7 @@ exact label name when referencing the image/figure in text. The label is
 very important as it provides a way for the function to match where the
 alternative text gets placed. When compile is set to TRUE, the alternative
 text using this format will not be available and must be used in conjunction
-with \code{asar::add_tagging()} unless tagged is set to FALSE.
+with \code{asar::add_tagging()} unless tagged is set to FALSE. Default is TRUE.
 }
 \description{
 Add alternative text into latex
@@ -78,7 +78,7 @@ withr::with_dir(
   add_alttext(
     x = "SAR_USWC_Dover_sole_skeleton.tex",
     dir = getwd(),
-    alttext_csv = getwd(),
+    alttext_csv = "my_alttext_file.csv",
     compile = FALSE,
     rename = "SAR_Dover_sole_tagged"
   )

@@ -16,7 +16,7 @@ format_quarto <- function(format = "pdf",
     paste0(
       "format: ", "\n",
       "  ", format, ": \n",
-      "  ", "  ", "documentclass: scrartcl", "\n",
+      "  ", "  ", "documentclass: article", "\n",
       "  ", "  ", "papersize: letter", "\n",
       "  ", "  ", "number-sections: true", "\n",
       "  ", "  ", "template-partials:", "\n",
