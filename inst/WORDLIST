@@ -11,6 +11,7 @@ Canelón
 DocumentMetadata
 Drs
 FIMS
+Flextable
 Hardcoding
 LBody
 LaTex
@@ -27,6 +28,7 @@ Overleaf's
 PCFL
 PFMC's
 PIFSC
+Pandoc
 Pomatomus
 README
 RStudio
@@ -58,6 +60,7 @@ dplyr
 ect
 fims
 flextable
+flextables
 frac
 gls
 gp
@@ -104,6 +107,7 @@ str
 stringr
 subfiles
 subseason
+taggable
 tagpdf
 tbl
 tbls
