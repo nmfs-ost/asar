@@ -62,7 +62,7 @@ for using `asar` can be found [here](https://connect.fisheries.noaa.gov/asar_tut
 The SS3 Report.sso files was converted using the following code:
 
 ```r
-output <- asar::convert_output(
+output <- stockplotr::convert_output(
   file = system.file("extdata", "Report.sso", package = "asar"),
   model = "ss3",
   save_dir = here::here("readme_output.rda"))
