@@ -59,7 +59,7 @@ produced by the NWFSC and made available by the Pacific Fisheries Management Cou
 The assessment model files are also available on the PFMC's website. A tutorial 
 for using `asar` can be found [here](https://connect.fisheries.noaa.gov/asar_tutorial/).
 
-The SS3 Report.sso files was converted using the following code:
+The SS3 Report.sso file was converted using the following code:
 
 ```r
 output <- stockplotr::convert_output(
