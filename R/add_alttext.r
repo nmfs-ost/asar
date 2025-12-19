@@ -93,7 +93,7 @@ add_alttext <- function(
   if (length(art_line) > 0) {
     fig_lines <- fig_lines[-c(art_line)]
   }
-  
+
   # read in alt text csv file to match with labels
   alttext <- utils::read.csv(alttext_csv)
 
