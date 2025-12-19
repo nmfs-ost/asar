@@ -90,7 +90,7 @@ add_alttext <- function(
   # HOTFIX: instead of removing lines thast dont have pandocbounded, just remove the artifact line
   # Identify line that has the artifact
   art_line <- which(grepl("artifact", tex_file[fig_lines]))
-  fig_lines <- fig_lines[-art_line]
+  fig_lines <- fig_lines[-c(art_line)]
   
   # read in alt text csv file to match with labels
   alttext <- utils::read.csv(alttext_csv)
