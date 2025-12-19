@@ -71,22 +71,29 @@ add_alttext <- function(
   if (!file.exists(alttext_csv)) cli::cli_abort("{alttext_csv} not found.")
 
   fig_lines <- grep("\\\\includegraphics", tex_file) # [-(1:3)]
-  lines_to_remove <- c()
-  # Remove lines from fig_lines that don't contain pandocbounded
-  for (i in seq_along(fig_lines)) {
-    # find line
-    line <- tex_file[fig_lines[i]]
-    # identify  if there is pandocbounded in line -- indicating it's a figure added not by the template
-    # added in pdftooltip as well if previous runs occurred
-    if (grepl("pandocbounded|pdftooltip", line)) next
-    # Indicate which position(s) to remove from fig_lines
-    lines_to_remove <- c(lines_to_remove, i)
-  }
-  # Remove lines that do not contain pandocbounded
-  if (length(lines_to_remove) > 0) {
-    fig_lines <- fig_lines[-lines_to_remove]
-  }
+  # lines_to_remove <- c()
+  # # Remove lines from fig_lines that don't contain pandocbounded
+  # for (i in seq_along(fig_lines)) {
+  #   # find line
+  #   line <- tex_file[fig_lines[i]]
+  #   # identify  if there is pandocbounded in line -- indicating it's a figure added not by the template
+  #   # added in pdftooltip as well if previous runs occurred
+  #   if (grepl("pandocbounded|pdftooltip", line)) next
+  #   # Indicate which position(s) to remove from fig_lines
+  #   lines_to_remove <- c(lines_to_remove, i)
+  # }
+  # # Remove lines that do not contain pandocbounded
+  # if (length(lines_to_remove) > 0) {
+  #   fig_lines <- fig_lines[-lines_to_remove]
+  # }
 
+  # HOTFIX: instead of removing lines thast dont have pandocbounded, just remove the artifact line
+  # Identify line that has the artifact
+  art_line <- which(grepl("artifact", tex_file[fig_lines]))
+  if (length(art_line) > 0) {
+    fig_lines <- fig_lines[-c(art_line)]
+  }
+  
   # read in alt text csv file to match with labels
   alttext <- utils::read.csv(alttext_csv)
 
