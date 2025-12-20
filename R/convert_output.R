@@ -1799,16 +1799,22 @@ convert_output <- function(
     var_names_sheet <- var_names_sheet |>
       dplyr::select(-dplyr::any_of("X"))
     out_new <- dplyr::left_join(out_new, var_names_sheet, by = c("module_name", "label")) |>
-      dplyr::mutate(label = dplyr::case_when(
-        !is.na(alt_label) ~ alt_label,
-        # TODO: add this to ss3_var_names.xlsx
-        label == "dev" & module_name == "SPAWN_RECRUIT" ~ "recruitment_deviation",
-        # TODO: add this to ss3_var_names.xlsx
-        label == "dev" & module_name == "SPAWN_RECRUIT_CURVE" ~ "recruitment_deviation",
-        # TODO: add this to ss3_var_names.xlsx
-        label == "dev" & module_name == "DISCARD_OUTPUT" ~ "discard_deviation",
-        TRUE ~ label
-      )) |>
+      dplyr::mutate(
+        label = dplyr::case_when(
+          !is.na(alt_label) ~ alt_label,
+          # TODO: add this to ss3_var_names.xlsx
+          label == "dev" & module_name == "SPAWN_RECRUIT" ~ "recruitment_deviation",
+          # TODO: add this to ss3_var_names.xlsx
+          label == "dev" & module_name == "SPAWN_RECRUIT_CURVE" ~ "recruitment_deviation",
+          # TODO: add this to ss3_var_names.xlsx
+          label == "dev" & module_name == "DISCARD_OUTPUT" ~ "discard_deviation",
+          TRUE ~ label
+          ),
+        module_name = dplyr::case_when(
+          !is.na(alt_module_name) ~ alt_module_name,
+          TRUE ~ module_name
+        )
+        ) |>
       dplyr::select(-alt_label) |>
       dplyr::rename(length_bins = len_bins)
   }
