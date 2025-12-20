@@ -72,7 +72,7 @@ by this function. Default is the working directory.}
 \item{title}{A custom title that is an alternative to the default title (composed
 in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
 
-\item{model_results}{Path to standard output file made from \code{asar::convert_output()}}
+\item{model_results}{Path to standard output file made from \code{stockplotr::convert_output()}}
 
 \item{tables_dir}{The location of the "tables" folder, which contains tables
 files. Default is the working directory.}
