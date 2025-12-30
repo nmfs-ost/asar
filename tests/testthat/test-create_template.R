@@ -193,7 +193,7 @@ test_that("file_dir works", {
   )
 
   # read in sample dataset
-  dat <- asar::convert_output(
+  dat <- stockplotr::convert_output(
     file = fs::path("fixtures", "ss3_models", "models", "Hake_2018", "Report.sso"),
     model = "ss3",
     save_dir = dir
@@ -220,7 +220,7 @@ test_that("file_dir works", {
 
 test_that("model_results metadata file created", {
   # identify wd on github to debug failing test there (but not locally)
-  dat <- asar::convert_output(
+  dat <- stockplotr::convert_output(
     file = fs::path("fixtures", "ss3_models", "models", "Hake_2018", "Report.sso"),
     model = "ss3",
     save_dir = getwd()
