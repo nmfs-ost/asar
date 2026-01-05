@@ -193,11 +193,11 @@ test_that("file_dir works", {
   )
 
   # read in sample dataset
-  dat <- stockplotr::convert_output(
-    file = fs::path("fixtures", "ss3_models", "models", "Hake_2018", "Report.sso"),
-    model = "ss3",
-    save_dir = dir
-  )
+  # dat <- stockplotr::convert_output(
+  #   file = fs::path("fixtures", "ss3_models", "models", "Hake_2018", "Report.sso"),
+  #   model = "ss3",
+  #   save_dir = dir
+  # )
 
   create_template(
     format = "pdf",
@@ -208,7 +208,7 @@ test_that("file_dir works", {
     authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
     parameters = FALSE,
-    model_results = file.path(dir, "std_output.rda"),
+    # model_results = file.path(dir, "std_output.rda"),
     file_dir = dir
   )
 
@@ -220,16 +220,16 @@ test_that("file_dir works", {
 
 test_that("model_results metadata file created", {
   # identify wd on github to debug failing test there (but not locally)
-  dat <- stockplotr::convert_output(
-    file = fs::path("fixtures", "ss3_models", "models", "Hake_2018", "Report.sso"),
-    model = "ss3",
-    save_dir = getwd()
-  )
+  # dat <- stockplotr::convert_output(
+  #   file = fs::path("fixtures", "ss3_models", "models", "Hake_2018", "Report.sso"),
+  #   model = "ss3",
+  #   save_dir = getwd()
+  # )
   # print(paste0("The working directory is: ", getwd()))
   # message(paste0("The working directory is: ", getwd()))
 
   create_template(
-    model_results = "std_output.rda",
+    # model_results = "std_output.rda",
     format = "pdf",
     office = "NWFSC",
     # species = "Dover sole",
