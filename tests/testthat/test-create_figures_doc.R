@@ -36,7 +36,8 @@ test_that("Creates expected start of figures doc with figure", {
 
   stockplotr::plot_biomass(
     dat = out_new,
-    make_rda = TRUE
+    make_rda = TRUE,
+    module = "TIME_SERIES"
   )
 
   # create figures doc
@@ -56,7 +57,7 @@ test_that("Creates expected start of figures doc with figure", {
   expected_head_figure_content <- "# Figures {#sec-figures} ```{r} #| label: 'set-rda-dir-figs'#| echo: false #| warnings: false #| eval: true"
 
   # test expectation of start of figures doc
-  testthat::expect_equal(
+  expect_equal(
     fc_pasted,
     expected_head_figure_content
   )
@@ -77,7 +78,8 @@ test_that("Throws warning if chunks with identical labels", {
 
   stockplotr::plot_biomass(
     dat = out_new,
-    make_rda = TRUE
+    make_rda = TRUE,
+    module = "TIME_SERIES"
   )
 
   # create figures doc

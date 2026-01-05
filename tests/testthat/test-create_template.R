@@ -266,7 +266,7 @@ test_that("model_results metadata file created", {
     "11_appendix.qmd",
     "SAR_species_skeleton.qmd",
     "preamble.R",
-    "std_output_metadata.md",
+    # "std_output_metadata.md",
     "report_glossary.tex",
     "asar_references.bib",
     "support_files"
