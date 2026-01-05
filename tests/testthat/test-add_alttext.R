@@ -2,7 +2,7 @@
 #   path <- getwd()
 #   # run convert_output for example model
 #   simple_model <- file.path(test_path("fixtures", "ss3_models"), "models", "Simple")
-#   asar::convert_output(
+#   stockplotr::convert_output(
 #     output_file = "Report.sso",
 #     outdir = simple_model,
 #     model = "SS3",

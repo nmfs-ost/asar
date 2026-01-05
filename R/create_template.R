@@ -33,7 +33,7 @@
 #' by this function. Default is the working directory.
 #' @param title A custom title that is an alternative to the default title (composed
 #' in asar::create_title()). Example: "Management Track Assessments Spring 2024".
-#' @param model_results Path to standard output file made from `asar::convert_output()`
+#' @param model_results Path to standard output file made from `stockplotr::convert_output()`
 #' @param tables_dir The location of the "tables" folder, which contains tables
 #' files. Default is the working directory.
 #' @param figures_dir The location of the "figures" folder, which contains
@@ -744,7 +744,7 @@ create_template <- function(
     ) |> suppressWarnings()
     preamble <- add_chunk(
       paste0(
-        "# load converted output from asar::convert_output() \n",
+        "# load converted output from stockplotr::convert_output() \n",
         load_method, "\n",
         # "output <- utils::read.csv('",
         # TODO: replace resdir with substitute object; was removed as arg
