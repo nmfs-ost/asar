@@ -861,11 +861,11 @@ create_template <- function(
     ##### Citation ----
     # Add page for citation of assessment report
     if (rerender_skeleton) {
-      if (!is.null(title) | !is.null(species) | !is.null(year) | !is.null(author)) {
+      if (!is.null(title) | !is.null(species) | !is.null(year) | !is.null(authors)) {
         citation_line <- grep("Please cite this publication as:", prev_skeleton) + 2
         citation <- glue::glue("{{< pagebreak >}} \n\n Please cite this publication as: \n\n {prev_skeleton[citation_line]}\n\n")
       } else {
-        author <- grep("  - name: ", prev_skeleton)
+        authors <- grep("  - name: ", prev_skeleton)
         citation <- create_citation(
           authors = authors,
           ...
