@@ -935,12 +935,12 @@ create_template <- function(
           # Create sections object to add into template
           sections <- add_child(
             sec_list2,
-            label = stringr::str_extract(sort(c(files_to_copy, tables_doc_name, figures_doc_name)), "(?<=_).+(?=\\.qmd$)")
+            label = stringr::str_remove_all(unlist(sec_list2), "^\\d{2}[a-zA-Z]?_|\\.qmd$")
           )
         } else { # custom_sections explicit
 
           # Add selected sections from base
-          sec_list1 <- add_base_section(files_to_copy)
+          sec_list1 <- add_base_section(c(files_to_copy, tables_doc_name, figures_doc_name))
           # Create new sections as .qmd in folder
           # check if sections are in custom_sections list
           if (any(stringr::str_replace(section_location, "^[a-z]+-", "") %notin% custom_sections)) {
