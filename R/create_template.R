@@ -924,7 +924,7 @@ create_template <- function(
           # TODO: type - this needs to just pull all files from folder that
           # it was copying from when custom sections is null -- DONE
 
-          sec_list1 <- files_to_copy
+          sec_list1 <- sort(c(files_to_copy, tables_doc_name, figures_doc_name))
           sec_list2 <- add_section(
             new_section = new_section,
             section_location = section_location,
@@ -934,7 +934,7 @@ create_template <- function(
 
           # Create sections object to add into template
           sections <- add_child(
-            sort(c(sec_list2, tables_doc_name, figures_doc_name)),
+            sec_list2,
             label = stringr::str_extract(sort(c(files_to_copy, tables_doc_name, figures_doc_name)), "(?<=_).+(?=\\.qmd$)")
           )
         } else { # custom_sections explicit
@@ -958,7 +958,7 @@ create_template <- function(
           # Create sections object to add into template
           sections <- add_child(
             sec_list2,
-            label = stringr::str_extract(unlist(sec_list2), "(?<=_).+(?=\\.qmd$)")
+            label = stringr::str_remove_all(unlist(sec_list2), "^\\d{2}[a-zA-Z]?_|\\.qmd$")
           )
         } # close if statement for very specific sectioning
       } # close if statement for extra custom
