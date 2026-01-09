@@ -92,7 +92,9 @@ asar::create_template(
 )
 ```
 
-Note: The output of this report is an example based on a real stock assessment. Please refer to the link in the beginning of this section for the full assessment report. 
+Note: The output of this report is an example based on a real stock assessment. Please refer to the link in the beginning of this section for the full assessment report.
+
+[Here, you can find a list of reports created using `asar`](https://nmfs-ost.github.io/asar/articles/example-reports.html). Please let us know if you'd like us to add your own report to this list!
 
 ## Testing
 
