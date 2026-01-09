@@ -40,8 +40,8 @@ navbar:
       text: References
       icon: fas fa-book fa-lg
       menu:
-      - text: Petrale Example
-        href: SAR_USWC_Petrale_sole_skeleton.pdf
+      - text: Example Reports
+        href: articles/example_reports.html
 
     cheatsheet:
       text: Cheatsheet

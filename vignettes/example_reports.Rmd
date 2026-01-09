@@ -1,0 +1,21 @@
+---
+title: "Example Reports"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc-depth: 3
+  pdf_document:
+    toc: true
+    toc-depth: 3
+vignette: >
+  %\VignetteIndexEntry{Example Reports}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The following reports have been made using `asar`. Please let us know if you'd like us to add your own report to this list!
+
+* ["Status of the Rougheye and Blackspotted Rockfishes stock off the U.S. West Coast in 2025"](https://www.pcouncil.org/documents/2026/01/status-of-rougheye-and-blackspotted-rockfishes-stock-off-the-u-s-west-coast-in-2025.pdf/) by Jason M. Cope, Vladlena Gertseva, R. Claire Rosemond, Alison D. Whitman, and Fabio P. Caltabellotta
+
+* ["Status of Quillback Rockfish in U.S. Waters off California in 2025"](https://www.pcouncil.org/documents/2026/01/status-of-quillback-rockfish-in-u-s-waters-off-california-in-2025.pdf/) by Brian J. Langseth\*, Melissa H. Monk\*, and Julia H. Coates
