@@ -600,6 +600,9 @@ create_template <- function(
       } |>
         suppressMessages() |>
         suppressWarnings()
+    } else {
+      # extract name for tables.qmd from report folder
+      tables_doc_name <- list.files(file_dir, pattern = "tables.qmd")
     }
 
     # Create figures qmd
@@ -619,6 +622,9 @@ create_template <- function(
         subdir = subdir,
         figures_dir = figures_dir
       )
+    } else {
+      # extract name for figures.qmd from report folder
+      figures_doc_name <- list.files(file_dir, pattern = "figures.qmd")
     }
 
     # Part I
