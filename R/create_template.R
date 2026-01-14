@@ -250,12 +250,23 @@ create_template <- function(
     # Extract type
     type <- stringr::str_extract(prev_report_name, "^[A-Z]+")
     # Extract region unless region is changed or updated
-    region <- ifelse(!is.null(region),
-                     region,
-                     stringr::str_extract(prev_report_name, "(?<=_)[A-Z]+(?=_)")
-                     )
-    # report name without type and region
-    report_name_1 <- gsub(glue::glue("{type}_"), "", prev_report_name)
+    # identify region from the skeleton
+    prev_skeleton <- readLines(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))
+    if (is.null(region)) {
+      region <- stringr::str_extract(
+        prev_skeleton[grep("region: ", prev_skeleton)],
+        "(?<=')[^']+(?=')")
+    }
+    region_name <- ifelse(
+      !is.null(region),
+      toupper(stringr::str_c(stringr::str_extract_all(region, "\\b[A-Za-z]")[[1]], collapse = "")),
+      stringr::str_extract(prev_report_name, "(?<=_)[A-Z]+(?=_)")
+    )
+    # report name without type
+    report_name_1 <- gsub(
+      glue::glue("{type}_"),
+      "", 
+      prev_report_name)
     # Extract species unless species is renamed
     species <- ifelse(
       species != "species",
@@ -263,7 +274,7 @@ create_template <- function(
       gsub(
       "_",
       " ",
-      gsub(glue::glue("{region}_"), "", report_name_1)
+      gsub(glue::glue("{region_name}_"), "", report_name_1)
     ))
 
     new_report_name <- paste0(
@@ -271,7 +282,7 @@ create_template <- function(
       ifelse(
         is.null(region),
         "",
-        paste0(paste(toupper(substr(strsplit(region, " ")[[1]], 1, 1)), collapse = ""), "_")
+        glue::glue("{region_name}_")
       ),
       ifelse(is.null(species), "species", stringr::str_replace_all(species, " ", "_")), "_",
       "skeleton.qmd"
@@ -374,14 +385,12 @@ create_template <- function(
   # Supporting files folder
   supdir <- file.path(subdir, "support_files")
 
-  # if (!is.null(region)) {
   if (dir.exists(subdir) == FALSE) {
     dir.create(subdir, recursive = TRUE)
   }
   if (dir.exists(supdir) == FALSE) {
     dir.create(supdir, recursive = FALSE)
   }
-  # }
 
   #### New template ----
   if (new_template) {
@@ -637,6 +646,7 @@ create_template <- function(
     # Create a report template file to render for the region and species
     # Create YAML header for document
     # Write title based on report type and region
+    # Extract region based on param if it was previously found
     if (title == "[TITLE]") {
       # TODO: update below so title gets updated if new input is added such as region/species/office
       if (rerender_skeleton) {
@@ -672,6 +682,16 @@ create_template <- function(
     )
 
     # Create yaml
+    # if (rerender_skeleton) {
+    #   # Verify that the extracted region is correct
+    #   if (!is.null(region)) {
+    #     region <- stringr::str_extract(
+    #       prev_skeleton[grep("region: ", prev_skeleton)],
+    #       "(?<=')[^']+(?=')"
+    #     )
+    #   }
+    # }
+    
     yaml <- create_yaml(
       prev_format = prev_format,
       format = format,
