@@ -56,17 +56,6 @@ create_citation <- function(
         first = gsub(" ", "", first),
         mi = ifelse(is.na(mi), "", paste0(mi, "."))
       )
-    # dplyr::left_join(
-    #   y = utils::read.csv(
-    #     system.file(
-    #       "resources",
-    #       "authorship.csv",
-    #       package = "asar",
-    #       mustWork = TRUE
-    #     )
-    #   ),
-    #   by = c("first", "mi", "last")
-    # )
 
     # Extract location of primary author
     primary_author_office <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>

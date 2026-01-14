@@ -249,28 +249,35 @@ create_template <- function(
     prev_report_name <- gsub("_skeleton.qmd", "", report_name)
     # Extract type
     type <- stringr::str_extract(prev_report_name, "^[A-Z]+")
-    # Extract region
-    region <- stringr::str_extract(prev_report_name, "(?<=_)[A-Z]+(?=_)")
+    # Extract region unless region is changed or updated
+    region <- ifelse(!is.null(region),
+                     region,
+                     stringr::str_extract(prev_report_name, "(?<=_)[A-Z]+(?=_)")
+                     )
     # report name without type and region
     report_name_1 <- gsub(glue::glue("{type}_"), "", prev_report_name)
-    # Extract species
-    species <- gsub(
+    # Extract species unless species is renamed
+    species <- ifelse(
+      species != "species",
+      species,
+      gsub(
       "_",
       " ",
       gsub(glue::glue("{region}_"), "", report_name_1)
-    )
-
+    ))
 
     new_report_name <- paste0(
       type, "_",
       ifelse(
         is.null(region),
         "",
-        paste(toupper(substr(strsplit(region, " ")[[1]], 1, 1)), collapse = "")
+        paste0(paste(toupper(substr(strsplit(region, " ")[[1]], 1, 1)), collapse = ""), "_")
       ),
       ifelse(is.null(species), "species", stringr::str_replace_all(species, " ", "_")), "_",
       "skeleton.qmd"
     )
+    # make sure type is changed to skeleton
+    if(type == "SAR") type <- "skeleton"
   } else {
     # Name report
     if (!is.null(type)) {
@@ -305,19 +312,9 @@ create_template <- function(
       gsub(" ", "_", species),
       "_skeleton.qmd"
     )
-    # } else {
-    #   report_name <- paste0(
-    #     report_name, "species_skeleton.qmd"
-    #   )
-    # }
   } # close if rerender skeleton for naming
 
   # Select format
-  # if (length(format) > 1) {
-  #   format <- "pdf"
-  # } else {
-  #   format <- match.arg(format, several.ok = FALSE)
-  # }
   if (grepl("^pdf$|^html$", tolower(format))) {
     format <- tolower(format)
   } else if (grepl("docx", tolower(format))) {
@@ -448,13 +445,22 @@ create_template <- function(
         prev_skeleton[grep("format:", prev_skeleton) + 1],
         "[a-z]+"
       )
-      year <- as.numeric(stringr::str_extract(
+      year <- ifelse(is.na(as.numeric(stringr::str_extract(
         prev_skeleton[grep("title:", prev_skeleton)],
         "[0-9]+"
-      ))
+        ))),
+        year,
+        as.numeric(stringr::str_extract(
+          prev_skeleton[grep("title:", prev_skeleton)],
+          "[0-9]+"
+        )))
       # Add in species image if updated in rerender
       if (species != "species") {
         file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
+        # Change path to spp image since finished copying for yaml
+        if (file.exists(spp_image)) {
+          spp_image <- file.path("support_files", paste0(gsub(" ", "_", species), ".png"))
+        }
       }
       # if it is previously html and the rerender species html then need to copy over html formatting
       if (tolower(prev_format) != "html" & tolower(format) == "html") {
@@ -635,14 +641,14 @@ create_template <- function(
       # TODO: update below so title gets updated if new input is added such as region/species/office
       if (rerender_skeleton) {
         title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
-        if (title == "'Stock Assessment Report Template' " & (!is.null(office) | !is.null(species) | !is.null(region))) {
+        if (title == "'Stock Assessment Report Template'") {
           title <- create_title(
             office = office,
             species = species,
             spp_latin = spp_latin,
             region = region,
             type = type,
-            year = year
+            year = ifelse(is.na(year), format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"), year)
           )
         }
       } else {
@@ -690,6 +696,78 @@ create_template <- function(
     if (!rerender_skeleton) cli::cli_alert_success("Built YAML header.")
 
     ##### Params chunk ----
+    if (rerender_skeleton) {
+      params_chunk_start <- grep("doc_parameters", prev_skeleton) - 1
+      if (!any(grepl("doc_parameters", prev_skeleton)) & parameters) {
+        params_chunk <- add_chunk(
+          paste0(
+            "# Parameters \n",
+            "spp <- params$species \n",
+            "SPP <- params$spp \n",
+            "species <- params$species \n",
+            "spp_latin <- params$spp_latin \n",
+            "office <- params$office",
+            if (!is.null(region)) {
+              paste0(
+                "\n",
+                "region <- params$region"
+              )
+            },
+            if (!is.null(param_names)) {
+              paste0(
+                "\n",
+                paste0(param_names, " <- ", "params$", param_names, collapse = " \n")
+              )
+            }
+          ),
+          label = "doc_parameters"
+        )
+      } else if (parameters) {
+        params_chunk_end <- grep("```", prev_skeleton)[which(grep("```", prev_skeleton) > params_chunk_start)][1]
+        params_chunk <- prev_skeleton[params_chunk_start:params_chunk_end]
+        # Add in region if it's not null
+        if (!is.null(region) & !any(grepl("region <- params$region", params_chunk))) 
+          params_chunk <- append(
+            params_chunk,
+            "region <- params$region",
+            after = params_chunk_end - 1
+          )
+        }
+        if (!is.null(param_values) & !is.null(param_names)) {
+          for (i in length(param_value)) {
+            add_param <- glue::glue("{param_names[i]} <- params${param_names[i]}")
+            params_chunk <- append(
+              params_chunk,
+              add_param,
+              after = params_chunk_end - 1
+            )
+          }
+        }
+    } else {
+      params_chunk <- add_chunk(
+        paste0(
+          "# Parameters \n",
+          "spp <- params$species \n",
+          "SPP <- params$spp \n",
+          "species <- params$species \n",
+          "spp_latin <- params$spp_latin \n",
+          "office <- params$office",
+          if (!is.null(region)) {
+            paste0(
+              "\n",
+              "region <- params$region"
+            )
+          },
+          if (!is.null(param_names)) {
+            paste0(
+              "\n",
+              paste0(param_names, " <- ", "params$", param_names, collapse = " \n")
+            )
+          }
+        ),
+        label = "doc_parameters"
+      )
+    }
     params_chunk <- add_chunk(
       paste0(
         "# Parameters \n",
@@ -867,17 +945,60 @@ create_template <- function(
     ##### Citation ----
     # Add page for citation of assessment report
     if (rerender_skeleton) {
-      if (!is.null(title) | !is.null(species) | !is.null(year) | !is.null(authors)) {
-        citation_line <- grep("Please cite this publication as:", prev_skeleton) + 2
-        citation <- glue::glue("{{< pagebreak >}} \n\n Please cite this publication as: \n\n {prev_skeleton[citation_line]}\n\n")
-      } else {
-        authors <- grep("  - name: ", prev_skeleton)
-        citation <- create_citation(
-          authors = authors,
-          ...
+      # Extract citation from previous skeleton
+      citation <- prev_skeleton[grep("Please cite this publication as:", prev_skeleton) + 2]
+      if (!is.null(authors)) {
+        authors_in_skel <- prev_skeleton[grep("  - name: ", prev_skeleton)]
+        authors_in_skel <- stringr::str_remove_all(authors_in_skel[seq(1, length(authors_in_skel),2)], "^.*- name: '|'$")
+        authors <- c(authors_in_skel, names(authors))
+        
+        cit_authors <- data.frame(authors) |> tidyr::separate_wider_regex(
+          cols = authors,
+          # Caitlin Allen Akselrud is the only non-hyphenated dual last name
+          # and needs to be included as its own pattern.
+          # The second pattern allows for first initials rather than first name
+          patterns = c(first = "Caitlin |^[A-Z]. |.*[a-z] ", last = ".*$")
+        ) |> tidyr::separate_wider_delim(
+          cols = last,
+          delim = ". ",
+          names = c("mi", "last"),
+          too_few = "align_end"
+        ) |>
+          dplyr::mutate(
+            first = gsub(" ", "", first),
+            mi = ifelse(is.na(mi), "", paste0(mi, "."))
+          )|>
+          dplyr::mutate(
+            first_initial = gsub("([A-Z])[a-z]+", "\\1.", first),
+            bib = purrr::pmap(
+              list(x = first_initial, y = mi, z = last),
+              \(x, y, z) utils::toBibtex(utils::person(given = c(x, y), family = z))
+            )
+          ) |>
+          dplyr::pull(bib) |>
+          gsub(pattern = " $", replacement = "") |>
+          glue::glue_collapse(sep = ", ", last = ", and ")
+        
+        # replace authors in citation
+        citation <- stringr::str_replace(
+          citation,
+          # regex to identify characters in the beginning of the string before the year
+          "^.*?(?=\\s\\d{4}\\.)",
+          cit_authors
         )
-        cli::cli_alert_success("Added report citation.")
       }
+      
+      if(!is.null(species) | !is.null(region) | !is.null(spp_latin)) {
+        # update title in citation
+        citation <- stringr::str_replace(
+          citation,
+          "(?<=\\d{4}\\.\\s).*?(?=\\.\\sNOAA Fisheries)",
+          # "(?<=\\.\\s)(Stock Assessment Report Template)(?=\\.)",
+          title
+        )
+      }
+        cli::cli_alert_success("Added report citation.")
+      # }
     } else {
       citation <- create_citation(
         authors = authors,
