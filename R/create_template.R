@@ -258,7 +258,7 @@ create_template <- function(
         "(?<=')[^']+(?=')")
     }
     region_name <- ifelse(
-      !is.null(region),
+      !is.null(region) | !is.na(region),
       toupper(stringr::str_c(stringr::str_extract_all(region, "\\b[A-Za-z]")[[1]], collapse = "")),
       stringr::str_extract(prev_report_name, "(?<=_)[A-Z]+(?=_)")
     )
@@ -280,7 +280,7 @@ create_template <- function(
     new_report_name <- paste0(
       type, "_",
       ifelse(
-        is.null(region),
+        is.null(region) | is.na(region),
         "",
         glue::glue("{region_name}_")
       ),
