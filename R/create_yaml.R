@@ -85,10 +85,10 @@ create_yaml <- function(
     #   toad <- paste(author_list[[i]], sep = ",")
     #   add_authors <- paste0(add_authors, toad) # -> add_authors
     # }
+    add_authors <- unlist(stringr::str_split(author_list, "\n"))
+    # remove trailing \n from each author entry
+    add_authors <- gsub("\n", "", add_authors)
     if (length(add_authors) > 0) {
-      add_authors <- unlist(stringr::str_split(author_list, "\n"))
-      # remove trailing \n from each author entry
-      add_authors <- gsub("\n", "", add_authors)
       # check if the template was blank before
       author_line <- grep("author:", yaml)
       # Replacing the empty author if template was made before adding any authors
