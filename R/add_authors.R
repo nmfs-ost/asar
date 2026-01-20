@@ -105,7 +105,7 @@ add_authors <- function(
       authors <- authors |>
         dplyr::filter(name %in% author_to_add)
     }
-    for (i in seq_along(authors)) {
+    for (i in seq_along(authors$name)) {
       auth <- authors[i, ]
       aff <- affil |>
         dplyr::filter(affiliation == auth$office)

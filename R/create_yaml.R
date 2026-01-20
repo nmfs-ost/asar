@@ -88,16 +88,17 @@ create_yaml <- function(
     add_authors <- unlist(stringr::str_split(author_list, "\n"))
     # remove trailing \n from each author entry
     add_authors <- gsub("\n", "", add_authors)
-    # check if the template was blank before
-    author_line <- grep("author:", yaml)
-    # Replacing the empty author if template was made before adding any authors
-    if (grepl("- name: 'FIRST LAST'", yaml[author_line + 1])) {
-      yaml <- yaml[-((author_line + 1):(author_line + 8))]
-      yaml <- append(yaml, add_authors, after = utils::tail(grep("author:", yaml), n = 1))
-    } else {
-      yaml <- append(yaml, add_authors, after = utils::tail(grep("postal-code:", yaml), n = 1))
+    if (length(add_authors) > 0) {
+      # check if the template was blank before
+      author_line <- grep("author:", yaml)
+      # Replacing the empty author if template was made before adding any authors
+      if (grepl("- name: 'FIRST LAST'", yaml[author_line + 1])) {
+        yaml <- yaml[-((author_line + 1):(author_line + 8))]
+        yaml <- append(yaml, add_authors, after = utils::tail(grep("author:", yaml), n = 1))
+      } else {
+        yaml <- append(yaml, add_authors, after = utils::tail(grep("postal-code:", yaml), n = 1))
+      }
     }
-    # }
 
     # replace title
     # DOES NOT WORK when latin latex notation is in the title
@@ -117,7 +118,7 @@ create_yaml <- function(
     }
 
     # Replace output-file name
-    out_name <- glue::glue("{tolower(species)}_{type}_{year}")
+    out_name <- glue::glue("{tolower(gsub(' ', '_', species))}_{ifelse(type=='skeleton', 'SAR', type)}_{year}")
     yaml <- stringr::str_replace(yaml, yaml[grep("output-file: ", yaml)], paste("output-file: ", out_name, sep = ""))
 
     # Parameters
@@ -128,14 +129,19 @@ create_yaml <- function(
         yaml <- append(yaml, "params:", after = grep("output-file:", yaml))
       }
       # if species, office, and latin are updated - replace in space
-      if (!is.null(species) & any(grepl("species: ''", yaml))) {
-        yaml <- stringr::str_replace(yaml, yaml[grep("species: ''", yaml)], paste("  ", " ", "species: ", "'", species, "'", sep = ""))
+      if (!is.null(species) & any(grepl("species: 'species'", yaml))) {
+        yaml <- stringr::str_replace(yaml, yaml[grep("species: 'species'", yaml)], paste("  ", " ", "species: ", "'", species, "'", sep = ""))
       }
       if (length(office) == 1 & !is.null(office) & any(grepl("office: ''", yaml))) {
         yaml <- stringr::str_replace(yaml, yaml[grep("office: ''", yaml)], paste("  ", " ", "office: ", "'", office, "'", sep = ""))
       }
       if (!is.null(spp_latin) & any(grepl("spp_latin: ''", yaml))) {
         yaml <- stringr::str_replace(yaml, yaml[grep("spp_latin: ''", yaml)], paste("  ", " ", "spp_latin: ", "'", spp_latin, "'", sep = ""))
+      }
+      if (!is.null(region)) {
+        if (any(grepl("region: ''", yaml))) {
+          yaml <- stringr::str_replace(yaml, yaml[grep("region: ''", yaml)], paste("  ", " ", "region: ", "'", region, "'", sep = ""))
+        }
       }
       # if params are not entered - use previous ones else change
       # TODO: add check for params not being replicated of default
@@ -252,11 +258,10 @@ create_yaml <- function(
         yaml, "params:", "\n",
         "  ", " ", "office: ", "'", office, "'", "\n",
         "  ", " ", "species: ", "'", species, "'", "\n",
-        "  ", " ", "spp_latin: ", "'", spp_latin, "'", "\n"
+        "  ", " ", "spp_latin: ", "'", spp_latin, "'", "\n",
+        "  ", " ", "region: ", "'", region, "'", "\n"
       )
-      if (!is.null(region)) {
-        yaml <- paste0(yaml, "  ", " ", "region: ", "'", region, "'", "\n")
-      }
+      
       # Add more parameters if indicated
       if (!is.null(param_names) & !is.null(param_values)) {
         # check there are the same number of names and values
