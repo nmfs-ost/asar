@@ -36,16 +36,13 @@
 #   quarto::quarto_render(file.path(path, "report", "SAR_USWC_Simple_skeleton.qmd"))
 #
 #   # run add_tagging and check if new one is created
-#   withr::with_dir(
-#     file.path(getwd(), "report"),
 #     add_alttext(
 #       x = "SAR_USWC_Simple_skeleton.tex",
-#       dir = getwd(),
-#       figures_dir = path,
+#       dir = file.path(getwd(), "report"),
+#       figures_dir = getwd(),
 #       compile = TRUE,
-#       alttext_csv_dir = path,
+#       alttext_csv_dir = getwd(),
 #       rename = "Simple_SAR_2025_alttext"
-#     )
 #   )
 #
 #   # Extract file to compare to snapshot

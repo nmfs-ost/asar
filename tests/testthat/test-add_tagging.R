@@ -15,14 +15,11 @@
 #   quarto::quarto_render(file.path(path, "report", "SAR_SA_Atlantic_Bluefish_skeleton.qmd"))
 #
 #   # run add_tagging and check if new one is created
-#   withr::with_dir(
-#     file.path(getwd(), "report"),
 #     add_tagging(
 #       x = "SAR_SA_Atlantic_Bluefish_skeleton.tex",
-#       dir = getwd(),
+#       dir = file.path(getwd(), "report"),
 #       compile = TRUE,
 #       rename = "SAB_SAR_2025_tagging"
-#     )
 #   )
 #
 #   expect_snapshot_file(

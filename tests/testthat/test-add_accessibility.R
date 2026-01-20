@@ -36,16 +36,13 @@
 #   quarto::quarto_render(file.path(path, "report", "SAR_USWC_Big_skate_skeleton.qmd"))
 #
 #   # run add_tagging and check if new one is created
-#   withr::with_dir(
-#     file.path(getwd(), "report"),
 #     add_accessibility(
 #       x = "SAR_USWC_Big_skate_skeleton.tex",
-#       dir = getwd(),
-#       figures_dir = path,
+#       dir = file.path(getwd(), "report"),
+#       figures_dir = getwd(),
 #       compile = TRUE,
-#       alttext_csv_dir = path,
+#       alttext_csv_dir = getwd(),
 #       rename = "Simple_SAR_2025_a11y"
-#     )
 #   )
 #
 #   # Remove testing files
