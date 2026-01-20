@@ -69,20 +69,15 @@ create_template(
   figures_dir = getwd()
 )
 
-path <- getwd()
+quarto::quarto_render(file.path(getwd(), "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
 
-quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
-
-withr::with_dir(
-  file.path(path, "report"),
-  add_alttext(
-    x = "SAR_USWC_Dover_sole_skeleton.tex",
-    dir = getwd(),
-    alttext_csv = "my_alttext_file.csv",
-    compile = FALSE,
-    rename = "SAR_Dover_sole_tagged"
+add_alttext(
+  x = "SAR_USWC_Dover_sole_skeleton.tex",
+  dir = file.path(getwd(), "report"),
+  alttext_csv = "my_alttext_file.csv",
+  compile = FALSE,
+  rename = "SAR_Dover_sole_tagged"
   )
-)
 }
 
 }

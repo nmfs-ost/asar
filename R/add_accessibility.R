@@ -37,18 +37,13 @@
 #'   section_location = "after-introduction"
 #' )
 #'
-#' path <- getwd()
+#' quarto::quarto_render(file.path(getwd(), "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
 #'
-#' quarto::quarto_render(file.path(path, "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
-#'
-#' withr::with_dir(
-#'   file.path(path, "report"),
-#'   add_accessibility(
-#'     x = "SAR_USWC_Dover_sole_skeleton.tex",
-#'     dir = getwd(),
-#'     alttext_csv = file.path(getwd(), "captions_alt_text.csv"),
-#'     compile = TRUE
-#'   )
+#' add_accessibility(
+#'   x = "SAR_USWC_Dover_sole_skeleton.tex",
+#'   dir = file.path(getwd(), "report"),
+#'   alttext_csv = file.path(getwd(), "captions_alt_text.csv"),
+#'   compile = TRUE
 #' )
 #' }
 #'
