@@ -114,7 +114,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Add alternative text into latex</h1>
-    <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/v2.0.1/R/add_alttext.r" class="external-link"><code>R/add_alttext.r</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/R/add_alttext.r" class="external-link"><code>R/add_alttext.r</code></a></small>
     <div class="hidden name"><code>add_alttext.Rd</code></div>
     </div>
 
@@ -204,20 +204,15 @@ with <code><a href="add_tagging.html">asar::add_tagging()</a></code> unless tagg
 <span class="r-in"><span>  figures_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">quarto</span><span class="fu">::</span><span class="fu"><a href="https://quarto-dev.github.io/quarto-r/reference/quarto_render.html" class="external-link">quarto_render</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"report"</span>, <span class="st">"SAR_USWC_Dover_sole_skeleton.qmd"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">quarto</span><span class="fu">::</span><span class="fu"><a href="https://quarto-dev.github.io/quarto-r/reference/quarto_render.html" class="external-link">quarto_render</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path</span>, <span class="st">"report"</span>, <span class="st">"SAR_USWC_Dover_sole_skeleton.qmd"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_dir.html" class="external-link">with_dir</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">path</span>, <span class="st">"report"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  <span class="fu">add_alttext</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    x <span class="op">=</span> <span class="st">"SAR_USWC_Dover_sole_skeleton.tex"</span>,</span></span>
-<span class="r-in"><span>    dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    alttext_csv <span class="op">=</span> <span class="st">"my_alttext_file.csv"</span>,</span></span>
-<span class="r-in"><span>    compile <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
-<span class="r-in"><span>    rename <span class="op">=</span> <span class="st">"SAR_Dover_sole_tagged"</span></span></span>
+<span class="r-in"><span><span class="fu">add_alttext</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="st">"SAR_USWC_Dover_sole_skeleton.tex"</span>,</span></span>
+<span class="r-in"><span>  dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"report"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  alttext_csv <span class="op">=</span> <span class="st">"my_alttext_file.csv"</span>,</span></span>
+<span class="r-in"><span>  compile <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  rename <span class="op">=</span> <span class="st">"SAR_Dover_sole_tagged"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
