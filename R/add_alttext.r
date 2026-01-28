@@ -47,7 +47,7 @@
 #'   alttext_csv = "my_alttext_file.csv",
 #'   compile = FALSE,
 #'   rename = "SAR_Dover_sole_tagged"
-#'   )
+#' )
 #' }
 #'
 add_alttext <- function(
@@ -88,7 +88,7 @@ add_alttext <- function(
   if (length(art_line) > 0) {
     fig_lines <- fig_lines[-c(art_line)]
   }
-  
+
   # read in alt text csv file to match with labels
   alttext <- utils::read.csv(alttext_csv)
 

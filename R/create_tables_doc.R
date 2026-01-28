@@ -60,7 +60,7 @@ create_tables_doc <- function(subdir = getwd(),
     if ("# Tables {#sec-tables}" %in% table_content) {
       append <- TRUE
       cli::cli_alert_info("Tables doc will be appended to include tables in `tables_dir`.")
-      
+
       # remove empty_doc_text
       updated_content <- gsub(empty_doc_text, "", table_content, fixed = TRUE)
       writeLines(updated_content, existing_tables_doc)

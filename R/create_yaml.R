@@ -261,7 +261,7 @@ create_yaml <- function(
         "  ", " ", "spp_latin: ", "'", spp_latin, "'", "\n",
         "  ", " ", "region: ", "'", region, "'", "\n"
       )
-      
+
       # Add more parameters if indicated
       if (!is.null(param_names) & !is.null(param_values)) {
         # check there are the same number of names and values

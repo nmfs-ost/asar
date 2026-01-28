@@ -23,7 +23,7 @@ create_titlepage_tex <- function(office = "",
   # Add alt text to cover page image
   line_before <- grep("\\$if\\(cover)\\$", lines)
   cp_alt <- paste(
-    "\\pandocbounded{\\includegraphics[width=6in, alt=An illustration of ", species,".]{$cover$}}", # }
+    "\\pandocbounded{\\includegraphics[width=6in, alt=An illustration of ", species, ".]{$cover$}}", # }
     # "An illustration of ", species,
     # "}",
     sep = ""
