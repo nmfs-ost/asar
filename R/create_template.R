@@ -255,7 +255,8 @@ create_template <- function(
     if (is.null(region)) {
       region <- stringr::str_extract(
         prev_skeleton[grep("region: ", prev_skeleton)],
-        "(?<=')[^']+(?=')")
+        "(?<=')[^']+(?=')"
+      )
     }
     region_name <- ifelse(
       !is.null(region) | !is.na(region),
@@ -265,17 +266,19 @@ create_template <- function(
     # report name without type
     report_name_1 <- gsub(
       glue::glue("{type}_"),
-      "", 
-      prev_report_name)
+      "",
+      prev_report_name
+    )
     # Extract species unless species is renamed
     species <- ifelse(
       species != "species",
       species,
       gsub(
-      "_",
-      " ",
-      gsub(glue::glue("{region_name}_"), "", report_name_1)
-    ))
+        "_",
+        " ",
+        gsub(glue::glue("{region_name}_"), "", report_name_1)
+      )
+    )
 
     new_report_name <- paste0(
       type, "_",
@@ -288,7 +291,7 @@ create_template <- function(
       "skeleton.qmd"
     )
     # make sure type is changed to skeleton
-    if(type == "SAR") type <- "skeleton"
+    if (type == "SAR") type <- "skeleton"
   } else {
     # Name report
     if (!is.null(type)) {
@@ -457,12 +460,13 @@ create_template <- function(
       year <- ifelse(is.na(as.numeric(stringr::str_extract(
         prev_skeleton[grep("title:", prev_skeleton)],
         "[0-9]+"
-        ))),
-        year,
-        as.numeric(stringr::str_extract(
-          prev_skeleton[grep("title:", prev_skeleton)],
-          "[0-9]+"
-        )))
+      ))),
+      year,
+      as.numeric(stringr::str_extract(
+        prev_skeleton[grep("title:", prev_skeleton)],
+        "[0-9]+"
+      ))
+      )
       # Add in species image if updated in rerender
       if (species != "species") {
         file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
@@ -691,7 +695,7 @@ create_template <- function(
     #     )
     #   }
     # }
-    
+
     yaml <- create_yaml(
       prev_format = prev_format,
       format = format,
@@ -746,23 +750,24 @@ create_template <- function(
         params_chunk_end <- grep("```", prev_skeleton)[which(grep("```", prev_skeleton) > params_chunk_start)][1]
         params_chunk <- prev_skeleton[params_chunk_start:params_chunk_end]
         # Add in region if it's not null
-        if (!is.null(region) & !any(grepl("region <- params$region", params_chunk))) 
+        if (!is.null(region) & !any(grepl("region <- params$region", params_chunk))) {
           params_chunk <- append(
             params_chunk,
             "region <- params$region",
             after = params_chunk_end - 1
           )
         }
-        if (!is.null(param_values) & !is.null(param_names)) {
-          for (i in length(param_value)) {
-            add_param <- glue::glue("{param_names[i]} <- params${param_names[i]}")
-            params_chunk <- append(
-              params_chunk,
-              add_param,
-              after = params_chunk_end - 1
-            )
-          }
+      }
+      if (!is.null(param_values) & !is.null(param_names)) {
+        for (i in length(param_value)) {
+          add_param <- glue::glue("{param_names[i]} <- params${param_names[i]}")
+          params_chunk <- append(
+            params_chunk,
+            add_param,
+            after = params_chunk_end - 1
+          )
         }
+      }
     } else {
       params_chunk <- add_chunk(
         paste0(
@@ -969,25 +974,27 @@ create_template <- function(
       citation <- prev_skeleton[grep("Please cite this publication as:", prev_skeleton) + 2]
       if (!is.null(authors)) {
         authors_in_skel <- prev_skeleton[grep("  - name: ", prev_skeleton)]
-        authors_in_skel <- stringr::str_remove_all(authors_in_skel[seq(1, length(authors_in_skel),2)], "^.*- name: '|'$")
+        authors_in_skel <- stringr::str_remove_all(authors_in_skel[seq(1, length(authors_in_skel), 2)], "^.*- name: '|'$")
         authors <- c(authors_in_skel, names(authors))
-        
-        cit_authors <- data.frame(authors) |> tidyr::separate_wider_regex(
-          cols = authors,
-          # Caitlin Allen Akselrud is the only non-hyphenated dual last name
-          # and needs to be included as its own pattern.
-          # The second pattern allows for first initials rather than first name
-          patterns = c(first = "Caitlin |^[A-Z]. |.*[a-z] ", last = ".*$")
-        ) |> tidyr::separate_wider_delim(
-          cols = last,
-          delim = ". ",
-          names = c("mi", "last"),
-          too_few = "align_end"
-        ) |>
+
+        cit_authors <- data.frame(authors) |>
+          tidyr::separate_wider_regex(
+            cols = authors,
+            # Caitlin Allen Akselrud is the only non-hyphenated dual last name
+            # and needs to be included as its own pattern.
+            # The second pattern allows for first initials rather than first name
+            patterns = c(first = "Caitlin |^[A-Z]. |.*[a-z] ", last = ".*$")
+          ) |>
+          tidyr::separate_wider_delim(
+            cols = last,
+            delim = ". ",
+            names = c("mi", "last"),
+            too_few = "align_end"
+          ) |>
           dplyr::mutate(
             first = gsub(" ", "", first),
             mi = ifelse(is.na(mi), "", paste0(mi, "."))
-          )|>
+          ) |>
           dplyr::mutate(
             first_initial = gsub("([A-Z])[a-z]+", "\\1.", first),
             bib = purrr::pmap(
@@ -998,7 +1005,7 @@ create_template <- function(
           dplyr::pull(bib) |>
           gsub(pattern = " $", replacement = "") |>
           glue::glue_collapse(sep = ", ", last = ", and ")
-        
+
         # replace authors in citation
         citation <- stringr::str_replace(
           citation,
@@ -1007,8 +1014,8 @@ create_template <- function(
           cit_authors
         )
       }
-      
-      if(!is.null(species) | !is.null(region) | !is.null(spp_latin)) {
+
+      if (!is.null(species) | !is.null(region) | !is.null(spp_latin)) {
         # update title in citation
         citation <- stringr::str_replace(
           citation,
@@ -1017,7 +1024,7 @@ create_template <- function(
           title
         )
       }
-        cli::cli_alert_success("Added report citation.")
+      cli::cli_alert_success("Added report citation.")
       # }
     } else {
       citation <- create_citation(

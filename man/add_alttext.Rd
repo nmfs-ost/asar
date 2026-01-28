@@ -77,7 +77,7 @@ add_alttext(
   alttext_csv = "my_alttext_file.csv",
   compile = FALSE,
   rename = "SAR_Dover_sole_tagged"
-  )
+)
 }
 
 }

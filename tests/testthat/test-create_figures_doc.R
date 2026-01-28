@@ -71,41 +71,41 @@ test_that("Creates expected start of figures doc with figure", {
 test_that("Formerly empty figures doc renders correctly", {
   # create empty figures doc
   create_template()
-  
+
   # load sample dataset
   load(file.path(
     "fixtures", "ss3_models_converted", "Hake_2018",
     "std_output.rda"
   ))
-  
+
   stockplotr::plot_biomass(
     dat = out_new,
     make_rda = TRUE,
     module = "TIME_SERIES"
   )
-  
+
   # rerender figures doc, appending new figure
   create_figures_doc(
     subdir = file.path(getwd(), "report"),
     figures_dir = getwd()
   )
-  
+
   # read in figures doc
   figure_content <- readLines(file.path(getwd(), "report", "09_figures.qmd"))
   # extract first 8 lines
   head_figure_content <- head(figure_content, 8)
   # remove line numbers and collapse
   fc_pasted <- paste(head_figure_content, collapse = "")
-  
+
   # expected figures doc head
   expected_head_figure_content <- "# Figures {#sec-figures} ```{r} #| label: 'set-rda-dir-figs'#| echo: false #| warnings: false #| eval: true"
-  
+
   # test expectation of start of figures doc
   expect_equal(
     fc_pasted,
     expected_head_figure_content
   )
-  
+
   # erase temporary testing files
   file.remove(fs::path(getwd(), "09_figures.qmd"))
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))

@@ -31,10 +31,10 @@ create_figures_doc <- function(subdir = getwd(),
     if ("# Figures {#sec-figures}" %in% figure_content) {
       append <- TRUE
       cli::cli_alert_info("Figures doc will be appended to include figures in `figures_dir`.")
-  
-    # remove empty_doc_text
-    updated_content <- gsub(empty_doc_text, "", figure_content, fixed = TRUE)
-    writeLines(updated_content, existing_figs_doc)
+
+      # remove empty_doc_text
+      updated_content <- gsub(empty_doc_text, "", figure_content, fixed = TRUE)
+      writeLines(updated_content, existing_figs_doc)
     }
   }
 
@@ -207,7 +207,7 @@ rm(rda)\n
     ),
     append = append
   )
-  
+
   # Read through figures doc and warn about identical labels
   new_figs_doc <- readLines(
     ifelse(

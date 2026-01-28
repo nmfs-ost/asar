@@ -100,41 +100,41 @@ test_that("Creates expected start of nearly empty tables doc", {
 # test_that("Formerly empty tables doc renders correctly", {
 #   # create empty tables doc
 #   create_template()
-#   
+#
 #   # load sample dataset
 #   load(file.path(
 #     "fixtures", "ss3_models_converted", "Hake_2018",
 #     "std_output.rda"
 #   ))
-#   
+#
 #   stockplotr::table_landings(
 #     dat = out_new,
 #     make_rda = TRUE,
 #     module = "TIME_SERIES"
 #   )
-#   
+#
 #   # rerender tables doc, appending new table
 #   create_tables_doc(
 #     subdir = file.path(getwd(), "report"),
 #     tables_dir = getwd()
 #   )
-#   
+#
 #   # read in tables doc
 #   table_content <- readLines(file.path(getwd(), "report", "08_tables.qmd"))
 #   # extract first 8 lines
 #   head_table_content <- head(table_content, 8)
 #   # remove line numbers and collapse
 #   fc_pasted <- paste(head_table_content, collapse = "")
-#   
+#
 #   # expected tables doc head
 #   expected_head_table_content <- "# Tables {#sec-tables} ```{r} #| label: 'set-rda-dir-figs'#| echo: false #| warnings: false #| eval: true"
-#   
+#
 #   # test expectation of start of tables doc
 #   expect_equal(
 #     fc_pasted,
 #     expected_head_table_content
 #   )
-#   
+#
 #   # erase temporary testing files
 #   file.remove(fs::path(getwd(), "08_tables.qmd"))
 #   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
