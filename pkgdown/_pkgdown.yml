@@ -16,7 +16,9 @@ navbar:
       text: Issues
       icon: fas fa-question-circle fa-lg
       href: https://github.com/nmfs-ost/asar/issues
-
+      # Make the link open in a new tab
+      target: "_blank"
+      
     articles:
       text: Articles
       icon: fas fa-file-contract fa-lg
@@ -36,13 +38,13 @@ navbar:
       - text: Captions/alt text in Alternative Workflows
         href: articles/caps-alttext-alt-workflows.html
 
-    documents:
-      text: References
+    examples:
+      text: Example Reports
       icon: fas fa-book fa-lg
-      menu:
-      - text: Example Reports
-        href: articles/example_reports.html
-
+      href: articles/example_reports.html
+      # Make the link open in a new tab
+      target: "_blank"
+      
     cheatsheet:
       text: Cheatsheet
       href: asar_cheatsheet.pdf
@@ -58,5 +60,5 @@ navbar:
       target: "_blank"
       
   structure:
-    left: [home, reference, sourcecode, cheatsheet, tutorial, articles, documents, news]
+    left: [home, reference, cheatsheet, tutorial, articles, examples, news]
     right: [search, issue, github]
