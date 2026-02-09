@@ -5,7 +5,7 @@
 #'  in the console.
 #'
 #' @param format Rendering format (pdf, html, or docx).
-#' @param type Type of report to build. Default is SAR (a NOAA standard "Stock
+#' @param type Type of report to build. Default is sar (a NOAA standard "Stock
 #' Assessment Report").
 #' @param office Regional Fisheries Science Center producing the
 #'  report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).
@@ -81,7 +81,7 @@
 #'  of parameter names. Parameters automatically included:
 #'  office, region, species (each of which are listed as
 #'  individual parameters for this function, above).
-#' @param type Type of report to build. Default is SAR (NOAA Fisheries
+#' @param type Type of report to build. Default is "sar" (NOAA Fisheries
 #' Stock Assessment Report).
 #' @param custom TRUE/FALSE; Build custom sectioning for the
 #' template, rather than the default for stock assessments in
@@ -164,7 +164,7 @@
 #'   model_results = here::here("folder", "std_output.rda"),
 #'   new_section = "an_additional_section",
 #'   section_location = "before-discussion",
-#'   type = "SAR",
+#'   type = "sar",
 #'   custom = TRUE,
 #'   custom_sections = c("executive_summary", "introduction", "discussion"),
 #'   spp_image = "dir/containing/spp_image"
@@ -173,7 +173,7 @@
 #'
 create_template <- function(
   format = "pdf",
-  type = "SAR",
+  type = "sar",
   office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
   region = NULL,
   species = "species",
@@ -205,7 +205,7 @@ create_template <- function(
       "Pacific Fishery Management Council" = "pfmc",
       "Stock Assessment and Fishery Evaluation" = "safe",
       "Stock Assessment Report" = "skeleton",
-      "SAR" = "skeleton",
+      "sar" = "skeleton",
       "pfmc" = "pfmc",
       "nemt" = "nemt",
       "safe" = "safe",
@@ -213,7 +213,7 @@ create_template <- function(
         type_fxn <- function() {
           selection <- utils::menu(
             title = "Unrecognized template type. Please select an option below: ",
-            choices = c("Default", "PFMC", "NEMT", "SAFE")
+            choices = c("Default", "Pacific Fisheries Management Council", "Northeast Management Track", "SAFE")
           )
           type <- switch(as.character(selection),
             "1" = "skeleton",
@@ -248,7 +248,7 @@ create_template <- function(
 
     prev_report_name <- gsub("_skeleton.qmd", "", report_name)
     # Extract type
-    type <- stringr::str_extract(prev_report_name, "^[A-Z]+")
+    type <- stringr::str_extract(tolower(prev_report_name), "^[a-z]+")
     # Extract region unless region is changed or updated
     # identify region from the skeleton
     prev_skeleton <- readLines(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))
@@ -291,12 +291,12 @@ create_template <- function(
       "skeleton.qmd"
     )
     # make sure type is changed to skeleton
-    if (type == "SAR") type <- "skeleton"
-  } else {
+    if(type == "sar") type <- "skeleton"
+    } else {
     # Name report
     if (!is.null(type)) {
       report_name <- paste0(
-        ifelse(type == "skeleton", "SAR", type),
+        ifelse(type == "skeleton", "sar", type),
         "_"
       )
     } else {
@@ -757,15 +757,15 @@ create_template <- function(
             after = params_chunk_end - 1
           )
         }
-      }
-      if (!is.null(param_values) & !is.null(param_names)) {
-        for (i in length(param_value)) {
-          add_param <- glue::glue("{param_names[i]} <- params${param_names[i]}")
-          params_chunk <- append(
-            params_chunk,
-            add_param,
-            after = params_chunk_end - 1
-          )
+        if (!is.null(param_values) & !is.null(param_names)) {
+          for (i in length(param_values)) {
+            add_param <- glue::glue("{param_names[i]} <- params${param_names[i]}")
+            params_chunk <- append(
+              params_chunk,
+              add_param,
+              after = params_chunk_end - 1
+            )
+          }
         }
       }
     } else {
@@ -974,23 +974,25 @@ create_template <- function(
       citation <- prev_skeleton[grep("Please cite this publication as:", prev_skeleton) + 2]
       if (!is.null(authors)) {
         authors_in_skel <- prev_skeleton[grep("  - name: ", prev_skeleton)]
-        authors_in_skel <- stringr::str_remove_all(authors_in_skel[seq(1, length(authors_in_skel), 2)], "^.*- name: '|'$")
-        authors <- c(authors_in_skel, names(authors))
-
-        cit_authors <- data.frame(authors) |>
-          tidyr::separate_wider_regex(
-            cols = authors,
-            # Caitlin Allen Akselrud is the only non-hyphenated dual last name
-            # and needs to be included as its own pattern.
-            # The second pattern allows for first initials rather than first name
-            patterns = c(first = "Caitlin |^[A-Z]. |.*[a-z] ", last = ".*$")
-          ) |>
-          tidyr::separate_wider_delim(
-            cols = last,
-            delim = ". ",
-            names = c("mi", "last"),
-            too_few = "align_end"
-          ) |>
+        authors_in_skel <- stringr::str_remove_all(authors_in_skel[seq(1, length(authors_in_skel),2)], "^.*- name: '|'$")
+        authors <- ifelse(
+          authors_in_skel == "FIRST LAST",
+          names(authors),
+          c(authors_in_skel, names(authors))
+        )
+        
+        cit_authors <- data.frame(authors) |> tidyr::separate_wider_regex(
+          cols = authors,
+          # Caitlin Allen Akselrud is the only non-hyphenated dual last name
+          # and needs to be included as its own pattern.
+          # The second pattern allows for first initials rather than first name
+          patterns = c(first = "Caitlin |^[A-Z]. |.*[a-z] ", last = ".*$")
+        ) |> tidyr::separate_wider_delim(
+          cols = last,
+          delim = ". ",
+          names = c("mi", "last"),
+          too_few = "align_end"
+        ) |>
           dplyr::mutate(
             first = gsub(" ", "", first),
             mi = ifelse(is.na(mi), "", paste0(mi, "."))
@@ -1007,12 +1009,22 @@ create_template <- function(
           glue::glue_collapse(sep = ", ", last = ", and ")
 
         # replace authors in citation
-        citation <- stringr::str_replace(
-          citation,
-          # regex to identify characters in the beginning of the string before the year
-          "^.*?(?=\\s\\d{4}\\.)",
-          cit_authors
-        )
+        if (authors_in_skel[1] == "FIRST LAST") {
+          citation <- stringr::str_replace(
+            citation,
+            # regex to identify characters in the beginning of the string before the year
+            "\\[AUTHOR NAME\\].",
+            cit_authors
+          )
+        } else {
+          citation <- stringr::str_replace(
+            citation,
+            # regex to identify characters in the beginning of the string before the year
+            "^.*?(?=\\s\\d{4}\\.)",
+            cit_authors
+          )
+        }
+        
       }
 
       if (!is.null(species) | !is.null(region) | !is.null(spp_latin)) {
