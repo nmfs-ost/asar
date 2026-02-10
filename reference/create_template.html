@@ -19,7 +19,7 @@ in the console."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">asar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.2</span>
       </span>
     </div>
 
@@ -124,7 +124,7 @@ in the console.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_template</span><span class="op">(</span></span>
 <span>  format <span class="op">=</span> <span class="st">"pdf"</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"SAR"</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"sar"</span>,</span>
 <span>  office <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AFSC"</span>, <span class="st">"PIFSC"</span>, <span class="st">"NEFSC"</span>, <span class="st">"NWFSC"</span>, <span class="st">"SEFSC"</span>, <span class="st">"SWFSC"</span><span class="op">)</span>,</span>
 <span>  region <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  species <span class="op">=</span> <span class="st">"species"</span>,</span>
@@ -160,7 +160,7 @@ in the console.</p>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
-<dd><p>Type of report to build. Default is SAR (NOAA Fisheries
+<dd><p>Type of report to build. Default is "sar" (NOAA Fisheries
 Stock Assessment Report).</p></dd>
 
 
@@ -376,7 +376,7 @@ each of the child documents should be edited separately.</p>
 <span class="r-in"><span>  model_results <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"folder"</span>, <span class="st">"std_output.rda"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  new_section <span class="op">=</span> <span class="st">"an_additional_section"</span>,</span></span>
 <span class="r-in"><span>  section_location <span class="op">=</span> <span class="st">"before-discussion"</span>,</span></span>
-<span class="r-in"><span>  type <span class="op">=</span> <span class="st">"SAR"</span>,</span></span>
+<span class="r-in"><span>  type <span class="op">=</span> <span class="st">"sar"</span>,</span></span>
 <span class="r-in"><span>  custom <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  custom_sections <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"executive_summary"</span>, <span class="st">"introduction"</span>, <span class="st">"discussion"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  spp_image <span class="op">=</span> <span class="st">"dir/containing/spp_image"</span></span></span>
