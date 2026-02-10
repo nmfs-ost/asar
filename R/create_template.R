@@ -291,8 +291,8 @@ create_template <- function(
       "skeleton.qmd"
     )
     # make sure type is changed to skeleton
-    if(type == "sar") type <- "skeleton"
-    } else {
+    if (type == "sar") type <- "skeleton"
+  } else {
     # Name report
     if (!is.null(type)) {
       report_name <- paste0(
@@ -974,25 +974,27 @@ create_template <- function(
       citation <- prev_skeleton[grep("Please cite this publication as:", prev_skeleton) + 2]
       if (!is.null(authors)) {
         authors_in_skel <- prev_skeleton[grep("  - name: ", prev_skeleton)]
-        authors_in_skel <- stringr::str_remove_all(authors_in_skel[seq(1, length(authors_in_skel),2)], "^.*- name: '|'$")
+        authors_in_skel <- stringr::str_remove_all(authors_in_skel[seq(1, length(authors_in_skel), 2)], "^.*- name: '|'$")
         authors <- ifelse(
           authors_in_skel == "FIRST LAST",
           names(authors),
           c(authors_in_skel, names(authors))
         )
-        
-        cit_authors <- data.frame(authors) |> tidyr::separate_wider_regex(
-          cols = authors,
-          # Caitlin Allen Akselrud is the only non-hyphenated dual last name
-          # and needs to be included as its own pattern.
-          # The second pattern allows for first initials rather than first name
-          patterns = c(first = "Caitlin |^[A-Z]. |.*[a-z] ", last = ".*$")
-        ) |> tidyr::separate_wider_delim(
-          cols = last,
-          delim = ". ",
-          names = c("mi", "last"),
-          too_few = "align_end"
-        ) |>
+
+        cit_authors <- data.frame(authors) |>
+          tidyr::separate_wider_regex(
+            cols = authors,
+            # Caitlin Allen Akselrud is the only non-hyphenated dual last name
+            # and needs to be included as its own pattern.
+            # The second pattern allows for first initials rather than first name
+            patterns = c(first = "Caitlin |^[A-Z]. |.*[a-z] ", last = ".*$")
+          ) |>
+          tidyr::separate_wider_delim(
+            cols = last,
+            delim = ". ",
+            names = c("mi", "last"),
+            too_few = "align_end"
+          ) |>
           dplyr::mutate(
             first = gsub(" ", "", first),
             mi = ifelse(is.na(mi), "", paste0(mi, "."))
@@ -1024,7 +1026,6 @@ create_template <- function(
             cit_authors
           )
         }
-        
       }
 
       if (!is.null(species) | !is.null(region) | !is.null(spp_latin)) {
