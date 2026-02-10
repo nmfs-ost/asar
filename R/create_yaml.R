@@ -155,7 +155,7 @@ create_yaml <- function(
             add_params <- c(add_params, toad)
           } # close loop
           # add params into yaml
-          yaml <- append(yaml, add_params, after = grep("params: ", yaml))
+          yaml <- append(yaml, add_params, after = grep("params:", yaml))
         } # close check
       } # close if adding add'l params
     } # close if params to be included in template

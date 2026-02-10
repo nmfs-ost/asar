@@ -87,7 +87,7 @@ of parameter names. Parameters automatically included:
 office, region, species (each of which are listed as
 individual parameters for this function, above).}
 
-\item{type}{Type of report to build. Default is SAR (NOAA Fisheries
+\item{type}{Type of report to build. Default is "sar" (NOAA Fisheries
 Stock Assessment Report).}
 }
 \value{

@@ -15,7 +15,7 @@ create_title(
 )
 }
 \arguments{
-\item{type}{Type of report to build. Default is SAR (NOAA Fisheries
+\item{type}{Type of report to build. Default is "sar" (NOAA Fisheries
 Stock Assessment Report).}
 
 \item{office}{Regional Fisheries Science Center producing the

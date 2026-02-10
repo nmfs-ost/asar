@@ -35,7 +35,7 @@ test_that("NEFSC report given accurate title", {
   } else if (as.numeric(format(Sys.Date(), "%m")) %in% c(12, 1, 2)) {
     season <- "Winter"
   }
-  exp_title <- paste0("Management Track Assessment of Atlantic Bluefish (\\textit{Pomatomus saltatrix}) ", season, " 2024")
+  exp_title <- paste0("Management Track Assessment of Atlantic Bluefish (Pomatomus saltatrix) ", season, " 2024")
   expect_equal(title_ex, exp_title)
 })
 
@@ -71,7 +71,7 @@ test_that("PIFSC report given accurate title", {
     spp_latin = "Latin name",
     year = 2024
   )
-  expect_equal(title_ex, "Stock Assessment for Big7 (\\textit{Latin name}) along the main Hawaiian Islands in 2024")
+  expect_equal(title_ex, "Stock Assessment for Big7 (Latin name) along the main Hawaiian Islands in 2024")
 
   title_ex <- create_title(
     office = "PIFSC",
@@ -80,7 +80,7 @@ test_that("PIFSC report given accurate title", {
     year = 2024,
     region = "Western atoll"
   )
-  expect_equal(title_ex, "Stock Assessment for Big7 (\\textit{Latin name}) on Western atoll in 2024")
+  expect_equal(title_ex, "Stock Assessment for Big7 (Latin name) on Western atoll in 2024")
 })
 
 test_that("SEFSC report given accurate title", {
@@ -91,7 +91,7 @@ test_that("SEFSC report given accurate title", {
     region = "South Atlantic",
     year = 2024
   )
-  expect_equal(title_ex, "SEDAR XX Assessment Report for Red Snapper (\\textit{Lutjanus campechanus}) in the South Atlantic in 2024")
+  expect_equal(title_ex, "SEDAR XX Assessment Report for Red Snapper (Lutjanus campechanus) in the South Atlantic in 2024")
 
   title_ex <- create_title(
     office = "SEFSC",
@@ -99,7 +99,7 @@ test_that("SEFSC report given accurate title", {
     spp_latin = "Lutjanus campechanus",
     year = 2024
   )
-  expect_equal(title_ex, "SEDAR XX Assessment Report for Red Snapper (\\textit{Lutjanus campechanus}) in 2024")
+  expect_equal(title_ex, "SEDAR XX Assessment Report for Red Snapper (Lutjanus campechanus) in 2024")
 })
 
 test_that("SWFSC report given accurate title", {

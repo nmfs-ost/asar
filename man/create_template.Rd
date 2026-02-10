@@ -6,7 +6,7 @@
 \usage{
 create_template(
   format = "pdf",
-  type = "SAR",
+  type = "sar",
   office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
   region = NULL,
   species = "species",
@@ -35,7 +35,7 @@ create_template(
 \arguments{
 \item{format}{Rendering format (pdf, html, or docx).}
 
-\item{type}{Type of report to build. Default is SAR (NOAA Fisheries
+\item{type}{Type of report to build. Default is "sar" (NOAA Fisheries
 Stock Assessment Report).}
 
 \item{office}{Regional Fisheries Science Center producing the
@@ -206,7 +206,7 @@ create_template(
   model_results = here::here("folder", "std_output.rda"),
   new_section = "an_additional_section",
   section_location = "before-discussion",
-  type = "SAR",
+  type = "sar",
   custom = TRUE,
   custom_sections = c("executive_summary", "introduction", "discussion"),
   spp_image = "dir/containing/spp_image"
