@@ -237,6 +237,11 @@ export_glossary <- function() {
         Meaning,
         "National Standards Guidelines",
         "National Standard Guidelines"
+      ),
+      Meaning = stringr::str_replace(
+        Meaning,
+        "Ecological and Socioeconomic Profile",
+        "Ecosystem and Socioeconomic Profile"
       )
     ) |>
     dplyr::filter(!Definition %in% "An advisory committee of the PFMC made up of scientists and economists. The Magnuson-Stevens Act requires that each council maintain an SSC to assist in gathering and analyzing statistical, biological, ecological, economic, social, and other scientific information that is relevant to the management of Council fisheries.") |>
