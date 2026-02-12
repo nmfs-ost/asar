@@ -657,8 +657,11 @@ export_glossary <- function() {
     ) |>
     dplyr::mutate(Label = stringr::str_replace_all(Label,
                                                    "_",
-                                                   "\\\\_")
-    )
+                                                   "-")
+    ) |>
+    dplyr::mutate(Label = stringr::str_replace_all(Label,
+                                                   "[\\(\\)]",
+                                                   "-"))
 
   duplicate_acronyms <- unique_all_cleaning3 |>
     dplyr::add_count(Acronym) |>
