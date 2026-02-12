@@ -641,11 +641,23 @@ export_glossary <- function() {
       !(is.na(Definition) & Acronym == "SEAMAP"),
       !(Meaning == "Connecticut Long Island Sound Trawl Survey" & Label == "ct lists")
     ) |>
-    # add backslash to escape special character (underscore) when
-    # rendering tex file
+    # add backslash to escape special characters
+    # (underscores, ampersands) when rendering tex file
     dplyr::mutate(Meaning = stringr::str_replace_all(Meaning,
                                                      "_",
                                                      "\\\\_")
+    ) |>
+    dplyr::mutate(Meaning = stringr::str_replace_all(Meaning,
+                                                     "&",
+                                                     "\\\\&")
+    ) |>
+    dplyr::mutate(Acronym = stringr::str_replace_all(Acronym,
+                                                     "_",
+                                                     "-")
+    ) |>
+    dplyr::mutate(Label = stringr::str_replace_all(Label,
+                                                   "_",
+                                                   "\\\\_")
     )
 
   duplicate_acronyms <- unique_all_cleaning3 |>
