@@ -622,7 +622,7 @@ export_glossary <- function() {
     ) |>
     dplyr::ungroup() |>
     dplyr::select(-c(Acronym, word_count)) |>
-    dplyr::rename(Acronym = ac_short)
+    dplyr::rename(Acronym = ac_short) 
 
   unique_all_cleaning3 <- unique_all_cleaning2 |>
     dplyr::mutate(Meaning = ifelse(Label %in% rows_to_lower,
@@ -645,7 +645,28 @@ export_glossary <- function() {
       !(Meaning == "Northern CalCOFI" & Acronym == "NC"),
       !(is.na(Definition) & Acronym == "SEAMAP"),
       !(Meaning == "Connecticut Long Island Sound Trawl Survey" & Label == "ct lists")
-    )
+    ) |>
+    # add backslash to escape special characters
+    # (underscores, ampersands) when rendering tex file
+    dplyr::mutate(Meaning = stringr::str_replace_all(Meaning,
+                                                     "_",
+                                                     "\\\\_")
+    ) |>
+    dplyr::mutate(Meaning = stringr::str_replace_all(Meaning,
+                                                     "&",
+                                                     "\\\\&")
+    ) |>
+    dplyr::mutate(Acronym = stringr::str_replace_all(Acronym,
+                                                     "_",
+                                                     "-")
+    ) |>
+    dplyr::mutate(Label = stringr::str_replace_all(Label,
+                                                   "_",
+                                                   "-")
+    ) |>
+    dplyr::mutate(Label = stringr::str_replace_all(Label,
+                                                   "[\\(\\)]",
+                                                   "-"))
 
   duplicate_acronyms <- unique_all_cleaning3 |>
     dplyr::add_count(Acronym) |>
