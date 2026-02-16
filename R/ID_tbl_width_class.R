@@ -34,9 +34,14 @@ ID_tbl_width_class <- function(
     load(tables_path)
     table_rda <- rda
     rm(rda)
-    table_width <- flextable::flextable_dim(table_rda$table)[["widths"]] |>
-      as.numeric()
+    gt_table <- table_rda$table
 
+    # Set each col to 1.5"
+    col_inches <- 1.5
+
+    # Calculate total table width in inches
+    table_width <- ncol(gt_table[["_data"]]) * col_inches
+    
     # determine table width class
     if (table_width <= portrait_pg_width) {
       width_class <- "regular"
