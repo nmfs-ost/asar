@@ -1,6 +1,6 @@
 #' Split an extra-wide table into multiple tables
 #'
-#' @param report_flextable The extra-wide flextable.
+#' @param report_gt The extra-wide gt table.
 #' @param essential_columns The columns that will be retained between the split
 #' tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
 #' column. Example: for the indices table, this could be the year column.
@@ -14,37 +14,37 @@
 #' @examples
 #' \dontrun{
 #' render_lg_table(
-#'   report_flextable = indices_table,
+#'   report_gt = indices_table,
 #'   essential_columns = 1,
 #'   tables_dir = here::here(),
 #'   plot_name = "indices.abundance_table.rda"
 #' )
 #'
 #' render_lg_table(
-#'   report_flextable = important_table,
+#'   report_gt = important_table,
 #'   essential_columns = 1:3,
 #'   tables_dir = "data",
 #'   plot_name = "bnc_table.rda"
 #' )
 #' }
-render_lg_table <- function(report_flextable,
+render_lg_table <- function(report_gt,
                             essential_columns,
                             tables_dir,
                             plot_name) {
+
+  # Set each col to 1.5"
+  col_inches <- 1.5
+  
   # calculate key numbers
+  # total columns, width of table in inches
+  total_cols <- ncol(report_gt[["_data"]])
+  total_width <- total_cols * col_inches
 
-  # total columns, width of table
-  total_cols <- flextable::ncol_keys(report_flextable)
-  total_width <- flextable::flextable_dim(report_flextable)[["widths"]]
-
-  # goal width of each table split from report_flextable, in inches
+  # goal width of each table split from report_gt, in inches
   goal_width <- 7.5 # max is 8"
 
-  # approx width of each column in report_flextable
-  approx_col_width <- total_width / total_cols
-
-  # goal number of columns per table split from report_flextable
-  goal_cols_per_table <- ceiling(goal_width / approx_col_width)
+  # goal number of columns per table split from report_gt
+  goal_cols_per_table <- ceiling(goal_width / col_inches)
 
   # split tables needed
   num_tables <- ceiling(total_cols / goal_cols_per_table)
@@ -117,70 +117,54 @@ render_lg_table <- function(report_flextable,
       }, cols_to_del_seq, essential_cols_seq)
     )
 
-  # print all split tables by removing final_cols_to_del from report_flextable
-  # for (i in 1:num_tables) {
-  #   report_flextable |>
-  #     flextable::delete_columns(j = c(
-  #       as.numeric(
-  #         unlist(
-  #           strsplit(
-  #             table_cols[i,"final_cols_to_del"], ",")
-  #           )
-  #         )
-  #       )
-  #     ) |>
-  #       print()
-  # }
-
+ 
   # save all tables to a list
   table_list <- list()
   for (i in 1:num_tables) {
-    split_table <- report_flextable |>
-      flextable::delete_columns(j = c(
-        as.numeric(
-          unlist(
-            strsplit(
-              table_cols[i, "final_cols_to_del"], ","
+    split_table <- report_gt |>
+      gt::cols_hide(
+        columns = all_of(
+          as.numeric(
+            unlist(
+              strsplit(
+                table_cols[i, "final_cols_to_del"], ","
+                )
+              )
             )
           )
-        )
-      )) |>
-      flextable::fit_to_width(max_width = goal_width) |>
-      flextable::hline(
-        part = "header",
-        # i = 1,
-        border = officer::fp_border(
-          width = 1.5,
-          color = "#666666"
-        )
+       ) |>
+      gt::tab_options(table.width = px(goal_width * 96)) |> # in pixels
+      gt::tab_style(
+        style = cell_borders(
+          sides = "bottom",
+          color = "#666666",
+          weight = px(1.5)
+        ),
+        locations = cells_column_labels()
       ) |>
-      flextable::valign(valign = "center", part = "header")
+      gt::tab_style(
+        style = cell_text(v_align = "middle"),
+        locations = cells_column_labels()
+      )
 
     table_list[[i]] <- split_table
 
     # get rownames of split table
-    all_vals <- split_table$header$dataset
-    shown_vals <- c(split_table[["header"]][["content"]][["keys"]])
+    all_vals <- split_table[["_boxhead"]]
     split_tbl_vals <- all_vals |>
-      dplyr::select(dplyr::intersect(
-        names(all_vals),
-        shown_vals
-      )) |>
-      dplyr::slice(1) |>
-      dplyr::select_if(~ !(all(is.na(.)) | all(. == ""))) |>
+      dplyr::filter(type != "hidden") |>
+      # Pull the display labels (this handles cases where you renamed columns)
+      dplyr::pull(column_label) |>
       as.character() |>
+      # Replaces subset() - filter keeps only the values that match
+      (\(x) x[!is.na(x) & x != ""])() |> 
       unique() |>
       stringr::str_squish() |>
       paste(collapse = ", ")
 
     # add rownames to table_list
     names(table_list)[[i]] <- split_tbl_vals
-
-
-    # if(i == num_tables){
-    #   single_tab <- table_list[[returned_tab]]
-    #   return(single_tab)
-    # }
+    
   }
   # save table_list as rda
   save(table_list,

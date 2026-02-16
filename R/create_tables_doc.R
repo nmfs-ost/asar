@@ -77,7 +77,7 @@ create_tables_doc <- function(subdir = getwd(),
   tables_doc_setup <- paste0(
     add_chunk(
       glue::glue(
-        "library(flextable)
+        "library(gt)
           tables_dir <- fs::path('{tables_dir}', 'tables')"
       ),
       label = "set-rda-dir-tbls",
@@ -122,9 +122,9 @@ create_tables_doc <- function(subdir = getwd(),
     )
 
     # identify table orientation
-    # split tables will always be extra_wide
+    # split tables will always be extra-wide
     tbl_orient <- ifelse(split,
-      "extra_wide",
+      "extra-wide",
       ID_tbl_width_class(
         plot_name = tab_shortname,
         tables_dir = tables_dir,
@@ -175,8 +175,14 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
         "::: {.landscape}\n\n",
         add_chunk(
           glue::glue(
-            "{tab_shortname}_table |>
-                flextable::fit_to_width(max_width = 8)"
+            "{tab_shortname}_table |>\n",
+              "  gt::tab_options(\n",
+                "    table.width = pct(100),\n",
+                "    table.layout = 'auto'\n",
+               "  ) |>\n",
+              "  gt::cols_width(\n",
+                "    everything() ~ px(144)\n",
+               "  )"
           ),
           label = glue::glue("tbl-{tab_shortname}"),
           # add_option = TRUE,
@@ -194,13 +200,13 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
       )
     }
 
-    if (tbl_orient == "extra_wide") {
+    if (tbl_orient == "extra-wide") {
       if (split) {
         # identify number of split tables
         load(fs::path(tables_dir, "tables", tab))
         split_tables <- length(table_list)
       } else {
-        # split extra_wide tables into smaller tables and export AND
+        # split extra-wide tables into smaller tables and export AND
         # identify number of split tables IF not already split
         split_tables <- export_split_tbls(
           tables_dir = tables_dir,
@@ -240,7 +246,14 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
           add_chunk(
             paste0(
               "# plot split table ", i, "\n",
-              tab_shortname, "_table_split_rda[[", i, "]] |> flextable::fit_to_width(max_width = 8)\n"
+              tab_shortname, "_table_split_rda[[", i, "]] |>\n",
+                "  gt::tab_options(\n",
+                "    table.width = pct(100),\n",
+                "    table.layout = 'auto'\n",
+              "  ) |>\n",
+                "  gt::cols_width(\n",
+                "    everything() ~ px(144)\n",
+              "  ) \n"
             ),
             label = glue::glue("tbl-{tab_shortname}", i),
             add_option = TRUE,
