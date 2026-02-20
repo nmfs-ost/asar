@@ -111,6 +111,12 @@ create_inheader_tex <- function(species = NULL, year = NULL, subdir) {
   #   sep = ""
   # )
   # lines <- append(lines, gloss)
+  
+  # Add float package
+  lines <- append(
+    lines,
+    "\\usepackage{float}\n\\floatplacement{table}{H}\n"
+  )
 
   write(lines, file = paste(subdir, "/in-header.tex", sep = ""))
 }
