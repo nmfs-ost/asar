@@ -34,10 +34,10 @@ ID_tbl_length_class <- function(
     table_length <- nrow(gt_table[["_data"]])
     
     # determine table length class
-    if (table_length <= 30) {
-      length_class <- "regular"
+    if (table_length <= 38) {
+      length_class <- "regular" # fit on one landscape page (and, by default, portrait)
     } else {
-      length_class <- "long"
+      length_class <- "long" # divided across >1 landscape page
       }
   } else {
     cli::cli_abort(message = "Table not found at {tables_path}")
