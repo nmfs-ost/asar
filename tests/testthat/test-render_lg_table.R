@@ -4,7 +4,7 @@ test_that("accurate number of split tables identified", {
     t() |>
     as.data.frame() |>
     dplyr::select(1:50) |>
-    flextable::flextable()
+    gt::gt()
 
   dir.create("tables")
 
@@ -32,7 +32,7 @@ test_that("accurate number of split tables identified", {
     t() |>
     as.data.frame() |>
     dplyr::select(1:70) |>
-    flextable::flextable()
+    gt::gt()
 
   # 0 essential columns
   tables_test3 <- render_lg_table(ft,
@@ -58,7 +58,7 @@ test_that("accurate number of split tables identified", {
     t() |>
     as.data.frame() |>
     dplyr::select(1:20) |>
-    flextable::flextable()
+    gt::gt()
 
   # 0 essential columns
   tables_test5 <- render_lg_table(ft,
@@ -88,7 +88,7 @@ test_that("table_list saved as an rda", {
     t() |>
     as.data.frame() |>
     dplyr::select(1:50) |>
-    flextable::flextable()
+    gt::gt()
 
   dir.create("tables")
 

@@ -1,13 +1,13 @@
 test_that("Table widths calculated correctly for wide table", {
   # make sample dataset
-  library(flextable)
+  library(gt)
   test_table <- data.frame(
     year = rep(seq(1987, 2024, 1), times = 3),
     estimate = rep(rnorm(38, mean = 1000, sd = 100), times = 6),
     label = rep(c("spawning_biomass", "catch", "abundance", "new_col1", "new_col2", "new_col3"), each = 38)
   ) |>
     tidyr::pivot_wider(id_cols = year, names_from = label, values_from = estimate) |>
-    flextable()
+    gt()
 
   rda <- list(
     "table" = test_table,
@@ -34,7 +34,7 @@ test_that("Table widths calculated correctly for wide table", {
 
 test_that("Table widths calculated correctly for extra-wide table", {
   # make sample dataset
-  library(flextable)
+  library(gt)
   test_table <- data.frame(
     species = sample(c("Tuna", "Cod", "Trout", "Salmon"), 20, replace = TRUE),
     location = c(
@@ -62,7 +62,7 @@ test_that("Table widths calculated correctly for extra-wide table", {
     is_tagged = sample(c(TRUE, FALSE), 20, replace = TRUE)
   ) |>
     tidyr::pivot_wider(id_cols = species, names_from = location, values_from = is_tagged) |>
-    flextable()
+    gt()
 
   rda <- list(
     "table" = test_table,
