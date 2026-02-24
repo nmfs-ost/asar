@@ -267,7 +267,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
               chunk_option = c(
                 "echo: false",
                 glue::glue(
-                  "tbl-cap: !expr paste0({tab_shortname}_cap, '(', {tab_shortname}_cap, ')')"
+                  "tbl-cap: !expr paste0({tab_shortname}_cap, ' ({i} of {split_tables_rowwise})')"
                 )
               )
             ),
@@ -340,7 +340,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
             chunk_option = c(
               "echo: false",
               glue::glue(
-                "tbl-cap: !expr paste0({tab_shortname}_cap, '(', {tab_shortname}_cap_split[[", i, "]], ')')"
+                "tbl-cap: !expr paste0({tab_shortname}_cap, ' (', {tab_shortname}_cap_split[[", i, "]], ') ({i} of {split_tables_rowwise})')"
               )
             )
           ),
