@@ -81,12 +81,12 @@ render_lg_table <- function(report_gt,
     
     # Create the gt objects
     split_table <- report_gt |>
-      gt::cols_hide(columns = -all_of(current_keep)) |>
-      gt::tab_options(table.width = px(goal_width * 96)) |> 
+      gt::cols_hide(columns = -dplyr::all_of(current_keep)) |>
+      gt::tab_options(table.width = gt::px(goal_width * 96)) |> 
       gt::tab_style(
         style = gt::cell_borders(sides = "bottom", 
                                  color = "#666666",
-                                 weight = px(1.5)),
+                                 weight = gt::px(1.5)),
         locations = gt::cells_column_labels()
       ) |>
       gt::tab_style(

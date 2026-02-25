@@ -30,7 +30,6 @@ Imports:
     glue,
     gt,
     naniar,
-    officer,
     purrr,
     stats,
     stringi,
