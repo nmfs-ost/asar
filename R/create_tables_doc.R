@@ -208,7 +208,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
             "  gt::tab_options(\n",
             "    table.width = pct(100),\n",
             "    table.layout = 'auto'\n",
-            "  ) |>\n"#,
+            "  ) \n"#|>,
             # "  gt::cols_width(\n",
             # "    everything() ~ px(144)\n",
             # "  )"
@@ -333,7 +333,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
               "  gt::tab_options(\n",
               "    table.width = pct(100),\n",
               "    table.layout = 'auto'\n",
-              "  ) |>\n"#,
+              "  ) \n"#|>,
               # "  gt::cols_width(\n",
               # "    everything() ~ px(144)\n",
               # "  ) \n"
@@ -343,7 +343,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
             chunk_option = c(
               "echo: false",
               glue::glue(
-                "tbl-cap: !expr paste0({tab_shortname}_cap, ' (', {tab_shortname}_cap_split[[", i, "]], ') ({i} of {split_tables_rowwise})')"
+                "tbl-cap: !expr paste0({tab_shortname}_cap, ' ({i} of {split_tables})')"
               ),
               "tbl-pos: 't'"
             )
@@ -427,7 +427,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
             chunk_option = c(
               "echo: false",
               glue::glue(
-                "tbl-cap: !expr paste0({tab_shortname}_cap, '(', {tab_shortname}_cap_split[[", i, "]], ')')"
+                "tbl-cap: !expr paste0({tab_shortname}_cap, ' ({i} of {split_tables} tables split by column, {j} of {split_tables_rowwise} tables split by rows)')"
               ),
               "tbl-pos: 't'"
             )
