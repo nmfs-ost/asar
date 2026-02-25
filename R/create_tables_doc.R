@@ -189,7 +189,8 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
             "warnings: false",
             glue::glue(
               "tbl-cap: !expr {tab_shortname}_cap"
-            )
+            ),
+            "tbl-pos: 't'"
           )
         ),
         "\n"
@@ -207,10 +208,10 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
             "  gt::tab_options(\n",
             "    table.width = pct(100),\n",
             "    table.layout = 'auto'\n",
-            "  ) |>\n",
-            "  gt::cols_width(\n",
-            "    everything() ~ px(144)\n",
-            "  )"
+            "  ) |>\n"#,
+            # "  gt::cols_width(\n",
+            # "    everything() ~ px(144)\n",
+            # "  )"
           ),
           label = glue::glue("tbl-{tab_shortname}"),
           # add_option = TRUE,
@@ -219,7 +220,8 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
             "warnings: false",
             glue::glue(
               "tbl-cap: !expr {tab_shortname}_cap"
-            )
+            ),
+            "tbl-pos: 't'"
           )
         ),
         "\n",
@@ -257,8 +259,8 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
                 "    table.width = pct(100),\n",
                 "    table.layout = 'auto'\n",
                 "  ) |>\n",
-                "  gt::cols_width(\n",
-                "    everything() ~ px(144)) |>\n",
+                # "  gt::cols_width(\n",
+                # "    everything() ~ px(144)) |>\n",
                 " gt::gt_split(row_every_n = ", max_rows, ") |>\n",
                 " gt::grp_pull(", i, ")\n"
               ),
@@ -268,7 +270,8 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
                 "echo: false",
                 glue::glue(
                   "tbl-cap: !expr paste0({tab_shortname}_cap, ' ({i} of {split_tables_rowwise})')"
-                )
+                ),
+                "tbl-pos: 't'"
               )
             ),
             # add landscape braces after R chunk if tbl_class == "wide_long"
@@ -330,10 +333,10 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
               "  gt::tab_options(\n",
               "    table.width = pct(100),\n",
               "    table.layout = 'auto'\n",
-              "  ) |>\n",
-              "  gt::cols_width(\n",
-              "    everything() ~ px(144)\n",
-              "  ) \n"
+              "  ) |>\n"#,
+              # "  gt::cols_width(\n",
+              # "    everything() ~ px(144)\n",
+              # "  ) \n"
             ),
             label = glue::glue("tbl-{tab_shortname}", i),
             add_option = TRUE,
@@ -341,7 +344,8 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
               "echo: false",
               glue::glue(
                 "tbl-cap: !expr paste0({tab_shortname}_cap, ' (', {tab_shortname}_cap_split[[", i, "]], ') ({i} of {split_tables_rowwise})')"
-              )
+              ),
+              "tbl-pos: 't'"
             )
           ),
           "\n",
@@ -413,8 +417,8 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
               "    table.width = pct(100),\n",
               "    table.layout = 'auto'\n",
               "  ) |>\n",
-              "  gt::cols_width(\n",
-              "    everything() ~ px(144)) |>\n",
+              # "  gt::cols_width(\n",
+              # "    everything() ~ px(144)) |>\n",
               " gt::gt_split(row_every_n = ", max_rows, ") |>\n",
               " gt::grp_pull(", j, ")\n"
             ),
@@ -424,7 +428,8 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
               "echo: false",
               glue::glue(
                 "tbl-cap: !expr paste0({tab_shortname}_cap, '(', {tab_shortname}_cap_split[[", i, "]], ')')"
-              )
+              ),
+              "tbl-pos: 't'"
             )
           ),
           "\n",
