@@ -28,7 +28,7 @@ test_that("Number of split tables is calculated correctly for 1 table", {
 })
 
 
-test_that("Number of split tables is calculated correctly for 2 tables", {
+test_that("Number of split tables is calculated correctly for 3 tables", {
   library(gt)
   load(file.path(
     "fixtures", "ss3_models_converted", "Hake_2018",
@@ -67,8 +67,8 @@ test_that("Number of split tables is calculated correctly for 2 tables", {
     essential_columns = 1
   )
   
-  # expect 2 tables
-  expected_output <- 2
+  # expect 3 tables
+  expected_output <- 3
   expect_equal(num_tabs, expected_output)
   
   # expect to see an "landings_table_split.rda" file
@@ -77,7 +77,7 @@ test_that("Number of split tables is calculated correctly for 2 tables", {
   # expect that an object "table_list" imported into environment
   expect_no_error(load(file.path("tables", "landings_table_split.rda")))
   
-  expect_equal(length(table_list), 2)
+  expect_equal(length(table_list), 3)
   
   # erase temporary testing files
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))

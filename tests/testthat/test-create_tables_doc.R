@@ -110,7 +110,7 @@ test_that("Formerly empty tables doc renders correctly", {
   stockplotr::table_landings(
     dat = out_new,
     make_rda = TRUE,
-    module = "TIME_SERIES"
+    module = "CATCH"
   )
 
   # rerender tables doc, appending new table
@@ -127,7 +127,7 @@ test_that("Formerly empty tables doc renders correctly", {
   fc_pasted <- paste(head_table_content, collapse = "")
 
   # expected tables doc head
-  expected_head_table_content <- "# Tables {#sec-tables} ```{r} #| label: 'set-rda-dir-figs'#| echo: false #| warnings: false #| eval: true"
+  expected_head_table_content <- "# Tables {#sec-tables} ```{r} #| label: 'set-rda-dir-tbls'#| echo: false #| warning: false #| include: false"
 
   # test expectation of start of tables doc
   expect_equal(

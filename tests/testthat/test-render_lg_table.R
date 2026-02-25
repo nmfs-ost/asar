@@ -1,4 +1,5 @@
 test_that("accurate number of split tables identified", {
+  library(gt)
   # make very wide table
   ft <- as.data.frame(faithful) |>
     t() |>
@@ -9,22 +10,24 @@ test_that("accurate number of split tables identified", {
   dir.create("tables")
 
   # 0 essential columns
-  tables_test1 <- render_lg_table(ft,
+  tables_test1 <- render_lg_table(
+    report_gt = ft,
     essential_columns = 0,
     tables_dir = getwd(),
     plot_name = "test_plot1.rda"
   )
 
-  expect_equal(tables_test1, 5)
+  expect_equal(tables_test1, 10)
 
   # 2 essential columns
-  tables_test2 <- render_lg_table(ft,
+  tables_test2 <- render_lg_table(
+    report_gt = ft,
     essential_columns = 1:2,
     tables_dir = getwd(),
     plot_name = "test_plot2.rda"
   )
 
-  expect_equal(tables_test2, 5)
+  expect_equal(tables_test2, 16)
 
 
   # make very very wide table
@@ -41,7 +44,7 @@ test_that("accurate number of split tables identified", {
     plot_name = "test_plot3.rda"
   )
 
-  expect_equal(tables_test3, 7)
+  expect_equal(tables_test3, 14)
 
   # 3 essential columns
   tables_test4 <- render_lg_table(ft,
@@ -50,7 +53,7 @@ test_that("accurate number of split tables identified", {
     plot_name = "test_plot4.rda"
   )
 
-  expect_equal(tables_test4, 7)
+  expect_equal(tables_test4, 34)
 
 
   # make slightly wide table
@@ -67,7 +70,7 @@ test_that("accurate number of split tables identified", {
     plot_name = "test_plot5.rda"
   )
 
-  expect_equal(tables_test5, 2)
+  expect_equal(tables_test5, 4)
 
   # 3 essential columns
   tables_test6 <- render_lg_table(ft,
@@ -76,7 +79,7 @@ test_that("accurate number of split tables identified", {
     plot_name = "test_plot6.rda"
   )
 
-  expect_equal(tables_test6, 2)
+  expect_equal(tables_test6, 9)
 
   # erase temporary testing files
   unlink(fs::path(getwd(), "tables"), recursive = T)
