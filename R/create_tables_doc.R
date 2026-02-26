@@ -181,7 +181,11 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     if (tbl_class == "reg_reg") {
       tables_doc_plot_setup2 <- paste0(
         add_chunk(
-          glue::glue("{tab_shortname}_table"),
+          glue::glue("{tab_shortname}_table |>\n",
+                     "    gt::cols_width(\n",
+                     "      everything() ~ pct(20)\n",
+                     "    ) \n"
+                     ),
           label = glue::glue("tbl-{tab_shortname}"),
           # add_option = TRUE,
           chunk_option = c(
@@ -208,10 +212,10 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
             "  gt::tab_options(\n",
             "    table.width = pct(100),\n",
             "    table.layout = 'auto'\n",
-            "  ) \n"#|>,
-            # "  gt::cols_width(\n",
-            # "    everything() ~ px(144)\n",
-            # "  )"
+            "  ) |>\n",
+            "  gt::cols_width(\n",
+            "    everything() ~ pct(20)\n",
+            "  ) \n"
           ),
           label = glue::glue("tbl-{tab_shortname}"),
           # add_option = TRUE,
@@ -231,7 +235,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     }
 
     ## add table if it is long enough to be shown on >1 portrait ("reg_long") OR landscape ("wide_long") page
-    ### only difference: latter has landscape braces
+    ### only differences: latter has landscape braces and narrower cols
     if (tbl_class == "reg_long" | tbl_class == "wide_long") {
         # identify number of tables in rda
         load(fs::path(tables_dir, "tables", tab))
@@ -259,8 +263,9 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
                 "    table.width = pct(100),\n",
                 "    table.layout = 'auto'\n",
                 "  ) |>\n",
-                # "  gt::cols_width(\n",
-                # "    everything() ~ px(144)) |>\n",
+                "  gt::cols_width(\n",
+                "    everything() ~ pct(20)\n",
+                "  ) \n",
                 " gt::gt_split(row_every_n = ", max_rows, ") |>\n",
                 " gt::grp_pull(", i, ")\n"
               ),
@@ -296,6 +301,11 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
           plot_name = tab,
           essential_columns = 1
         )
+        
+        # identify number of split tables
+        tab <- gsub("table", "table_split", tab)
+        load(fs::path(tables_dir, "tables", tab))
+        split_tables <- length(table_list)
       }
       
       # add a chunk to import split tables
@@ -333,10 +343,10 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
               "  gt::tab_options(\n",
               "    table.width = pct(100),\n",
               "    table.layout = 'auto'\n",
-              "  ) \n"#|>,
-              # "  gt::cols_width(\n",
-              # "    everything() ~ px(144)\n",
-              # "  ) \n"
+              "  ) |>\n",
+              "  gt::cols_width(\n",
+              "    everything() ~ pct(20)\n",
+              "  ) \n"
             ),
             label = glue::glue("tbl-{tab_shortname}", i),
             add_option = TRUE,
@@ -374,6 +384,11 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
           plot_name = tab,
           essential_columns = 1
         )
+        
+        # identify number of split tables
+        tab <- gsub("table", "table_split", tab)
+        load(fs::path(tables_dir, "tables", tab))
+        split_tables <- length(table_list)
       }
       # identify number of tables that each split table must be further split
       # into, with different rows per table
@@ -417,8 +432,9 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
               "    table.width = pct(100),\n",
               "    table.layout = 'auto'\n",
               "  ) |>\n",
-              # "  gt::cols_width(\n",
-              # "    everything() ~ px(144)) |>\n",
+              "  gt::cols_width(\n",
+              "    everything() ~ pct(20)\n",
+              "  ) \n",
               " gt::gt_split(row_every_n = ", max_rows, ") |>\n",
               " gt::grp_pull(", j, ")\n"
             ),
