@@ -265,7 +265,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
                 "  ) |>\n",
                 "  gt::cols_width(\n",
                 "    everything() ~ pct(20)\n",
-                "  ) \n",
+                "  ) |> \n",
                 " gt::gt_split(row_every_n = ", max_rows, ") |>\n",
                 " gt::grp_pull(", i, ")\n"
               ),
@@ -434,7 +434,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
               "  ) |>\n",
               "  gt::cols_width(\n",
               "    everything() ~ pct(20)\n",
-              "  ) \n",
+              "  ) |> \n",
               " gt::gt_split(row_every_n = ", max_rows, ") |>\n",
               " gt::grp_pull(", j, ")\n"
             ),
