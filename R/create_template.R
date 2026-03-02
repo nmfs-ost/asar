@@ -890,7 +890,9 @@ create_template <- function(
 
     # extract old preamble if don't want to change
     if (rerender_skeleton) {
-      question1 <- readline("Do you want to keep the current preamble? (Y/N)")
+      question1 <- readline("As you are rerendering your report skeleton,
+you may need a new preamble.
+Do you want to keep the current preamble? (Y/N)")
 
       # answer question1 as y if session isn't interactive
       if (!interactive()) {
