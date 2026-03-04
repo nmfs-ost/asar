@@ -890,13 +890,13 @@ create_template <- function(
 
     # extract old preamble if don't want to change
     if (rerender_skeleton) {
-      question1 <- readline("Do you want to keep the current preamble? (Y/N)")
+      question1 <- readline("Update the preamble to match entered arguments? (Y/N)")
 
-      # answer question1 as y if session isn't interactive
+      # answer question1 as n if session isn't interactive
       if (!interactive()) {
-        question1 <- "y"
+        question1 <- "n"
       }
-      if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+      if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
         start_line <- grep("output_and_quantities", prev_skeleton) - 1
         # find next trailing "```"` in case it was edited at the end
         end_line <- grep("```", prev_skeleton)[grep("```", prev_skeleton) > start_line][1]
@@ -956,7 +956,7 @@ create_template <- function(
           cli::cli_alert_info("Model results not updated.")
           preamble <- paste(preamble, collapse = "\n")
         }
-      } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+      } else if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         cli::cli_alert_warning("Report template files were not copied into your directory.")
         cli::cli_alert_info("If you wish to update the template with new parameters or output files, please edit the {report_name} in your local folder.",
           wrap = TRUE
