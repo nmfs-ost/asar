@@ -186,6 +186,8 @@ recruitment_alt_text <- new_alt_text
 
 4. If you add a special character (e.g., percentage sign (%) or dollar sign ($); see [full list on this wiki page](https://en.wikibooks.org/wiki/LaTeX/Special_Characters#Other_symbols)), please add two backslashes before the character to avoid issues compiling your report later on (specifically, the conversion from Quarto to LaTeX via Pandoc, and then compilation of the LaTeX report after running `add_accessibility()` or `add_alttext()`). For example, "The 95% CI" would be written as "The 95\\\\% CI".
 
+4. If you add a special character (e.g., percentage sign (%) or dollar sign ($); see [full list on this wiki page](https://en.wikibooks.org/wiki/LaTeX/Special_Characters#Other_symbols)), please add two backslashes before the character to avoid issues compiling your report later on (specifically, the conversion from Quarto to LaTeX via Pandoc, and then compilation of the LaTeX report after running `add_accessibility()` or `add_alttext()`). For example, "The 95% CI" would be written as "The 95\\\\% CI".
+
 ### More resources
 
 Looking for more resources for writing alt text? Check out the [NOAA Library's website for creating accessible documents](https://library.noaa.gov/Section508/CreatingDocs).
