@@ -32,15 +32,12 @@ data.frame(
     "1991-1997, 2003, 2007, 2009, 2011, 2013, 2015, 2017, 2019"
   )
 ) |>
-  flextable::flextable() |>
-  flextable::width(j = ~Source, width = 1) |>
-  flextable::width(j = ~Data, width = 1.5) |>
-  flextable::width(j = ~Years, width = 4) |>
-  flextable::merge_v(j = 1) |>
-  flextable::font(fontname = "Times", part = "all") |>
-  flextable::fontsize(size = 10) |>
-  flextable::theme_vanilla() |>
-  flextable::fix_border_issues()
+  gt::gt() |>
+  gt::cols_width(
+    Source ~ px(100),
+    Data ~ px(150),
+    Years ~ px(400)
+  )
 ```
 
 ## Fishery

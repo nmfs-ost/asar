@@ -83,7 +83,7 @@ asar::create_template(
   species = "Petrale sole",
   spp_latin = "Eopsetta jordani",
   year = 2023,
-  author = c("Ian G. Taylor"="NWFSC", "Vladlena Gertseva"="NWFSC", "Nick Tolimieri"="NWFSC"),
+  authors = c("Ian G. Taylor"="NWFSC", "Vladlena Gertseva"="NWFSC", "Nick Tolimieri"="NWFSC"),
   include_affiliation = TRUE,
   simple_affiliation = FALSE,
   param_names = c("nf","sf"),
