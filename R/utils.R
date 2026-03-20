@@ -172,7 +172,12 @@ SS3_extract_fleet <- function(dat, vers) {
 #' smaller tables across multiple pages (in RTF and Word outputs, primarily via
 #' \link[gt]{gtsave}, or, with breaks between them when the output context is HTML.
 #'
-#' @inheritParams fmt_number
+#' @param data *The gt table data object*
+#'
+#'   `obj:<gt_tbl>` // **required**
+#'
+#'   This is the **gt** table object that is commonly created through use of the
+#'   [gt()] function.
 #'
 #' @param row_every_n *Split at every n rows*
 #'
@@ -229,10 +234,6 @@ SS3_extract_fleet <- function(dat, vers) {
 #'   gt_split(row_every_n = 5)
 #' ```
 #'
-#' \if{html}{\out{
-#' `r man_get_image_tag(file = "man_gt_split_1.png")`
-#' }}
-#'
 #' Use a smaller subset of the [`gtcars`] dataset to create a **gt** table.
 #' Format the `msrp` column to display numbers as currency values, set the table
 #' width with [tab_options()] and split the table at the `model` column This
@@ -248,10 +249,6 @@ SS3_extract_fleet <- function(dat, vers) {
 #'   tab_options(table.width = px(400)) |>
 #'   gt_split(col_slice_at = "model")
 #' ```
-#'
-#' \if{html}{\out{
-#' `r man_get_image_tag(file = "man_gt_split_2.png")`
-#' }}
 #'
 #' @family table group functions
 #' @section Function ID:
