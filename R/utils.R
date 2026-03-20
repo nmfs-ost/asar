@@ -161,31 +161,7 @@ SS3_extract_fleet <- function(dat, vers) {
 
 #----------------------------------------------------------
 
-#------------------------------------------------------------------------------#
-#
-#                /$$
-#               | $$
-#     /$$$$$$  /$$$$$$
-#    /$$__  $$|_  $$_/
-#   | $$  \ $$  | $$
-#   | $$  | $$  | $$ /$$
-#   |  $$$$$$$  |  $$$$/
-#    \____  $$   \___/
-#    /$$  \ $$
-#   |  $$$$$$/
-#    \______/
-#
-#  This file is part of the 'rstudio/gt' project.
-#
-#  Copyright (c) 2018-2026 gt authors
-#
-#  For full copyright and license information, please look at
-#  https://gt.rstudio.com/LICENSE.html
-#
-#------------------------------------------------------------------------------#
-
-
-# gt_split() -------------------------------------------------------------------
+# gt_split()
 #' Split a table into a group of tables (a `gt_group`)
 #'
 #' @description
@@ -194,7 +170,7 @@ SS3_extract_fleet <- function(dat, vers) {
 #' collection in a `gt_group` object. This function is useful for those cases
 #' where you want to section up a table in a specific way and print those
 #' smaller tables across multiple pages (in RTF and Word outputs, primarily via
-#' [gtsave()]), or, with breaks between them when the output context is HTML.
+#' \link[gt]{gtsave}, or, with breaks between them when the output context is HTML.
 #'
 #' @inheritParams fmt_number
 #'
@@ -219,8 +195,8 @@ SS3_extract_fleet <- function(dat, vers) {
 #'   Any columns where vertical splitting across should occur. The splits occur
 #'   to the right of the resolved column names. Can either be a series of column
 #'   names provided in `c()`, a vector of column indices, or a select helper
-#'   function (e.g. [starts_with()], [ends_with()], [contains()], [matches()],
-#'   [num_range()], and [everything()]).
+#'   function (e.g. \link[gt]{starts_with}, \link[gt]{ends_with}, \link[gt]{contains}, \link[gt]{matches},
+#'   \link[gt]{num_range}, and \link[gt]{everything}).
 #'
 #' @return An object of class `gt_group`.
 #' 
@@ -236,7 +212,7 @@ SS3_extract_fleet <- function(dat, vers) {
 #'
 #' Use a subset of the [`gtcars`] dataset to create a **gt** table. Format the
 #' `msrp` column to display numbers as currency values, set column widths with
-#' [cols_width()], and split the table at every five rows with `gt_split()`.
+#' \link[gt]{cols_width}, and split the table at every five rows with `gt_split()`.
 #' This creates a `gt_group` object containing two tables. Printing this object
 #' yields two tables separated by a line break.
 #'
@@ -293,17 +269,17 @@ gt_split <- function(
 ) {
   
   # Perform input object validation
-  stop_if_not_gt_tbl(data = data)
+  gt:::stop_if_not_gt_tbl(data = data)
   
   # Resolution of columns as character vectors
   col_slice_at <-
-    resolve_cols_c(
+    gt:::resolve_cols_c(
       expr = {{ col_slice_at }},
       data = data,
       null_means = "nothing"
     )
   
-  gt_tbl_built <- build_data(data = data, context = "html")
+  gt_tbl_built <- gt:::build_data(data = data, context = "html")
   
   # Get row count for table (data rows)
   n_rows_data <- nrow(gt_tbl_built[["_stub_df"]])
@@ -341,7 +317,7 @@ gt_split <- function(
   
   gt_tbl_main <- data
   
-  gt_group <- gt_group(.use_grp_opts = FALSE)
+  gt_group <- gt::gt_group(.use_grp_opts = FALSE)
   
   for (i in seq_along(row_range_list)) {
     
@@ -353,7 +329,7 @@ gt_split <- function(
     if (!is.null(col_slice_at)) {
       
       # Get all visible vars in their finalized order
-      visible_col_vars <- dt_boxhead_get_vars_default(data = data)
+      visible_col_vars <- gt:::dt_boxhead_get_vars_default(data = data)
       
       # Stop function if any of the columns to split at aren't visible columns
       if (!all(col_slice_at %in% visible_col_vars)) {
@@ -396,12 +372,12 @@ gt_split <- function(
             gt_tbl_j[["_boxhead"]]$var %in% visible_col_vars[col_range_list[[j]]],
           ]
         
-        gt_group <- grp_add(gt_group, gt_tbl_j)
+        gt_group <- gt::grp_add(gt_group, gt_tbl_j)
       }
       
       
     } else {
-      gt_group <- grp_add(gt_group, gt_tbl_i)
+      gt_group <- gt::grp_add(gt_group, gt_tbl_i)
     }
   }
   
