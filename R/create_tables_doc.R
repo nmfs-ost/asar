@@ -266,7 +266,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
                 "  gt::cols_width(\n",
                 "    everything() ~ pct(20)\n",
                 "  ) |> \n",
-                " gt::gt_split(row_every_n = ", max_rows, ") |>\n",
+                " asar::gt_split(row_every_n = ", max_rows, ") |>\n",
                 " gt::grp_pull(", i, ")\n"
               ),
               label = glue::glue("tbl-{tab_shortname}", i),
@@ -435,7 +435,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
               "  gt::cols_width(\n",
               "    everything() ~ pct(20)\n",
               "  ) |> \n",
-              " gt::gt_split(row_every_n = ", max_rows, ") |>\n",
+              " asar::gt_split(row_every_n = ", max_rows, ") |>\n",
               " gt::grp_pull(", j, ")\n"
             ),
             label = glue::glue("tbl-{tab_shortname}", i, "-", j),
