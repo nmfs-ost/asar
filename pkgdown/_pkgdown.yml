@@ -4,8 +4,12 @@ navbar:
 
   components:
     home:
-      icon: fas fa-home fa-lg
+      icon: fas fa-file-alt fa-lg
       href: index.html
+      
+    overview: Project Overview
+      icon: fas fa-info-circle fa-lg
+      href: workflows-one-pager.pdf
 
     reference:
       text: Functions
@@ -23,8 +27,6 @@ navbar:
       text: Articles
       icon: fas fa-file-contract fa-lg
       menu:
-      - text: About
-        href: workflows-one-pager.pdf
       - text: Manual
         href: articles/manual.html
       - text: Markdown Notation
