@@ -131,33 +131,34 @@ create_tables_doc <- function(subdir = getwd(),
         portrait_pg_width = portrait_pg_width
       )
     )
-    
+
     # identify table length: regular (1 landscape page) or long (>1 landscape page)
     tbl_length <- ID_tbl_length_class(
       plot_name = tab_shortname,
       tables_dir = tables_dir
-      )
-    
-    table_specs <- list(tbl_orient, tbl_length)
-    
-    tbl_class <- dplyr::case_when(
-      table_specs[[1]] == "regular"    & table_specs[[2]] == "regular" ~ "reg_reg",   # 38 rows / portrait
-      table_specs[[1]] == "regular"    & table_specs[[2]] == "long"    ~ "reg_long",  # 38 rows, split / portrait
-      table_specs[[1]] == "wide"       & table_specs[[2]] == "regular" ~ "wide_reg",  # 28 rows / landscape
-      table_specs[[1]] == "wide"       & table_specs[[2]] == "long"    ~ "wide_long", # 28 rows, split / landscape
-      table_specs[[1]] == "extra-wide" & table_specs[[2]] == "regular" ~ "ewide_reg", # 28 rows, split / landscape
-      table_specs[[1]] == "extra-wide" & table_specs[[2]] == "long"    ~ "ewide_long", # 28 rows, split / landscape
-      TRUE                                                             ~ "unknown"
     )
-    
-    if (tbl_class == "unknown"){
+
+    table_specs <- list(tbl_orient, tbl_length)
+
+    tbl_class <- dplyr::case_when(
+      table_specs[[1]] == "regular" & table_specs[[2]] == "regular" ~ "reg_reg", # 38 rows / portrait
+      table_specs[[1]] == "regular" & table_specs[[2]] == "long" ~ "reg_long", # 38 rows, split / portrait
+      table_specs[[1]] == "wide" & table_specs[[2]] == "regular" ~ "wide_reg", # 28 rows / landscape
+      table_specs[[1]] == "wide" & table_specs[[2]] == "long" ~ "wide_long", # 28 rows, split / landscape
+      table_specs[[1]] == "extra-wide" & table_specs[[2]] == "regular" ~ "ewide_reg", # 28 rows, split / landscape
+      table_specs[[1]] == "extra-wide" & table_specs[[2]] == "long" ~ "ewide_long", # 28 rows, split / landscape
+      TRUE ~ "unknown"
+    )
+
+    if (tbl_class == "unknown") {
       cli::cli_abort("Unknown table class. Check table is an acceptable `gt` table.")
     }
-    
+
     # set max number of rows per table based on orientation
     max_rows <- ifelse(tbl_orient == "regular",
-                       38, # max rows for portrait
-                       28) # max rows for landscape
+      38, # max rows for portrait
+      28
+    ) # max rows for landscape
 
     ## import table, caption
     ## do this for all tables
@@ -181,11 +182,12 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     if (tbl_class == "reg_reg") {
       tables_doc_plot_setup2 <- paste0(
         add_chunk(
-          glue::glue("{tab_shortname}_table |>\n",
-                     "    gt::cols_width(\n",
-                     "      everything() ~ pct(20)\n",
-                     "    ) \n"
-                     ),
+          glue::glue(
+            "{tab_shortname}_table |>\n",
+            "    gt::cols_width(\n",
+            "      everything() ~ pct(20)\n",
+            "    ) \n"
+          ),
           label = glue::glue("tbl-{tab_shortname}"),
           # add_option = TRUE,
           chunk_option = c(
@@ -200,7 +202,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
         "\n"
       )
     }
-    
+
     ## add table if it is intact, rotated on a landscape page
     if (tbl_class == "wide_reg") {
       tables_doc_plot_setup2 <- paste0(
@@ -237,56 +239,58 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     ## add table if it is long enough to be shown on >1 portrait ("reg_long") OR landscape ("wide_long") page
     ### only differences: latter has landscape braces and narrower cols
     if (tbl_class == "reg_long" | tbl_class == "wide_long") {
-        # identify number of tables in rda
-        load(fs::path(tables_dir, "tables", tab))
-        # split_tables <- length(table_list)
-        # identify number of tables that each split table must be further split
-        # into, with different rows per table
-        split_table_rows <- length(rda[[1]]$`_data`[[1]])
-        split_tables_rowwise <- ceiling(split_table_rows/max_rows)
-        
+      # identify number of tables in rda
+      load(fs::path(tables_dir, "tables", tab))
+      # split_tables <- length(table_list)
+      # identify number of tables that each split table must be further split
+      # into, with different rows per table
+      split_table_rows <- length(rda[[1]]$`_data`[[1]])
+      split_tables_rowwise <- ceiling(split_table_rows / max_rows)
+
       # prepare text for chunk that will display split tables
       tables_doc_plot_setup2 <- ""
       for (i in 1:as.numeric(split_tables_rowwise)) {
-          # add a chunk for each table
+        # add a chunk for each table
         tables_doc_plot_setup2 <- paste0(
-            tables_doc_plot_setup2,
-            # add landscape braces before R chunk if tbl_class == "wide_long"
-            ifelse(tbl_class == "wide_long",
-                   "::: {.landscape}\n\n",
-                   ""),
-            add_chunk(
-              paste0(
-                "# plot table ", i, "\n",
-                tab_shortname, "_table |>\n",
-                "  gt::tab_options(\n",
-                "    table.width = pct(100),\n",
-                "    table.layout = 'auto'\n",
-                "  ) |>\n",
-                "  gt::cols_width(\n",
-                "    everything() ~ pct(20)\n",
-                "  ) |> \n",
-                " asar::gt_split(row_every_n = ", max_rows, ") |>\n",
-                " gt::grp_pull(", i, ")\n"
-              ),
-              label = glue::glue("tbl-{tab_shortname}", i),
-              add_option = TRUE,
-              chunk_option = c(
-                "echo: false",
-                glue::glue(
-                  "tbl-cap: !expr paste0({tab_shortname}_cap, ' ({i} of {split_tables_rowwise})')"
-                ),
-                "tbl-pos: 't'"
-              )
+          tables_doc_plot_setup2,
+          # add landscape braces before R chunk if tbl_class == "wide_long"
+          ifelse(tbl_class == "wide_long",
+            "::: {.landscape}\n\n",
+            ""
+          ),
+          add_chunk(
+            paste0(
+              "# plot table ", i, "\n",
+              tab_shortname, "_table |>\n",
+              "  gt::tab_options(\n",
+              "    table.width = pct(100),\n",
+              "    table.layout = 'auto'\n",
+              "  ) |>\n",
+              "  gt::cols_width(\n",
+              "    everything() ~ pct(20)\n",
+              "  ) |> \n",
+              " asar::gt_split(row_every_n = ", max_rows, ") |>\n",
+              " gt::grp_pull(", i, ")\n"
             ),
-            # add landscape braces after R chunk if tbl_class == "wide_long"
-            ifelse(tbl_class == "wide_long",
-                   ":::\n",
-                   "\n")
+            label = glue::glue("tbl-{tab_shortname}", i),
+            add_option = TRUE,
+            chunk_option = c(
+              "echo: false",
+              glue::glue(
+                "tbl-cap: !expr paste0({tab_shortname}_cap, ' ({i} of {split_tables_rowwise})')"
+              ),
+              "tbl-pos: 't'"
+            )
+          ),
+          # add landscape braces after R chunk if tbl_class == "wide_long"
+          ifelse(tbl_class == "wide_long",
+            ":::\n",
+            "\n"
           )
-        }
+        )
       }
-    
+    }
+
     ## add table if it is wide enough to be rotated and shown on >1 landscape
     if (tbl_class == "ewide_reg") {
       if (split) {
@@ -301,13 +305,13 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
           plot_name = tab,
           essential_columns = 1
         )
-        
+
         # identify number of split tables
         tab <- gsub("table", "table_split", tab)
         load(fs::path(tables_dir, "tables", tab))
         split_tables <- length(table_list)
       }
-      
+
       # add a chunk to import split tables
       tables_doc_plot_setup2_import <- paste0(
         add_chunk(
@@ -363,15 +367,15 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
           ":::\n"
         )
       }
-      
+
       tables_doc_plot_setup2 <- paste0(
         tables_doc_plot_setup2_import,
         tables_doc_plot_setup2_display
       )
     }
-    
+
     ## add table if it is wide and long enough to be rotated and split across >1 landscape pages
-    if (tbl_class == "ewide_long"){
+    if (tbl_class == "ewide_long") {
       if (split) {
         # identify number of split tables
         load(fs::path(tables_dir, "tables", tab))
@@ -384,7 +388,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
           plot_name = tab,
           essential_columns = 1
         )
-        
+
         # identify number of split tables
         tab <- gsub("table", "table_split", tab)
         load(fs::path(tables_dir, "tables", tab))
@@ -393,7 +397,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
       # identify number of tables that each split table must be further split
       # into, with different rows per table
       split_table_rows <- length(table_list[[1]]$`_data`[[1]])
-      split_tables_rowwise <- ceiling(split_table_rows/max_rows)
+      split_tables_rowwise <- ceiling(split_table_rows / max_rows)
 
       # add a chunk to import split tables
       tables_doc_plot_setup2_import <- paste0(
@@ -419,48 +423,48 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
       tables_doc_plot_setup2_display <- ""
       for (i in 1:as.numeric(split_tables)) {
         for (j in 1:as.numeric(split_tables_rowwise)) {
-        # add a chunk for each table
-        tables_doc_plot_setup2_display <- paste0(
-          tables_doc_plot_setup2_display,
-          # add landscape braces before R chunk
-          "::: {.landscape}\n\n",
-          add_chunk(
-            paste0(
-              "# plot split table ", i, "\n",
-              tab_shortname, "_table_split_rda[[", i, "]] |>\n",
-              "  gt::tab_options(\n",
-              "    table.width = pct(100),\n",
-              "    table.layout = 'auto'\n",
-              "  ) |>\n",
-              "  gt::cols_width(\n",
-              "    everything() ~ pct(20)\n",
-              "  ) |> \n",
-              " asar::gt_split(row_every_n = ", max_rows, ") |>\n",
-              " gt::grp_pull(", j, ")\n"
-            ),
-            label = glue::glue("tbl-{tab_shortname}", i, "-", j),
-            add_option = TRUE,
-            chunk_option = c(
-              "echo: false",
-              glue::glue(
-                "tbl-cap: !expr paste0({tab_shortname}_cap, ' ({i} of {split_tables} tables split by column, {j} of {split_tables_rowwise} tables split by rows)')"
+          # add a chunk for each table
+          tables_doc_plot_setup2_display <- paste0(
+            tables_doc_plot_setup2_display,
+            # add landscape braces before R chunk
+            "::: {.landscape}\n\n",
+            add_chunk(
+              paste0(
+                "# plot split table ", i, "\n",
+                tab_shortname, "_table_split_rda[[", i, "]] |>\n",
+                "  gt::tab_options(\n",
+                "    table.width = pct(100),\n",
+                "    table.layout = 'auto'\n",
+                "  ) |>\n",
+                "  gt::cols_width(\n",
+                "    everything() ~ pct(20)\n",
+                "  ) |> \n",
+                " asar::gt_split(row_every_n = ", max_rows, ") |>\n",
+                " gt::grp_pull(", j, ")\n"
               ),
-              "tbl-pos: 't'"
-            )
-          ),
-          "\n",
-          # add landscape braces after R chunk
-          ":::\n"
-        )
+              label = glue::glue("tbl-{tab_shortname}", i, "-", j),
+              add_option = TRUE,
+              chunk_option = c(
+                "echo: false",
+                glue::glue(
+                  "tbl-cap: !expr paste0({tab_shortname}_cap, ' ({i} of {split_tables} tables split by column, {j} of {split_tables_rowwise} tables split by rows)')"
+                ),
+                "tbl-pos: 't'"
+              )
+            ),
+            "\n",
+            # add landscape braces after R chunk
+            ":::\n"
+          )
         }
       }
-      
+
       tables_doc_plot_setup2 <- paste0(
         tables_doc_plot_setup2_import,
         tables_doc_plot_setup2_display
       )
     }
-  
+
     paste0(
       tables_doc_plot_setup1,
       tables_doc_plot_setup2
