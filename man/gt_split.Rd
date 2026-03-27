@@ -12,7 +12,11 @@ gt_split(data, row_every_n = NULL, row_slice_i = NULL, col_slice_at = NULL)
 \verb{obj:<gt_tbl>} // \strong{required}
 
 This is the \strong{gt} table object that is commonly created through use of the
+<<<<<<< HEAD
 \code{\link[gt:gt]{gt()}} function.}
+=======
+\code{\link[gt:gt]{gt::gt()}} function.}
+>>>>>>> a8aca40 (Update functions that relied on 'flextable' and convert to 'gt' (#429))
 
 \item{row_every_n}{\emph{Split at every n rows}
 
@@ -54,12 +58,20 @@ belong to \code{rstudio/gt}. This function provides a fix to the function
 introduced by a bug in gt v1.3.0. Until this is corrected in the package, we
 are using the function here. Once this bug is patched, we will deprecate
 and remove this function from asar and direct users to use the gt package
+<<<<<<< HEAD
 version of this function.
+=======
+version of this function.rom
+>>>>>>> a8aca40 (Update functions that relied on 'flextable' and convert to 'gt' (#429))
 }
 \section{Examples}{
 
 
+<<<<<<< HEAD
 Use a subset of the \code{\link[gt:gtcars]{gtcars}} dataset to create a \strong{gt} table. Format the
+=======
+Use a subset of the \code{\link[gt:gtcars]{gt::gtcars}} dataset to create a \strong{gt} table. Format the
+>>>>>>> a8aca40 (Update functions that relied on 'flextable' and convert to 'gt' (#429))
 \code{msrp} column to display numbers as currency values, set column widths with
 \link[gt]{cols_width}, and split the table at every five rows with \code{gt_split()}.
 This creates a \code{gt_group} object containing two tables. Printing this object
@@ -77,9 +89,15 @@ yields two tables separated by a line break.
   gt_split(row_every_n = 5)
 }\if{html}{\out{</div>}}
 
+<<<<<<< HEAD
 Use a smaller subset of the \code{\link[gt:gtcars]{gtcars}} dataset to create a \strong{gt} table.
 Format the \code{msrp} column to display numbers as currency values, set the table
 width with \code{\link[gt:tab_options]{tab_options()}} and split the table at the \code{model} column This
+=======
+Use a smaller subset of the \code{\link[gt:gtcars]{gt::gtcars}} dataset to create a \strong{gt} table.
+Format the \code{msrp} column to display numbers as currency values, set the table
+width with \code{\link[gt:tab_options]{gt::tab_options()}} and split the table at the \code{model} column This
+>>>>>>> a8aca40 (Update functions that relied on 'flextable' and convert to 'gt' (#429))
 creates a \code{gt_group} object again containing two tables but this time we get
 a vertical split. Printing this object yields two tables of the same width.
 
