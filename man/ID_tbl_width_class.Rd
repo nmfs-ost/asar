@@ -19,7 +19,7 @@ be resized, rotated, and/or split across multiple pages.}
 }
 \value{
 The width class of a table: regular, wide, or extra-wide. The result
-will determine whether the table that can be rendered on a portrait page
+will determine whether the table can be rendered on a portrait page
 as-is, or if it needs to be resized, rotated, and/or split across multiple pages.
 }
 \description{

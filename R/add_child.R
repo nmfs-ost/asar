@@ -28,6 +28,10 @@ add_child <- function(x,
       "#| warning: false", "\n",
       "a <- knitr::knit_child(", "'", sec_num, "'", ", quiet = TRUE)", "\n",
       "cat(a, sep = '\\n')", "\n",
+      # ifelse checks for the 'tables' label and injects the extra code/comment
+      ifelse(label[i] == "tables", 
+             "# Force LaTeX to render all floating tables before moving to the next section\ncat('\\n\\\\clearpage\\n')\n", 
+             ""),
       "```", "\n"
     )
     child <- paste(child, child_loop, sep = "\n {{< pagebreak >}} \n")

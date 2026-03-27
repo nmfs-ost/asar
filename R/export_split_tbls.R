@@ -32,7 +32,7 @@ export_split_tbls <- function(
 
   # split tables and export
   render_lg_table(
-    report_flextable = table_rda$table,
+    report_gt = table_rda$table,
     essential_columns = essential_columns,
     tables_dir = tables_dir,
     plot_name = plot_name

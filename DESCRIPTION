@@ -25,12 +25,11 @@ Imports:
     cli,
     data.table,
     dplyr,
-    flextable,
     forstringr,
     fs,
     glue,
+    gt,
     naniar,
-    officer,
     purrr,
     stats,
     stringi,
@@ -42,7 +41,6 @@ Imports:
     utils
 Suggests: 
     ggplot2,
-    gt,
     kableExtra,
     knitr,
     parallel,
