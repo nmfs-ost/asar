@@ -616,9 +616,9 @@ create_template <- function(
           subdir = subdir,
           tables_dir = tables_dir
         )
-      } |>
-        suppressMessages() |>
-        suppressWarnings()
+      } # |>
+       # suppressMessages() |>
+       # suppressWarnings()
     } else {
       # extract name for tables.qmd from report folder
       tables_doc_name <- list.files(file_dir, pattern = "tables.qmd")
