@@ -6,6 +6,12 @@ navbar:
     home:
       icon: fas fa-home fa-lg
       href: index.html
+      
+    overview: 
+      text: Project Overview
+      icon: fas fa-info-circle
+      href: workflows-one-pager.pdf
+      target: "_blank"
 
     reference:
       text: Functions
