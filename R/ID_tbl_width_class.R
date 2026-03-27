@@ -7,7 +7,7 @@
 #' be resized, rotated, and/or split across multiple pages.
 #'
 #' @return The width class of a table: regular, wide, or extra-wide. The result
-#' will determine whether the table that can be rendered on a portrait page
+#' will determine whether the table can be rendered on a portrait page
 #' as-is, or if it needs to be resized, rotated, and/or split across multiple pages.
 #' @export
 #'
@@ -34,9 +34,14 @@ ID_tbl_width_class <- function(
     load(tables_path)
     table_rda <- rda
     rm(rda)
-    table_width <- flextable::flextable_dim(table_rda$table)[["widths"]] |>
-      as.numeric()
+    gt_table <- table_rda$table
 
+    # Set each col to 1.5"
+    col_inches <- 1.5
+
+    # Calculate total table width in inches
+    table_width <- ncol(gt_table[["_data"]]) * col_inches
+    
     # determine table width class
     if (table_width <= portrait_pg_width) {
       width_class <- "regular"

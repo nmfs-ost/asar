@@ -1,10 +1,10 @@
-test_that("Table widths calculated correctly for wide table", {
+test_that("Table length calculated correctly for regular table", {
   # make sample dataset
   library(gt)
   test_table <- data.frame(
-    year = rep(seq(1987, 2024, 1), times = 3),
-    estimate = rep(rnorm(38, mean = 1000, sd = 100), times = 6),
-    label = rep(c("spawning_biomass", "catch", "abundance", "new_col1", "new_col2", "new_col3"), each = 38)
+    year = rep(seq(1987, 2000, 1), times = 3),
+    estimate = rep(rnorm(42, mean = 1000, sd = 100)),
+    label = rep(c("spawning_biomass", "catch", "abundance"), each = 14)
   ) |>
     tidyr::pivot_wider(id_cols = year, names_from = label, values_from = estimate) |>
     gt()
@@ -18,21 +18,20 @@ test_that("Table widths calculated correctly for wide table", {
   dir.create(tbl_path)
   save(rda, file = fs::path(getwd(), "tables", "indices.abundance_table.rda"))
 
-  # wide width
-  tbl_width <- ID_tbl_width_class(
+  # regular length
+  tbl_width <- ID_tbl_length_class(
     plot_name = "indices.abundance",
-    tables_dir = getwd(),
-    portrait_pg_width = 5
+    tables_dir = getwd()
   )
 
-  expected_output <- "wide"
+  expected_output <- "regular"
   expect_equal(tbl_width, expected_output)
 
   # erase temporary testing files
   unlink(tbl_path, recursive = T)
 })
 
-test_that("Table widths calculated correctly for extra-wide table", {
+test_that("Table lengths calculated correctly for a long table", {
   # make sample dataset
   library(gt)
   test_table <- data.frame(
@@ -57,11 +56,29 @@ test_that("Table widths calculated correctly for extra-wide table", {
       "Kodiak_Alaska",
       "Bering_Sea",
       "Hawaiian_Islands",
-      "Sargasso_Sea"
-    ),
-    is_tagged = sample(c(TRUE, FALSE), 20, replace = TRUE)
+      "Sargasso_Sea",
+      "Buzzards_Bay_MA",
+      "Stellwagen_Bank",
+      "Vineyard_Sound",
+      "Great_South_Channel",
+      "Casco_Bay_Maine",
+      "Grand_Banks",
+      "Scotian_Shelf",
+      "Delaware_Bay",
+      "Pamlico_Sound_NC",
+      "Charleston_Bump_SC",
+      "Gray_Reef_GA",
+      "St_Johns_River_FL",
+      "Mobile_Bay_AL",
+      "Flower_Garden_Banks",
+      "Channel_Islands_CA",
+      "Columbia_River_Estuary",
+      "Gulf_of_the_Farallones",
+      "Aleutian_Islands",
+      "Chukchi_Sea",
+      "Beaufort_Sea"
+    )
   ) |>
-    tidyr::pivot_wider(id_cols = species, names_from = location, values_from = is_tagged) |>
     gt()
 
   rda <- list(
@@ -73,13 +90,12 @@ test_that("Table widths calculated correctly for extra-wide table", {
   dir.create(tbl_path)
   save(rda, file = fs::path(getwd(), "tables", "bnc_table.rda"))
 
-  tbl_width2 <- ID_tbl_width_class(
+  tbl_width2 <- ID_tbl_length_class(
     plot_name = "bnc",
-    tables_dir = getwd(),
-    portrait_pg_width = 5
+    tables_dir = getwd()
   )
 
-  expected_output <- "extra-wide"
+  expected_output <- "long"
   expect_equal(tbl_width2, expected_output)
 
   # erase temporary testing files

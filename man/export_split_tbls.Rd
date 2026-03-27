@@ -18,7 +18,7 @@ files.}
 
 \item{essential_columns}{The columns that will be retained between the split
 tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
-column. Example: for the indices table, this could be the year column.}
+column). Example: for the indices table, this could be the year column.}
 }
 \value{
 The number of split tables

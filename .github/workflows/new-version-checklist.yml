@@ -4,6 +4,7 @@ name: new-version-checklist
 on:
   pull_request:
     branches: [main]
+    types: [opened]
   workflow_dispatch:
 jobs:
   new-version-checklist:

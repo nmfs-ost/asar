@@ -4,14 +4,14 @@
 \alias{render_lg_table}
 \title{Split an extra-wide table into multiple tables}
 \usage{
-render_lg_table(report_flextable, essential_columns, tables_dir, plot_name)
+render_lg_table(report_gt, essential_columns, tables_dir, plot_name)
 }
 \arguments{
-\item{report_flextable}{The extra-wide flextable.}
+\item{report_gt}{The extra-wide gt table.}
 
 \item{essential_columns}{The columns that will be retained between the split
 tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
-column. Example: for the indices table, this could be the year column.}
+column). Example: for the indices table, this could be the year column.}
 
 \item{tables_dir}{The location of the "tables" folder, which contains tables
 files.}
@@ -27,14 +27,14 @@ Split an extra-wide table into multiple tables
 \examples{
 \dontrun{
 render_lg_table(
-  report_flextable = indices_table,
+  report_gt = indices_table,
   essential_columns = 1,
   tables_dir = here::here(),
   plot_name = "indices.abundance_table.rda"
 )
 
 render_lg_table(
-  report_flextable = important_table,
+  report_gt = important_table,
   essential_columns = 1:3,
   tables_dir = "data",
   plot_name = "bnc_table.rda"

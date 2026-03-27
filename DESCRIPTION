@@ -1,6 +1,6 @@
 Package: asar
 Title: Build NOAA Stock Assessment Report
-Version: 2.0.2
+Version: 2.0.3
 Authors@R: c(
     person("Samantha", "Schiano", , "samantha.schiano@noaa.gov", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0003-3744-6428")),
@@ -25,12 +25,11 @@ Imports:
     cli,
     data.table,
     dplyr,
-    flextable,
     forstringr,
     fs,
     glue,
+    gt,
     naniar,
-    officer,
     purrr,
     stats,
     stringi,
@@ -42,7 +41,6 @@ Imports:
     utils
 Suggests: 
     ggplot2,
-    gt,
     kableExtra,
     knitr,
     parallel,
