@@ -24,7 +24,7 @@ via the AKFIN database (http://www.akfin.org)."),
     locations = cells_column_labels(columns = Catch)
   ) |>
   gt::fmt_integer(columns = Year, sep_mark = "") |>
-  gt::fmt_integer(columns = Biomass:Catch, sep_mark = ",")  |>
+  gt::fmt_integer(columns = Biomass:Catch, sep_mark = ",") |>
   gt::tab_options(
     column_labels.font.weight = "bold",
     table_body.hlines.style = "none"
@@ -44,9 +44,9 @@ ptdata2 <- safe::ptdata2
 year <- format(Sys.time(), "%Y")
 date <- Sys.Date()
 
-yr_prev  <- ptdata2[1, 3]  # "2021"
-yr_curr  <- ptdata2[1, 7]  # "2022"
-yr_next  <- ptdata2[1, 9]  # "2023"
+yr_prev <- ptdata2[1, 3] # "2021"
+yr_curr <- ptdata2[1, 7] # "2022"
+yr_next <- ptdata2[1, 9] # "2023"
 
 ptdata2[-1, ] |>
   gt::gt() |>
@@ -54,15 +54,15 @@ ptdata2[-1, ] |>
     column_labels.font.weight = "bold",
     table_body.hlines.style = "none"
   ) |>
-    gt::cols_label(
-      OFL   = paste(yr_prev, "OFL"),
-      ABC   = paste(yr_prev, "ABC"),
-      TAC   = paste(yr_prev, "TAC"),
-      Catch = paste(yr_prev, "Catch"),
-      OFL.1 = paste(yr_curr, "ABC"),
-      ABC.1 = paste(yr_curr, "OFL"),
-      OFL.2 = paste(yr_next, "ABC"),
-      ABC.2 = paste(yr_next, "OFL")
+  gt::cols_label(
+    OFL   = paste(yr_prev, "OFL"),
+    ABC   = paste(yr_prev, "ABC"),
+    TAC   = paste(yr_prev, "TAC"),
+    Catch = paste(yr_prev, "Catch"),
+    OFL.1 = paste(yr_curr, "ABC"),
+    ABC.1 = paste(yr_curr, "OFL"),
+    OFL.2 = paste(yr_next, "ABC"),
+    ABC.2 = paste(yr_next, "OFL")
   ) |>
   gt::tab_footnote(
     footnote = paste0("Current as of ", date, ". Source: NMFS Alaska Regional Office Catch Accounting System via the AKFIN database (http://www.akfin.org)."),
@@ -79,5 +79,6 @@ ptdata2[-1, ] |>
     locations = list(
       cells_body(columns = c(6, 8)),
       cells_column_labels(columns = c(6, 8))
-    )  )
+    )
+  )
 ```

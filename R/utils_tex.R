@@ -111,7 +111,7 @@ create_inheader_tex <- function(species = NULL, year = NULL, subdir) {
   #   sep = ""
   # )
   # lines <- append(lines, gloss)
-  
+
   # Add float package
   lines <- append(
     lines,
