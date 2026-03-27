@@ -2,7 +2,6 @@
 <url><loc>nmfs-ost.github.io/asar/404.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/CODE_OF_CONDUCT.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/CONTRIBUTING.html</loc></url>
-<url><loc>nmfs-ost.github.io/asar/LICENSE-text.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/LICENSE.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/articles/accessibility_guide.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/articles/caps-alttext-alt-workflows.html</loc></url>
@@ -15,6 +14,7 @@
 <url><loc>nmfs-ost.github.io/asar/articles/regional_workflows.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/authors.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/index.html</loc></url>
+<url><loc>nmfs-ost.github.io/asar/reference/ID_tbl_length_class.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/ID_tbl_width_class.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/add_accessibility.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/add_alttext.html</loc></url>
@@ -36,6 +36,7 @@
 <url><loc>nmfs-ost.github.io/asar/reference/export_glossary.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/export_split_tbls.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/format_quarto.html</loc></url>
+<url><loc>nmfs-ost.github.io/asar/reference/gt_split.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/index.html</loc></url>
 <url><loc>nmfs-ost.github.io/asar/reference/render_lg_table.html</loc></url>
 </urlset>

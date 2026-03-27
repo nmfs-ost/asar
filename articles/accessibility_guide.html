@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">asar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
       </span>
     </div>
 
@@ -135,7 +135,7 @@
       <h1 data-toc-skip>Increasing Report Accessibility</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/vignettes/accessibility_guide.Rmd" class="external-link"><code>vignettes/accessibility_guide.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/v2.0.3/vignettes/accessibility_guide.Rmd" class="external-link"><code>vignettes/accessibility_guide.Rmd</code></a></small>
       <div class="hidden name"><code>accessibility_guide.Rmd</code></div>
 
     </div>
@@ -443,6 +443,14 @@ in the <code>stockplotr</code> package to view the template with
 placeholders. The same package’s <code>write_captions()</code> function
 shows how values are extracted from the model results and substituted
 into the placeholders.</p></li>
+<li><p>If you add a special character (e.g., percentage sign (%) or
+dollar sign ($); see <a href="https://en.wikibooks.org/wiki/LaTeX/Special_Characters#Other_symbols" class="external-link">full
+list on this wiki page</a>), please add two backslashes before the
+character to avoid issues compiling your report later on (specifically,
+the conversion from Quarto to LaTeX via Pandoc, and then compilation of
+the LaTeX report after running <code><a href="../reference/add_accessibility.html">add_accessibility()</a></code> or
+<code><a href="../reference/add_alttext.html">add_alttext()</a></code>). For example, “The 95% CI” would be written
+as “The 95\\% CI”.</p></li>
 </ol>
 </div>
 <div class="section level4">
