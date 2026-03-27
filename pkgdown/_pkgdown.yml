@@ -26,6 +26,10 @@ navbar:
       text: Articles
       icon: fas fa-file-contract fa-lg
       menu:
+      - text: About
+        href: workflows-one-pager.pdf
+      - text: Manual
+        href: articles/manual.html
       - text: Markdown Notation
         href: articles/markdown_notation.html
       - text: Increasing Report Accessibility
