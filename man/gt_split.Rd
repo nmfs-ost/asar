@@ -54,7 +54,7 @@ belong to \code{rstudio/gt}. This function provides a fix to the function
 introduced by a bug in gt v1.3.0. Until this is corrected in the package, we
 are using the function here. Once this bug is patched, we will deprecate
 and remove this function from asar and direct users to use the gt package
-version of this function.rom
+version of this function.
 }
 \section{Examples}{
 
