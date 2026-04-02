@@ -59,7 +59,7 @@ We encourage users writing species complex/multispecies assessments to remember 
 
 While we have striven to add sufficient options for customization, we highly discourage changing the formatting or adding many sections so that the final document does not stray far from the intended, standardized format.
 
-# Editing reports
+# Editing and writing reports
 
 ## What is the purpose of the R chunk labelled `output_and_quantities` in the skeleton?
 
@@ -91,6 +91,14 @@ Please refer to [the accessibility vignette's guide ](https://nmfs-ost.github.io
 
 Please refer to the [Acronyms and Glossary section of the accessibility vignette](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#acronyms-and-glossary) for guidance on how to use acronyms and edit the glossary.
 
+
+## Can I render individual child documents, rather than the skeleton?
+
+You can render child documents (e.g., "01_introduction.qmd") as HTML files. These files will show you if your code is working, but not what the document will look like in your final report as it lacks the formatting specified in your skeleton's YAML.
+
+As a workaround, we recommend commenting out the irrelevant code chunks in your skeleton, then rendering that file to preview the child doc. This way, the report's formatting will be preserved.
+
+You could manually add a YAML specifying the format as PDF into the child document, but this would not show the report's full formatting and would have to be removed before rendering the report skeleton.
 
 # Tables and Figures
 
