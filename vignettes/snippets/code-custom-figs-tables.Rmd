@@ -1,6 +1,4 @@
-# Code your custom tables and figures {#sec-code-custom-figs-tables}
-
-*Using the direct image insertion workflow (option 1)? Skip this step and proceed to the* [Write captions and alternative text](#sec-write-caps-alttext) *section.*
+### Code your custom tables and figures {#sec-code-custom-figs-tables}
 
 First, write the code to produce (but not export; that's a future step!) your custom tables and figures. Save each table and figure as an object (e.g., in the examples below, `your_table` and `your_figure`). Save the script somewhere safe.
 

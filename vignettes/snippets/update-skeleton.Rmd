@@ -1,6 +1,6 @@
-# Update report skeleton {#sec-update-skeleton}
+### Update report skeleton {#sec-update-skeleton}
 
-Finally, the last step is to update the report skeleton so that it imports your new custom table and figure .qmd files.
+Finally, update the report skeleton so that it imports your new custom table and figure .qmd files.
 
 Open your skeleton .qmd file. Scroll down to the chunks that contain tables and figures (their labels are "tables" and "figures", respectively).
 

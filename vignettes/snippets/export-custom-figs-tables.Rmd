@@ -1,10 +1,8 @@
-# Export your custom tables and figures {#sec-export-custom-figs-tables}
-
-*Using the direct image insertion workflow (option 1)? Skip this step and proceed to [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd).*
+### Export your custom tables and figures {#sec-export-custom-figs-tables}
 
 Next, export your tables and figures to rda files. This code was adapted from functions like `stockplotr::plot_biomass`.
 
-## Import pre-written captions and alternative text
+#### Import pre-written captions and alternative text
 
 Import your csv containing your captions and alternative text and save it as an object. Then, save the captions and alternative text as separate objects. For example:
 
@@ -42,11 +40,11 @@ my_figure_alt_text <- my_text |>
 
 > **NOTE**: Your label must match the label associated with your table or figure in your csv containing the captions and alternative text. If it does not match, the label will not be extracted properly and added to your rdas.
 
-## Make rdas
+#### Make rdas
 
 Your rdas will contain your table or figure, caption, and alternative text (if it's a figure).
 
-### Tables
+##### Tables
 
 ```{r eval=F}
 rda <- list(
@@ -55,7 +53,7 @@ rda <- list(
 )
 ```
 
-### Figures
+##### Figures
 
 ```{r eval=F}
 rda <- list(
@@ -65,7 +63,7 @@ rda <- list(
 )
 ```
 
-## Make 'figures' and 'tables' folders (if needed)
+#### Make 'figures' and 'tables' folders (if needed)
 
 Do you already have 'figures' and 'tables' folders? *Hint: both should be in your working directory.* If yes: Great! You can skip this step. If not, simply enter the code below to make a the folders.
 
@@ -74,9 +72,9 @@ dir.create(fs::path(getwd(), "figures"))
 dir.create(fs::path(getwd(), "tables"))
 ```
 
-## Export your rdas
+#### Export your rdas
 
-### Tables
+##### Tables
 
 This will produce an rda called "example_tab.rda" and save it in your 'tables' folder.
 
@@ -92,7 +90,7 @@ save(rda,
 )
 ```
 
-### Figures
+##### Figures
 
 This will produce an rda called "example_fig.rda" and save it in your 'figures' folder.
 

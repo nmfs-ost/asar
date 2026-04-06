@@ -29,8 +29,6 @@ The main way to create tables and figures for your `asar` report is by using fun
 
 ## Choose your workflow
 
-### Comparing workflows
-
 ```{r echo=F}
 data.frame(
   Option = c(
@@ -95,169 +93,70 @@ data.frame(
   )
 ```
 
-# Direct image insertion workflow (option 1)
+
+# Workflow Guides {.tabset .tabset-fade .tabset-pills}
+
+## Direct image insertion workflow (option 1)
 
 1.  Write captions and alternative text
 2.  Set up Quarto markdown (.qmd) files to display custom tables and figures
 3.  Update report skeleton
 
-{{< include snippets/write-caps-alttext.Rmd >}}
-
-{{< include snippets/set-up-qmd.Rmd >}}
-
-{{< include snippets/update-skeleton.Rmd >}}
-
-# rda-based workflow (option 2) {#rda-based-workflow-option-2}
-
-1.  [Code your custom tables and figures]
-2.  [Write captions and alternative text](#sec-write-caps-alttext)
-3.  [Export your custom tables and figures]
-4.  [Identify table width, orientation, and if splitting is necessary](#sec-id_width)
-5.  [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd)
-6.  [Update report skeleton](#sec-update-skeleton)
-
-# Direct coding-in-qmd workflow (option 3)
-
-1.  [Code your custom tables and figures]
-2.  [Write captions and alternative text](#sec-write-caps-alttext)
-3.  [Identify table width, orientation, and if splitting is necessary](#sec-id_width)
-4.  [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd)
-5.  [Update report skeleton](#sec-update-skeleton)
-
-# Code your custom tables and figures
-
-*Using the direct image insertion workflow (option 1)? Skip this step and proceed to the* [Write captions and alternative text](#sec-write-caps-alttext) *section.*
-
-First, write the code to produce (but not export; that's a future step!) your custom tables and figures. Save each table and figure as an object (e.g., in the examples below, `your_table` and `your_figure`). Save the script somewhere safe.
-
-```{r eval=F}
-# Example dataframe
-your_df <- data.frame(
-  "x" = c(1, 2, 3),
-  "y" = c(4, 5, 6)
-)
-
-# Example table
-your_table <- gt::gt(your_df)
-
-# Example figure
-your_figure <- ggplot2::ggplot(
-  your_df,
-  aes(
-    x = x,
-    y = y
-  )
-) +
-  ggplot2::geom_point()
+```{r, child="snippets/write-caps-alttext.Rmd"}
 ```
 
-# Export your custom tables and figures
-
-*Using the direct image insertion workflow (option 1)? Skip this step and proceed to [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd).*
-
-Next, export your tables and figures to rda files. This code was adapted from functions like `stockplotr::plot_biomass`.
-
-## Import pre-written captions and alternative text
-
-Import your csv containing your captions and alternative text and save it as an object. Then, save the captions and alternative text as separate objects. For example:
-
-```{r eval=F}
-# Import captions and alternative text
-my_text <- read.csv(file = "captions_alt_text.csv")
-
-# Extract table caption
-my_table_cap <- my_text |>
-  dplyr::filter(
-    label == "example_table",
-    type == "table"
-  ) |>
-  dplyr::select(caption) |>
-  as.character()
-
-# Extract figure caption
-my_figure_cap <- my_text |>
-  dplyr::filter(
-    label == "example_fig",
-    type == "figure"
-  ) |>
-  dplyr::select(caption) |>
-  as.character()
-
-# Extract figure alternative text
-my_figure_alt_text <- my_text |>
-  dplyr::filter(
-    label == "example_fig",
-    type == "figure"
-  ) |>
-  dplyr::select(alt_text) |>
-  as.character()
+```{r, child="snippets/set-up-qmd_img.Rmd"}
 ```
 
-> **NOTE**: Your label must match the label associated with your table or figure in your csv containing the captions and alternative text. If it does not match, the label will not be extracted properly and added to your rdas.
-
-## Make rdas
-
-Your rdas will contain your table or figure, caption, and alternative text (if it's a figure).
-
-### Tables
-
-```{r eval=F}
-rda <- list(
-  "table" = your_table, # your table object
-  "caption" = my_table_cap # your table caption
-)
+```{r, child="snippets/update-skeleton.Rmd"}
 ```
 
-### Figures
+## rda-based workflow (option 2) {#rda-based-workflow-option-2}
 
-```{r eval=F}
-rda <- list(
-  "figure" = your_figure, # your figure object
-  "caption" = my_figure_cap, # your figure caption
-  "alt_text" = my_figure_alt_text # your figure alternative text
-)
+1.  Code your custom tables and figures
+2.  Write captions and alternative text
+3.  Export your custom tables and figures
+4.  Identify table width, orientation, and if splitting is necessary
+5.  Set up Quarto markdown (.qmd) files to display custom tables and figures
+6.  Update report skeleton
+
+```{r, child="snippets/code-custom-figs-tables.Rmd"}
 ```
 
-## Make 'figures' and 'tables' folders (if needed)
-
-Do you already have 'figures' and 'tables' folders? *Hint: both should be in your working directory.* If yes: Great! You can skip this step. If not, simply enter the code below to make a the folders.
-
-```{r eval=FALSE}
-dir.create(fs::path(getwd(), "figures"))
-dir.create(fs::path(getwd(), "tables"))
+```{r, child='snippets/write-caps-alttext.Rmd'}
 ```
 
-## Export your rdas
-
-### Tables
-
-This will produce an rda called "example_tab.rda" and save it in your 'tables' folder.
-
-```{r eval=FALSE}
-save(rda,
-  file = fs::path(
-    getwd(), # this is your tables directory
-    "tables",
-    paste0(
-      "example_tab.rda" # your table's label
-    )
-  )
-)
+```{r, child='snippets/export-custom-figs-tables.Rmd'}
 ```
 
-### Figures
-
-This will produce an rda called "example_fig.rda" and save it in your 'figures' folder.
-
-```{r eval=FALSE}
-save(rda,
-  file = fs::path(
-    getwd(), # this is your figures directory
-    "figures",
-    paste0(
-      "example_fig.rda" # your figure's label
-    )
-  )
-)
+```{r, child='snippets/id_width.Rmd'}
 ```
 
+```{r, child='snippets/set-up-qmd_rda.Rmd'}
+```
+
+```{r, child='snippets/update-skeleton.Rmd'}
+```
+
+## Direct coding-in-qmd workflow (option 3)
+
+1.  Code your custom tables and figures
+2.  Write captions and alternative text
+3.  Identify table width, orientation, and if splitting is necessary
+4.  Set up Quarto markdown (.qmd) files to display custom tables and figures
+5.  Update report skeleton
+
+```{r, child="snippets/code-custom-figs-tables.Rmd"}
+```
+
+```{r, child='snippets/write-caps-alttext.Rmd'}
+```
+
+```{r, child='snippets/id_width.Rmd'}
+```
+
+```{r, child='snippets/set-up-qmd_coding.Rmd'}
+```
+
+```{r, child='snippets/update-skeleton.Rmd'}
+```

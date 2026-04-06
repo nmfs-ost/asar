@@ -29,8 +29,6 @@ The main way to create tables and figures for your `asar` report is by using fun
 
 ## Choose your workflow
 
-### Comparing workflows
-
 ```{r echo=F}
 data.frame(
   Option = c(
@@ -95,53 +93,57 @@ data.frame(
   )
 ```
 
-# Direct image insertion workflow (option 1)
 
-1.  [Write captions and alternative text](#sec-write-caps-alttext)
-2.  [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd)
-3.  [Update report skeleton](#sec-update-skeleton)
+# Workflow Guides {.tabset .tabset-fade .tabset-pills}
 
-{{< include snippets/write-caps-alttext.Rmd >}}
+## Direct image insertion workflow (option 1)
 
-{{< include snippets/set-up-qmd.Rmd >}}
+1.  Write captions and alternative text
+2.  Set up Quarto markdown (.qmd) files to display custom tables and figures
+3.  Update report skeleton
 
-{{< include snippets/update-skeleton.Rmd >}}
+{r, child='snippets/write-caps-alttext.Rmd'}
 
-# rda-based workflow (option 2) {#rda-based-workflow-option-2}
+{r, child='snippets/set-up-qmd.Rmd'}
 
-1.  [Code your custom tables and figures](#sec-code-custom-figs-tables)
-2.  [Write captions and alternative text](#sec-write-caps-alttext)
-3.  [Export your custom tables and figures](#sec-export-custom-figs-tables)
-4.  [Identify table width, orientation, and if splitting is necessary](#sec-id_width)
-5.  [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd)
-6.  [Update report skeleton](#sec-update-skeleton)
+{r, child='snippets/update-skeleton.Rmd'}
 
-{{< include snippets/code-custom-figs-tables.Rmd >}}
+## rda-based workflow (option 2) {#rda-based-workflow-option-2}
 
-{{< include snippets/write-caps-alttext.Rmd >}}
+1.  Code your custom tables and figures
+2.  Write captions and alternative text
+3.  Export your custom tables and figures
+4.  Identify table width, orientation, and if splitting is necessary
+5.  Set up Quarto markdown (.qmd) files to display custom tables and figures
+6.  Update report skeleton
 
-{{< include snippets/export-custom-figs-tables.Rmd >}}
+{r, child='snippets/code-custom-figs-tables.Rmd'}
 
-{{< include snippets/id_width.Rmd >}}
+{r, child='snippets/write-caps-alttext.Rmd'}
 
-{{< include snippets/set-up-qmd.Rmd >}}
+{r, child='snippets/export-custom-figs-tables.Rmd'}
 
-{{< include snippets/update-skeleton.Rmd >}}
+{r, child='snippets/id_width.Rmd'}
 
-# Direct coding-in-qmd workflow (option 3)
+{r, child='snippets/set-up-qmd.Rmd'}
 
-1.  [Code your custom tables and figures](#sec-code-custom-figs-tables)
-2.  [Write captions and alternative text](#sec-write-caps-alttext)
-3.  [Identify table width, orientation, and if splitting is necessary](#sec-id_width)
-4.  [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd)
-5.  [Update report skeleton](#sec-update-skeleton)
+{r, child='snippets/update-skeleton.Rmd'}
 
-{{< include snippets/code-custom-figs-tables.Rmd >}}
 
-{{< include snippets/write-caps-alttext.Rmd >}}
+## Direct coding-in-qmd workflow (option 3)
 
-{{< include snippets/id_width.Rmd >}}
+1.  Code your custom tables and figures
+2.  Write captions and alternative text
+3.  Identify table width, orientation, and if splitting is necessary
+4.  Set up Quarto markdown (.qmd) files to display custom tables and figures
+5.  Update report skeleton
 
-{{< include snippets/set-up-qmd.Rmd >}}
+{r, child='snippets/code-custom-figs-tables.Rmd'}
 
-{{< include snippets/update-skeleton.Rmd >}}
+{r, child='snippets/write-caps-alttext.Rmd'}
+
+{r, child='snippets/id_width.Rmd'}
+
+{r, child='snippets/set-up-qmd.Rmd'}
+
+{r, child='snippets/update-skeleton.Rmd'}

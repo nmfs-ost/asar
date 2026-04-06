@@ -1,4 +1,4 @@
-# Identify table width, orientation, and if splitting is necessary {#sec-id_width}
+### Identify table width, orientation, and if splitting is necessary {#sec-id_width}
 
 *Skip this section if you are not including custom tables.*
 
@@ -11,9 +11,9 @@ This section contains the steps to answer these questions.
 
 > **NOTE**: This workflow is reflected in the create_tables_doc.R file and its associated functions (such as `render_lg_table()`, `ID_tbl_length_class()`, `ID_tbl_width_class()`, and `export_split_tbls()`).
 
-## Table width and orientation
+#### Table width and orientation
 
-### rda-based workflow (option 2) {#sec-tbl-width-op2}
+##### rda-based workflow (option 2) {#sec-tbl-width-op2}
 
 Run this code:
 
@@ -44,7 +44,7 @@ You will see one of three outputs: regular, wide, or extra-wide.
 
 *If your output is extra-wide*, this means that you will place your table's .qmd chunk in special braces that change the page orientation to landscape *and* split it into narrower tables, each of which are displayed on separate pages. Proceed to the section [Table splitting (for extra-wide tables only)](#sec-table-splitting).
 
-### Direct coding-in-qmd workflow (option 3)
+##### Direct coding-in-qmd workflow (option 3)
 
 Assuming your table is saved as a `gt` table called `gt_table`, run this code:
 
@@ -76,7 +76,7 @@ Refer to the table above in above section ([rda-based workflow (option 2)](#rda-
 
 *If your table is extra-wide*, please start over and use the rda-based workflow. This workflow is not built for the extra steps needed to split an extra-wide table into multiple smaller tables.
 
-## Table splitting (for extra-wide tables only) {#sec-table-splitting}
+#### Table splitting (for extra-wide tables only) {#sec-table-splitting}
 
 Extra-wide tables will need to be split among multiple pages. Run this code to learn the number of tables into which your original table will be split *and* export the split tables (as a list) into a new rda:
 
