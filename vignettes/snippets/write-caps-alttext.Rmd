@@ -1,0 +1,37 @@
+# Write captions and alternative text {#sec-write-caps-alttext}
+
+Once you know what your tables and figures look like, write your own captions and alternative text. Custom tables will require captions only.
+
+## Writing text
+
+Check out the `stockplotr` ['captions_alt_text_template.csv' file](https://github.com/nmfs-ost/stockplotr/blob/master/inst/resources/captions_alt_text_template.csv), which contains the templates for each table or figure's caption/alternative text, to get a sense of how each description is structured. Then, refer to [the accessibility vignette's guide](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) to learn how to write clear and comprehensive alternative text.
+
+We recommend adding in key quantities, like maximum and minimum values, to ensure your captions and alternative text clearly describe your plots. For example, if you're showing how biomass changed over time, we recommend providing the maximum and minimum values of biomass and years shown, instead of simply stating that a figure shows biomass changing over time. Check out the code within [the `stockplotr::write_captions()` function](https://github.com/nmfs-ost/stockplotr/blob/master/R/write_captions.R) to see how we extract certain key quantities from the model results files. You are welcome to use and adapt that code to your own results to calculate key quantities, or calculate the quantities with your own code.
+
+## Saving text
+
+*Using the direct coding-in-qmd workflow (option 3)? Skip this step and proceed to [Identify table width, orientation, and if splitting is necessary](#sec-id_width).*
+
+Once written, you'll have to save your captions and alternative text.
+
+Do you have an existing captions_alt_text.csv file? If you've already generated a figure or table rda, this file should exist, most likely in your working directory. If you don't have one, run `stockplotr::write_captions()` or another `stockplotr` plotting function (e.g., `plot_biomass()`, `table_bnc()`) to generate the file.
+
+Open captions_alt_text.csv file, then add your text. The file is set up like this:
+
+-   Column 1 ("label") is a shorthand label for your figure or table. Labels should be somewhat short and exclude spaces. Examples include "kobe", "relative.biomass", and "fishing.mortality".
+-   Column 2 ("type") contains "figure" or "table".
+-   Column 3 ("caption") contains your caption.
+-   Column 4 ("alt_text") contains alternative text for figures. For tables, this column will be blank.
+
++-------------+------------+-----------------------------+--------------------------------------+
+| label       | type       | caption                     | alt_text                             |
++=============+============+=============================+======================================+
+| example_fig | figure     | Example caption for figure. | Example alternative text for figure. |
++-------------+------------+-----------------------------+--------------------------------------+
+| example_tab | table      | Example caption for table.  |                                      |
++-------------+------------+-----------------------------+--------------------------------------+
+
+: Format for csv containing table and figure captions and alternative text.
+
+> **NOTE**: If you are using the direct image insertion workflow (option 1), only the _alternative text_ will be used in your final report- not the caption. This happens because of the workaround workflow that allows us to add alt text into PDFs. The caption will be taken from your directly-coded image's markdown code, so you can leave it empty or put the same caption here; it doesn't matter. 
+

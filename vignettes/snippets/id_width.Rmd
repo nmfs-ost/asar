@@ -1,0 +1,97 @@
+# Identify table width, orientation, and if splitting is necessary {#sec-id_width}
+
+*Skip this section if you are not including custom tables.*
+
+Your next step is to get a sense of your table dimensions. You'll ask:
+
+-   Will each fit neatly into a portrait orientation, or should the page be rotated 90 degrees into landscape view?
+-   Even in landscape view, is the table too wide to be shown properly, and must be split into smaller tables?
+
+This section contains the steps to answer these questions.
+
+> **NOTE**: This workflow is reflected in the create_tables_doc.R file and its associated functions (such as `render_lg_table()`, `ID_tbl_length_class()`, `ID_tbl_width_class()`, and `export_split_tbls()`).
+
+## Table width and orientation
+
+### rda-based workflow (option 2) {#sec-tbl-width-op2}
+
+Run this code:
+
+```{r eval=F}
+my_plot_name <- "example_tab.rda" # replace this with the filename of your table rda
+tables_dir <- getwd() # replace this with the location of your tables folder
+
+ID_tbl_width_class(
+  plot_name = my_plot_name,
+  tables_dir = tables_dir,
+  portrait_pg_width = 5 # 5 inches = the threshold for maximum table width before it needs to be resized, rotated, and/or split
+)
+```
+
+You will see one of three outputs: regular, wide, or extra-wide.
+
++--------------------+:------------:+:-------------------------:+:------------:+
+| **Classification** | Regular      | Wide                      | Extra-wide   |
++--------------------+--------------+---------------------------+--------------+
+| **Table width**    | \< 5"        | at least 5" and up to 12" | \>12"        |
++--------------------+--------------+---------------------------+--------------+
+
+: Table width classification system coded in the `ID_tbl_width_class` function.
+
+*If your output is regular*, this means that you can display your table in a .qmd chunk without any additional steps. Jump to section [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd) and proceed.
+
+*If your output is wide*, this means that you will place your table's .qmd chunk in special braces that change the page orientation to landscape. Jump to section [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd) and proceed.
+
+*If your output is extra-wide*, this means that you will place your table's .qmd chunk in special braces that change the page orientation to landscape *and* split it into narrower tables, each of which are displayed on separate pages. Proceed to the section [Table splitting (for extra-wide tables only)](#sec-table-splitting).
+
+### Direct coding-in-qmd workflow (option 3)
+
+Assuming your table is saved as a `gt` table called `gt_table`, run this code:
+
+```{r eval=F}
+# Set each column width to 1.5 inches
+column_width <- 1.5
+# Calculate total table width in inches
+table_width <- ncol(gt_table[["_data"]]) * column_width
+
+# Set portrait page width to 5 inches
+portrait_pg_width <- 5
+# Determine table width class
+if (table_width <= portrait_pg_width) {
+  width_class <- "regular"
+} else {
+  if (table_width > 12) {
+    width_class <- "extra-wide"
+  } else {
+    width_class <- "wide"
+  }
+}
+
+width_class
+```
+
+Refer to the table above in above section ([rda-based workflow (option 2)](#rda-based-workflow-option-2)) to find out which category best describes your table width: regular, wide, or extra-wide.
+
+*If your table is regular or wide*, read the text below the table and jump to the appropriate section.
+
+*If your table is extra-wide*, please start over and use the rda-based workflow. This workflow is not built for the extra steps needed to split an extra-wide table into multiple smaller tables.
+
+## Table splitting (for extra-wide tables only) {#sec-table-splitting}
+
+Extra-wide tables will need to be split among multiple pages. Run this code to learn the number of tables into which your original table will be split *and* export the split tables (as a list) into a new rda:
+
+```{r eval=F}
+my_plot_name <- "example_tab.rda" # replace this with the filename of your table rda
+tables_dir <- getwd() # replace this with the location of your tables folder
+essential_cols <- 1:2 # replace this with the columns that will be retained between the split tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single column)
+
+export_split_tbls(
+  tables_dir = tables_dir,
+  plot_name = my_plot_name,
+  essential_columns = essential_cols
+)
+```
+
+If the number returned was, say, 5, then since each split table must be in its own chunk, you will need 5 chunks to show your split tables. You will also need an additional chunk to load in the data. Each table needs its own chunk, and therefore label, so that it can be cross-referenced in text.
+
+You can check out your split tables in the new rda saved in your tables_dir folder. It will have the same filename as your original rda except that it will contain "\_split" in the filename. For instance, split tables created from "example_tab.rda" will be saved in "example_tab_table_split.rda".

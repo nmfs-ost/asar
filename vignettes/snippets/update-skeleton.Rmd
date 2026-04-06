@@ -1,0 +1,42 @@
+# Update report skeleton {#sec-update-skeleton}
+
+Finally, the last step is to update the report skeleton so that it imports your new custom table and figure .qmd files.
+
+Open your skeleton .qmd file. Scroll down to the chunks that contain tables and figures (their labels are "tables" and "figures", respectively).
+
+Your "tables" chunk will look similar, if not identical, to this:
+
+````{verbatim}
+```{r, results='asis'}
+#| label: 'tables'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child("08_tables.qmd", quiet = TRUE)
+cat(a, sep = "\n")
+```
+````
+
+If you are adding custom tables, copy the two lines of code that start with "a \<- knitr::" and "cat". Paste them below the original two lines of code in the same chunk. Then, in those two new lines, make the following changes:
+
+1.  Change "a" to "b"
+2.  Replace '08_tables.qmd' with the name of your new custom .qmd
+
+For example:
+
+````{verbatim}
+```{r, results='asis'}
+#| label: 'tables'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child("08_tables.qmd", quiet = TRUE)
+cat(a, sep = "\n")
+b <- knitr::knit_child("08_tables_custom.qmd", quiet = TRUE)
+cat(b, sep = "\n")
+```
+````
+
+If you're adding custom figures, follow the same steps with the figures chunk.
+
+Save the changes to your skeleton, and you're done! Your custom tables and figures will be included in your report.
