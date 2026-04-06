@@ -109,8 +109,16 @@ Then, add this chunk to display the table in your .qmd when it's rendered:
 #| echo: false
 #| warning: false
 #| tbl-cap: !expr example_cap
+
+# the tab_options() and cols_width() lines format the table to fit the landscape page
 example_table |>
-  flextable::fit_to_width(max_width = 8) # this extra line ensures the table will be resized to a maximum of 8" wide
+  gt::tab_options(
+    table.width = pct(100),
+    table.layout = 'auto'
+  ) |>
+  gt::cols_width(
+    everything() ~ pct(20)
+  )
 ``` 
 ````
 
@@ -182,9 +190,16 @@ Now, you'll add as many chunks as you have split tables. Here's what the first o
 #| warning: false
 #| tbl-cap: !expr paste0(example_cap, '(', example_cap_split[[1]], ')') # this pastes the original table caption with the specifiers associated with table 1
 
+# the tab_options() and cols_width() lines format the table to fit the landscape page
 # plot split table 1
 example_table_rda_split[[1]] |>
-  flextable::fit_to_width(max_width = 8) # this extra line ensures the table will be resized to a maximum of 8" wide
+  gt::tab_options(
+    table.width = pct(100),
+    table.layout = 'auto'
+  ) |>
+  gt::cols_width(
+    everything() ~ pct(20)
+  )
 ``` 
 ````
 

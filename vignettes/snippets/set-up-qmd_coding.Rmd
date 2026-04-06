@@ -75,8 +75,15 @@ your_df <- data.frame(
 )
 
 # Make your table
+# the tab_options() and cols_width() lines format the table to fit the landscape page
 your_table <- gt::gt(your_df) |>
-  flextable::fit_to_width(max_width = 8) # this extra line ensures the table will be resized to a maximum of 8" wide
+  gt::tab_options(
+    table.width = pct(100),
+    table.layout = 'auto'
+  ) |>
+  gt::cols_width(
+    everything() ~ pct(20)
+  )
 
 # Show your table
 your_table
