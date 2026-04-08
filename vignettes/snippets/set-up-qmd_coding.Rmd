@@ -1,112 +1,158 @@
-### Set up Quarto markdown (.qmd) files to display custom tables and figures {#sec-set-up-qmd}
+### Add custom tables and figures {#sec-add-plots_coding}
 
-You will create one .qmd file for your tables and one .qmd file for your figures.
-
-#### Set up templates
-
-Open a blank .qmd script (in RStudio, click File -\> New File -\> Quarto Document -\> Create Empty Document (button in the bottom left corner of the popup)).
-
-Remove all text from the new document.
-
-Switch from Visual to Source mode ([instructions here](https://quarto.org/docs/visual-editor/#switching-modes)).
-
-Save this new file with a clear name in a logical location. We recommend filenames like 08_tables_custom.qmd and 09_figures_custom.qmd, then saving these files in the same report folder as the rest of your report files. We include separate workflows for tables and figures, below.
+In your 'report' folder, open your figures and tables docs (probably named something like '08_tables.qmd' and '09_figures.qmd'). Add the following code there.
 
 #### Tables
 
-Follow the instructions in the appropriate section depending on your table width: regular or wide.
+Follow the instructions in the appropriate section below based on your table classification: reg_reg, reg_long, wide_reg, wide_long, ewide_reg, or ewide_long.
 
-##### Regular table
-
-Add the following chunk to display the table in your .qmd when it's rendered:
+Regardless of the table type, you must **first** include a setup chunk to load your data and split the caption into usable objects:
 
 ````{verbatim}
-```{r} 
-#| label: 'tbl-custom1' # choose a label
-#| echo: false
-#| warning: false
-#| tbl-cap: !expr This is your table caption.
+```{r}
+#| label: 'tab-setup'
+#| include: false
 
-# Import your data
-your_df <- data.frame(
-  "x" = c(1, 2, 3),
-  "y" = c(4, 5, 6)
-)
+# Load the rda
+load(file.path(tables_dir, 'example_tab_table.rda'))
 
-# Make your table
-your_table <- gt::gt(your_df)
-
-# Show your table
-your_table
-``` 
+# Save to specific objects for the display chunks
+your_table <- rda$table
+your_cap <- rda$caption
+```
 ````
 
-If you are adding another table, regardless of size, add a page break first:
+-----
 
-```{verbatim}
-{{< pagebreak >}}
+##### Regular tables (reg_reg)
+
+*Portrait orientation, fits on one page.*
+
+Add this chunk to display the table:
+
+````{verbatim}
+```{r}
+#| label: 'tbl-custom'
+#| echo: false
+#| warning: false
+#| tbl-cap: !expr your_cap
+
+your_table |>
+  gt::cols_width(everything() ~ pct(20))
 ```
+````
 
-Keep adding as many tables as you'd like. Keep in mind that each table must have a chunk that imports it, and another chunk that displays it, as shown above.
+##### Wide tables (wide_reg)
 
-You're almost done! Proceed to the last section ([Update report skeleton](#sec-update-skeleton)) to finish adding your custom tables to your report.
+*Landscape orientation, fits on one page.*
 
-##### Wide table
+Wrap the chunk in landscape braces:
 
-Before you add your first chunk, add [landscape braces](https://quarto.org/docs/authoring/article-layout.html#landscape-mode) to ensure your table will be displayed on a landscape-oriented page:
-
-```{verbatim}
+````{verbatim}
 ::: {.landscape}
-```
 
-Then, add the following chunk to display the table in your .qmd when it's rendered:
-
-````{verbatim}
-```{r} 
-#| label: 'tbl-custom1' # choose a label
+```{r}
+#| label: 'tbl-custom-wide'
 #| echo: false
 #| warning: false
-#| tbl-cap: !expr This is your table caption.
+#| tbl-cap: !expr your_cap
 
-# Import your data
-your_df <- data.frame(
-  "x" = c(1, 2, 3),
-  "y" = c(4, 5, 6)
-)
-
-# Make your table
-# the tab_options() and cols_width() lines format the table to fit the landscape page
-your_table <- gt::gt(your_df) |>
-  gt::tab_options(
-    table.width = pct(100),
-    table.layout = 'auto'
-  ) |>
-  gt::cols_width(
-    everything() ~ pct(20)
-  )
-
-# Show your table
-your_table
-``` 
-````
-
-And add three colons to close the landscape braces:
-
-```{verbatim}
-:::
+your_table |>
+  gt::tab_options(table.width = pct(100), table.layout = 'auto') |>
+  gt::cols_width(everything() ~ pct(20))
 ```
 
-> **NOTE**: Landscape braces only work in [Quarto v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn how to check your Quarto version and update it if necessary.
+:::
+````
 
-If you are adding another table, regardless of size, add a page break first:
+##### Long tables (reg_long or wide_long)
+
+*Splits by row across multiple pages. wide_long uses landscape; reg_long uses portrait.*
+
+You will need a separate chunk for each page of the split (e.g., if `split_tables_rowwise` was 2, repeat this twice, changing the index in `grp_pull`).
+
+> **Note**: For wide_long, wrap the chunk in `::: {.landscape}` braces, as shown for wide_reg tables, above.
+
+````{verbatim}
+```{r}
+#| label: 'tbl-custom-long1'
+#| echo: false
+#| tbl-cap: !expr paste0(your_cap, ' (1 of 2)')
+
+your_table |>
+  gt::tab_options(table.width = pct(100), table.layout = 'auto') |>
+  gt::cols_width(everything() ~ pct(20)) |> 
+  asar::gt_split(row_every_n = 38) |> # Use 28 for wide_long
+  gt::grp_pull(1)                    # Change this index for subsequent chunks
+```
+````
+
+##### Extra-wide tables (ewide_reg)
+
+*Landscape orientation, split by column across multiple pages.*
+
+First, load the split rda:
+
+````{verbatim}
+```{r}
+#| label: 'tbl-setup-split'
+#| include: false
+load(file.path(tables_dir, 'example_tab_table_split.rda'))
+table_list_split <- table_list
+```
+````
+
+Then, for each split table in the list, create a chunk:
+
+````{verbatim}
+::: {.landscape}
+
+```{r}
+#| label: 'tbl-custom-ewide1'
+#| echo: false
+#| tbl-cap: !expr paste0(your_cap, ' (1 of 3)')
+
+table_list_split[[1]] |>
+  gt::tab_options(table.width = pct(100), table.layout = 'auto') |>
+  gt::cols_width(everything() ~ pct(20))
+```
+
+:::
+````
+
+##### Extra-wide, long tables (ewide_long)
+
+*Landscape orientation, split by both column AND row.*
+
+This requires a nested approach. You must create chunks for every combination of column-split and row-split.
+
+````{verbatim}
+::: {.landscape}
+
+```{r}
+#| label: 'tbl-custom-ewide-long1-1'
+#| echo: false
+#| tbl-cap: !expr paste0(your_cap, ' (Column split 1 of 2, Row split 1 of 3)')
+
+table_list_split[[1]] |>
+  gt::tab_options(table.width = pct(100), table.layout = 'auto') |>
+  gt::cols_width(everything() ~ pct(20)) |>
+  asar::gt_split(row_every_n = 28) |>
+  gt::grp_pull(1)
+```
+
+:::
+````
+
+##### Final step: page break
+
+If you are adding multiple tables, insert a page break between them:
 
 ```{verbatim}
 {{< pagebreak >}}
 ```
 
-Keep adding as many tables as you'd like. Keep in mind that each table must have a chunk that imports it, and another chunk that displays it, as shown above.
-
-You're almost done! Proceed to the last section ([Update report skeleton](#sec-update-skeleton)) to finish adding your custom tables to your report.
+Proceed to _________
 
 #### Figures
 

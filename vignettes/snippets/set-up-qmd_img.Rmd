@@ -1,16 +1,6 @@
-### Set up Quarto markdown (.qmd) files to display custom tables and figures {#sec-set-up-qmd}
+### Add custom tables and figures {#sec-add-plots_img}
 
-You will create one .qmd file for your tables and one .qmd file for your figures.
-
-#### Set up templates
-
-Open a blank .qmd script (in RStudio, click File -\> New File -\> Quarto Document -\> Create Empty Document (button in the bottom left corner of the popup)).
-
-Remove all text from the new document.
-
-Switch from Visual to Source mode ([instructions here](https://quarto.org/docs/visual-editor/#switching-modes)).
-
-Save this new file with a clear name in a logical location. We recommend filenames like 08_tables_custom.qmd and 09_figures_custom.qmd, then saving these files in the same report folder as the rest of your report files. We include separate workflows for tables and figures, below.
+In your 'report' folder, open your figures and tables docs (probably named something like '08_tables.qmd' and '09_figures.qmd'). Add the following code there.
 
 #### Identify page orientation
 

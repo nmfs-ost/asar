@@ -83,9 +83,9 @@ You should see one of six outputs: reg_reg, reg_long, wide_reg, wide_long, ewide
 
 **Regular-length tables**
 
-*If your output is reg_reg*, you can display your table in a .qmd chunk without any additional steps. Jump to section [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd) and proceed.
+*If your output is reg_reg*, you can display your table in a .qmd chunk without any additional steps. Jump to section [Add custom tables and figures](#sec-add-plots) and proceed.
 
-*If your output is wide_reg*, you will place your table's .qmd chunk in special braces that change the page orientation to landscape. Jump to section [Set up Quarto markdown (.qmd) files to display custom tables and figures](#sec-set-up-qmd) and proceed.
+*If your output is wide_reg*, you will place your table's .qmd chunk in special braces that change the page orientation to landscape. Jump to section [Add custom tables and figures](#sec-add-plots) and proceed.
 
 *If your output is ewide_reg*, you will place your table's .qmd chunk in special braces that change the page orientation to landscape *and* split it into narrower tables, each of which are displayed on separate pages. Proceed to the section [Table splitting (for extra-wide tables only)](#sec-table-splitting).
 

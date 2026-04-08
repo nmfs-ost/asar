@@ -99,12 +99,12 @@ data.frame(
 ## Direct image insertion workflow (option 1)
 
 1.  Write captions and alternative text
-2.  Set up Quarto markdown (.qmd) files to display custom tables and figures
+2.  Add custom tables and figures
 3.  Update report skeleton
 
 {r, child='snippets/write-caps-alttext.Rmd'}
 
-{r, child='snippets/set-up-qmd.Rmd'}
+{r, child='snippets/add-plots.Rmd'}
 
 {r, child='snippets/update-skeleton.Rmd'}
 
@@ -114,7 +114,7 @@ data.frame(
 2.  Write captions and alternative text
 3.  Export your custom tables and figures
 4.  Identify table width, orientation, and if splitting is necessary
-5.  Set up Quarto markdown (.qmd) files to display custom tables and figures
+5.  Add custom tables and figures
 6.  Update report skeleton
 
 {r, child='snippets/code-custom-figs-tables.Rmd'}
@@ -125,7 +125,7 @@ data.frame(
 
 {r, child='snippets/id_width.Rmd'}
 
-{r, child='snippets/set-up-qmd.Rmd'}
+{r, child='snippets/add-plots.Rmd'}
 
 {r, child='snippets/update-skeleton.Rmd'}
 
@@ -135,7 +135,7 @@ data.frame(
 1.  Code your custom tables and figures
 2.  Write captions and alternative text
 3.  Identify table width, orientation, and if splitting is necessary
-4.  Set up Quarto markdown (.qmd) files to display custom tables and figures
+4.  Add custom tables and figures
 5.  Update report skeleton
 
 {r, child='snippets/code-custom-figs-tables.Rmd'}
@@ -144,6 +144,6 @@ data.frame(
 
 {r, child='snippets/id_width.Rmd'}
 
-{r, child='snippets/set-up-qmd.Rmd'}
+{r, child='snippets/add-plots.Rmd'}
 
 {r, child='snippets/update-skeleton.Rmd'}

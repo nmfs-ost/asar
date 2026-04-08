@@ -1,26 +1,16 @@
-### Set up Quarto markdown (.qmd) files to display custom tables and figures {#sec-set-up-qmd}
+### Add custom tables and figures {#sec-add-plots_rda}
 
-You will create one .qmd file for your tables and one .qmd file for your figures.
-
-#### Set up templates
-
-Open a blank .qmd script (in RStudio, click File -\> New File -\> Quarto Document -\> Create Empty Document (button in the bottom left corner of the popup)).
-
-Remove all text from the new document.
-
-Switch from Visual to Source mode ([instructions here](https://quarto.org/docs/visual-editor/#switching-modes)).
-
-Save this new file with a clear name in a logical location. We recommend filenames like 08_tables_custom.qmd and 09_figures_custom.qmd, then saving these files in the same report folder as the rest of your report files. We include separate workflows for tables and figures, below.
+In your 'report' folder, open your figures and tables docs (probably named something like '08_tables.qmd' and '09_figures.qmd'). Add the following code there.
 
 #### Tables
 
-In your tables doc, add your first R chunk (shown below). This chunk is used to establish your tables_dir folder and load the library needed to plot your tables (`gt`).
+In your tables doc, add your first R chunk (shown below). This chunk is used to establish your `tables_dir` folder and load the library needed to plot your tables (`gt`).
 
 Click the following links to learn more about [cross-references](https://quarto.org/docs/computations/execution-options.html) (label) and [chunk options](https://quarto.org/docs/computations/execution-options.html) (echo, warning, etc.).
 
 ````{verbatim}
 ```{r} 
-#| label: 'set-rda-dir-tbls-custom' # you can set this label as you wish, as long as it's not repeated in any other R chunk in, for instance, the 08_tables.qmd or 09_figures.qmd files. Labels are used for cross-referencing in your report text.
+#| label: 'set-rda-dir-tbls-custom' 
 #| echo: false
 #| warning: false
 #| include: false
@@ -29,11 +19,11 @@ tables_dir <- "C:/path/to/your/tables" # set the path to your tables_dir
 ``` 
 ````
 
-Now, follow the instructions in the appropriate section depending on your table width: regular, wide, or extra wide.
+Now, follow the instructions in the appropriate section depending on your table classification: **regular**, **wide**, **long**, **extra-wide**, or **extra-wide and long**.
 
-##### Regular table
+##### Regular table (`reg_reg`)
 
-Add the following chunk to your script to import your table's rda and save objects containing the table and caption:
+Add the following chunk to import your table's rda and save objects containing the table and caption:
 
 ````{verbatim}
 ```{r} 
@@ -52,77 +42,40 @@ example_cap <- example_table_rda$caption
 ``` 
 ````
 
-Then, add this chunk to display the table in your .qmd when it's rendered:
+Then, add this chunk to display the table:
 
 ````{verbatim}
 ```{r} 
-#| label: 'tbl-custom1' # choose a label
+#| label: 'tbl-custom1' 
 #| echo: false
 #| warning: false
 #| tbl-cap: !expr example_cap
+
 example_table
 ``` 
 ````
 
-If you are adding another table, regardless of size, add a page break first:
+##### Wide table (`wide_reg`)
 
-```{verbatim}
-{{< pagebreak >}}
-```
-
-Keep adding as many tables as you'd like. Keep in mind that each table must have a chunk that imports it, and another chunk that displays it, as shown above.
-
-You're almost done! Proceed to the last section ([Update report skeleton](#sec-update-skeleton)) to finish adding your custom tables to your report.
-
-##### Wide table
-
-Add the following chunk to your script to import your table's rda and save objects containing the table and caption:
-
-````{verbatim}
-```{r} 
-#| label: 'tbl-setup-custom1' # choose a label
-#| echo: false
-#| warning: false
-#| include: false
-# load your rda and save with a table-specific name, then delete "rda"
-load(file.path(tables_dir, "example_tab.rda"))
-example_table_rda <- rda
-rm(rda)
-
-# save table, caption as separate objects
-example_table <- example_table_rda$table
-example_cap <- example_table_rda$caption
-``` 
-````
-
-Before you add your next chunk, add [landscape braces](https://quarto.org/docs/authoring/article-layout.html#landscape-mode) to ensure your table will be displayed on a landscape-oriented page:
+Import your rda using the same "Regular table" setup chunk above. Then, add [landscape braces](https://quarto.org/docs/authoring/article-layout.html#landscape-mode) and the display chunk:
 
 ```{verbatim}
 ::: {.landscape}
 ```
 
-Then, add this chunk to display the table in your .qmd when it's rendered:
-
 ````{verbatim}
 ```{r} 
-#| label: 'tbl-custom1' # choose a label
+#| label: 'tbl-custom-wide1' # choose a label
 #| echo: false
 #| warning: false
 #| tbl-cap: !expr example_cap
 
 # the tab_options() and cols_width() lines format the table to fit the landscape page
 example_table |>
-  gt::tab_options(
-    table.width = pct(100),
-    table.layout = 'auto'
-  ) |>
-  gt::cols_width(
-    everything() ~ pct(20)
-  )
+  gt::tab_options(table.width = pct(100), table.layout = 'auto') |>
+  gt::cols_width(everything() ~ pct(20))
 ``` 
 ````
-
-And add three colons to close the landscape braces:
 
 ```{verbatim}
 :::
@@ -130,92 +83,109 @@ And add three colons to close the landscape braces:
 
 > **NOTE**: Landscape braces only work in [Quarto v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn how to check your Quarto version and update it if necessary.
 
-If you are adding another table, regardless of size, add a page break first:
+##### Long table (`reg_long` or `wide_long`)
 
-```{verbatim}
-{{< pagebreak >}}
-```
+Import your rda using the "Regular table" setup chunk. Long tables are split by row using `gt_split()`. You will need one chunk per page (e.g., if you have 2 pages, repeat the display chunk twice).
 
-Keep adding as many tables as you'd like. Keep in mind that each table must have a chunk that imports it, and another chunk that displays it, as shown above.
-
-You're almost done! Proceed to the last section ([Update report skeleton](#sec-update-skeleton)) to finish adding your custom tables to your report.
-
-##### Extra-wide table
-
-Add the following chunk to your script to:
-
--   import your *original table's* rda
--   save original table's caption as a separate object
--   import your *split tables'* rda
--   save split tables' caption specifiers as a separate object
+> **NOTE**: For `wide_long` tables, wrap these chunks in `::: {.landscape}` braces. Landscape braces only work in [Quarto v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn how to check your Quarto version and update it if necessary.
 
 ````{verbatim}
 ```{r} 
-#| label: 'tbl-labels-custom1' # choose a label
+#| label: 'tbl-custom-long1' # choose a label
 #| echo: false
 #| warning: false
-#| include: false
-# load your original table rda and save with a table-specific name, then delete "rda"
-load(file.path(tables_dir, "example_tab.rda"))
-example_table_rda <- rda
-rm(rda)
+#| tbl-cap: !expr paste0(example_cap, ' (1 of 2)')
 
-# save caption as separate object
-example_cap <- example_table_rda$caption
-
-# load split table rda and save with a table-specific name, then delete "table_list"
-load(file.path(tables_dir, "example_table_split.rda"))
-example_table_rda_split <- table_list
-rm(table_list)
-
-# extract table caption specifiers
-example_cap_split <- names(example_table_rda_split)
+example_table |>
+  gt::tab_options(table.width = pct(100), table.layout = 'auto') |>
+  gt::cols_width(everything() ~ pct(20)) |>
+  asar::gt_split(row_every_n = 38) |> # Use 28 if wide_long
+  gt::grp_pull(1)                    # Use 2 for the second chunk, etc.
 ``` 
 ````
 
-Example caption specifiers could include fleets only shown in specific tables.
+##### Extra-wide table (`ewide_reg`)
 
-Before you add your next chunk, add [landscape braces](https://quarto.org/docs/authoring/article-layout.html#landscape-mode) to ensure your table will be displayed on a landscape-oriented page:
+For extra-wide tables, load the split rda. This file contains a list of tables and their associated caption specifiers.
+
+````{verbatim}
+```{r} 
+#| label: 'tbl-setup-ewide1' # choose a label
+#| echo: false
+#| warning: false
+#| include: false
+# Load the split rda
+load(file.path(tables_dir, "example_tab_table_split.rda"))
+
+# Save the list and the caption specifiers
+example_table_split <- table_list
+example_cap_split <- names(example_table_split)
+rm(table_list)
+```
+````
+
+Wrap each split table in landscape braces. Repeat the chunk below for each table in your `table_list`:
 
 ```{verbatim}
 ::: {.landscape}
 ```
 
-Now, you'll add as many chunks as you have split tables. Here's what the first one will look like:
+Then, add a chunk for each split table. Note how the caption is constructed using the specifiers:
 
 ````{verbatim}
 ```{r} 
-#| label: 'tbl-custom1' # choose a label
+#| label: 'tbl-custom-ewide1-part1' 
 #| echo: false
 #| warning: false
-#| tbl-cap: !expr paste0(example_cap, '(', example_cap_split[[1]], ')') # this pastes the original table caption with the specifiers associated with table 1
+#| tbl-cap: !expr paste0(example_cap_split, ' (1 of 2)')
 
-# the tab_options() and cols_width() lines format the table to fit the landscape page
-# plot split table 1
-example_table_rda_split[[1]] |>
-  gt::tab_options(
-    table.width = pct(100),
-    table.layout = 'auto'
-  ) |>
-  gt::cols_width(
-    everything() ~ pct(20)
-  )
-``` 
+example_table_split[[1]] |>
+  gt::tab_options(table.width = pct(100), table.layout = 'auto') |>
+  gt::cols_width(everything() ~ pct(20))
+```
 ````
-
-Copy and paste this chunk for as many split tables as you have. Then, replace the instances of "1" with the split table number (e.g., 2,3,4, etc.). In the example above, "1" occurs in the chunk options (label, tbl-cap) and the table-plotting code itself.
-
-Now, add three colons to close the landscape braces:
 
 ```{verbatim}
 :::
 ```
 
-> **NOTE**: Landscape braces only work in [Quarto v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn how to check your Quarto version and update it if necessary.
+Duplicate the "tbl-custom-ewide1-part1" chunk above, changing the label, caption, and item pulled from the example_table_split object (e.g., `example_table_split[[2]]`) to add the rest of the split tables.
 
-Keep adding as many tables as you'd like. Keep in mind that each table must have a chunk that imports it, and another chunk that displays it, as shown above.
+##### Extra-wide, long table (`ewide_long`)
 
-You're almost done! Proceed to the last section ([Update report skeleton](#sec-update-skeleton)) to finish adding your custom tables to your report.
+For tables that are both extra-wide and long, you will use the same split rda import as above, but you will also apply the row-splitting logic to each chunk:
+
+```{verbatim}
+::: {.landscape}
+```
+
+````{verbatim}
+```{r} 
+#| label: 'tbl-ewide-long-c1-r1' 
+#| echo: false
+#| tbl-cap: !expr paste0(example_cap_split, ' (1 of 2 tables split by column, 1 of 3 tables split by row)')
+
+example_table_split[[1]] |>
+  gt::tab_options(table.width = pct(100), table.layout = 'auto') |>
+  gt::cols_width(everything() ~ pct(20)) |>
+  asar::gt_split(row_every_n = 28) |>
+  gt::grp_pull(1)
+``` 
+````
+
+```{verbatim}
+:::
+```
+
+Duplicate the "tbl-ewide-long-c1-r1" chunk above, changing the label, caption, item pulled from the example_table_split object (e.g., `example_table_split[[2]]`), *and* the portion of the table split by row (e.g., `grp_pull(2)`) to add the rest of the split tables.
+
+##### Final step: page break
+
+If you are adding multiple tables, regardless of size, add a page break between them to ensure they render on separate pages:
+
+```{verbatim}
+{{< pagebreak >}}
+```
 
 #### Figures
 
@@ -272,5 +242,3 @@ If you are adding another figure, add a page break first:
 ```{verbatim}
 {{< pagebreak >}}
 ```
-
-You're almost done! Proceed to the last section ([Update report skeleton](#sec-update-skeleton)) to finish adding your custom figures to your report.
