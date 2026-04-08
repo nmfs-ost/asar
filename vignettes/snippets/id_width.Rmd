@@ -87,17 +87,17 @@ You should see one of six outputs: reg_reg, reg_long, wide_reg, wide_long, ewide
 
 *If your output is wide_reg*, you will place your table's .qmd chunk in special braces that change the page orientation to landscape. Jump to section [Add custom tables and figures](#sec-add-plots) and proceed.
 
-*If your output is ewide_reg*, you will place your table's .qmd chunk in special braces that change the page orientation to landscape *and* split it into narrower tables, each of which are displayed on separate pages. Proceed to the section [Table splitting (for extra-wide tables only)](#sec-table-splitting).
+*If your output is ewide_reg*, you will place your table's .qmd chunk in special braces that change the page orientation to landscape *and* split it into narrower tables, each of which are displayed on separate pages. Proceed to the section [Table splitting](#sec-table-splitting).
 
 **Long tables**
 
-*If your output is reg_long*, you will split your table into shorter tables, each of which are displayed on separate pages. Proceed to the section \_\_\_\_.
+*If your output is reg_long*, you will split your table into shorter tables, each of which are displayed on separate pages. Proceed to the section [Table splitting](#sec-table-splitting).
 
-*If your output is wide_long*, you will place your table's .qmd chunk in special braces that change the page orientation to landscape *and* split your table into shorter tables, each of which are displayed on separate pages. Proceed to the section \_\_\_\_\_\_.
+*If your output is wide_long*, you will place your table's .qmd chunk in special braces that change the page orientation to landscape *and* split your table into shorter tables, each of which are displayed on separate pages. Proceed to the section [Table splitting](#sec-table-splitting).
 
-*If your output is ewide_long*, you will place your table's .qmd chunk in special braces that change the page orientation to landscape; split it into narrower tables, each of which are displayed on separate pages; *and* split your table into shorter tables, each of which are displayed on separate pages. Proceed to the section \_\_\_\_\_.
+*If your output is ewide_long*, you will place your table's .qmd chunk in special braces that change the page orientation to landscape; split it into narrower tables, each of which are displayed on separate pages; *and* split your table into shorter tables, each of which are displayed on separate pages. Proceed to the section [Table splitting](#sec-table-splitting).
 
-#### Table splitting
+#### Table splitting {#sec-table-splitting}
 
 ##### Extra-wide tables
 

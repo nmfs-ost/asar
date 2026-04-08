@@ -3,11 +3,6 @@ title: "Adding Custom Tables and Figures"
 output:
   html_document:
     toc: true
-    toc_float: true
-    toc-depth: 3
-  pdf_document:
-    toc: true
-    toc-depth: 3
 vignette: >
   %\VignetteIndexEntry{Adding Custom Tables and Figures}
   %\VignetteEngine{knitr::rmarkdown}
@@ -100,7 +95,6 @@ data.frame(
 
 1.  Write captions and alternative text
 2.  Add custom tables and figures
-3.  Update report skeleton
 
 ```{r, child="snippets/write-caps-alttext.Rmd"}
 ```
@@ -115,7 +109,6 @@ data.frame(
 3.  Export your custom tables and figures
 4.  Identify table width, orientation, and if splitting is necessary
 5.  Add custom tables and figures
-6.  Update report skeleton
 
 ```{r, child="snippets/code-custom-figs-tables.Rmd"}
 ```
@@ -138,7 +131,6 @@ data.frame(
 2.  Write captions and alternative text
 3.  Identify table width, orientation, and if splitting is necessary
 4.  Add custom tables and figures
-5.  Update report skeleton
 
 ```{r, child="snippets/code-custom-figs-tables.Rmd"}
 ```
