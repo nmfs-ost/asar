@@ -42,7 +42,7 @@ stock_assessments_2025/
 
 ``` markdown
 # Example 2
-![Here is my caption to my example table.](images/my_custom_table.png){width=5in #fig-custom_table1}
+![Here is my caption to my example table.](images/my_custom_table.png){width=5in #tab-custom_table1}
 ```
 
 #### Add landscape braces (optional)

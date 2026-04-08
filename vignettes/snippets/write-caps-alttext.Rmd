@@ -6,7 +6,7 @@ Once you know what your tables and figures look like, write your own captions an
 
 Check out the `stockplotr` ['captions_alt_text_template.csv' file](https://github.com/nmfs-ost/stockplotr/blob/master/inst/resources/captions_alt_text_template.csv), which contains the templates for each table or figure's caption/alternative text, to get a sense of how each description is structured. Then, refer to [the accessibility vignette's guide](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) to learn how to write clear and comprehensive alternative text.
 
-We recommend adding in key quantities, like maximum and minimum values, to ensure your captions and alternative text clearly describe your plots. For example, if you're showing how biomass changed over time, we recommend providing the maximum and minimum values of biomass and years shown, instead of simply stating that a figure shows biomass changing over time. Check out the code within [the `stockplotr::write_captions()` function](https://github.com/nmfs-ost/stockplotr/blob/master/R/write_captions.R) to see how we extract certain key quantities from the model results files. You are welcome to use and adapt that code to your own results to calculate key quantities, or calculate the quantities with your own code.
+We recommend adding in key quantities, like maximum and minimum values, to ensure your captions and alternative text clearly describe your plots. For example, if you're showing how biomass changed over time, we recommend providing the maximum and minimum values of biomass and years shown, instead of simply stating that a figure shows biomass changing over time. Check out the ["How captions and alternative text are generated" vignette](https://nmfs-ost.github.io/stockplotr/articles/how-caps-alttext-are-made.html) to see how we extract certain key quantities from the model results files. You are welcome to use and adapt that code to your own results to calculate key quantities, or calculate the quantities with your own code.
 
 #### Saving text
 
@@ -14,7 +14,7 @@ We recommend adding in key quantities, like maximum and minimum values, to ensur
 
 Once written, you'll have to save your captions and alternative text.
 
-Do you have an existing captions_alt_text.csv file? If you've already generated a figure or table rda, this file should exist, most likely in your working directory. If you don't have one, run `stockplotr::write_captions()` or another `stockplotr` plotting function (e.g., `plot_biomass()`, `table_bnc()`) to generate the file.
+Do you have an existing captions_alt_text.csv file? If you've already generated a figure or table rda, this file should exist, most likely in your working directory. If you don't have one, run a `stockplotr` plotting function (e.g., `plot_biomass()`, `table_bnc()`) to generate the file.
 
 Open captions_alt_text.csv file, then add your text. The file is set up like this:
 

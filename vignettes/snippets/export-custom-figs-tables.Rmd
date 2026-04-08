@@ -65,7 +65,7 @@ rda <- list(
 
 #### Make 'figures' and 'tables' folders (if needed)
 
-Do you already have 'figures' and 'tables' folders? *Hint: both should be in your working directory.* If yes: Great! You can skip this step. If not, simply enter the code below to make a the folders.
+Do you already have 'figures' and 'tables' folders? *Hint: both should be in your working directory.* If yes: Great! You can skip this step. If not, simply enter the code below to make the folders.
 
 ```{r eval=FALSE}
 dir.create(fs::path(getwd(), "figures"))

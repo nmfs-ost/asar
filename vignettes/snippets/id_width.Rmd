@@ -51,7 +51,7 @@ print(paste0("Your table dimension is ", tbl_class, ". The maximum number of tab
 tables_path <- fs::path(
     tables_dir,
     "tables",
-    paste0(plot_name, "_table.rda")
+    paste0(my_plot_name, "_table.rda")
   )
 
 load(tables_path)
