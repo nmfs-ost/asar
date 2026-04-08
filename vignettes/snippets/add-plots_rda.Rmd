@@ -2,6 +2,10 @@
 
 In your 'report' folder, open your figures and tables docs (probably named something like '08_tables.qmd' and '09_figures.qmd'). Add the following code there.
 
+
+**IMPORTANT**: The label in your captions/alt text csv must match the label in your plot's chunk options, **MINUS the "fig-" or "tab-"**. For example, the label "custom_table3" in the csv would match up properly with the "tbl-custom_table3" label in a code chunk.
+The same rule applies for figures: "custom_figure1" in the csv would match up with "fig-custom_figure1" in the chunk options' label.
+
 #### Tables
 
 In your tables doc, add your first R chunk (shown below). This chunk is used to establish your `tables_dir` folder and load the library needed to plot your tables (`gt`).
@@ -21,6 +25,8 @@ tables_dir <- "C:/path/to/your/tables" # set the path to your tables_dir
 
 Now, follow the instructions in the appropriate section depending on your table classification: **regular**, **wide**, **long**, **extra-wide**, or **extra-wide and long**.
 
+> **NOTE**: Landscape braces, used for wide and extra-wide tables, only work in [Quarto v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn how to check your Quarto version and update it if necessary.
+
 ##### Regular table (`reg_reg`)
 
 Add the following chunk to import your table's rda and save objects containing the table and caption:
@@ -32,7 +38,7 @@ Add the following chunk to import your table's rda and save objects containing t
 #| warning: false
 #| include: false
 # load your rda and save with a table-specific name, then delete "rda"
-load(file.path(tables_dir, "example_tab.rda"))
+load(file.path(tables_dir, "example_table.rda"))
 example_table_rda <- rda
 rm(rda)
 
@@ -81,13 +87,11 @@ example_table |>
 :::
 ```
 
-> **NOTE**: Landscape braces only work in [Quarto v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn how to check your Quarto version and update it if necessary.
-
 ##### Long table (`reg_long` or `wide_long`)
 
 Import your rda using the "Regular table" setup chunk. Long tables are split by row using `gt_split()`. You will need one chunk per page (e.g., if you have 2 pages, repeat the display chunk twice).
 
-> **NOTE**: For `wide_long` tables, wrap these chunks in `::: {.landscape}` braces. Landscape braces only work in [Quarto v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn how to check your Quarto version and update it if necessary.
+> **NOTE**: For `wide_long` tables, wrap these chunks in `::: {.landscape}` braces.
 
 ````{verbatim}
 ```{r} 
@@ -213,7 +217,7 @@ Add the following chunk to your script to import your figure's rda and save obje
 #| warning: false
 #| include: false
 # load your rda and save with a figure-specific name, then delete "rda"
-load(file.path(figures_dir, "example_fig.rda"))
+load(file.path(figures_dir, "example_figure.rda"))
 example_figure_rda <- rda
 rm(rda)
 

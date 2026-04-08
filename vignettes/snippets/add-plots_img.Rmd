@@ -2,6 +2,15 @@
 
 In your 'report' folder, open your figures and tables docs (probably named something like '08_tables.qmd' and '09_figures.qmd'). Add the following code there.
 
+
+**IMPORTANT**: The label in your captions/alt text csv must match the label in your plot's chunk options, **MINUS the "fig-" or "tab-"**. For example, the label "your_image_label_name" in the csv would match up properly with the "tbl-your_image_label_name" label in this code:
+
+``` rmd
+![Your caption here](your_image.png){width=4in #fig-your_image_label_name}
+```
+
+The same rule applies for tables: "custom_table2" in the csv would match up with "tbl-custom_table2" in the markdown's label.
+
 #### Identify page orientation
 
 If you're using this workflow, your table/figure should be at most 8" wide or can be shrunken to 8" wide and still be legible. Find the width of your image file. Would you prefer to show it on a page with a portrait orientation (can fit 5" width) or landscape orientation (can fit 8" width)?
@@ -72,5 +81,3 @@ If you are including more than one custom table or figure in a file, we suggest 
 ```{verbatim}
 {{< pagebreak >}}
 ```
-
-You're almost done! Proceed to the last section ([Update report skeleton](#sec-update-skeleton)) to finish adding your custom tables to your report.

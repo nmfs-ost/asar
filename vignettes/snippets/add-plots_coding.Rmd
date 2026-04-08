@@ -2,6 +2,9 @@
 
 In your 'report' folder, open your figures and tables docs (probably named something like '08_tables.qmd' and '09_figures.qmd'). Add the following code there.
 
+**IMPORTANT**: The label in your captions/alt text csv must match the label in your plot's chunk options, **MINUS the "fig-" or "tab-"**. For example, the label "custom_table1" in the csv would match up properly with the "tbl-custom_table1" label in a code chunk.
+The same rule applies for figures: "custom_figure1" in the csv would match up with "fig-custom_figure1" in the chunk options' label.
+
 #### Tables
 
 Follow the instructions in the appropriate section below based on your table classification: reg_reg, reg_long, wide_reg, wide_long, ewide_reg, or ewide_long.
@@ -147,6 +150,8 @@ table_list_split[[1]] |>
 :::
 ````
 
+The next chunk would be identical except for a different label, caption, and would have `gt::grp_pull(2)` instead of `gt::grp_pull(1)`, for instance. When adding the second split table, add `table_list_split[[2]]` instead of `table_list_split[[1]]`, then change the label, caption, and `gt::grp_pull()` as needed.
+
 ##### Final step: page break
 
 If you are adding multiple tables, insert a page break between them:
@@ -194,5 +199,3 @@ If you are adding another figure, add a page break first:
 ```{verbatim}
 {{< pagebreak >}}
 ```
-
-You're almost done! Proceed to the last section ([Update report skeleton](#sec-update-skeleton)) to finish adding your custom figures to your report.

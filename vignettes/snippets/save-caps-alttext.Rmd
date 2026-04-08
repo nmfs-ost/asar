@@ -1,0 +1,21 @@
+#### Saving text
+
+Do you have an existing captions_alt_text.csv file? If you've already generated a figure or table rda, this file should exist, most likely in your working directory. If you don't have one, run a `stockplotr` plotting function (e.g., `plot_biomass()`, `table_bnc()`) to generate the file.
+
+Open captions_alt_text.csv file, then add your text. The file is set up like this:
+
+-   Column 1 ("label") is a shorthand label for your figure or table. Labels should be somewhat short and exclude spaces. Examples include "kobe", "relative.biomass", and "fishing.mortality".
+-   Column 2 ("type") contains "figure" or "table".
+-   Column 3 ("caption") contains your caption.
+-   Column 4 ("alt_text") contains alternative text for figures. For tables, this column will be blank.
+
++-------------+------------+-----------------------------+--------------------------------------+
+| label       | type       | caption                     | alt_text                             |
++=============+============+=============================+======================================+
+| example_fig | figure     | Example caption for figure. | Example alternative text for figure. |
++-------------+------------+-----------------------------+--------------------------------------+
+| example_tab | table      | Example caption for table.  |                                      |
++-------------+------------+-----------------------------+--------------------------------------+
+
+: Format for csv containing table and figure captions and alternative text.
+

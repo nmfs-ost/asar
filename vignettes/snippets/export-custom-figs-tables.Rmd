@@ -76,7 +76,9 @@ dir.create(fs::path(getwd(), "tables"))
 
 ##### Tables
 
-This will produce an rda called "example_tab.rda" and save it in your 'tables' folder.
+This will produce an rda called "example_table.rda" and save it in your 'tables' folder.
+
+**IMPORTANT**: Your table must have "_table" before the .rda file extension. For example, "custom_table1.rda" wouldn't work, but "custom1_table.rda" would work.
 
 ```{r eval=FALSE}
 save(rda,
@@ -84,7 +86,7 @@ save(rda,
     getwd(), # this is your tables directory
     "tables",
     paste0(
-      "example_tab.rda" # your table's label
+      "example_table.rda" # your table's label
     )
   )
 )
@@ -92,7 +94,9 @@ save(rda,
 
 ##### Figures
 
-This will produce an rda called "example_fig.rda" and save it in your 'figures' folder.
+This will produce an rda called "example_figure.rda" and save it in your 'figures' folder.
+
+**IMPORTANT**: Your figure must have "_figure" before the .rda file extension. For example, "custom_figure1.rda" wouldn't work, but "custom1_figure.rda" would work.
 
 ```{r eval=FALSE}
 save(rda,
@@ -100,7 +104,7 @@ save(rda,
     getwd(), # this is your figures directory
     "figures",
     paste0(
-      "example_fig.rda" # your figure's label
+      "example_figure.rda" # your figure's label
     )
   )
 )

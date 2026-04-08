@@ -15,19 +15,19 @@ This section contains the steps to answer these questions.
 Run this code:
 
 ```{r eval=F}
-my_plot_name <- "example_tab.rda" # replace this with the filename of your table rda
+my_plot_name <- "example_table.rda" # replace this with the filename of your table rda
 tables_dir <- getwd() # replace this with the location of your tables folder
 
 # Identify table width class
 tbl_orient <- ID_tbl_width_class(
-  plot_name = my_plot_name,
+  plot_name = gsub("_table.rda", "", my_plot_name),
   tables_dir = tables_dir,
   portrait_pg_width = 5 # 5 inches = the threshold for maximum table width before it needs to be resized, rotated, and/or split
 )
 
 # Identify table length class
 tbl_length <- ID_tbl_length_class(
-      plot_name = my_plot_name,
+      plot_name = gsub("_table.rda", "", my_plot_name),
       tables_dir = tables_dir
     )
 
@@ -51,7 +51,7 @@ print(paste0("Your table dimension is ", tbl_class, ". The maximum number of tab
 tables_path <- fs::path(
     tables_dir,
     "tables",
-    paste0(my_plot_name, "_table.rda")
+    my_plot_name
   )
 
 load(tables_path)
@@ -104,7 +104,7 @@ You should see one of six outputs: reg_reg, reg_long, wide_reg, wide_long, ewide
 Extra-wide tables will need to be split among multiple pages. Run this code to learn the number of tables into which your original table will be split (by column) *and* export the split tables (as a list) into a new rda:
 
 ```{r eval=F}
-my_plot_name <- "example_tab.rda" # replace this with the filename of your table rda
+my_plot_name <- "example_table.rda" # replace this with the filename of your table rda
 tables_dir <- getwd() # replace this with the location of your tables folder
 essential_cols <- 1:2 # replace this with the columns that will be retained between the split tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single column)
 
@@ -117,7 +117,7 @@ export_split_tbls(
 
 If the number returned was, say, 5, then since each split table must be in its own chunk, you will need 5 chunks to show your split tables by column (if your table is *ewide-long*, then you must also split tables by row). You will also need an additional chunk to load in the data. Each table needs its own chunk, and therefore label, so that it can be cross-referenced in text.
 
-You can check out your split tables in the new rda saved in your tables_dir folder. It will have the same filename as your original rda except that it will contain "\_split" in the filename. For instance, split tables created from "example_tab.rda" will be saved in "example_tab_table_split.rda".
+You can check out your split tables in the new rda saved in your tables_dir folder. It will have the same filename as your original rda except that it will contain "\_split" in the filename. For instance, split tables created from "example_table.rda" will be saved in "example_table_table_split.rda".
 
 ##### Long tables
 
