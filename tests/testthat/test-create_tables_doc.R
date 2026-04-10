@@ -63,6 +63,7 @@ test_that("Creates expected start of nearly empty tables doc", {
 #   # erase temporary testing files
 #   file.remove(fs::path(getwd(), "08_tables.qmd"))
 #   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
+#   file.remove(fs::path(getwd(), "key_quantities.csv"))
 #   unlink(fs::path(getwd(), "tables"), recursive = T)
 # })
 #
@@ -94,6 +95,7 @@ test_that("Creates expected start of nearly empty tables doc", {
 #   # erase temporary testing files
 #   file.remove(fs::path(getwd(), "08_tables.qmd"))
 #   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
+#   file.remove(fs::path(getwd(), "key_quantities.csv"))
 #   unlink(fs::path(getwd(), "tables"), recursive = T)
 # })
 #
@@ -138,6 +140,7 @@ test_that("Creates expected start of nearly empty tables doc", {
 #   # erase temporary testing files
 #   file.remove(fs::path(getwd(), "08_tables.qmd"))
 #   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
+#   file.remove(fs::path(getwd(), "key_quantities.csv"))
 #   unlink(fs::path(getwd(), "tables"), recursive = T)
 #   unlink(fs::path(getwd(), "report"), recursive = T)
 # })

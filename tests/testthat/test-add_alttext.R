@@ -102,6 +102,9 @@
 #   on.exit(unlink(file.path(getwd(), "captions_alt_text.csv"),
 #     recursive = TRUE
 #   ), add = TRUE)
+#   on.exit(unlink(file.path(getwd(), "key_quantities.csv"),
+#     recursive = TRUE
+#   ), add = TRUE)
 # })
 #
 # # test_that("add_alttext() renames altered tex file.", {

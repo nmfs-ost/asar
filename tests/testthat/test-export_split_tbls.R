@@ -24,6 +24,7 @@
 #
 #   # erase temporary testing files
 #   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
+#   file.remove(fs::path(getwd(), "key_quantities.csv"))
 #   unlink(fs::path(getwd(), "tables"), recursive = T)
 # })
 #
@@ -81,6 +82,7 @@
 #
 #   # erase temporary testing files
 #   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
+#   file.remove(fs::path(getwd(), "key_quantities.csv"))
 #   unlink(fs::path(getwd(), "tables"), recursive = T)
 #
 # })
