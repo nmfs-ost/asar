@@ -1,6 +1,6 @@
 #### Saving text
 
-Do you have an existing captions_alt_text.csv file? If you've already generated a figure or table rda, this file should exist, most likely in your working directory. If you don't have one, run a `stockplotr` plotting function (e.g., `plot_biomass()`, `table_bnc()`) to generate the file.
+Do you have an existing captions_alt_text.csv file? If you've already generated a figure or table rda, this file should exist, most likely in your working directory. If you don't have one, run a `stockplotr` plotting function (e.g., `plot_biomass(make_rda = TRUE)`, `table_bnc(make_rda = TRUE)`) to generate the file.
 
 Open captions_alt_text.csv file, then add your text. The file is set up like this:
 
