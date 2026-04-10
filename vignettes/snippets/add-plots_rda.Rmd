@@ -55,6 +55,7 @@ Then, add this chunk to display the table:
 #| label: 'tbl-custom1' 
 #| echo: false
 #| warning: false
+#| eval: true
 #| tbl-cap: !expr example_cap
 
 example_table
