@@ -1,0 +1,249 @@
+### Add custom tables and figures {#sec-add-plots_rda}
+
+In your 'report' folder, open your figures and tables docs (probably named something like '08_tables.qmd' and '09_figures.qmd'). Add the following code there.
+
+
+**IMPORTANT**: The label in your captions/alt text csv must match the label in your plot's chunk options, **MINUS the "fig-" or "tab-"**. For example, the label "custom_table3" in the csv would match up properly with the "tbl-custom_table3" label in a code chunk.
+The same rule applies for figures: "custom_figure1" in the csv would match up with "fig-custom_figure1" in the chunk options' label.
+
+#### Tables
+
+In your tables doc, add your first R chunk (shown below). This chunk is used to establish your `tables_dir` folder and load the library needed to plot your tables (`gt`).
+
+Click the following links to learn more about [cross-references](https://quarto.org/docs/computations/execution-options.html) (label) and [chunk options](https://quarto.org/docs/computations/execution-options.html) (echo, warning, etc.).
+
+````{verbatim}
+```{r} 
+#| label: 'set-rda-dir-tbls-custom' 
+#| echo: false
+#| warning: false
+#| include: false
+library(gt)
+tables_dir <- "C:/path/to/your/tables" # set the path to your tables_dir
+``` 
+````
+
+Now, follow the instructions in the appropriate section depending on your table classification: **regular**, **wide**, **long**, **extra-wide**, or **extra-wide and long**.
+
+> **NOTE**: Landscape braces, used for wide and extra-wide tables, only work in [Quarto v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/). Please read [this Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn how to check your Quarto version and update it if necessary.
+
+##### Regular table (`reg_reg`)
+
+Add the following chunk to import your table's rda and save objects containing the table and caption:
+
+````{verbatim}
+```{r} 
+#| label: 'tbl-setup-custom1' # choose a label
+#| echo: false
+#| warning: false
+#| include: false
+# load your rda and save with a table-specific name, then delete "rda"
+load(file.path(tables_dir, "example_table.rda"))
+example_table_rda <- rda
+rm(rda)
+
+# save table, caption as separate objects
+example_table <- example_table_rda$table
+example_cap <- example_table_rda$caption
+``` 
+````
+
+Then, add this chunk to display the table:
+
+````{verbatim}
+```{r} 
+#| label: 'tbl-custom1' 
+#| echo: false
+#| warning: false
+#| eval: true
+#| tbl-cap: !expr example_cap
+
+example_table
+``` 
+````
+
+##### Wide table (`wide_reg`)
+
+Import your rda using the same "Regular table" setup chunk above. Then, add [landscape braces](https://quarto.org/docs/authoring/article-layout.html#landscape-mode) and the display chunk:
+
+```{verbatim}
+::: {.landscape}
+```
+
+````{verbatim}
+```{r} 
+#| label: 'tbl-custom-wide1' # choose a label
+#| echo: false
+#| warning: false
+#| tbl-cap: !expr example_cap
+
+# the tab_options() and cols_width() lines format the table to fit the landscape page
+example_table |>
+  gt::tab_options(table.width = pct(100), table.layout = 'auto') |>
+  gt::cols_width(everything() ~ pct(20))
+``` 
+````
+
+```{verbatim}
+:::
+```
+
+##### Long table (`reg_long` or `wide_long`)
+
+Import your rda using the "Regular table" setup chunk. Long tables are split by row using `gt_split()`. You will need one chunk per page (e.g., if you have 2 pages, repeat the display chunk twice).
+
+> **NOTE**: For `wide_long` tables, wrap these chunks in `::: {.landscape}` braces.
+
+````{verbatim}
+```{r} 
+#| label: 'tbl-custom-long1' # choose a label
+#| echo: false
+#| warning: false
+#| tbl-cap: !expr paste0(example_cap, ' (1 of 2)')
+
+example_table |>
+  gt::tab_options(table.width = pct(100), table.layout = 'auto') |>
+  gt::cols_width(everything() ~ pct(20)) |>
+  asar::gt_split(row_every_n = 38) |> # Use 28 if wide_long
+  gt::grp_pull(1)                    # Use 2 for the second chunk, etc.
+``` 
+````
+
+##### Extra-wide table (`ewide_reg`)
+
+For extra-wide tables, load the split rda. This file contains a list of tables and their associated caption specifiers.
+
+````{verbatim}
+```{r} 
+#| label: 'tbl-setup-ewide1' # choose a label
+#| echo: false
+#| warning: false
+#| include: false
+# Load the split rda
+load(file.path(tables_dir, "example_tab_table_split.rda"))
+
+# Save the list and the caption specifiers
+example_table_split <- table_list
+example_cap_split <- names(example_table_split)
+rm(table_list)
+```
+````
+
+Wrap each split table in landscape braces. Repeat the chunk below for each table in your `table_list`:
+
+```{verbatim}
+::: {.landscape}
+```
+
+Then, add a chunk for each split table. Note how the caption is constructed using the specifiers:
+
+````{verbatim}
+```{r} 
+#| label: 'tbl-custom-ewide1-part1' 
+#| echo: false
+#| warning: false
+#| tbl-cap: !expr paste0(example_cap_split, ' (1 of 2)')
+
+example_table_split[[1]] |>
+  gt::tab_options(table.width = pct(100), table.layout = 'auto') |>
+  gt::cols_width(everything() ~ pct(20))
+```
+````
+
+```{verbatim}
+:::
+```
+
+Duplicate the "tbl-custom-ewide1-part1" chunk above, changing the label, caption, and item pulled from the example_table_split object (e.g., `example_table_split[[2]]`) to add the rest of the split tables.
+
+##### Extra-wide, long table (`ewide_long`)
+
+For tables that are both extra-wide and long, you will use the same split rda import as above, but you will also apply the row-splitting logic to each chunk:
+
+```{verbatim}
+::: {.landscape}
+```
+
+````{verbatim}
+```{r} 
+#| label: 'tbl-ewide-long-c1-r1' 
+#| echo: false
+#| tbl-cap: !expr paste0(example_cap_split, ' (1 of 2 tables split by column, 1 of 3 tables split by row)')
+
+example_table_split[[1]] |>
+  gt::tab_options(table.width = pct(100), table.layout = 'auto') |>
+  gt::cols_width(everything() ~ pct(20)) |>
+  asar::gt_split(row_every_n = 28) |>
+  gt::grp_pull(1)
+``` 
+````
+
+```{verbatim}
+:::
+```
+
+Duplicate the "tbl-ewide-long-c1-r1" chunk above, changing the label, caption, item pulled from the example_table_split object (e.g., `example_table_split[[2]]`), *and* the portion of the table split by row (e.g., `grp_pull(2)`) to add the rest of the split tables.
+
+##### Final step: page break
+
+If you are adding multiple tables, regardless of size, add a page break between them to ensure they render on separate pages:
+
+```{verbatim}
+{{< pagebreak >}}
+```
+
+#### Figures
+
+The workflow for figures is very similar to the workflow for regular tables.
+
+In your figures doc, add your first R chunk (shown below). This chunk is used to establish your figures_dir folder.
+
+Click the following links to learn more about [cross-references](https://quarto.org/docs/computations/execution-options.html) (label) and [chunk options](https://quarto.org/docs/computations/execution-options.html) (echo, warning, etc.).
+
+````{verbatim}
+```{r} 
+#| label: 'set-rda-dir-figs-custom' # you can set this label as you wish, as long as it's not repeated in any other R chunk in, for instance, the 08_tables.qmd or 09_figures.qmd files. Labels are used for cross-referencing in your report text.
+#| echo: false
+#| warning: false
+figures_dir <- "C:/path/to/your/figures" # set the path to your figures_dir
+``` 
+````
+
+Add the following chunk to your script to import your figure's rda and save objects containing the figure, caption, and alternative text:
+
+````{verbatim}
+```{r} 
+#| label: 'fig-setup-custom1' # choose a label
+#| echo: false
+#| warning: false
+#| include: false
+# load your rda and save with a figure-specific name, then delete "rda"
+load(file.path(figures_dir, "example_figure.rda"))
+example_figure_rda <- rda
+rm(rda)
+
+# save figure, caption, and alternative text as separate objects
+example_plot <- example_figure_rda$figure
+example_cap <- example_figure_rda$caption
+example_alt_text <- example_figure_rda$alt_text
+``` 
+````
+
+Then, add this chunk to display the figure in your .qmd when it's rendered:
+
+````{verbatim}
+```{r} 
+#| label: 'fig-custom1' # choose a label
+#| echo: false
+#| warning: false
+#| fig-cap: !expr example_cap
+#| fig-alt: !expr example_alt_text
+example_plot
+``` 
+````
+
+If you are adding another figure, add a page break first:
+
+```{verbatim}
+{{< pagebreak >}}
+```
