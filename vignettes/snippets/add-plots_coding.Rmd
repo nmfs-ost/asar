@@ -76,8 +76,6 @@ your_table |>
 
 You will need a separate chunk for each page of the split. For example, if your table requires 2 pages, repeat this chunk twice, changing the index in `grp_pull(1)` to `grp_pull(2)`.
 
-> **NOTE**: For `wide_long`, wrap the chunk in `::: {.landscape}` braces.
-
 ````{verbatim}
 ```{r}
 #| label: 'tbl-custom-long-p1'
@@ -90,6 +88,14 @@ your_table |>
   asar::gt_split(row_every_n = 38) |> # Use 28 for wide_long
   gt::grp_pull(1)                    # Change this to 2 for the next page
 ```
+````
+
+> **NOTE**: For `wide_long`, wrap the chunk in `::: {.landscape}` braces. For example:
+
+````{verbatim}
+::: {.landscape}
+# code chunk shown above
+:::
 ````
 
 ##### Extra-wide tables (`ewide_reg`)
