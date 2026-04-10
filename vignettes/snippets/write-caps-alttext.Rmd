@@ -2,7 +2,7 @@
 
 Once you know what your tables and figures look like, write your own captions and alternative text. Custom tables will require captions only.
 
-#### Writing text
+#### Writing alternative text
 
 Check out the `stockplotr` ['captions_alt_text_template.csv' file](https://github.com/nmfs-ost/stockplotr/blob/master/inst/resources/captions_alt_text_template.csv), which contains the templates for each table or figure's caption/alternative text, to get a sense of how each description is structured. Then, refer to [the accessibility vignette's guide](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) to learn how to write clear and comprehensive alternative text.
 
