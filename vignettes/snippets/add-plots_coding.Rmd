@@ -7,7 +7,7 @@ The same rule applies for figures: "custom_figure1" in the csv would match up wi
 
 #### Tables
 
-Follow the instructions in the appropriate section below based on your table classification: reg_reg, reg_long, wide_reg, wide_long, ewide_reg, or ewide_long.
+Follow the instructions in the appropriate section below based on your table classification: [reg_reg](#sec-rr), [reg_long](#sec-long), [wide_reg](#sec-wr), [wide_long](#sec-long), [ewide_reg](#sec-er), or [ewide_long](#sec-el).
 
 For all table types, add a setup chunk to define your table and its caption:
 
@@ -30,7 +30,7 @@ your_cap <- "This is the caption for my custom table."
 ```
 ````
 
-##### Regular tables (`reg_reg`)
+##### Regular tables (`reg_reg`) {#sec-rr}
 
 *Portrait orientation, fits on one page.*
 
@@ -47,7 +47,7 @@ your_table
 ```
 ````
 
-##### Wide tables (`wide_reg`)
+##### Wide tables (`wide_reg`) {#sec-wr}
 
 *Landscape orientation, fits on one page.*
 
@@ -70,11 +70,13 @@ your_table |>
 :::
 ````
 
-##### Long tables (`reg_long` or `wide_long`)
+##### Long tables (`reg_long` or `wide_long`) {#sec-long}
 
 *Splits by row across multiple pages. `wide_long` uses landscape; `reg_long` uses portrait.*
 
 You will need a separate chunk for each page of the split. For example, if your table requires 2 pages, repeat this chunk twice, changing the index in `grp_pull(1)` to `grp_pull(2)`.
+
+Also, notice how `gt_split()` extracts subsets of rows from the table to ensure it fits on one page. This function is from the excellent `gt` package. There is a bug preventing the `gt` function from working as expected, so we filed an issue and submitted [a pull request that fixes the issue](https://github.com/rstudio/gt/pull/2132). Until it's resolved, we've added the fixed function to {asar} so users can access it via `asar::gt_split()`.
 
 ````{verbatim}
 ```{r}
@@ -98,7 +100,7 @@ your_table |>
 :::
 ````
 
-##### Extra-wide tables (`ewide_reg`)
+##### Extra-wide tables (`ewide_reg`) {#sec-er}
 
 *Landscape orientation, split by column across multiple pages.*
 
@@ -132,7 +134,7 @@ table_list_split[[1]] |>
 :::
 ````
 
-##### Extra-wide, long tables (`ewide_long`)
+##### Extra-wide, long tables (`ewide_long`) {#sec-el}
 
 *Landscape orientation, split by both column AND row.*
 

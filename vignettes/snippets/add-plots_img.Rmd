@@ -30,28 +30,35 @@ Next, add your image in this format ([see this Quarto documentation for more inf
 
 1.  Your report folder (path = the image name, like *image.png*)
 2.  A folder within your report folder (path = the relative filepath, like *images/image.png* if there's an images folder within report)
+3. A higher-level folder that can be referenced by formatting a filepath with two periods and a forward slash (../). This indicates "the parent folder of the current directory".
 
 Here are some examples, using the following example folder structure setup:
 
 ``` markdown
 stock_assessments_2025/
 ├── captions_alt_text.csv
+├── rockfish.jpg
 ├── report/
 │   ├── 01_executive_summary.qmd
 │   ├── 02_introduction.qmd
-│   ├── my_custom_figure.png
+│   ├── hake.png
 │   ├── images/
-│   │   ├── my_custom_table.png
+│   │   ├── sardine.png
 ```
 
 ``` markdown
 # Example 1
-![Here is my caption to my example figure.](my_custom_figure.png){width=3in #fig-custom_figure1}
+![Here is my caption to a hake figure.](hake.png){width=3in #fig-hake}
 ```
 
 ``` markdown
 # Example 2
-![Here is my caption to my example table.](images/my_custom_table.png){width=5in #tab-custom_table1}
+![Here is my caption to a sardine table.](images/sardine.png){width=5in #tab-sardine}
+```
+
+``` markdown
+# Example 3
+![Here is my caption to a rockfish figure.](../rockfish.jpg){width=5in #fig-rockfish}
 ```
 
 #### Add landscape braces (optional)
