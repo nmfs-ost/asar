@@ -2,6 +2,8 @@
 
 This step will alter your figures and tables docs (probably named something like '08_tables.qmd' and '09_figures.qmd'), located in your 'report' folder.
 
+As a reminder, this workflow assumes that you have tables and/or figures stored in rda files. If you don't have those rda files, please see the [Export your custom tables and figures](#sec-export-custom-figs-tables) section to create them.
+
 **IMPORTANT**: The label in your captions/alt text csv must match the label in your plot's chunk options, **MINUS the "fig-" or "tab-"**. For example, the label "custom_table3" in the csv would match up properly with the "tbl-custom_table3" label in a code chunk. The same rule applies for figures: "custom_figure1" in the csv would match up with "fig-custom_figure1" in the chunk options' label.
 
 #### Figures

@@ -104,7 +104,7 @@ your_table |>
 
 *Landscape orientation, split by column across multiple pages.*
 
-Because extra-wide tables are split by column, you must have already run `export_split_tbls()` to create the `_split.rda` file. Load that split file to access the list of tables:
+Because extra-wide tables are split by column, you must have already run [`export_split_tbls()`](https://github.com/nmfs-ost/asar/blob/main/R/export_split_tbls.R) to create the `_split.rda` file. Load that split file to access the list of tables:
 
 ````{verbatim}
 ```{r}
@@ -170,7 +170,7 @@ If you are adding multiple tables, insert a page break between them:
 
 #### Figures
 
-The workflow for figures is very similar to the workflow for regular tables.
+The workflow for figures is very similar to the workflow for [regular tables](#sec-rr): 1) add a chunk to define your figure, its caption, and its alternative text, and then 2) add a chunk to display the figure.
 
 In your figures doc, add the following chunk to display the figure in your .qmd when it's rendered:
 
