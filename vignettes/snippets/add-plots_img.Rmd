@@ -24,7 +24,7 @@ Next, add your image in this format ([see this Quarto documentation for more inf
 ``` markdown
 ![Your caption here](your_image.png){width=___in #fig-your_image_label_name}
 ```
-> **NOTE**: Remember that alternative text placed in this markdown format will not be put into your final report file; it must be in the captions_alt_text.csv file. However, *you must put the caption here*.
+> **NOTE**: Captions and alternative text in this markdown format will appear in your final report file. However, we **strongly encourage** adding the caption and alt text in the captions_alt_text.csv file as well, where your other figures and tables' captions and alt text are stored, for reproducibility and clarity when reusing report templates.
 
 > **NOTE**: It can be a headache to specify the correct image path. We recommend placing your files in either of these places:
 
