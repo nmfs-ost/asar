@@ -20,7 +20,7 @@ for more information about making .rda files with custom tables."><!-- mathjax -
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">asar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.4</span>
       </span>
     </div>
 
@@ -61,9 +61,6 @@ for more information about making .rda files with custom tables."><!-- mathjax -
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/manual.html">Manual</a>
-    </li>
-    <li>
       <a href="../articles/markdown_notation.html">Markdown Notation</a>
     </li>
     <li>
@@ -112,7 +109,7 @@ for more information about making .rda files with custom tables."><!-- mathjax -
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create Quarto Document of Tables</h1>
-    <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/R/create_tables_doc.R" class="external-link"><code>R/create_tables_doc.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/v2.0.4/R/create_tables_doc.R" class="external-link"><code>R/create_tables_doc.R</code></a></small>
     <div class="hidden name"><code>create_tables_doc.Rd</code></div>
     </div>
 
@@ -163,7 +160,7 @@ asar::export_split_tbls with your preferred essential_columns value.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="fu">create_tables_doc</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  subdir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  tables_dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  tables_dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>

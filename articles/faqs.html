@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">asar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.4</span>
       </span>
     </div>
 
@@ -75,9 +75,6 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/manual.html">Manual</a>
-    </li>
-    <li>
       <a href="../articles/markdown_notation.html">Markdown Notation</a>
     </li>
     <li>
@@ -135,7 +132,7 @@
       <h1 data-toc-skip>Frequently Asked Questions (FAQs)</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/vignettes/faqs.Rmd" class="external-link"><code>vignettes/faqs.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/v2.0.4/vignettes/faqs.Rmd" class="external-link"><code>vignettes/faqs.Rmd</code></a></small>
       <div class="hidden name"><code>faqs.Rmd</code></div>
 
     </div>
@@ -207,7 +204,7 @@ standardized format.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="editing-reports">Editing reports<a class="anchor" aria-label="anchor" href="#editing-reports"></a>
+<h2 id="editing-and-writing-reports">Editing and writing reports<a class="anchor" aria-label="anchor" href="#editing-and-writing-reports"></a>
 </h2>
 <div class="section level3">
 <h3 id="what-is-the-purpose-of-the-r-chunk-labelled-output_and_quantities-in-the-skeleton">What is the purpose of the R chunk labelled
@@ -251,6 +248,30 @@ accessibility vignette’s guide</a> on editing alt text and captions.</p>
 <p>Please refer to the <a href="https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#acronyms-and-glossary">Acronyms
 and Glossary section of the accessibility vignette</a> for guidance on
 how to use acronyms and edit the glossary.</p>
+</div>
+<div class="section level3">
+<h3 id="will-my-reports-glossary-contain-all-1000-acronyms-in-the-report_glossary-tex-file">Will my report’s glossary contain all 1,000+ acronyms in the
+report_glossary.tex file?<a class="anchor" aria-label="anchor" href="#will-my-reports-glossary-contain-all-1000-acronyms-in-the-report_glossary-tex-file"></a>
+</h3>
+<p>No, only the acronyms you use in your report will appear in your
+report’s glossary.</p>
+</div>
+<div class="section level3">
+<h3 id="can-i-render-individual-child-documents-rather-than-the-skeleton">Can I render individual child documents, rather than the
+skeleton?<a class="anchor" aria-label="anchor" href="#can-i-render-individual-child-documents-rather-than-the-skeleton"></a>
+</h3>
+<p>You can render child documents (e.g., “01_introduction.qmd”) as HTML
+files. These files will show you if your code is working, but not what
+the document will look like in your final report as it lacks the
+formatting specified in your skeleton’s YAML.</p>
+<p>As a workaround, we recommend making some temporary edits to the
+skeleton. You could alter irrelevant code chunks by 1) commenting them
+out or 2) setting <code>eval: false</code> in those chunks’ options.
+Then, once you render the skeleton, the report’s formatting will be
+preserved.</p>
+<p>You could manually add a YAML specifying the format as PDF into the
+child document, but this would not show the report’s full formatting and
+would have to be removed before rendering the report skeleton.</p>
 </div>
 </div>
 <div class="section level2">
@@ -299,7 +320,7 @@ decided to return to the original workflow for two reasons.</p>
 rendering your report, Quarto will recognize your “report” folder as the
 working directory, which probably isn’t your <em>actual</em> working
 directory. This will result in a rendering error.</p></li>
-<li><p>While hardcoding <code><a href="https://here.r-lib.org/reference/here.html" class="external-link">here::here()</a></code> into the path
+<li><p>While hardcoding <code>here::here()</code> into the path
 <em>does</em> work, we recognize that some users may be unfamiliar with
 <a href="https://here.r-lib.org/" class="external-link">the <code>here</code> package</a> and
 are not able to learn another tool while already learning
@@ -310,7 +331,7 @@ use.</p></li>
 <p>If you want to ensure <code>tables_dir</code> and
 <code>figures_dir</code> are relative filepaths (which may be essential
 if you are collaborating), you can directly edit these paths yourself
-and reset them using <code><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd()</a></code>, <code><a href="https://here.r-lib.org/reference/here.html" class="external-link">here::here()</a></code>, or
+and reset them using <code><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd()</a></code>, <code>here::here()</code>, or
 some other option.</p>
 </div>
 </div>
