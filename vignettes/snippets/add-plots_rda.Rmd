@@ -23,7 +23,7 @@ Then, there are only two arguments to fill out:
 create_figures_doc(
   subdir = fs::path(getwd(), "report"), # indicates the new figures doc will be saved in your "report" folder, located in the working directory
   figures_dir = getwd() # indicates your "figures" folder is located in the working directory
-                  )
+)
 ```
 
 In your figures doc, you'll notice the following structure:
@@ -59,5 +59,5 @@ To add tables to the {asar} tables doc:
 create_tables_doc(
   subdir = fs::path(getwd(), "report"),
   tables_dir = getwd()
-  )
+)
 ```
