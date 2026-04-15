@@ -3,6 +3,9 @@ title: "Adding Custom Tables and Figures"
 output:
   html_document:
     toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
 vignette: >
   %\VignetteIndexEntry{Adding Custom Tables and Figures}
   %\VignetteEngine{knitr::rmarkdown}
