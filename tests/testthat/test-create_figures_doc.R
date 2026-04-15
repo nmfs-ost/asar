@@ -65,6 +65,7 @@ test_that("Creates expected start of figures doc with figure", {
   # erase temporary testing files
   file.remove(fs::path(getwd(), "09_figures.qmd"))
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
+  file.remove(fs::path(getwd(), "key_quantities.csv"))
   unlink(fs::path(getwd(), "figures"), recursive = T)
 })
 
@@ -109,6 +110,7 @@ test_that("Formerly empty figures doc renders correctly", {
   # erase temporary testing files
   file.remove(fs::path(getwd(), "09_figures.qmd"))
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
+  file.remove(fs::path(getwd(), "key_quantities.csv"))
   unlink(fs::path(getwd(), "figures"), recursive = T)
   unlink(fs::path(getwd(), "report"), recursive = T)
 })
@@ -143,5 +145,6 @@ test_that("Throws warning if chunks with identical labels", {
   # erase temporary testing files
   file.remove(fs::path(getwd(), "09_figures.qmd"))
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
+  file.remove(fs::path(getwd(), "key_quantities.csv"))
   unlink(fs::path(getwd(), "figures"), recursive = T)
 })

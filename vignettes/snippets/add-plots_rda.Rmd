@@ -1,0 +1,63 @@
+### Add custom tables and figures {#sec-add-plots_rda}
+
+This step will alter your figures and tables docs (probably named something like '08_tables.qmd' and '09_figures.qmd'), located in your 'report' folder.
+
+As a reminder, this workflow assumes that you have tables and/or figures stored in rda files. If you don't have those rda files, please see the [Export your custom tables and figures](#sec-export-custom-figs-tables) section to create them.
+
+**IMPORTANT**: The label in your captions/alt text csv must match the label in your plot's chunk options, **MINUS the "fig-" or "tab-"**. For example, the label "custom_table3" in the csv would match up properly with the "tbl-custom_table3" label in a code chunk. The same rule applies for figures: "custom_figure1" in the csv would match up with "fig-custom_figure1" in the chunk options' label.
+
+#### Figures
+
+To add figures, first ensure that your folder containing the figures is called "figures".
+
+Then, there are only two arguments to fill out:
+
+1.  `subdir`: The location where the *new* figures doc should be saved (we recommend your 'report' folder, so it overwrites the old, empty version)
+2.  `figures_dir`: The location of your "figures" folder
+
+```{r}
+#| label: add-figures
+#| eval: false
+#| warning: false
+#| messages: false
+create_figures_doc(
+  subdir = fs::path(getwd(), "report"), # indicates the new figures doc will be saved in your "report" folder, located in the working directory
+  figures_dir = getwd() # indicates your "figures" folder is located in the working directory
+                  )
+```
+
+In your figures doc, you'll notice the following structure:
+
+**Chunk 1** will always create an object saving the location of your `figures_dir`.
+
+Then, there will be at least two chunks for each figure. For each figure,
+
+**Chunk 2** will:
+
+-   load an rda containing a figure
+-   give the rda a specific name
+-   save the figure, caption, and alternative text as separate objects
+
+**Chunk 3** will:
+
+-   display the figure
+
+#### Tables
+
+Adding tables entails nearly the same process as described for figures. The only differences are:
+
+1.  Tables will involve captions only, whereas figure require captions and alternative text
+2.  Tables can be rotated or split across pages. See the [direct coding-in-qmd workflow (Option 3)](#sec-add-plots_coding) to learn about the logic within `create_tables_doc()` and why some tables are split into several code chunks.
+
+To add tables to the {asar} tables doc:
+
+```{r}
+#| label: add-tables
+#| eval: false
+#| warning: false
+#| messages: false
+create_tables_doc(
+  subdir = fs::path(getwd(), "report"),
+  tables_dir = getwd()
+  )
+```
