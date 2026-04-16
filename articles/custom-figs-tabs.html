@@ -132,7 +132,7 @@
       <h1 data-toc-skip>Adding Custom Tables and Figures</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/v2.0.4/vignettes/custom-figs-tabs.Rmd" class="external-link"><code>vignettes/custom-figs-tabs.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/vignettes/custom-figs-tabs.Rmd" class="external-link"><code>vignettes/custom-figs-tabs.Rmd</code></a></small>
       <div class="hidden name"><code>custom-figs-tabs.Rmd</code></div>
 
     </div>
@@ -1188,32 +1188,32 @@ create_tables_doc.R file and its associated functions (such as
 <span></span>
 <span><span class="co"># Identify table length class</span></span>
 <span><span class="va">tbl_length</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ID_tbl_length_class.html">ID_tbl_length_class</a></span><span class="op">(</span></span>
-<span>      plot_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"_table.rda"</span>, <span class="st">""</span>, <span class="va">my_plot_name</span><span class="op">)</span>,</span>
-<span>      tables_dir <span class="op">=</span> <span class="va">tables_dir</span></span>
-<span>    <span class="op">)</span></span>
+<span>  plot_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"_table.rda"</span>, <span class="st">""</span>, <span class="va">my_plot_name</span><span class="op">)</span>,</span>
+<span>  tables_dir <span class="op">=</span> <span class="va">tables_dir</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">table_specs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">tbl_orient</span>, <span class="va">tbl_length</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Identify table dimension class (length x width)</span></span>
 <span><span class="va">tbl_class</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
-<span>      <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">~</span> <span class="st">"reg_reg"</span>,</span>
-<span>      <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"long"</span> <span class="op">~</span> <span class="st">"reg_long"</span>,</span>
-<span>      <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"wide"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">~</span> <span class="st">"wide_reg"</span>,</span>
-<span>      <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"wide"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"long"</span> <span class="op">~</span> <span class="st">"wide_long"</span>,</span>
-<span>      <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"extra-wide"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">~</span> <span class="st">"ewide_reg"</span>,</span>
-<span>      <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"extra-wide"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"long"</span> <span class="op">~</span> <span class="st">"ewide_long"</span>,</span>
-<span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"unknown"</span></span>
-<span>    <span class="op">)</span></span>
+<span>  <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">~</span> <span class="st">"reg_reg"</span>,</span>
+<span>  <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"long"</span> <span class="op">~</span> <span class="st">"reg_long"</span>,</span>
+<span>  <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"wide"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">~</span> <span class="st">"wide_reg"</span>,</span>
+<span>  <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"wide"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"long"</span> <span class="op">~</span> <span class="st">"wide_long"</span>,</span>
+<span>  <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"extra-wide"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">~</span> <span class="st">"ewide_reg"</span>,</span>
+<span>  <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"extra-wide"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"long"</span> <span class="op">~</span> <span class="st">"ewide_long"</span>,</span>
+<span>  <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"unknown"</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">max_rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">tbl_orient</span> <span class="op">==</span> <span class="st">"regular"</span>, <span class="fl">38</span>, <span class="fl">28</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Your table dimension is "</span>, <span class="va">tbl_class</span>, <span class="st">". The maximum number of table rows per page is "</span>, <span class="va">max_rows</span>, <span class="st">"."</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tables_path</span> <span class="op">&lt;-</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path.html" class="external-link">path</a></span><span class="op">(</span></span>
-<span>    <span class="va">tables_dir</span>,</span>
-<span>    <span class="st">"tables"</span>,</span>
-<span>    <span class="va">my_plot_name</span></span>
-<span>  <span class="op">)</span></span>
+<span>  <span class="va">tables_dir</span>,</span>
+<span>  <span class="st">"tables"</span>,</span>
+<span>  <span class="va">my_plot_name</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="va">tables_path</span><span class="op">)</span></span>
 <span></span>
@@ -1394,7 +1394,7 @@ old, empty version)</li>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/create_figures_doc.html">create_figures_doc</a></span><span class="op">(</span></span>
 <span>  subdir <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path.html" class="external-link">path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"report"</span><span class="op">)</span>, <span class="co"># indicates the new figures doc will be saved in your "report" folder, located in the working directory</span></span>
 <span>  figures_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># indicates your "figures" folder is located in the working directory</span></span>
-<span>                  <span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
 <p>In your figures doc, you’ll notice the following structure:</p>
 <p><strong>Chunk 1</strong> will always create an object saving the
 location of your <code>figures_dir</code>.</p>
@@ -1429,7 +1429,7 @@ and why some tables are split into several code chunks.</li>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/create_tables_doc.html">create_tables_doc</a></span><span class="op">(</span></span>
 <span>  subdir <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path.html" class="external-link">path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"report"</span><span class="op">)</span>,</span>
 <span>  tables_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 </div>
@@ -1535,32 +1535,32 @@ create_tables_doc.R file and its associated functions (such as
 <span></span>
 <span><span class="co"># Identify table length class</span></span>
 <span><span class="va">tbl_length</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ID_tbl_length_class.html">ID_tbl_length_class</a></span><span class="op">(</span></span>
-<span>      plot_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"_table.rda"</span>, <span class="st">""</span>, <span class="va">my_plot_name</span><span class="op">)</span>,</span>
-<span>      tables_dir <span class="op">=</span> <span class="va">tables_dir</span></span>
-<span>    <span class="op">)</span></span>
+<span>  plot_name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"_table.rda"</span>, <span class="st">""</span>, <span class="va">my_plot_name</span><span class="op">)</span>,</span>
+<span>  tables_dir <span class="op">=</span> <span class="va">tables_dir</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">table_specs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">tbl_orient</span>, <span class="va">tbl_length</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Identify table dimension class (length x width)</span></span>
 <span><span class="va">tbl_class</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
-<span>      <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">~</span> <span class="st">"reg_reg"</span>,</span>
-<span>      <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"long"</span> <span class="op">~</span> <span class="st">"reg_long"</span>,</span>
-<span>      <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"wide"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">~</span> <span class="st">"wide_reg"</span>,</span>
-<span>      <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"wide"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"long"</span> <span class="op">~</span> <span class="st">"wide_long"</span>,</span>
-<span>      <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"extra-wide"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">~</span> <span class="st">"ewide_reg"</span>,</span>
-<span>      <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"extra-wide"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"long"</span> <span class="op">~</span> <span class="st">"ewide_long"</span>,</span>
-<span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"unknown"</span></span>
-<span>    <span class="op">)</span></span>
+<span>  <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">~</span> <span class="st">"reg_reg"</span>,</span>
+<span>  <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"long"</span> <span class="op">~</span> <span class="st">"reg_long"</span>,</span>
+<span>  <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"wide"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">~</span> <span class="st">"wide_reg"</span>,</span>
+<span>  <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"wide"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"long"</span> <span class="op">~</span> <span class="st">"wide_long"</span>,</span>
+<span>  <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"extra-wide"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"regular"</span> <span class="op">~</span> <span class="st">"ewide_reg"</span>,</span>
+<span>  <span class="va">table_specs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"extra-wide"</span> <span class="op">&amp;</span> <span class="va">table_specs</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="st">"long"</span> <span class="op">~</span> <span class="st">"ewide_long"</span>,</span>
+<span>  <span class="cn">TRUE</span> <span class="op">~</span> <span class="st">"unknown"</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">max_rows</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">tbl_orient</span> <span class="op">==</span> <span class="st">"regular"</span>, <span class="fl">38</span>, <span class="fl">28</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Your table dimension is "</span>, <span class="va">tbl_class</span>, <span class="st">". The maximum number of table rows per page is "</span>, <span class="va">max_rows</span>, <span class="st">"."</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tables_path</span> <span class="op">&lt;-</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path.html" class="external-link">path</a></span><span class="op">(</span></span>
-<span>    <span class="va">tables_dir</span>,</span>
-<span>    <span class="st">"tables"</span>,</span>
-<span>    <span class="va">my_plot_name</span></span>
-<span>  <span class="op">)</span></span>
+<span>  <span class="va">tables_dir</span>,</span>
+<span>  <span class="st">"tables"</span>,</span>
+<span>  <span class="va">my_plot_name</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/load.html" class="external-link">load</a></span><span class="op">(</span><span class="va">tables_path</span><span class="op">)</span></span>
 <span></span>
@@ -1770,7 +1770,7 @@ caption:</p>
 <span id="cb27-7"><a href="#cb27-7" tabindex="-1"></a>#| tbl-cap: !expr your_cap</span>
 <span id="cb27-8"><a href="#cb27-8" tabindex="-1"></a></span>
 <span id="cb27-9"><a href="#cb27-9" tabindex="-1"></a>your_table |&gt;</span>
-<span id="cb27-10"><a href="#cb27-10" tabindex="-1"></a>  gt::tab_options(table.width = pct(100), table.layout = 'auto') |&gt;</span>
+<span id="cb27-10"><a href="#cb27-10" tabindex="-1"></a>  gt::tab_options(table.width = pct(100), table.layout = "auto") |&gt;</span>
 <span id="cb27-11"><a href="#cb27-11" tabindex="-1"></a>  gt::cols_width(everything() ~ pct(20))</span>
 <span id="cb27-12"><a href="#cb27-12" tabindex="-1"></a>```</span>
 <span id="cb27-13"><a href="#cb27-13" tabindex="-1"></a></span>
@@ -1799,10 +1799,10 @@ fixed function to {asar} so users can access it via
 <span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a>#| tbl-cap: !expr paste0(your_cap, ' (Page 1 of 2)')</span>
 <span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a></span>
 <span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a>your_table |&gt;</span>
-<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a>  gt::tab_options(table.width = pct(100), table.layout = 'auto') |&gt;</span>
-<span id="cb28-8"><a href="#cb28-8" tabindex="-1"></a>  gt::cols_width(everything() ~ pct(20)) |&gt; </span>
+<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a>  gt::tab_options(table.width = pct(100), table.layout = "auto") |&gt;</span>
+<span id="cb28-8"><a href="#cb28-8" tabindex="-1"></a>  gt::cols_width(everything() ~ pct(20)) |&gt;</span>
 <span id="cb28-9"><a href="#cb28-9" tabindex="-1"></a>  asar::gt_split(row_every_n = 38) |&gt; # Use 28 for wide_long</span>
-<span id="cb28-10"><a href="#cb28-10" tabindex="-1"></a>  gt::grp_pull(1)                    # Change this to 2 for the next page</span>
+<span id="cb28-10"><a href="#cb28-10" tabindex="-1"></a>  gt::grp_pull(1) # Change this to 2 for the next page</span>
 <span id="cb28-11"><a href="#cb28-11" tabindex="-1"></a>```</span></code></pre></div>
 <blockquote>
 <p><strong>NOTE</strong>: For <code>wide_long</code>, wrap the chunk in
@@ -1825,7 +1825,7 @@ access the list of tables:</p>
 <span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>#| label: 'tbl-setup-ewide-split'</span>
 <span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>#| include: false</span>
 <span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a># Load the list of split tables generated by export_split_tbls()</span>
-<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a>load(file.path(tables_dir, 'example_tab_table_split.rda'))</span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a>load(file.path(tables_dir, "example_tab_table_split.rda"))</span>
 <span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a>table_list_split &lt;- table_list</span>
 <span id="cb30-7"><a href="#cb30-7" tabindex="-1"></a>```</span></code></pre></div>
 <p>Then, for each split table in the list, create a landscape chunk:</p>
@@ -1837,7 +1837,7 @@ access the list of tables:</p>
 <span id="cb31-6"><a href="#cb31-6" tabindex="-1"></a>#| tbl-cap: !expr paste0(your_cap, ' (Column split 1 of 3)')</span>
 <span id="cb31-7"><a href="#cb31-7" tabindex="-1"></a></span>
 <span id="cb31-8"><a href="#cb31-8" tabindex="-1"></a>table_list_split[[1]] |&gt;</span>
-<span id="cb31-9"><a href="#cb31-9" tabindex="-1"></a>  gt::tab_options(table.width = pct(100), table.layout = 'auto') |&gt;</span>
+<span id="cb31-9"><a href="#cb31-9" tabindex="-1"></a>  gt::tab_options(table.width = pct(100), table.layout = "auto") |&gt;</span>
 <span id="cb31-10"><a href="#cb31-10" tabindex="-1"></a>  gt::cols_width(everything() ~ pct(20))</span>
 <span id="cb31-11"><a href="#cb31-11" tabindex="-1"></a>```</span>
 <span id="cb31-12"><a href="#cb31-12" tabindex="-1"></a></span>
@@ -1858,7 +1858,7 @@ every combination of column-split and row-split.</p>
 <span id="cb32-6"><a href="#cb32-6" tabindex="-1"></a>#| tbl-cap: !expr paste0(your_cap, ' (Column split 1 of 2, Row split 1 of 3)')</span>
 <span id="cb32-7"><a href="#cb32-7" tabindex="-1"></a></span>
 <span id="cb32-8"><a href="#cb32-8" tabindex="-1"></a>table_list_split[[1]] |&gt;</span>
-<span id="cb32-9"><a href="#cb32-9" tabindex="-1"></a>  gt::tab_options(table.width = pct(100), table.layout = 'auto') |&gt;</span>
+<span id="cb32-9"><a href="#cb32-9" tabindex="-1"></a>  gt::tab_options(table.width = pct(100), table.layout = "auto") |&gt;</span>
 <span id="cb32-10"><a href="#cb32-10" tabindex="-1"></a>  gt::cols_width(everything() ~ pct(20)) |&gt;</span>
 <span id="cb32-11"><a href="#cb32-11" tabindex="-1"></a>  asar::gt_split(row_every_n = 28) |&gt;</span>
 <span id="cb32-12"><a href="#cb32-12" tabindex="-1"></a>  gt::grp_pull(1)</span>
