@@ -27,32 +27,32 @@ tbl_orient <- ID_tbl_width_class(
 
 # Identify table length class
 tbl_length <- ID_tbl_length_class(
-      plot_name = gsub("_table.rda", "", my_plot_name),
-      tables_dir = tables_dir
-    )
+  plot_name = gsub("_table.rda", "", my_plot_name),
+  tables_dir = tables_dir
+)
 
 table_specs <- list(tbl_orient, tbl_length)
 
 # Identify table dimension class (length x width)
 tbl_class <- dplyr::case_when(
-      table_specs[[1]] == "regular" & table_specs[[2]] == "regular" ~ "reg_reg",
-      table_specs[[1]] == "regular" & table_specs[[2]] == "long" ~ "reg_long",
-      table_specs[[1]] == "wide" & table_specs[[2]] == "regular" ~ "wide_reg",
-      table_specs[[1]] == "wide" & table_specs[[2]] == "long" ~ "wide_long",
-      table_specs[[1]] == "extra-wide" & table_specs[[2]] == "regular" ~ "ewide_reg",
-      table_specs[[1]] == "extra-wide" & table_specs[[2]] == "long" ~ "ewide_long",
-      TRUE ~ "unknown"
-    )
+  table_specs[[1]] == "regular" & table_specs[[2]] == "regular" ~ "reg_reg",
+  table_specs[[1]] == "regular" & table_specs[[2]] == "long" ~ "reg_long",
+  table_specs[[1]] == "wide" & table_specs[[2]] == "regular" ~ "wide_reg",
+  table_specs[[1]] == "wide" & table_specs[[2]] == "long" ~ "wide_long",
+  table_specs[[1]] == "extra-wide" & table_specs[[2]] == "regular" ~ "ewide_reg",
+  table_specs[[1]] == "extra-wide" & table_specs[[2]] == "long" ~ "ewide_long",
+  TRUE ~ "unknown"
+)
 
 max_rows <- ifelse(tbl_orient == "regular", 38, 28)
 
 print(paste0("Your table dimension is ", tbl_class, ". The maximum number of table rows per page is ", max_rows, "."))
 
 tables_path <- fs::path(
-    tables_dir,
-    "tables",
-    my_plot_name
-  )
+  tables_dir,
+  "tables",
+  my_plot_name
+)
 
 load(tables_path)
 
