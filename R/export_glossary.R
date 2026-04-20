@@ -672,7 +672,15 @@ export_glossary <- function() {
       Label,
       "[\\(\\)]",
       "-"
-    ))
+    )) |>
+    # make labels shorter by subbing FSCs acronyms
+    dplyr::mutate(
+      Label = gsub("alaska fisheries science center", "afsc", Label, ignore.case = TRUE),
+      Label = gsub("northeast fisheries science center", "nefsc", Label, ignore.case = TRUE),
+      Label = gsub("northwest fisheries science center", "nwfsc", Label, ignore.case = TRUE),
+      Label = gsub("pacific islands fisheries science center", "pifsc", Label, ignore.case = TRUE),
+      Label = gsub("southeast fisheries science center", "sefsc", Label, ignore.case = TRUE),
+      Label = gsub("southwest fisheries science center", "swfsc", Label, ignore.case = TRUE))
 
   duplicate_acronyms <- unique_all_cleaning3 |>
     dplyr::add_count(Acronym) |>
