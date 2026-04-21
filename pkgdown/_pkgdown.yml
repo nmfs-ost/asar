@@ -25,15 +25,13 @@ navbar:
       menu:
       - text: Markdown Notation
         href: articles/markdown_notation.html
-      - text: Regional Workflows
-        href: articles/regional_workflows.html
       - text: Increasing Report Accessibility
         href: articles/accessibility_guide.html
       - text: Custom Figures & Tables
         href: articles/custom-figs-tabs.html
       - text: Frequently Asked Questions (FAQs)
         href: articles/faqs.html
-      - text: Captions/alt text in Alternative Workflows
+      - text: Captions/Alt Text in Alternative Workflows
         href: articles/caps-alttext-alt-workflows.html
 
     examples:
