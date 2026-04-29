@@ -14,3 +14,6 @@
 ^\.octocov\.yml$
 ^\.devcontainer$
 ^CODE_OF_CONDUCT\.md$
+^vignettes/articles/\.quarto$
+^vignettes/articles/*_files$
+^vignettes/articles$
