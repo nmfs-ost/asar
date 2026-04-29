@@ -1,17 +1,17 @@
 ---
 title: "Example Reports"
-output:
-  html_document:
-    toc: true
-    toc_float: true
-    toc-depth: 3
-  pdf_document:
+format:
+  html:
     toc: true
     toc-depth: 3
-vignette: >
-  %\VignetteIndexEntry{Example Reports}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    anchor-sections: true
+    other-links:
+      - text: stockplotr
+        href: https://nmfs-ost.github.io/stockplotr/
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
 ---
 
 The following reports have been made using `asar`. Please let us know if you'd like us to add your own report to this list!
