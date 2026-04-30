@@ -672,7 +672,15 @@ export_glossary <- function() {
       Label,
       "[\\(\\)]",
       "-"
-    ))
+    )) |>
+    # make labels shorter by subbing FSCs acronyms
+    dplyr::mutate(
+      Label = gsub("alaska fisheries science center", "afsc", Label, ignore.case = TRUE),
+      Label = gsub("northeast fisheries science center", "nefsc", Label, ignore.case = TRUE),
+      Label = gsub("northwest fisheries science center", "nwfsc", Label, ignore.case = TRUE),
+      Label = gsub("pacific islands fisheries science center", "pifsc", Label, ignore.case = TRUE),
+      Label = gsub("southeast fisheries science center", "sefsc", Label, ignore.case = TRUE),
+      Label = gsub("southwest fisheries science center", "swfsc", Label, ignore.case = TRUE))
 
   duplicate_acronyms <- unique_all_cleaning3 |>
     dplyr::add_count(Acronym) |>
@@ -784,6 +792,15 @@ export_glossary <- function() {
     ) |>
     dplyr::arrange(tolower(Label))
 
+  cat(paste0(
+    "% NOTE ON SURVEYS:\n",
+    "% To increase findability, surveys may have multiple entries to link informal with formal names.\n",
+    "% Specifically, there may be more than one 'label' (first curly braces entry) or 'acronym' (second curly braces entry) with the same 'long form' (third curly braces entry).\n",
+    "% If the first 'label' you find for a given survey seems too long, look for an alternative entry with the same 'long form' but a different 'label' and/or 'acronym'.\n",
+    "% For example, there are three entries for the 'long form' 'Northeast Ecosystem Monitoring (EcoMon)\\_Fall':\n\n",
+    "%     \\newacronym{ecomon fall}{ECOMON Fall}{Northeast Ecosystem Monitoring (EcoMon)\\_Fall}\n",
+    "%     \\newacronym{fall nefsc ecosystem monitoring survey}{Fall Northeast Fisheries Science Center Ecosystem Monitoring Survey}{Northeast Ecosystem Monitoring (EcoMon)\\_Fall}\n",
+    "%     \\newacronym{nemef}{NEMEF}{Northeast Ecosystem Monitoring (EcoMon)\\_Fall}\n\n"))
 
   for (i in 1:dim(tex_acs)[1]) {
     cat(
