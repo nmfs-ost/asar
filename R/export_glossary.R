@@ -44,24 +44,6 @@ export_glossary <- function() {
       Acronym = "CEATTLE",
       Meaning = "Climate enhanced Age-based model with Temperature specific Trophic linkages and Energetics",
       Definition = NA
-    ) |> # Add entries from NEFSC's glossary files
-    dplyr::add_row(
-      source = NA,
-      Acronym = "CA",
-      Meaning = "Canada",
-      Definition = NA
-    ) |>
-    dplyr::add_row(
-      source = NA,
-      Acronym = "CC",
-      Meaning = "Cape Cod",
-      Definition = NA
-    ) |>
-    dplyr::add_row(
-      source = NA,
-      Acronym = "GB",
-      Meaning = "Georges Bank",
-      Definition = NA
     ) |>
     dplyr::mutate(dplyr::across(.cols = tidyr::everything(), trimws),
       Meaning = gsub("Nino", "Niño", Meaning),
@@ -69,9 +51,6 @@ export_glossary <- function() {
       Shared_ac = duplicated(Acronym),
       Shared_mean = duplicated(meaning_lower)
     )
-
-  # min length of consolidated acronyms: ~818
-  # length(unique(acronyms$Acronym))
 
   # for a given acronym: if there is a row with an identical acronym,
   # and there is a row with an identical meaning_lower, and at least one
@@ -135,7 +114,8 @@ export_glossary <- function() {
       !Meaning %in% c(
         "Biomass (in either weight or other appropriate unit)",
         "Biomass at maximum sustainable yield",
-        "Biomass at MSY"
+        "Biomass at MSY",
+        "Northwest Atlantic Fisheries Organization viii"
       ),
       !Acronym %in% "BMSY (B sub MSY)"
     ) |>
@@ -160,6 +140,7 @@ export_glossary <- function() {
         "Ecosystem-based fishery management",
         "East Pacific Ocean",
         "Division of Fish and Wildlife, Northern Mariana Islands",
+        "Groundfish Assessment Review Committee",
         "A measure of the instantaneous rate of fishing mortality",
         "instantaneous rate of fishing mortality",
         "Mortality due to fishing",
@@ -238,7 +219,8 @@ export_glossary <- function() {
         "BO",
         "DAR",
         "ITA",
-        "NS#"
+        "NS#",
+        "CTLISTS"
       ),
       !(is.na(Definition) & Meaning == "Marine Recreational Fishing Statistical Survey"),
       !(is.na(Definition) & Acronym == "P*"),
@@ -351,7 +333,31 @@ export_glossary <- function() {
         "SBA",
         "Secretary",
         "SSB",
-        "STT"
+        "STT",
+        "BLSPR",
+        "BSB",
+        "EXL",
+        "Fbar5:7",
+        "Fbar7:8",
+        "FLSPR",
+        "FLXSPR",
+        "FXL",
+        "FXLMSP",
+        "FXLSPR",
+        "FXX",
+        "MNKN",
+        "MNKS",
+        "OPTUNIT",
+        "OQUNIT",
+        "PLA",
+        "Q",
+        "REDUNIT",
+        "SBpr",
+        "SBXL",
+        "SCUNIT",
+        "SPRLX",
+        "SSBpr",
+        "ssbratio"
       ),
       !(source == "PFMC" & Acronym == "ABC"),
       !(source == "SAFMC" & Acronym == "ALS"),
@@ -535,7 +541,8 @@ export_glossary <- function() {
       Meaning = ifelse(Meaning == "Optimum sustainable production, Oregon State Police", "optimum sustainable production", Meaning),
       Meaning = ifelse(Meaning == "Spawning Abundance at MSY", "spawning abundance at MSY", Meaning),
       Meaning = ifelse(Meaning == "Spawning Stock Biomass at MSY", "spawning stock biomass at MSY", Meaning),
-      Meaning = ifelse(Acronym == "R", "Programming environment for statistical processing and presentation", Meaning)
+      Meaning = ifelse(Acronym == "R", "Programming environment for statistical processing and presentation", Meaning),
+      Meaning = ifelse(Acronym == "GARM", "Groundfish Assessment Review Meeting", Meaning)
     ) |>
     # add periods to end of Definition
     dplyr::mutate(
@@ -669,7 +676,26 @@ export_glossary <- function() {
       !(Meaning == "CalCOFI_Spring" & Acronym == "CS"),
       !(Meaning == "Northern CalCOFI" & Acronym == "NC"),
       !(is.na(Definition) & Acronym == "SEAMAP"),
-      !(Meaning == "Connecticut Long Island Sound Trawl Survey" & Label == "ct lists")
+      !(Meaning == "Connecticut Long Island Sound Trawl Survey" & Label == "ct lists"),
+      !(Meaning == "autoregressive model" & Label == "ar"),
+      !(Meaning == "biomass" & Label == "bm"),
+      !(Meaning == "centimeters, fish length" & Label == "cm"),
+      !(Meaning == "fishing mortality at 50% of msy" & Label == "fl"),
+      !(Meaning == "operational assessment, biennial" & Label == "oa"),
+      !(Meaning == "Portable Document Format" & Label == "pdf"),
+      !(Meaning == "Quantitative Ecology and Socioeconomics Training" & Label == "qus"),
+      !(Meaning == "subarea (nafo)" & Label == "sa"),
+      !(Meaning == "School for Marine Science and Technology" & Label == "smast"),
+      !(Meaning == "Transboundary Resources Assessment Committee" & is.na(Definition)),
+      !(Meaning == "Univ. of Rhode Island, GSO" & Label == "uri"),
+      !(Meaning == "young of the year or age 0" & Label == "yoy"),
+      !(Label == "msyxl"),
+      !(Label == "msypr"),
+      !(Label == "msyxl"),
+      !(Label == "sbmsypr"),
+      !(Label == "ssbmsypr"),
+      !(Label == "ssbxl"),
+      !(Label == "sbxl")
     ) |>
     # add backslash to escape special characters
     # (underscores, ampersands) when rendering tex file
@@ -843,3 +869,4 @@ export_glossary <- function() {
   }
   sink()
 }
+
