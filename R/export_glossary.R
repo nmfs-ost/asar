@@ -44,6 +44,24 @@ export_glossary <- function() {
       Acronym = "CEATTLE",
       Meaning = "Climate enhanced Age-based model with Temperature specific Trophic linkages and Energetics",
       Definition = NA
+    ) |> # Add entries from NEFSC's glossary files
+    dplyr::add_row(
+      source = NA,
+      Acronym = "CA",
+      Meaning = "Canada",
+      Definition = NA
+    ) |>
+    dplyr::add_row(
+      source = NA,
+      Acronym = "CC",
+      Meaning = "Cape Cod",
+      Definition = NA
+    ) |>
+    dplyr::add_row(
+      source = NA,
+      Acronym = "GB",
+      Meaning = "Georges Bank",
+      Definition = NA
     ) |>
     dplyr::mutate(dplyr::across(.cols = tidyr::everything(), trimws),
       Meaning = gsub("Nino", "Niño", Meaning),
@@ -242,6 +260,13 @@ export_glossary <- function() {
         Meaning,
         "Ecological and Socioeconomic Profile",
         "Ecosystem and Socioeconomic Profile"
+      )
+    ) |> # correct acronym
+    dplyr::mutate(
+      Acronym = dplyr::if_else(
+        Acronym == "CC" & Meaning == "Connecticut", 
+        "CT", 
+        Acronym
       )
     ) |>
     dplyr::filter(!Definition %in% "An advisory committee of the PFMC made up of scientists and economists. The Magnuson-Stevens Act requires that each council maintain an SSC to assist in gathering and analyzing statistical, biological, ecological, economic, social, and other scientific information that is relevant to the management of Council fisheries.") |>
