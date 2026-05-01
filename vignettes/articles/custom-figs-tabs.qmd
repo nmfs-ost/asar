@@ -1,23 +1,21 @@
 ---
 title: "Adding Custom Tables and Figures"
-output:
-  html_document:
+format:
+  html:
     toc: true
-    toc_float:
-      collapsed: true
-      smooth_scroll: true
-vignette: >
-  %\VignetteIndexEntry{Adding Custom Tables and Figures}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    toc-depth: 3
+    anchor-sections: true
+    other-links:
+      - text: stockplotr
+        href: https://nmfs-ost.github.io/stockplotr/
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
 ---
 
 ```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-
+#| label: setup
 library(gt)
 ```
 
@@ -92,26 +90,27 @@ data.frame(
 ```
 
 
-# Workflow Guides {.tabset .tabset-fade .tabset-pills}
+# Workflow Guides
 
-## Direct image insertion workflow (option 1)
+::: {.panel-tabset}
 
+## Direct image insertion workflow
 1.  Write captions and alternative text
 2.  Save captions and alternative text
 3.  Add custom tables and figures
 
-```{r, child="snippets/write-caps-alttext.Rmd"}
+```{r, child="../snippets/write-caps-alttext.Rmd"}
 ```
 
-```{r, child='snippets/save-caps-alttext.Rmd'}
+```{r, child="../snippets/save-caps-alttext.Rmd"}
 ```
 
 > **NOTE**: Only the _alternative text_ will be used in your final report- not the caption. This happens because of the workaround workflow that allows us to add alt text into PDFs. The caption will be taken from your directly-coded image's markdown code, so you can leave it empty or put the same caption here; it doesn't matter. 
 
-```{r, child="snippets/add-plots_img.Rmd"}
+```{r, child="../snippets/add-plots_img.Rmd"}
 ```
 
-## rda-based workflow (option 2) {#rda-based-workflow-option-2}
+## rda-based workflow
 
 1.  Code your custom tables and figures
 2.  Write captions and alternative text
@@ -120,39 +119,41 @@ data.frame(
 5.  Identify table width, orientation, and if splitting is necessary
 6.  Add custom tables and figures
 
-```{r, child="snippets/code-custom-figs-tables.Rmd"}
+```{r, child="../snippets/code-custom-figs-tables.Rmd"}
 ```
 
-```{r, child='snippets/write-caps-alttext.Rmd'}
+```{r, child="../snippets/write-caps-alttext.Rmd"}
 ```
 
-```{r, child='snippets/save-caps-alttext.Rmd'}
+```{r, child="../snippets/save-caps-alttext.Rmd"}
 ```
 
-```{r, child='snippets/export-custom-figs-tables.Rmd'}
+```{r, child="../snippets/export-custom-figs-tables.Rmd"}
 ```
 
-```{r, child='snippets/id_width.Rmd'}
+```{r, child="../snippets/id_width.Rmd"}
 ```
 
-```{r, child='snippets/add-plots_rda.Rmd'}
+```{r, child="../snippets/add-plots_rda.Rmd"}
 ```
 
-## Direct coding-in-qmd workflow (option 3)
+## Direct coding-in-qmd workflow
 
 1.  Code your custom tables and figures
 2.  Write captions and alternative text
 3.  Identify table width, orientation, and if splitting is necessary
 4.  Add custom tables and figures
 
-```{r, child="snippets/code-custom-figs-tables.Rmd"}
+```{r, child="../snippets/code-custom-figs-tables.Rmd"}
 ```
 
-```{r, child='snippets/write-caps-alttext.Rmd'}
+```{r, child="../snippets/write-caps-alttext.Rmd"}
 ```
 
-```{r, child='snippets/id_width.Rmd'}
+```{r, child="../snippets/id_width.Rmd"}
 ```
 
-```{r, child='snippets/add-plots_coding.Rmd'}
+```{r, child="../snippets/add-plots_coding.Rmd"}
 ```
+
+:::

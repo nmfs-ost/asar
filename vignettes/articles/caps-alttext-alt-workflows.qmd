@@ -1,13 +1,19 @@
 ---
 title: "Implement captions and alt text in alternative workflows"
-output:
-  html_document:
+format:
+  html:
     toc: true
-vignette: >
-  %\VignetteIndexEntry{Implement captions and alt text in alternative workflows}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    toc-depth: 3
+    anchor-sections: true
+    other-links:
+      - text: stockplotr
+        href: https://nmfs-ost.github.io/stockplotr/
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
 ---
+
 
 # Purpose
 

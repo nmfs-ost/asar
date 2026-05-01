@@ -83,8 +83,4 @@ Then, add three colons to close the braces:
 
 #### Page break
 
-If you are including more than one custom table or figure in a file, we suggest adding a page break to separate the tables/figures:
-
-```{verbatim}
-{{< pagebreak >}}
-```
+If you are including more than one custom table or figure in a file, we suggest adding a page break to separate the tables/figures by adding this on a new line: "\{\{< pagebreak >\}\}"

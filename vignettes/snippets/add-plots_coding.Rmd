@@ -162,11 +162,7 @@ The next chunk would be identical except for a different label, caption, and wou
 
 ##### Final step: page break
 
-If you are adding multiple tables, insert a page break between them:
-
-```{verbatim}
-{{< pagebreak >}}
-```
+If you are adding another table, add a page break by adding this on a new line: "\{\{< pagebreak >\}\}"
 
 #### Figures
 
@@ -202,8 +198,4 @@ your_figure
 ``` 
 ````
 
-If you are adding another figure, add a page break first:
-
-```{verbatim}
-{{< pagebreak >}}
-```
+If you are adding another figure, add a page break by adding this on a new line: "\{\{< pagebreak >\}\}"

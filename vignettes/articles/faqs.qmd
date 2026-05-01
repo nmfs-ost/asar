@@ -1,20 +1,18 @@
 ---
 title: "Frequently Asked Questions (FAQs)"
-output:
-  html_document:
+format:
+  html:
     toc: true
-vignette: >
-  %\VignetteIndexEntry{Frequently Asked Questions (FAQs)}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    toc-depth: 2
+    anchor-sections: true
+    other-links:
+      - text: stockplotr
+        href: https://nmfs-ost.github.io/stockplotr/
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
 ---
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
 # Installing `asar`
 

@@ -1,21 +1,20 @@
 ---
 title: "Increasing Report Accessibility"
-output:
-  html_document:
+format:
+  html:
     toc: true
-vignette: >
-  %\VignetteIndexEntry{Increasing Report Accessibility}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
-bibliography: references.bib
+    toc-depth: 3
+    anchor-sections: true
+    other-links:
+      - text: stockplotr
+        href: https://nmfs-ost.github.io/stockplotr/
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+bibliography: ../references.bib
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
 > Having issues with `add_tagging()`, `add_alttext()`, or `add_accessibility()`? Check out our [FAQs vignette](faqs.html#sec-a11y-issues).
 
