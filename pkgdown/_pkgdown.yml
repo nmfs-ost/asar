@@ -1,3 +1,6 @@
+template:
+  bootstrap: 5
+
 url: nmfs-ost.github.io/asar/
 
 navbar:
