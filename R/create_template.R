@@ -393,7 +393,7 @@ create_template <- function(
 
     asar_folder <- system.file("templates", package = "asar")
     # copy files from specific type folder
-    current_folder <- file.path(asar_folder, type)
+    current_folder <- ifelse(rerender_skeleton, subdir, file.path(asar_folder, type))
     new_folder <- subdir
 
     ##### Identify files to copy ----
@@ -410,7 +410,14 @@ create_template <- function(
         custom_sections <- c(custom_sections, "references")
       }
     } else {
-      files_to_copy <- list.files(current_folder)
+      if (rerender_skeleton) {
+        # id the order of the files in the skeleton and copy over in that order
+        files_to_copy <- stringr::str_extract(prev_skeleton[grep("knitr::knit_child", prev_skeleton)], "(?<=knit_child\\(').*?(?=\\')")
+        # copy over template files from past one rather than new blanks
+        # files_to_copy <- list.files(current_folder)[grepl(".qmd", list.files(current_folder))]
+      } else {
+        files_to_copy <- list.files(current_folder)
+      }
     }
 
     before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "asar")
@@ -887,6 +894,9 @@ create_template <- function(
     # at this point, files_to_copy is the most updated outline
 
     ###### Rerender & not custom ----
+    # add check if user set custom sections, but did not set custom = TRUE
+    if (!is.null(new_section) || !is.null(custom_sections)) custom <- TRUE
+
     if (rerender_skeleton & custom == FALSE) {
       # identify all previous sections
       sections <- stringr::str_extract_all(
@@ -924,7 +934,7 @@ create_template <- function(
           # TODO: type - this needs to just pull all files from folder that
           # it was copying from when custom sections is null -- DONE
 
-          sec_list1 <- files_to_copy
+          sec_list1 <- unique(c(files_to_copy, tables_doc_name, figures_doc_name))
           sec_list2 <- add_section(
             new_section = new_section,
             section_location = section_location,
@@ -940,7 +950,7 @@ create_template <- function(
         } else { # custom_sections explicit
 
           # Add selected sections from base
-          sec_list1 <- add_base_section(files_to_copy)
+          sec_list1 <- unique(c(unlist(add_base_section(files_to_copy)), tables_doc_name, figures_doc_name))
           # Create new sections as .qmd in folder
           # check if sections are in custom_sections list
           if (any(stringr::str_replace(section_location, "^[a-z]+-", "") %notin% custom_sections)) {
