@@ -4,228 +4,124 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Frequently Asked Questions (FAQs) • asar</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Frequently Asked Questions (FAQs)">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="faqs_files/libs/quarto-html/popper.min.js"></script><script src="faqs_files/libs/quarto-html/tippy.umd.min.js"></script><script src="faqs_files/libs/quarto-html/anchor.min.js"></script><link href="faqs_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="faqs_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Frequently Asked Questions (FAQs)">
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">asar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.4</span>
-      </span>
-    </div>
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <a class="navbar-brand me-2" href="../index.html">asar</a>
 
-  </a>
-</li>
-<li>
-  <a href="../reference/index.html">
-    <span class="far fa-file-code fa-lg"></span>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
 
-    Functions
-  </a>
-</li>
-<li>
-  <a href="../asar_cheatsheet.pdf">
-    <span class="fa fa-solid fa-key"></span>
 
-    Cheatsheet
-  </a>
-</li>
-<li>
-  <a href="https://connect.fisheries.noaa.gov/asar_tutorial/" class="external-link">
-    <span class="fa fa-regular fa-map"></span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    Tutorial
-  </a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <span class="fas fa-file-contract fa-lg"></span>
-
-    Articles
-
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/markdown_notation.html">Markdown Notation</a>
-    </li>
-    <li>
-      <a href="../articles/regional_workflows.html">Regional Workflows</a>
-    </li>
-    <li>
-      <a href="../articles/accessibility_guide.html">Increasing Report Accessibility</a>
-    </li>
-    <li>
-      <a href="../articles/custom-figs-tabs.html">Custom Figures &amp; Tables</a>
-    </li>
-    <li>
-      <a href="../articles/faqs.html">Frequently Asked Questions (FAQs)</a>
-    </li>
-    <li>
-      <a href="../articles/caps-alttext-alt-workflows.html">Captions/alt text in Alternative Workflows</a>
-    </li>
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../index.html"><span class="fa fas fa-home fa-lg"></span></a></li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html"><span class="fa far fa-file-code fa-lg"></span> Functions</a></li>
+<li class="nav-item"><a class="nav-link" href="../asar_cheatsheet.pdf" target="_blank"><span class="fa fa-solid fa-key"></span> Cheatsheet</a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://connect.fisheries.noaa.gov/asar_tutorial/" target="_blank"><span class="fa fa-regular fa-map"></span> Tutorial</a></li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fas fa-file-contract fa-lg"></span> Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/markdown_notation.html">Markdown Notation</a></li>
+    <li><a class="dropdown-item" href="../articles/accessibility_guide.html">Increasing Report Accessibility</a></li>
+    <li><a class="dropdown-item" href="../articles/custom-figs-tabs.html">Custom Figures &amp; Tables</a></li>
+    <li><a class="dropdown-item" href="../articles/faqs.html">Frequently Asked Questions (FAQs)</a></li>
+    <li><a class="dropdown-item" href="../articles/caps-alttext-alt-workflows.html">Captions/Alt Text in Alternative Workflows</a></li>
   </ul>
 </li>
-<li>
-  <a href="../articles/example_reports.html">
-    <span class="fas fa-book fa-lg"></span>
-
-    Example Reports
-  </a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../articles/example_reports.html" target="_blank"><span class="fa fas fa-book fa-lg"></span> Example Reports</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">
-    <span class="fas fa-question-circle fa-lg"></span>
-
-    Issues
-  </a>
-</li>
-<li>
-  <a href="https://github.com/nmfs-ost/asar/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
-
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/nmfs-ost/asar/issues" target="_blank"><span class="fa fas fa-question-circle fa-lg"></span> Issues</a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/nmfs-ost/asar/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-quarto">
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+
+      <h1>Frequently Asked Questions (FAQs)</h1>
 
 
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Frequently Asked Questions (FAQs)</h1>
-            
-      
-      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/vignettes/faqs.Rmd" class="external-link"><code>vignettes/faqs.Rmd</code></a></small>
-      <div class="hidden name"><code>faqs.Rmd</code></div>
 
+      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/vignettes/articles/faqs.qmd" class="external-link"><code>vignettes/articles/faqs.qmd</code></a></small>
+      <div class="d-none name"><code></code></div>
     </div>
 
-    
-    
-<div class="section level2">
-<h2 id="installing-asar">Installing <code>asar</code><a class="anchor" aria-label="anchor" href="#installing-asar"></a>
+
+
+
+
+
+    <section class="section level2"><h2 id="installing-asar">Installing <code>asar</code>
+<a class="anchor" aria-label="anchor" href="#installing-asar"></a>
 </h2>
-<div class="section level3">
-<h3 id="how-can-i-download-the-package">How can I download the package?<a class="anchor" aria-label="anchor" href="#how-can-i-download-the-package"></a>
+<section class="level2"><h3 class="anchored" id="how-can-i-download-the-package">How can I download the package?<a class="anchor" aria-label="anchor" href="#how-can-i-download-the-package"></a>
 </h3>
-<p>Please consult <a href="https://nmfs-ost.github.io/asar/index.html#installation">the
-README page</a> for installation instructions.</p>
-</div>
-<div class="section level3">
-<h3 id="alternative-instructions">Alternative instructions<a class="anchor" aria-label="anchor" href="#alternative-instructions"></a>
+<p>Please consult <a href="https://nmfs-ost.github.io/asar/index.html#installation">the README page</a> for installation instructions.</p>
+</section><section class="level2"><h3 class="anchored" id="alternative-instructions">Alternative instructions<a class="anchor" aria-label="anchor" href="#alternative-instructions"></a>
 </h3>
-<p>If you are receiving the following error when trying to download the
-package:</p>
+<p>If you are receiving the following error when trying to download the package:</p>
 <pre><code>Using GitHub PAT from the git credential store.
 Initiating curl with CURL_SSL_BACKEND: openssl
 Error: Failed to install 'unknown package' from GitHub:
   HTTP error 403.
   Resource protected by organization SAML enforcement. You must grant your OAuth token access to this organization.</code></pre>
-<p>If you’re a member of the NMFS OST organization, you can <a href="https://docs.github.com/en/enterprise-cloud@latest/authentication/authenticating-with-single-sign-on/authorizing-a-personal-access-token-for-use-with-single-sign-on" class="external-link">authorize
-your token</a> to solve this issue.</p>
+<p>If you’re a member of the NMFS OST organization, you can <a href="https://docs.github.com/en/enterprise-cloud@latest/authentication/authenticating-with-single-sign-on/authorizing-a-personal-access-token-for-use-with-single-sign-on" class="external-link">authorize your token</a> to solve this issue.</p>
 <p>Otherwise, please download the package using this code:</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"asar"</span>, repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"https://nmfs-ost.r-universe.dev"</span>, <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span><span class="op">)</span></span></code></pre>
-</div>
-</div>
-<div class="section level2">
-<h2 id="setting-up-the-report-skeleton">Setting up the report skeleton<a class="anchor" aria-label="anchor" href="#setting-up-the-report-skeleton"></a>
+</section></section><section class="section level2"><h2 id="setting-up-the-report-skeleton">Setting up the report skeleton<a class="anchor" aria-label="anchor" href="#setting-up-the-report-skeleton"></a>
 </h2>
-<div class="section level3">
-<h3 id="create_template-isnt-working--what-do-i-do">
+<section class="level2"><h3 class="anchored" id="can-i-make-an-asar-report-for-an-assessment-without-model-results">Can I make an <code>asar</code> report for an assessment without model results?<a class="anchor" aria-label="anchor" href="#can-i-make-an-asar-report-for-an-assessment-without-model-results"></a>
+</h3>
+<p>Yes! You can run <code><a href="../reference/create_template.html">create_template()</a></code> without a converted model results file (hence why running the function without any arguments still produces a basic report template). This means that you can use <code>asar</code> to make assessments that are not model-based.</p>
+<p>In this case, you can disregard the preamble chunk (its label is ‘output_and_quantities’). Ensure that its “eval” chunk option is set to false (‘eval: false’).</p>
+</section><section class="level2"><h3 class="anchored" id="can-i-make-an-asar-report-for-an-assessment-with-model-results-that-arent-yet-compatible-with-stockplotrconvert_output-e-g--wham">Can I make an <code>asar</code> report for an assessment with model results that aren’t yet compatible with <code>stockplotr::convert_output()</code> (e.g., WHAM)?<a class="anchor" aria-label="anchor" href="#can-i-make-an-asar-report-for-an-assessment-with-model-results-that-arent-yet-compatible-with-stockplotrconvert_output-e-g--wham"></a>
+</h3>
+<p>Yes! You can convert your own output into the expected standardized format without <code><a href="https://noaa-fisheries-integrated-toolbox.r-universe.dev/stockplotr/reference/convert_output.html" class="external-link">stockplotr::convert_output()</a></code>, by following the guidance in the <a href="https://nmfs-ost.github.io/stockplotr/articles/convert_output_details.html" class="external-link">“Standardizing Assessment Model Output” <code>stockplotr</code> vignette</a>.</p>
+</section><section class="level2"><h3 class="anchored" id="create_template-isnt-working--what-do-i-do">
 <code>create_template()</code> isn’t working. What do I do?<a class="anchor" aria-label="anchor" href="#create_template-isnt-working--what-do-i-do"></a>
 </h3>
-<p>This could mean a lot of things. Most of the time, when
-<code><a href="../reference/create_template.html">create_template()</a></code> is not working, it means you are missing
-a key argument to the function. Make sure to read the error message(s)
-clearly and check the ‘report’ folder where all of the file were
-created. If you have exhausted your options and double checked that you
-have all of the correct arguments, then please open an <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issue</a>.</p>
-</div>
-<div class="section level3">
-<h3 id="what-should-i-do-if-i-have-a-species-complexmultispecies-assessment">What should I do if I have a species complex/multispecies
-assessment?<a class="anchor" aria-label="anchor" href="#what-should-i-do-if-i-have-a-species-complexmultispecies-assessment"></a>
+<p>This could mean a lot of things. Most of the time, when <code><a href="../reference/create_template.html">create_template()</a></code> is not working, it means you are missing a key argument to the function. Make sure to read the error message(s) clearly and check the ‘report’ folder where all of the file were created. If you have exhausted your options and double checked that you have all of the correct arguments, then please open an <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issue</a>.</p>
+</section><section class="level2"><h3 class="anchored" id="what-should-i-do-if-i-have-a-species-complexmultispecies-assessment">What should I do if I have a species complex/multispecies assessment?<a class="anchor" aria-label="anchor" href="#what-should-i-do-if-i-have-a-species-complexmultispecies-assessment"></a>
 </h3>
-<p><code>asar</code> was designed to create reports for single species.
-As a workaround, you can combine multiple species using “and” in the
-<code>species</code> argument of <code><a href="../reference/create_template.html">create_template()</a></code>. For
-example, the following code will produce a report with two species in
-the title, though a cover image must be added manually since cover
-images are matched to single species:</p>
+<p><code>asar</code> was designed to create reports for single species. As a workaround, you can combine multiple species using “and” in the <code>species</code> argument of <code><a href="../reference/create_template.html">create_template()</a></code>. For example, the following code will produce a report with two species in the title, though a cover image must be added manually since cover images are matched to single species:</p>
 <p><code>create_template(species = "Species A and Species B")</code></p>
-<p>We encourage users writing species complex/multispecies assessments
-to remember that the reports are highly customizable both before and
-after the skeleton is created. For example, the
-<code><a href="../reference/create_template.html">create_template()</a></code> command allows for customization by
-providing custom section options. After the skeleton has been created,
-advanced Quarto users can edit the YAML, chunk options, and other
-components of the report, and everyone can customize the report’s
-text.</p>
-<p>While we have striven to add sufficient options for customization, we
-highly discourage changing the formatting or adding many sections so
-that the final document does not stray far from the intended,
-standardized format.</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="editing-and-writing-reports">Editing and writing reports<a class="anchor" aria-label="anchor" href="#editing-and-writing-reports"></a>
+<p>We encourage users writing species complex/multispecies assessments to remember that the reports are highly customizable both before and after the skeleton is created. For example, the <code><a href="../reference/create_template.html">create_template()</a></code> command allows for customization by providing custom section options. After the skeleton has been created, advanced Quarto users can edit the YAML, chunk options, and other components of the report, and everyone can customize the report’s text.</p>
+<p>While we have striven to add sufficient options for customization, we highly discourage changing the formatting or adding many sections so that the final document does not stray far from the intended, standardized format.</p>
+</section></section><section class="section level2"><h2 id="editing-and-writing-reports">Editing and writing reports<a class="anchor" aria-label="anchor" href="#editing-and-writing-reports"></a>
 </h2>
-<div class="section level3">
-<h3 id="what-is-the-purpose-of-the-r-chunk-labelled-output_and_quantities-in-the-skeleton">What is the purpose of the R chunk labelled
-<code>output_and_quantities</code> in the skeleton?<a class="anchor" aria-label="anchor" href="#what-is-the-purpose-of-the-r-chunk-labelled-output_and_quantities-in-the-skeleton"></a>
+<section class="level2"><h3 class="anchored" id="what-is-the-purpose-of-the-r-chunk-labelled-output_and_quantities-in-the-skeleton">What is the purpose of the R chunk labelled <code>output_and_quantities</code> in the skeleton?<a class="anchor" aria-label="anchor" href="#what-is-the-purpose-of-the-r-chunk-labelled-output_and_quantities-in-the-skeleton"></a>
 </h3>
-<p>This chunk is what we call the preamble. It loads in commonly-used
-estimates and quantities that you can reference throughout your report,
-making the document dynamic. By updating the values calculated in your
-report folder’s <a href="https://github.com/nmfs-ost/asar/blob/d3070f349f12a49ad6e6ae10aa2865de104b5581/inst/resources/preamble.R#L4" class="external-link">preamble.R
-script</a> file, you can easily update the values throughout your
-report.</p>
-</div>
-<div class="section level3">
-<h3 id="how-do-i-reference-one-of-the-quantities-in-the-preamble-in-my-text">How do I reference one of the quantities in the preamble in my
-text?<a class="anchor" aria-label="anchor" href="#how-do-i-reference-one-of-the-quantities-in-the-preamble-in-my-text"></a>
+<p>This chunk is what we call the preamble. It loads in commonly-used estimates and quantities that you can reference throughout your report, making the document dynamic. By updating the values calculated in your report folder’s <a href="https://github.com/nmfs-ost/asar/blob/d3070f349f12a49ad6e6ae10aa2865de104b5581/inst/resources/preamble.R#L4" class="external-link">preamble.R script</a> file, you can easily update the values throughout your report.</p>
+</section><section class="level2"><h3 class="anchored" id="how-do-i-reference-one-of-the-quantities-in-the-preamble-in-my-text">How do I reference one of the quantities in the preamble in my text?<a class="anchor" aria-label="anchor" href="#how-do-i-reference-one-of-the-quantities-in-the-preamble-in-my-text"></a>
 </h3>
-<p>To reference these quantities in your text, please use the following
-notation:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>`r start_year`</span></code></pre></div>
-<p>For example, if <code>start_year</code> = 2025 and your report
-contained this text:</p>
+<p>To reference these quantities in your text, please use the following notation:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>`r start_year`</span></code></pre></div>
+<p>For example, if <code>start_year</code> = 2025 and your report contained this text:</p>
 <blockquote>
 <p>The current year is <code>`r start_year`</code>.</p>
 </blockquote>
@@ -233,270 +129,203 @@ contained this text:</p>
 <blockquote>
 <p>The current year is 2025.</p>
 </blockquote>
-<p>For more help using Quarto efficiently, please see our <a href="https://nmfs-ost.github.io/asar/articles/markdown_notation.html">markdown
-guide</a>.</p>
-</div>
-<div class="section level3">
-<h3 id="how-can-i-edit-my-reports-alt-text-and-captions">How can I edit my report’s alt text and captions?<a class="anchor" aria-label="anchor" href="#how-can-i-edit-my-reports-alt-text-and-captions"></a>
+<p>For more help using Quarto efficiently, please see our <a href="https://nmfs-ost.github.io/asar/articles/markdown_notation.html">markdown guide</a>.</p>
+</section><section class="level2"><h3 class="anchored" id="how-can-i-edit-my-reports-alt-text-and-captions">How can I edit my report’s alt text and captions?<a class="anchor" aria-label="anchor" href="#how-can-i-edit-my-reports-alt-text-and-captions"></a>
 </h3>
-<p>Please refer to <a href="https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#how-to-edit-your-reports-alt-text-and-captions">the
-accessibility vignette’s guide</a> on editing alt text and captions.</p>
-</div>
-<div class="section level3">
-<h3 id="how-can-i-use-acronyms-and-edit-the-glossary">How can I use acronyms and edit the glossary?<a class="anchor" aria-label="anchor" href="#how-can-i-use-acronyms-and-edit-the-glossary"></a>
+<p>Please refer to <a href="https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#how-to-edit-your-reports-alt-text-and-captions">the accessibility vignette’s guide</a> on editing alt text and captions.</p>
+</section><section class="level2"><h3 class="anchored" id="how-can-i-use-acronyms-and-edit-the-glossary">How can I use acronyms and edit the glossary?<a class="anchor" aria-label="anchor" href="#how-can-i-use-acronyms-and-edit-the-glossary"></a>
 </h3>
-<p>Please refer to the <a href="https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#acronyms-and-glossary">Acronyms
-and Glossary section of the accessibility vignette</a> for guidance on
-how to use acronyms and edit the glossary.</p>
-</div>
-<div class="section level3">
-<h3 id="will-my-reports-glossary-contain-all-1000-acronyms-in-the-report_glossary-tex-file">Will my report’s glossary contain all 1,000+ acronyms in the
-report_glossary.tex file?<a class="anchor" aria-label="anchor" href="#will-my-reports-glossary-contain-all-1000-acronyms-in-the-report_glossary-tex-file"></a>
+<p>Please refer to the <a href="https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#acronyms-and-glossary">Acronyms and Glossary section of the accessibility vignette</a> for guidance on how to use acronyms and edit the glossary.</p>
+</section><section class="level2"><h3 class="anchored" id="will-my-reports-glossary-contain-all-1000-acronyms-in-the-report_glossary-tex-file">Will my report’s glossary contain all 1,000+ acronyms in the report_glossary.tex file?<a class="anchor" aria-label="anchor" href="#will-my-reports-glossary-contain-all-1000-acronyms-in-the-report_glossary-tex-file"></a>
 </h3>
-<p>No, only the acronyms you use in your report will appear in your
-report’s glossary.</p>
-</div>
-<div class="section level3">
-<h3 id="can-i-render-individual-child-documents-rather-than-the-skeleton">Can I render individual child documents, rather than the
-skeleton?<a class="anchor" aria-label="anchor" href="#can-i-render-individual-child-documents-rather-than-the-skeleton"></a>
+<p>No, only the acronyms you use in your report will appear in your report’s glossary.</p>
+</section><section class="level2"><h3 class="anchored" id="can-i-render-individual-child-documents-rather-than-the-skeleton">Can I render individual child documents, rather than the skeleton?<a class="anchor" aria-label="anchor" href="#can-i-render-individual-child-documents-rather-than-the-skeleton"></a>
 </h3>
-<p>You can render child documents (e.g., “01_introduction.qmd”) as HTML
-files. These files will show you if your code is working, but not what
-the document will look like in your final report as it lacks the
-formatting specified in your skeleton’s YAML.</p>
-<p>As a workaround, we recommend making some temporary edits to the
-skeleton. You could alter irrelevant code chunks by 1) commenting them
-out or 2) setting <code>eval: false</code> in those chunks’ options.
-Then, once you render the skeleton, the report’s formatting will be
-preserved.</p>
-<p>You could manually add a YAML specifying the format as PDF into the
-child document, but this would not show the report’s full formatting and
-would have to be removed before rendering the report skeleton.</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="tables-and-figures">Tables and Figures<a class="anchor" aria-label="anchor" href="#tables-and-figures"></a>
+<p>You can render child documents (e.g., “01_introduction.qmd”) as HTML files. These files will show you if your code is working, but not what the document will look like in your final report as it lacks the formatting specified in your skeleton’s YAML.</p>
+<p>As a workaround, we recommend making some temporary edits to the skeleton. You could alter irrelevant code chunks by 1) commenting them out or 2) setting <code>eval: false</code> in those chunks’ options. Then, once you render the skeleton, the report’s formatting will be preserved.</p>
+<p>You could manually add a YAML specifying the format as PDF into the child document, but this would not show the report’s full formatting and would have to be removed before rendering the report skeleton.</p>
+</section></section><section class="section level2"><h2 id="tables-and-figures">Tables and Figures<a class="anchor" aria-label="anchor" href="#tables-and-figures"></a>
 </h2>
-<div class="section level3">
-<h3 id="why-arent-my-tables-andor-figures-displaying-on-landscape-oriented-pages-when-the-landscape-braces-are-present">Why aren’t my tables and/or figures displaying on landscape-oriented
-pages when the landscape braces are present?<a class="anchor" aria-label="anchor" href="#why-arent-my-tables-andor-figures-displaying-on-landscape-oriented-pages-when-the-landscape-braces-are-present"></a>
+<section class="level2"><h3 class="anchored" id="why-arent-my-tables-andor-figures-displaying-on-landscape-oriented-pages-when-the-landscape-braces-are-present">Why aren’t my tables and/or figures displaying on landscape-oriented pages when the landscape braces are present?<a class="anchor" aria-label="anchor" href="#why-arent-my-tables-andor-figures-displaying-on-landscape-oriented-pages-when-the-landscape-braces-are-present"></a>
 </h3>
-<p>You may be using a version of Quarto <a href="https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/" class="external-link">older
-than v1.6</a>. Please read <a href="https://github.com/nmfs-ost/asar/discussions/186" class="external-link">this Discussion
-post</a> detailing how to check which version you have and update
-it.</p>
-</div>
-<div class="section level3">
-<h3 id="my-figure-and-table-references-arent-in-chronological-order-in-the-report--how-do-i-fix-this">My figure and table references aren’t in chronological order in the
-report. How do I fix this?<a class="anchor" aria-label="anchor" href="#my-figure-and-table-references-arent-in-chronological-order-in-the-report--how-do-i-fix-this"></a>
+<p>You may be using a version of Quarto <a href="https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/" class="external-link">older than v1.6</a>. Please read <a href="https://github.com/nmfs-ost/asar/discussions/186" class="external-link">this Discussion post</a> detailing how to check which version you have and update it.</p>
+</section><section class="level2"><h3 class="anchored" id="my-figure-and-table-references-arent-in-chronological-order-in-the-report--how-do-i-fix-this">My figure and table references aren’t in chronological order in the report. How do I fix this?<a class="anchor" aria-label="anchor" href="#my-figure-and-table-references-arent-in-chronological-order-in-the-report--how-do-i-fix-this"></a>
 </h3>
-<p>You will notice that the order of your figures and tables in their
-respective 08_tables.qmd and 09_figures.qmd docs will determine their
-numbers in the report. This might result in Table 2 being referenced
-before Table 1, for instance, in your report.</p>
-<p>We are encouraging users to keep the order as-is for a few reasons.
-First, the predictability of standardized figure and table order could
-prove useful when comparing reports. Second, the choice of where to
-prioritize the figure/table order- in the Figures and Tables sections,
-or in the main text- is somewhat of a personal preference, rather than a
-hard rule. Third, as far as we know, a fix isn’t yet possible with
-Quarto. We are choosing to focus on building other features for
-<code>asar</code>.</p>
-<p>However, we understand that some will strongly prefer to set the
-order of their tables and figures. You <em>can</em> try manually
-changing the order of the figure and table chunks in the 08_tables.qmd
-and 09_figures.qmd docs, but this isn’t a reproducible or permanent
-solution.</p>
-</div>
-<div class="section level3">
-<h3 id="why-are-there-absolute-rather-than-relative-filepaths-for-tables_dir-and-figures_dir-at-the-tops-of-my-figures-and-tables-docs">Why are there absolute, rather than relative, filepaths for
-<code>tables_dir</code> and <code>figures_dir</code> at the tops of my
-figures and tables docs?<a class="anchor" aria-label="anchor" href="#why-are-there-absolute-rather-than-relative-filepaths-for-tables_dir-and-figures_dir-at-the-tops-of-my-figures-and-tables-docs"></a>
+<p>You will notice that the order of your figures and tables in their respective 08_tables.qmd and 09_figures.qmd docs will determine their numbers in the report. This might result in Table 2 being referenced before Table 1, for instance, in your report.</p>
+<p>We are encouraging users to keep the order as-is for a few reasons. First, the predictability of standardized figure and table order could prove useful when comparing reports. Second, the choice of where to prioritize the figure/table order- in the Figures and Tables sections, or in the main text- is somewhat of a personal preference, rather than a hard rule. Third, as far as we know, a fix isn’t yet possible with Quarto. We are choosing to focus on building other features for <code>asar</code>.</p>
+<p>However, we understand that some will strongly prefer to set the order of their tables and figures. You <em>can</em> try manually changing the order of the figure and table chunks in the 08_tables.qmd and 09_figures.qmd docs, but this isn’t a reproducible or permanent solution.</p>
+</section><section class="level2"><h3 class="anchored" id="why-are-there-absolute-rather-than-relative-filepaths-for-tables_dir-and-figures_dir-at-the-tops-of-my-figures-and-tables-docs">Why are there absolute, rather than relative, filepaths for <code>tables_dir</code> and <code>figures_dir</code> at the tops of my figures and tables docs?<a class="anchor" aria-label="anchor" href="#why-are-there-absolute-rather-than-relative-filepaths-for-tables_dir-and-figures_dir-at-the-tops-of-my-figures-and-tables-docs"></a>
 </h3>
-<p>We tried to implement relative filepaths for these objects but
-decided to return to the original workflow for two reasons.</p>
-<ol style="list-style-type: decimal">
-<li><p>Hardcoding <code><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd()</a></code> into the path doesn’t work; when
-rendering your report, Quarto will recognize your “report” folder as the
-working directory, which probably isn’t your <em>actual</em> working
-directory. This will result in a rendering error.</p></li>
-<li><p>While hardcoding <code><a href="https://here.r-lib.org/reference/here.html" class="external-link">here::here()</a></code> into the path
-<em>does</em> work, we recognize that some users may be unfamiliar with
-<a href="https://here.r-lib.org/" class="external-link">the <code>here</code> package</a> and
-are not able to learn another tool while already learning
-<code>asar</code>. We highly recommend checking out this awesome
-package, but in the meantime, we are not going to force its
-use.</p></li>
+<p>We tried to implement relative filepaths for these objects but decided to return to the original workflow for two reasons.</p>
+<ol type="1">
+<li><p>Hardcoding <code><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd()</a></code> into the path doesn’t work; when rendering your report, Quarto will recognize your “report” folder as the working directory, which probably isn’t your <em>actual</em> working directory. This will result in a rendering error.</p></li>
+<li><p>While hardcoding <code>here::here()</code> into the path <em>does</em> work, we recognize that some users may be unfamiliar with <a href="https://here.r-lib.org/" class="external-link">the <code>here</code> package</a> and are not able to learn another tool while already learning <code>asar</code>. We highly recommend checking out this awesome package, but in the meantime, we are not going to force its use.</p></li>
 </ol>
-<p>If you want to ensure <code>tables_dir</code> and
-<code>figures_dir</code> are relative filepaths (which may be essential
-if you are collaborating), you can directly edit these paths yourself
-and reset them using <code><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd()</a></code>, <code><a href="https://here.r-lib.org/reference/here.html" class="external-link">here::here()</a></code>, or
-some other option.</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="rendering-reports">Rendering reports<a class="anchor" aria-label="anchor" href="#rendering-reports"></a>
+<p>If you want to ensure <code>tables_dir</code> and <code>figures_dir</code> are relative filepaths (which may be essential if you are collaborating), you can directly edit these paths yourself and reset them using <code><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd()</a></code>, <code>here::here()</code>, or some other option.</p>
+</section></section><section class="section level2"><h2 id="rendering-reports">Rendering reports<a class="anchor" aria-label="anchor" href="#rendering-reports"></a>
 </h2>
-<div class="section level3">
-<h3 id="why-am-i-getting-the-following-error-message-when-i-try-to-render-my-template">Why am I getting the following error message when I try to render my
-template?<a class="anchor" aria-label="anchor" href="#why-am-i-getting-the-following-error-message-when-i-try-to-render-my-template"></a>
+<section class="level2"><h3 class="anchored" id="why-am-i-getting-the-following-error-message-when-i-try-to-render-my-template">Why am I getting the following error message when I try to render my template?<a class="anchor" aria-label="anchor" href="#why-am-i-getting-the-following-error-message-when-i-try-to-render-my-template"></a>
 </h3>
-<div class="section level4">
-<h4 id="missing-item-error">“Missing item” error<a class="anchor" aria-label="anchor" href="#missing-item-error"></a>
+<section class="level3"><h4 class="anchored" id="missing-item-error">“Missing item” error<a class="anchor" aria-label="anchor" href="#missing-item-error"></a>
 </h4>
 <pre class="error:"><code>compilation failed- error
 LaTeX Error: Something's wrong--perhaps a missing \item.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H &lt;return&gt;  for immediate help.
- ...                                              
-                                                  
+ ...
+
 l.419 \end{CSLReferences}</code></pre>
-<p>The above error message is created due to a bug introduced in Quarto
-in the last year where the notation in <em>07_references.qmd</em>
-creates an issue when there is no in-text reference in the text. To
-correct this, please add a temporary reference to any of the Quarto
-files in the outlined document (<em>only if you are using the default
-asar_references.bib file</em>), then replace it with real references
-when ready. Here is an example “temporary reference”:</p>
+<p>The above error message is created due to a bug introduced in Quarto in the last year where the notation in <em>07_references.qmd</em> creates an issue when there is no in-text reference in the text. To correct this, please add a temporary reference to any of the Quarto files in the outlined document (<em>only if you are using the default asar_references.bib file</em>), then replace it with real references when ready. Here is an example “temporary reference”:</p>
 <p><code>Here is an example of an in-text citation (@methot_stock_2013).</code></p>
-</div>
-<div class="section level4">
-<h4 id="sec-docmetadata">“DocumentMetadata” error<a class="anchor" aria-label="anchor" href="#sec-docmetadata"></a>
+</section><section class="level3"><h4 class="anchored" id="sec-docmetadata">“DocumentMetadata” error<a class="anchor" aria-label="anchor" href="#sec-docmetadata"></a>
 </h4>
 <p><code>! LaTeX Error: No support files for \DocumentMetadata found.</code></p>
-<p>The above error message occurs when LaTeX packages necessary for
-rendering haven’t been installed.</p>
-<p>We typically encourage users to <a href="https://github.com/nmfs-ost/asar?tab=readme-ov-file#installation" class="external-link">install
-the default tinytex bundle</a> (“TinyTeX-1”, installed via
-<code><a href="https://rdrr.io/pkg/tinytex/man/install_tinytex.html" class="external-link">tinytex::install_tinytex()</a></code>). This bundle contains most, but
-not all, LaTeX packages needed for rendering <code>asar</code> reports.
-Then, when you render your report for the first time, those missing
-LaTeX packages needed for rendering should install automatically (e.g.,
-‘tagpdf’). However, this doesn’t always happen; we don’t know why.</p>
-<p>Try to resolve the error by installing the full TinyTeX bundle in the
-R console. Since this TinyTeX bundle contains every LaTeX package you
-could install from CTAN (<a href="https://github.com/rstudio/tinytex-releases?tab=readme-ov-file#releases" class="external-link">TinyTeX-2</a>),
-it should contain every LaTeX package needed for rendering (hence its
-large size):</p>
+<p>The above error message occurs when LaTeX packages necessary for rendering haven’t been installed.</p>
+<p>We typically encourage users to <a href="https://github.com/nmfs-ost/asar?tab=readme-ov-file#installation" class="external-link">install the default tinytex bundle</a> (“TinyTeX-1”, installed via <code><a href="https://rdrr.io/pkg/tinytex/man/install_tinytex.html" class="external-link">tinytex::install_tinytex()</a></code>). This bundle contains most, but not all, LaTeX packages needed for rendering <code>asar</code> reports. Then, when you render your report for the first time, those missing LaTeX packages needed for rendering should install automatically (e.g., ‘tagpdf’). However, this doesn’t always happen; we don’t know why.</p>
+<p>Try to resolve the error by installing the full TinyTeX bundle in the R console. Since this TinyTeX bundle contains every LaTeX package you could install from CTAN (<a href="https://github.com/rstudio/tinytex-releases?tab=readme-ov-file#releases" class="external-link">TinyTeX-2</a>), it should contain every LaTeX package needed for rendering (hence its large size):</p>
 <p><code>tinytex::install_tinytex(bundle = "TinyTeX-2")</code></p>
 <p>Then, render your report once more.</p>
-</div>
-</div>
-<div class="section level3">
-<h3 id="when-rendering-why-does-my-report-hang-on-the-figures-doc">When rendering, why does my report hang on the figures doc?<a class="anchor" aria-label="anchor" href="#when-rendering-why-does-my-report-hang-on-the-figures-doc"></a>
+</section></section><section class="level2"><h3 class="anchored" id="when-rendering-why-does-my-report-hang-on-the-figures-doc">When rendering, why does my report hang on the figures doc?<a class="anchor" aria-label="anchor" href="#when-rendering-why-does-my-report-hang-on-the-figures-doc"></a>
 </h3>
-<p>When rendering your report, it may hang when processing the figures
-file. If this occurs, it probably means that your TinyTeX installation
-isn’t working properly. This may occur even if you’ve installed the
-TinyTeX bundle with every LaTeX package you could install from CTAN (<a href="https://github.com/rstudio/tinytex-releases?tab=readme-ov-file#releases" class="external-link">TinyTeX-2</a>).</p>
-<p>Try this: Uninstall tinytex in the R console
-(<code><a href="https://rdrr.io/pkg/tinytex/man/install_tinytex.html" class="external-link">tinytex::uninstall_tinytex()</a></code>), then reinstall it in the
-terminal (<code>quarto install tinytex</code>).</p>
-<p>Notably, this command will install TinyTeX-1 bundle (the default),
-then install the necessary LaTeX packages needed for rendering <em>while
-your report is rendering the first time</em>. See the <a href="#sec-docmetadata">“DocumentMetadata” error</a> section for more
-information.</p>
-</div>
-<div class="section level3">
-<h3 id="why-cant-my-report-find-support_filesbefore-body-tex">Why can’t my report
-<code>find support_files/before-body.tex</code>?<a class="anchor" aria-label="anchor" href="#why-cant-my-report-find-support_filesbefore-body-tex"></a>
+<p>When rendering your report, it may hang when processing the figures file. If this occurs, it probably means that your TinyTeX installation isn’t working properly. This may occur even if you’ve installed the TinyTeX bundle with every LaTeX package you could install from CTAN (<a href="https://github.com/rstudio/tinytex-releases?tab=readme-ov-file#releases" class="external-link">TinyTeX-2</a>).</p>
+<p>Try this: Uninstall tinytex in the R console (<code><a href="https://rdrr.io/pkg/tinytex/man/install_tinytex.html" class="external-link">tinytex::uninstall_tinytex()</a></code>), then reinstall it in the terminal (<code>quarto install tinytex</code>).</p>
+<p>Notably, this command will install TinyTeX-1 bundle (the default), then install the necessary LaTeX packages needed for rendering <em>while your report is rendering the first time</em>. See the <a href="#sec-docmetadata">“DocumentMetadata” error</a> section for more information.</p>
+</section><section class="level2"><h3 class="anchored" id="why-cant-my-report-find-support_filesbefore-body-tex">Why can’t my report <code>find support_files/before-body.tex</code>?<a class="anchor" aria-label="anchor" href="#why-cant-my-report-find-support_filesbefore-body-tex"></a>
 </h3>
-<p>This error can occasionally occur to some users when they are working
-on a remote or shared drive that does not originate from their local
-machine. Due to constraints of Quarto, the user must render their
-skeleton document when the support files and child documents are found
-somewhere locally.</p>
-<p>We suggest users who encounter this problem to store their files made
-from <code>asar</code> on their local computer and push them to a GitHub
-repo to store and share.</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="sec-a11y-issues">Adding tagging and alternative text<a class="anchor" aria-label="anchor" href="#sec-a11y-issues"></a>
+<p>This error can occasionally occur to some users when they are working on a remote or shared drive that does not originate from their local machine. Due to constraints of Quarto, the user must render their skeleton document when the support files and child documents are found somewhere locally.</p>
+<p>We suggest users who encounter this problem to store their files made from <code>asar</code> on their local computer and push them to a GitHub repo to store and share.</p>
+</section></section><section class="section level2"><h2 id="sec-a11y-issues">Adding tagging and alternative text<a class="anchor" aria-label="anchor" href="#sec-a11y-issues"></a>
 </h2>
-<div class="section level3">
-<h3 id="when-i-compile-my-report-after-adding-tagging-or-alt-text-i-get-an-error--why">When I compile my report after adding tagging or alt text, I get an
-error. Why?<a class="anchor" aria-label="anchor" href="#when-i-compile-my-report-after-adding-tagging-or-alt-text-i-get-an-error--why"></a>
+<section class="level2"><h3 class="anchored" id="when-i-compile-my-report-after-adding-tagging-or-alt-text-i-get-an-error--why">When I compile my report after adding tagging or alt text, I get an error. Why?<a class="anchor" aria-label="anchor" href="#when-i-compile-my-report-after-adding-tagging-or-alt-text-i-get-an-error--why"></a>
 </h3>
-<p>We have experienced several seemingly random errors when developing
-this package. Oftentimes, these errors arise when LaTeX packages are
-updated and end up conflicting with one another. As a first attempt to
-debug, we strongly advise updating your LaTeX packages with the
-following command:</p>
+<p>We have experienced several seemingly random errors when developing this package. Oftentimes, these errors arise when LaTeX packages are updated and end up conflicting with one another. As a first attempt to debug, we strongly advise updating your LaTeX packages with the following command:</p>
 <p><code><a href="https://rdrr.io/pkg/tinytex/man/tlmgr.html" class="external-link">tinytex::tlmgr_update()</a></code></p>
-<p>Close RStudio and open it again. Try again to compile your
-report.</p>
+<p>Close RStudio and open it again. Try again to compile your report.</p>
 <p>If that doesn’t solve your problem:</p>
-<ol style="list-style-type: decimal">
-<li>Reinstall your TinyTeX installation (we recommend <a href="@sec-docmetadata">bundle 2</a>, though bundle 1 may suffice).
-Update the packages and try compiling again.</li>
-<li>Check out our <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issues page</a> and <a href="https://github.com/nmfs-ost/asar/discussions" class="external-link">discussion board</a>
-to see if someone else has already asked (and maybe solved!) your
-question.</li>
+<ol type="1">
+<li>Reinstall your TinyTeX installation (we recommend <a href="@sec-docmetadata">bundle 2</a>, though bundle 1 may suffice). Update the packages and try compiling again.</li>
+<li>Check out our <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issues page</a> and <a href="https://github.com/nmfs-ost/asar/discussions" class="external-link">discussion board</a> to see if someone else has already asked (and maybe solved!) your question.</li>
 <li>If you’re still struggling, <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">make an issue</a>.</li>
-</ol>
-</div>
-<div class="section level3">
-<h3 id="i-think-specific-latex-package-is-causing-an-issue--how-do-i-investigate-further">I think [specific LaTeX package] is causing an issue. How do I
-investigate further?<a class="anchor" aria-label="anchor" href="#i-think-specific-latex-package-is-causing-an-issue--how-do-i-investigate-further"></a>
+</ol></section><section class="level2"><h3 class="anchored" id="i-think-specific-latex-package-is-causing-an-issue--how-do-i-investigate-further">I think [specific LaTeX package] is causing an issue. How do I investigate further?<a class="anchor" aria-label="anchor" href="#i-think-specific-latex-package-is-causing-an-issue--how-do-i-investigate-further"></a>
 </h3>
-<p>If you’ve identified a specific LaTeX package that may be causing
-issues (you may be tipped off by console messages), try reinstalling the
-package by typing the following in the console:</p>
+<p>If you’ve identified a specific LaTeX package that may be causing issues (you may be tipped off by console messages), try reinstalling the package by typing the following in the console:</p>
 <p><code>tinytex::tlmgr_install("&lt;LaTeX package name&gt;")</code></p>
-<p>For example, to reinstall <code>pdfcomment</code>, you’d enter
-<code>tinytex::tlmgr_install("pdfcomment")</code>.</p>
-<p>Quarto <em>should be</em> installing LaTeX packages that it can’t
-find, but sometimes it doesn’t. This is a frustrating back-end issue
-with Quarto.</p>
-<p>You can also verify that your package has <em>actually been
-downloaded</em> by typing the following:</p>
+<p>For example, to reinstall <code>pdfcomment</code>, you’d enter <code>tinytex::tlmgr_install("pdfcomment")</code>.</p>
+<p>Quarto <em>should be</em> installing LaTeX packages that it can’t find, but sometimes it doesn’t. This is a frustrating back-end issue with Quarto.</p>
+<p>You can also verify that your package has <em>actually been downloaded</em> by typing the following:</p>
 <p><code>tinytex::tlmgr_search("&lt;LaTeX package name&gt;")</code></p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="general-errors">General errors<a class="anchor" aria-label="anchor" href="#general-errors"></a>
+</section></section><section class="section level2"><h2 id="general-errors">General errors<a class="anchor" aria-label="anchor" href="#general-errors"></a>
 </h2>
-<div class="section level3">
-<h3 id="im-getting-an-error-not-explained-in-this-faq--how-do-i-fix-it">I’m getting an error not explained in this FAQ. How do I fix
-it?<a class="anchor" aria-label="anchor" href="#im-getting-an-error-not-explained-in-this-faq--how-do-i-fix-it"></a>
+<section class="level2"><h3 class="anchored" id="im-getting-an-error-not-explained-in-this-faq--how-do-i-fix-it">I’m getting an error not explained in this FAQ. How do I fix it?<a class="anchor" aria-label="anchor" href="#im-getting-an-error-not-explained-in-this-faq--how-do-i-fix-it"></a>
 </h3>
-<p>When getting to know <code>asar</code>, you’ll probably encounter
-some errors. We highly recommend checking out our <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issues page</a> and <a href="https://github.com/nmfs-ost/asar/discussions" class="external-link">discussion board</a>
-to see if someone else has already asked (and maybe solved!) your
-question.</p>
-<p>If you cannot find an answer, feel free to report your issue or
-question to the <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issues
-page</a> or <a href="https://github.com/nmfs-ost/asar/discussions" class="external-link">discussion
-board</a>. There are multiple issue templates to choose from: request to
-add author affiliation, bug report, feature request, and more.</p>
+<p>When getting to know <code>asar</code>, you’ll probably encounter some errors. We highly recommend checking out our <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issues page</a> and <a href="https://github.com/nmfs-ost/asar/discussions" class="external-link">discussion board</a> to see if someone else has already asked (and maybe solved!) your question.</p>
+<p>If you cannot find an answer, feel free to report your issue or question to the <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issues page</a> or <a href="https://github.com/nmfs-ost/asar/discussions" class="external-link">discussion board</a>. There are multiple issue templates to choose from: request to add author affiliation, bug report, feature request, and more.</p>
+</section></section><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config);
+    }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
-</div>
-  </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
-
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Samantha Schiano, Sophie Breitbart, Steve Saul.</p>
 </div>
 
-
-
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by Samantha Schiano, Sophie Breitbart, Steve Saul.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+    </footer>
 </div>
-
-      </footer>
-</div>
-
 
 
 

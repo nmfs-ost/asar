@@ -1,0 +1,30 @@
+# 
+
+### Code your custom tables and figures
+
+First, write the code to produce (but not export; that’s a future step!)
+your custom tables and figures. Save each table and figure as an object
+(e.g., in the examples below, `your_table` and `your_figure`). Save the
+script somewhere safe.
+
+``` r
+
+# Example dataframe
+your_df <- data.frame(
+  "x" = c(1, 2, 3),
+  "y" = c(4, 5, 6)
+)
+
+# Example table
+your_table <- gt::gt(your_df)
+
+# Example figure
+your_figure <- ggplot2::ggplot(
+  your_df,
+  aes(
+    x = x,
+    y = y
+  )
+) +
+  ggplot2::geom_point()
+```

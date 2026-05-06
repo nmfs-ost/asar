@@ -1,0 +1,98 @@
+# Add alternative text into latex
+
+Add alternative text into latex
+
+## Usage
+
+``` r
+add_alttext(
+  x = list.files(getwd())[grep("skeleton.tex", list.files(getwd()))],
+  dir = getwd(),
+  alttext_csv = file.path(getwd(), "captions_alt_text.csv"),
+  compile = TRUE,
+  rename = NULL,
+  tagged = TRUE
+)
+```
+
+## Arguments
+
+- x:
+
+  .tex file containing report. Typically produced after initially
+  rendering the skeleton made from create_template.
+
+- dir:
+
+  directory where the tex file is located that will be edited
+
+- alttext_csv:
+
+  File path for the csv file containing alternative text and captions
+  generated when running stockplotr::exp_all_figs_tables
+
+- compile:
+
+  Indicate whether the document (X) should be rendered after these files
+  are changed. Default TRUE.
+
+- rename:
+
+  Indicate a name for the new tex file produced from this function.
+  There is no need to include ".tex" in the name. Defaults to current
+  name and overwrites the current tex file.
+
+- tagged:
+
+  Indicate if the input tex file from dir has the latex package, tagpdf,
+  used so that tagging is present.
+
+## Value
+
+This function was made to help add in alternative text to latex
+documents generated from quarto. Quarto does not currently contain a way
+to add alternative text to PDF documents, so this function was developed
+as a work around. The addition of alternative text needs to be found in
+either the rda files produced from stockplotr::exp_all_figs_tables or in
+the captions_alt_text.csv also produced from the same function. Users
+not using this format should create a csv file with columns containing
+"label" and "alt_text" where the label column contains the exact label
+name when referencing the image/figure in text. The label is very
+important as it provides a way for the function to match where the
+alternative text gets placed. When compile is set to TRUE, the
+alternative text using this format will not be available and must be
+used in conjunction with
+[`asar::add_tagging()`](nmfs-ost.github.io/asar/reference/add_tagging.md)
+unless tagged is set to FALSE. Default is TRUE.
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+create_template(
+  new_template = TRUE,
+  format = "pdf",
+  office = "NWFSC",
+  region = "U.S. West Coast",
+  species = "Dover sole",
+  spp_latin = "Microstomus pacificus",
+  year = 2010,
+  authors = c("John Snow" = "AFSC", "Danny Phantom" = "NEFSC", "Patrick Star" = "SEFSC-ML"),
+  model_results = "Report.sso",
+  model = "SS3",
+  new_section = "an_additional_section",
+  section_location = "after-introduction",
+  figures_dir = getwd()
+)
+
+quarto::quarto_render(file.path(getwd(), "report", "SAR_USWC_Dover_sole_skeleton.qmd"))
+
+add_alttext(
+  x = "SAR_USWC_Dover_sole_skeleton.tex",
+  dir = file.path(getwd(), "report"),
+  alttext_csv = "my_alttext_file.csv",
+  compile = FALSE,
+  rename = "SAR_Dover_sole_tagged"
+)
+} # }
+```

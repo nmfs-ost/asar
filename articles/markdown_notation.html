@@ -4,156 +4,86 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>markdown • asar</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="markdown">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="markdown_notation_files/libs/quarto-html/popper.min.js"></script><script src="markdown_notation_files/libs/quarto-html/tippy.umd.min.js"></script><script src="markdown_notation_files/libs/quarto-html/anchor.min.js"></script><link href="markdown_notation_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="markdown_notation_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="markdown">
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">asar</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.4</span>
-      </span>
-    </div>
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <a class="navbar-brand me-2" href="../index.html">asar</a>
 
-  </a>
-</li>
-<li>
-  <a href="../reference/index.html">
-    <span class="far fa-file-code fa-lg"></span>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
 
-    Functions
-  </a>
-</li>
-<li>
-  <a href="../asar_cheatsheet.pdf">
-    <span class="fa fa-solid fa-key"></span>
 
-    Cheatsheet
-  </a>
-</li>
-<li>
-  <a href="https://connect.fisheries.noaa.gov/asar_tutorial/" class="external-link">
-    <span class="fa fa-regular fa-map"></span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    Tutorial
-  </a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <span class="fas fa-file-contract fa-lg"></span>
-
-    Articles
-
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/markdown_notation.html">Markdown Notation</a>
-    </li>
-    <li>
-      <a href="../articles/regional_workflows.html">Regional Workflows</a>
-    </li>
-    <li>
-      <a href="../articles/accessibility_guide.html">Increasing Report Accessibility</a>
-    </li>
-    <li>
-      <a href="../articles/custom-figs-tabs.html">Custom Figures &amp; Tables</a>
-    </li>
-    <li>
-      <a href="../articles/faqs.html">Frequently Asked Questions (FAQs)</a>
-    </li>
-    <li>
-      <a href="../articles/caps-alttext-alt-workflows.html">Captions/alt text in Alternative Workflows</a>
-    </li>
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../index.html"><span class="fa fas fa-home fa-lg"></span></a></li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html"><span class="fa far fa-file-code fa-lg"></span> Functions</a></li>
+<li class="nav-item"><a class="nav-link" href="../asar_cheatsheet.pdf" target="_blank"><span class="fa fa-solid fa-key"></span> Cheatsheet</a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://connect.fisheries.noaa.gov/asar_tutorial/" target="_blank"><span class="fa fa-regular fa-map"></span> Tutorial</a></li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fas fa-file-contract fa-lg"></span> Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/markdown_notation.html">Markdown Notation</a></li>
+    <li><a class="dropdown-item" href="../articles/accessibility_guide.html">Increasing Report Accessibility</a></li>
+    <li><a class="dropdown-item" href="../articles/custom-figs-tabs.html">Custom Figures &amp; Tables</a></li>
+    <li><a class="dropdown-item" href="../articles/faqs.html">Frequently Asked Questions (FAQs)</a></li>
+    <li><a class="dropdown-item" href="../articles/caps-alttext-alt-workflows.html">Captions/Alt Text in Alternative Workflows</a></li>
   </ul>
 </li>
-<li>
-  <a href="../articles/example_reports.html">
-    <span class="fas fa-book fa-lg"></span>
-
-    Example Reports
-  </a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../articles/example_reports.html" target="_blank"><span class="fa fas fa-book fa-lg"></span> Example Reports</a></li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">
-    <span class="fas fa-question-circle fa-lg"></span>
-
-    Issues
-  </a>
-</li>
-<li>
-  <a href="https://github.com/nmfs-ost/asar/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
-
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/nmfs-ost/asar/issues" target="_blank"><span class="fa fas fa-question-circle fa-lg"></span> Issues</a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/nmfs-ost/asar/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-quarto">
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
+
+      <h1>markdown</h1>
 
 
 
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>markdown</h1>
-            
-      
-      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/vignettes/markdown_notation.Rmd" class="external-link"><code>vignettes/markdown_notation.Rmd</code></a></small>
-      <div class="hidden name"><code>markdown_notation.Rmd</code></div>
 
+      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/vignettes/articles/markdown_notation.qmd" class="external-link"><code>vignettes/articles/markdown_notation.qmd</code></a></small>
+      <div class="d-none name"><code></code></div>
     </div>
 
-    
-    
-<div class="section level2">
-<h2 id="markdown-notation">Markdown Notation<a class="anchor" aria-label="anchor" href="#markdown-notation"></a>
+
+
+
+
+
+    <section class="section level2"><h2 id="markdown-notation">Markdown Notation<a class="anchor" aria-label="anchor" href="#markdown-notation"></a>
 </h2>
-<p>Efficiently using this package in the stock assessment workflow
-requires a basic understanding of markdown notation. In this article, we
-are going to describe common notation and example using markdown
-language in which you might use for writing a stock assessment
-report.</p>
-<div class="section level3">
-<h3 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
+<p>Markdown is a great tool for formatting text. Below, we describe common notation and examples, many of which you may use when writing an <code>asar</code>-based stock assessment report.</p>
+<section class="level2"><h3 class="anchored" id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h3>
-<div class="section level4">
-<h4 id="basic-syntax">Basic Syntax<a class="anchor" aria-label="anchor" href="#basic-syntax"></a>
+<section class="level3"><h4 class="anchored" id="basic-syntax">Basic Syntax<a class="anchor" aria-label="anchor" href="#basic-syntax"></a>
 </h4>
-<table class="table">
+<table class="table caption-top">
 <thead><tr class="header">
 <th>Element</th>
 <th>Markdown Syntax</th>
@@ -212,16 +142,9 @@ report.</p>
 <td>`knitr::include_graphics(“path/image.png”)</td>
 </tr>
 </tbody>
-</table>
-</div>
-<div class="section level4">
-<h4 id="extended-syntax">Extended Syntax<a class="anchor" aria-label="anchor" href="#extended-syntax"></a>
+</table></section><section class="level3"><h4 class="anchored" id="extended-syntax">Extended Syntax<a class="anchor" aria-label="anchor" href="#extended-syntax"></a>
 </h4>
-<table class="table">
-<colgroup>
-<col width="34%">
-<col width="65%">
-</colgroup>
+<table class="table caption-top">
 <thead><tr class="header">
 <th>Element</th>
 <th>Markdown Syntax</th>
@@ -229,8 +152,7 @@ report.</p>
 <tbody>
 <tr class="odd">
 <td>Markdown table</td>
-<td>| Syntax | Description | <br> |———-|——-| <br> | entry 1 |
-description | <br> | entry 2 | description |</td>
+<td>| Syntax | Description | <br> |———-|——-| <br> | entry 1 | description | <br> | entry 2 | description |</td>
 </tr>
 <tr class="even">
 <td>Footnote</td>
@@ -270,75 +192,44 @@ description | <br> | entry 2 | description |</td>
 <code>&lt;www.example.com&gt;</code> <br> ````<a href="mailto:example@noaa.gov" class="email">example@noaa.gov</a>`````</td>
 </tr>
 </tbody>
-</table>
-</div>
-<div class="section level4">
-<h4 id="math">Math<a class="anchor" aria-label="anchor" href="#math"></a>
+</table></section><section class="level3"><h4 class="anchored" id="math">Math<a class="anchor" aria-label="anchor" href="#math"></a>
 </h4>
-<p>Two helpful things to know about writing mathematical expressions
-with R markdown:</p>
-<ol style="list-style-type: decimal">
+<p>Two helpful things to know about writing mathematical expressions with R markdown:</p>
+<ol type="1">
 <li>R markdown supports LaTex-style mathematical expressions.</li>
 <li>
-<em>In-line expressions</em> are surrounded by one set of dollar
-signs ($) while equations that are on their own line (<em>“block”
-expressions</em>) are surrounded by two sets. For instance, $1+1=2$ is
-rendered as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">1+1=2</annotation></semantics></math>
-while <code>$$1 + 1 = 2$$</code> is rendered as:
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">1+1=2</annotation></semantics></math>
+<em>In-line expressions</em> are surrounded by one set of dollar signs ($) while equations that are on their own line (<em>“block” expressions</em>) are surrounded by two sets. For instance, $1+1=2$ is rendered as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">1+1=2</annotation></semantics></math> while <code>$$1 + 1 = 2$$</code> is rendered as: <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">1+1=2</annotation></semantics></math>
 </li>
 </ol>
-<div class="section level5">
-<h5 id="superscript">Superscript<a class="anchor" aria-label="anchor" href="#superscript"></a>
+<section class="level4"><h5 class="anchored" id="superscript">Superscript<a class="anchor" aria-label="anchor" href="#superscript"></a>
 </h5>
-<p>To write a superscript, use a caret (^) before a value. For instance,
-$b^2$ renders as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>b</mi><mn>2</mn></msup><annotation encoding="application/x-tex">b^2</annotation></semantics></math>.</p>
-</div>
-<div class="section level5">
-<h5 id="subscript">Subscript<a class="anchor" aria-label="anchor" href="#subscript"></a>
+<p>To write a superscript, use a caret (^) before a value. For instance, $b^2$ renders as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>b</mi><mn>2</mn></msup><annotation encoding="application/x-tex">b^2</annotation></semantics></math>.</p>
+</section><section class="level4"><h5 class="anchored" id="subscript">Subscript<a class="anchor" aria-label="anchor" href="#subscript"></a>
 </h5>
-<p>To write a subscript, use an underscore (_) before a value. For
-instance, $b_2$ renders as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mn>2</mn></msub><annotation encoding="application/x-tex">b_2</annotation></semantics></math>.
-For longer subscripts, enclose the text in curly brackets ($b_{12345}$
-renders as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mn>12345</mn></msub><annotation encoding="application/x-tex">b_{12345}</annotation></semantics></math>)</p>
-</div>
-<div class="section level5">
-<h5 id="symbols">Symbols<a class="anchor" aria-label="anchor" href="#symbols"></a>
+<p>To write a subscript, use an underscore (_) before a value. For instance, $b_2$ renders as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mn>2</mn></msub><annotation encoding="application/x-tex">b_2</annotation></semantics></math>. For longer subscripts, enclose the text in curly brackets ($b_{12345}$ renders as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mn>12345</mn></msub><annotation encoding="application/x-tex">b_{12345}</annotation></semantics></math>)</p>
+</section><section class="level4"><h5 class="anchored" id="symbols">Symbols<a class="anchor" aria-label="anchor" href="#symbols"></a>
 </h5>
-<p>Many symbols can be written by adding a backslash (\) before a symbol
-name. For instance:</p>
+<p>Many symbols can be written by adding a backslash (\) before a symbol name. For instance:</p>
 <ul>
-<li>$\pi$ renders as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>π</mi><annotation encoding="application/x-tex">\pi</annotation></semantics></math>
+<li>$\pi$ renders as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>π</mi><annotation encoding="application/x-tex">\pi</annotation></semantics></math>
 </li>
-<li>$\beta$ renders as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+<li>$\beta$ renders as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
 </li>
-<li>$\mu$ renders as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>
+<li>$\mu$ renders as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>
 </li>
-<li>$\sigma$ renders as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>σ</mi><annotation encoding="application/x-tex">\sigma</annotation></semantics></math>
+<li>$\sigma$ renders as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>σ</mi><annotation encoding="application/x-tex">\sigma</annotation></semantics></math>
 </li>
-<li>$\overline{b}$ renders as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>b</mi><mo accent="true">¯</mo></mover><annotation encoding="application/x-tex">\overline{b}</annotation></semantics></math>
+<li>$\overline{b}$ renders as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>b</mi><mo accent="true">¯</mo></mover><annotation encoding="application/x-tex">\overline{b}</annotation></semantics></math>
 </li>
-<li>$|b|$ renders as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">|</mo><mi>b</mi><mo stretchy="true" form="postfix">|</mo></mrow><annotation encoding="application/x-tex">|b|</annotation></semantics></math>
+<li>$|b|$ renders as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>b</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|b|</annotation></semantics></math>
 </li>
-<li>$\sqrt{4+i}$ renders as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mrow><mn>4</mn><mo>+</mo><mi>i</mi></mrow></msqrt><annotation encoding="application/x-tex">\sqrt{4+i}</annotation></semantics></math>
+<li>$\sqrt{4+i}$ renders as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mrow><mn>4</mn><mo>+</mo><mi>i</mi></mrow></msqrt><annotation encoding="application/x-tex">\sqrt{4+i}</annotation></semantics></math>
 </li>
 </ul>
-<div class="section level6">
-<h6 id="greek-letters">Greek Letters<a class="anchor" aria-label="anchor" href="#greek-letters"></a>
+<section class="level5"><h6 class="anchored" id="greek-letters">Greek Letters<a class="anchor" aria-label="anchor" href="#greek-letters"></a>
 </h6>
 <p>Generalized notation - <code>$\alpha$</code></p>
-<table class="table">
+<table class="table caption-top">
 <thead><tr class="header">
 <th>Greek Letter Spelling</th>
 <th>Lowercase</th>
@@ -358,12 +249,12 @@ name. For instance:</p>
 <tr class="odd">
 <td>gamma</td>
 <td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math></td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Γ</mi><annotation encoding="application/x-tex">\Gamma</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Γ</mi><annotation encoding="application/x-tex">\Gamma</annotation></semantics></math></td>
 </tr>
 <tr class="even">
 <td>delta</td>
 <td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>δ</mi><annotation encoding="application/x-tex">\delta</annotation></semantics></math></td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Δ</mi><annotation encoding="application/x-tex">\Delta</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Δ</mi><annotation encoding="application/x-tex">\Delta</annotation></semantics></math></td>
 </tr>
 <tr class="odd">
 <td>epsilon</td>
@@ -383,7 +274,7 @@ name. For instance:</p>
 <tr class="even">
 <td>theta</td>
 <td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math></td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Θ</mi><annotation encoding="application/x-tex">\Theta</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Θ</mi><annotation encoding="application/x-tex">\Theta</annotation></semantics></math></td>
 </tr>
 <tr class="odd">
 <td>kappa</td>
@@ -393,7 +284,7 @@ name. For instance:</p>
 <tr class="even">
 <td>lambda</td>
 <td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math></td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Λ</mi><annotation encoding="application/x-tex">\Lambda</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Λ</mi><annotation encoding="application/x-tex">\Lambda</annotation></semantics></math></td>
 </tr>
 <tr class="odd">
 <td>mu</td>
@@ -407,7 +298,7 @@ name. For instance:</p>
 </tr>
 <tr class="odd">
 <td>omicron</td>
-<td><span class="math inline">$\omicron$</span></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ο</mi><annotation encoding="application/x-tex">\omicron</annotation></semantics></math></td>
 <td>O</td>
 </tr>
 <tr class="even">
@@ -418,7 +309,7 @@ name. For instance:</p>
 <tr class="odd">
 <td>sigma</td>
 <td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>σ</mi><annotation encoding="application/x-tex">\sigma</annotation></semantics></math></td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Σ</mi><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Σ</mi><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math></td>
 </tr>
 <tr class="even">
 <td>tau</td>
@@ -428,7 +319,7 @@ name. For instance:</p>
 <tr class="odd">
 <td>upsilon</td>
 <td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>υ</mi><annotation encoding="application/x-tex">\upsilon</annotation></semantics></math></td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Υ</mi><annotation encoding="application/x-tex">\Upsilon</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Υ</mi><annotation encoding="application/x-tex">\Upsilon</annotation></semantics></math></td>
 </tr>
 <tr class="even">
 <td>chi</td>
@@ -438,7 +329,7 @@ name. For instance:</p>
 <tr class="odd">
 <td>psi</td>
 <td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ψ</mi><annotation encoding="application/x-tex">\psi</annotation></semantics></math></td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ψ</mi><annotation encoding="application/x-tex">\Psi</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Ψ</mi><annotation encoding="application/x-tex">\Psi</annotation></semantics></math></td>
 </tr>
 <tr class="even">
 <td>iota</td>
@@ -448,101 +339,66 @@ name. For instance:</p>
 <tr class="odd">
 <td>xi</td>
 <td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ξ</mi><annotation encoding="application/x-tex">\xi</annotation></semantics></math></td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ξ</mi><annotation encoding="application/x-tex">\Xi</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Ξ</mi><annotation encoding="application/x-tex">\Xi</annotation></semantics></math></td>
 </tr>
 <tr class="even">
 <td>pi</td>
 <td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>π</mi><annotation encoding="application/x-tex">\pi</annotation></semantics></math></td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Π</mi><annotation encoding="application/x-tex">\Pi</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Π</mi><annotation encoding="application/x-tex">\Pi</annotation></semantics></math></td>
 </tr>
 <tr class="odd">
 <td>phi</td>
 <td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math></td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Φ</mi><annotation encoding="application/x-tex">\Phi</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Φ</mi><annotation encoding="application/x-tex">\Phi</annotation></semantics></math></td>
 </tr>
 <tr class="even">
 <td>omega</td>
 <td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math></td>
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math></td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math></td>
 </tr>
 </tbody>
-</table>
-</div>
-</div>
-<div class="section level5">
-<h5 id="fractions">Fractions<a class="anchor" aria-label="anchor" href="#fractions"></a>
+</table></section></section><section class="level4"><h5 class="anchored" id="fractions">Fractions<a class="anchor" aria-label="anchor" href="#fractions"></a>
 </h5>
-<p>To make a fraction, write \frac before your numerator and
-denominator, both of which are enclosed in curly brackets ({ }). For
-instance, $\frac{7}{8}$ renders as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mn>7</mn><mn>8</mn></mfrac><annotation encoding="application/x-tex">\frac{7}{8}</annotation></semantics></math>.</p>
-</div>
-<div class="section level5">
-<h5 id="equations-and-combinations">Equations and combinations<a class="anchor" aria-label="anchor" href="#equations-and-combinations"></a>
+<p>To make a fraction, write \frac before your numerator and denominator, both of which are enclosed in curly brackets ({ }). For instance, $\frac{7}{8}$ renders as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mn>7</mn><mn>8</mn></mfrac><annotation encoding="application/x-tex">\frac{7}{8}</annotation></semantics></math>.</p>
+</section><section class="level4"><h5 class="anchored" id="equations-and-combinations">Equations and combinations<a class="anchor" aria-label="anchor" href="#equations-and-combinations"></a>
 </h5>
-<p>Lots of these special symbols can be combined into complex terms and
-equations. For instance:</p>
+<p>Lots of these special symbols can be combined into complex terms and equations. For instance:</p>
 <ul>
-<li><p>$R^2_{adj}$ renders as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>R</mi><mrow><mi>a</mi><mi>d</mi><mi>j</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">R^2_{adj}</annotation></semantics></math></p></li>
-<li><p>$y = ax^2 + bx + c$ renders as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">y = ax^2 + bx + c</annotation></semantics></math></p></li>
-<li><p>$\frac{\theta^{10}}{2a} \le \frac{5c^4}{b_{min}}$ renders as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>θ</mi><mn>10</mn></msup><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mo>≤</mo><mfrac><mrow><mn>5</mn><msup><mi>c</mi><mn>4</mn></msup></mrow><msub><mi>b</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">\frac{\theta^{10}}{2a} \le \frac{5c^4}{b_{min}}</annotation></semantics></math></p></li>
+<li><p>$R^2_{adj}$ renders as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>R</mi><mrow><mi>a</mi><mi>d</mi><mi>j</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">R^2_{adj}</annotation></semantics></math></p></li>
+<li><p>$y = ax^2 + bx + c$ renders as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">y = ax^2 + bx + c</annotation></semantics></math></p></li>
+<li><p>$\frac{\theta^{10}}{2a} \le \frac{5c^4}{b_{min}}$ renders as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><msup><mi>θ</mi><mn>10</mn></msup><mrow><mn>2</mn><mi>a</mi></mrow></mfrac><mo>≤</mo><mfrac><mrow><mn>5</mn><msup><mi>c</mi><mn>4</mn></msup></mrow><msub><mi>b</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">\frac{\theta^{10}}{2a} \le \frac{5c^4}{b_{min}}</annotation></semantics></math></p></li>
 <li>
-<p>$SBPR_f = \sum_{a} N_a m_a w_a$ renders as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>B</mi><mi>P</mi><msub><mi>R</mi><mi>f</mi></msub><mo>=</mo><msub><mo>∑</mo><mi>a</mi></msub><msub><mi>N</mi><mi>a</mi></msub><msub><mi>m</mi><mi>a</mi></msub><msub><mi>w</mi><mi>a</mi></msub></mrow><annotation encoding="application/x-tex">SBPR_f = \sum_{a} N_a m_a w_a</annotation></semantics></math></p>
+<p>$SBPR_f = \sum_{a} N_a m_a w_a$ renders as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>B</mi><mi>P</mi><msub><mi>R</mi><mi>f</mi></msub><mo>=</mo><msub><mo>∑</mo><mi>a</mi></msub><msub><mi>N</mi><mi>a</mi></msub><msub><mi>m</mi><mi>a</mi></msub><msub><mi>w</mi><mi>a</mi></msub></mrow><annotation encoding="application/x-tex">SBPR_f = \sum_{a} N_a m_a w_a</annotation></semantics></math></p>
 <ul>
-<li>Note: when sums are rendered in-text, like the one above, the bounds
-will appear next to the summation. When rendered as a block equation,
-the bounds will appear as expected, like this:
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>B</mi><mi>P</mi><msub><mi>R</mi><mi>f</mi></msub><mo>=</mo><munder><mo>∑</mo><mi>a</mi></munder><msub><mi>N</mi><mi>a</mi></msub><msub><mi>m</mi><mi>a</mi></msub><msub><mi>w</mi><mi>a</mi></msub></mrow><annotation encoding="application/x-tex">SBPR_f = \sum_{a} N_a m_a w_a</annotation></semantics></math>
+<li>Note: when sums are rendered in-text, like the one above, the bounds will appear next to the summation. When rendered as a block equation, the bounds will appear as expected, like this: <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>B</mi><mi>P</mi><msub><mi>R</mi><mi>f</mi></msub><mo>=</mo><munder><mo>∑</mo><mi>a</mi></munder><msub><mi>N</mi><mi>a</mi></msub><msub><mi>m</mi><mi>a</mi></msub><msub><mi>w</mi><mi>a</mi></msub></mrow><annotation encoding="application/x-tex">SBPR_f = \sum_{a} N_a m_a w_a</annotation></semantics></math>
 </li>
 </ul>
 </li>
-</ul>
-</div>
-<div class="section level5">
-<h5 id="further-guidance">Further guidance<a class="anchor" aria-label="anchor" href="#further-guidance"></a>
+</ul></section><section class="level4"><h5 class="anchored" id="further-guidance">Further guidance<a class="anchor" aria-label="anchor" href="#further-guidance"></a>
 </h5>
-<p>Check out <a href="https://www.overleaf.com/learn/latex/Mathematical_expressions" class="external-link">Overleaf’s
-LaTeX reference guide to mathematical expressions</a> for more guidance
-writing mathematical text.</p>
-</div>
-</div>
-</div>
-<div class="section level3">
-<h3 id="markdown-syntax">Markdown Syntax<a class="anchor" aria-label="anchor" href="#markdown-syntax"></a>
+<p>Check out <a href="https://www.overleaf.com/learn/latex/Mathematical_expressions" class="external-link">Overleaf’s LaTeX reference guide to mathematical expressions</a> for more guidance writing mathematical text.</p>
+</section></section></section><section class="level2"><h3 class="anchored" id="markdown-syntax">Markdown Syntax<a class="anchor" aria-label="anchor" href="#markdown-syntax"></a>
 </h3>
-</div>
-<div class="section level3">
-<h3 id="sec-codechunk">Code Chunks<a class="anchor" aria-label="anchor" href="#sec-codechunk"></a>
+</section><section class="level2"><h3 class="anchored" id="sec-codechunk">Code Chunks<a class="anchor" aria-label="anchor" href="#sec-codechunk"></a>
 </h3>
-<p>To add a piece of code into the text directly, encase R code within a
-pair of back ticks (`). For example, `params$region` will render like
-this:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<p>To add a piece of code into the text directly, encase R code within a pair of back ticks (`). For example, `params$region` will render like this:</p>
+<div class="cell">
+<details class="code-fold"><summary>Show the code</summary><div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">params</span><span class="op">$</span><span class="va">region</span></span></code></pre></div>
-<p>The above example shows how one would incorporate the <em>region</em>
-parameter into a sentence in a markdown or quarto file. In google docs,
-this notation formatted to green and the font roboto mono.</p>
-<p>If we define the parameter of region as NWFSC, the phrase “my region
-is `params$region` would render as”my region is NWFSC”.</p>
+</details>
+</div>
+<p>The above example shows how one would incorporate the <em>region</em> parameter into a sentence in a markdown or quarto file. In google docs, this notation formatted to green and the font roboto mono.</p>
+<p>If we define the parameter of region as NWFSC, the phrase “my region is `params$region` would render as”my region is NWFSC”.</p>
 <p>Other ways to incorporate markdown notation include:</p>
-<div class="section level5">
-<h5 id="in-line-calculations">In-line calculations<a class="anchor" aria-label="anchor" href="#in-line-calculations"></a>
+<section class="level4"><h5 class="anchored" id="in-line-calculations">In-line calculations<a class="anchor" aria-label="anchor" href="#in-line-calculations"></a>
 </h5>
 <ul>
 <li>
 <code>\r 2+2\</code> would render as 4.</li>
-</ul>
-</div>
-<div class="section level5">
-<h5 id="code-chunk-options">Code Chunk Options<a class="anchor" aria-label="anchor" href="#code-chunk-options"></a>
+</ul></section><section class="level4"><h5 class="anchored" id="code-chunk-options">Code Chunk Options<a class="anchor" aria-label="anchor" href="#code-chunk-options"></a>
 </h5>
-<p>The following are some of the ways you can tell quarto to evaluate
-code:</p>
-<table class="table">
+<p>The following are some of the ways you can tell quarto to evaluate code:</p>
+<table class="table caption-top">
 <thead><tr class="header">
 <th>Execute options</th>
 <th>Actions</th>
@@ -558,9 +414,7 @@ code:</p>
 </tr>
 <tr class="odd">
 <td>eval</td>
-<td>true, false,
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>.</mi><mi>.</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">...</annotation></semantics></math>
-</td>
+<td>true, false, […]</td>
 </tr>
 <tr class="even">
 <td>output</td>
@@ -587,97 +441,142 @@ code:</p>
 <td>true, false, auto</td>
 </tr>
 </tbody>
-</table>
-</div>
-</div>
-<div class="section level3">
-<h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</table></section></section><section class="level2"><h3 class="anchored" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h3>
-<p><code>asar</code> comes with a default .bib file which contains
-example references, but users are encouraged to replace it or expand
-upon it with their own .bib files for references in their report. To
-references an article or other references from the file within the test
-use the following notation:</p>
+<p><code>asar</code> comes with a default .bib file which contains example references, but users are encouraged to replace it or expand upon it with their own .bib files for references in their report. To references an article or other references from the file within the test use the following notation:</p>
 <blockquote>
-<p>“The dynasty fell within the year 1206, leaving the Vikings in a
-state of unrest (<code>@Biddle_1992</code>).”</p>
+<p>“The dynasty fell within the year 1206, leaving the Vikings in a state of unrest (<code>@Biddle_1992</code>).”</p>
 </blockquote>
 <p>renders as</p>
 <blockquote>
-<p>“The dynasty fell within the year 1206, leaving the Vikings in a
-state of unrest (<span class="citation">Biddle and Kjølbye-Biddle
-(1992)</span>).”</p>
+<p>“The dynasty fell within the year 1206, leaving the Vikings in a state of unrest (<span class="citation" data-cites="Biddle_1992">Biddle and Kjølbye-Biddle (<a href="#ref-Biddle_1992" role="doc-biblioref">1992</a>)</span>).”</p>
 </blockquote>
-<p>The citation will format according to Canadian Journal of Fisheries
-and Aquatic Sciences standards and include the citation in
-<code>07_references.qmd</code>. This default citation style is set in
-the skeleton file’s YAML (<code>csl: support_files/cjfas.csl</code>).
-You can change the citation style by substituting the “cjfas.csl”
-file.</p>
-<p>A good rule of thumb to follow is that references are cited use the @
-symbol followed by the first author’s last name then the publication
-year. This is not always the case, so it is advised that users check
-their bib file for the proper citation or use the Visual editor that
-provides a convenient drop down with a list of suggested citations base
-on author name, year, or keyword from the title.</p>
-</div>
-<div class="section level3">
-<h3 id="combinations">Combinations<a class="anchor" aria-label="anchor" href="#combinations"></a>
+<p>The citation will format according to Canadian Journal of Fisheries and Aquatic Sciences standards and include the citation in <code>07_references.qmd</code>. This default citation style is set in the skeleton file’s YAML (<code>csl: support_files/cjfas.csl</code>). You can change the citation style by substituting the “cjfas.csl” file.</p>
+<p>A good rule of thumb to follow is that references are cited use the @ symbol followed by the first author’s last name then the publication year. This is not always the case, so it is advised that users check their bib file for the proper citation or use the Visual editor that provides a convenient drop down with a list of suggested citations base on author name, year, or keyword from the title.</p>
+</section><section class="level2"><h3 class="anchored" id="combinations">Combinations<a class="anchor" aria-label="anchor" href="#combinations"></a>
 </h3>
-<p>A lot of the notation in this document can be combined for a highly
-customizable document. For example, you can bold or italicize a link by
-surrounding the notation to insert a link by asterisks (*):</p>
-<div class="section level5">
-<h5 id="italicized-link">Italicized link<a class="anchor" aria-label="anchor" href="#italicized-link"></a>
+<p>A lot of the notation in this document can be combined for a highly customizable document. For example, you can bold or italicize a link by surrounding the notation to insert a link by asterisks (*):</p>
+<section class="level4"><h5 class="anchored" id="italicized-link">Italicized link<a class="anchor" aria-label="anchor" href="#italicized-link"></a>
 </h5>
-<p>*[NOAA Fisheries](<a href="https://www.fisheries.noaa.gov" class="external-link uri">https://www.fisheries.noaa.gov</a>)* renders as <em><a href="https://www.fisheries.noaa.gov/" class="external-link">NOAA Fisheries</a></em></p>
-</div>
-<div class="section level5">
-<h5 id="bolded-link">Bolded link<a class="anchor" aria-label="anchor" href="#bolded-link"></a>
+<p>*[NOAA Fisheries](https://www.fisheries.noaa.gov)* renders as <em><a href="https://www.fisheries.noaa.gov/" class="external-link">NOAA Fisheries</a></em></p>
+</section><section class="level4"><h5 class="anchored" id="bolded-link">Bolded link<a class="anchor" aria-label="anchor" href="#bolded-link"></a>
 </h5>
-<p>**[NOAA Fisheries](<a href="https://www.fisheries.noaa.gov" class="external-link uri">https://www.fisheries.noaa.gov</a>)** renders as <strong><a href="https://www.fisheries.noaa.gov/" class="external-link">NOAA Fisheries</a></strong></p>
-</div>
-</div>
-<div class="section level3">
-<h3 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
+<p>**[NOAA Fisheries](https://www.fisheries.noaa.gov)** renders as <strong><a href="https://www.fisheries.noaa.gov/" class="external-link">NOAA Fisheries</a></strong></p>
+</section></section><section class="level2"><h3 class="anchored" id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
 </h3>
-<p>This content was sourced and adapted from the Markdown Guide <a href="https://www.markdownguide.org/cheat-sheet/" class="external-link">Markdown Cheat
-Sheet</a>, a helpful resource for the markdown language.</p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="references-1">References<a class="anchor" aria-label="anchor" href="#references-1"></a>
+<p>This content was sourced and adapted from the Markdown Guide <a href="https://www.markdownguide.org/cheat-sheet/" class="external-link">Markdown Cheat Sheet</a>, a helpful resource for the markdown language.</p>
+</section></section><section class="section level2"><h2 id="references-1">References<a class="anchor" aria-label="anchor" href="#references-1"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
-<div id="ref-Biddle_1992" class="csl-entry">
-Biddle, Martin, and Birthe Kjølbye-Biddle. 1992. <span>“Repton and the
-Vikings.”</span> <em>Antiquity</em> 66 (250): 36–51. <a href="https://doi.org/10.1017/S0003598X00081023" class="external-link">https://doi.org/10.1017/S0003598X00081023</a>.
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-Biddle_1992" class="csl-entry" role="listitem">
+Biddle, Martin, and Birthe Kjølbye-Biddle. 1992. <span>“Repton and the Vikings.”</span> <em>Antiquity</em> 66 (250): 36–51. <a href="https://doi.org/10.1017/S0003598X00081023" class="external-link">https://doi.org/10.1017/S0003598X00081023</a>.
 </div>
 </div>
+</section><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config);
+    }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
-  </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
-
+    <footer><div class="pkgdown-footer-left">
+  <p>Developed by Samantha Schiano, Sophie Breitbart, Steve Saul.</p>
 </div>
 
-
-
-      <footer><div class="copyright">
-  <p></p>
-<p>Developed by Samantha Schiano, Sophie Breitbart, Steve Saul.</p>
+<div class="pkgdown-footer-right">
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
-<div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+    </footer>
 </div>
-
-      </footer>
-</div>
-
 
 
 
