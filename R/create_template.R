@@ -721,8 +721,8 @@ create_template <- function(
 
     ##### Params chunk ----
     if (rerender_skeleton) {
-      params_chunk_start <- grep("doc_parameters", prev_skeleton) - 1
-      if (!any(grepl("doc_parameters", prev_skeleton)) & parameters) {
+      params_chunk_start <- grep("R_parameters", prev_skeleton) - 1
+      if (!any(grepl("R_parameters", prev_skeleton)) & parameters) {
         params_chunk <- add_chunk(
           paste0(
             "# Parameters \n",
@@ -744,7 +744,7 @@ create_template <- function(
               )
             }
           ),
-          label = "doc_parameters"
+          label = "R_parameters"
         )
       } else if (parameters) {
         params_chunk_end <- grep("```", prev_skeleton)[which(grep("```", prev_skeleton) > params_chunk_start)][1]
@@ -790,7 +790,7 @@ create_template <- function(
             )
           }
         ),
-        label = "doc_parameters"
+        label = "R_parameters"
       )
     }
     params_chunk <- add_chunk(
@@ -814,7 +814,7 @@ create_template <- function(
           )
         }
       ),
-      label = "doc_parameters"
+      label = "R_parameters"
     )
 
     ##### Preamble ----
@@ -884,7 +884,7 @@ create_template <- function(
         "h # steepness\n",
         "R0 # recruitment\n"
       ),
-      label = "output_and_quantities",
+      label = "preamble",
       chunk_option = c("warning: false", ifelse(is.null(model_results), "eval: false", "eval: true"), "include: false")
     )
 
@@ -897,7 +897,7 @@ create_template <- function(
         question1 <- "n"
       }
       if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-        start_line <- grep("output_and_quantities", prev_skeleton) - 1
+        start_line <- grep("preamble", prev_skeleton) - 1
         # find next trailing "```"` in case it was edited at the end
         end_line <- grep("```", prev_skeleton)[grep("```", prev_skeleton) > start_line][1]
         # preamble <- paste(prev_skeleton[start_line:end_line], collapse = "\n")

@@ -1,20 +1,18 @@
 ---
 title: "Frequently Asked Questions (FAQs)"
-output:
-  html_document:
+format:
+  html:
     toc: true
-vignette: >
-  %\VignetteIndexEntry{Frequently Asked Questions (FAQs)}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    toc-depth: 2
+    anchor-sections: true
+    other-links:
+      - text: stockplotr
+        href: https://nmfs-ost.github.io/stockplotr/
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
 ---
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
 # Installing `asar`
 
@@ -43,6 +41,16 @@ install.packages("asar", repos = c("https://nmfs-ost.r-universe.dev", "https://c
 ```
 
 # Setting up the report skeleton
+
+## Can I make an `asar` report for an assessment without model results?
+
+Yes! You can run `create_template()` without a converted model results file (hence why running the function without any arguments still produces a basic report template). This means that you can use `asar` to make assessments that are not model-based.
+
+In this case, you can disregard the preamble chunk (its label is 'output_and_quantities'). Ensure that its "eval" chunk option is set to false ('eval: false').
+
+## Can I make an `asar` report for an assessment with model results that aren't yet compatible with `stockplotr::convert_output()` (e.g., WHAM)?
+
+Yes! You can convert your own output into the expected standardized format without `stockplotr::convert_output()`, by following the guidance in the ["Standardizing Assessment Model Output" `stockplotr` vignette](https://nmfs-ost.github.io/stockplotr/articles/convert_output_details.html).
 
 ## `create_template()` isn't working. What do I do?
 

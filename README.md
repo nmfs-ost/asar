@@ -9,7 +9,7 @@ Download using the directions below and fill in `create_template.R` function wit
 the desired parameters (follow example below) to create a template Quarto document 
 to be rendered to create a stock assessment report.
 
-The goal of ASAR is to automate stock assessment reports for NOAA science centers
+The goal of `asar` is to automate stock assessment reports for NOAA science centers
 so they are reproducible and cohesive across the agency. This project intends 
 to create a streamlined workflow that allows the analyst to create a customized 
 report tailored to their needs and requirements by the SSC, council, or other 
@@ -134,6 +134,10 @@ We strongly encourage all users to check out the [Increasing Report Accessibilit
 Have you identified any suggestions for improvement, bugs, or questions? Please see our [Contributing page](https://github.com/nmfs-ost/asar/blob/main/CONTRIBUTING.md) for more information on how to make effective contributions to `asar`.
 
 Thank you for helping us improve this package!
+
+## Progress, Goals, & Timeline
+
+What are we working on? When do we aim to complete it? What have we accomplished? Check out our [GitHub Project Board](https://github.com/orgs/nmfs-ost/projects/44/) and [Milestones](https://github.com/nmfs-ost/asar/milestones) to see the package development status and our goals for the next few months.
 
 ## Tips
 

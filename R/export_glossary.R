@@ -52,9 +52,6 @@ export_glossary <- function() {
       Shared_mean = duplicated(meaning_lower)
     )
 
-  # min length of consolidated acronyms: ~818
-  # length(unique(acronyms$Acronym))
-
   # for a given acronym: if there is a row with an identical acronym,
   # and there is a row with an identical meaning_lower, and at least one
   # row has a definition, then keep the row with the definition
@@ -117,7 +114,8 @@ export_glossary <- function() {
       !Meaning %in% c(
         "Biomass (in either weight or other appropriate unit)",
         "Biomass at maximum sustainable yield",
-        "Biomass at MSY"
+        "Biomass at MSY",
+        "Northwest Atlantic Fisheries Organization viii"
       ),
       !Acronym %in% "BMSY (B sub MSY)"
     ) |>
@@ -142,6 +140,7 @@ export_glossary <- function() {
         "Ecosystem-based fishery management",
         "East Pacific Ocean",
         "Division of Fish and Wildlife, Northern Mariana Islands",
+        "Groundfish Assessment Review Committee",
         "A measure of the instantaneous rate of fishing mortality",
         "instantaneous rate of fishing mortality",
         "Mortality due to fishing",
@@ -220,7 +219,8 @@ export_glossary <- function() {
         "BO",
         "DAR",
         "ITA",
-        "NS#"
+        "NS#",
+        "CTLISTS"
       ),
       !(is.na(Definition) & Meaning == "Marine Recreational Fishing Statistical Survey"),
       !(is.na(Definition) & Acronym == "P*"),
@@ -242,6 +242,13 @@ export_glossary <- function() {
         Meaning,
         "Ecological and Socioeconomic Profile",
         "Ecosystem and Socioeconomic Profile"
+      )
+    ) |> # correct acronym
+    dplyr::mutate(
+      Acronym = dplyr::if_else(
+        Acronym == "CC" & Meaning == "Connecticut", 
+        "CT", 
+        Acronym
       )
     ) |>
     dplyr::filter(!Definition %in% "An advisory committee of the PFMC made up of scientists and economists. The Magnuson-Stevens Act requires that each council maintain an SSC to assist in gathering and analyzing statistical, biological, ecological, economic, social, and other scientific information that is relevant to the management of Council fisheries.") |>
@@ -326,7 +333,31 @@ export_glossary <- function() {
         "SBA",
         "Secretary",
         "SSB",
-        "STT"
+        "STT",
+        "BLSPR",
+        "BSB",
+        "EXL",
+        "Fbar5:7",
+        "Fbar7:8",
+        "FLSPR",
+        "FLXSPR",
+        "FXL",
+        "FXLMSP",
+        "FXLSPR",
+        "FXX",
+        "MNKN",
+        "MNKS",
+        "OPTUNIT",
+        "OQUNIT",
+        "PLA",
+        "Q",
+        "REDUNIT",
+        "SBpr",
+        "SBXL",
+        "SCUNIT",
+        "SPRLX",
+        "SSBpr",
+        "ssbratio"
       ),
       !(source == "PFMC" & Acronym == "ABC"),
       !(source == "SAFMC" & Acronym == "ALS"),
@@ -510,7 +541,8 @@ export_glossary <- function() {
       Meaning = ifelse(Meaning == "Optimum sustainable production, Oregon State Police", "optimum sustainable production", Meaning),
       Meaning = ifelse(Meaning == "Spawning Abundance at MSY", "spawning abundance at MSY", Meaning),
       Meaning = ifelse(Meaning == "Spawning Stock Biomass at MSY", "spawning stock biomass at MSY", Meaning),
-      Meaning = ifelse(Acronym == "R", "Programming environment for statistical processing and presentation", Meaning)
+      Meaning = ifelse(Acronym == "R", "Programming environment for statistical processing and presentation", Meaning),
+      Meaning = ifelse(Acronym == "GARM", "Groundfish Assessment Review Meeting", Meaning)
     ) |>
     # add periods to end of Definition
     dplyr::mutate(
@@ -644,7 +676,26 @@ export_glossary <- function() {
       !(Meaning == "CalCOFI_Spring" & Acronym == "CS"),
       !(Meaning == "Northern CalCOFI" & Acronym == "NC"),
       !(is.na(Definition) & Acronym == "SEAMAP"),
-      !(Meaning == "Connecticut Long Island Sound Trawl Survey" & Label == "ct lists")
+      !(Meaning == "Connecticut Long Island Sound Trawl Survey" & Label == "ct lists"),
+      !(Meaning == "autoregressive model" & Label == "ar"),
+      !(Meaning == "biomass" & Label == "bm"),
+      !(Meaning == "centimeters, fish length" & Label == "cm"),
+      !(Meaning == "fishing mortality at 50% of msy" & Label == "fl"),
+      !(Meaning == "operational assessment, biennial" & Label == "oa"),
+      !(Meaning == "Portable Document Format" & Label == "pdf"),
+      !(Meaning == "Quantitative Ecology and Socioeconomics Training" & Label == "qus"),
+      !(Meaning == "subarea (nafo)" & Label == "sa"),
+      !(Meaning == "School for Marine Science and Technology" & Label == "smast"),
+      !(Meaning == "Transboundary Resources Assessment Committee" & is.na(Definition)),
+      !(Meaning == "Univ. of Rhode Island, GSO" & Label == "uri"),
+      !(Meaning == "young of the year or age 0" & Label == "yoy"),
+      !(Label == "msyxl"),
+      !(Label == "msypr"),
+      !(Label == "msyxl"),
+      !(Label == "sbmsypr"),
+      !(Label == "ssbmsypr"),
+      !(Label == "ssbxl"),
+      !(Label == "sbxl")
     ) |>
     # add backslash to escape special characters
     # (underscores, ampersands) when rendering tex file
@@ -672,7 +723,15 @@ export_glossary <- function() {
       Label,
       "[\\(\\)]",
       "-"
-    ))
+    )) |>
+    # make labels shorter by subbing FSCs acronyms
+    dplyr::mutate(
+      Label = gsub("alaska fisheries science center", "afsc", Label, ignore.case = TRUE),
+      Label = gsub("northeast fisheries science center", "nefsc", Label, ignore.case = TRUE),
+      Label = gsub("northwest fisheries science center", "nwfsc", Label, ignore.case = TRUE),
+      Label = gsub("pacific islands fisheries science center", "pifsc", Label, ignore.case = TRUE),
+      Label = gsub("southeast fisheries science center", "sefsc", Label, ignore.case = TRUE),
+      Label = gsub("southwest fisheries science center", "swfsc", Label, ignore.case = TRUE))
 
   duplicate_acronyms <- unique_all_cleaning3 |>
     dplyr::add_count(Acronym) |>
@@ -784,6 +843,15 @@ export_glossary <- function() {
     ) |>
     dplyr::arrange(tolower(Label))
 
+  cat(paste0(
+    "% NOTE ON SURVEYS:\n",
+    "% To increase findability, surveys may have multiple entries to link informal with formal names.\n",
+    "% Specifically, there may be more than one 'label' (first curly braces entry) or 'acronym' (second curly braces entry) with the same 'long form' (third curly braces entry).\n",
+    "% If the first 'label' you find for a given survey seems too long, look for an alternative entry with the same 'long form' but a different 'label' and/or 'acronym'.\n",
+    "% For example, there are three entries for the 'long form' 'Northeast Ecosystem Monitoring (EcoMon)\\_Fall':\n\n",
+    "%     \\newacronym{ecomon fall}{ECOMON Fall}{Northeast Ecosystem Monitoring (EcoMon)\\_Fall}\n",
+    "%     \\newacronym{fall nefsc ecosystem monitoring survey}{Fall Northeast Fisheries Science Center Ecosystem Monitoring Survey}{Northeast Ecosystem Monitoring (EcoMon)\\_Fall}\n",
+    "%     \\newacronym{nemef}{NEMEF}{Northeast Ecosystem Monitoring (EcoMon)\\_Fall}\n\n"))
 
   for (i in 1:dim(tex_acs)[1]) {
     cat(
@@ -801,3 +869,4 @@ export_glossary <- function() {
   }
   sink()
 }
+

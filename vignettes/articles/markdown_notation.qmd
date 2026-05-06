@@ -1,24 +1,21 @@
 ---
 title: "markdown"
-output:
-  html_document:
+format:
+  html:
     toc: true
-    toc_float: true
-vignette: >
-  %\VignetteIndexEntry{markdown}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    toc-depth: 3
+    anchor-sections: true
+    other-links:
+      - text: stockplotr
+        href: https://nmfs-ost.github.io/stockplotr/
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
 params:
   region: "NWFSC"
-bibliography: references.bib
+bibliography: ../references.bib
 ---
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
 ```{r}
 #| eval: false
@@ -29,7 +26,7 @@ params$region <- "NWFSC"
 
 # Markdown Notation
 
-Efficiently using this package in the stock assessment workflow requires a basic understanding of markdown notation. In this article, we are going to describe common notation and example using markdown language in which you might use for writing a stock assessment report.
+Markdown is a great tool for formatting text. Below, we describe common notation and examples, many of which you may use when writing an `asar`-based stock assessment report.
 
 ## Summary
 
