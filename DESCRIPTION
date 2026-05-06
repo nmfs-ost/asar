@@ -54,8 +54,7 @@ Suggests:
 VignetteBuilder: 
     knitr
 Remotes:
-    nmfs-ost/stockplotr,
-    r4ss/r4ss
+    nmfs-ost/stockplotr
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 Encoding: UTF-8
