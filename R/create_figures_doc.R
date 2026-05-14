@@ -143,7 +143,9 @@ rm(rda)\n
           figures_dir = figures_dir
         )
 
-        rda_figures_doc <- paste0(rda_figures_doc, fig_chunk)
+        rda_figures_doc <- paste0(rda_figures_doc, fig_chunk,
+          "{{< pagebreak >}} \n\n"
+        )
       }
     } else {
       cli::cli_alert_warning("Found zero figures in an rda format (i.e., .rda) in {fs::path(figures_dir, 'figures')}.",
@@ -170,7 +172,8 @@ rm(rda)\n
           ),
           "){#fig-",
           fig_name,
-          "}\n\n"
+          "}\n\n",
+          "{{< pagebreak >}} \n\n"
         )
 
         non.rda_figures_doc <- paste0(non.rda_figures_doc, fig_chunk)
@@ -185,11 +188,13 @@ rm(rda)\n
     figures_doc <- paste0(
       figures_doc_header,
       figures_doc_setup,
-      ifelse(exists("rda_figures_doc"),
+      ifelse(
+        exists("rda_figures_doc"),
         rda_figures_doc,
         ""
       ),
-      ifelse(exists("non.rda_figures_doc"),
+      ifelse(
+        exists("non.rda_figures_doc"),
         non.rda_figures_doc,
         ""
       )
