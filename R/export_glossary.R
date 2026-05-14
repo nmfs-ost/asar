@@ -671,6 +671,7 @@ export_glossary <- function() {
     # remove duplicates
     dplyr::filter(
       !(Definition == "Aggregated Survey on US chartered and State-Owned boats" & Acronym == "ASOUCA"),
+      !(Meaning == "biomass maximum sustainable yield"),
       !(Meaning == "CAEP Cook Inlet Beluga USrvey_Summer" & Label == "cook inlet beluga (cib) demography and condition_uas"),
       !(Definition == "The Marine Resources Monitoring, Assessment, and Prediction Program" & Acronym == "MARMAP"),
       !(Meaning == "CalCOFI_Spring" & Acronym == "CS"),
@@ -681,6 +682,7 @@ export_glossary <- function() {
       !(Meaning == "biomass" & Label == "bm"),
       !(Meaning == "centimeters, fish length" & Label == "cm"),
       !(Meaning == "fishing mortality at 50% of msy" & Label == "fl"),
+      !(Meaning == "management track"),
       !(Meaning == "operational assessment, biennial" & Label == "oa"),
       !(Meaning == "Portable Document Format" & Label == "pdf"),
       !(Meaning == "Quantitative Ecology and Socioeconomics Training" & Label == "qus"),
@@ -735,7 +737,8 @@ export_glossary <- function() {
 
   duplicate_acronyms <- unique_all_cleaning3 |>
     dplyr::add_count(Acronym) |>
-    dplyr::filter(n > 1) |>
+    dplyr::add_count(Label) |>
+    dplyr::filter(n > 1 | nn > 1) |>
     dplyr::distinct()
 
   if (dim(duplicate_acronyms)[1] > 0) {
