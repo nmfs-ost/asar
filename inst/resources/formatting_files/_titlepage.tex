@@ -94,10 +94,8 @@ $if(by-affiliation.name)$, $endif$%
 {$it.department$}%
 $endif$%
 $if(by-affiliation.address)$%
-% Ross recommends putting address on one line
-$if(by-affiliation.name)$, $else$$if(by-affiliation.department)$, $endif$$endif$%
-% {$it.address$}%
-{$it.address$, $it.city$, $it.postal-code$}%
+  $if(by-affiliation.name)$, $else$$if(by-affiliation.department)$, $endif$$endif$%
+  $it.address$, $it.city$, $it.postal-code$%
 $endif$%
 $sep$\par\hangindent=1em\hangafter=1%
 $endfor$
