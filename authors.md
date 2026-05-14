@@ -18,16 +18,16 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/nmfs-ost/asar/blob/v2.0.5/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/nmfs-ost/asar/blob/main/DESCRIPTION)
 
 Schiano S, Breitbart S, Saul S (2026). *asar: Build NOAA Stock
-Assessment Report*. R package version 2.0.4,
+Assessment Report*. R package version 2.0.5,
 <https://github.com/nmfs-ost/asar>.
 
     @Manual{,
       title = {asar: Build NOAA Stock Assessment Report},
       author = {Samantha Schiano and Sophie Breitbart and Steve Saul},
       year = {2026},
-      note = {R package version 2.0.4},
+      note = {R package version 2.0.5},
       url = {https://github.com/nmfs-ost/asar},
     }
