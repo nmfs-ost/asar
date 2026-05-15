@@ -370,7 +370,8 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
 
       tables_doc_plot_setup2 <- paste0(
         tables_doc_plot_setup2_import,
-        tables_doc_plot_setup2_display
+        tables_doc_plot_setup2_display,
+        "{{< pagebreak >}} \n\n"
       )
     }
 
@@ -467,7 +468,8 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
 
     paste0(
       tables_doc_plot_setup1,
-      tables_doc_plot_setup2
+      tables_doc_plot_setup2,
+      "{{< pagebreak >}} \n\n"
     )
   }
 
