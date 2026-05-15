@@ -897,7 +897,7 @@ create_template <- function(
         question1 <- "n"
       }
       if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-        start_line <- grep("preamble", prev_skeleton) - 1
+        start_line <- grep("label: 'preamble'", prev_skeleton) - 1
         # find next trailing "```"` in case it was edited at the end
         end_line <- grep("```", prev_skeleton)[grep("```", prev_skeleton) > start_line][1]
         # preamble <- paste(prev_skeleton[start_line:end_line], collapse = "\n")
