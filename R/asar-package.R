@@ -17,6 +17,6 @@ globvar <- c(
   "row_rescale", "table_list", "read.csv", "All", "x", "Acronym", "Meaning",
   "meaning_lower", "Definition", "n", "Label", "figures_doc_header",
   "X", "len_bins", "area", "match_key", "uncertainty_label",
-  "word_count", "ac_short", "column_label"
+  "word_count", "ac_short", "column_label", "nn"
 )
 if (getRversion() >= "2.15.1") utils::globalVariables(globvar)
