@@ -1,65 +1,44 @@
-# test_that("add_alttext() creates .tex file", {
-#   path <- getwd()
-#   # run convert_output for example model
-#   simple_model <- file.path(test_path("fixtures", "ss3_models"), "models", "Simple")
-#   stockplotr::convert_output(
-#     output_file = "Report.sso",
-#     outdir = simple_model,
-#     model = "SS3",
-#     file_save = TRUE,
-#     save_name = "spp_conout"
-#   ) |> suppressMessages() |> suppressWarnings()
-#
-#   # run stockplotr::exp_all_figs_tables()
-#   stockplotr::exp_all_figs_tables(
-#     dat = utils::read.csv(file.path(path, "spp_conout.csv")),
-#     end_year = 2023,
-#     ref_line = "msy",
-#     ref_line_sb = "msy",
-#     indices_unit_label = ""
-#   ) |> suppressMessages() |> suppressWarnings()
-#
-#   # run create template
-#   asar::create_template(
-#     office = "NWFSC",
-#     region = "USWC",
-#     species = "Big skate",
-#     spp_latin = "latin spp",
-#     year = 2025,
-#     author = "John Snow",
-#     resdir = path,
-#     model_results = "spp_conout.csv",
-#     model = "SS3"
-#   ) |> suppressMessages() |> suppressWarnings()
-#
-#   # render template
-#   quarto::quarto_render(file.path(path, "report", "SAR_USWC_Big_skate_skeleton.qmd"))
-#
-#   # run add_tagging and check if new one is created
-#     add_accessibility(
-#       x = "SAR_USWC_Big_skate_skeleton.tex",
-#       dir = file.path(getwd(), "report"),
-#       figures_dir = getwd(),
-#       compile = TRUE,
-#       alttext_csv_dir = getwd(),
-#       rename = "Simple_SAR_2025_a11y"
-#   )
-#
-#   # Remove testing files
-#   on.exit(unlink(file.path(getwd(), "report"),
-#       recursive = TRUE
-#     ), add = TRUE)
-#   on.exit(unlink(file.path(getwd(), "figures"),
-#       recursive = TRUE
-#     ), add = TRUE)
-#   on.exit(unlink(file.path(getwd(), "spp_conout.csv"),
-#     recursive = TRUE
-#   ), add = TRUE)
-#   on.exit(unlink(file.path(getwd(), "captions_alt_text.csv"),
-#     recursive = TRUE
-#   ), add = TRUE)
-#   on.exit(unlink(file.path(getwd(), "key_quantities.csv"),
-#     recursive = TRUE
-#   ), add = TRUE)
-# })
-#
+test_that("add_accessibility() runs without error", {
+  # don't run on GitHub because tinytex isn't installed in the GitHub testing environment, so rendering will fail
+  skip_on_ci()
+  
+  stockplotr::plot_biomass(dat = stockplotr::example_data,
+                           interactive = FALSE,
+                           make_rda = TRUE)
+  create_template(
+    office = "NWFSC",
+    region = "USWC",
+    species = "Big skate",
+    year = 2025
+  ) |> suppressMessages() |> suppressWarnings()
+
+  # render template
+  quarto::quarto_render(file.path(getwd(), "report", "SAR_U_Big_skate_skeleton.qmd"))
+
+    expect_no_error(
+      add_accessibility(
+        x = "SAR_U_Big_skate_skeleton.tex",
+        dir = file.path(getwd(), "report"),
+        rename = "Simple_SAR_2025_a11y"
+      )
+    )
+    
+    expect_true(
+      file.exists(file.path(getwd(), "report", "Simple_SAR_2025_a11y.pdf"))
+    )
+
+  # Remove testing files
+  on.exit(unlink(file.path(getwd(), "report"),
+      recursive = TRUE
+    ), add = TRUE)
+  on.exit(unlink(file.path(getwd(), "figures"),
+      recursive = TRUE
+    ), add = TRUE)
+  on.exit(unlink(file.path(getwd(), "captions_alt_text.csv"),
+    recursive = TRUE
+  ), add = TRUE)
+  on.exit(unlink(file.path(getwd(), "key_quantities.csv"),
+    recursive = TRUE
+  ), add = TRUE)
+})
+

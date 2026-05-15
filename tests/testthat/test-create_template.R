@@ -370,3 +370,54 @@ test_that("Incompatible formats are recognized, produce warnings/errors", {
   # erase temporary testing files
   unlink(fs::path(path, "report"), recursive = T)
 })
+
+test_that("Basic report renders", {
+  # don't run on GitHub because tinytex isn't installed in the GitHub testing environment, so rendering will fail
+  skip_on_ci()
+
+  out_new <- stockplotr::example_data
+  save(out_new,
+       file = fs::path("out_new.rda"))
+
+  create_template(
+    office = "NWFSC",
+    species = "Dover sole",
+    model_results = "out_new.rda",
+    year = 2010,
+    authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC")
+  )
+  
+  # move model results to "report" folder
+  file.copy(from = "out_new.rda",
+            to = fs::path(getwd(), "report", "out_new.rda"),)
+  
+  file.remove("out_new.rd")
+  
+  # add acronym and reference
+  exec_sum_path <- fs::path("report", "01_executive_summary.qmd")
+  exec_sum <- readLines(exec_sum_path) |>
+    suppressWarnings()
+
+  new_text <- append(exec_sum,
+                     paste0(
+                     "\n",
+                      "@Abrams2014 states that...\n",
+                      "\\gls{abc} is an acronym for...\n",
+                     "The end year is `r end_year`.\n",
+                     "The species is `r params$species`"
+                     ))
+  writeLines(new_text, exec_sum_path)
+  
+  expect_no_error(
+    quarto::quarto_render(
+    input = fs::path(getwd(), "report", "sar_Dover_sole_skeleton.qmd")
+    )
+  )
+  
+  # Check report pdf created
+  expect_true(file.exists(fs::path(getwd(), "report", "Dover_sole_SAR_2010.pdf")))
+  
+  # erase temporary testing files
+  unlink(fs::path(getwd(), "report"), recursive = T)
+})
+
