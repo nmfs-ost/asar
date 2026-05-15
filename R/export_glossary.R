@@ -246,8 +246,8 @@ export_glossary <- function() {
     ) |> # correct acronym
     dplyr::mutate(
       Acronym = dplyr::if_else(
-        Acronym == "CC" & Meaning == "Connecticut", 
-        "CT", 
+        Acronym == "CC" & Meaning == "Connecticut",
+        "CT",
         Acronym
       )
     ) |>
@@ -733,7 +733,8 @@ export_glossary <- function() {
       Label = gsub("northwest fisheries science center", "nwfsc", Label, ignore.case = TRUE),
       Label = gsub("pacific islands fisheries science center", "pifsc", Label, ignore.case = TRUE),
       Label = gsub("southeast fisheries science center", "sefsc", Label, ignore.case = TRUE),
-      Label = gsub("southwest fisheries science center", "swfsc", Label, ignore.case = TRUE))
+      Label = gsub("southwest fisheries science center", "swfsc", Label, ignore.case = TRUE)
+    )
 
   duplicate_acronyms <- unique_all_cleaning3 |>
     dplyr::add_count(Acronym) |>
@@ -854,7 +855,8 @@ export_glossary <- function() {
     "% For example, there are three entries for the 'long form' 'Northeast Ecosystem Monitoring (EcoMon)\\_Fall':\n\n",
     "%     \\newacronym{ecomon fall}{ECOMON Fall}{Northeast Ecosystem Monitoring (EcoMon)\\_Fall}\n",
     "%     \\newacronym{fall nefsc ecosystem monitoring survey}{Fall Northeast Fisheries Science Center Ecosystem Monitoring Survey}{Northeast Ecosystem Monitoring (EcoMon)\\_Fall}\n",
-    "%     \\newacronym{nemef}{NEMEF}{Northeast Ecosystem Monitoring (EcoMon)\\_Fall}\n\n"))
+    "%     \\newacronym{nemef}{NEMEF}{Northeast Ecosystem Monitoring (EcoMon)\\_Fall}\n\n"
+  ))
 
   for (i in 1:dim(tex_acs)[1]) {
     cat(
@@ -872,4 +874,3 @@ export_glossary <- function() {
   }
   sink()
 }
-
