@@ -30,7 +30,7 @@
 #' "        address: '75 Virginia Beach Drive'",
 #' "        city: 'Miami'",
 #' "        state: 'FL'",
-#' "        postal-code: '33149'"
+#' "        postal-code: '33149'",
 #' sep = "\n"
 #' )
 #' create_yaml(
