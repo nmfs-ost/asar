@@ -372,6 +372,8 @@ test_that("Incompatible formats are recognized, produce warnings/errors", {
 })
 
 test_that("Basic report renders", {
+  # don't run on GitHub because tinytex isn't installed in the GitHub testing environment, so rendering will fail
+  skip_on_ci()
 
   create_template(
     office = "NWFSC",

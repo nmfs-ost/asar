@@ -1,4 +1,6 @@
 test_that("add_accessibility() runs without error", {
+  # don't run on GitHub because tinytex isn't installed in the GitHub testing environment, so rendering will fail
+  skip_on_ci()
   
   stockplotr::plot_biomass(dat = stockplotr::example_data,
                            interactive = FALSE,
