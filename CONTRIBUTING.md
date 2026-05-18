@@ -28,7 +28,7 @@ the [`{roxygen2}` package structure](https://roxygen2.r-lib.org/articles/roxygen
 
 4. Please increment the package version following our [semantic versioning section](https://github.com/nmfs-ost/asar/blob/doc-update-contrib/CONTRIBUTING.md#semantic-versioning-sec-version).
 
-5. Add a short summary or title line in the NEWS.md file indicating the feature 
+5. Add a short summary or title line in the [NEWS.md](https://github.com/nmfs-ost/asar/blob/main/NEWS) file indicating the feature 
 or fix. This will be how we include recognition for your contribution in our 
 monthly release notes.
 
