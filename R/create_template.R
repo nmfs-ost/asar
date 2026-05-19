@@ -734,7 +734,7 @@ create_template <- function(
           paste0(
             "# Parameters \n",
             "spp <- params$species \n",
-            "SPP <- params$spp \n",
+            "SPP <- params$species \n",
             "species <- params$species \n",
             "spp_latin <- params$spp_latin \n",
             "office <- params$office",
@@ -780,7 +780,7 @@ create_template <- function(
         paste0(
           "# Parameters \n",
           "spp <- params$species \n",
-          "SPP <- params$spp \n",
+          "SPP <- params$species \n",
           "species <- params$species \n",
           "spp_latin <- params$spp_latin \n",
           "office <- params$office",
@@ -804,7 +804,7 @@ create_template <- function(
       paste0(
         "# Parameters \n",
         "spp <- params$species \n",
-        "SPP <- params$spp \n",
+        "SPP <- params$species \n",
         "species <- params$species \n",
         "spp_latin <- params$spp_latin \n",
         "office <- params$office",
