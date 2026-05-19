@@ -1,0 +1,29 @@
+# 
+
+### Write captions and alternative text
+
+Once you know what your tables and figures look like, write your own
+captions and alternative text. Custom tables will require captions only.
+
+#### Writing text
+
+Check out the `stockplotr` [‘captions_alt_text_template.csv’
+file](https://github.com/nmfs-ost/stockplotr/blob/master/inst/resources/captions_alt_text_template.csv),
+which contains the templates for each table or figure’s
+caption/alternative text, to get a sense of how each description is
+structured. Then, refer to [the accessibility vignette’s
+guide](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html)
+to learn how to write clear and comprehensive alternative text.
+
+We recommend adding in key quantities, like maximum and minimum values,
+to ensure your captions and alternative text clearly describe your
+plots. For example, if you’re showing how biomass changed over time, we
+recommend providing the maximum and minimum values of biomass and years
+shown, instead of simply stating that a figure shows biomass changing
+over time. Check out the [“How captions and alternative text are
+generated”
+vignette](https://nmfs-ost.github.io/stockplotr/articles/how-caps-alttext-are-made.html)
+to see how we extract certain key quantities from the model results
+files. You are welcome to use and adapt that code to your own results to
+calculate key quantities, or calculate the quantities with your own
+code.

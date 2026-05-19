@@ -1,0 +1,620 @@
+# Increasing Report Accessibility
+
+> Having issues with
+> [`add_tagging()`](nmfs-ost.github.io/asar/reference/add_tagging.md),
+> [`add_alttext()`](nmfs-ost.github.io/asar/reference/add_alttext.md),
+> or
+> [`add_accessibility()`](nmfs-ost.github.io/asar/reference/add_accessibility.md)?
+> Check out our [FAQs
+> vignette](nmfs-ost.github.io/asar/articles/faqs.html#sec-a11y-issues).
+
+When someone reads your document, they may read it with a [screen
+reader](https://www.afb.org/blindness-and-low-vision/using-technology/assistive-technology-products/screen-readers).
+To ensure that they are able to interpret your document as intended, the
+document must contain some essential features, like tagged elements,
+alternative text, and metadata.
+
+We have built `asar` so that the produced documents uphold several
+[federal accessibility
+standards](https://www.section508.gov/test/documents/). However, to
+achieve our goal of producing accessible documents, **you must complete
+a few tasks yourself**. But don’t fret! We will help you. Below, we
+provide several resources to help you achieve this important goal.
+
+## Your to-do list
+
+1.  **Check the accuracy** of each figure’s alternative text (“alt text”
+    for short).
+
+    - `asar`’s figures already contains some prewritten alt text that
+      includes data from the model results file. This means that most of
+      the work has been done for you! However, it is crucial that you
+      check this information for accuracy and update it where necessary.
+      This is especially true if the default figures have been modified.
+
+    - If you see text that looks like a placeholder (e.g., “The x axis,
+      showing the year, spans from B.start.year to B.end.year…”), that
+      means that there was at least one instance where our tool failed
+      to extract a specific value from the model results, calculate a
+      key quantity (like the start year of a biomass plot- aka
+      “B.start.year”), and substitute it into the placeholder. Learn how
+      to manually add the right values in section “How to edit your
+      report’s alt text and captions”, below.
+
+    - Again, we stress that while we have extracted key quantities as
+      accurately as possible, **we cannot guarantee that each quantity
+      will have been calculated perfectly. Input data varies widely.
+      It’s always your responsibility to check the accuracy of your
+      figures’ alt text.**
+
+2.  **Write the final component** of each figure’s alt text.
+
+    - This prewritten alt text usually contains 3/4 essential
+      ingredients for well-written alt text. The remaining ingredient
+      (#4): *the relationship between the variables shown (i.e., what
+      the figure is conveying).* Since we can’t program `asar` to
+      analyze the figure’s meaning, *you must provide this*.
+
+3.  **Add tagging and alternative text** to your final PDF.
+
+    - When you are ready to compile your final report, you will run one
+      more function:
+      [`add_accessibility()`](nmfs-ost.github.io/asar/reference/add_accessibility.md).
+      This function will take the LaTeX version of your report, which
+      was created when you rendered your skeleton, and activate tagging
+      and add alternative text. Please refer to the
+      [`add_accessibility()`
+      example](https://nmfs-ost.github.io/asar/reference/add_accessibility.html)
+      for guidance in how to run this function.
+
+4.  *Optional, but encouraged*: Use acronyms in your report.
+
+    - While writing your report, [refer to acronyms using a
+      straightforward format explained in the Acronyms and Glossary
+      section](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#acronyms-and-glossary).
+      Then, when you render, your report will contain a glossary with
+      your acronyms and their meanings. This system also ensures your
+      acronyms’ meanings will be added upon their first usage in the
+      text, which means that you don’t have to keep track of that
+      anymore!
+
+## Guidance and resources
+
+### Alternative text
+
+#### What is alternative text?
+
+After using
+[`create_template()`](nmfs-ost.github.io/asar/reference/create_template.md)
+to create a skeleton of your document, you will see chunks containing
+`fig-alt:` in the figures.qmd files, like this:
+
+```` default
+```{r}
+#| eval: false
+#| fig-alt: '...'
+```
+````
+
+The
+[`fig-alt`](https://quarto.org/docs/computations/execution-options.html#caption-and-alt-text)
+parameter in this chunk signifies that this is where you should add a
+description of your figure that can be read aloud by the screen reader.
+This description, otherwise known as [alternative
+text](https://www.section508.gov/create/alternative-text/) should answer
+this essential question:
+
+> What is this image conveying?
+
+#### Which information belongs in alt text?
+
+While tempting, tools like AI cannot be used to easily answer this
+question. Additionally, one should not use the caption as the alt text.
+Here are four essential ingredients for well-written alt text, as
+described by Drs. Silvia Canelón and Liz Hare in their talk, “Revealing
+Room for Improvement in Accessibility within a Social Media Data
+Visualization Learning Community”[^1]:
+
+1.  Type of data visualization (e.g., scatterplot, line graph,
+    box-and-whisker plot)
+2.  Axis variables
+3.  Range of the data
+4.  The relationship between the variables shown (i.e., what the figure
+    is conveying)
+
+Dr. Hare stresses the importance of ingredient \#4 by explaining,
+*“Don’t waste my time with 1-3 if you aren’t going to include 4. While
+some automatic alt text processes mine some of this information, I don’t
+want to spend time building a mental model of the graph if I can’t find
+out what the graph says.*[^2]*”*
+
+Both presentations are great resources for learning about alt text and
+will help you as you craft your own alt text!
+
+> Remember: The first three essential ingredients should already be
+> present in your figures’ prewritten alt texts! You just need to check
+> them for accuracy and provide ingredient \#4.
+
+#### Example of alt text
+
+Here is an example of a figure with a caption and alt text. The caption
+is shown directly below the figure and is written in the chunk’s options
+(`fig.cap=""`). The alt text is also included in the chunk’s options
+(`fig.alt=""`) but is not shown unless the webpage is inspected with
+Developer Tools or it’s extracted with a screen reader.
+
+``` r
+
+library(ggplot2)
+
+orange <- as.data.frame(Orange)
+orange <- orange |>
+  dplyr::mutate(Tree = base::factor(Tree,
+    levels = c(1, 2, 3, 4, 5)
+  )) |>
+  dplyr::rename(
+    Age = age,
+    Circumference = circumference
+  )
+
+ggplot2::ggplot(
+  data = orange,
+  aes(
+    x = Age,
+    y = Circumference,
+    color = Tree
+  )
+) +
+  ggplot2::geom_line(size = 1) +
+  ggplot2::geom_point(size = 2) +
+  ggplot2::scale_color_viridis_d() +
+  ggplot2::xlim(0, NA) +
+  ggplot2::ylim(0, NA) +
+  ggplot2::theme_bw() +
+  labs(
+    x = "Age (days since 1968/12/31)",
+    y = "Orange Tree Circumference (mm)"
+  )
+```
+
+![A line graph showing how tree circumference increases with age for a
+set of 5 orange trees. Age, shown on the x axis, is measured in days
+since 1968/12/31 and spans from 118-1582 days. Circumference, shown on
+the y axis, spans from 30-214 mm. All trees showed an increasing trend
+of trunk circumference with age, with each tree starting with a
+circumference of 30-33 mm at age 0 and ending with a circumference of
+140-216 mm at age 1582. At age 1582, the tree with the largest
+circumference was tree 4, followed by trees 2, 5, 1, and
+3.](accessibility_guide_files/figure-html/unnamed-chunk-2-1.png)
+
+Tree circumference and age for 5 orange trees.
+
+The figure’s alt text is written as such:
+
+*A line graph showing how tree circumference increases with age for a
+set of 5 orange trees. Age, shown on the x axis, is measured in days
+since 1968/12/31 and spans from 118-1582 days. Circumference, shown on
+the y axis, spans from 30-214 mm. All trees showed an increasing trend
+of trunk circumference with age, with each tree starting with a
+circumference of 30-33 mm at age 0 and ending with a circumference of
+140-216 mm at age 1582. At age 1582, the tree with the largest
+circumference was tree 4, followed by trees 2, 5, 1, and 3.*
+
+#### How to write ingredient \#4
+
+> Ingredient \#4 = the relationship between the variables shown (i.e.,
+> what the figure is conveying).
+
+There is no one-size-fits-all approach for explaining what a figure is
+conveying. We’ve included some prompts, below, to get you started, but
+*you will need to go beyond these prompts to properly complete this
+task.*
+
+##### Many figures
+
+- Describe the span of the 95% confidence interval at a meaningful x
+  axis value.
+- Describe the meaning of the legend.
+
+##### Line graphs
+
+- Describe where the line increases and decreases.
+- Describe where the line dips below the reference point (if present).
+
+##### Kobe plots
+
+- Describe where most points fall (in the four quadrants).
+
+#### How to edit your report’s alt text and captions
+
+To edit your rda’s alt text, follow these steps:
+
+1.  Open your report’s 09_figures.qmd file.
+2.  Run the first code chunk, which saves the filepath of your rda
+    directory as an object (it has the label `"set-rda-dir-figs"`).
+3.  Find the two code chunks associated with the figure you’re
+    interested (e.g., recruitment). Run the first chunk, which will have
+    “setup” in the label (e.g.,
+    `"fig-recruitment-setup"`,`"fig-spawning_biomass-setup"`, etc.).
+4.  **Add to the alt text by** pasting the existing alt text with a new
+    string *within the chunk*. To do this, find your existing alt text
+    object, which is an object named with the figure’s topic and
+    “alt_text” (e.g., `recruitment_alt_text`). Then, make an object (a
+    string) containing your additional text (e.g., `new_alt_text`).
+    Then, paste together the existing alt text object and your new text
+    object. For example:
+
+``` r
+
+# the original alt text for the recruitment figure
+recruitment_alt_text
+
+# the new text that will be added on to the recruitment figure's alt text
+new_alt_text <- "This is my new alt text."
+
+# add the new text to the old text
+recruitment_alt_text <- paste0(recruitment_alt_text, new_alt_text)
+```
+
+5.  **Replace the alt text by** updating the original alt text object
+    *within the chunk*. To do this, reassign the original alt text
+    object as your new text object. For example:
+
+``` r
+
+# the original alt text for the recruitment figure
+recruitment_alt_text
+
+# the new text that will replace the recruitment figure's alt text
+new_alt_text <- "This is my new alt text."
+
+# replace the old alt text with the new alt text
+recruitment_alt_text <- new_alt_text
+```
+
+**NOTES**:
+
+1.  Changes to your alt text will be saved within your 09_figures.qmd
+    file, but not within the rda file itself. To directly edit the rda
+    file’s alt text or caption, assign a new value to the text you wish
+    to change. For example, if your rda is called `rda` and you want to
+    change the caption to “my new caption”, you’d enter the following
+    command: `rda[["caption"]] <- "my new caption"`. To change the alt
+    text, you’d change “caption” to “alt_text” (e.g.,
+    `rda[["alt_text"]] <- "my new alt text"`.). Save the changes to the
+    rda’s file by entering the following command (in this example, our
+    rda is called “biomass_figure.rda”):
+    `save(rda, file = 'biomass_figure.rda')`.
+
+2.  Edit figure and table captions with the same process. Just
+    substitute mentions of alt text with caption.
+
+3.  As stated earlier, if you see text that looks like a placeholder
+    (e.g., “The x axis, showing the year, spans from B.start.year to
+    B.end.year…”), that means that there was at least one instance where
+    our tool failed to extract a specific value from the model results
+    and substitute it into the placeholder. Please make sure that your
+    alt text and captions contain the expected values before moving
+    forward with your report. Check out the
+    inst/resources/captions_alt_text_template.csv file in the
+    `stockplotr` package to view the template with placeholders.
+
+4.  If you add a special character (e.g., percentage sign (%) or dollar
+    sign (\$); see [full list on this wiki
+    page](https://en.wikibooks.org/wiki/LaTeX/Special_Characters#Other_symbols)),
+    please add two backslashes before the character to avoid issues
+    compiling your report later on (specifically, the conversion from
+    Quarto to LaTeX via Pandoc, and then compilation of the LaTeX report
+    after running
+    [`add_accessibility()`](nmfs-ost.github.io/asar/reference/add_accessibility.md)
+    or
+    [`add_alttext()`](nmfs-ost.github.io/asar/reference/add_alttext.md)).
+    For example, “The 95% CI” would be written as “The 95\\% CI”.
+
+#### More resources
+
+Looking for more resources for writing alt text? Check out the [NOAA
+Library’s website for creating accessible
+documents](https://library.noaa.gov/Section508/CreatingDocs).
+
+### Acronyms and Glossary
+
+When you use an acronym, it will be included in a glossary table that is
+automatically added to the end of your report. Below are directions for
+using acronyms and editing the glossary.
+
+**Location**: The glossary (“report_glossary.tex”) is located in your
+report folder.
+
+**Order**: The glossary is sorted alphabetically. Case can differentiate
+entries (e.g., “M” (natural mortality) is different from “m”
+(meter(s)).)
+
+**Structure**: Each acronym has its own line, structured like this:
+
+`\newacronym{<"label" or "key">}{<"short form" or "acronym">}{<"long form">}`
+
+- “label” (or “key”): The term written in the report body. The label
+  links the short form (see below) to the glossary entry. In our
+  glossary, labels are typically lowercase. *Examples: bcurrent, noaa*.
+
+- “short form” (or “acronym”): The term actually shown when the report
+  is rendered. The short form may have formatting applied to it.
+  *Examples: \$B\_{current}\$* (which will render as $`B_{current}`$),
+  *NOAA*.
+
+- “long form”: The meaning of the short form. *Examples: current biomass
+  of stock, National Oceanic and Atmospheric Administration*.
+
+Here are two entries using the examples mentioned above:
+
+`\newacronym{bcurrent}{$B_{current}$}{current biomass of stock}`
+
+`\newacronym{noaa}{NOAA}{National Oceanic and Atmospheric Administration}`
+
+#### Survey names
+
+Many people refer to surveys with nicknames or “informal” names that do
+not match up with administrative documentation. For example, the
+“Atlantic Surf Clam & Ocean Quahog Dredge” is sometimes called the “clam
+survey”. To facilitate communication in the reporting process, **we have
+added survey names to the glossary**.
+
+*Informal survey names* (i.e., nicknames used to refer to surveys that
+are not correct) are listed in the “Acronym” column.
+
+*Formal survey names* (i.e., the correct survey names) are listed in the
+“Meaning” column.
+
+If you would like us to add more survey name pairs to our table, please
+make an [issue](https://github.com/nmfs-ost/asar/issues) or, even
+better, submit a [pull request](https://github.com/nmfs-ost/asar/pulls).
+Please see the [GitHub Docs’ “Contributing to a project”
+page](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project)
+for step-by-step guidance in making a pull request. Thank you!
+
+#### Editing the glossary
+
+Remember that your changes will only be reflected in your report
+folder’s glossary .tex file, not in the file stored in the `asar`
+package’s inst/ folder. If you regenerate your report folder, that main
+file will overwrite your edited version unless you have indicated
+otherwise.
+
+If you would like to contribute suggestions to the glossary, please open
+a pull request or [issue](https://github.com/nmfs-ost/asar/issues).
+
+#### How to remove a glossary entry
+
+Delete the entire line in the file.
+
+#### How to add a glossary entry
+
+First, ensure that your new acronym is not already duplicated in the
+glossary as this will cause an error upon rendering.
+
+Find the logical location for your acronym based on alphabetical order.
+Make a new line and add the appropriate information for your acronym and
+its meaning, based on the structure discussed above.
+
+#### How to edit a glossary entry
+
+You can edit any entry as needed.
+
+#### How to indicate that a word is an acronym
+
+First, check if the glossary contains your acronym; if it doesn’t, you
+can edit the file and add it yourself (see section above).
+
+Once your acronym is in the glossary, go back to the location of the
+acronym in your report. Encase it in curly brackets ({}), with “\gls”
+preceding it. For example, to indicate “ABC” is an acronym, you would
+write `\gls{ABC}`. Use this notation each time you use the acronym in
+your text.
+
+*Good news*: when using this notation, you never have to spell out the
+full meaning of the acronym upon its first usage, or even remember the
+location of its first usage! The CTAN `glossaries` package takes care of
+all of that.
+
+Your text will look like this:
+
+> This is the first instance of `\gls{ABC}`. Here, `\gls{ABC}` is used a
+> second time.
+
+And it will render like this:
+
+> This is the first instance of Acceptable Biological Catch (ABC). Here,
+> ABC is used a second time.
+
+For specialized commands that enable capitalization, reference to
+acronyms’ meanings, and more, check out the Command Summary (pg 46)
+within [the `glossaries` package’s beginners’
+guide](https://ctan.math.illinois.edu/macros/LaTeX/contrib/glossaries/glossariesbegin.pdf).
+
+### Tables
+
+Please do not place figures inside tables. Doing so makes it very
+difficult for software to properly identify the structure of (i.e.,
+*tag*) the table and its inner elements.
+
+## Status of accessibility features
+
+*Date updated: 12/16/2025*
+
+In December 2025, we performed extensive testing on accessibility
+features in PDFs. This [“a11y-sandbox”
+repository](https://github.com/Schiano-NOAA/a11y-sandbox/) contains many
+examples of features and table types that were tested for success in
+tagging, passing Adobe Accessibility Checker tests, and more. Please
+check out the
+[README](https://github.com/Schiano-NOAA/a11y-sandbox/blob/main/README.md)
+for findings related to topics such as:
+
+- Why some Adobe Accessibility checks fail, why some failures are
+  incorrect, and how to manually fix the tags in Adobe
+- Differences in tagging behavior for tables produced with `gt`,
+  `kableExtra`, `flextable`, and raw LaTeX
+- How to avoid package conflicts between the LaTeX package that enables
+  tagging (`tagpdf`) and other packages (e.g., `scrartcl`)
+
+### NOAA institutional repository submission requirements
+
+This section states the status of `asar` reports’ accessibility features
+as compared to [the NOAA “Big 5” Section 508 compliance
+requirements](https://library.noaa.gov/Section508/QuickStart).
+
+#### 1. Tagged content 🚧
+
+**Expectation:** The PDF is a tagged PDF.
+
+**Status**:
+[`add_tagging()`](nmfs-ost.github.io/asar/reference/add_tagging.md) adds
+tags to PDFs with a variety of features including figures, figure
+captions, lists, math, and other textual aspects of reports such as
+headers and sections. The function also works for reports with tables
+made with:
+
+- Raw LaTeX ([example
+  here](https://github.com/Schiano-NOAA/a11y-sandbox/blob/main/LaTeX-compatible-table-pkgs/custom_LaTeX.qmd))
+- the `gt` package ([example
+  here](https://github.com/Schiano-NOAA/a11y-sandbox/blob/main/LaTeX-compatible-table-pkgs/gt.qmd))
+- the `kableExtra` package’s `kbl` or `kable` functions ([examples
+  here](https://github.com/Schiano-NOAA/a11y-sandbox/blob/main/LaTeX-compatible-table-pkgs/kableextra.qmd))
+- potentially other packages
+
+**Reports containing tables made with the `flextable` package are not
+taggable at this time.** The issue seems to be that flextables are not
+converted to LaTeX well by Pandoc while a Quarto report is being
+rendered to PDF. We are in the process of redeveloping `stockplotr`
+tables so that the basis of each is `gt`, not `flextable`. Please let us
+know if you’d like help converting any `flextable`-based tables to a
+different format.
+
+#### 2. Bookmarks ✅
+
+**Expectation:** Bookmarks are present on documents over 20 pages and
+illustrate the structure of the document.
+
+**Expectation:** If a Table of Contents is present, bookmarks should
+reflect this.
+
+**Status**: Both expectations are met.
+
+#### 3. Alternative Text ✅
+
+**Expectation:** Alternative text is present for all figures, charts,
+maps, etc.
+
+**Status**: This expectation is met.
+[`add_tagging()`](nmfs-ost.github.io/asar/reference/add_tagging.md) adds
+alternative text to images.
+
+#### 4. Logical reading order ✅
+
+**Expectation:** The reading order of the elements is logical and
+follows the flow of the document.
+
+**Status**: This expectation is met.
+
+#### 5. Document properties ✅
+
+**Expectation:** Title and Language are present.
+
+**Status**: This expectation is met.
+
+### Other accessibility considerations
+
+This section states the status of `asar` reports’ accessibility features
+that are not explicitly referenced by the NOAA institutional repository
+submission “Big 5” list.
+
+#### HTML
+
+HTML reports more readily pass several accessibility criteria.
+
+#### Adding tags and alt text in the same function
+
+[`add_accessibility()`](nmfs-ost.github.io/asar/reference/add_accessibility.md)
+is functional. It combines
+[`add_tagging()`](nmfs-ost.github.io/asar/reference/add_tagging.md) and
+[`add_alttext()`](nmfs-ost.github.io/asar/reference/add_alttext.md),
+allowing the user to add tagging and alternative text at once.
+
+#### Glossary
+
+The glossary is functional.
+
+### NOAA Central Library Accessibility Checklist: PDF Documents
+
+This section states the status of `asar` reports’ accessibility features
+as compared to the more extensive [NOAA Central Library’s accessibility
+checklist for
+PDFs](https://library.noaa.gov/ld.php?content_id=61618926).
+
+The checklist reflects the results from a report made with a basic,
+exemplary `asar` workflow (such as that in the README).
+
+#### General Accessibility
+
+| Element | Pass | Fail | Not Applicable |
+|:---|:--:|:--:|:--:|
+| File name is concise and free of spaces or special characters. | X |  |  |
+| Document properties for Title and Language are added. | X |  |  |
+| Track changes have been accepted and/or turned off. All comments have been removed/resolved. | X |  |  |
+| If there is a Table of Contents (TOC), it was created using the TOC Command. |  |  | X (The TOC was created externally from Adobe but are constructed such that TOC is inserted appropriately) |
+| Page numbering codes are used (as opposed to manually entering page numbers). | X |  |  |
+| Footnotes have been created via the Insert Footnote tool. |  |  | X (Footnotes are created externally from Adobe but are constructed such that footnotes are inserted appropriately) |
+| Links contain descriptive text informing the user of the context and content of the linked page. Avoid linking terms such as “Click Here” or “Website.” | X |  |  |
+| All hyperlinks are working and linking to their intended destination. | X |  |  |
+| All information that is conveyed through the use of color is also available without color. | X |  |  |
+| All color for images, text, etc. avoids red-green contrast when possible. (For colorblind viewers). | X |  |  |
+
+#### Headings & Fonts
+
+| Element | Pass | Fail | Not Applicable |
+|:---|:--:|:--:|:--:|
+| The document uses recommended font styles (Arial, Veranda, Times New Roman, Georgia, Calibri). | X |  |  |
+| Text is easy to read against the background of the document (Recommended color contrast ratio of 4.5:1). | X |  |  |
+| The document has been formatted using the style elements for Headings and is presented hierarchically (i.e., Heading 1 to Heading 2 leading into body text). | X |  |  |
+
+#### Image Requirements
+
+| Element | Pass | Fail | Not Applicable |
+|:---|:--:|:--:|:--:|
+| The document should be free of background images, watermarks, and scanned images of text. | X |  |  |
+| All images and graphics should appear crisp and clear. | X |  |  |
+| All images and non-text elements have alternative text. | X |  |  |
+| Multiple associated images on the same page are grouped together and alternative text for the images has been added. |  |  | X |
+| Multilayered objects (such as charts or graphs) have been flattened into a single image and alternative text for the image has been added. | X |  |  |
+| Complex images include descriptive text like captions. | X |  |  |
+
+#### Lists & Tables
+
+| Element | Pass | Fail | Not Applicable |
+|:---|:--:|:--:|:--:|
+| All tables were made using the Insert Table option. |  |  | X (Tables will be created externally from Adobe but will be constructed such that tables are inserted appropriately) |
+| No blank or merged cells are present in the table(s). | X (We are redeveloping our `stockplotr` tables to meet this criterion. Users must check that tables made with other packages meet this criterion.) |  |  |
+| Data tables should have the first row designated as “Header Row” within the Table Properties. | X |  |  |
+| Under Table Properties, “Allow row to break across pages” should not be checked. (This impacts reading order.) |  |  | X (This criterion seems written for Word documents in particular, which is not applicable with the `asar`-based workflow) |
+| Tables are labeled and/or described as necessary. | X |  |  |
+| No layout tables are present in the document. | X (Tables made with `stockplotr` tables meet this criterion. Users must check that tables made with other packages meet this criterion.) |  |  |
+| All lists have been appropriately tagged using all four tags: L, LI, Lbl, and LBody. | X |  |  |
+
+#### Bookmarks, Tagging & Table of Contents
+
+| Element | Pass | Fail | Not Applicable |
+|:---|:--:|:--:|:--:|
+| All documents more than 20 pages have logical bookmarks. These should reflect the structure of the document and often time may mirror the Table of Contents (TOC). | X |  |  |
+| Items in the TOC are linked appropriately, and page numbers are correct. | X |  |  |
+| PDF tags have been added to the document (auto-tagging is acceptable, but may require touch-up work). | X |  |  |
+| Reading order is logical and correct based on the PDF tags. | X |  |  |
+
+[^1]: Canelón, Silvia, and Liz Hare. *Revealing Room for Improvement in
+    Accessibility within a Social Media Data Visualization Learning
+    Community*, csv,conf,v6, 7 May 2021,
+    [spcanelon.github.io/csvConf2021/slides/](nmfs-ost.github.io/asar/articles/spcanelon.github.io/csvConf2021/slides/).
+
+[^2]: Hare, Liz. *Writing Meaningful Alt Texts for Data Visualizations
+    in R*, R Ladies NYC, 10 Oct. 2022,
+    [lizharedogs.github.io/RLadiesNYAltText/](nmfs-ost.github.io/asar/articles/lizharedogs.github.io/RLadiesNYAltText/).

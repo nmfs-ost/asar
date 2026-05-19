@@ -1,0 +1,119 @@
+# 
+
+### Add custom tables and figures
+
+In your ‘report’ folder, open your figures and tables docs (probably
+named something like ‘08_tables.qmd’ and ‘09_figures.qmd’). Add the
+following code there.
+
+**IMPORTANT**: The label in your captions/alt text csv must match the
+label in your plot’s chunk options, **MINUS the “fig-” or “tab-”**. For
+example, the label “your_image_label_name” in the csv would match up
+properly with the “tbl-your_image_label_name” label in this code:
+
+``` rmd
+![Your caption here](your_image.png){width=4in #fig-your_image_label_name}
+```
+
+The same rule applies for tables: “custom_table2” in the csv would match
+up with “tbl-custom_table2” in the markdown’s label.
+
+#### Identify page orientation
+
+If you’re using this workflow, your table/figure should be at most 8”
+wide or can be shrunken to 8” wide and still be legible. Find the width
+of your image file. Would you prefer to show it on a page with a
+portrait orientation (can fit 5” width) or landscape orientation (can
+fit 8” width)?
+
+Identify the preferred width of your image. Keep it in mind for when you
+add your image in the next section.
+
+#### Add image
+
+Next, add your image in this format ([see this Quarto documentation for
+more information](https://quarto.org/docs/authoring/figures.html)):
+
+``` markdown
+![Your caption here](your_image.png){width=___in #fig-your_image_label_name}
+```
+
+> **NOTE**: Captions and alternative text in this markdown format will
+> appear in your final report file. However, we **strongly encourage**
+> adding the caption and alt text in the captions_alt_text.csv file as
+> well, where your other figures and tables’ captions and alt text are
+> stored, for reproducibility and clarity when reusing report templates.
+
+> **NOTE**: It can be a headache to specify the correct image path. We
+> recommend placing your files in either of these places:
+
+1.  Your report folder (path = the image name, like *image.png*)
+2.  A folder within your report folder (path = the relative filepath,
+    like *images/image.png* if there’s an images folder within report)
+3.  A higher-level folder that can be referenced by formatting a
+    filepath with two periods and a forward slash (../). This indicates
+    “the parent folder of the current directory”.
+
+Here are some examples, using the following example folder structure
+setup:
+
+``` markdown
+stock_assessments_2025/
+├── captions_alt_text.csv
+├── rockfish.jpg
+├── report/
+│   ├── 01_executive_summary.qmd
+│   ├── 02_introduction.qmd
+│   ├── hake.png
+│   ├── images/
+│   │   ├── sardine.png
+```
+
+``` markdown
+# Example 1
+![Here is my caption to a hake figure.](hake.png){width=3in #fig-hake}
+```
+
+``` markdown
+# Example 2
+![Here is my caption to a sardine table.](images/sardine.png){width=5in #tab-sardine}
+```
+
+``` markdown
+# Example 3
+![Here is my caption to a rockfish figure.](../rockfish.jpg){width=5in #fig-rockfish}
+```
+
+#### Add landscape braces (optional)
+
+If you’d like to place your image on a landscape-oriented page, you’ll
+add [landscape
+braces](https://quarto.org/docs/authoring/article-layout.html#landscape-mode)
+before and after your table/figure to ensure it will be displayed
+properly, like this:
+
+``` default
+::: {.landscape}
+```
+
+``` rmd
+![Your caption here](your_image.png){width=___in #fig-your_image_label_name}
+```
+
+Then, add three colons to close the braces:
+
+``` default
+:::
+```
+
+> **NOTE**: Landscape braces only work in [Quarto
+> v1.6+](https://quarto.org/docs/blog/posts/2024-11-25-1.6-release/).
+> Please read [this
+> Discussion](https://github.com/nmfs-ost/asar/discussions/186) to learn
+> how to check your Quarto version and update it if necessary.
+
+#### Page break
+
+If you are including more than one custom table or figure in a file, we
+suggest adding a page break to separate the tables/figures by adding
+this on a new line: “{{\< pagebreak \>}}”
