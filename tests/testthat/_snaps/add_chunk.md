@@ -4,7 +4,6 @@
       cat(add_chunk("plot(cars$speed, cars$distance)"))
     Output
       ```{r} 
-      #| echo: false 
       #| warnings: false 
       #| eval: true
       plot(cars$speed, cars$distance)

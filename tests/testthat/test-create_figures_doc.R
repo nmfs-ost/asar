@@ -48,13 +48,13 @@ test_that("Creates expected start of figures doc with figure", {
 
   # read in figures doc
   figure_content <- readLines("09_figures.qmd")
-  # extract first 7 lines
-  head_figure_content <- head(figure_content, 7)
+  # extract first 6 lines
+  head_figure_content <- head(figure_content, 6)
   # remove line numbers and collapse
   fc_pasted <- paste(head_figure_content, collapse = "")
 
   # expected figures doc head
-  expected_head_figure_content <- "# Figures {#sec-figures} ```{r} #| label: 'set-rda-dir-figs'#| echo: false #| warnings: false #| eval: true"
+  expected_head_figure_content <- "# Figures {#sec-figures} ```{r} #| label: 'set-rda-dir-figs'#| warnings: false #| eval: true"
 
   # test expectation of start of figures doc
   expect_equal(
@@ -93,13 +93,13 @@ test_that("Formerly empty figures doc renders correctly", {
 
   # read in figures doc
   figure_content <- readLines(file.path(getwd(), "report", "09_figures.qmd"))
-  # extract first 8 lines
-  head_figure_content <- head(figure_content, 8)
+  # extract first 7 lines
+  head_figure_content <- head(figure_content, 7)
   # remove line numbers and collapse
   fc_pasted <- paste(head_figure_content, collapse = "")
 
   # expected figures doc head
-  expected_head_figure_content <- "# Figures {#sec-figures} ```{r} #| label: 'set-rda-dir-figs'#| echo: false #| warnings: false #| eval: true"
+  expected_head_figure_content <- "# Figures {#sec-figures} ```{r} #| label: 'set-rda-dir-figs'#| warnings: false #| eval: true"
 
   # test expectation of start of figures doc
   expect_equal(
