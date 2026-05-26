@@ -51,5 +51,5 @@ for the function to render it properly
 
 ``` r
 add_chunk("plot(cars$speed, cars$distance)")
-#> [1] "```{r} \n#| echo: false \n#| warnings: false \n#| eval: true\nplot(cars$speed, cars$distance)\n``` \n"
+#> [1] "```{r} \n#| warnings: false \n#| eval: true\nplot(cars$speed, cars$distance)\n``` \n"
 ```

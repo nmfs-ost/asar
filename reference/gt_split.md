@@ -55,13 +55,12 @@ gt_split(data, row_every_n = NULL, row_slice_i = NULL, col_slice_at = NULL)
   series of column names provided in
   [`c()`](https://rdrr.io/r/base/c.html), a vector of column indices, or
   a select helper function (e.g.
-  [starts_with](https://tidyselect.r-lib.org/reference/starts_with.html),
-  [ends_with](https://tidyselect.r-lib.org/reference/starts_with.html),
-  [contains](https://tidyselect.r-lib.org/reference/starts_with.html),
-  [matches](https://tidyselect.r-lib.org/reference/starts_with.html),
-  [num_range](https://tidyselect.r-lib.org/reference/starts_with.html),
-  and
-  [everything](https://tidyselect.r-lib.org/reference/everything.html)).
+  [starts_with](https://rdrr.io/pkg/tidyselect/man/starts_with.html),
+  [ends_with](https://rdrr.io/pkg/tidyselect/man/starts_with.html),
+  [contains](https://rdrr.io/pkg/tidyselect/man/starts_with.html),
+  [matches](https://rdrr.io/pkg/tidyselect/man/starts_with.html),
+  [num_range](https://rdrr.io/pkg/tidyselect/man/starts_with.html), and
+  [everything](https://rdrr.io/pkg/tidyselect/man/everything.html)).
 
 ## Value
 
