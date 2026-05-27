@@ -323,6 +323,7 @@ export_glossary <- function() {
         "F-CURR",
         "F-MSY",
         "F-OY",
+        "GOA",
         "Gulf",
         "LCN",
         "Mid-Atlantic Council",
@@ -578,7 +579,26 @@ export_glossary <- function() {
       Label = ifelse(Acronym == "PPT", "PPT", Label)
     ) |>
     dplyr::arrange(Label) |>
-    as.data.frame()
+    as.data.frame() |>
+  # Duplicates that should be added back with unique labels:
+  ## GOA: goa-ak and goa-se, for Gulf of Alaska and Gulf of America
+  ## CA: ca-cali and ca-canada, for California and Canada
+    dplyr::add_row(Label = "goa-ak",
+                   Acronym = "GOA",
+                   Meaning = "Gulf of Alaska",
+                   Definition = "") |>
+    dplyr::add_row(Label = "goa-se",
+                   Acronym = "GOA",
+                   Meaning = "Gulf of America",
+                   Definition = "") |>
+    dplyr::add_row(Label = "ca-cali",
+                   Acronym = "CA",
+                   Meaning = "California",
+                   Definition = "") |>
+    dplyr::add_row(Label = "ca-canada",
+                   Acronym = "CA",
+                   Meaning = "Canada",
+                   Definition = "")
 
   # rows with meanings that should be all lowercase, labelled by label
   rows_to_lower <- c(
@@ -735,10 +755,12 @@ export_glossary <- function() {
       Label = gsub("southeast fisheries science center", "sefsc", Label, ignore.case = TRUE),
       Label = gsub("southwest fisheries science center", "swfsc", Label, ignore.case = TRUE))
 
+  # Acronyms can be duplicated; labels cannot
   duplicate_acronyms <- unique_all_cleaning3 |>
-    dplyr::add_count(Acronym) |>
+   # dplyr::add_count(Acronym) |>
     dplyr::add_count(Label) |>
-    dplyr::filter(n > 1 | nn > 1) |>
+  #  dplyr::filter(n > 1 | nn > 1) |>
+    dplyr::filter(n > 1) |>
     dplyr::distinct()
 
   if (dim(duplicate_acronyms)[1] > 0) {
@@ -854,7 +876,17 @@ export_glossary <- function() {
     "% For example, there are three entries for the 'long form' 'Northeast Ecosystem Monitoring (EcoMon)\\_Fall':\n\n",
     "%     \\newacronym{ecomon fall}{ECOMON Fall}{Northeast Ecosystem Monitoring (EcoMon)\\_Fall}\n",
     "%     \\newacronym{fall nefsc ecosystem monitoring survey}{Fall Northeast Fisheries Science Center Ecosystem Monitoring Survey}{Northeast Ecosystem Monitoring (EcoMon)\\_Fall}\n",
-    "%     \\newacronym{nemef}{NEMEF}{Northeast Ecosystem Monitoring (EcoMon)\\_Fall}\n\n"))
+    "%     \\newacronym{nemef}{NEMEF}{Northeast Ecosystem Monitoring (EcoMon)\\_Fall}\n\n\n"),
+
+
+    "% NOTE ON DUPLICATED ACRONYMS:\n",
+    "% There are some entries with the same acronym, but with different labels and meanings. For example:\n",
+    "% -the 'GOA' acronym appears twice: for the Gulf of Alaska (label: 'goa-ak') and America (label: 'goa-se').\n",
+    "% -the 'CA' acronym appears twice: for California (label: 'ca-cali') and Canada (label: 'ca-canada').\n",
+    "% Each pair of acronyms is included with the assumption that both will not appear in the same report.\n",
+    "% If both pairs appear in the same report, the report will not render.\n",
+    "% If you need to use both, please edit your individual report_glossary.tex file and change the 'Acronym' for one entry to differentiate the pair.\n",
+    "% For example, you could change the 'ca-canada' acronym from 'CA' to 'CAN'.\n\n\n")
 
   for (i in 1:dim(tex_acs)[1]) {
     cat(
