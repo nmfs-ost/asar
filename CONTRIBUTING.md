@@ -28,10 +28,6 @@ the [`{roxygen2}` package structure](https://roxygen2.r-lib.org/articles/roxygen
 
 4. Please increment the package version following our [semantic versioning section](https://github.com/nmfs-ost/asar/blob/doc-update-contrib/CONTRIBUTING.md#semantic-versioning-sec-version).
 
-5. Add a short summary or title line in the [NEWS.md](https://github.com/nmfs-ost/asar/blob/main/NEWS) file indicating the feature 
-or fix. This will be how we include recognition for your contribution in our 
-monthly release notes.
-
 ### Recommended practices
 
 -   Write clear, succinct commit messages ([see some tips here](https://opensource.com/article/22/12/git-commit-message))
@@ -39,23 +35,9 @@ monthly release notes.
 -   Ensure your base branch is correct. We typically merge most PRs into "dev", then merge "dev" into "main" upon a new release.
 -   Test that your contributed code will function as expected under different circumstances.
 -   Add comments to the code if it's not immediately clear what the purpose of the code is, or how it works.
+-   Name branches and title pull requests according to the release indicators in the table below.
 
-### Semantic Versioning
-
-We use an approach to semantic versioning for our packages. This includes using 
-a typical structure for semantic versioning which follows:
-`
-`v<MAJOR>.<MINOR>.<PATCH>`
-
-where,
-
-- MAJOR = major release (not backwards compatible)
-- MINOR = minor release (new features)
-- PATCH = hot fixes and bug fixes (aka patches)
-
-A branch in `v<MAJOR>.<MINOR>.<PATCH>.9000` indicates development in main branch.
-
-Please use the following "release indicators" for a naming a branch or pull request:
+#### Release Indicators:
 
 | Indicator | Description |
 |-----------|-------------|
@@ -76,8 +58,8 @@ Please use the following "release indicators" for a naming a branch or pull requ
 - If the type contains refactor/style/perf/doc/test/chore, then nothing is incremented and no release will be made.
 
 
-The above content is modeled after an article on ["Automating Versioning and Releases Using Semantic Release"](https://medium.com/agoda-engineering/automating-versioning-and-releases-using-semantic-release-6ed355ede742)
-from Agoda Engineering.
+**The above content is modeled after an article on ["Automating Versioning and Releases Using Semantic Release"](https://medium.com/agoda-engineering/automating-versioning-and-releases-using-semantic-release-6ed355ede742)
+# from Agoda Engineering.**
 
 ## Contributing bugs
 
