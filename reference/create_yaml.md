@@ -128,3 +128,38 @@ Create a string indicating the important formatting pieces for a quarto
 file for a stock assessment report.
 
 ## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+my_author_list <- paste(
+  "  - name: 'Patrick Star'",
+  "    affiliations:",
+  "      - name: 'NOAA Fisheries Southeast Fisheries Science Center'",
+  "        address: '75 Virginia Beach Drive'",
+  "        city: 'Miami'",
+  "        state: 'FL'",
+  "        postal-code: '33149'",
+  sep = "\n"
+)
+create_yaml(
+  rerender_skeleton = FALSE,
+  prev_skeleton = NULL,
+  title = "My title",
+  author_list = my_author_list,
+  author = c("Patrick Star" = "SEFSC"),
+  office = "SEFSC",
+  add_author = NULL,
+  spp_image = NULL,
+  species = "",
+  spp_latin = NULL,
+  region = NULL,
+  format = "pdf",
+  parameters = TRUE,
+  param_names = NULL,
+  param_values = NULL,
+  bib_file = "path/asar_references.bib",
+  bib_name = "asar_references.bib",
+  year = 2025
+)
+} # }
+```

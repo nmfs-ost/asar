@@ -21,6 +21,9 @@ Useful links:
 
 Authors:
 
+- Samantha Schiano <samantha.schiano@noaa.gov>
+  ([ORCID](https://orcid.org/0009-0003-3744-6428))
+
 - Sophie Breitbart <sophie.breitbart@noaa.gov>
   ([ORCID](https://orcid.org/0000-0001-9641-9786)) \[contributor\]
 
