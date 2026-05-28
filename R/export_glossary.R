@@ -543,7 +543,8 @@ export_glossary <- function() {
       Meaning = ifelse(Meaning == "Spawning Abundance at MSY", "spawning abundance at MSY", Meaning),
       Meaning = ifelse(Meaning == "Spawning Stock Biomass at MSY", "spawning stock biomass at MSY", Meaning),
       Meaning = ifelse(Acronym == "R", "Programming environment for statistical processing and presentation", Meaning),
-      Meaning = ifelse(Acronym == "GARM", "Groundfish Assessment Review Meeting", Meaning)
+      Meaning = ifelse(Acronym == "GARM", "Groundfish Assessment Review Meeting", Meaning),
+      Meaning = ifelse(Acronym == "SWFSC", "Southwest Fisheries Science Center", Meaning)
     ) |>
     # add periods to end of Definition
     dplyr::mutate(
