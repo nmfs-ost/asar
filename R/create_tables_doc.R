@@ -554,33 +554,15 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
   )
 
   # Read through tables doc and warn about identical labels
-  new_tables_doc <- readLines(
-    ifelse(
-      any(grepl("_tables.qmd$", list.files(subdir))),
-      fs::path(subdir, list.files(subdir)[grep("_tables.qmd", list.files(subdir))]),
-      fs::path(subdir, "08_tables.qmd")
-    )
-  ) |>
-    suppressWarnings() |>
-    as.list()
+  doc_path <- ifelse(
+    any(grepl("_tables.qmd$", list.files(subdir))),
+    fs::path(subdir, list.files(subdir)[grep("_tables.qmd", list.files(subdir))]),
+    fs::path(subdir, "08_tables.qmd")
+  )
+  
+  fix_duplicate_chunks(
+    doc_path = doc_path,
+    doc_type = "Tables"
+  )
 
-  label_line_nums <- grep("\\label", new_tables_doc)
-  labels <- new_tables_doc[label_line_nums]
-  names(labels) <- label_line_nums
-  labels <- lapply(labels, function(x) {
-    gsub("#\\| label: ", "", x)
-  })
-
-  repeated_labels <- labels[duplicated(labels)]
-  repeated_labels <- as.vector(unlist(repeated_labels))
-
-  if (length(repeated_labels) > 0) {
-    cli::cli_alert_danger("Tables doc contains chunks with identical labels: {repeated_labels}.")
-    cli::cli_alert_info("Open tables doc and check for:")
-    cli::cli_bullets(c(
-      "*" = "Identical, repeated tables",
-      "*" = "Different tables with identical labels"
-    ))
-    cli::cli_alert_warning("Tables doc will not render if chunks have identical labels.")
-  }
 }
