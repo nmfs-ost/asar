@@ -32,7 +32,7 @@ the [`{roxygen2}` package structure](https://roxygen2.r-lib.org/articles/roxygen
 
 -   Write clear, succinct commit messages ([see some tips here](https://opensource.com/article/22/12/git-commit-message))
 -   Limit a commit to a few, rather than many, changes. Smaller commits means more commit messages, which is often helpful for documentation.
--   Ensure your base branch is correct. We typically merge most PRs into "dev", then merge "dev" into "main" upon a new release.
+-   Ensure your base branch is correct. We merge all branches into main.
 -   Test that your contributed code will function as expected under different circumstances.
 -   Add comments to the code if it's not immediately clear what the purpose of the code is, or how it works.
 -   Name branches and title pull requests according to the release indicators in the table below.
