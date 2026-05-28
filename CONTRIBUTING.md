@@ -26,8 +26,6 @@ If you are unfamiliar with this approach, simply let us know :smile
 3. If including a feature that is a new function, please add documentation using
 the [`{roxygen2}` package structure](https://roxygen2.r-lib.org/articles/roxygen2.html).
 
-4. Please increment the package version following our [semantic versioning section](https://github.com/nmfs-ost/asar/blob/doc-update-contrib/CONTRIBUTING.md#semantic-versioning-sec-version).
-
 ### Recommended practices
 
 -   Write clear, succinct commit messages ([see some tips here](https://opensource.com/article/22/12/git-commit-message))
