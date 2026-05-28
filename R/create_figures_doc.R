@@ -143,7 +143,8 @@ rm(rda)\n
           figures_dir = figures_dir
         )
 
-        rda_figures_doc <- paste0(rda_figures_doc, fig_chunk,
+        rda_figures_doc <- paste0(
+          rda_figures_doc, fig_chunk,
           "{{< pagebreak >}} \n\n"
         )
       }
