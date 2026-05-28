@@ -319,9 +319,9 @@ documents](https://library.noaa.gov/Section508/CreatingDocs).
 
 ### Acronyms and Glossary
 
-When you use an acronym, it will be included in a glossary table that is
-automatically added to the end of your report. Below are directions for
-using acronyms and editing the glossary.
+When you use an acronym, it will be included in a glossary that is
+automatically added to the start of your report. Below are directions
+for using acronyms and editing the glossary.
 
 **Location**: The glossary (“report_glossary.tex”) is located in your
 report folder.
@@ -352,6 +352,21 @@ Here are two entries using the examples mentioned above:
 
 `\newacronym{noaa}{NOAA}{National Oceanic and Atmospheric Administration}`
 
+**NOTE**: There are some entries with the same acronym, but with
+different labels and meanings. For example:
+
+- the ‘GOA’ acronym appears twice: for the Gulf of Alaska (label:
+  ‘goa-ak’) and America (label: ‘goa-se’).
+- the ‘CA’ acronym appears twice: for California (label: ‘ca-cali’) and
+  Canada (label: ‘ca-canada’).
+
+Each pair of acronyms is included with the assumption that both will not
+appear in the same report. If both pairs appear in the same report, the
+report will not render. If you need to use both, please edit your
+individual report_glossary.tex file and change the ‘Acronym’ for one
+entry to differentiate the pair. For example, you could change the
+‘ca-canada’ acronym from ‘CA’ to ‘CAN’.
+
 #### Survey names
 
 Many people refer to surveys with nicknames or “informal” names that do
@@ -365,6 +380,26 @@ are not correct) are listed in the “Acronym” column.
 
 *Formal survey names* (i.e., the correct survey names) are listed in the
 “Meaning” column.
+
+**NOTE**: To increase findability, surveys may have multiple entries to
+link informal with formal names. Specifically, there may be more than
+one ‘label’ (first curly braces entry) or ‘acronym’ (second curly braces
+entry) with the same ‘long form’ (third curly braces entry). If the
+first ‘label’ you find for a given survey seems too long, look for an
+alternative entry with the same ‘long form’ but a different ‘label’
+and/or ‘acronym’.
+
+For example, there are three entries for the ‘long form’ ‘Northeast
+Ecosystem Monitoring (EcoMon)\_Fall’:
+
+\newacronym{ecomon fall}{ECOMON Fall}{Northeast Ecosystem Monitoring
+(EcoMon)\_Fall}
+
+\newacronym{fall nefsc ecosystem monitoring survey}{Fall Northeast
+Fisheries Science Center Ecosystem Monitoring Survey}{Northeast
+Ecosystem Monitoring (EcoMon)\_Fall}
+
+\newacronym{nemef}{NEMEF}{Northeast Ecosystem Monitoring (EcoMon)\_Fall}
 
 If you would like us to add more survey name pairs to our table, please
 make an [issue](https://github.com/nmfs-ost/asar/issues) or, even

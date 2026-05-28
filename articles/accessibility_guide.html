@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">asar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -250,7 +250,7 @@
 <p>Looking for more resources for writing alt text? Check out the <a href="https://library.noaa.gov/Section508/CreatingDocs" class="external-link">NOAA Library’s website for creating accessible documents</a>.</p>
 </section></section><section class="level2"><h3 class="anchored" id="acronyms-and-glossary">Acronyms and Glossary<a class="anchor" aria-label="anchor" href="#acronyms-and-glossary"></a>
 </h3>
-<p>When you use an acronym, it will be included in a glossary table that is automatically added to the end of your report. Below are directions for using acronyms and editing the glossary.</p>
+<p>When you use an acronym, it will be included in a glossary that is automatically added to the start of your report. Below are directions for using acronyms and editing the glossary.</p>
 <p><strong>Location</strong>: The glossary (“report_glossary.tex”) is located in your report folder.</p>
 <p><strong>Order</strong>: The glossary is sorted alphabetically. Case can differentiate entries (e.g., “M” (natural mortality) is different from “m” (meter(s)).)</p>
 <p><strong>Structure</strong>: Each acronym has its own line, structured like this:</p>
@@ -263,11 +263,22 @@
 <p>Here are two entries using the examples mentioned above:</p>
 <p><code>\newacronym{bcurrent}{$B_{current}$}{current biomass of stock}</code></p>
 <p><code>\newacronym{noaa}{NOAA}{National Oceanic and Atmospheric Administration}</code></p>
+<p><strong>NOTE</strong>: There are some entries with the same acronym, but with different labels and meanings. For example:</p>
+<ul>
+<li>the ‘GOA’ acronym appears twice: for the Gulf of Alaska (label: ‘goa-ak’) and America (label: ‘goa-se’).</li>
+<li>the ‘CA’ acronym appears twice: for California (label: ‘ca-cali’) and Canada (label: ‘ca-canada’).</li>
+</ul>
+<p>Each pair of acronyms is included with the assumption that both will not appear in the same report. If both pairs appear in the same report, the report will not render. If you need to use both, please edit your individual report_glossary.tex file and change the ‘Acronym’ for one entry to differentiate the pair. For example, you could change the ‘ca-canada’ acronym from ‘CA’ to ‘CAN’.</p>
 <section class="level3"><h4 class="anchored" id="survey-names">Survey names<a class="anchor" aria-label="anchor" href="#survey-names"></a>
 </h4>
 <p>Many people refer to surveys with nicknames or “informal” names that do not match up with administrative documentation. For example, the “Atlantic Surf Clam &amp; Ocean Quahog Dredge” is sometimes called the “clam survey”. To facilitate communication in the reporting process, <strong>we have added survey names to the glossary</strong>.</p>
 <p><em>Informal survey names</em> (i.e., nicknames used to refer to surveys that are not correct) are listed in the “Acronym” column.</p>
 <p><em>Formal survey names</em> (i.e., the correct survey names) are listed in the “Meaning” column.</p>
+<p><strong>NOTE</strong>: To increase findability, surveys may have multiple entries to link informal with formal names. Specifically, there may be more than one ‘label’ (first curly braces entry) or ‘acronym’ (second curly braces entry) with the same ‘long form’ (third curly braces entry). If the first ‘label’ you find for a given survey seems too long, look for an alternative entry with the same ‘long form’ but a different ‘label’ and/or ‘acronym’.</p>
+<p>For example, there are three entries for the ‘long form’ ‘Northeast Ecosystem Monitoring (EcoMon)_Fall’:</p>
+<p>\newacronym{ecomon fall}{ECOMON Fall}{Northeast Ecosystem Monitoring (EcoMon)_Fall}</p>
+<p>\newacronym{fall nefsc ecosystem monitoring survey}{Fall Northeast Fisheries Science Center Ecosystem Monitoring Survey}{Northeast Ecosystem Monitoring (EcoMon)_Fall}</p>
+<p>\newacronym{nemef}{NEMEF}{Northeast Ecosystem Monitoring (EcoMon)_Fall}</p>
 <p>If you would like us to add more survey name pairs to our table, please make an <a href="https://github.com/nmfs-ost/asar/issues" class="external-link">issue</a> or, even better, submit a <a href="https://github.com/nmfs-ost/asar/pulls" class="external-link">pull request</a>. Please see the <a href="https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project" class="external-link">GitHub Docs’ “Contributing to a project” page</a> for step-by-step guidance in making a pull request. Thank you!</p>
 </section><section class="level3"><h4 class="anchored" id="editing-the-glossary">Editing the glossary<a class="anchor" aria-label="anchor" href="#editing-the-glossary"></a>
 </h4>
