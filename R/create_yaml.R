@@ -143,7 +143,7 @@ create_yaml <- function(
         yaml <- stringr::str_replace(yaml, yaml[grep("species: 'species'", yaml)], paste("  ", " ", "species: ", "'", species, "'", sep = ""))
       }
       if (length(office) == 1 & !is.null(office) & any(grepl("office: ''", yaml))) {
-        yaml <- stringr::str_replace(yaml, yaml[grep("office: ''", yaml)], paste("  ", " ", "office: ", "'", office, "'", sep = ""))
+        yaml <- stringr::str_replace(yaml, yaml[grep("office: ''", yaml)], paste("  ", " ", "office: ", "'\\gls{", tolower(office), "}'", sep = ""))
       }
       if (!is.null(spp_latin) & any(grepl("spp_latin: ''", yaml))) {
         yaml <- stringr::str_replace(yaml, yaml[grep("spp_latin: ''", yaml)], paste("  ", " ", "spp_latin: ", "'", spp_latin, "'", sep = ""))
@@ -268,7 +268,7 @@ create_yaml <- function(
     if (parameters) {
       yaml <- paste0(
         yaml, "params:", "\n",
-        "  ", " ", "office: ", "'", office, "'", "\n",
+        "  ", " ", "office: ", "'\\gls{", tolower(office), "}'", "\n",
         "  ", " ", "species: ", "'", species, "'", "\n",
         "  ", " ", "spp_latin: ", "'", spp_latin, "'", "\n",
         "  ", " ", "region: ", "'", region, "'", "\n"
