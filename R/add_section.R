@@ -87,7 +87,7 @@ add_section <- function(
       ifelse(locality == "in", "### ", "## "), stringr::str_to_title(sub("_", " ", tolower(new_section[i]))), "\n",
       "\n",
       "[Insert text here]", "\n",
-      "\n"#,
+      "\n" # ,
       # add_chunk("# Insert code", label = paste0("example_chunk_", i)), "\n"
     )
 

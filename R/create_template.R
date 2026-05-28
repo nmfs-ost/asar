@@ -1063,7 +1063,7 @@ create_template <- function(
     ###### Rerender & not custom ----
     # add check if user set custom sections, but did not set custom = TRUE
     if (!is.null(new_section) || !is.null(custom_sections)) custom <- TRUE
-    
+
     if (rerender_skeleton & custom == FALSE) {
       # identify all previous sections
       sections <- stringr::str_extract_all(

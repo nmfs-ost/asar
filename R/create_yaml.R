@@ -24,14 +24,14 @@
 #' @examples
 #' \dontrun{
 #' my_author_list <- paste(
-#' "  - name: 'Patrick Star'",
-#' "    affiliations:",
-#' "      - name: 'NOAA Fisheries Southeast Fisheries Science Center'",
-#' "        address: '75 Virginia Beach Drive'",
-#' "        city: 'Miami'",
-#' "        state: 'FL'",
-#' "        postal-code: '33149'",
-#' sep = "\n"
+#'   "  - name: 'Patrick Star'",
+#'   "    affiliations:",
+#'   "      - name: 'NOAA Fisheries Southeast Fisheries Science Center'",
+#'   "        address: '75 Virginia Beach Drive'",
+#'   "        city: 'Miami'",
+#'   "        state: 'FL'",
+#'   "        postal-code: '33149'",
+#'   sep = "\n"
 #' )
 #' create_yaml(
 #'   rerender_skeleton = FALSE,
