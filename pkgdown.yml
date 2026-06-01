@@ -3,20 +3,20 @@ pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   articles/accessibility_guide: accessibility_guide.html
-  snippets/add-plots_coding: snippets/add-plots_coding.html
-  snippets/add-plots_img: snippets/add-plots_img.html
-  snippets/add-plots_rda: snippets/add-plots_rda.html
+  articles/snippets/add-plots_coding: snippets/add-plots_coding.html
+  articles/snippets/add-plots_img: snippets/add-plots_img.html
+  articles/snippets/add-plots_rda: snippets/add-plots_rda.html
   articles/caps-alttext-alt-workflows: caps-alttext-alt-workflows.html
-  snippets/code-custom-figs-tables: snippets/code-custom-figs-tables.html
+  articles/snippets/code-custom-figs-tables: snippets/code-custom-figs-tables.html
   articles/custom-figs-tabs: custom-figs-tabs.html
   articles/example_reports: example_reports.html
-  snippets/export-custom-figs-tables: snippets/export-custom-figs-tables.html
+  articles/snippets/export-custom-figs-tables: snippets/export-custom-figs-tables.html
   articles/faqs: faqs.html
-  snippets/id_width: snippets/id_width.html
+  articles/snippets/id_width: snippets/id_width.html
   articles/markdown_notation: markdown_notation.html
-  snippets/save-caps-alttext: snippets/save-caps-alttext.html
-  snippets/write-caps-alttext: snippets/write-caps-alttext.html
-last_built: 2026-05-28T20:30Z
+  articles/snippets/save-caps-alttext: snippets/save-caps-alttext.html
+  articles/snippets/write-caps-alttext: snippets/write-caps-alttext.html
+last_built: 2026-06-01T19:02Z
 urls:
   reference: nmfs-ost.github.io/asar/reference
   article: nmfs-ost.github.io/asar/articles
