@@ -111,6 +111,22 @@ As a workaround, we recommend making some temporary edits to the skeleton. You c
 
 You could manually add a YAML specifying the format as PDF into the child document, but this would not show the report's full formatting and would have to be removed before rendering the report skeleton.
 
+## What arguments can I use when trying to rerender my skeleton?
+
+Rerending a skeleton using `rerender = TRUE` can be a helpful and reproducible way to making edits to your skeleton document and leaving a record of your process for future you and future assessment scientists. The current arguments that can be called to adjust your skeleton file when `rerender = TRUE` are:
+
+- format
+- authors
+- species
+- region
+- spp_latin
+- office
+- custom_sections
+- new_section & section_location
+- param_names & param_values
+
+We plan to include future functionality to also include bib_file and spp_image as functional arguments when using `rerender = TRUE`.
+
 # Tables and Figures
 
 ## Why aren't my tables and/or figures displaying on landscape-oriented pages when the landscape braces are present?
