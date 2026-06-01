@@ -12,7 +12,7 @@ knitr:
   opts_chunk:
     collapse: true
     comment: '#>'
-bibliography: ../references.bib
+bibliography: references.bib
 ---
 
 

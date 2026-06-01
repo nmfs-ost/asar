@@ -46,7 +46,7 @@ export_glossary <- function() {
       Definition = NA
     ) |>
     dplyr::mutate(dplyr::across(.cols = tidyr::everything(), trimws),
-      Meaning = gsub("Nino", "Niño", Meaning),
+      Meaning = gsub("Nino", "Ni\u00f1o", Meaning),
       meaning_lower = tolower(Meaning),
       Shared_ac = duplicated(Acronym),
       Shared_mean = duplicated(meaning_lower)
@@ -135,7 +135,7 @@ export_glossary <- function() {
         "Catch Per Unit Effort, sometimes C/E",
         "Code of Federal Regulations 1",
         "Department of Fisheries and Oceans, Canadian",
-        "El Niño-Southern Oscillation Index",
+        "El Ni\u00f1o-Southern Oscillation Index",
         "Evolutionary Significant Unit",
         "Ecosystem-based fishery management",
         "East Pacific Ocean",
@@ -480,7 +480,7 @@ export_glossary <- function() {
         Definition
       ),
       Definition = ifelse(Acronym == "SEDAR",
-        "The cooperative peer-reviewed process by which stock assessment projects are conducted in NOAA Fisheries’ Southeast Region.",
+        "The cooperative peer-reviewed process by which stock assessment projects are conducted in NOAA Fisheries' Southeast Region.",
         Definition
       ),
       Definition = ifelse(Acronym == "SEFSC",

@@ -51,8 +51,6 @@ Suggests:
     stockplotr,
     testthat (>= 3.0.0),
     withr
-VignetteBuilder: 
-    knitr
 Remotes:
     nmfs-ost/stockplotr
 Config/Needs/website: quarto
