@@ -33,7 +33,9 @@
 #' by this function. Default is the working directory.
 #' @param title A custom title that is an alternative to the default title (composed
 #' in asar::create_title()). Example: "Management Track Assessments Spring 2024".
-#' @param model_results Path to standard output file made from `stockplotr::convert_output()`
+#' @param model_results Path to standard output file made from 
+#' `stockplotr::convert_output()` relative to the "skeleton" file produced in
+#' this function. For example, "../my_results.rda"
 #' @param tables_dir The location of the "tables" folder, which contains tables
 #' files. Default is the working directory.
 #' @param figures_dir The location of the "figures" folder, which contains
