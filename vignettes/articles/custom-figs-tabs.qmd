@@ -99,15 +99,15 @@ data.frame(
 2.  Save captions and alternative text
 3.  Add custom tables and figures
 
-```{r, child="../snippets/write-caps-alttext.Rmd"}
+```{r, child="snippets/write-caps-alttext.Rmd"}
 ```
 
-```{r, child="../snippets/save-caps-alttext.Rmd"}
+```{r, child="snippets/save-caps-alttext.Rmd"}
 ```
 
 > **NOTE**: Only the _alternative text_ will be used in your final report- not the caption. This happens because of the workaround workflow that allows us to add alt text into PDFs. The caption will be taken from your directly-coded image's markdown code, so you can leave it empty or put the same caption here; it doesn't matter. 
 
-```{r, child="../snippets/add-plots_img.Rmd"}
+```{r, child="snippets/add-plots_img.Rmd"}
 ```
 
 ## rda-based workflow
@@ -119,22 +119,22 @@ data.frame(
 5.  Identify table width, orientation, and if splitting is necessary
 6.  Add custom tables and figures
 
-```{r, child="../snippets/code-custom-figs-tables.Rmd"}
+```{r, child="snippets/code-custom-figs-tables.Rmd"}
 ```
 
-```{r, child="../snippets/write-caps-alttext.Rmd"}
+```{r, child="snippets/write-caps-alttext.Rmd"}
 ```
 
-```{r, child="../snippets/save-caps-alttext.Rmd"}
+```{r, child="snippets/save-caps-alttext.Rmd"}
 ```
 
-```{r, child="../snippets/export-custom-figs-tables.Rmd"}
+```{r, child="snippets/export-custom-figs-tables.Rmd"}
 ```
 
-```{r, child="../snippets/id_width.Rmd"}
+```{r, child="snippets/id_width.Rmd"}
 ```
 
-```{r, child="../snippets/add-plots_rda.Rmd"}
+```{r, child="snippets/add-plots_rda.Rmd"}
 ```
 
 ## Direct coding-in-qmd workflow
@@ -144,16 +144,16 @@ data.frame(
 3.  Identify table width, orientation, and if splitting is necessary
 4.  Add custom tables and figures
 
-```{r, child="../snippets/code-custom-figs-tables.Rmd"}
+```{r, child="snippets/code-custom-figs-tables.Rmd"}
 ```
 
-```{r, child="../snippets/write-caps-alttext.Rmd"}
+```{r, child="snippets/write-caps-alttext.Rmd"}
 ```
 
-```{r, child="../snippets/id_width.Rmd"}
+```{r, child="snippets/id_width.Rmd"}
 ```
 
-```{r, child="../snippets/add-plots_coding.Rmd"}
+```{r, child="snippets/add-plots_coding.Rmd"}
 ```
 
 :::

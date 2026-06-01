@@ -14,7 +14,7 @@ knitr:
     comment: '#>'
 params:
   region: "NWFSC"
-bibliography: ../references.bib
+bibliography: references.bib
 ---
 
 ```{r}
