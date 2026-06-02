@@ -50,13 +50,6 @@ navbar:
       # Make the link open in a new tab
       target: "_blank"
       
-    guidelines:
-      text: NMFS Report Guidlines
-      icon: fas fa-book fa-lg
-      href: articles/std_guidelines.html
-      # Make the link open in a new tab
-      target: "_blank"
-      
     cheatsheet:
       text: Cheatsheet
       href: asar_cheatsheet.pdf
