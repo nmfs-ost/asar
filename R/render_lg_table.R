@@ -101,6 +101,7 @@ render_lg_table <- function(report_gt,
 
     # Get labels for visible columns only
     all_vals <- split_table[["_boxhead"]]
+
     if (!is.null(all_vals)) {
       display_names <- all_vals |>
         dplyr::filter(type != "hidden") |>
