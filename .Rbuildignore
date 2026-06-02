@@ -19,3 +19,5 @@
 ^vignettes/articles$
 ^CONTRIBUTING\.md$
 ^LICENSE\.md$
+^\.positai$
+^\.claude$

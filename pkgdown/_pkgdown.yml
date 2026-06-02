@@ -65,5 +65,5 @@ navbar:
       target: "_blank"
       
   structure:
-    left: [home, reference, cheatsheet, tutorial, articles, examples, news]
+    left: [home, overview, reference, cheatsheet, tutorial, articles, examples]
     right: [search, issue, github]

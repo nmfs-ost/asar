@@ -1180,7 +1180,7 @@ create_template <- function(
       cli::cli_alert_success("Updated report skeleton in directory {subdir}.")
     } else {
       cli::cli_alert_success("Saved report template in directory {subdir}.")
-      cli::cli_alert_info("To proceeed, please edit sections within the report template in order to produce a completed stock assessment report.",
+      cli::cli_alert_info("To proceed, please edit sections within the report template in order to produce a completed stock assessment report.",
         wrap = TRUE
       )
     }
