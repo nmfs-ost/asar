@@ -26,6 +26,7 @@ First please check to make sure `tinytex` package is installed on your machine. 
 ```r
 install.packages("pak")
 pak::pkg_install("rstudio/tinytex")
+tinytex::install_tinytex(bundle = "TinyTeX-2")
 ```
 
 Then install the package using one of the three following ways:
