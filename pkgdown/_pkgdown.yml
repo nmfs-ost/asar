@@ -68,3 +68,4 @@ navbar:
       
   structure:
     left: [home, overview, reference, cheatsheet, tutorial, articles, examples]
+    right: [search, issue, github]
