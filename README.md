@@ -51,7 +51,10 @@ remotes::install_github("nmfs-ost/asar")
 install.packages('asar', repos = c('https://noaa-fisheries-integrated-toolbox.r-universe.dev', 'https://cloud.r-project.org'))
 ```
 
-We also recommend to download the [`stockplotr` package](https://github.com/nmfs-ost/stockplotr). Use one of the previous download instructions to also install `stockplotr` by replacing 'asar' with 'stockplotr'.
+We also recommend to download the [`stockplotr` package](https://github.com/nmfs-ost/stockplotr)
+along with Quarto (v1.6.0 or greater). Use one of the previous download
+instructions to also install `stockplotr` by replacing 'asar' with 'stockplotr'.
+Install quarto using the above options or base R `install.packages("quarto")`.
 
 ## Example
 
