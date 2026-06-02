@@ -22,7 +22,8 @@ gt_split(data, row_every_n = NULL, row_slice_i = NULL, col_slice_at = NULL)
   `obj:<gt_tbl>` // **required**
 
   This is the **gt** table object that is commonly created through use
-  of the [`gt()`](https://gt.rstudio.com/reference/gt.html) function.
+  of the [`gt::gt()`](https://gt.rstudio.com/reference/gt.html)
+  function.
 
 - row_every_n:
 
@@ -78,7 +79,7 @@ use the gt package version of this function.
 ## Examples
 
 Use a subset of the
-[`gtcars`](https://gt.rstudio.com/reference/gtcars.html) dataset to
+[`gt::gtcars`](https://gt.rstudio.com/reference/gtcars.html) dataset to
 create a **gt** table. Format the `msrp` column to display numbers as
 currency values, set column widths with
 [cols_width](https://gt.rstudio.com/reference/cols_width.html), and
@@ -98,13 +99,13 @@ tables separated by a line break.
       gt_split(row_every_n = 5)
 
 Use a smaller subset of the
-[`gtcars`](https://gt.rstudio.com/reference/gtcars.html) dataset to
+[`gt::gtcars`](https://gt.rstudio.com/reference/gtcars.html) dataset to
 create a **gt** table. Format the `msrp` column to display numbers as
 currency values, set the table width with
-[`tab_options()`](https://gt.rstudio.com/reference/tab_options.html) and
-split the table at the `model` column This creates a `gt_group` object
-again containing two tables but this time we get a vertical split.
-Printing this object yields two tables of the same width.
+[`gt::tab_options()`](https://gt.rstudio.com/reference/tab_options.html)
+and split the table at the `model` column This creates a `gt_group`
+object again containing two tables but this time we get a vertical
+split. Printing this object yields two tables of the same width.
 
     gtcars |>
       dplyr::slice_head(n = 5) |>
