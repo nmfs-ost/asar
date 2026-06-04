@@ -35,7 +35,7 @@ The executive summary should include the following:
 
 ### Introduction
 
-The intent is to keep this section to two to three pages and provide a high level summary of the stock. The intention is to provide enough information in this section so the audience does not need to reference previous documents. Please include the species scientific name at the first mention of its common name.
+The intent is to keep this section to **2-3 pages** and **provide a high level summary of the stock**. The intention is to provide enough information in this section so the audience does not need to reference previous documents. Please include the species' scientific name at the first mention of its common name.
 
 * Stock ID (detailed description if appropriate and quantitative studies or data are behind the decision-making)
 * Management history: Briefly describe the management history of the stock and status. Please only touch on historical policies that would have impacted modeling decisions or would be critical knowledge about the species that might affect its population dynamics.
