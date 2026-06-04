@@ -1,0 +1,142 @@
+# NMFS Stock Assessment Report Guidelines
+
+## General guidance
+
+The following sections are components of a recommended outline for a
+U.S. fisheries stock assessment report. **The goal of reports created
+with these guidelines is to effectively present information to managers
+so as to provide the best scientific advice available within a
+reasonable framework.** This effort represents a shift in assessment
+document formatting from a focus on SSC/statistical review towards a
+more succinct presentation of information to aid in quicker
+decision-making. Therefore, **the main body of the report should contain
+the minimum necessary information to inform and provide management
+advice for the stock; additional materials, including information
+relevant for evaluation of the stock either during SSC or statistical
+review, should be placed in the appendix.**
+
+{asar} is a tool that can generate a report template aligning with the
+following guidelines. As the template contains standardized sections and
+formatting, some components– such as the title page and authorship
+sections– are not included here as each are generated automatically.
+Authors not using the template generated from {asar} should place tables
+and figures at the end of the document.
+
+Note: terms of reference are intended to remain as a stand alone
+document or can be included in an appendix at the end of the report.
+Direct answers to the terms of reference should not be included in the
+body of the stock assessment report.
+
+## Outline for Stock Assessment Reports
+
+### Executive Summary
+
+Where possible the executive summary should paraphrase the shared
+content of the body of the report to minimize redundancy.
+
+The executive summary should include the following:
+
+- Short statement describing assessment model used for the current
+  management cycle and any data updates.
+- Short summary of reference points, stock status, and projections. In
+  the future, when using the {asar} R package, tables of reference
+  points and projections will be automatically generated.
+
+### Introduction
+
+The intent is to keep this section to **2-3 pages** and **provide a high
+level summary of the stock**. The intention is to provide enough
+information in this section so the audience does not need to reference
+previous documents. Please include the species’ scientific name at the
+first mention of its common name.
+
+- Stock ID (detailed description if appropriate and quantitative studies
+  or data are behind the decision-making)
+- Management History: Briefly describe the management history of the
+  stock and status. Please only touch on historical policies that would
+  have impacted modeling decisions or would be critical knowledge about
+  the species that might affect its population dynamics.
+- Assessment History
+- Fishery Description: Short summary of fleet composition (i.e., boat
+  types), gear types, species targeted, and fishing grounds (one
+  paragraph)
+- Ecosystem Considerations: If this section is not relevant, please
+  ignore; however the default will state “Ecosystem considerations
+  and/or climate indicators were not included in this assessment.”
+
+### Data
+
+Please provide relevant data that entered the assessment model including
+temporal and spatial resolutions, sample size, and units where
+appropriate for each of the following:
+
+- Life History (growth, maturity, fecundity, natural mortality,
+  meristics, etc.)
+- Catch (retained and discarded)
+- Indices and Standardization (Fishery dependent and independent)
+- Composition Data - age, length (Description, aging error, reweighting)
+- Absolute Abundance (if applicable)
+- Environmental/Ecosystem Indicator Data. Please include a blanket
+  statement if none are considered.
+
+### Assessment
+
+Current modeling approach: short general overview of modeling platform
+including the reference to model paper or online reference. Please
+include a short description of changes between the approach from the
+last assessment cycle to the current. Please also note the version of
+the modelling platform used for this assessment.
+
+- Configuration of the base model: please describe the setup of the
+  stock assessment model. Please also include any environmental
+  relationships/hypotheses that informed the configuration of the base
+  model.
+- Bridging: Briefly describe the bridging analysis performed to the
+  previous assessment.
+- Modeling Results: for each of the following please describe the
+  results for the base model.
+- Parameter Estimates
+- Time Series
+- Model Fits
+- Model Diagnostics
+- Sensitivity Analyses
+- Management Benchmarks: decisions on management metrics/benchmarks
+  (e.g. provide a rationale for why a specific F-proxy was recommended
+  for management)
+- Projections: Description of stock status, biological reference points
+  (BRPs), and trends for each scenario; rebuilding times
+
+### Discussion
+
+Dependent on analyst/assessment/region; please include sub sections
+discussing ecosystem considerations (if applicable) and research
+recommendations/improvements to the assessment
+
+- Research Recommendations
+
+### References
+
+### Tables
+
+Please include report tables in this section. Semi-automated tables can
+be made using the
+[{stockplotr}](nmfs-ost.github.io/asar/articles/github.com/nmfs-ost/stockplotr)
+package.
+
+### Figures
+
+Please include report figures in this section. Semi-automated figures
+can be made using the
+[{stockplotr}](nmfs-ost.github.io/asar/articles/github.com/nmfs-ost/stockplotr)
+package.
+
+### Appendices
+
+Any information relevant for evaluation of the stock either during SSC
+or statistical review should be included in the appendix. The main
+assessment document should contain the minimum necessary information to
+inform and provide management advice for the stock while additional
+materials can be found in the appendix. It is not intended for the
+appendices to be a catch-all. We highly encourage authors to review the
+need and irreplaceable value of the report’s content when it comes to
+addressing the audience.

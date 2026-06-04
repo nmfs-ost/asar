@@ -27,5 +27,7 @@
 - [markdown](nmfs-ost.github.io/asar/articles/markdown_notation.md):
 - [UNKNOWN
   TITLE](nmfs-ost.github.io/asar/articles/snippets/save-caps-alttext.md):
+- [NMFS Stock Assessment Report
+  Guidelines](nmfs-ost.github.io/asar/articles/std_guidelines.md):
 - [UNKNOWN
   TITLE](nmfs-ost.github.io/asar/articles/snippets/write-caps-alttext.md):
