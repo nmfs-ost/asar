@@ -41,7 +41,7 @@ The intent is to keep this section to two to three pages and provide a high leve
 * Fishery Description: Short summary of fleet composition (i.e., boat types), gear types, species targeted, and fishing grounds (one paragraph)
 * Ecosystem Considerations: If this section is not relevant, please ignore; however the default will state “Ecosystem considerations and/or climate indicators were not included in this assessment.”
 
-### Data:
+### Data
 
 Please provide relevant data that entered the assessment model including temporal and spatial resolutions, sample size, and units  where appropriate for each of the following:
 
