@@ -39,7 +39,7 @@ The intent is to keep this section to **2-3 pages** and **provide a high level s
 
 * Stock ID (detailed description if appropriate and quantitative studies or data are behind the decision-making)
 * Management History: Briefly describe the management history of the stock and status. Please only touch on historical policies that would have impacted modeling decisions or would be critical knowledge about the species that might affect its population dynamics.
-* Assessment history
+* Assessment History
 * Fishery Description: Short summary of fleet composition (i.e., boat types), gear types, species targeted, and fishing grounds (one paragraph)
 * Ecosystem Considerations: If this section is not relevant, please ignore; however the default will state “Ecosystem considerations and/or climate indicators were not included in this assessment.”
 
