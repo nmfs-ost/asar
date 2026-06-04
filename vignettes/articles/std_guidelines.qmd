@@ -67,7 +67,7 @@ Current modeling approach: short general overview of modeling platform including
 * Management Benchmarks: decisions on management metrics/benchmarks (i.e. provide a rationale for why a specific F-proxy was recommended for management)
 * Projections: Description of stock status, biological reference points (BRPs), and trends for each scenario; rebuilding times
 
-### Discussion:
+### Discussion
 
 Dependent on analyst/assessment/region; please include sub sections discussing ecosystem considerations (if applicable) and research recommendations/improvements to the assessment
 
