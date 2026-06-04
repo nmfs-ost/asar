@@ -83,5 +83,6 @@ At minimum, please include the following tables into the report (when applicable
 
 At minimum, please include the following figures into the report (when applicable to the stock). Pre-made figures can be found in the {stockplotr} package downloaded from GitHub.
 
-### Appendices: Any information relevant for evaluation of the stock either during SSC or management review should be included in the appendix. The main assessment document should contain the minimum necessary information to inform and provide management advice for the stock while additional materials can be found in the appendix. It is not intended for the appendices to be a catch-all. We highly encourage authors to review the need and irreplaceable value of the report's content when it comes to addressing the audience.
+### Appendices
+Any information relevant for evaluation of the stock either during SSC or statistical review should be included in the appendix. The main assessment document should contain the minimum necessary information to inform and provide management advice for the stock while additional materials can be found in the appendix. It is not intended for the appendices to be a catch-all. We highly encourage authors to review the need and irreplaceable value of the report's content when it comes to addressing the audience.
 
