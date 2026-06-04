@@ -1,6 +1,7 @@
 AFSC
 Arial
 BAM
+BRPs
 Blackspotted
 Blockquote
 Bolded
@@ -12,8 +13,8 @@ Canelón
 Coates
 DocumentMetadata
 Drs
-EcoMon
 ECOMON
+EcoMon
 Fabio
 Flextable
 Gertseva
@@ -36,6 +37,7 @@ PFMC's
 PIFSC
 Pandoc
 Pomatomus
+Pre
 Quillback
 README
 RStudio
@@ -45,7 +47,6 @@ Rockfish
 Rockfishes
 Rosemond
 Rougheye
-RTF
 SBPR
 SEFSC
 SSC
@@ -74,8 +75,8 @@ findability
 flextable
 flextables
 frac
-goa
 gls
+goa
 hardcoding
 is’
 jpg
@@ -83,6 +84,8 @@ knitr
 kobe
 labelled
 le
+meristics
+modelling
 modularized
 multispecies
 nefsc
@@ -105,6 +108,7 @@ rdas
 rdat
 rda’s
 readLines
+reweighting
 roboto
 saltatrix
 sar

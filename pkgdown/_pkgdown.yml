@@ -32,6 +32,8 @@ navbar:
       text: Articles
       icon: fas fa-file-contract fa-lg
       menu:
+      - text: NMFS SAR Guidelines
+        href: articles/std_guidelines.html
       - text: Markdown Notation
         href: articles/markdown_notation.html
       - text: Increasing Report Accessibility
