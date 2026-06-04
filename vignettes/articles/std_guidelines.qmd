@@ -79,11 +79,11 @@ Dependent on analyst/assessment/region; please include sub sections discussing e
 
 ### Tables
 
-At minimum, please include the following tables in the report (when applicable to the stock). Semi-automated tables can be made using the [{stockplotr}](github.com/nmfs-ost/stockplotr) package.
+Please include report tables in this section. Semi-automated tables can be made using the [{stockplotr}](github.com/nmfs-ost/stockplotr) package.
 
 ### Figures
 
-At minimum, please include the following figures in the report (when applicable to the stock). Semi-automated figures can be made using the [{stockplotr}](github.com/nmfs-ost/stockplotr) package.
+Please include report figures in this section. Semi-automated figures can be made using the [{stockplotr}](github.com/nmfs-ost/stockplotr) package.
 
 ### Appendices
 Any information relevant for evaluation of the stock either during SSC or statistical review should be included in the appendix. The main assessment document should contain the minimum necessary information to inform and provide management advice for the stock while additional materials can be found in the appendix. It is not intended for the appendices to be a catch-all. We highly encourage authors to review the need and irreplaceable value of the report's content when it comes to addressing the audience.
