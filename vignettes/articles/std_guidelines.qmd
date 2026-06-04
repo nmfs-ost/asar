@@ -22,7 +22,7 @@ Note: terms of reference are intended to remain as a stand alone document or can
 
 ## Outline for Stock Assessment Reports
 
-### Executive Summary:
+### Executive Summary
 
 Where possible the executive summary should paraphrase the shared content of the body of the report to minimize redundancy.
 
