@@ -31,7 +31,7 @@ The executive summary should include the following:
 * Short statement describing assessment model used for the current management cycle and any data updates.
 * Short summary of reference points, stock status, and projections. In the future, when using the {asar} R package, tables of reference points and projections will be automatically generated.
 
-### Introduction:
+### Introduction
 
 The intent is to keep this section to two to three pages and provide a high level summary of the stock. The intention is to provide enough information in this section so the audience does not need to reference previous documents. Please include the species scientific name at the first mention of its common name.
 
