@@ -75,7 +75,7 @@ Dependent on analyst/assessment/region; please include sub sections discussing e
 
 ### References
 
-### Tables:
+### Tables
 
 At minimum, please include the following tables into the report (when applicable to the stock). Pre-made figures can be found in the {stockplotr} package downloaded from GitHub.
 
