@@ -50,7 +50,7 @@ Please provide relevant data that entered the assessment model including tempora
 * Life History (growth, maturity, fecundity, natural mortality, meristics, etc.)
 * Catch (retained and discarded)
 * Indices and Standardization (Fishery dependent and independent)
-* Composition data - age, length (Description, aging error, reweighting)
+* Composition Data - age, length (Description, aging error, reweighting)
 * Absolute abundance (if applicable)
 * Environmental/ecosystem indicator data. Please include a blanket statement if none are considered.
 
