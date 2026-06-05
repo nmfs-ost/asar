@@ -18,7 +18,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/nmfs-ost/asar/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/nmfs-ost/asar/blob/v2.0.6/DESCRIPTION)
 
 Schiano S, Breitbart S, Saul S (2026). *asar: Build NOAA Stock
 Assessment Report*. R package version 2.2.0.9000,
