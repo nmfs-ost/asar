@@ -43,6 +43,26 @@ export_to_sis(
   AS_B_RANGE_BASIS,
   AS_B_RANGE,
   AS_B_TRANSFORM,
+  AS_F_MAX,
+  AS_F_MIN,
+  AS_F_RANGE_BASIS,
+  AS_F_RANGE,
+  AS_F_MSY_MAX,
+  AS_F_MSY_MIN,
+  AS_F_MSY_RANGE_BASIS,
+  AS_F_MSY_RANGE,
+  AS_FTARGET,
+  AS_FTARGET_BASIS,
+  AS_MSY,
+  AS_MSY_Unit,
+  AS_MSY_MAX,
+  AS_MSY_MIN,
+  AS_MSY_RANGE_BASIS,
+  AS_MSY_RANGE,
+  AS_BMSY_MAX,
+  AS_BMSY_MIN,
+  AS_BMSY_RANGE_BASIS,
+  AS_BMSY_RANGE,
   TIME_SERIES
 )
 }
@@ -169,9 +189,7 @@ Options: 1, 2, 3, 4, 5, 6, 7, 8, 9. Descriptions of each level are as follows:
 \item (7) Reject, Data Insufficient for Assessment
 \item (8) Reject, Results Too Uncertain To Be Considered Accurate
 \item (9) Remand
-}
-
-Parameters assigned automatically by SIS}
+}}
 
 \item{ASSESSMENT_ID}{Unique numeric identifier assigned to all
 stock assessment records. Assigned automatically by SIS.}
@@ -350,6 +368,121 @@ multi-year averaging).
 Default: value automatically extracted from {asar} and/or {stockplotr} files.
 
 Options: "Y" (yes), "N" (no)}
+
+\item{AS_F_MAX}{Maximum estimated value within the approved confidence interval
+of the Fishing Mortality estimate. This field should be equivalent to the
+value of Best F Confidence Interval Upper estimate.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_F_MIN}{Minimum estimated value within the approved confidence interval
+of the Fishing Mortality estimate. This field should be equivalent to the
+value of Best F Confidence Interval Lower estimate.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_F_RANGE_BASIS}{Approach used to calculate the confidence intervals
+provided for the stock assessment. Optional.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_F_RANGE}{Percentile range of the confidence intervals provided for
+the stock assessment. Optional.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_F_MSY_MAX}{Maximum estimated value within the approved confidence interval
+of the Fishing Mortality estimate. This field should be equivalent to the
+value of Fmsy Confidence Interval Upper estimate.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_F_MSY_MIN}{Minimum estimated value within the approved confidence interval
+of the Fishing Mortality estimate. This field should be equivalent to the
+value of Fmsy Confidence Interval Lower estimate.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_F_MSY_RANGE_BASIS}{Approach used to calculate the confidence intervals
+provided for the stock assessment. Optional.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_F_MSY_RANGE}{Percentile range of the confidence intervals provided for
+the stock assessment. Optional.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_FTARGET}{Value of the Ftarget estimate produced by a stock assessment.
+This is often used for stocks in a rebuilding plan.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_FTARGET_BASIS}{Approach used to calculate the Ftarget estimate produced
+by a stock assessment.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_MSY}{Value of the MSY estimated by the assessment.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_MSY_Unit}{Unit associated with the MSY value.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.
+
+Options:
+\itemize{
+\item Metric tons
+\item Thousand metric tons
+\item lbs
+\item Thousand lbs
+\item Number of fish
+}}
+
+\item{AS_MSY_MAX}{Maximum estimated value within the approved confidence interval
+of the Fishing Mortality estimate. This field should be equivalent to the
+value of MSY Confidence Interval Upper estimate.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_MSY_MIN}{Minimum estimated value within the approved confidence interval
+of the Fishing Mortality estimate. This field should be equivalent to the
+value of MSY Confidence Interval Lower estimate.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_MSY_RANGE_BASIS}{Approach used to calculate the confidence intervals
+provided for the stock assessment. Optional.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_MSY_RANGE}{Percentile range of the confidence intervals provided for
+the stock assessment. Optional.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_BMSY_MAX}{Maximum estimated value within the approved confidence interval
+of the Fishing Mortality estimate. This field should be equivalent to the
+value of Bmsy Confidence Interval Upper estimate.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_BMSY_MIN}{Minimum estimated value within the approved confidence interval
+of the Fishing Mortality estimate. This field should be equivalent to the
+value of Bmsy Confidence Interval Lower estimate.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_BMSY_RANGE_BASIS}{Approach used to calculate the confidence intervals
+provided for the stock assessment. Optional.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_BMSY_RANGE}{Percentile range of the confidence intervals provided for
+the stock assessment. Optional.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 }
 \description{
 Submit completed stock assessment data to SIS via a Google Drive folder.
