@@ -307,6 +307,137 @@
 #'   Options: "Y" (yes), "N" (no)
 #' 
 #' 
+#' 
+#' 
+#' 
+#' @param AS_F_MAX Maximum estimated value within the approved confidence interval 
+#'   of the Fishing Mortality estimate. This field should be equivalent to the 
+#'   value of Best F Confidence Interval Upper estimate.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_F_MIN Minimum estimated value within the approved confidence interval 
+#'   of the Fishing Mortality estimate. This field should be equivalent to the 
+#'   value of Best F Confidence Interval Lower estimate.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_F_RANGE_BASIS Approach used to calculate the confidence intervals 
+#'   provided for the stock assessment. Optional.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_F_RANGE Percentile range of the confidence intervals provided for 
+#'   the stock assessment. Optional.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_F_MSY_MAX Maximum estimated value within the approved confidence interval 
+#'   of the Fishing Mortality estimate. This field should be equivalent to the 
+#'   value of Fmsy Confidence Interval Upper estimate.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_F_MSY_MIN Minimum estimated value within the approved confidence interval 
+#'   of the Fishing Mortality estimate. This field should be equivalent to the 
+#'   value of Fmsy Confidence Interval Lower estimate.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_F_MSY_RANGE_BASIS Approach used to calculate the confidence intervals 
+#'   provided for the stock assessment. Optional.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_F_MSY_RANGE Percentile range of the confidence intervals provided for 
+#'   the stock assessment. Optional.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_FTARGET Value of the Ftarget estimate produced by a stock assessment. 
+#'   This is often used for stocks in a rebuilding plan.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_FTARGET_BASIS Approach used to calculate the Ftarget estimate produced 
+#'   by a stock assessment.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_MSY Value of the MSY estimated by the assessment.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_MSY_Unit Unit associated with the MSY value.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#'   Options:
+#'   \itemize{
+#'     \item Metric tons
+#'     \item Thousand metric tons
+#'     \item lbs
+#'     \item Thousand lbs
+#'     \item Number of fish
+#'   }
+#'   
+#' @param AS_MSY_MAX Maximum estimated value within the approved confidence interval 
+#'   of the Fishing Mortality estimate. This field should be equivalent to the 
+#'   value of MSY Confidence Interval Upper estimate.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_MSY_MIN Minimum estimated value within the approved confidence interval 
+#'   of the Fishing Mortality estimate. This field should be equivalent to the 
+#'   value of MSY Confidence Interval Lower estimate.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_MSY_RANGE_BASIS Approach used to calculate the confidence intervals 
+#'   provided for the stock assessment. Optional.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_MSY_RANGE Percentile range of the confidence intervals provided for 
+#'   the stock assessment. Optional.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_BMSY_MAX Maximum estimated value within the approved confidence interval 
+#'   of the Fishing Mortality estimate. This field should be equivalent to the 
+#'   value of Bmsy Confidence Interval Upper estimate.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_BMSY_MIN Minimum estimated value within the approved confidence interval 
+#'   of the Fishing Mortality estimate. This field should be equivalent to the 
+#'   value of Bmsy Confidence Interval Lower estimate.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_BMSY_RANGE_BASIS Approach used to calculate the confidence intervals 
+#'   provided for the stock assessment. Optional.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   
+#' @param AS_BMSY_RANGE Percentile range of the confidence intervals provided for 
+#'   the stock assessment. Optional.
+#'   
+#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
+#' 
 #' @details This function acts within the following workflow:
 #' 
 #' 1. When a stock assessment is scheduled to conclude, SIS will generate an
@@ -339,16 +470,12 @@ export_to_sis <- function(
   AS_REVIEW_TYPE,
   ASSESSMENT_ID,
   ENTITY_ID,
-  # ENT_NAME,
   AS_YEAR,
   AS_MONTH,
-  # AS_STOCK_LEVEL_BMSY,
   AS_LAST_DATA_YEAR,
   AS_B_BASIS,
   AS_F_BASIS,
-  # AS_B_BMSY_RATIO,
   AS_FMSY,
-  # AS_F_FLIMIT_RATIO,
   AS_F_BEST,
   AS_FLIMIT_BASIS,
   AS_B_YEAR,
@@ -358,30 +485,37 @@ export_to_sis <- function(
   AS_B_BEST,
   AS_BMSY_BASIS,
   AS_FMSY_BASIS,
-  # AS_F_FMSY_RATIO,
   AS_FLIMIT,
   AS_F_YEAR,
   AS_F_UNIT,
   AS_B_UNIT,
   AS_MODEL,
   AS_MODEL_VERSION,
-  # AS_LEAD_LAB,
   AS_ENSEMBLE_FLAG,
-  # AS_FISCAL_YEAR,
   AS_F_TRANSFORM,
   AS_B_RANGE_BASIS,
   AS_B_RANGE,
   AS_B_TRANSFORM,
-  # AS_LOCKED_FLAG_BY,
-  # AS_LOCKED_FLAG_DATE,
-  # AS_TIMESERIES_LOCKED_FLAG_BY,
-  # AS_TIMESERIES_LOCKED_FLAG_DATE,
-  # AS_SURVEY_LINK_LOCKED_FLAG_BY,
-  # AS_SURVEY_LINK_LOCKED_FLAG_DATE,
-  # PLANNED_ASSESSMENT_ID,
-  # ENT_ID,
-  # ATS_CNT,
-  # ASL_CNT,
+  AS_F_MAX,
+  AS_F_MIN,
+  AS_F_RANGE_BASIS,
+  AS_F_RANGE,
+  AS_F_MSY_MAX,
+  AS_F_MSY_MIN,
+  AS_F_MSY_RANGE_BASIS,
+  AS_F_MSY_RANGE,
+  AS_FTARGET,
+  AS_FTARGET_BASIS,
+  AS_MSY,
+  AS_MSY_Unit,
+  AS_MSY_MAX,
+  AS_MSY_MIN,
+  AS_MSY_RANGE_BASIS,
+  AS_MSY_RANGE,
+  AS_BMSY_MAX,
+  AS_BMSY_MIN,
+  AS_BMSY_RANGE_BASIS,
+  AS_BMSY_RANGE,
   
   # SIS time series
   # this is formatted as a string to be imported as JSON into SIS, but could be formatted as a df and converted to JSON in the function
@@ -397,36 +531,24 @@ export_to_sis <- function(
     '","AS_LAST_DATA_YEAR":"', AS_LAST_DATA_YEAR,
     '","AS_B_BASIS":"', AS_B_BASIS,
     '","AS_F_BASIS":"', AS_F_BASIS,
-    # '","AS_B_BMSY_RATIO":"', AS_B_BMSY_RATIO,
     '","AS_FMSY":"', AS_FMSY,
-    # '","AS_F_FLIMIT_RATIO":"', AS_F_FLIMIT_RATIO,
     '","AS_F_BEST":"', AS_F_BEST,
     '","AS_FLIMIT_BASIS":"', AS_FLIMIT_BASIS,
     '","AS_B_YEAR":"', AS_B_YEAR,
     '","AS_B_MAX":"', AS_B_MAX,
     '","AS_BMSY":"', AS_BMSY,
-    # '","AS_STOCK_LEVEL_BMSY":"', AS_STOCK_LEVEL_BMSY,
     '","AS_B_MIN":"', AS_B_MIN,
     '","AS_B_BEST":"', AS_B_BEST,
     '","AS_BMSY_BASIS":"', AS_BMSY_BASIS,
     '","AS_FMSY_BASIS":"', AS_FMSY_BASIS,
-    # '","AS_F_FMSY_RATIO":"', AS_F_FMSY_RATIO,
     '","AS_FLIMIT":"', AS_FLIMIT,
     '","AS_F_YEAR":"', AS_F_YEAR,
     '","ENTITY_ID":"', ENTITY_ID,
-    # '","DATE_CREATED":"', DATE_CREATED,
-    # '","CREATED_BY":"', CREATED_BY,
-    # '","DATE_MODIFIED":"', DATE_MODIFIED,
-    # '","MODIFIED_BY":"', MODIFIED_BY,
-    # '","AS_LOCKED_FLAG":"', AS_LOCKED_FLAG,
     '","AS_F_UNIT":"', AS_F_UNIT,
     '","AS_B_UNIT":"', AS_B_UNIT,
     '","AS_MODEL":"', AS_MODEL,
     '","AS_MODEL_VERSION":"', AS_MODEL_VERSION,
-    # '","AS_LEAD_LAB":"', AS_LEAD_LAB,
     '","AS_POINT_OF_CONTACT":"', AS_POINT_OF_CONTACT,
-    # '","AS_TIMESERIES_LOCKED_FLAG":"', AS_TIMESERIES_LOCKED_FLAG,
-    # '","AS_SURVEY_LINK_LOCKED_FLAG":"', AS_SURVEY_LINK_LOCKED_FLAG,
     '","AS_CATCH_DATA":"', AS_CATCH_DATA,
     '","AS_ABUNDANCE_DATA":"', AS_ABUNDANCE_DATA,
     '","AS_BIOLOGICAL_DATA":"', AS_BIOLOGICAL_DATA,
@@ -435,22 +557,30 @@ export_to_sis <- function(
     '","AS_MODEL_CAT":"', AS_MODEL_CAT,
     '","AS_TYPE":"', AS_TYPE,
     '","AS_ENSEMBLE_FLAG":"', AS_ENSEMBLE_FLAG,
-    # '","AS_FISCAL_YEAR":"', AS_FISCAL_YEAR,
     '"," AS_F_TRANSFORM":"', AS_F_TRANSFORM,
     '"," AS_B_RANGE_BASIS":"', AS_B_RANGE_BASIS,
     '"," AS_B_RANGE":"', AS_B_RANGE,
     '"," AS_B_TRANSFORM":"', AS_B_TRANSFORM,
-    # '"," AS_LOCKED_FLAG_BY":"', AS_LOCKED_FLAG_BY,
-    # '"," AS_LOCKED_FLAG_DATE":"', AS_LOCKED_FLAG_DATE,
-    # '"," AS_TIMESERIES_LOCKED_FLAG_BY ":"', AS_TIMESERIES_LOCKED_FLAG_BY,
-    # '"," AS_TIMESERIES_LOCKED_FLAG_DATE ":"', AS_TIMESERIES_LOCKED_FLAG_DATE,
-    # '"," AS_SURVEY_LINK_LOCKED_FLAG_BY ":"', AS_SURVEY_LINK_LOCKED_FLAG_BY,
-    # '"," AS_SURVEY_LINK_LOCKED_FLAG_DATE ":"', AS_SURVEY_LINK_LOCKED_FLAG_DATE,
-    # '"," PLANNED_ASSESSMENT_ID ":"', PLANNED_ASSESSMENT_ID,
-    # '"," ENT_ID ":"', ENT_ID,
-    # '"," ENT_NAME ":"', ENT_NAME,
-    # '"," ATS_CNT ":"', ATS_CNT,
-    # '"," ASL_CNT ":"', ASL_CNT,
+    '"," AS_F_MAX":"', AS_F_MAX,
+    '"," AS_F_MIN":"', AS_F_MIN,
+    '"," AS_F_RANGE_BASIS":"', AS_F_RANGE_BASIS,
+    '"," AS_F_RANGE":"', AS_F_RANGE,
+    '"," AS_F_MSY_MAX":"', AS_F_MSY_MAX,
+    '"," AS_F_MSY_MIN":"', AS_F_MSY_MIN,
+    '"," AS_F_MSY_RANGE_BASIS":"', AS_F_MSY_RANGE_BASIS,
+    '"," AS_F_MSY_RANGE":"', AS_F_MSY_RANGE,
+    '"," AS_FTARGET":"', AS_FTARGET,
+    '"," AS_FTARGET_BASIS":"', AS_FTARGET_BASIS,
+    '"," AS_MSY":"', AS_MSY,
+    '"," AS_MSY_Unit":"', AS_MSY_Unit,
+    '"," AS_MSY_MAX":"', AS_MSY_MAX,
+    '"," AS_MSY_MIN":"', AS_MSY_MIN,
+    '"," AS_MSY_RANGE_BASIS":"', AS_MSY_RANGE_BASIS,
+    '"," AS_MSY_RANGE":"', AS_MSY_RANGE,
+    '"," AS_BMSY_MAX":"', AS_BMSY_MAX,
+    '"," AS_BMSY_MIN":"', AS_BMSY_MIN,
+    '"," AS_BMSY_RANGE_BASIS":"', AS_BMSY_RANGE_BASIS,
+    '"," AS_BMSY_RANGE":"', AS_BMSY_RANGE,
     '"," model_identifier ":"', model_identifier, '"}'
   )
   
