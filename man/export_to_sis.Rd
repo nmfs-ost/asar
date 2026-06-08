@@ -2,81 +2,181 @@
 % Please edit documentation in R/export_to_sis.R
 \name{export_to_sis}
 \alias{export_to_sis}
-\title{TODO: add title}
+\title{Export key quantities to SIS via Google Drive}
 \usage{
 export_to_sis(
-  ASSESSMENT_ID,
-  ENT_NAME = "Alaska plaice - Bering Sea / Aleutian Islands",
   model_identifier = "base",
+  AS_POINT_OF_CONTACT,
+  AS_CATCH_DATA,
+  AS_ABUNDANCE_DATA,
+  AS_BIOLOGICAL_DATA,
+  AS_ECOSYSTEM_DATA,
+  AS_COMP_DATA,
+  AS_MODEL_CAT,
+  AS_TYPE,
+  AS_REVIEW_TYPE,
+  ASSESSMENT_ID,
+  ENTITY_ID,
   AS_YEAR,
   AS_MONTH,
-  AS_REVIEW_TYPE = "Full acceptance",
-  AS_LAST_DATA_YEAR = 2024,
-  AS_B_BASIS = "Spawning Stock Biomass",
-  AS_F_BASIS = "F for Fully-Selected Fish",
-  AS_B_BMSY_RATIO = 1.422,
-  AS_FMSY = 0.17,
-  AS_F_FLIMIT_RATIO = 0.356,
-  AS_F_BEST = 0.074,
-  AS_FLIMIT_BASIS = "F from 2024 asmt corresponding to 2023 OFL",
-  AS_B_YEAR = 2024,
-  AS_B_MAX = 160559,
-  AS_BMSY = 103743,
-  AS_STOCK_LEVEL_BMSY = "ABOVE",
-  AS_B_MIN = 134463,
-  AS_B_BEST = 147511,
-  AS_BMSY_BASIS = "B35\%",
-  AS_FMSY_BASIS = "F35\% as proxy",
-  AS_F_FMSY_RATIO = 0.435,
-  AS_FLIMIT = 0.208,
-  AS_F_YEAR = 2023,
-  ENTITY_ID = 10026,
-  DATE_CREATED = "2025-07-25 08:35:39.0",
-  CREATED_BY = "SYSTEM",
-  DATE_MODIFIED = "2025-07-29 09:16:49.0",
-  MODIFIED_BY = "SIS_USER",
-  AS_LOCKED_FLAG = "Y",
-  AS_F_UNIT = "Fully-selected F",
-  AS_B_UNIT = "Metric Tons",
-  AS_MODEL = "SS",
-  AS_MODEL_VERSION = "3.30.22",
-  AS_LEAD_LAB = "AFSC",
-  AS_POINT_OF_CONTACT,
-  AS_TIMESERIES_LOCKED_FLAG = "Y",
-  AS_SURVEY_LINK_LOCKED_FLAG = "Y",
-  AS_CATCH_DATA = 5,
-  AS_ABUNDANCE_DATA = 5,
-  AS_BIOLOGICAL_DATA = 4,
-  AS_ECOSYSTEM_DATA = 2,
-  AS_COMP_DATA = 4,
-  AS_MODEL_CAT = 6,
-  AS_TYPE = "Research & Operational",
-  AS_ENSEMBLE_FLAG = "N",
-  AS_FISCAL_YEAR = 2025,
-  AS_F_TRANSFORM = "N",
-  AS_B_RANGE_BASIS = "Credible",
-  AS_B_RANGE = 95,
-  AS_B_TRANSFORM = "N",
-  AS_LOCKED_FLAG_BY,
-  AS_LOCKED_FLAG_DATE = "2025-07-29 09:16:49.0",
-  AS_TIMESERIES_LOCKED_FLAG_BY,
-  AS_TIMESERIES_LOCKED_FLAG_DATE = "2025-07-29 09:14:38.0",
-  AS_SURVEY_LINK_LOCKED_FLAG_BY,
-  AS_SURVEY_LINK_LOCKED_FLAG_DATE = "2025-07-29 09:14:42.0",
-  PLANNED_ASSESSMENT_ID = 471,
-  ENT_ID = 10026,
-  ATS_CNT = 4,
-  ASL_CNT = 1,
-  TIME_SERIES,
-  ASSESSMENT_SURVEY_LINK_ID = 13859,
-  SURVEY_ID = 13,
-  ASL_INFLUENCE_DEGREE = "Primary",
-  S_NAME = "GAP-SAP Eastern Bering Sea Bottom Trawl_Summer"
+  AS_LAST_DATA_YEAR,
+  AS_B_BASIS,
+  AS_F_BASIS,
+  AS_FMSY,
+  AS_F_BEST,
+  AS_FLIMIT_BASIS,
+  AS_B_YEAR,
+  AS_B_MAX,
+  AS_BMSY,
+  AS_B_MIN,
+  AS_B_BEST,
+  AS_BMSY_BASIS,
+  AS_FMSY_BASIS,
+  AS_FLIMIT,
+  AS_F_YEAR,
+  AS_F_UNIT,
+  AS_B_UNIT,
+  AS_MODEL,
+  AS_MODEL_VERSION,
+  AS_ENSEMBLE_FLAG,
+  AS_F_TRANSFORM,
+  AS_B_RANGE_BASIS,
+  AS_B_RANGE,
+  AS_B_TRANSFORM,
+  TIME_SERIES
 )
 }
 \arguments{
+\item{model_identifier}{Argument used to distinguish between base model
+and a new, updated model sent in subsequent submission. Optional.
+
+Default: "base"
+
+Options: "base", "updated_model_1", "updated_model_2", etc.}
+
+\item{AS_POINT_OF_CONTACT}{The lead/corresponding author for a stock
+assessment, formatted as an email address.}
+
+\item{AS_CATCH_DATA}{Categorical classification describing
+the availability of catch data for use in the stock assessment. This level
+should be based on the data that was actually used in the final version of
+the assessment model.
+
+Options: 0, 1, 2, 3, 4, 5. Descriptions of each level are as follows:
+\itemize{
+\item (0) - No quantitative catch data available
+\item (1) - Some catch data, but major gaps for some fishery sectors or for historical periods such that their use in assessments is not supported
+\item (2) - Enough catch data establish magnitude of catch and trends in catch for a major fishery sector in order to apply a data-limited assessment method. This includes fisheries that are closed and it is known that negligible catch is occurring
+\item (3) - Catch data is generally available for all fishery sectors to support quantitative stock assessment, but some gaps exist such as low observer coverage, high levels of self-reported catch, or weak information on discard mortality
+\item (4) - No data gaps substantially impede assessment, but catch is not without uncertainty (e.g. recreational catches estimated from surveys)
+\item (5) - Very complete knowledge of total catch
+}}
+
+\item{AS_ABUNDANCE_DATA}{Categorical classification describing
+the availability of abundance data for use in the stock assessment. This
+level should be based on the data that was actually used in the final version
+of the assessment model.
+
+Options: 0, 1, 2, 3, 4, 5. Descriptions of each level are as follows:
+\itemize{
+\item (0) - No indicator of stock abundance or trend in stock abundance over time
+\item (1) - Fishery-dependent catch rates (CPUE) are available, but high uncertainty about their standardization over time; or expert opinion on degree of stock depletion over time
+\item (2) - Fishery-dependent catch rates (CPUE) are sufficiently standardized to enable their use in full assessments; data from fishery-independent sources are not available or sufficient to estimate abundance trends
+\item (3) - Limited fishery-independent survey(s) provide estimates of relative abundance; however, the temporal or spatial coverage of the stock is limited or the sampling variability is high
+\item (4) - Complete fishery-independent survey(s) provide estimates of relative abundance, and the survey(s) cover a large proportion of the spatial extent of the stock with several years of tracking at a level of precision that supports assessments
+\item (5) - Calibrated fishery-independent survey(s) or tag-recapture provide estimates of absolute abundance
+}}
+
+\item{AS_BIOLOGICAL_DATA}{Categorical classification describing the availability of
+biological/life history data for use in the stock assessment. This level should be based on the data
+that was actually used in the final version of the assessment model.
+
+Options: 0, 1, 2, 3, 4, 5. Descriptions of each level are as follows:
+\itemize{
+\item (0) - No life history data
+\item (1) - Estimates of most life history factors not based on empirical data; instead derived using proxies, meta-analyses, borrowed from other species, or without scientific basis
+\item (2) - Estimates of some life history factors based on stock-specific empirical data, but at least one derived using life history proxies, meta-analyses, borrowed from other species, or without scientific basis. Generally supports data-poor assessments that use life history information
+\item (3) - Estimates of most life history factors based on stock-specific empirical data
+\item (4) - Data are sufficient to track changes over time in at least growth
+\item (5) - No major gaps in life history knowledge, including detailed stock structure, spatial and temporal patterns in natural mortality, growth, and reproductive biology
+}}
+
+\item{AS_ECOSYSTEM_DATA}{Categorical classification describing the usage of ecosystem
+linkage data in the stock assessment. This level should be based on the data that was actually used in the final version of the assessment model.
+
+Options: 0, 1, 2, 3, 4, 5. Descriptions of each level are as follows:
+\itemize{
+\item (0) - No linkage to ecosystem dynamic or consideration of ecosystem properties (environment, climate, habitat, predator-prey, etc.) in configuring the assessment (i.e. equilibrium conditions assumed for ecosystem)
+\item (1) - Ecosystem-based hypotheses inform the assessment model structure (e.g. defining the stock boundaries and/or spatial or temporal features) and/or are used for processing assessment inputs (e.g. abundance index), but no explicit linkage to any ecosystem drivers (environment, climate, habitat, predator-prey, etc.)
+\item (2) - The assessment includes some form of variability or effect to explicitly account for unidentified ecosystem dynamic(s) (e.g. time/space “regimes”, random variation, or other approaches to changing features without direct inclusion of ecosystem data)
+\item (3) - One or more assessment features is linked to a dynamic (i.e. data) from at least one of the following categories: environment, climate, habitat, predator-prey data (e.g. covariate)
+\item (4) - The assessment model is linked to at least one ecosystem dynamic, and one or more process studies directly support the manner in which environmental, climate, habitat, and/or predator-prey dynamics are incorporated (e.g. consumption rates measured and covariate informed by results)
+\item (5) - The assessment approach is configured to be coupled or linked with an ecosystem process (e.g. multispecies, coupled biophysical, climate-linked models)
+}}
+
+\item{AS_COMP_DATA}{Categorical classification describing the availability of size/age
+composition data for use in the stock assessment. This level should be based on the data that was
+actually used in the final version of the assessment model.
+
+Options: 0, 1, 2, 3, 4, 5. Descriptions of each level are as follows:
+\itemize{
+\item (0) - No composition data collected
+\item (1) - Some size or age composition data has been collected, but major gaps in coverage, and not used in stock assessment
+\item (2) - Enough size or age composition data has been collected to enable data-limited assessment approaches
+\item (3) - Enough size or age composition data is collected over a sufficient time series to be informative in age/size structured assessment models
+\item (4) - Enough age composition data has been collected over a sufficient time series to enable assessment methods that need age composition data from the fishery
+\item (5) - Very complete age and size composition data, including, as needed on stock-specific basis, knowledge of ageing precision, spatial patterns or other issues
+}}
+
+\item{AS_MODEL_CAT}{Category of model used to complete the stock assessment; categories
+are defined in Implementing a Next Generation Stock Assessment Enterprise (see Table 5.1; NOAA, 2018).
+Categories range from 1-6 and focus on the population dynamics structure, data requirements, and types
+of management advice provided. If an ensemble approach was used, select the highest category describing
+one or more models included in the ensemble.
+
+Options: 0, 1, 2, 3, 4, 5, 6. Descriptions of each level are as follows:
+\itemize{
+\item (1) - Data-limited
+\item (2) - Index-based
+\item (3) - Aggregate Biomass Dynamics
+\item (4) - Virtual Population Analysis
+\item (5) - Statistical Catch-at-Length
+\item (6) - Statistical Catch-at-Age
+}}
+
+\item{AS_TYPE}{Type of stock assessment, with regards to approach, technique,
+effort level, and complexity (NOAA, 2018).
+
+Options: "Research Stock Assessment", "Research/Operational Stock Assessment", "Operational Assessment", "Stock Monitoring Update". Descriptions of each type are as follows:
+\itemize{
+\item Research Stock Assessment: Development or revision of a stock assessment data type or method, typically subjected to the regional assessment review process.
+\item Research/Operational Stock Assessment: Applied to provide management advice while also producing a substantial revision to the assessment method.
+\item Operational Assessment: Analyses conducted to provide scientific advice to fishery managers with particular focus on determining stock status and recommending catch limits.
+\item Stock Monitoring Update: Methods used to provide stock-level advice to fishery managers between stock assessments (e.g. catch-only updates) containing no changes to methods or data series.
+}}
+
+\item{AS_REVIEW_TYPE}{Final status of the assessment, chosen from a set of
+values found in the SIS manual.
+
+Options: 1, 2, 3, 4, 5, 6, 7, 8, 9. Descriptions of each level are as follows:
+\itemize{
+\item (1) Not Reviewed
+\item (2) Accept Previous Approach, Remand New Attempt
+\item (3) Full Acceptance
+\item (4) Partial Acceptance, Fishing Mortality Estimates
+\item (5) Partial Acceptance, Biomass Estimates
+\item (6) Partial Acceptance, Status Determinations Only
+\item (7) Reject, Data Insufficient for Assessment
+\item (8) Reject, Results Too Uncertain To Be Considered Accurate
+\item (9) Remand
+}
+
+Parameters assigned automatically by SIS}
+
 \item{ASSESSMENT_ID}{Unique numeric identifier assigned to all
 stock assessment records. Assigned automatically by SIS.}
+
+\item{ENTITY_ID}{Entity unique identifier value. Assigned automatically by SIS.}
 
 \item{AS_YEAR}{Year the assessment was completed. Assigned
 automatically by SIS.}
@@ -84,111 +184,186 @@ automatically by SIS.}
 \item{AS_MONTH}{Month the assessment was completed. Assigned
 automatically by SIS.}
 
-\item{AS_REVIEW_TYPE}{Final status of the assessment. This is
-constrained to a set of values found in the SIS manual:
-\itemize{
-\item{Not Reviewed}
-\item{Accept Previous Approach, Remand New Attempt}
-\item{Full Acceptance}
-\item{Partial Acceptance, Fishing Mortality Estimates}
-\item{Partial Acceptance, Biomass Estimates}
-\item{Partial Acceptance, Status Determinations Only}
-\item{Reject, Data Insufficient for Assessment}
-\item{Reject, Results Too Uncertain To Be Considered Accurate}
-\item{Remand}
-}}
+\item{AS_LAST_DATA_YEAR}{Year of the "latest" data used in the assessment.
 
-\item{AS_LAST_DATA_YEAR}{Year of the "latest" data
-used in the assessment. \emph{Source: Automate extraction from model file.}}
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 
 \item{AS_B_BASIS}{The basis of the biomass unit.
-\emph{Source: Automate extraction from model file.} param should align
-with one of the following values:
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.
+
+Options:
 \itemize{
-\item{Spawning Stock Biomass}
-\item{Total Stock Biomass}
-\item{Survey-Estimated Biomass}
-\item{Escapement}
-\item{Stock Reproductive Output}
-\item{Survey Index}
-\item{Total Stock Abundance}
+\item Spawning Stock Biomass
+\item Total Stock Biomass
+\item Survey-Estimated Biomass
+\item Escapement
+\item Stock Reproductive Output
+\item Survey Index
+\item Total Stock Abundance
 }}
 
-\item{AS_F_BASIS}{Character. The basis of the Fishing Mortality unit.
-\emph{Source: Automate extraction from model file.} Field should align with one
-of the following values:
+\item{AS_F_BASIS}{The basis of the Fishing Mortality unit.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.
+
+Options: 1, 2, 3, 4, 5, 6, 7. Descriptions of each level are as follows:
 \itemize{
-\item Max F @ Age
-\item F for Fully-Selected Fish
-\item Catch / Biomass
-\item Catch / Exploitable Biomass
-\item Catch
-\item Fishing Intensity
-\item True F
+\item (1) Max F at Age
+\item (2) F for Fully-Selected Fish
+\item (3) Catch / Biomass
+\item (4) Catch / Exploitable Biomass
+\item (5) Catch
+\item (6) Fishing Intensity
+\item (7) True F
 }}
 
-\item{AS_B_BMSY_RATIO}{Numeric. The ratio of B / Bmsy. \strong{OPTIONAL FIELD.} #'   \emph{Source: Automatically calculated inside database by default, or provided by model file.}}
+\item{AS_FMSY}{Estimated and/or calculated value of Fishing Mortality at MSY.
 
-\item{AS_FMSY}{Numeric. The estimated and/or calculated value of Fishing Mortality at MSY.
-\emph{Source: Automate extraction from model file.}}
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 
-\item{AS_F_FLIMIT_RATIO}{Numeric. The ratio of F / Flimit. \strong{OPTIONAL FIELD.} #'   \emph{Source: Automatically calculated inside database by default, or provided by model file.}}
+\item{AS_F_BEST}{Best estimate of Fishing Mortality.
 
-\item{AS_F_BEST}{Numeric. The best estimate of Fishing Mortality.
-\emph{Source: Automate extraction from model file.}}
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 
-\item{AS_FLIMIT_BASIS}{Character. Basis for the recommended fishing mortality limit -
-calculated or directly estimated. *Source: Automate extraction from model file, *
-\emph{though user input may be required.}}
+\item{AS_FLIMIT_BASIS}{Basis for the recommended fishing mortality limit -
+calculated or directly estimated.
 
-\item{AS_B_YEAR}{Numeric/Character. The year of the Biomass estimate for the stock.
-\emph{Source: Automate extraction from model file.}}
+Default: value automatically extracted from model file, though user input
+may be required if automatic extraction is not possible.}
 
-\item{AS_B_MAX}{Numeric. The maximum estimated value within the approved confidence interval
-of the Biomass estimate. Equivalent to the value of Best B Confidence Interval Upper estimate.
-\emph{Source: Automate extraction from model file.}}
+\item{AS_B_YEAR}{Year of the Biomass estimate for the stock.
 
-\item{AS_BMSY}{Numeric. Estimated stock size that would, on average, produce the maximum
-sustainable yield when fished at a level equal to FMSY. \emph{Source: Automate extraction from model file.}}
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 
-\item{AS_STOCK_LEVEL_BMSY}{Character. Displays whether the stock is ABOVE, NEAR
-(between 80\% and 99\%), or BELOW (<80\%) Bmsy based upon the value provided in the
-AS_B_BMSY_RATIO field. \emph{Source: Calculated within SIS Automatically.}}
+\item{AS_B_MAX}{Maximum estimated value within the approved confidence interval
+of the Biomass estimate. Equivalent to the value of Best B Confidence
+Interval Upper estimate.
 
-\item{AS_B_MIN}{Numeric. The minimum estimated value within the approved confidence interval
-of the Biomass estimate. Equivalent to the value of Best B Confidence Interval Lower estimate.
-\emph{Source: Automate extraction from model file.}}
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 
-\item{AS_B_BEST}{Numeric. The best estimate of Biomass.
-\emph{Source: Automate extraction from model file.}}
+\item{AS_BMSY}{Estimated stock size that would, on average, produce the maximum
+sustainable yield when fished at a level equal to FMSY.
 
-\item{AS_BMSY_BASIS}{Character. Basis for the estimated BMSY value.
-\emph{Source: Automate extraction from model file, though user input may be required.}}
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 
-\item{AS_FMSY_BASIS}{Character. The estimated fishing mortality rate that, on average,
+\item{AS_B_MIN}{Minimum estimated value within the approved confidence interval
+of the Biomass estimate. Equivalent to the value of Best B Confidence
+Interval Lower estimate.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_B_BEST}{Best estimate of Biomass.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_BMSY_BASIS}{Basis for the estimated BMSY value.
+
+Default: value automatically extracted from model file, though user input
+may be required.}
+
+\item{AS_FMSY_BASIS}{Estimated fishing mortality rate that, on average,
 would produce the maximum sustainable yield from a stock at BMSY.
-\emph{Source: Automate extraction from model file, though user input may be required.}}
 
-\item{AS_F_FMSY_RATIO}{Numeric. The ratio of F / Fmsy. \strong{OPTIONAL FIELD.} #'   \emph{Source: Automatically calculated inside database by default, or provided by model file.}}
+Default: value automatically extracted from model file, though user input
+may be required.}
 
-\item{AS_FLIMIT}{Numeric. The recommended fishing mortality limit from the assessment,
+\item{AS_FLIMIT}{Recommended fishing mortality limit from the assessment,
 above which the stock would be considered to be experiencing overfishing.
-\emph{Source: Automate extraction from model file.}}
 
-\item{AS_F_YEAR}{Numeric/Character. The year of the Fishing Mortality estimate for the stock.
-\emph{Source: Automate extraction from model file.}}
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 
-\item{ENTITY_ID}{Character/Numeric. Entity unique identifier value assigned by SIS.
-\emph{Source: Automatically provided by SIS.}}
-}
-\value{
-This function runs all functions from \code{asar} associated with
-accessibility and renders the final document. The document is tagged and
-includes alternative text from the captions_alt_text.csv produced from
-\code{stockplotr} package also available on GitHub.
+\item{AS_F_YEAR}{Year of the Fishing Mortality estimate for the stock.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_F_UNIT}{Unit of measure corresponding to the fishing mortality estimate.
+Linked to F Basis selections.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.
+
+Options: 1, 2, 3, 4, 5, 6, 7. Descriptions of each level are as follows:
+\itemize{
+\item (1) Apical F = Max F at Age
+\item (2) Fully-selected F = F for Fully-Selected Fish
+\item (3) Exploitation Rate = Catch / Biomass
+\item (4) Relative F = Catch / Exploitable Biomass
+\item (5) Metric Tons = Catch
+\item (6) 1 - SPR = Fishing Intensity
+\item (7) F = Z - M = True F
+}}
+
+\item{AS_B_UNIT}{Unit of measure corresponding to the biomass estimate.
+Linked to B Basis selections.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.
+
+Options: 1, 2, 3, 4, 5, 6, 7, 8. Descriptions of each level are as follows:
+\itemize{
+\item (1) Metric Tons = Spawning Stock Biomass / Total Stock Biomass / Survey-Estimated Biomass
+\item (2) Thousand Metric Tons = Spawning Stock Biomass / Total Stock Biomass / Survey-Estimated Biomass
+\item (3) Adult spawners - Natural & Hatchery - Escapement
+\item (4) Adult spawners - Hatchery - Escapement
+\item (5) Adult spawners - Natural - Escapement
+\item (6) Number of Eggs - Stock Reproductive Output
+\item (7) kg / tow - Survey Index
+\item (8) Number of Fish - Total Stock Abundance
+}}
+
+\item{AS_MODEL}{Model software package used to complete the final version of the assessment.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_MODEL_VERSION}{Version of the software package used to complete the final stock assessment.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_ENSEMBLE_FLAG}{Whether the assessment was completed using an ensemble
+or multimodeling approach.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.
+
+Options: "Y" (yes), "N" (no)}
+
+\item{AS_F_TRANSFORM}{Indicator identifying Fishing Mortality best estimates
+that include terminal year transformations (e.g., retrospective corrections
+or multi-year averaging).
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.
+
+Options: "Y" (yes), "N" (no)}
+
+\item{AS_B_RANGE_BASIS}{Approach used to calculate the confidence
+intervals provided for the stock assessment. Optional.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_B_RANGE}{Percentile range of the confidence intervals
+provided for the stock assessment. Optional.
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+
+\item{AS_B_TRANSFORM}{Indicator identifying Biomass best estimates that
+include terminal year transformations (e.g., retrospective corrections or
+multi-year averaging).
+
+Default: value automatically extracted from {asar} and/or {stockplotr} files.
+
+Options: "Y" (yes), "N" (no)}
 }
 \description{
-TODO: add further description
+Submit completed stock assessment data to SIS via a Google Drive folder.
+}
+\details{
+This function acts within the following workflow:
+\enumerate{
+\item When a stock assessment is scheduled to conclude, SIS will generate an
+attachment or prompt containing metadata and identifiers.
+\item Upon notification, the user will input some of these SIS-provided data into
+this function, as well as other information that should be sent to SIS.
+The function will format and upload this data to a specific Google Drive folder.
+\item The uploaded contents will be resubmitted to SIS to finalize the record.
+}
 }
 \examples{
 \dontrun{
