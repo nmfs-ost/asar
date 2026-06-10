@@ -10,6 +10,12 @@ on:
     tags: ['*']
   pull_request:
     branches: [main, master]
+    
+# no permissions are needed by the default github token for this workflow to 
+# run, so don't pass any.
+# https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token
+permissions: {}
+
 jobs:
   pkgdown:
     runs-on: ubuntu-latest

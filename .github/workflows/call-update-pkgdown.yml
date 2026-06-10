@@ -7,6 +7,12 @@ on:
   push:
     branches: [main, master]
     tags: ['*']
+
+# Give the fewest permissions possible. content is necessary.
+# https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/controlling-permissions-for-github_token
+permissions:
+  contents: write
+  
 jobs:
   pkgdown:
     runs-on: ubuntu-latest
