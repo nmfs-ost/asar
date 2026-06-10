@@ -81,6 +81,8 @@ quarto::quarto_render(fs::path("report", "sar_USWC_Petrale_sole_skeleton.qmd"))
 ```{r}
 #| echo: false
 #| warning: false
+#| message: false
+#| results: hide
 file.copy(
   from = fs::path("report/Petrale_sole_SAR_2023.pdf"),
   to = fs::path("../../pkgdown/assets"),
