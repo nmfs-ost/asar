@@ -44,14 +44,16 @@ create_figures_doc <- function(subdir = getwd(),
   )
 
   # add chunk that creates object as the directory of all rdas
-  figures_doc_setup <- paste0(
-    add_chunk(
-      glue::glue("figures_dir <- fs::path('{figures_dir}', 'figures')"),
-      label = "set-rda-dir-figs"
-    ),
-    "\n"
-  )
-
+  if (!append) {
+    figures_doc_setup <- paste0(
+      add_chunk(
+        glue::glue("figures_dir <- fs::path('{figures_dir}', 'figures')"),
+        label = "set-rda-dir-figs"
+      ),
+      "\n"
+    )
+  }
+ 
   figures_doc <- ""
 
   # list all files in figures
@@ -61,6 +63,23 @@ create_figures_doc <- function(subdir = getwd(),
   rda_fig_list <- file_list[grepl("_figure.rda", file_list)]
   # create sublist of only non-rda figure files
   non.rda_fig_list <- file_list[!grepl(".rda", file_list)]
+  
+  # Check if rda or non-rda already exists and remove from list
+  if (length(file.path(subdir, list.files(subdir, pattern = "figures.qmd"))) == 1) {
+    existing_figs_doc <- file.path(subdir, list.files(subdir, pattern = "figures.qmd"))
+    figure_content <- readLines(existing_figs_doc) |>
+      suppressWarnings()
+    # find all instances of figures
+    existing_rda_figs <- vapply(rda_fig_list, function(x) {
+      any(grepl(x, figure_content, fixed = TRUE))
+    }, FUN.VALUE = logical(1))
+    rda_fig_list <- rda_fig_list[-existing_rda_figs]
+    # find instances of non-rda and remove
+    existing_non.rda_figs <- vapply(non.rda_fig_list, function(x) {
+      any(grepl(x, figure_content, fixed = TRUE))
+    }, FUN.VALUE = logical(1))
+    non.rda_fig_list <- non.rda_fig_list[-existing_non.rda_figs]
+  }
 
   # create two-chunk system to plot each rda figure
   create_fig_chunks <- function(fig = NA,
@@ -188,7 +207,7 @@ rm(rda)\n
     # combine figures_doc setup with figure chunks
     figures_doc <- paste0(
       figures_doc_header,
-      figures_doc_setup,
+      ifelse(!append, figures_doc_setup, ""),
       ifelse(
         exists("rda_figures_doc"),
         rda_figures_doc,
