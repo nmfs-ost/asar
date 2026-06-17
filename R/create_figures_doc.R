@@ -44,7 +44,11 @@ create_figures_doc <- function(subdir = getwd(),
   )
 
   # add chunk that creates object as the directory of all rdas
-  if (!append) {
+  # check if the current setup already has the setup chunk
+  if (!(exists(existing_figs_doc) && any(grepl(
+    "#| label: set-rda-dir-figs",
+    figure_content
+  )))) {
     figures_doc_setup <- paste0(
       add_chunk(
         glue::glue("figures_dir <- fs::path('{figures_dir}', 'figures')"),

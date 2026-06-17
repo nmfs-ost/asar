@@ -28,14 +28,8 @@ test_that("Creates expected start of nearly empty figures doc", {
 })
 
 test_that("Creates expected start of figures doc with figure", {
-  # load sample dataset
-  load(file.path(
-    "fixtures", "ss3_models_converted", "Hake_2018",
-    "std_output.rda"
-  ))
-
-  stockplotr::plot_biomass(
-    dat = out_new,
+ stockplotr::plot_biomass(
+    dat = stockplotr::example_data,
     make_rda = TRUE,
     module = "TIME_SERIES"
   )
@@ -73,14 +67,8 @@ test_that("Formerly empty figures doc renders correctly", {
   # create empty figures doc
   create_template()
 
-  # load sample dataset
-  load(file.path(
-    "fixtures", "ss3_models_converted", "Hake_2018",
-    "std_output.rda"
-  ))
-
   stockplotr::plot_biomass(
-    dat = out_new,
+    dat = stockplotr::example_data,
     make_rda = TRUE,
     module = "TIME_SERIES"
   )
