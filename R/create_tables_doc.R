@@ -98,6 +98,18 @@ create_tables_doc <- function(subdir = getwd(),
 
   # create sublist of only rda table files
   rda_tab_list <- file_list[grepl(".rda", file_list)]
+  
+  # Check if rda already exists and remove from list
+  if (length(file.path(subdir, list.files(subdir, pattern = "tables.qmd"))) == 1) {
+    existing_tabs_doc <- file.path(subdir, list.files(subdir, pattern = "tables.qmd"))
+    table_content <- readLines(existing_tabs_doc) |>
+      suppressWarnings()
+    # find all instances of figures
+    existing_rda_tabs <- vapply(rda_tab_list, function(x) {
+      any(grepl(x, table_content, fixed = TRUE))
+    }, FUN.VALUE = logical(1))
+    rda_tab_list <- rda_tab_list[-existing_rda_tabs]
+  }
 
   # remove rda table files that have an associated "split" version
   # remove "_split" from filenames
@@ -474,20 +486,24 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
   }
 
   if (length(rda_tab_list) == 0) {
-    cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
-      wrap = TRUE
-    )
-    cli::cli_alert_info("For `create_tables_doc` to run properly, there must be:",
-      wrap = TRUE
-    )
-    cli::cli_ol(c(
-      "a 'tables' folder in {fs::path(tables_dir)}",
-      ".rda files in the 'tables' folder"
-    ))
-    tables_doc <- paste0(
-      tables_doc_header,
-      empty_doc_text
-    )
+    if (length(file.path(subdir, list.files(subdir, pattern = "tables.qmd"))) != 1) {
+      cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
+                             wrap = TRUE
+      )
+      cli::cli_alert_info("For `create_tables_doc` to run properly, there must be:",
+                          wrap = TRUE
+      )
+      cli::cli_ol(c(
+        "a 'tables' folder in {fs::path(tables_dir)}",
+        ".rda files in the 'tables' folder"
+      ))
+      tables_doc <- paste0(
+        tables_doc_header,
+        empty_doc_text
+      )
+    } else {
+      cli::cli_alert("No new tables detected.")
+    }
   } else {
     cli::cli_alert_success("Found {length(final_rda_tab_list)} table{?s} in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
       wrap = TRUE
