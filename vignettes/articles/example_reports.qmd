@@ -23,6 +23,7 @@ The following reports have been made using `asar`. Please let us know if you'd l
 #| message: false
 #| results: hide
 #| fig-show: hide
+#| eval: false
 
 # load libraries
 library(asar)
@@ -50,7 +51,7 @@ create_template(
   region = "U.S. West Coast",
   species = "Petrale sole",
   spp_latin = "Eopsetta jordani",
-  year = 2023,
+  year = 2025,
   authors = c("Ian G. Taylor"="NWFSC", "Vladlena Gertseva"="NWFSC", "Nick Tolimieri"="NWFSC"),
   include_affiliation = TRUE,
   simple_affiliation = FALSE,
@@ -83,21 +84,22 @@ quarto::quarto_render(fs::path("report", "sar_USWC_Petrale_sole_skeleton.qmd"))
 #| warning: false
 #| message: false
 #| results: hide
+#| eval: false
 file.copy(
-  from = fs::path("report/Petrale_sole_SAR_2023.pdf"),
+  from = fs::path("report/Petrale_sole_SAR_2025.pdf"),
   to = fs::path("../../pkgdown/assets"),
   overwrite = TRUE
 )
- 
-file.remove("key_quantities.csv")
-file.remove("captions_alt_text.csv")
-file.remove(here::here("readme_output.rda"))
-unlink(fs::path("report"), recursive = T)
+#  
+# file.remove("key_quantities.csv")
+# file.remove("captions_alt_text.csv")
+# file.remove(here::here("readme_output.rda"))
+# unlink(fs::path("report"), recursive = T)
 ```
 
-<iframe src="../../pkgdown/assets/Petrale_sole_SAR_2023.pdf" width="100%" height="600px"></iframe>
+<iframe src="../../pkgdown/assets/Petrale_sole_SAR_2025.pdf" width="100%" height="600px"></iframe>
 
-<!-- <iframe src="../Petrale_sole_SAR_2023.pdf" width="100%" height="600px"></iframe> -->
+<!-- <iframe src="../Petrale_sole_SAR_2025.pdf" width="100%" height="600px"></iframe> -->
 
 # Published reports
 

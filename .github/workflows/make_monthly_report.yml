@@ -1,0 +1,101 @@
+name: Generate Monthly PDF Report
+
+on:
+  schedule:
+    - cron: '0 0 1 * *'  # Runs at 00:00 on the 1st day of every month
+  workflow_dispatch:     # Allows you to trigger this manually from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  run_glossary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      
+      - uses: r-lib/actions/setup-pandoc@v2
+            
+      - name: Set up Quarto 
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Install TinyTeX (LaTeX Engine)
+        run: |
+          quarto install tool tinytex
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::quarto, local::., nmfs-ost/stockplotr
+      
+      - name: Install R package (asar)
+        run: pak::local_install()
+        shell: Rscript {0} # use the default terminal for shell
+
+      - name: Compile PDF Report
+        run: |
+          Rscript -e '
+          library(asar)
+          library(stockplotr)
+          
+          output <- stockplotr::convert_output(
+            file = system.file("extdata", "Report.sso", package = "asar"),
+            model = "ss3",
+            save_dir = here::here("readme_output.rda"))
+          
+          plot_fishing_mortality(output,
+                                 module = "CATCH",
+                                 make_rda = TRUE)
+          
+          table_landings(output,
+                         module = "CATCH",
+                         make_rda = TRUE)
+          
+          create_template(
+            format = "pdf",
+            office = "NWFSC",
+            region = "U.S. West Coast",
+            species = "Petrale sole",
+            spp_latin = "Eopsetta jordani",
+            year = 2025,
+            authors = c("Ian G. Taylor"="NWFSC", "Vladlena Gertseva"="NWFSC", "Nick Tolimieri"="NWFSC"),
+            include_affiliation = TRUE,
+            simple_affiliation = FALSE,
+            param_names = c("nf","sf"),
+            param_values = c("North fleet", "South fleet"),
+            model_results = here::here("readme_output.rda")
+          )
+          
+          # add some text to the executive summary, which includes
+          # parameters, key quantities, a citation, and a reference
+          # to a section of the report
+          example_text <- "\n\nThe stock assessment for `r params$species` was conducted by the `r params$office` in `r params$region`. The terminal spawning biomass for the current assessment year (`r end_year`) was `r SBend`. You can find more information on the results of this assessment in @sec-assmt-results. The guidelines for this report follow those outlined in @Abrams2014."
+          
+          exec_sum <- readLines(fs::path("report", "01_executive_summary.qmd"))
+          
+          exec_sum_new <- append(exec_sum, example_text)
+          
+          writeLines(
+            exec_sum_new,
+            fs::path("report", "01_executive_summary.qmd")
+              )
+          
+          # render report
+          quarto::quarto_render("report/sar_USWC_Petrale_sole_skeleton.qmd")
+                '
+                
+      - name: Move PDF to Assets
+        run: |
+          mkdir -p pkgdown/assets
+          cp report/Petrale_sole_SAR_2025.pdf pkgdown/assets/
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: 'create sample asar report'
+          branch: sample_report
+          title: 'Create sample asar report'
+
