@@ -49,8 +49,9 @@ create_figures_doc <- function(subdir = getwd(),
   # add chunk that creates object as the directory of all rdas
   # check if the current setup already has the setup chunk
   if (!(any(grepl(
-    "#\\| label: set-rda-dir-figs",
-    figure_content
+    "#| label: 'set-rda-dir-figs'",
+    figure_content,
+    fixed = TRUE
   )))) {
     figures_doc_setup <- paste0(
       add_chunk(
@@ -83,11 +84,23 @@ create_figures_doc <- function(subdir = getwd(),
       any(grepl(x, figure_content, fixed = TRUE))
     }, FUN.VALUE = logical(1))
     rda_fig_list <- rda_fig_list[!existing_rda_figs]
+    # add condition for message to add "new" into message
+    new_rda <- ifelse(
+      length(existing_rda_figs) > 0,
+      TRUE,
+      FALSE
+    )
     # find instances of non-rda and remove
     existing_non.rda_figs <- vapply(non.rda_fig_list, function(x) {
       any(grepl(x, figure_content, fixed = TRUE))
     }, FUN.VALUE = logical(1))
     non.rda_fig_list <- non.rda_fig_list[!existing_non.rda_figs]
+    # add condition for message to add "new" into message
+    new_non.rda <- ifelse(
+      length(existing_non.rda_figs) > 0,
+      TRUE,
+      FALSE
+    )
   }
 
   # create two-chunk system to plot each rda figure
@@ -161,7 +174,7 @@ rm(rda)\n
   } else {
     # paste rda figure code chunks into one object
     if (length(rda_fig_list) > 0) {
-      cli::cli_alert_success("Found {length(rda_fig_list)} figure{?s} in an rda format (i.e., .rda) in {fs::path(figures_dir, 'figures')}.",
+      cli::cli_alert_success("Found {length(rda_fig_list)}{ifelse(new_rda, ' new ', ' ')}figure{?s} in an rda format (i.e., .rda) in {fs::path(figures_dir, 'figures')}.",
         wrap = TRUE
       )
       rda_figures_doc <- ""
@@ -182,7 +195,7 @@ rm(rda)\n
       )
     }
     if (length(non.rda_fig_list) > 0) {
-      cli::cli_alert_success("Found {length(non.rda_fig_list)} figure{?s} in a non-rda format (e.g., .jpg, .png) in {fs::path(figures_dir, 'figures')}.",
+      cli::cli_alert_success("Found {length(non.rda_fig_list)}{ifelse(new_non.rda, ' new ', ' ')}figure{?s} in a non-rda format (e.g., .jpg, .png) in {fs::path(figures_dir, 'figures')}.",
         wrap = TRUE
       )
       non.rda_figures_doc <- ""
