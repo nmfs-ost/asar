@@ -147,8 +147,7 @@ rm(rda)\n
     cli::cli_alert_warning("Found zero figure files in {fs::path(figures_dir, 'figures')}.",
       wrap = TRUE
     )
-    # TODO: change this alert
-    cli::cli_alert_info("For `create_figures_doc` to run properly, there must be:",
+    cli::cli_alert_info("For `create_figures_doc` to incorporate figures, there must be:",
       wrap = TRUE
     )
     cli::cli_ol(c(

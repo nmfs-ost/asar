@@ -490,7 +490,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
       cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
                              wrap = TRUE
       )
-      cli::cli_alert_info("For `create_tables_doc` to run properly, there must be:",
+      cli::cli_alert_info("For `create_tables_doc` to incorporate tables, there must be:",
                           wrap = TRUE
       )
       cli::cli_ol(c(
