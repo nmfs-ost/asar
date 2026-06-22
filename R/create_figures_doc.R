@@ -105,59 +105,6 @@ create_figures_doc <- function(subdir = getwd(),
     )
   }
 
-  # create two-chunk system to plot each rda figure
-  create_fig_chunks <- function(fig = NA,
-                                figures_dir = getwd()) {
-    fig_shortname <- stringr::str_remove(fig, "_figure.rda")
-
-    ## import plot, caption, alt text
-    figures_doc_plot_setup1 <- paste0(
-      # figures_doc,
-      add_chunk(
-        paste0(
-          "# load rda
-load(file.path(figures_dir, '", fig, "'))\n
-# save rda with plot-specific name
-", fig_shortname, "_plot_rda <- rda\n
-# remove generic rda object
-rm(rda)\n
-# save figure, caption, and alt text as separate objects
-", fig_shortname, "_plot <- ", fig_shortname, "_plot_rda$figure
-", fig_shortname, "_cap <- ", fig_shortname, "_plot_rda$caption
-", fig_shortname, "_alt_text <- ", fig_shortname, "_plot_rda$alt_text"
-        ),
-        label = glue::glue("fig-{fig_shortname}-setup")
-      ),
-      "\n"
-    )
-
-    ## make figure chunk
-    figures_doc_plot_setup2 <- paste0(
-      # figures_doc_plot_setup1,
-      add_chunk(
-        paste0(fig_shortname, "_plot"),
-        label = glue::glue("fig-{fig_shortname}"),
-        # add_option = TRUE,
-        chunk_option = c(
-          "echo: false",
-          "warning: false",
-          glue::glue(
-            "fig-cap: !expr {fig_shortname}_cap"
-          ),
-          glue::glue(
-            "fig-alt: !expr {fig_shortname}_alt_text"
-          )
-        )
-      ),
-      "\n"
-    )
-
-    paste0(
-      figures_doc_plot_setup1,
-      figures_doc_plot_setup2
-    )
-  }
-
   if (length(file_list) == 0) {
     cli::cli_alert_warning("Found zero figure files in {fs::path(figures_dir, 'figures')}.",
       wrap = TRUE
