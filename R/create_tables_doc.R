@@ -65,6 +65,9 @@ create_tables_doc <- function(subdir = getwd(),
       updated_content <- gsub(empty_doc_text, "", table_content, fixed = TRUE)
       writeLines(updated_content, existing_tables_doc)
     }
+  } else {
+    # existing_figs_doc <- NULL
+    table_content <- ""
   }
 
   # add header
@@ -74,22 +77,30 @@ create_tables_doc <- function(subdir = getwd(),
   )
 
   # add chunk that creates object as the directory of all rdas
-  tables_doc_setup <- paste0(
-    add_chunk(
-      glue::glue(
-        "library(gt)
+  if (!(any(grepl(
+    "#| label: 'set-rda-dir-tbls'",
+    table_content,
+    fixed = TRUE
+  )))) {
+    tables_doc_setup <- paste0(
+      add_chunk(
+        glue::glue(
+          "library(gt)
           tables_dir <- fs::path('{tables_dir}', 'tables')"
+        ),
+        label = "set-rda-dir-tbls",
+        # add_option = TRUE,
+        chunk_option = c(
+          "echo: false",
+          "warning: false",
+          "include: false"
+        )
       ),
-      label = "set-rda-dir-tbls",
-      # add_option = TRUE,
-      chunk_option = c(
-        "echo: false",
-        "warning: false",
-        "include: false"
-      )
-    ),
-    "\n"
-  )
+      "\n"
+    )
+  } else {
+    tables_doc_setup <- ""
+  }
 
   tables_doc <- ""
 
@@ -100,15 +111,23 @@ create_tables_doc <- function(subdir = getwd(),
   rda_tab_list <- file_list[grepl(".rda", file_list)]
   
   # Check if rda already exists and remove from list
+  # Check if rda or non-rda already exists and remove from list
+  new_rda <- FALSE
   if (length(file.path(subdir, list.files(subdir, pattern = "tables.qmd"))) == 1) {
-    existing_tabs_doc <- file.path(subdir, list.files(subdir, pattern = "tables.qmd"))
-    table_content <- readLines(existing_tabs_doc) |>
+    existing_tbls_doc <- file.path(subdir, list.files(subdir, pattern = "tables.qmd"))
+    table_content <- readLines(existing_tbls_doc) |>
       suppressWarnings()
     # find all instances of figures
     existing_rda_tabs <- vapply(rda_tab_list, function(x) {
       any(grepl(x, table_content, fixed = TRUE))
     }, FUN.VALUE = logical(1))
-    rda_tab_list <- rda_tab_list[-existing_rda_tabs]
+    rda_tab_list <- rda_tab_list[!existing_rda_tabs]
+    # add condition for message to add "new" into message
+    new_rda <- ifelse(
+      length(existing_rda_tabs) > 0,
+      TRUE,
+      FALSE
+    )
   }
 
   # remove rda table files that have an associated "split" version
@@ -505,7 +524,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
       cli::cli_alert("No new tables detected.")
     }
   } else {
-    cli::cli_alert_success("Found {length(final_rda_tab_list)} table{?s} in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
+    cli::cli_alert_success("Found {length(final_rda_tab_list)}{ifelse(new_rda, ' new ', ' ')}table{?s} in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
       wrap = TRUE
     )
     # paste rda table code chunks into one object
