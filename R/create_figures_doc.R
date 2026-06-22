@@ -75,6 +75,8 @@ create_figures_doc <- function(subdir = getwd(),
   non.rda_fig_list <- file_list[!grepl(".rda", file_list)]
   
   # Check if rda or non-rda already exists and remove from list
+  new_rda <- FALSE
+  new_non.rda <- FALSE
   if (length(file.path(subdir, list.files(subdir, pattern = "figures.qmd"))) == 1) {
     existing_figs_doc <- file.path(subdir, list.files(subdir, pattern = "figures.qmd"))
     figure_content <- readLines(existing_figs_doc) |>
