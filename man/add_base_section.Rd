@@ -7,13 +7,17 @@
 add_base_section(custom_sections = NULL)
 }
 \arguments{
-\item{custom_sections}{List of existing sections to include in
-the custom template. Note: this only includes sections within
-list.files(system.file("templates", "skeleton",
-package = "asar")). The name of the section, rather than the
-name of the file, can be used (e.g., 'abstract' rather than
-'00_abstract.qmd'). If adding a new section, also use
-parameters 'new_section' and 'section_location'.}
+\item{custom_sections}{If choosing to build custom sectioning for the
+template, rather than the default for stock assessments in
+your region: a list of existing sections to include in the custom template.
+If adding a new section, also use arguments 'new_section' and 'section_location'.
+
+Default: NULL
+
+Options: sections within
+\code{list.files(system.file("templates", "skeleton", package = "asar"))}.
+The name of the section, rather than the name of the file, can be used
+(e.g., 'abstract' rather than '00_abstract.qmd').}
 }
 \value{
 Call and copy the sections in the package templates to create an

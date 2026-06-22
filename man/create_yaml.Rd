@@ -26,46 +26,68 @@ create_yaml(
 )
 }
 \arguments{
-\item{format}{Rendering format (pdf, html, or docx).}
+\item{format}{Rendering format
 
-\item{office}{Regional Fisheries Science Center producing the
-report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
+Default: "pdf"
+
+Options: "pdf", "html"}
+
+\item{office}{Regional Fisheries Science Center producing the report
+
+Default: NULL
+
+Options: AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC}
 
 \item{region}{Full name of region in which the species is
 evaluated (if applicable). If the region is not specified for
-your center or species, do not use this variable.}
+your center or species, do not use this variable.
+
+Default: NULL}
 
 \item{species}{Full common name for target species. Split
 naming with a space and capitalize first letter(s). Example:
-"Dover sole".}
+"Dover sole".
+
+Default: "species"}
 
 \item{spp_latin}{Latin name for the target species. Example:
-"Pomatomus saltatrix".}
+"Pomatomus saltatrix".
+
+Default: NULL}
 
 \item{spp_image}{File path to the species' image if not
-using the image included in the project's repository.}
+using the image included in the project's repository.
 
-\item{year}{Year the assessment is being conducted. Default
-is the year in which the report is rendered.}
+Default: NULL}
+
+\item{year}{Year the assessment is being conducted.
+
+Default: the year in which the report is rendered}
 
 \item{bib_name}{Name of a bib file being added into the yaml. For example,
 "asar.bib".}
 
 \item{bib_file}{File path to a .bib file used for citing references in
-the report}
+the report
+
+Default: "asar_references.bib"}
 
 \item{author_list}{A list of strings containing pre-formatted author names
 and affiliations that would be found in the format in a yaml of a quarto
 file when using base R function \code{cat()}.}
 
 \item{title}{A custom title that is an alternative to the default title (composed
-in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
+in asar::create_title()). Example: "Management Track Assessments Spring 2024".
 
-\item{rerender_skeleton}{Re-create the "skeleton.qmd" in your outline when
-changes to the main skeleton need to be made. This reproduces the
+Default: "\link{TITLE}"}
+
+\item{rerender_skeleton}{TRUE/FALSE; Re-create the "skeleton.qmd" in your
+outline when changes to the main skeleton need to be made. This reproduces the
 yaml, output (if changed), preamble quantities, and restructures your
 sectioning in the skeleton if indicated. All files in your folder
-will remain as is.}
+will remain as is.
+
+Default: FALSE}
 
 \item{prev_skeleton}{Vector of strings containing all the lines of the
 previous skeleton file. File is read in using the function readLines from
@@ -74,21 +96,25 @@ base R.}
 \item{prev_format}{The format that the previous skeleton was directed to
 render to. Parameter is inherited from create_template.}
 
-\item{parameters}{TRUE/FALSE; For
-parameterization of the script. Default is true.}
+\item{param_names}{List of extra parameter names that will be added to the
+skeleton YAML and available for use in the document. Parameters automatically
+included: office, region, species (each of which are listed as
+individual parameters for this function, above).
 
-\item{param_names}{List of parameter names that will be called
-in the document. Parameters automatically included:
-office, region, species (each of which are listed as
-individual parameters for this function, above).}
+Default: NULL}
 
 \item{param_values}{List of values associated with the order
 of parameter names. Parameters automatically included:
 office, region, species (each of which are listed as
-individual parameters for this function, above).}
+individual parameters for this function, above).
 
-\item{type}{Type of report to build. Default is "sar" (NOAA Fisheries
-Stock Assessment Report).}
+Default: NULL}
+
+\item{type}{Type of report to build
+
+Default: "sar" (a NOAA standard "Stock Assessment Report"
+
+Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and Fishery Evaluation)}
 }
 \value{
 Create a string indicating the important formatting pieces for a
