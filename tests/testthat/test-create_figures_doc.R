@@ -102,38 +102,30 @@ test_that("Formerly empty figures doc renders correctly", {
   unlink(fs::path(getwd(), "report"), recursive = T)
 })
 
-# Test is no longer applicable, but if we want to test this, there needs to be 
-# 2 files with the same label, but different file names
-# test_that("Throws warning if chunks with identical labels", {
-#   # load sample dataset
-#   load(file.path(
-#     "fixtures", "ss3_models_converted", "Hake_2018",
-#     "std_output.rda"
-#   ))
-# 
-#   stockplotr::plot_biomass(
-#     dat = out_new,
-#     make_rda = TRUE,
-#     module = "TIME_SERIES"
-#   )
-# 
-#   # create figures doc
-#   create_figures_doc(
-#     subdir = getwd(),
-#     figures_dir = getwd()
-#   )
-# 
-#   expect_message(
-#     create_figures_doc(
-#       subdir = getwd(),
-#       figures_dir = getwd()
-#     ),
-#     "Figures doc contains chunks with identical labels:"
-#   )
-# 
-#   # erase temporary testing files
-#   file.remove(fs::path(getwd(), "09_figures.qmd"))
-#   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
-#   file.remove(fs::path(getwd(), "key_quantities.csv"))
-#   unlink(fs::path(getwd(), "figures"), recursive = T)
-# })
+test_that("Throws warning if chunks with identical labels", {
+  stockplotr::plot_biomass(
+    dat = stockplotr::example_data,
+    make_rda = TRUE,
+    module = "TIME_SERIES"
+  )
+
+  # create figures doc
+  create_figures_doc(
+    subdir = getwd(),
+    figures_dir = getwd()
+  )
+
+  expect_message(
+    create_figures_doc(
+      subdir = getwd(),
+      figures_dir = getwd()
+    ),
+    "Figures doc contains chunks with identical labels:"
+  )
+
+  # erase temporary testing files
+  file.remove(fs::path(getwd(), "09_figures.qmd"))
+  file.remove(fs::path(getwd(), "captions_alt_text.csv"))
+  file.remove(fs::path(getwd(), "key_quantities.csv"))
+  unlink(fs::path(getwd(), "figures"), recursive = T)
+})

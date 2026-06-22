@@ -36,6 +36,9 @@ create_figures_doc <- function(subdir = getwd(),
       updated_content <- gsub(empty_doc_text, "", figure_content, fixed = TRUE)
       writeLines(updated_content, existing_figs_doc)
     }
+  } else {
+    # existing_figs_doc <- NULL
+    figure_content <- ""
   }
 
   figures_doc_header <- ifelse(append,
@@ -45,8 +48,8 @@ create_figures_doc <- function(subdir = getwd(),
 
   # add chunk that creates object as the directory of all rdas
   # check if the current setup already has the setup chunk
-  if (!(exists(existing_figs_doc) && any(grepl(
-    "#| label: set-rda-dir-figs",
+  if (!(any(grepl(
+    "#\\| label: set-rda-dir-figs",
     figure_content
   )))) {
     figures_doc_setup <- paste0(
@@ -56,6 +59,8 @@ create_figures_doc <- function(subdir = getwd(),
       ),
       "\n"
     )
+  } else {
+    figures_doc_setup <- ""
   }
  
   figures_doc <- ""
@@ -77,12 +82,12 @@ create_figures_doc <- function(subdir = getwd(),
     existing_rda_figs <- vapply(rda_fig_list, function(x) {
       any(grepl(x, figure_content, fixed = TRUE))
     }, FUN.VALUE = logical(1))
-    rda_fig_list <- rda_fig_list[-existing_rda_figs]
+    rda_fig_list <- rda_fig_list[!existing_rda_figs]
     # find instances of non-rda and remove
     existing_non.rda_figs <- vapply(non.rda_fig_list, function(x) {
       any(grepl(x, figure_content, fixed = TRUE))
     }, FUN.VALUE = logical(1))
-    non.rda_fig_list <- non.rda_fig_list[-existing_non.rda_figs]
+    non.rda_fig_list <- non.rda_fig_list[!existing_non.rda_figs]
   }
 
   # create two-chunk system to plot each rda figure
@@ -142,6 +147,7 @@ rm(rda)\n
     cli::cli_alert_warning("Found zero figure files in {fs::path(figures_dir, 'figures')}.",
       wrap = TRUE
     )
+    # TODO: change this alert
     cli::cli_alert_info("For `create_figures_doc` to run properly, there must be:",
       wrap = TRUE
     )
@@ -211,7 +217,8 @@ rm(rda)\n
     # combine figures_doc setup with figure chunks
     figures_doc <- paste0(
       figures_doc_header,
-      ifelse(!append, figures_doc_setup, ""),
+      # ifelse(!append, figures_doc_setup, ""),
+      figures_doc_setup,
       ifelse(
         exists("rda_figures_doc"),
         rda_figures_doc,
