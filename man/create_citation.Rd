@@ -13,20 +13,25 @@ create_citation(
 \arguments{
 \item{authors}{A character vector of author names with their accompanying
 affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
-would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
-is found in a database located in the package: \code{system.file("resources",
-"affiliation_info.csv", package = "asar")}. Keys to the office addresses
-follow the naming convention of the office acronym (ex. NWFSC) with a dash
-followed by the first initial of the city then the 2 letter abbreviation for
+would have an entry of c("Jane Doe"="NWFSC-SWA"). Keys to the office addresses
+follow the naming convention of the office acronym (ex. NWFSC) with a dash (-)
+followed by the first initial of the city, then the 2 letter abbreviation for
 the state the office is located in. If the city has 2 or more words such as
 Panama City, the first initial of each word is used in the key
-(ex. Panama City, Florida = PCFL)}
+(ex. Panama City, Florida = PCFL)
+
+Default: NULL
+
+Options: See \code{system.file("resources", "affiliation_info.csv", package = "asar")}.}
 
 \item{title}{A custom title that is an alternative to the default title (composed
-in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
+in asar::create_title()). Example: "Management Track Assessments Spring 2024".
 
-\item{year}{Year the assessment is being conducted. Default
-is the year in which the report is rendered.}
+Default: "\link{TITLE}"}
+
+\item{year}{Year the assessment is being conducted.
+
+Default: the year in which the report is rendered}
 }
 \value{
 Generate a citation for use in publications and other
