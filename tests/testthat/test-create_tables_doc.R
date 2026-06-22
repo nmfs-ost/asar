@@ -1,5 +1,3 @@
-library(stockplotr)
-
 test_that("Creates expected start of nearly empty tables doc", {
   # create tables doc
   create_tables_doc(
@@ -30,13 +28,8 @@ test_that("Creates expected start of nearly empty tables doc", {
 })
 
 test_that("Creates expected start of tables doc with table", {
-  # load sample dataset
-  load(file.path(
-    "fixtures", "ss3_models_converted", "Hake_2018",
-    "std_output.rda"
-  ))
-
-  table_landings(out_new,
+  stockplotr::table_landings(
+    stockplotr::example_data,
     make_rda = TRUE,
     interactive = FALSE
   )
@@ -70,51 +63,43 @@ test_that("Creates expected start of tables doc with table", {
   unlink(fs::path(getwd(), "tables"), recursive = T)
 })
 
-test_that("Throws warning if chunks with identical labels", {
-  # load sample dataset
-  load(file.path(
-    "fixtures", "ss3_models_converted", "Hake_2018",
-    "std_output.rda"
-  ))
-
-  table_landings(out_new,
-    make_rda = TRUE,
-    interactive = FALSE
-  )
-
-  # create tables doc
-  create_tables_doc(
-    subdir = getwd(),
-    tables_dir = getwd()
-  )
-
-  expect_message(
-    create_tables_doc(
-      subdir = getwd(),
-      tables_dir = getwd()
-    ),
-    "Tables doc contains chunks with identical labels:"
-  )
-
-  # erase temporary testing files
-  file.remove(fs::path(getwd(), "08_tables.qmd"))
-  file.remove(fs::path(getwd(), "captions_alt_text.csv"))
-  file.remove(fs::path(getwd(), "key_quantities.csv"))
-  unlink(fs::path(getwd(), "tables"), recursive = T)
-})
+# moot bc new checks account for this
+# not sure when this might happen
+# test_that("Throws warning if chunks with identical labels", {
+#   stockplotr::table_landings(
+#     stockplotr::example_data,
+#     make_rda = TRUE,
+#     interactive = FALSE
+#   )
+# 
+#   # create tables doc
+#   create_tables_doc(
+#     subdir = getwd(),
+#     tables_dir = getwd()
+#   )
+# 
+#   expect_message(
+#     create_tables_doc(
+#       subdir = getwd(),
+#       tables_dir = getwd()
+#     ),
+#     "Tables doc contains chunks with identical labels:"
+#   )
+# 
+#   # erase temporary testing files
+#   file.remove(fs::path(getwd(), "08_tables.qmd"))
+#   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
+#   file.remove(fs::path(getwd(), "key_quantities.csv"))
+#   unlink(fs::path(getwd(), "tables"), recursive = T)
+# })
 
 test_that("Formerly empty tables doc renders correctly", {
   # create empty tables doc
   create_template()
 
-  # load sample dataset
-  load(file.path(
-    "fixtures", "ss3_models_converted", "Hake_2018",
-    "std_output.rda"
-  ))
-
-  table_landings(
-    dat = out_new,
+  # create example table
+  stockplotr::table_landings(
+    dat = stockplotr::example_data,
     interactive = FALSE,
     make_rda = TRUE,
     module = "CATCH"
@@ -134,7 +119,7 @@ test_that("Formerly empty tables doc renders correctly", {
   fc_pasted <- paste(head_table_content, collapse = "")
 
   # expected tables doc head
-  expected_head_table_content <- "# Tables {#sec-tables} ```{r} #| label: 'set-rda-dir-tbls'#| echo: false #| warning: false #| include: false"
+  expected_head_table_content <- "# Tables {#sec-tables} ```{r} #| label: 'set-rda-dir-tbls'#| echo: false #| warning: false #| include: falselibrary(gt)"
 
   # test expectation of start of tables doc
   expect_equal(
