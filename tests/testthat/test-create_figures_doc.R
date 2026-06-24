@@ -131,6 +131,7 @@ test_that("Formerly empty figures doc renders correctly", {
 #   unlink(fs::path(getwd(), "figures"), recursive = T)
 # })
 
+# DO NOT RERUN MANUALLY -- snapshot path will not be correct if it adjusts and test will fail
 test_that("Adds new figure from figures folder.", {
   # Create one figure
   stockplotr::plot_biomass(
@@ -155,16 +156,15 @@ test_that("Adds new figure from figures folder.", {
   
   # read in figures doc
   figure_content <- readLines(file.path(getwd(), "report", "09_figures.qmd"))
+  # Remove the first lines so test doesn't test path differences
+  # Note: you CAN NOT test rendering with this approach
+  figure_content <- figure_content[-c(3:11)]
   # remove line numbers and collapse
-  fc_pasted <- paste(figure_content, collapse = "")
-  
-  # expected figures doc head
-  expected_head_figure_content <- "# Figures {#sec-figures} ```{r} #| label: 'set-rda-dir-figs'#| warnings: false #| eval: truefigures_dir <- fs::path('C:/Users/samantha.schiano.NMFS/Documents/GitHub/asar', 'figures')``` ```{r} #| label: 'fig-biomass-setup'#| warnings: false #| eval: true# load rdaload(file.path(figures_dir, 'biomass_figure.rda'))# save rda with plot-specific namebiomass_plot_rda <- rda# remove generic rda objectrm(rda)# save figure, caption, and alt text as separate objectsbiomass_plot <- biomass_plot_rda$figurebiomass_cap <- biomass_plot_rda$captionbiomass_alt_text <- biomass_plot_rda$alt_text``` ```{r} #| label: 'fig-biomass'#| echo: false #| warning: false #| fig-cap: !expr biomass_cap #| fig-alt: !expr biomass_alt_textbiomass_plot``` {{< pagebreak >}} ```{r} #| label: 'fig-abundance_at_age-setup'#| warnings: false #| eval: true# load rdaload(file.path(figures_dir, 'abundance_at_age_figure.rda'))# save rda with plot-specific nameabundance_at_age_plot_rda <- rda# remove generic rda objectrm(rda)# save figure, caption, and alt text as separate objectsabundance_at_age_plot <- abundance_at_age_plot_rda$figureabundance_at_age_cap <- abundance_at_age_plot_rda$captionabundance_at_age_alt_text <- abundance_at_age_plot_rda$alt_text``` ```{r} #| label: 'fig-abundance_at_age'#| echo: false #| warning: false #| fig-cap: !expr abundance_at_age_cap #| fig-alt: !expr abundance_at_age_alt_textabundance_at_age_plot``` {{< pagebreak >}} "
+  fc_pasted <- paste(figure_content, collapse = "\n")
   
   # test expectation of start of figures doc
-  expect_equal(
-    fc_pasted,
-    expected_head_figure_content
+  expect_snapshot(
+    cat(fc_pasted)
   )
   
   # erase temporary testing files

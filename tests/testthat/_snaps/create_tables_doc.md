@@ -6,15 +6,6 @@
       # Tables {#sec-tables}
        
       ```{r} 
-      #| label: 'set-rda-dir-tbls'
-      #| echo: false 
-      #| warning: false 
-      #| include: false
-      library(gt)
-      tables_dir <- fs::path('C:/Users/samantha.schiano.NMFS/Documents/GitHub/asar/tests/testthat', 'tables')
-      ``` 
-      
-      ```{r} 
       #| label: 'tab-landings-setup'
       #| warnings: false 
       #| eval: true

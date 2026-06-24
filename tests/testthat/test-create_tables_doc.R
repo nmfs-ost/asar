@@ -165,6 +165,9 @@ test_that("Adds new table from tables folder.", {
   
   # read in figures doc
   table_content <- readLines(file.path(getwd(), "report", "08_tables.qmd"))
+  # Remove the first lines so test doesn't test path differences
+  # Note: you CAN NOT test rendering with this approach
+  table_content <- table_content[-c(3:11)]
   # remove line numbers and collapse
   fc_pasted <- paste(table_content, collapse = "\n")
   
