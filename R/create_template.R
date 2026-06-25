@@ -475,12 +475,13 @@ create_template <- function(
       ))
       )
       # Add in species image if updated in rerender
-      if (species != "species") {
+      if (!is.null(spp_image) || species != "species") {
         file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
         # Change path to spp image since finished copying for yaml
         if (file.exists(spp_image)) {
           spp_image <- file.path("support_files", paste0(gsub(" ", "_", species), ".png"))
         }
+        # TODO: add line that replaces the default text in the _titlepage in formatting files?
       }
       # if it is previously html and the rerender species html then need to copy over html formatting
       if (tolower(prev_format) != "html" & tolower(format) == "html") {

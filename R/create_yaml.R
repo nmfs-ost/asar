@@ -122,8 +122,8 @@ create_yaml <- function(
     #   yaml <- append(yaml, add_params, after = grep("bibliography:", yaml) - 1)
     # }
 
-    # add in spp image
-    if (species != "species") {
+    # add in spp image/replace if specific
+    if (!is.null(spp_image) || species != "species") {
       yaml <- stringr::str_replace(yaml, yaml[grep("cover: ", yaml)], paste("cover: ", spp_image, sep = ""))
     }
 
