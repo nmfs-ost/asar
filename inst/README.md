@@ -2,7 +2,7 @@
 
 This folder contains various files which support the creation of materials for running functions in {asar}.
 
-* WORDLIST contains a list of words that are used in the spell check workflow. It is a plain text file with one word per line. The words in this list are considered correct and will not be flagged as spelling errors during the spell check process.
+* WORDLIST contains a list of words that are used in the spell check workflow. It is a plain text file with one word per line. The words in this list are considered correct and will not be flagged as spelling errors during the spell check process. Words can be added or removed from this list by running `spelling::update_wordlist()`.
 
 ## Sub-folders
 
