@@ -6,7 +6,7 @@ This folder contains various files which support the creation of materials for r
 
 ## Sub-folders
 
-* The `extdata` sub-folder contains an example of an SS3 report file that can be input into `convert_output()`.
+* The `extdata` sub-folder contains an example of an SS3 report file that can be input into `stockplotr::convert_output()`.
 * The `glossary` sub-folder contains the materials used to create the {asar} glossary (`report_glossary.tex`).
 * The `resources` sub-folder contains files used in the development of {asar} reports. This includes:
   * author affiliation information (`affiliation_info.csv`)
