@@ -192,19 +192,17 @@ to return to the original workflow for two reasons.
     your *actual* working directory. This will result in a rendering
     error.
 
-2.  While hardcoding
-    [`here::here()`](https://here.r-lib.org/reference/here.html) into
-    the path *does* work, we recognize that some users may be unfamiliar
-    with [the `here` package](https://here.r-lib.org/) and are not able
-    to learn another tool while already learning `asar`. We highly
-    recommend checking out this awesome package, but in the meantime, we
-    are not going to force its use.
+2.  While hardcoding `here::here()` into the path *does* work, we
+    recognize that some users may be unfamiliar with [the `here`
+    package](https://here.r-lib.org/) and are not able to learn another
+    tool while already learning `asar`. We highly recommend checking out
+    this awesome package, but in the meantime, we are not going to force
+    its use.
 
 If you want to ensure `tables_dir` and `figures_dir` are relative
 filepaths (which may be essential if you are collaborating), you can
 directly edit these paths yourself and reset them using
-[`getwd()`](https://rdrr.io/r/base/getwd.html),
-[`here::here()`](https://here.r-lib.org/reference/here.html), or some
+[`getwd()`](https://rdrr.io/r/base/getwd.html), `here::here()`, or some
 other option.
 
 ## Rendering reports

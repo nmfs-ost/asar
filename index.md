@@ -81,10 +81,10 @@ output <- stockplotr::convert_output(
 ```
 
 In this function, the users have the option to convert output files to a
-standardized framework from either SS3 (Report.sso) or BAM (.rdat)
-output files. `asar` uses this converted output from the environment to
-calculate quantities in the preamble and it is also used for creating
-plots and tables from
+standardized framework from either SS3 (Report.sso), BAM (.rdat), FIMS
+(R object), or Rceattle (R object) output files. `asar` uses this
+converted output from the environment to calculate quantities in the
+preamble and it is also used for creating plots and tables from
 [`stockplotr`](https://github.com/nmfs-ost/stockplotr).
 
 To proceed, the user should then run the following:
