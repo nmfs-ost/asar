@@ -372,3 +372,102 @@ gt_split <- function(
 
   gt_group
 }
+
+#----Fix figures/tables docs with duplicate chunks----
+fix_duplicate_chunks <- function(doc_path,
+                                 doc_type){
+  
+  new_figs_doc <- readLines(doc_path) |>
+    suppressWarnings() |>
+    as.list()
+  
+  label_line_nums <- grep("\\label", new_figs_doc)
+  labels <- new_figs_doc[label_line_nums]
+  names(labels) <- label_line_nums
+  labels <- lapply(labels, function(x) {
+    gsub("#\\| label: ", "", x)
+  })
+  
+  repeated_labels <- labels[duplicated(labels)]
+  repeated_labels <- as.vector(unlist(repeated_labels))
+  
+  if (length(repeated_labels) > 0) {
+    cli::cli_alert_warning("{doc_type} doc contains chunks with identical labels: {repeated_labels}.")
+    cli::cli_alert_warning("{doc_type} doc will not render if chunks have identical labels.")
+    cli::cli_alert_info("The duplicate chunks will be commented out.")
+    
+    in_chunk <- FALSE
+    current_chunk_start <- NA
+    current_chunk_label <- NULL
+    
+    chunks_list <- list()
+    
+    for (i in seq_along(new_figs_doc)) {
+      line <- new_figs_doc[i]
+      
+      # get code chunk start
+      if (!in_chunk && grepl("^\\s*```\\s*\\{[a-zA-Z]", line)) {
+        in_chunk <- TRUE
+        current_chunk_start <- i
+        current_chunk_label <- NULL
+        
+        # Handle inline label format: e.g., ```{r my-label}
+        inline_match <- regmatches(line, regexec("^\\s*```\\s*\\{[a-zA-Z]+\\s+([^, }]+)", line))[[1]]
+        if (length(inline_match) > 1) {
+          current_chunk_label <- trimws(inline_match[2])
+        }
+      } 
+      # get label
+      else if (in_chunk && is.null(current_chunk_label) && grepl("^\\s*#\\|\\s*label:", line)) {
+        # extract everything after "label:"
+        label_match <- regmatches(line, regexec("^\\s*#\\|\\s*label:\\s*(.*)", line))[[1]]
+        if (length(label_match) > 1) {
+          current_chunk_label <- trimws(label_match[2])
+          # strip outer quotes
+          current_chunk_label <- gsub("^['\"]|['\"]$", "", current_chunk_label)
+        }
+      }
+      # find end of code chunk
+      else if (in_chunk && grepl("^\\s*```\\s*$", line)) {
+        in_chunk <- FALSE
+        
+        # get chunk label
+        if (!is.null(current_chunk_label)) {
+          chunks_list[[length(chunks_list) + 1]] <- tidyr::tibble(
+            start = current_chunk_start,
+            end = i,
+            label = current_chunk_label
+          )
+        }
+      }
+    }
+    
+    # Combine list elements into a df
+    chunks_df <- dplyr::bind_rows(chunks_list)
+    
+    # Find duplicate occurrences
+    duplicates <- chunks_df |>
+      dplyr::group_by(label) |>
+      dplyr::mutate(occurrence = dplyr::row_number()) |>
+      dplyr::ungroup() |>
+      dplyr::filter(occurrence > 1) |>
+      dplyr::arrange(dplyr::desc(start))
+    
+    modified_doc <- new_figs_doc
+    
+    # Loop over duplicate chunks and comment out every line in range
+    for (row_idx in seq_len(nrow(duplicates))) {
+      label <- duplicates$label[row_idx]
+      start <- duplicates$start[row_idx]
+      end <- duplicates$end[row_idx]
+      
+      cli::cli_alert_info(sprintf("Commenting out duplicate chunk '%s' (Lines %d to %d)", label, start, end))
+      
+      # comment out each line
+      modified_doc[start:end] <- paste0("<!-- ", modified_doc[start:end], " -->")
+    }
+    
+    writeLines(as.character(unlist(modified_doc)), doc_path)
+    cli::cli_alert_success(sprintf("Successfully resolved %d duplicate chunk label issues in {doc_type} doc.", nrow(duplicates)))
+  } 
+}

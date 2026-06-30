@@ -28,14 +28,8 @@ test_that("Creates expected start of nearly empty figures doc", {
 })
 
 test_that("Creates expected start of figures doc with figure", {
-  # load sample dataset
-  load(file.path(
-    "fixtures", "ss3_models_converted", "Hake_2018",
-    "std_output.rda"
-  ))
-
-  stockplotr::plot_biomass(
-    dat = out_new,
+ stockplotr::plot_biomass(
+    dat = stockplotr::example_data,
     make_rda = TRUE,
     module = "TIME_SERIES"
   )
@@ -73,14 +67,8 @@ test_that("Formerly empty figures doc renders correctly", {
   # create empty figures doc
   create_template()
 
-  # load sample dataset
-  load(file.path(
-    "fixtures", "ss3_models_converted", "Hake_2018",
-    "std_output.rda"
-  ))
-
   stockplotr::plot_biomass(
-    dat = out_new,
+    dat = stockplotr::example_data,
     make_rda = TRUE,
     module = "TIME_SERIES"
   )
@@ -108,43 +96,80 @@ test_that("Formerly empty figures doc renders correctly", {
   )
 
   # erase temporary testing files
-  file.remove(fs::path(getwd(), "09_figures.qmd"))
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
   file.remove(fs::path(getwd(), "key_quantities.csv"))
   unlink(fs::path(getwd(), "figures"), recursive = T)
   unlink(fs::path(getwd(), "report"), recursive = T)
 })
 
-test_that("Throws warning if chunks with identical labels", {
-  # load sample dataset
-  load(file.path(
-    "fixtures", "ss3_models_converted", "Hake_2018",
-    "std_output.rda"
-  ))
+# TODO: update test and find condition where chunks might have identical labels
+# test_that("Throws warning if chunks with identical labels", {
+#   stockplotr::plot_biomass(
+#     dat = stockplotr::example_data,
+#     make_rda = TRUE,
+#     module = "TIME_SERIES"
+#   )
+# 
+#   # create figures doc
+#   create_figures_doc(
+#     subdir = getwd(),
+#     figures_dir = getwd()
+#   )
+# 
+#   expect_message(
+#     create_figures_doc(
+#       subdir = getwd(),
+#       figures_dir = getwd()
+#     ),
+#     "Figures doc contains chunks with identical labels:"
+#   )
+# 
+#   # erase temporary testing files
+#   file.remove(fs::path(getwd(), "09_figures.qmd"))
+#   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
+#   file.remove(fs::path(getwd(), "key_quantities.csv"))
+#   unlink(fs::path(getwd(), "figures"), recursive = T)
+# })
 
+# DO NOT RERUN MANUALLY -- snapshot path will not be correct if it adjusts and test will fail
+test_that("Adds new figure from figures folder.", {
+  # Create one figure
   stockplotr::plot_biomass(
-    dat = out_new,
+    dat = stockplotr::example_data,
     make_rda = TRUE,
     module = "TIME_SERIES"
   )
-
-  # create figures doc
+  
+  create_template()
+  
+  # Make another figure
+  stockplotr::plot_abundance_at_age(
+    dat = stockplotr::example_data,
+    make_rda = TRUE
+  )
+  
+  # rerender figures doc, appending new figure
   create_figures_doc(
-    subdir = getwd(),
+    subdir = file.path(getwd(), "report"),
     figures_dir = getwd()
   )
-
-  expect_message(
-    create_figures_doc(
-      subdir = getwd(),
-      figures_dir = getwd()
-    ),
-    "Figures doc will not render if chunks have identical labels."
+  
+  # read in figures doc
+  figure_content <- readLines(file.path(getwd(), "report", "09_figures.qmd"))
+  # Remove the first lines so test doesn't test path differences
+  # Note: you CAN NOT test rendering with this approach
+  figure_content <- figure_content[-c(3:11)]
+  # remove line numbers and collapse
+  fc_pasted <- paste(figure_content, collapse = "\n")
+  
+  # test expectation of start of figures doc
+  expect_snapshot(
+    cat(fc_pasted)
   )
-
+  
   # erase temporary testing files
-  file.remove(fs::path(getwd(), "09_figures.qmd"))
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
   file.remove(fs::path(getwd(), "key_quantities.csv"))
   unlink(fs::path(getwd(), "figures"), recursive = T)
+  unlink(fs::path(getwd(), "report"), recursive = T)
 })

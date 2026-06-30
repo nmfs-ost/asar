@@ -36,6 +36,9 @@ create_figures_doc <- function(subdir = getwd(),
       updated_content <- gsub(empty_doc_text, "", figure_content, fixed = TRUE)
       writeLines(updated_content, existing_figs_doc)
     }
+  } else {
+    # existing_figs_doc <- NULL
+    figure_content <- ""
   }
 
   figures_doc_header <- ifelse(append,
@@ -44,14 +47,23 @@ create_figures_doc <- function(subdir = getwd(),
   )
 
   # add chunk that creates object as the directory of all rdas
-  figures_doc_setup <- paste0(
-    add_chunk(
-      glue::glue("figures_dir <- fs::path('{figures_dir}', 'figures')"),
-      label = "set-rda-dir-figs"
-    ),
-    "\n"
-  )
-
+  # check if the current setup already has the setup chunk
+  if (!(any(grepl(
+    "#| label: 'set-rda-dir-figs'",
+    figure_content,
+    fixed = TRUE
+  )))) {
+    figures_doc_setup <- paste0(
+      add_chunk(
+        glue::glue("figures_dir <- fs::path('{figures_dir}', 'figures')"),
+        label = "set-rda-dir-figs"
+      ),
+      "\n"
+    )
+  } else {
+    figures_doc_setup <- ""
+  }
+ 
   figures_doc <- ""
 
   # list all files in figures
@@ -61,6 +73,37 @@ create_figures_doc <- function(subdir = getwd(),
   rda_fig_list <- file_list[grepl("_figure.rda", file_list)]
   # create sublist of only non-rda figure files
   non.rda_fig_list <- file_list[!grepl(".rda", file_list)]
+  
+  # Check if rda or non-rda already exists and remove from list
+  new_rda <- FALSE
+  new_non.rda <- FALSE
+  if (length(file.path(subdir, list.files(subdir, pattern = "figures.qmd"))) == 1) {
+    existing_figs_doc <- file.path(subdir, list.files(subdir, pattern = "figures.qmd"))
+    figure_content <- readLines(existing_figs_doc) |>
+      suppressWarnings()
+    # find all instances of figures
+    existing_rda_figs <- vapply(rda_fig_list, function(x) {
+      any(grepl(x, figure_content, fixed = TRUE))
+    }, FUN.VALUE = logical(1))
+    rda_fig_list <- rda_fig_list[!existing_rda_figs]
+    # add condition for message to add "new" into message
+    new_rda <- ifelse(
+      length(existing_rda_figs) > 0,
+      TRUE,
+      FALSE
+    )
+    # find instances of non-rda and remove
+    existing_non.rda_figs <- vapply(non.rda_fig_list, function(x) {
+      any(grepl(x, figure_content, fixed = TRUE))
+    }, FUN.VALUE = logical(1))
+    non.rda_fig_list <- non.rda_fig_list[!existing_non.rda_figs]
+    # add condition for message to add "new" into message
+    new_non.rda <- ifelse(
+      length(existing_non.rda_figs) > 0,
+      TRUE,
+      FALSE
+    )
+  }
 
   # create two-chunk system to plot each rda figure
   create_fig_chunks <- function(fig = NA,
@@ -116,24 +159,28 @@ rm(rda)\n
   }
 
   if (length(file_list) == 0) {
-    cli::cli_alert_warning("Found zero figure files in {fs::path(figures_dir, 'figures')}.",
-      wrap = TRUE
-    )
-    cli::cli_alert_info("For `create_figures_doc` to run properly, there must be:",
-      wrap = TRUE
-    )
-    cli::cli_ol(c(
-      "a 'figures' folder in {fs::path(figures_dir)}",
-      "files in appropriate formats (e.g., .rda, .png, .jpg) in the 'figures' folder"
-    ))
-    figures_doc <- paste0(
-      figures_doc_header,
-      empty_doc_text
-    )
+    if (length(file.path(subdir, list.files(subdir, pattern = "figures.qmd"))) != 1) {
+      cli::cli_alert_warning("Found zero figure files in {fs::path(figures_dir, 'figures')}.",
+        wrap = TRUE
+      )
+      cli::cli_alert_info("For `create_figures_doc` to incorporate figures, there must be:",
+        wrap = TRUE
+      )
+      cli::cli_ol(c(
+        "a 'figures' folder in {fs::path(figures_dir)}",
+        "files in appropriate formats (e.g., .rda, .png, .jpg) in the 'figures' folder"
+      ))
+      figures_doc <- paste0(
+        figures_doc_header,
+        empty_doc_text
+      )
+    } else {
+      cli::cli_alert("No new figures detected.")
+    }
   } else {
     # paste rda figure code chunks into one object
     if (length(rda_fig_list) > 0) {
-      cli::cli_alert_success("Found {length(rda_fig_list)} figure{?s} in an rda format (i.e., .rda) in {fs::path(figures_dir, 'figures')}.",
+      cli::cli_alert_success("Found {length(rda_fig_list)}{ifelse(new_rda, ' new ', ' ')}figure{?s} in an rda format (i.e., .rda) in {fs::path(figures_dir, 'figures')}.",
         wrap = TRUE
       )
       rda_figures_doc <- ""
@@ -154,7 +201,7 @@ rm(rda)\n
       )
     }
     if (length(non.rda_fig_list) > 0) {
-      cli::cli_alert_success("Found {length(non.rda_fig_list)} figure{?s} in a non-rda format (e.g., .jpg, .png) in {fs::path(figures_dir, 'figures')}.",
+      cli::cli_alert_success("Found {length(non.rda_fig_list)}{ifelse(new_non.rda, ' new ', ' ')}figure{?s} in a non-rda format (e.g., .jpg, .png) in {fs::path(figures_dir, 'figures')}.",
         wrap = TRUE
       )
       non.rda_figures_doc <- ""
@@ -188,6 +235,7 @@ rm(rda)\n
     # combine figures_doc setup with figure chunks
     figures_doc <- paste0(
       figures_doc_header,
+      # ifelse(!append, figures_doc_setup, ""),
       figures_doc_setup,
       ifelse(
         exists("rda_figures_doc"),
@@ -215,33 +263,14 @@ rm(rda)\n
   )
 
   # Read through figures doc and warn about identical labels
-  new_figs_doc <- readLines(
-    ifelse(
-      any(grepl("_figures.qmd$", list.files(subdir))),
-      fs::path(subdir, list.files(subdir)[grep("_figures.qmd", list.files(subdir))]),
-      fs::path(subdir, "09_figures.qmd")
-    )
-  ) |>
-    suppressWarnings() |>
-    as.list()
-
-  label_line_nums <- grep("\\label", new_figs_doc)
-  labels <- new_figs_doc[label_line_nums]
-  names(labels) <- label_line_nums
-  labels <- lapply(labels, function(x) {
-    gsub("#\\| label: ", "", x)
-  })
-
-  repeated_labels <- labels[duplicated(labels)]
-  repeated_labels <- as.vector(unlist(repeated_labels))
-
-  if (length(repeated_labels) > 0) {
-    cli::cli_alert_danger("Figures doc contains chunks with identical labels: {repeated_labels}.")
-    cli::cli_alert_info("Open figures doc and check for:")
-    cli::cli_bullets(c(
-      "*" = "Identical, repeated figures",
-      "*" = "Different figures with identical labels"
-    ))
-    cli::cli_alert_warning("Figures doc will not render if chunks have identical labels.")
-  }
+  doc_path <- ifelse(
+    any(grepl("_figures.qmd$", list.files(subdir))),
+    fs::path(subdir, list.files(subdir)[grep("_figures.qmd", list.files(subdir))]),
+    fs::path(subdir, "09_figures.qmd")
+  )
+  
+  fix_duplicate_chunks(
+    doc_path = doc_path,
+    doc_type = "Figures"
+  )
 }

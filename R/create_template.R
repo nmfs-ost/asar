@@ -638,16 +638,18 @@ create_template <- function(
         "safe" = "12_figures.qmd",
         "09_figures.qmd"
       )
-      figures_doc <- ""
-      utils::capture.output(cat(figures_doc),
-        file = fs::path(subdir, figures_doc_name),
-        append = FALSE
-      )
 
       create_figures_doc(
         subdir = subdir,
         figures_dir = figures_dir
       )
+      # rename figures doc
+      if (figures_doc_name != "09_figures.qmd") {
+        file.rename(
+          from = fs::path(subdir, "09_figures.qmd"),
+          to = fs::path(subdir, figures_doc_name)
+        )
+      }
     } else {
       # extract name for figures.qmd from report folder
       figures_doc_name <- list.files(file_dir, pattern = "figures.qmd")
