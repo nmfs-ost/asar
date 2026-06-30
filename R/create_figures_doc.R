@@ -159,20 +159,24 @@ rm(rda)\n
   }
 
   if (length(file_list) == 0) {
-    cli::cli_alert_warning("Found zero figure files in {fs::path(figures_dir, 'figures')}.",
-      wrap = TRUE
-    )
-    cli::cli_alert_info("For `create_figures_doc` to incorporate figures, there must be:",
-      wrap = TRUE
-    )
-    cli::cli_ol(c(
-      "a 'figures' folder in {fs::path(figures_dir)}",
-      "files in appropriate formats (e.g., .rda, .png, .jpg) in the 'figures' folder"
-    ))
-    figures_doc <- paste0(
-      figures_doc_header,
-      empty_doc_text
-    )
+    if (length(file.path(subdir, list.files(subdir, pattern = "figures.qmd"))) != 1) {
+      cli::cli_alert_warning("Found zero figure files in {fs::path(figures_dir, 'figures')}.",
+        wrap = TRUE
+      )
+      cli::cli_alert_info("For `create_figures_doc` to incorporate figures, there must be:",
+        wrap = TRUE
+      )
+      cli::cli_ol(c(
+        "a 'figures' folder in {fs::path(figures_dir)}",
+        "files in appropriate formats (e.g., .rda, .png, .jpg) in the 'figures' folder"
+      ))
+      figures_doc <- paste0(
+        figures_doc_header,
+        empty_doc_text
+      )
+    } else {
+      cli::cli_alert("No new figures detected.")
+    }
   } else {
     # paste rda figure code chunks into one object
     if (length(rda_fig_list) > 0) {
