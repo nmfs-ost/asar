@@ -76,7 +76,7 @@ smaller tables across multiple pages (in RTF and Word outputs, primarily via
 <dd><p><em>The gt table data object</em></p>
 <p><code>obj:&lt;gt_tbl&gt;</code> // <strong>required</strong></p>
 <p>This is the <strong>gt</strong> table object that is commonly created through use of the
-<code><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt::gt()</a></code> function.</p></dd>
+<code><a href="https://gt.rstudio.com/reference/gt.html" class="external-link">gt()</a></code> function.</p></dd>
 
 
 <dt id="arg-row-every-n">row_every_n<a class="anchor" aria-label="anchor" href="#arg-row-every-n"></a></dt>
@@ -121,7 +121,7 @@ version of this function.</p>
 
 
 
-<p>Use a subset of the <code><a href="https://gt.rstudio.com/reference/gtcars.html" class="external-link">gt::gtcars</a></code> dataset to create a <strong>gt</strong> table. Format the
+<p>Use a subset of the <code><a href="https://gt.rstudio.com/reference/gtcars.html" class="external-link">gtcars</a></code> dataset to create a <strong>gt</strong> table. Format the
 <code>msrp</code> column to display numbers as currency values, set column widths with
 <a href="https://gt.rstudio.com/reference/cols_width.html" class="external-link">cols_width</a>, and split the table at every five rows with <code>gt_split()</code>.
 This creates a <code>gt_group</code> object containing two tables. Printing this object
@@ -136,9 +136,9 @@ yields two tables separated by a line break.</p>
 <span>    <span class="fu">everything</span><span class="op">(</span><span class="op">)</span> <span class="op">~</span> <span class="fu">px</span><span class="op">(</span><span class="fl">150</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/gt_split.html">gt_split</a></span><span class="op">(</span>row_every_n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre><p></p></div>
-<p>Use a smaller subset of the <code><a href="https://gt.rstudio.com/reference/gtcars.html" class="external-link">gt::gtcars</a></code> dataset to create a <strong>gt</strong> table.
+<p>Use a smaller subset of the <code><a href="https://gt.rstudio.com/reference/gtcars.html" class="external-link">gtcars</a></code> dataset to create a <strong>gt</strong> table.
 Format the <code>msrp</code> column to display numbers as currency values, set the table
-width with <code><a href="https://gt.rstudio.com/reference/tab_options.html" class="external-link">gt::tab_options()</a></code> and split the table at the <code>model</code> column This
+width with <code><a href="https://gt.rstudio.com/reference/tab_options.html" class="external-link">tab_options()</a></code> and split the table at the <code>model</code> column This
 creates a <code>gt_group</code> object again containing two tables but this time we get
 a vertical split. Printing this object yields two tables of the same width.</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="va">gtcars</span> <span class="op">|&gt;</span></span>

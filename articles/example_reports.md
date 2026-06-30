@@ -15,16 +15,19 @@ library(stockplotr)
 output <- stockplotr::convert_output(
   file = system.file("extdata", "Report.sso", package = "asar"),
   model = "ss3",
-  save_dir = here::here("readme_output.rda"))
+  save_dir = here::here("readme_output.rda")
+)
 
 # make example figure and table
 plot_fishing_mortality(output,
-                       module = "CATCH",
-                       make_rda = TRUE)
+  module = "CATCH",
+  make_rda = TRUE
+)
 
 table_landings(output,
-               module = "CATCH",
-               make_rda = TRUE)
+  module = "CATCH",
+  make_rda = TRUE
+)
 
 # make basic report
 create_template(
@@ -34,10 +37,10 @@ create_template(
   species = "Petrale sole",
   spp_latin = "Eopsetta jordani",
   year = 2025,
-  authors = c("Ian G. Taylor"="NWFSC", "Vladlena Gertseva"="NWFSC", "Nick Tolimieri"="NWFSC"),
+  authors = c("Ian G. Taylor" = "NWFSC", "Vladlena Gertseva" = "NWFSC", "Nick Tolimieri" = "NWFSC"),
   include_affiliation = TRUE,
   simple_affiliation = FALSE,
-  param_names = c("nf","sf"),
+  param_names = c("nf", "sf"),
   param_values = c("North fleet", "South fleet"),
   model_results = here::here("readme_output.rda")
 )
@@ -54,7 +57,7 @@ exec_sum_new <- append(exec_sum, example_text)
 writeLines(
   exec_sum_new,
   fs::path("report", "01_executive_summary.qmd")
-    )
+)
 
 # render report
 quarto::quarto_render(fs::path("report", "sar_USWC_Petrale_sole_skeleton.qmd"))
