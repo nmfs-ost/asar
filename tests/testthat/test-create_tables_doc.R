@@ -71,13 +71,13 @@ test_that("Creates expected start of tables doc with table", {
 #     make_rda = TRUE,
 #     interactive = FALSE
 #   )
-# 
+#
 #   # create tables doc
 #   create_tables_doc(
 #     subdir = getwd(),
 #     tables_dir = getwd()
 #   )
-# 
+#
 #   expect_message(
 #     create_tables_doc(
 #       subdir = getwd(),
@@ -85,7 +85,7 @@ test_that("Creates expected start of tables doc with table", {
 #     ),
 #     "Tables doc contains chunks with identical labels:"
 #   )
-# 
+#
 #   # erase temporary testing files
 #   file.remove(fs::path(getwd(), "08_tables.qmd"))
 #   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
@@ -128,7 +128,7 @@ test_that("Formerly empty tables doc renders correctly", {
   )
 
   # erase temporary testing files
- # file.remove(fs::path(getwd(), "08_tables.qmd"))
+  # file.remove(fs::path(getwd(), "08_tables.qmd"))
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
   file.remove(fs::path(getwd(), "key_quantities.csv"))
   unlink(fs::path(getwd(), "tables"), recursive = T)
@@ -142,9 +142,9 @@ test_that("Adds new table from tables folder.", {
     make_rda = TRUE,
     module = "CATCH"
   )
-  
+
   create_template()
-  
+
   # Make another table
   # stockplotr::table_index(
   #   dat = stockplotr::example_data,
@@ -156,13 +156,13 @@ test_that("Adds new table from tables folder.", {
     from = file.path(getwd(), "tables", "landings_table.rda"),
     to = file.path(getwd(), "tables", "land_table.rda")
   )
-  
+
   # rerender figures doc, appending new figure
   create_tables_doc(
     subdir = file.path(getwd(), "report"),
     tables_dir = getwd()
   )
-  
+
   # read in figures doc
   table_content <- readLines(file.path(getwd(), "report", "08_tables.qmd"))
   # Remove the first lines so test doesn't test path differences
@@ -170,12 +170,12 @@ test_that("Adds new table from tables folder.", {
   table_content <- table_content[-c(3:11)]
   # remove line numbers and collapse
   fc_pasted <- paste(table_content, collapse = "\n")
-  
+
   # test expectation of start of figures doc
   expect_snapshot(
     cat(fc_pasted)
   )
-  
+
   # erase temporary testing files
   file.remove(fs::path("captions_alt_text.csv"))
   file.remove(fs::path("key_quantities.csv"))

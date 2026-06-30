@@ -109,7 +109,7 @@ create_tables_doc <- function(subdir = getwd(),
 
   # create sublist of only rda table files
   rda_tab_list <- file_list[grepl(".rda", file_list)]
-  
+
   # Check if rda already exists and remove from list
   # Check if rda or non-rda already exists and remove from list
   new_rda <- FALSE
@@ -507,10 +507,10 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
   if (length(rda_tab_list) == 0) {
     if (length(file.path(subdir, list.files(subdir, pattern = "tables.qmd"))) != 1) {
       cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
-                             wrap = TRUE
+        wrap = TRUE
       )
       cli::cli_alert_info("For `create_tables_doc` to incorporate tables, there must be:",
-                          wrap = TRUE
+        wrap = TRUE
       )
       cli::cli_ol(c(
         "a 'tables' folder in {fs::path(tables_dir)}",
@@ -594,10 +594,9 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     fs::path(subdir, list.files(subdir)[grep("_tables.qmd", list.files(subdir))]),
     fs::path(subdir, "08_tables.qmd")
   )
-  
+
   fix_duplicate_chunks(
     doc_path = doc_path,
     doc_type = "Tables"
   )
-
 }

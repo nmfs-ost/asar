@@ -63,7 +63,7 @@ create_figures_doc <- function(subdir = getwd(),
   } else {
     figures_doc_setup <- ""
   }
- 
+
   figures_doc <- ""
 
   # list all files in figures
@@ -73,7 +73,7 @@ create_figures_doc <- function(subdir = getwd(),
   rda_fig_list <- file_list[grepl("_figure.rda", file_list)]
   # create sublist of only non-rda figure files
   non.rda_fig_list <- file_list[!grepl(".rda", file_list)]
-  
+
   # Check if rda or non-rda already exists and remove from list
   new_rda <- FALSE
   new_non.rda <- FALSE
@@ -268,7 +268,7 @@ rm(rda)\n
     fs::path(subdir, list.files(subdir)[grep("_figures.qmd", list.files(subdir))]),
     fs::path(subdir, "09_figures.qmd")
   )
-  
+
   fix_duplicate_chunks(
     doc_path = doc_path,
     doc_type = "Figures"

@@ -28,7 +28,7 @@ test_that("Creates expected start of nearly empty figures doc", {
 })
 
 test_that("Creates expected start of figures doc with figure", {
- stockplotr::plot_biomass(
+  stockplotr::plot_biomass(
     dat = stockplotr::example_data,
     make_rda = TRUE,
     module = "TIME_SERIES"
@@ -109,13 +109,13 @@ test_that("Formerly empty figures doc renders correctly", {
 #     make_rda = TRUE,
 #     module = "TIME_SERIES"
 #   )
-# 
+#
 #   # create figures doc
 #   create_figures_doc(
 #     subdir = getwd(),
 #     figures_dir = getwd()
 #   )
-# 
+#
 #   expect_message(
 #     create_figures_doc(
 #       subdir = getwd(),
@@ -123,7 +123,7 @@ test_that("Formerly empty figures doc renders correctly", {
 #     ),
 #     "Figures doc contains chunks with identical labels:"
 #   )
-# 
+#
 #   # erase temporary testing files
 #   file.remove(fs::path(getwd(), "09_figures.qmd"))
 #   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
@@ -139,21 +139,21 @@ test_that("Adds new figure from figures folder.", {
     make_rda = TRUE,
     module = "TIME_SERIES"
   )
-  
+
   create_template()
-  
+
   # Make another figure
   stockplotr::plot_abundance_at_age(
     dat = stockplotr::example_data,
     make_rda = TRUE
   )
-  
+
   # rerender figures doc, appending new figure
   create_figures_doc(
     subdir = file.path(getwd(), "report"),
     figures_dir = getwd()
   )
-  
+
   # read in figures doc
   figure_content <- readLines(file.path(getwd(), "report", "09_figures.qmd"))
   # Remove the first lines so test doesn't test path differences
@@ -161,12 +161,12 @@ test_that("Adds new figure from figures folder.", {
   figure_content <- figure_content[-c(3:11)]
   # remove line numbers and collapse
   fc_pasted <- paste(figure_content, collapse = "\n")
-  
+
   # test expectation of start of figures doc
   expect_snapshot(
     cat(fc_pasted)
   )
-  
+
   # erase temporary testing files
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
   file.remove(fs::path(getwd(), "key_quantities.csv"))
