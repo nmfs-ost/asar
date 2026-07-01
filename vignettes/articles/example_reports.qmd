@@ -54,8 +54,8 @@ create_template(
   region = "U.S. West Coast",
   species = "Petrale sole",
   spp_latin = "Eopsetta jordani",
-  year = 2025,
-  authors = c("Ian G. Taylor" = "NWFSC", "Vladlena Gertseva" = "NWFSC", "Nick Tolimieri" = "NWFSC"),
+  year = 2026,
+  authors = c("Ann Chovy" = "NWFSC"),
   include_affiliation = TRUE,
   simple_affiliation = FALSE,
   param_names = c("nf", "sf"),
@@ -88,10 +88,15 @@ quarto::quarto_render(fs::path("report", "sar_USWC_Petrale_sole_skeleton.qmd"))
 #| results: hide
 #| eval: false
 file.copy(
-  from = fs::path("report/Petrale_sole_SAR_2025.pdf"),
+  from = fs::path("report/Petrale_sole_SAR_2026.pdf"),
   to = fs::path("../../pkgdown/assets"),
   overwrite = TRUE
 )
+# file.copy(
+#   from = fs::path("report/Petrale_sole_SAR_2026.pdf"),
+#   to = fs::path("../../docs"),
+#   overwrite = TRUE
+# )
 #
 # file.remove("key_quantities.csv")
 # file.remove("captions_alt_text.csv")
@@ -99,9 +104,11 @@ file.copy(
 # unlink(fs::path("report"), recursive = T)
 ```
 
-<iframe src="../../pkgdown/assets/Petrale_sole_SAR_2025.pdf" width="100%" height="600px"></iframe>
+<!-- <iframe src="../../pkgdown/assets/Petrale_sole_SAR_2026.pdf" width="100%" height="600px"></iframe> -->
 
-<!-- <iframe src="../Petrale_sole_SAR_2025.pdf" width="100%" height="600px"></iframe> -->
+<iframe src="../Petrale_sole_SAR_2026.pdf" width="100%" height="600px"></iframe>
+
+<!-- <iframe src="Petrale_sole_SAR_2026.pdf" width="100%" height="600px"></iframe> -->
 
 # Published reports
 
