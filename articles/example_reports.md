@@ -36,7 +36,7 @@ create_template(
   region = "U.S. West Coast",
   species = "Petrale sole",
   spp_latin = "Eopsetta jordani",
-  year = 2025,
+  year = 2026,
   authors = c("Ann Chovy" = "NWFSC"),
   include_affiliation = TRUE,
   simple_affiliation = FALSE,
