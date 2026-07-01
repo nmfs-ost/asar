@@ -37,7 +37,7 @@ create_template(
   species = "Petrale sole",
   spp_latin = "Eopsetta jordani",
   year = 2025,
-  authors = c("Ian G. Taylor" = "NWFSC", "Vladlena Gertseva" = "NWFSC", "Nick Tolimieri" = "NWFSC"),
+  authors = c("Ann Chovy" = "NWFSC"),
   include_affiliation = TRUE,
   simple_affiliation = FALSE,
   param_names = c("nf", "sf"),
