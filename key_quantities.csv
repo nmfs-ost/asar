@@ -1,0 +1,131 @@
+"key_quantity","value","meaning","dependent_on_other_kq","dependent_kq","dependent_on_other_fxn_args","fxn_with_other_args"
+"B.BMSY.end.yr",NA,"biomass relative to BMSY in the final year",NA,NA,NA,NA
+"B.end.year",NA,"final year of the biomass time series",NA,NA,NA,NA
+"B.max",NA,"maximum biomass",NA,NA,NA,NA
+"B.min",NA,"minimum biomass",NA,NA,NA,NA
+"B.ref.pt",NA,"biomass limit reference point",NA,NA,NA,NA
+"B.start.year",NA,"start year of the biomass time series",NA,NA,NA,NA
+"B.units",NA,"units of biomass measurement",NA,NA,NA,NA
+"Bend",NA,"biomass at the end of the time series",NA,NA,NA,NA
+"Bmsy",NA,"biomass at maximum sustainable yield",NA,NA,NA,NA
+"Btarg",NA,"target biomass reference point",NA,NA,NA,NA
+"caa.age.max",NA,"maximum age in catch-at-age data",NA,NA,NA,NA
+"caa.age.min",NA,"minimum age in catch-at-age data",NA,NA,NA,NA
+"caa.end.year",NA,"final year for catch-at-age data",NA,NA,NA,NA
+"caa.start.year",NA,"start year for catch-at-age data",NA,NA,NA,NA
+"cal.length.max",NA,"maximum length in catch-at-length histograms",NA,NA,NA,NA
+"cal.length.min",NA,"minimum length in catch-at-length histograms",NA,NA,NA,NA
+"cpue.end.year",NA,"final year of the CPUE time series",NA,NA,NA,NA
+"cpue.max",NA,"maximum catch per unit effort",NA,NA,NA,NA
+"cpue.min",NA,"minimum catch per unit effort",NA,NA,NA,NA
+"cpue.start.year",NA,"start year of the CPUE time series",NA,NA,NA,NA
+"cpue.units",NA,"units for catch per unit effort",NA,NA,NA,NA
+"F.FMSY.end.yr",NA,"fishing mortality relative to FMSY in the final year",NA,NA,NA,NA
+"F.end.year","2022","final year of the fishing mortality time series",NA,NA,NA,NA
+"F.max",NA,"maximum fishing mortality",NA,NA,NA,NA
+"F.min",NA,"minimum fishing mortality",NA,NA,NA,NA
+"F.ref.pt","msy","fishing mortality limit reference point",NA,NA,NA,NA
+"F.start.year","1876","start year of the fishing mortality time series",NA,NA,NA,NA
+"fecundity.length.max",NA,"maximum fish length for fecundity relationship",NA,NA,NA,NA
+"fecundity.length.min",NA,"minimum fish length for fecundity relationship",NA,NA,NA,NA
+"fecundity.length.units",NA,"length units for fecundity measurement",NA,NA,NA,NA
+"fecundity.max",NA,"maximum observed fecundity",NA,NA,NA,NA
+"fecundity.min",NA,"minimum observed fecundity",NA,NA,NA,NA
+"fecundity.units",NA,"units for fecundity (number of eggs)",NA,NA,NA,NA
+"fork.length.max",NA,"maximum fork length",NA,NA,NA,NA
+"fork.length.min",NA,"minimum fork length",NA,NA,NA,NA
+"fork.length.units",NA,"units for fork length",NA,NA,NA,NA
+"Ftarg",NA,"target fishing mortality reference point",NA,NA,NA,NA
+"kobe.end.year",NA,"final year displayed on the Kobe plot",NA,NA,NA,NA
+"landings.end.year",NA,"final year of historical landings data",NA,NA,NA,NA
+"landings.max",NA,"maximum historical landings",NA,NA,NA,NA
+"landings.min",NA,"minimum historical landings",NA,NA,NA,NA
+"landings.start.year",NA,"start year of historical landings data",NA,NA,NA,NA
+"landings.units"," (mt)","units for landings",NA,NA,NA,NA
+"M.age.max",NA,"maximum age for natural mortality",NA,NA,NA,NA
+"M.age.min",NA,"minimum age for natural mortality",NA,NA,NA,NA
+"M.rate.max",NA,"maximum natural mortality rate",NA,NA,NA,NA
+"M.rate.min",NA,"minimum natural mortality rate",NA,NA,NA,NA
+"mod.fit.abun.end.year",NA,"final year for model fit to abundance index",NA,NA,NA,NA
+"mod.fit.abun.start.year",NA,"start year for model fit to abundance index",NA,NA,NA,NA
+"mod.fit.catch.end.year",NA,"final year for model fit to catch data",NA,NA,NA,NA
+"mod.fit.catch.max",NA,"maximum model estimated catch",NA,NA,NA,NA
+"mod.fit.catch.min",NA,"minimum model estimated catch",NA,NA,NA,NA
+"mod.fit.catch.start.year",NA,"start year for model fit to catch data",NA,NA,NA,NA
+"mod.fit.catch.units",NA,"units for model estimated catch",NA,NA,NA,NA
+"mod.fit.discards.end.year",NA,"final year for model fit to discards",NA,NA,NA,NA
+"mod.fit.discards.max",NA,"maximum estimated discards",NA,NA,NA,NA
+"mod.fit.discards.min",NA,"minimum estimated discards",NA,NA,NA,NA
+"mod.fit.discards.start.year",NA,"start year for model fit to discards",NA,NA,NA,NA
+"mod.fit.discards.units",NA,"units for estimated discards",NA,NA,NA,NA
+"overfished.status.is.isnot",NA,"indicator of overfished status",NA,NA,NA,NA
+"overfishing.status.is.isnot",NA,"indicator of overfishing status",NA,NA,NA,NA
+"pop.baa.age.max",NA,"maximum age for biomass-at-age data",NA,NA,NA,NA
+"pop.baa.age.min",NA,"minimum age for biomass-at-age data",NA,NA,NA,NA
+"pop.baa.end.year",NA,"final year for biomass-at-age data",NA,NA,NA,NA
+"pop.baa.fish.max",NA,"maximum bubble size for biomass-at-age",NA,NA,NA,NA
+"pop.baa.fish.min",NA,"minimum bubble size for biomass-at-age",NA,NA,NA,NA
+"pop.baa.start.year",NA,"start year for biomass-at-age data",NA,NA,NA,NA
+"pop.naa.age.max",NA,"maximum age for numbers-at-age data",NA,NA,NA,NA
+"pop.naa.age.min",NA,"minimum age for numbers-at-age data",NA,NA,NA,NA
+"pop.naa.end.year",NA,"final year for numbers-at-age data",NA,NA,NA,NA
+"pop.naa.fish.max",NA,"maximum bubble size for numbers-at-age",NA,NA,NA,NA
+"pop.naa.fish.min",NA,"minimum bubble size for numbers-at-age",NA,NA,NA,NA
+"pop.naa.start.year",NA,"start year for numbers-at-age data",NA,NA,NA,NA
+"proj.catch.end.year",NA,"final year of catch projections",NA,NA,NA,NA
+"proj.catch.min",NA,"minimum forecasted catch",NA,NA,NA,NA
+"proj.catch.start.year",NA,"start year of catch projections",NA,NA,NA,NA
+"proj.catch.units",NA,"units for projected catch",NA,NA,NA,NA
+"prop.mat.length.max",NA,"maximum length for maturity schedule",NA,NA,NA,NA
+"prop.mat.length.min",NA,"minimum length for maturity schedule",NA,NA,NA,NA
+"prop.mat.length.units",NA,"length units for maturity data",NA,NA,NA,NA
+"R0",NA,"unfished equilibrium recruitment",NA,NA,NA,NA
+"recruit.dev.end.year",NA,"final year of recruitment deviations",NA,NA,NA,NA
+"recruit.dev.max",NA,"maximum recruitment deviation",NA,NA,NA,NA
+"recruit.dev.min",NA,"minimum recruitment deviation",NA,NA,NA,NA
+"recruit.dev.start.year",NA,"start year of recruitment deviations",NA,NA,NA,NA
+"recruitment.end.year",NA,"final year of estimated recruitment",NA,NA,NA,NA
+"recruitment.max",NA,"maximum estimated recruitment",NA,NA,NA,NA
+"recruitment.min",NA,"minimum estimated recruitment",NA,NA,NA,NA
+"recruitment.start.year",NA,"start year of estimated recruitment",NA,NA,NA,NA
+"recruitment.units",NA,"units for recruitment",NA,NA,NA,NA
+"rel.B.max",NA,"maximum relative biomass",NA,NA,NA,NA
+"rel.B.min",NA,"minimum relative biomass",NA,NA,NA,NA
+"rel.recruitment.max",NA,"maximum relative recruitment (R/R0)",NA,NA,NA,NA
+"rel.recruitment.min",NA,"minimum relative recruitment (R/R0)",NA,NA,NA,NA
+"rel.ssb.max",NA,"maximum relative spawning biomass",NA,NA,NA,NA
+"rel.ssb.min",NA,"minimum relative spawning biomass",NA,NA,NA,NA
+"selectivity.end.year",NA,"final year for selectivity estimates",NA,NA,NA,NA
+"selectivity.length.max",NA,"maximum length for gear selectivity",NA,NA,NA,NA
+"selectivity.length.min",NA,"minimum length for gear selectivity",NA,NA,NA,NA
+"selectivity.length.units",NA,"units for selectivity length",NA,NA,NA,NA
+"selectivity.start.year",NA,"start year for selectivity estimates",NA,NA,NA,NA
+"spr.max",NA,"maximum spawning potential ratio",NA,NA,NA,NA
+"spr.min",NA,"minimum spawning potential ratio",NA,NA,NA,NA
+"spr.ref.pt",NA,"spawning potential ratio reference point",NA,NA,NA,NA
+"sr.age.min",NA,"age of newly recruited fish in SR model",NA,NA,NA,NA
+"sr.ssb.max",NA,"maximum SSB in stock-recruit relationship",NA,NA,NA,NA
+"sr.ssb.min",NA,"minimum SSB in stock-recruit relationship",NA,NA,NA,NA
+"sr.ssb.units",NA,"units for SSB in stock-recruit relationship",NA,NA,NA,NA
+"ssb.end.year",NA,"final year of the SSB time series",NA,NA,NA,NA
+"ssb.max",NA,"maximum spawning biomass",NA,NA,NA,NA
+"ssb.min",NA,"minimum spawning biomass",NA,NA,NA,NA
+"ssb.ref.pt",NA,"spawning biomass reference point",NA,NA,NA,NA
+"ssb.start.year",NA,"start year of the SSB time series",NA,NA,NA,NA
+"ssb.units",NA,"units for spawning biomass",NA,NA,NA,NA
+"tot.catch.max",NA,"maximum total catch",NA,NA,NA,NA
+"tot.catch.min",NA,"minimum total catch",NA,NA,NA,NA
+"total.length.max",NA,"maximum total length",NA,NA,NA,NA
+"total.length.min",NA,"minimum total length",NA,NA,NA,NA
+"total.length.units",NA,"units for total length",NA,NA,NA,NA
+"vonb.age.max",NA,"maximum age for von Bertalanffy growth",NA,NA,NA,NA
+"vonb.age.min",NA,"minimum age for von Bertalanffy growth",NA,NA,NA,NA
+"vonb.length.max",NA,"maximum length for von Bertalanffy growth",NA,NA,NA,NA
+"vonb.length.min",NA,"minimum length for von Bertalanffy growth",NA,NA,NA,NA
+"vonb.length.units",NA,"units for length in growth model",NA,NA,NA,NA
+"wl.length.max",NA,"maximum length for weight-length relationship",NA,NA,NA,NA
+"wl.length.min",NA,"minimum length for weight-length relationship",NA,NA,NA,NA
+"wl.length.units",NA,"length units for weight-length conversion",NA,NA,NA,NA
+"wl.weight.max",NA,"maximum weight for weight-length relationship",NA,NA,NA,NA
+"wl.weight.min",NA,"minimum weight for weight-length relationship",NA,NA,NA,NA
+"wl.weight.units",NA,"weight units for weight-length conversion",NA,NA,NA,NA
