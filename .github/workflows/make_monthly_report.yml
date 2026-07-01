@@ -7,7 +7,8 @@ on:
 
 permissions:
   contents: write
-
+  pull-requests: write
+  
 jobs:
   run_glossary:
     runs-on: ubuntu-latest
@@ -61,7 +62,7 @@ jobs:
             species = "Petrale sole",
             spp_latin = "Eopsetta jordani",
             year = 2025,
-            authors = c("Ian G. Taylor"="NWFSC", "Vladlena Gertseva"="NWFSC", "Nick Tolimieri"="NWFSC"),
+            authors = c("Ann Chovy"="NWFSC"),
             include_affiliation = TRUE,
             simple_affiliation = FALSE,
             param_names = c("nf","sf"),
@@ -91,6 +92,12 @@ jobs:
         run: |
           mkdir -p pkgdown/assets
           cp report/Petrale_sole_SAR_2025.pdf pkgdown/assets/
+                      
+      - name: Remove intermediary files
+        run: |
+          rm Rplots.pdf
+          rm readme_output.rda
+          rm key_quantities.csv
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
