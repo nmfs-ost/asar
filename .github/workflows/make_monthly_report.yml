@@ -7,7 +7,8 @@ on:
 
 permissions:
   contents: write
-
+  pull-requests: write
+  
 jobs:
   run_glossary:
     runs-on: ubuntu-latest
