@@ -22,12 +22,13 @@ Panama City, the first initial of each word is used in the key
 
 Default: NULL
 
-Options: See \code{system.file("resources", "affiliation_info.csv", package = "asar")}.}
+Options: See \code{asar::affiliation_info}.}
 
-\item{title}{A custom title that is an alternative to the default title (composed
-in asar::create_title()). Example: "Management Track Assessments Spring 2024".
+\item{title}{A custom title that is an alternative to the default
+title (composed in \code{asar::create_title()}).
+Example: "Management Track Assessments Spring 2024".
 
-Default: "\link{TITLE}"}
+Default: \verb{[TITLE]}}
 
 \item{year}{Year the assessment is being conducted.
 

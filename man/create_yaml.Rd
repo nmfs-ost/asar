@@ -76,10 +76,11 @@ Default: "asar_references.bib"}
 and affiliations that would be found in the format in a yaml of a quarto
 file when using base R function \code{cat()}.}
 
-\item{title}{A custom title that is an alternative to the default title (composed
-in asar::create_title()). Example: "Management Track Assessments Spring 2024".
+\item{title}{A custom title that is an alternative to the default
+title (composed in \code{asar::create_title()}).
+Example: "Management Track Assessments Spring 2024".
 
-Default: "\link{TITLE}"}
+Default: \verb{[TITLE]}}
 
 \item{rerender_skeleton}{TRUE/FALSE; Re-create the "skeleton.qmd" in your
 outline when changes to the main skeleton need to be made. This reproduces the

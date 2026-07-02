@@ -81,17 +81,18 @@ Panama City, the first initial of each word is used in the key
 
 Default: NULL
 
-Options: See \code{system.file("resources", "affiliation_info.csv", package = "asar")}.}
+Options: See \code{asar::affiliation_info}.}
 
 \item{file_dir}{Location of stock assessment files produced
 by this function.
 
 Default: the working directory}
 
-\item{title}{A custom title that is an alternative to the default title (composed
-in asar::create_title()). Example: "Management Track Assessments Spring 2024".
+\item{title}{A custom title that is an alternative to the default
+title (composed in \code{asar::create_title()}).
+Example: "Management Track Assessments Spring 2024".
 
-Default: "\link{TITLE}"}
+Default: \verb{[TITLE]}}
 
 \item{model_results}{Path to standard output file made from \code{stockplotr::convert_output()}
 
@@ -184,9 +185,14 @@ General sections are called as child documents in this skeleton and
 each of the child documents should be edited separately.
 }
 \description{
-To see templates included in the base skeleton, please run
-'list.files(system.file('templates','skeleton', package = 'asar'))'
-in the console.
+Generates a set of Quarto files (.qmd) that set up a stock assessment report
+with supporting files. Function builds a YAML specific to the region and
+utilizes current resources and workflows from different U.S. Fishery Science
+Centers.
+}
+\details{
+To see templates included in the base skeleton, see
+\code{asar::affiliation_info}.
 }
 \examples{
 \dontrun{

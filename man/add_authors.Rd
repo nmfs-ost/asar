@@ -18,7 +18,7 @@ Panama City, the first initial of each word is used in the key
 
 Default: NULL
 
-Options: See \code{system.file("resources", "affiliation_info.csv", package = "asar")}.}
+Options: See \code{asar::affiliation_info}.}
 
 \item{rerender_skeleton}{TRUE/FALSE; Re-create the "skeleton.qmd" in your
 outline when changes to the main skeleton need to be made. This reproduces the

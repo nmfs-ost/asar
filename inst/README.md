@@ -9,7 +9,6 @@ This folder contains various files which support the creation of materials for r
 * The `extdata` sub-folder contains an example of an SS3 report file that can be input into `stockplotr::convert_output()`.
 * The `glossary` sub-folder contains the materials used to create the {asar} glossary (`report_glossary.tex`).
 * The `resources` sub-folder contains files used in the development of {asar} reports. This includes:
-  * author affiliation information (`affiliation_info.csv`)
   * citations for use in the report bibliography (`citations.bib`)
   * citation formatting file in the style of the Canadian Journal of Fisheries and Aquatic Sciences (CJFAS) (`cjfas.csl`)
   * LaTeX partials used to format the Quarto-based report (`formatting_files` folder)
