@@ -11,28 +11,29 @@ create_citation(
 )
 }
 \arguments{
-\item{authors}{A character vector of author names with their accompanying
-affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
-would have an entry of c("Jane Doe"="NWFSC-SWA"). Keys to the office addresses
-follow the naming convention of the office acronym (ex. NWFSC) with a dash (-)
-followed by the first initial of the city, then the 2 letter abbreviation for
-the state the office is located in. If the city has 2 or more words such as
-Panama City, the first initial of each word is used in the key
-(ex. Panama City, Florida = PCFL)
+\item{authors}{A character vector of author names and affiliations.
+For example, a Jane Doe at the NWFSC Seattle, Washington office
+would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
+can be found with: \code{asar::affiliation_info}. Keys to the office addresses
+follow the naming convention of: office acronym (ex. NWFSC), a hyphen (-),
+the first initial of the city, and then the two-letter abbreviation for
+the state the office is located in. If the city has two or more words (e.g.,
+Panama City), the first initial of each word is used in the key
+(ex. Panama City, Florida = PCFL).
 
 Default: NULL
 
 Options: See \code{asar::affiliation_info}.}
 
-\item{title}{A custom title that is an alternative to the default
-title (composed in \code{asar::create_title()}).
-Example: "Management Track Assessments Spring 2024".
+\item{title}{Custom report title superceding the default composed in
+\code{asar::create_title()}. Example: "Management Track Assessments Spring
+2024".
 
-Default: \verb{[TITLE]}}
+Default: \verb{[TITLE]}. If species and region are provided, a title will be generated based on the report type, species, and region.}
 
-\item{year}{Year the assessment is being conducted.
+\item{year}{Year the assessment is conducted.
 
-Default: the year in which the report is rendered}
+Default: the year in which the report is rendered.}
 }
 \value{
 Generate a citation for use in publications and other

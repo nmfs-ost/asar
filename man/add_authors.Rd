@@ -7,14 +7,15 @@
 add_authors(authors, rerender_skeleton = FALSE, prev_skeleton = NULL)
 }
 \arguments{
-\item{authors}{A character vector of author names with their accompanying
-affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
-would have an entry of c("Jane Doe"="NWFSC-SWA"). Keys to the office addresses
-follow the naming convention of the office acronym (ex. NWFSC) with a dash (-)
-followed by the first initial of the city, then the 2 letter abbreviation for
-the state the office is located in. If the city has 2 or more words such as
-Panama City, the first initial of each word is used in the key
-(ex. Panama City, Florida = PCFL)
+\item{authors}{A character vector of author names and affiliations.
+For example, a Jane Doe at the NWFSC Seattle, Washington office
+would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
+can be found with: \code{asar::affiliation_info}. Keys to the office addresses
+follow the naming convention of: office acronym (ex. NWFSC), a hyphen (-),
+the first initial of the city, and then the two-letter abbreviation for
+the state the office is located in. If the city has two or more words (e.g.,
+Panama City), the first initial of each word is used in the key
+(ex. Panama City, Florida = PCFL).
 
 Default: NULL
 

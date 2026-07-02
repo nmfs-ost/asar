@@ -3,70 +3,69 @@
 #' Generates a set of Quarto files (.qmd) that set up a stock assessment report
 #' with supporting files. Function builds a YAML specific to the region and
 #' utilizes current resources and workflows from different U.S. Fishery Science
-#' Centers.
+#' Centers. Automates authorship, bibliography, and other report components.
 #'
-#' @param format Rendering format
+#' @param format Rendering format. Note: "docx" is currently unsupported and will default to "pdf".
 #' 
 #' Default: "pdf"
 #' 
 #' Options: "pdf", "html"
 #' 
-#' @param type Type of report to build
+#' @param type Report template type.
 #' 
-#' Default: "sar" (a NOAA standard "Stock Assessment Report"
+#' Default: "sar" (a NOAA standard "Stock Assessment Report")
 #' 
 #' Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and Fishery Evaluation)
 #' 
-#' @param office Regional Fisheries Science Center producing the report
+#' @param office Regional Fisheries Science Center producing the report.
 #' 
 #' Default: NULL
 #' 
-#' Options: AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC
+#' Options: "AFSC", "NEFSC", "NWFSC", "PIFSC", "SEFSC", "SWFSC"
 #' 
-#' @param region Full name of region in which the species is
-#'  evaluated (if applicable). If the region is not specified for
-#'   your center or species, do not use this variable.
+#' @param region Full name of area in which the species is
+#' evaluated, if applicable. If the region is not 
+#' specified for your center or species, do not use this variable. Example:
+#' "U.S. West Coast".
 #'
 #' Default: NULL
 #'
-#' @param species Full common name for target species. Split
-#' naming with a space and capitalize first letter(s). Example:
-#' "Dover sole".
+#' @param species Common name of target species. Split multi-word names
+#' with space and capitalize first letter(s). Example: "Dover sole".
 #' 
 #' Default: "species"
 #' 
-#' @param spp_latin Latin name for the target species. Example:
-#' "Pomatomus saltatrix".
+#' @param spp_latin Latin name of target species. Example: "Pomatomus saltatrix".
 #' 
 #' Default: NULL
 #' 
-#' @param year Year the assessment is being conducted.
+#' @param year Year the assessment is conducted.
 #' 
-#' Default: the year in which the report is rendered
+#' Default: the year in which the report is rendered.
 #' 
-#' @param authors A character vector of author names with their accompanying
-#' affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
-#' would have an entry of c("Jane Doe"="NWFSC-SWA"). Keys to the office addresses
-#' follow the naming convention of the office acronym (ex. NWFSC) with a dash (-)
-#' followed by the first initial of the city, then the 2 letter abbreviation for
-#' the state the office is located in. If the city has 2 or more words such as
-#' Panama City, the first initial of each word is used in the key
-#' (ex. Panama City, Florida = PCFL)
+#' @param authors A character vector of author names and affiliations.
+#' For example, a Jane Doe at the NWFSC Seattle, Washington office
+#' would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
+#' can be found with: \code{asar::affiliation_info}. Keys to the office addresses
+#' follow the naming convention of: office acronym (ex. NWFSC), a hyphen (-),
+#' the first initial of the city, and then the two-letter abbreviation for
+#' the state the office is located in. If the city has two or more words (e.g.,
+#' Panama City), the first initial of each word is used in the key
+#' (ex. Panama City, Florida = PCFL).
 #' 
 #' Default: NULL
 #' 
 #' Options: See \code{asar::affiliation_info}.
 #' 
-#' @param file_dir Location of stock assessment files produced
-#' by this function.
+#' @param file_dir Directory where report files will be created.
 #' 
-#' Default: the working directory
+#' Default: the working directory (`getwd()`).
 #' 
-#' @param title A custom title that is an alternative to the default 
-#' title (composed in \code{asar::create_title()}).
-#' Example: "Management Track Assessments Spring 2024".
+#' @param title Custom report title superceding the default composed in
+#' \code{asar::create_title()}. Example: "Management Track Assessments Spring
+#' 2024".
 #' 
-#' Default: \verb{[TITLE]}
+#' Default: \verb{[TITLE]}. If species and region are provided, a title will be generated based on the report type, species, and region.
 #' 
 #' @param model_results Path to standard output file made from `stockplotr::convert_output()`
 #' 
@@ -301,8 +300,8 @@ create_template <- function(
   }
 
   if (!is.null(office) & length(office) == 1) {
-    office <- match.arg(office, several.ok = FALSE)
-  } else if (length(office) > 1) {
+    office <- match.arg(office, choices = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"), several.ok = FALSE)
+  } else if (length(office) > 1 | is.null(office)) {
     office <- ""
   }
 
@@ -502,7 +501,7 @@ create_template <- function(
 
     #### Links to files for yaml ----
     spp_image <- ifelse(
-      spp_image == "",
+      is.null(spp_image),
       system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar"),
       spp_image
     )

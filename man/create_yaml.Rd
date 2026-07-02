@@ -26,32 +26,31 @@ create_yaml(
 )
 }
 \arguments{
-\item{format}{Rendering format
+\item{format}{Rendering format. Note: "docx" is currently unsupported and will default to "pdf".
 
 Default: "pdf"
 
 Options: "pdf", "html"}
 
-\item{office}{Regional Fisheries Science Center producing the report
+\item{office}{Regional Fisheries Science Center producing the report.
 
 Default: NULL
 
-Options: AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC}
+Options: "AFSC", "NEFSC", "NWFSC", "PIFSC", "SEFSC", "SWFSC"}
 
-\item{region}{Full name of region in which the species is
-evaluated (if applicable). If the region is not specified for
-your center or species, do not use this variable.
+\item{region}{Full name of area in which the species is
+evaluated, if applicable. If the region is not
+specified for your center or species, do not use this variable. Example:
+"U.S. West Coast".
 
 Default: NULL}
 
-\item{species}{Full common name for target species. Split
-naming with a space and capitalize first letter(s). Example:
-"Dover sole".
+\item{species}{Common name of target species. Split multi-word names
+with space and capitalize first letter(s). Example: "Dover sole".
 
 Default: "species"}
 
-\item{spp_latin}{Latin name for the target species. Example:
-"Pomatomus saltatrix".
+\item{spp_latin}{Latin name of target species. Example: "Pomatomus saltatrix".
 
 Default: NULL}
 
@@ -60,9 +59,9 @@ using the image included in the project's repository.
 
 Default: NULL}
 
-\item{year}{Year the assessment is being conducted.
+\item{year}{Year the assessment is conducted.
 
-Default: the year in which the report is rendered}
+Default: the year in which the report is rendered.}
 
 \item{bib_name}{Name of a bib file being added into the yaml. For example,
 "asar.bib".}
@@ -76,11 +75,11 @@ Default: "asar_references.bib"}
 and affiliations that would be found in the format in a yaml of a quarto
 file when using base R function \code{cat()}.}
 
-\item{title}{A custom title that is an alternative to the default
-title (composed in \code{asar::create_title()}).
-Example: "Management Track Assessments Spring 2024".
+\item{title}{Custom report title superceding the default composed in
+\code{asar::create_title()}. Example: "Management Track Assessments Spring
+2024".
 
-Default: \verb{[TITLE]}}
+Default: \verb{[TITLE]}. If species and region are provided, a title will be generated based on the report type, species, and region.}
 
 \item{rerender_skeleton}{TRUE/FALSE; Re-create the "skeleton.qmd" in your
 outline when changes to the main skeleton need to be made. This reproduces the
@@ -111,9 +110,9 @@ individual parameters for this function, above).
 
 Default: NULL}
 
-\item{type}{Type of report to build
+\item{type}{Report template type.
 
-Default: "sar" (a NOAA standard "Stock Assessment Report"
+Default: "sar" (a NOAA standard "Stock Assessment Report")
 
 Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and Fishery Evaluation)}
 }

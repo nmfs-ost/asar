@@ -219,7 +219,7 @@ create_yaml <- function(
     )
 
     # Add species image on title page
-    if (spp_image == "") {
+    if (is.null(spp_image)) {
       yaml <- paste0(
         yaml,
         # image as pulled in from above

@@ -7,15 +7,15 @@
 format_quarto(format = "pdf", type = "sar")
 }
 \arguments{
-\item{format}{Rendering format
+\item{format}{Rendering format. Note: "docx" is currently unsupported and will default to "pdf".
 
 Default: "pdf"
 
 Options: "pdf", "html"}
 
-\item{type}{Type of report to build
+\item{type}{Report template type.
 
-Default: "sar" (a NOAA standard "Stock Assessment Report"
+Default: "sar" (a NOAA standard "Stock Assessment Report")
 
 Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and Fishery Evaluation)}
 }
