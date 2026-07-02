@@ -31,7 +31,8 @@ create_template(
 )
 }
 \arguments{
-\item{format}{Rendering format. Note: "docx" is currently unsupported and will default to "pdf".
+\item{format}{Report rendering format. Note: "docx" is currently unsupported
+and will default to "pdf".
 
 Default: "pdf"
 
@@ -49,10 +50,9 @@ Default: NULL
 
 Options: "AFSC", "NEFSC", "NWFSC", "PIFSC", "SEFSC", "SWFSC"}
 
-\item{region}{Full name of area in which the species is
-evaluated, if applicable. If the region is not
-specified for your center or species, do not use this variable. Example:
-"U.S. West Coast".
+\item{region}{Full name of the stock's sub-region, if applicable.
+If the region is not specified for your center or species, leave default.
+Example: "US West Coast".
 
 Default: NULL}
 
@@ -93,7 +93,8 @@ Default: the working directory (\code{getwd()}).}
 
 Default: \verb{[TITLE]}. If species and region are provided, a title will be generated based on the report type, species, and region.}
 
-\item{model_results}{Path to standard output file made from \code{stockplotr::convert_output()}
+\item{model_results}{Filepath to the standardized, converted model output
+.rda file generated with \code{stockplotr::convert_output()}.
 
 Default: NULL}
 
@@ -107,8 +108,9 @@ figures files
 
 Default: the working directory}
 
-\item{spp_image}{File path to the species' image if not
-using the image included in the project's repository.
+\item{spp_image}{Filepath to the species' image to be used on the report cover
+if different from the image included in the project's repository. Supported
+file extensions include .png, .jpg, .jpeg.
 
 Default: NULL}
 

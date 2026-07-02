@@ -36,10 +36,9 @@ Default: "species"}
 
 Default: NULL}
 
-\item{region}{Full name of area in which the species is
-evaluated, if applicable. If the region is not
-specified for your center or species, do not use this variable. Example:
-"U.S. West Coast".
+\item{region}{Full name of the stock's sub-region, if applicable.
+If the region is not specified for your center or species, leave default.
+Example: "US West Coast".
 
 Default: NULL}
 

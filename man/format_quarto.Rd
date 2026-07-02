@@ -7,7 +7,8 @@
 format_quarto(format = "pdf", type = "sar")
 }
 \arguments{
-\item{format}{Rendering format. Note: "docx" is currently unsupported and will default to "pdf".
+\item{format}{Report rendering format. Note: "docx" is currently unsupported
+and will default to "pdf".
 
 Default: "pdf"
 

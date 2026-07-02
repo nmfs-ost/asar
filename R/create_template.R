@@ -5,7 +5,8 @@
 #' utilizes current resources and workflows from different U.S. Fishery Science
 #' Centers. Automates authorship, bibliography, and other report components.
 #'
-#' @param format Rendering format. Note: "docx" is currently unsupported and will default to "pdf".
+#' @param format Report rendering format. Note: "docx" is currently unsupported
+#' and will default to "pdf".
 #' 
 #' Default: "pdf"
 #' 
@@ -23,10 +24,9 @@
 #' 
 #' Options: "AFSC", "NEFSC", "NWFSC", "PIFSC", "SEFSC", "SWFSC"
 #' 
-#' @param region Full name of area in which the species is
-#' evaluated, if applicable. If the region is not 
-#' specified for your center or species, do not use this variable. Example:
-#' "U.S. West Coast".
+#' @param region Full name of the stock's sub-region, if applicable.
+#' If the region is not specified for your center or species, leave default.
+#' Example: "US West Coast".
 #'
 #' Default: NULL
 #'
@@ -67,7 +67,8 @@
 #' 
 #' Default: \verb{[TITLE]}. If species and region are provided, a title will be generated based on the report type, species, and region.
 #' 
-#' @param model_results Path to standard output file made from `stockplotr::convert_output()`
+#' @param model_results Filepath to the standardized, converted model output
+#' .rda file generated with `stockplotr::convert_output()`.
 #' 
 #' Default: NULL
 #' 
@@ -81,8 +82,9 @@
 #' 
 #' Default: the working directory
 #' 
-#' @param spp_image File path to the species' image if not
-#' using the image included in the project's repository.
+#' @param spp_image Filepath to the species' image to be used on the report cover
+#' if different from the image included in the project's repository. Supported
+#' file extensions include .png, .jpg, .jpeg.
 #' 
 #' Default: NULL
 #' 
