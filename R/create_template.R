@@ -157,8 +157,25 @@
 #'         General sections are called as child documents in this skeleton and
 #'         each of the child documents should be edited separately.
 #'         
-#' @details To see templates included in the base skeleton, see
-#' \code{asar::affiliation_info}.
+#' @details The document that is rendered to generate the report (the "skeleton",
+#' a Quarto file) will be named based on arguments provided to
+#' \code{create_template()}. For instance, in example 2, below, the filename 
+#' would be 'sar_Dover_sole_skeleton.qmd'.
+#' 
+#' The skeleton contains several sections that should require little to no 
+#' editing by the user. These sections include: the yaml, Parameters R chunk,
+#' Preamble R chunk, Disclaimer, and Citations.
+#' 
+#' Report content is called as child documents in this skeleton. Each child document (e.g., '01_executive_summary.qmd', '02_introduction.qmd') should be 
+#' edited separately.
+#' 
+#' To see report templates included in the base skeleton, run
+#' \code{list.files(system.file('templates','skeleton', package = 'asar'))}.
+#' 
+#' For help with editing any of the sections in the skeleton, please see the
+#' cheatsheet, tutorial, and other resources available at \url{https://nmfs-ost.github.io/asar/}.
+#' 
+#' @seealso [add_authors()], [add_base_section()], [add_child()], [add_chunk()], [add_base_section()], [add_section()], [create_citation()], [create_figures_doc()], [create_tables_doc()], [create_title()], [create_yaml()], [format_quarto()]
 #'         
 #' @export
 #'
