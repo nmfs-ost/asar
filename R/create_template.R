@@ -259,7 +259,7 @@ create_template <- function(
       )
     }
     region_name <- ifelse(
-      !is.null(region) | !is.na(region),
+      region != "NA", # !is.null(region) | !is.na(region)
       toupper(stringr::str_c(stringr::str_extract_all(region, "\\b[A-Za-z]")[[1]], collapse = "")),
       stringr::str_extract(prev_report_name, "(?<=_)[A-Z]+(?=_)")
     )
@@ -283,7 +283,7 @@ create_template <- function(
     new_report_name <- paste0(
       type, "_",
       ifelse(
-        is.null(region) | is.na(region),
+        is.null(region) | is.na(region) | region == "NA",
         "",
         glue::glue("{region_name}_")
       ),
@@ -380,7 +380,7 @@ create_template <- function(
 
   # Create subdirectory for files
   subdir <- ifelse(
-    grepl("/report", file_dir),
+    grepl("/report", file_dir) || file_dir == "report",
     fs::path(file_dir),
     fs::path(file_dir, "report")
   )
@@ -434,7 +434,8 @@ create_template <- function(
     # format_files <- list(before_body_file, header_file)
 
     #### Links to files for yaml ----
-    spp_image <- ifelse(spp_image == "",
+    spp_image <- ifelse(
+      spp_image == "",
       system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar"),
       spp_image
     )
@@ -464,29 +465,30 @@ create_template <- function(
         prev_skeleton[grep("format:", prev_skeleton) + 1],
         "[a-z]+"
       )
-      year <- ifelse(is.na(as.numeric(stringr::str_extract(
-        prev_skeleton[grep("title:", prev_skeleton)],
-        "[0-9]+"
-      ))),
-      year,
-      as.numeric(stringr::str_extract(
-        prev_skeleton[grep("title:", prev_skeleton)],
-        "[0-9]+"
-      ))
+      year <- ifelse(
+        is.na(as.numeric(stringr::str_extract(
+          prev_skeleton[grep("title:", prev_skeleton)],
+          "[0-9]+"
+        ))),
+        year,
+        as.numeric(stringr::str_extract(
+          prev_skeleton[grep("title:", prev_skeleton)],
+          "[0-9]+"
+        ))
       )
       # Add in species image if updated in rerender
-      if (species != "species") {
+      if (!is.null(spp_image)) {
         file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
         # Change path to spp image since finished copying for yaml
         if (file.exists(spp_image)) {
-          spp_image <- file.path("support_files", paste0(gsub(" ", "_", species), ".png"))
+          spp_image <- file.path("support_files", stringr::str_extract(spp_image, "(?<=/)[^/]+$"))
         }
       }
       # if it is previously html and the rerender species html then need to copy over html formatting
       if (tolower(prev_format) != "html" & tolower(format) == "html") {
         if (!file.exists(file.path(file_dir, "support_files", "theme.scss"))) file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
       }
-      if (tolower(prev_format != "pdf" & tolower(format) == "pdf")) {
+      if (tolower(prev_format) != "pdf" & tolower(format) == "pdf") {
         if (is.null(species)) {
           species <- tolower(stringr::str_extract(
             prev_skeleton[grep("species: ", prev_skeleton)],
@@ -510,8 +512,6 @@ create_template <- function(
         if (!file.exists(file_dir, "support_files", "_titlepage.tex") | !is.null(species)) create_titlepage_tex(office = office, subdir = supdir, species = species)
         # customize in-header tex
         if (!file.exists(file_dir, "support_files", "in-header.tex") | !is.null(species)) create_inheader_tex(species = species, year = year, subdir = supdir)
-        # copy new spp image if updated
-        if (!is.null(species)) file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
       }
     } else {
       #### Copy template files to report folder ----
@@ -600,7 +600,7 @@ create_template <- function(
           )
         }
       } # close check for previous files & respective copying
-      prev_skeleton <- NULL
+      # prev_skeleton <- NULL
     } # close if rerender
 
     # created tables doc
