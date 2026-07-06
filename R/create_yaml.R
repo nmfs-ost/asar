@@ -60,7 +60,7 @@ create_yaml <- function(
   region = NULL,
   species = "species",
   spp_latin = NULL,
-  spp_image = "",
+  spp_image = NULL,
   year = NULL,
   bib_name = NULL,
   bib_file = "asar_references.bib",
@@ -219,7 +219,12 @@ create_yaml <- function(
     )
 
     # Add species image on title page
-    if (is.null(spp_image)) {
+    if (species == "species") {
+      yaml <- paste0(
+        yaml,
+        "cover: ", "\n"
+      )
+    } else if (is.null(spp_image)) {
       yaml <- paste0(
         yaml,
         # image as pulled in from above

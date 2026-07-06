@@ -10,7 +10,7 @@ create_yaml(
   region = NULL,
   species = "species",
   spp_latin = NULL,
-  spp_image = "",
+  spp_image = NULL,
   year = NULL,
   bib_name = NULL,
   bib_file = "asar_references.bib",

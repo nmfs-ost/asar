@@ -500,11 +500,11 @@ create_template <- function(
     # format_files <- list(before_body_file, header_file)
 
     #### Links to files for yaml ----
-    spp_image <- ifelse(
-      is.null(spp_image),
-      system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar"),
-      spp_image
-    )
+    if (is.null(spp_image) && species == "species"){
+      spp_image <- ""
+    } else if (is.null(spp_image) && species != "species") {
+      spp_image <- system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar")
+    } 
 
     # Add bib file
     if (bib_file == "asar_references.bib") {
@@ -771,10 +771,7 @@ create_template <- function(
     #   }
     # }
 
-    ifelse(!is.null(param_names),
-      parameters <- TRUE,
-      parameters <- FALSE
-    )
+    parameters <- TRUE
     
     yaml <- create_yaml(
       prev_format = prev_format,
