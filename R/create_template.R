@@ -82,13 +82,13 @@
 #' 
 #' Default: the working directory
 #' 
-#' @param spp_image Filepath to the species' image to be used on the report cover
-#' if different from the image included in the project's repository. Supported
-#' file extensions include .png, .jpg, .jpeg.
+#' @param spp_image Filepath to a custom species image to be used on the 
+#' report cover. Supported file extensions include .png, .jpg, .jpeg. 
+#' If empty, searches `asar` resources for a matching species name.
 #' 
 #' Default: NULL
 #' 
-#' @param bib_file File path to a .bib file used for citing references in
+#' @param bib_file File path to bibliography file (`.bib`) used for citing references in
 #' the report
 #' 
 #' Default: "asar_references.bib"
@@ -98,17 +98,14 @@
 #' 
 #' Default: FALSE
 #' 
-#' @param rerender_skeleton TRUE/FALSE; Re-create the "skeleton.qmd" in your
-#' outline when changes to the main skeleton need to be made. This reproduces the
-#' yaml, output (if changed), preamble quantities, and restructures your
-#' sectioning in the skeleton if indicated. All files in your folder
-#' will remain as is.
+#' @param rerender_skeleton TRUE/FALSE; Update the skeleton YAML and structure
+#' (R parameters, preamble, and skeleton sectioning) if relevant or indicated.
+#' All files in your folder, such as the `.qmd` child docs, will remain as is.
 #' 
 #' Default: FALSE
 #' 
-#' @param custom_sections If choosing to build custom sectioning for the
-#' template, rather than the default for stock assessments in
-#' your region: a list of existing sections to include in the custom template.
+#' @param custom_sections List of existing sections to include in a custom
+#' template (rather than the default for stock assessments in your region).
 #' If adding a new section, also use arguments 'new_section' and 'section_location'.
 #'   
 #' Default: NULL
@@ -135,10 +132,10 @@
 #' 
 #' Default: NULL
 #' 
-#' @param param_names List of extra parameter names that will be added to the 
-#' skeleton YAML and available for use in the document. Parameters automatically
-#' included: office, region, species (each of which are listed as
-#' individual parameters for this function, above).
+#' @param param_names List of additional custom parameter names to include in
+#' the skeleton YAML. Parameters automatically included: office, region,
+#' species (each of which are listed as individual parameters for this function,
+#' above).
 #'  
 #' Default: NULL
 #'  
@@ -150,25 +147,26 @@
 #' Default: NULL
 #' 
 #' @param ... Additional arguments passed into functions used in create_template
-#' such as `create_citation()`, `format_quarto()`, `add_chunk()`, etc.
+#' such as `create_citation()` or `create_yaml()`.
 #'
-#' @return Create template and pull skeleton for a stock assessment report.
-#'         Function builds a YAML specific to the region and utilizes current
-#'         resources and workflows from different U.S. Fishery Science Centers.
-#'         General sections are called as child documents in this skeleton and
-#'         each of the child documents should be edited separately.
-#'         
-#' @details The document that is rendered to generate the report (the "skeleton",
-#' a Quarto file) will be named based on arguments provided to
-#' \code{create_template()}. For instance, in example 2, below, the filename 
-#' would be 'sar_Dover_sole_skeleton.qmd'.
+#' @returns Path to the created `report/` directory containing files
+#' needed to produce the stock assessment report. Side effects include
+#' the creation of a directory structure, `.qmd` files, and support 
+#' files (e.g., images, `.bib`, `.tex`).
+#' 
+#' @details The function creates a `report/` subdirectory within `file_dir`.
+#' The primary file is a "skeleton" Quarto document that calls various 
+#' sections as child documents. The skeleton will be named based on arguments
+#' provided to \code{create_template()}. For instance, in example 2, below, 
+#' the filename would be 'sar_Dover_sole_skeleton.qmd'.
 #' 
 #' The skeleton contains several sections that should require little to no 
 #' editing by the user. These sections include: the yaml, Parameters R chunk,
 #' Preamble R chunk, Disclaimer, and Citations.
 #' 
-#' Report content is called as child documents in this skeleton. Each child document (e.g., '01_executive_summary.qmd', '02_introduction.qmd') should be 
-#' edited separately.
+#' Report content is called as child documents in this skeleton. Each child
+#' document (e.g., '01_executive_summary.qmd', '02_introduction.qmd') should 
+#' be edited separately.
 #' 
 #' To see report templates included in the base skeleton, run
 #' \code{list.files(system.file('templates','skeleton', package = 'asar'))}.

@@ -108,13 +108,13 @@ figures files
 
 Default: the working directory}
 
-\item{spp_image}{Filepath to the species' image to be used on the report cover
-if different from the image included in the project's repository. Supported
-file extensions include .png, .jpg, .jpeg.
+\item{spp_image}{Filepath to a custom species image to be used on the
+report cover. Supported file extensions include .png, .jpg, .jpeg.
+If empty, searches \code{asar} resources for a matching species name.
 
 Default: NULL}
 
-\item{bib_file}{File path to a .bib file used for citing references in
+\item{bib_file}{File path to bibliography file (\code{.bib}) used for citing references in
 the report
 
 Default: "asar_references.bib"}
@@ -124,17 +124,14 @@ will pull the last saved stock assessment report skeleton.
 
 Default: FALSE}
 
-\item{rerender_skeleton}{TRUE/FALSE; Re-create the "skeleton.qmd" in your
-outline when changes to the main skeleton need to be made. This reproduces the
-yaml, output (if changed), preamble quantities, and restructures your
-sectioning in the skeleton if indicated. All files in your folder
-will remain as is.
+\item{rerender_skeleton}{TRUE/FALSE; Update the skeleton YAML and structure
+(R parameters, preamble, and skeleton sectioning) if relevant or indicated.
+All files in your folder, such as the \code{.qmd} child docs, will remain as is.
 
 Default: FALSE}
 
-\item{custom_sections}{If choosing to build custom sectioning for the
-template, rather than the default for stock assessments in
-your region: a list of existing sections to include in the custom template.
+\item{custom_sections}{List of existing sections to include in a custom
+template (rather than the default for stock assessments in your region).
 If adding a new section, also use arguments 'new_section' and 'section_location'.
 
 Default: NULL
@@ -161,10 +158,10 @@ order of (sub)section names listed in the 'new_section' parameter.
 
 Default: NULL}
 
-\item{param_names}{List of extra parameter names that will be added to the
-skeleton YAML and available for use in the document. Parameters automatically
-included: office, region, species (each of which are listed as
-individual parameters for this function, above).
+\item{param_names}{List of additional custom parameter names to include in
+the skeleton YAML. Parameters automatically included: office, region,
+species (each of which are listed as individual parameters for this function,
+above).
 
 Default: NULL}
 
@@ -176,14 +173,13 @@ individual parameters for this function, above).
 Default: NULL}
 
 \item{...}{Additional arguments passed into functions used in create_template
-such as \code{create_citation()}, \code{format_quarto()}, \code{add_chunk()}, etc.}
+such as \code{create_citation()} or \code{create_yaml()}.}
 }
 \value{
-Create template and pull skeleton for a stock assessment report.
-Function builds a YAML specific to the region and utilizes current
-resources and workflows from different U.S. Fishery Science Centers.
-General sections are called as child documents in this skeleton and
-each of the child documents should be edited separately.
+Path to the created \verb{report/} directory containing files
+needed to produce the stock assessment report. Side effects include
+the creation of a directory structure, \code{.qmd} files, and support
+files (e.g., images, \code{.bib}, \code{.tex}).
 }
 \description{
 Generates a set of Quarto files (.qmd) that set up a stock assessment report
@@ -192,17 +188,19 @@ utilizes current resources and workflows from different U.S. Fishery Science
 Centers. Automates authorship, bibliography, and other report components.
 }
 \details{
-The document that is rendered to generate the report (the "skeleton",
-a Quarto file) will be named based on arguments provided to
-\code{create_template()}. For instance, in example 2, below, the filename
-would be 'sar_Dover_sole_skeleton.qmd'.
+The function creates a \verb{report/} subdirectory within \code{file_dir}.
+The primary file is a "skeleton" Quarto document that calls various
+sections as child documents. The skeleton will be named based on arguments
+provided to \code{create_template()}. For instance, in example 2, below,
+the filename would be 'sar_Dover_sole_skeleton.qmd'.
 
 The skeleton contains several sections that should require little to no
 editing by the user. These sections include: the yaml, Parameters R chunk,
 Preamble R chunk, Disclaimer, and Citations.
 
-Report content is called as child documents in this skeleton. Each child document (e.g., '01_executive_summary.qmd', '02_introduction.qmd') should be
-edited separately.
+Report content is called as child documents in this skeleton. Each child
+document (e.g., '01_executive_summary.qmd', '02_introduction.qmd') should
+be edited separately.
 
 To see report templates included in the base skeleton, run
 \code{list.files(system.file('templates','skeleton', package = 'asar'))}.

@@ -16,9 +16,8 @@ add_section(
 create_template function, this defaults to the location where the
 template is saved.}
 
-\item{custom_sections}{If choosing to build custom sectioning for the
-template, rather than the default for stock assessments in
-your region: a list of existing sections to include in the custom template.
+\item{custom_sections}{List of existing sections to include in a custom
+template (rather than the default for stock assessments in your region).
 If adding a new section, also use arguments 'new_section' and 'section_location'.
 
 Default: NULL

@@ -54,9 +54,9 @@ Default: "species"}
 
 Default: NULL}
 
-\item{spp_image}{Filepath to the species' image to be used on the report cover
-if different from the image included in the project's repository. Supported
-file extensions include .png, .jpg, .jpeg.
+\item{spp_image}{Filepath to a custom species image to be used on the
+report cover. Supported file extensions include .png, .jpg, .jpeg.
+If empty, searches \code{asar} resources for a matching species name.
 
 Default: NULL}
 
@@ -67,7 +67,7 @@ Default: the year in which the report is rendered.}
 \item{bib_name}{Name of a bib file being added into the yaml. For example,
 "asar.bib".}
 
-\item{bib_file}{File path to a .bib file used for citing references in
+\item{bib_file}{File path to bibliography file (\code{.bib}) used for citing references in
 the report
 
 Default: "asar_references.bib"}
@@ -82,11 +82,9 @@ file when using base R function \code{cat()}.}
 
 Default: \verb{[TITLE]}. If species and region are provided, a title will be generated based on the report type, species, and region.}
 
-\item{rerender_skeleton}{TRUE/FALSE; Re-create the "skeleton.qmd" in your
-outline when changes to the main skeleton need to be made. This reproduces the
-yaml, output (if changed), preamble quantities, and restructures your
-sectioning in the skeleton if indicated. All files in your folder
-will remain as is.
+\item{rerender_skeleton}{TRUE/FALSE; Update the skeleton YAML and structure
+(R parameters, preamble, and skeleton sectioning) if relevant or indicated.
+All files in your folder, such as the \code{.qmd} child docs, will remain as is.
 
 Default: FALSE}
 
@@ -97,10 +95,10 @@ base R.}
 \item{prev_format}{The format that the previous skeleton was directed to
 render to. Parameter is inherited from create_template.}
 
-\item{param_names}{List of extra parameter names that will be added to the
-skeleton YAML and available for use in the document. Parameters automatically
-included: office, region, species (each of which are listed as
-individual parameters for this function, above).
+\item{param_names}{List of additional custom parameter names to include in
+the skeleton YAML. Parameters automatically included: office, region,
+species (each of which are listed as individual parameters for this function,
+above).
 
 Default: NULL}
 

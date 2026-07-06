@@ -21,11 +21,9 @@ Default: NULL
 
 Options: See \code{asar::affiliation_info}.}
 
-\item{rerender_skeleton}{TRUE/FALSE; Re-create the "skeleton.qmd" in your
-outline when changes to the main skeleton need to be made. This reproduces the
-yaml, output (if changed), preamble quantities, and restructures your
-sectioning in the skeleton if indicated. All files in your folder
-will remain as is.
+\item{rerender_skeleton}{TRUE/FALSE; Update the skeleton YAML and structure
+(R parameters, preamble, and skeleton sectioning) if relevant or indicated.
+All files in your folder, such as the \code{.qmd} child docs, will remain as is.
 
 Default: FALSE}
 
