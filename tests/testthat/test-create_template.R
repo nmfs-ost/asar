@@ -90,8 +90,7 @@ test_that("create_template() creates correct files", {
     spp_latin = "Pomatomus saltatrix",
     year = year,
     authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
-    include_affiliation = TRUE,
-    parameters = FALSE
+    include_affiliation = TRUE
   ) |>
     suppressWarnings() |>
     suppressMessages()
@@ -139,6 +138,61 @@ test_that("create_template() creates correct files", {
   # Check if all expected support files are created for Dover sole
   expect_true(all(sort(expect_dover_sole_support_files) == sort(object_support_files)))
 
+  # erase temporary testing files
+  unlink(fs::path(path, "report"), recursive = T)
+  
+  
+  # Test case 3: custom sections
+  
+  create_template(
+    new_template = TRUE,
+    format = "pdf",
+    office = "SWFSC",
+    species = "Rex sole",
+    year = 2010,
+    authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
+    include_affiliation = TRUE,
+    custom_sections = c("executive_summary", "introduction", "data", "appendix")
+  ) |>
+    suppressWarnings() |>
+    suppressMessages()
+  
+  long_inputs_output_path <- file.path(path, "report")
+  object_report_files <- list.files(long_inputs_output_path)
+  object_support_files <- list.files(file.path(long_inputs_output_path, "support_files"))
+  
+  # Define expected report files for Rex sole
+  expect_report_files <- c(
+    "01_executive_summary.qmd",
+    "02_introduction.qmd",
+    "03_data.qmd",
+    "06_acknowledgments.qmd",
+    "07_references.qmd",
+    "08_tables.qmd",
+    "09_figures.qmd",
+    "11_appendix.qmd",
+    "sar_Rex_sole_skeleton.qmd",
+    "asar_references.bib",
+    "preamble.R",
+    "report_glossary.tex",
+    "support_files"
+  )
+  # Define expected support files for Rex sole
+  expect_rex_sole_support_files <- c(
+    "_titlepage.tex",
+    "before-body.tex",
+    "Rex_sole.png",
+    "in-header.tex",
+    "us_doc_logo.png",
+    "cjfas.csl"
+  )
+  
+  # Check if all expected report files are created for Rex sole
+  expect_true(all(sort(expect_report_files) == sort(object_report_files)))
+  
+  # Check if all expected support files are created for Rex sole
+  expect_true(all(sort(expect_rex_sole_support_files) == sort(object_support_files)))
+  
   # erase temporary testing files
   unlink(fs::path(path, "report"), recursive = T)
 })
@@ -394,7 +448,7 @@ test_that("Basic report renders", {
     to = fs::path(getwd(), "report", "out_new.rda"),
   )
 
-  file.remove("out_new.rd")
+  file.remove("out_new.rda")
 
   # add acronym and reference
   exec_sum_path <- fs::path("report", "01_executive_summary.qmd")
