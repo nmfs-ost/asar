@@ -53,7 +53,7 @@ In this case, you can disregard the preamble chunk (its label is 'output_and_qua
 Yes! You can convert your own output into the expected standardized format without `stockplotr::convert_output()`, by following the guidance in the ["Standardizing Assessment Model Output" `stockplotr` vignette](https://nmfs-ost.github.io/stockplotr/articles/convert_output_details.html).
 
 ## Where are the acronyms for each office (for the `authors` argument)?
-Run `asar::office_acronyms()` to see a list of the acronyms for each office.
+Run `asar::affiliation_info` to see a list of the acronyms for each office.
 
 ## `create_template()` isn't working. What do I do?
 

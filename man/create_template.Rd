@@ -94,7 +94,8 @@ Default: the working directory (\code{getwd()}).}
 Default: \verb{[TITLE]}. If species and region are provided, a title will be generated based on the report type, species, and region.}
 
 \item{model_results}{Filepath to the standardized, converted model output
-.rda file generated with \code{stockplotr::convert_output()}.
+.rda file generated with \code{stockplotr::convert_output()}, relative to the
+skeleton .qmd file that will be created within the 'report' folder.
 
 Default: NULL}
 
@@ -109,7 +110,7 @@ figures files
 Default: the working directory}
 
 \item{spp_image}{Filepath to a custom species image to be used on the
-report cover. Supported file extensions include .png, .jpg, .jpeg.
+report cover. Supported file extension is .png.
 If empty, searches \code{asar} resources for a matching species name.
 
 Default: NULL}
@@ -184,7 +185,7 @@ files (e.g., images, \code{.bib}, \code{.tex}).
 \description{
 Generates a set of Quarto files (.qmd) that set up a stock assessment report
 with supporting files. Function builds a YAML specific to the region and
-utilizes current resources and workflows from different U.S. Fishery Science
+utilizes current resources and workflows from different NOAA Fishery Science
 Centers. Automates authorship, bibliography, and other report components.
 }
 \details{

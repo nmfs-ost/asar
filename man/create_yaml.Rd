@@ -55,7 +55,7 @@ Default: "species"}
 Default: NULL}
 
 \item{spp_image}{Filepath to a custom species image to be used on the
-report cover. Supported file extensions include .png, .jpg, .jpeg.
+report cover. Supported file extension is .png.
 If empty, searches \code{asar} resources for a matching species name.
 
 Default: NULL}

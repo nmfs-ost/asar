@@ -2,7 +2,7 @@
 #'
 #' Generates a set of Quarto files (.qmd) that set up a stock assessment report
 #' with supporting files. Function builds a YAML specific to the region and
-#' utilizes current resources and workflows from different U.S. Fishery Science
+#' utilizes current resources and workflows from different NOAA Fishery Science
 #' Centers. Automates authorship, bibliography, and other report components.
 #'
 #' @param format Report rendering format. Note: "docx" is currently unsupported
@@ -68,7 +68,8 @@
 #' Default: \verb{[TITLE]}. If species and region are provided, a title will be generated based on the report type, species, and region.
 #' 
 #' @param model_results Filepath to the standardized, converted model output
-#' .rda file generated with `stockplotr::convert_output()`.
+#' .rda file generated with `stockplotr::convert_output()`, relative to the 
+#' skeleton .qmd file that will be created within the 'report' folder.
 #' 
 #' Default: NULL
 #' 
@@ -83,7 +84,7 @@
 #' Default: the working directory
 #' 
 #' @param spp_image Filepath to a custom species image to be used on the 
-#' report cover. Supported file extensions include .png, .jpg, .jpeg. 
+#' report cover. Supported file extension is .png. 
 #' If empty, searches `asar` resources for a matching species name.
 #' 
 #' Default: NULL
