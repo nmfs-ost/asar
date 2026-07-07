@@ -90,8 +90,7 @@ asar::create_template(
   authors = c("Ian G. Taylor"="NWFSC", "Vladlena Gertseva"="NWFSC", "Nick Tolimieri"="NWFSC"),
   include_affiliation = TRUE,
   simple_affiliation = FALSE,
-  param_names = c("nf","sf"),
-  param_values = c("North fleet", "South fleet"),
+  custom_params = c("nf" = "North fleet", "sf" = "South fleet"),
   model_results = here::here("readme_output.rda")
 )
 ```

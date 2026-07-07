@@ -20,8 +20,7 @@ create_yaml(
   prev_skeleton = NULL,
   prev_format = NULL,
   parameters = TRUE,
-  param_names = NULL,
-  param_values = NULL,
+  custom_params = NULL,
   type = "SAR"
 )
 }
@@ -95,17 +94,12 @@ base R.}
 \item{prev_format}{The format that the previous skeleton was directed to
 render to. Parameter is inherited from create_template.}
 
-\item{param_names}{List of additional custom parameter names to include in
-the skeleton YAML. Parameters automatically included: office, region,
-species (each of which are listed as individual parameters for this function,
-above).
-
-Default: NULL}
-
-\item{param_values}{List of values associated with the order
-of parameter names. Parameters automatically included:
-office, region, species (each of which are listed as
-individual parameters for this function, above).
+\item{custom_params}{Character vector of additional custom parameter
+names and values to include in the skeleton YAML. For example, a
+parameter "year2" and its value "2026" would have an entry of
+\code{c("year2" = "2026")}. Parameters automatically included: office, region,
+species (each of which are listed as individual parameters for this
+function, above).
 
 Default: NULL}
 
@@ -148,8 +142,7 @@ create_yaml(
   region = NULL,
   format = "pdf",
   parameters = TRUE,
-  param_names = NULL,
-  param_values = NULL,
+  custom_params = NULL,
   bib_file = "path/asar_references.bib",
   bib_name = "asar_references.bib",
   year = 2025
