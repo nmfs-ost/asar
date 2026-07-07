@@ -730,8 +730,8 @@ create_template <- function(
     if (title == "[TITLE]") {
       # TODO: update below so title gets updated if new input is added such as region/species/office
       if (rerender_skeleton) {
-        title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
-        if (title == "'Stock Assessment Report Template'") {
+        old_title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
+        if (old_title == "'Stock Assessment Report Template'" || !is.null(office) || species != "species" || !is.null(region) || year != format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y") || !is.null(spp_latin)) {
           title <- create_title(
             office = office,
             species = species,

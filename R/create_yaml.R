@@ -139,20 +139,31 @@ create_yaml <- function(
         yaml <- append(yaml, "params:", after = grep("output-file:", yaml))
       }
       # if species, office, and latin are updated - replace in space
-      if (!is.null(species) & any(grepl("species: 'species'", yaml))) {
-        yaml <- stringr::str_replace(yaml, yaml[grep("species: 'species'", yaml)], paste("  ", " ", "species: ", "'", species, "'", sep = ""))
+      if (is.null(species)) {
+      } else if (species == "species") {
+        yaml <- stringr::str_replace(yaml, "species: '.*'", "species: ''")
+      } else if (any(grepl("species: '.*'", yaml))) {
+        yaml <- stringr::str_replace(yaml, "species: '.*'", paste0("species: '", species, "'"))
       }
-      if (length(office) == 1 & !is.null(office) & any(grepl("office: ''", yaml))) {
-        yaml <- stringr::str_replace(yaml, yaml[grep("office: ''", yaml)], paste("  ", " ", "office: ", "'\\gls{", tolower(office), "}'", sep = ""))
+      if (length(office) == 1 && !is.null(office) && any(grepl("office: '.*'", yaml))) {
+        yaml <- stringr::str_replace(
+          yaml, 
+          "office: '.*'", 
+          paste0("office: '\\gls{", tolower(office), "}'"))
       }
-      if (!is.null(spp_latin) & any(grepl("spp_latin: ''", yaml))) {
-        yaml <- stringr::str_replace(yaml, yaml[grep("spp_latin: ''", yaml)], paste("  ", " ", "spp_latin: ", "'", spp_latin, "'", sep = ""))
+      if (!is.null(spp_latin) & any(grepl("spp_latin: '.*'", yaml))) {
+        yaml <- stringr::str_replace(
+          yaml, 
+          "spp_latin: '.*'", 
+          paste0("spp_latin: '", spp_latin, "'"))
       }
-      if (!is.null(region)) {
-        if (any(grepl("region: ''", yaml))) {
-          yaml <- stringr::str_replace(yaml, yaml[grep("region: ''", yaml)], paste("  ", " ", "region: ", "'", region, "'", sep = ""))
+      if (is.na(region)){region <- NULL}
+      if (!is.null(region) && any(grepl("region: '.*'", yaml))) {
+          yaml <- stringr::str_replace(
+            yaml, 
+            "region: '.*'", 
+            paste0("region: '", region, "'"))
         }
-      }
       # if params are not entered - use previous ones else change
       # TODO: add check for params not being replicated of default
       if (!is.null(param_names) | !is.null(param_values)) {
