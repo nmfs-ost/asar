@@ -84,7 +84,7 @@ add_authors <- function(
   }
 
   # Load in affiliation
-  affil <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE))
+  affil <- asar::affiliation_info
 
   author_list <- list()
   if (any(authors$name != "1")) { # nrow(authors) > 0 |

@@ -1,110 +1,177 @@
 #' Create Stock Assessment Report Template
 #'
-#' To see templates included in the base skeleton, please run
-#' 'list.files(system.file('templates','skeleton', package = 'asar'))'
-#'  in the console.
+#' Generates a set of Quarto files (.qmd) that set up a stock assessment report
+#' with supporting files. Function builds a YAML specific to the region and
+#' utilizes current resources and workflows from different NOAA Fishery Science
+#' Centers. Automates authorship, bibliography, and other report components.
 #'
-#' @param format Rendering format (pdf, html, or docx).
-#' @param type Type of report to build. Default is sar (a NOAA standard "Stock
-#' Assessment Report").
-#' @param office Regional Fisheries Science Center producing the
-#'  report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).
-#' @param region Full name of region in which the species is
-#'  evaluated (if applicable). If the region is not specified for
-#'   your center or species, do not use this variable.
-#' @param species Full common name for target species. Split
-#' naming with a space and capitalize first letter(s). Example:
-#' "Dover sole".
-#' @param spp_latin Latin name for the target species. Example:
-#' "Pomatomus saltatrix".
-#' @param year Year the assessment is being conducted. Default
-#' is the year in which the report is rendered.
-#' @param authors A character vector of author names with their accompanying
-#' affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
+#' @param format Report rendering format. Note: "docx" is currently unsupported
+#' and will default to "pdf".
+#' 
+#' Default: "pdf"
+#' 
+#' Options: "pdf", "html"
+#' 
+#' @param type Report template type.
+#' 
+#' Default: "sar" (a NOAA standard "Stock Assessment Report")
+#' 
+#' Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and Fishery Evaluation)
+#' 
+#' @param office Regional Fisheries Science Center producing the report.
+#' 
+#' Default: NULL
+#' 
+#' Options: "AFSC", "NEFSC", "NWFSC", "PIFSC", "SEFSC", "SWFSC"
+#' 
+#' @param region Full name of the stock's sub-region, if applicable.
+#' If the region is not specified for your center or species, leave default.
+#' Example: "US West Coast".
+#'
+#' Default: NULL
+#'
+#' @param species Common name of target species. Split multi-word names
+#' with space and capitalize first letter(s). Example: "Dover sole".
+#' 
+#' Default: "species"
+#' 
+#' @param spp_latin Latin name of target species. Example: "Pomatomus saltatrix".
+#' 
+#' Default: NULL
+#' 
+#' @param year Year the assessment is conducted.
+#' 
+#' Default: the year in which the report is rendered.
+#' 
+#' @param authors A character vector of author names and affiliations.
+#' For example, a Jane Doe at the NWFSC Seattle, Washington office
 #' would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
-#' is found in a database located in the package: \code{system.file("resources",
-#' "affiliation_info.csv", package = "asar")}. Keys to the office addresses
-#' follow the naming convention of the office acronym (ex. NWFSC) with a dash
-#' followed by the first initial of the city then the 2 letter abbreviation for
-#' the state the office is located in. If the city has 2 or more words such as
-#' Panama City, the first initial of each word is used in the key
-#' (ex. Panama City, Florida = PCFL)
-#' @param file_dir Location of stock assessment files produced
-#' by this function. Default is the working directory.
-#' @param title A custom title that is an alternative to the default title (composed
-#' in asar::create_title()). Example: "Management Track Assessments Spring 2024".
-#' @param model_results Path to standard output file made from `stockplotr::convert_output()`
+#' can be found with: \code{asar::affiliation_info}. Keys to the office addresses
+#' follow the naming convention of: office acronym (ex. NWFSC), a hyphen (-),
+#' the first initial of the city, and then the two-letter abbreviation for
+#' the state the office is located in. If the city has two or more words (e.g.,
+#' Panama City), the first initial of each word is used in the key
+#' (ex. Panama City, Florida = PCFL).
+#' 
+#' Default: NULL
+#' 
+#' Options: See \code{asar::affiliation_info}.
+#' 
+#' @param file_dir Directory where report files will be created.
+#' 
+#' Default: the working directory (`getwd()`).
+#' 
+#' @param title Custom report title superceding the default composed in
+#' \code{asar::create_title()}. Example: "Management Track Assessments Spring
+#' 2024".
+#' 
+#' Default: \verb{[TITLE]}. If species and region are provided, a title will be generated based on the report type, species, and region.
+#' 
+#' @param model_results Filepath to the standardized, converted model output
+#' .rda file generated with `stockplotr::convert_output()`, relative to the 
+#' skeleton .qmd file that will be created within the 'report' folder.
+#' 
+#' Default: NULL
+#' 
 #' @param tables_dir The location of the "tables" folder, which contains tables
-#' files. Default is the working directory.
+#' files
+#' 
+#' Default: the working directory
+#' 
 #' @param figures_dir The location of the "figures" folder, which contains
-#' figures files. Default is the working directory.
-#' @param spp_image File path to the species' image if not
-#' using the image included in the project's repository.
-#' @param bib_file File path to a .bib file used for citing references in
+#' figures files
+#' 
+#' Default: the working directory
+#' 
+#' @param spp_image Filepath to a custom species image to be used on the 
+#' report cover. Supported file extension is .png. 
+#' If empty, searches `asar` resources for a matching species name.
+#' 
+#' Default: NULL
+#' 
+#' @param bib_file File path to bibliography file (`.bib`) used for citing references in
 #' the report
+#' 
+#' Default: "asar_references.bib"
+#' 
 #' @param new_template TRUE/FALSE; Create a new template? If true,
 #' will pull the last saved stock assessment report skeleton.
-#' Default is false.
-#' @param rerender_skeleton Re-create the "skeleton.qmd" in your outline when
-#' changes to the main skeleton need to be made. This reproduces the
-#' yaml, output (if changed), preamble quantities, and restructures your
-#' sectioning in the skeleton if indicated. All files in your folder
-#' will remain as is.
-#' @param custom TRUE/FALSE; Build custom sectioning for the
-#' template, rather than the default for stock assessments in
-#' your region? Default is false.
-#' @param custom_sections List of existing sections to include in
-#' the custom template. Note: this only includes sections within
-#'  list.files(system.file("templates", "skeleton",
-#'  package = "asar")). The name of the section, rather than the
-#'  name of the file, can be used (e.g., 'abstract' rather than
-#'  '00_abstract.qmd'). If adding a new section, also use
-#'   parameters 'new_section' and 'section_location'.
-#' @param new_section Names of section(s) (e.g., introduction, results) or
+#' 
+#' Default: FALSE
+#' 
+#' @param rerender_skeleton TRUE/FALSE; Update the skeleton YAML and structure
+#' (R parameters, preamble, and skeleton sectioning) if relevant or indicated.
+#' All files in your folder, such as the `.qmd` child docs, will remain as is.
+#' 
+#' Default: FALSE
+#' 
+#' @param custom_sections List of existing sections to include in a custom
+#' template (rather than the default for stock assessments in your region).
+#' If adding a new section, also use arguments 'new_section' and 'section_location'.
+#'   
+#' Default: NULL
+#' 
+#' Options: sections within
+#' \code{list.files(system.file("templates", "skeleton", package = "asar"))}.
+#' The name of the section, rather than the name of the file, can be used
+#' (e.g., 'abstract' rather than '00_abstract.qmd'). 
+#' 
+#' @param new_section Names of section(s) (e.g., "Special Section") or
 #' subsection(s) (e.g., a section within the introduction) that will be
 #' added to the document. Please make a short list if >1 section/subsection
 #' will be added. The template will be created as a quarto document, added
 #' into the skeleton, and saved for reference.
+#'   
+#' Default: NULL
+#' 
 #' @param section_location Where new section(s)/subsection(s) will be added to
 #' the skeleton template. Please use the notation of 'placement-section'.
 #' For example, 'in-introduction' signifies that the new content would
 #' be created as a child document and added into the 02_introduction.qmd.
 #' To add >1 (sub)section, make the location a list corresponding to the
 #' order of (sub)section names listed in the 'new_section' parameter.
-#' @param parameters TRUE/FALSE; For
-#' parameterization of the script. Default is true.
-#' @param param_names List of parameter names that will be called
-#'  in the document. Parameters automatically included:
-#'  office, region, species (each of which are listed as
-#'  individual parameters for this function, above).
-#' @param param_values List of values associated with the order
-#'  of parameter names. Parameters automatically included:
-#'  office, region, species (each of which are listed as
-#'  individual parameters for this function, above).
-#' @param type Type of report to build. Default is "sar" (NOAA Fisheries
-#' Stock Assessment Report).
-#' @param custom TRUE/FALSE; Build custom sectioning for the
-#' template, rather than the default for stock assessments in
-#' your region? Default is false.
-#' @param custom_sections List of existing sections to include in
-#' the custom template. Note: this only includes sections within
-#'  list.files(system.file("templates", "skeleton",
-#'  package = "asar")). The name of the section, rather than the
-#'  name of the file, can be used (e.g., 'abstract' rather than
-#'  '00_abstract.qmd'). If adding a new section, also use
-#'   parameters 'new_section' and 'section_location'.
-#' @param spp_image File path to the species' image if not
-#' using the image included in the project's repository.
-#' @param bib_file File path to a .bib file used for citing references in
-#' the report
+#' 
+#' Default: NULL
+#' 
+#' @param custom_params Character vector of additional custom parameter 
+#' names and values to include in the skeleton YAML. For example, a 
+#' parameter "year2" and its value "2026" would have an entry of 
+#' `c("year2" = "2026")`. Parameters automatically included: office, region,
+#' species (each of which are listed as individual parameters for this
+#' function, above).
+#'  
+#' Default: NULL
+#' 
 #' @param ... Additional arguments passed into functions used in create_template
-#' such as `create_citation()`, `format_quarto()`, `add_chunk()`, ect
+#' such as `create_citation()` or `create_yaml()`.
 #'
-#' @return Create template and pull skeleton for a stock assessment report.
-#'         Function builds a YAML specific to the region and utilizes current
-#'         resources and workflows from different U.S. Fishery Science Centers.
-#'         General sections are called as child documents in this skeleton and
-#'         each of the child documents should be edited separately.
+#' @returns Path to the created `report/` directory containing files
+#' needed to produce the stock assessment report. Side effects include
+#' the creation of a directory structure, `.qmd` files, and support 
+#' files (e.g., images, `.bib`, `.tex`).
+#' 
+#' @details The function creates a `report/` subdirectory within `file_dir`.
+#' The primary file is a "skeleton" Quarto document that calls various 
+#' sections as child documents. The skeleton will be named based on arguments
+#' provided to \code{create_template()}. For instance, in example 2, below, 
+#' the filename would be 'sar_Dover_sole_skeleton.qmd'.
+#' 
+#' The skeleton contains several sections that should require little to no 
+#' editing by the user. These sections include: the yaml, Parameters R chunk,
+#' Preamble R chunk, Disclaimer, and Citations.
+#' 
+#' Report content is called as child documents in this skeleton. Each child
+#' document (e.g., '01_executive_summary.qmd', '02_introduction.qmd') should 
+#' be edited separately.
+#' 
+#' To see report templates included in the base skeleton, run
+#' \code{list.files(system.file('templates','skeleton', package = 'asar'))}.
+#' 
+#' For help with editing any of the sections in the skeleton, please see the
+#' cheatsheet, tutorial, and other resources available at \url{https://nmfs-ost.github.io/asar/}.
+#' 
+#' @seealso [add_authors()], [add_base_section()], [add_child()], [add_chunk()], [add_base_section()], [add_section()], [create_citation()], [create_figures_doc()], [create_tables_doc()], [create_title()], [create_yaml()], [format_quarto()]
+#'         
 #' @export
 #'
 #' @examples
@@ -144,7 +211,6 @@
 #'   authors = c("John Snow" = "AFSC"),
 #'   new_section = c("a_new_section", "another_new_section"),
 #'   section_location = c("before-introduction", "after-introduction"),
-#'   custom = TRUE,
 #'   custom_sections = c("executive_summary", "introduction")
 #' )
 #'
@@ -156,16 +222,13 @@
 #'   species = "Bluefish",
 #'   spp_latin = "Pomatomus saltatrix",
 #'   year = 2010,
-#'   authors = c("John Snow", "Danny Phantom", "Patrick Star"),
+#'   authors = c("John Snow" = "NEFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC-ML"),
 #'   title = "Management Track Assessments Spring 2024",
-#'   parameters = TRUE,
-#'   param_names = c("region", "year"),
-#'   param_values = c("my_region", "2024"),
+#'   custom_params = c("region2" = "North Coast", "year2" = "2026"),
 #'   model_results = here::here("folder", "std_output.rda"),
 #'   new_section = "an_additional_section",
 #'   section_location = "before-discussion",
 #'   type = "sar",
-#'   custom = TRUE,
 #'   custom_sections = c("executive_summary", "introduction", "discussion"),
 #'   spp_image = "dir/containing/spp_image"
 #' )
@@ -174,7 +237,7 @@
 create_template <- function(
   format = "pdf",
   type = "sar",
-  office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
+  office = NULL,
   region = NULL,
   species = "species",
   spp_latin = NULL,
@@ -185,17 +248,14 @@ create_template <- function(
   model_results = NULL,
   tables_dir = getwd(),
   figures_dir = getwd(),
-  spp_image = "",
+  spp_image = NULL,
   bib_file = "asar_references.bib",
   new_template = TRUE,
   rerender_skeleton = FALSE,
-  custom = FALSE,
   custom_sections = NULL,
   new_section = NULL,
   section_location = NULL,
-  parameters = TRUE,
-  param_names = NULL,
-  param_values = NULL,
+  custom_params = NULL,
   ...
 ) {
   # Check input type
@@ -234,8 +294,8 @@ create_template <- function(
   }
 
   if (!is.null(office) & length(office) == 1) {
-    office <- match.arg(office, several.ok = FALSE)
-  } else if (length(office) > 1) {
+    office <- match.arg(office, choices = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"), several.ok = FALSE)
+  } else if (length(office) > 1 | is.null(office)) {
     office <- ""
   }
 
@@ -434,11 +494,11 @@ create_template <- function(
     # format_files <- list(before_body_file, header_file)
 
     #### Links to files for yaml ----
-    spp_image <- ifelse(
-      spp_image == "",
-      system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar"),
-      spp_image
-    )
+    if (is.null(spp_image) && species == "species"){
+      spp_image <- ""
+    } else if (is.null(spp_image) && species != "species") {
+      spp_image <- system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar")
+    } 
 
     # Add bib file
     if (bib_file == "asar_references.bib") {
@@ -663,8 +723,8 @@ create_template <- function(
     if (title == "[TITLE]") {
       # TODO: update below so title gets updated if new input is added such as region/species/office
       if (rerender_skeleton) {
-        title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
-        if (title == "'Stock Assessment Report Template'") {
+        old_title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
+        if (old_title == "'Stock Assessment Report Template'" || !is.null(office) || species != "species" || !is.null(region) || year != format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y") || !is.null(spp_latin)) {
           title <- create_title(
             office = office,
             species = species,
@@ -705,6 +765,10 @@ create_template <- function(
     #   }
     # }
 
+    parameters <- TRUE
+    param_names <- custom_params |> names()
+    param_values <- custom_params |> unname()
+    
     yaml <- create_yaml(
       prev_format = prev_format,
       format = format,
@@ -718,8 +782,7 @@ create_template <- function(
       spp_latin = spp_latin,
       region = region,
       parameters = parameters,
-      param_names = param_names,
-      param_values = param_values,
+      custom_params = custom_params,
       bib_name = bib_name,
       bib_file = bib_file,
       year = year,
@@ -1063,10 +1126,10 @@ create_template <- function(
     # at this point, files_to_copy is the most updated outline
 
     ###### Rerender & not custom ----
-    # add check if user set custom sections, but did not set custom = TRUE
+    # add check if user set custom sections
     if (!is.null(new_section) || !is.null(custom_sections)) custom <- TRUE
 
-    if (rerender_skeleton & custom == FALSE) {
+    if (rerender_skeleton & is.null(custom_sections)) {
       # identify all previous sections
       sections <- stringr::str_extract_all(
         prev_skeleton,
@@ -1079,7 +1142,7 @@ create_template <- function(
         sections,
         label = gsub(".qmd", "", unlist(sections))
       )
-    } else if (custom == FALSE) {
+    } else if (is.null(custom_sections)) {
       sections <- add_child(
         sort(c(files_to_copy, tables_doc_name, figures_doc_name)),
         # TODO: need to remove the numbers proceeding the names as well

@@ -7,7 +7,7 @@
 create_template(
   format = "pdf",
   type = "sar",
-  office = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"),
+  office = NULL,
   region = NULL,
   species = "species",
   spp_latin = NULL,
@@ -18,136 +18,190 @@ create_template(
   model_results = NULL,
   tables_dir = getwd(),
   figures_dir = getwd(),
-  spp_image = "",
+  spp_image = NULL,
   bib_file = "asar_references.bib",
   new_template = TRUE,
   rerender_skeleton = FALSE,
-  custom = FALSE,
   custom_sections = NULL,
   new_section = NULL,
   section_location = NULL,
-  parameters = TRUE,
-  param_names = NULL,
-  param_values = NULL,
+  custom_params = NULL,
   ...
 )
 }
 \arguments{
-\item{format}{Rendering format (pdf, html, or docx).}
+\item{format}{Report rendering format. Note: "docx" is currently unsupported
+and will default to "pdf".
 
-\item{type}{Type of report to build. Default is "sar" (NOAA Fisheries
-Stock Assessment Report).}
+Default: "pdf"
 
-\item{office}{Regional Fisheries Science Center producing the
-report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
+Options: "pdf", "html"}
 
-\item{region}{Full name of region in which the species is
-evaluated (if applicable). If the region is not specified for
-your center or species, do not use this variable.}
+\item{type}{Report template type.
 
-\item{species}{Full common name for target species. Split
-naming with a space and capitalize first letter(s). Example:
-"Dover sole".}
+Default: "sar" (a NOAA standard "Stock Assessment Report")
 
-\item{spp_latin}{Latin name for the target species. Example:
-"Pomatomus saltatrix".}
+Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and Fishery Evaluation)}
 
-\item{year}{Year the assessment is being conducted. Default
-is the year in which the report is rendered.}
+\item{office}{Regional Fisheries Science Center producing the report.
 
-\item{authors}{A character vector of author names with their accompanying
-affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
+Default: NULL
+
+Options: "AFSC", "NEFSC", "NWFSC", "PIFSC", "SEFSC", "SWFSC"}
+
+\item{region}{Full name of the stock's sub-region, if applicable.
+If the region is not specified for your center or species, leave default.
+Example: "US West Coast".
+
+Default: NULL}
+
+\item{species}{Common name of target species. Split multi-word names
+with space and capitalize first letter(s). Example: "Dover sole".
+
+Default: "species"}
+
+\item{spp_latin}{Latin name of target species. Example: "Pomatomus saltatrix".
+
+Default: NULL}
+
+\item{year}{Year the assessment is conducted.
+
+Default: the year in which the report is rendered.}
+
+\item{authors}{A character vector of author names and affiliations.
+For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
-is found in a database located in the package: \code{system.file("resources",
-"affiliation_info.csv", package = "asar")}. Keys to the office addresses
-follow the naming convention of the office acronym (ex. NWFSC) with a dash
-followed by the first initial of the city then the 2 letter abbreviation for
-the state the office is located in. If the city has 2 or more words such as
-Panama City, the first initial of each word is used in the key
-(ex. Panama City, Florida = PCFL)}
+can be found with: \code{asar::affiliation_info}. Keys to the office addresses
+follow the naming convention of: office acronym (ex. NWFSC), a hyphen (-),
+the first initial of the city, and then the two-letter abbreviation for
+the state the office is located in. If the city has two or more words (e.g.,
+Panama City), the first initial of each word is used in the key
+(ex. Panama City, Florida = PCFL).
 
-\item{file_dir}{Location of stock assessment files produced
-by this function. Default is the working directory.}
+Default: NULL
 
-\item{title}{A custom title that is an alternative to the default title (composed
-in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
+Options: See \code{asar::affiliation_info}.}
 
-\item{model_results}{Path to standard output file made from \code{stockplotr::convert_output()}}
+\item{file_dir}{Directory where report files will be created.
+
+Default: the working directory (\code{getwd()}).}
+
+\item{title}{Custom report title superceding the default composed in
+\code{asar::create_title()}. Example: "Management Track Assessments Spring
+2024".
+
+Default: \verb{[TITLE]}. If species and region are provided, a title will be generated based on the report type, species, and region.}
+
+\item{model_results}{Filepath to the standardized, converted model output
+.rda file generated with \code{stockplotr::convert_output()}, relative to the
+skeleton .qmd file that will be created within the 'report' folder.
+
+Default: NULL}
 
 \item{tables_dir}{The location of the "tables" folder, which contains tables
-files. Default is the working directory.}
+files
+
+Default: the working directory}
 
 \item{figures_dir}{The location of the "figures" folder, which contains
-figures files. Default is the working directory.}
+figures files
 
-\item{spp_image}{File path to the species' image if not
-using the image included in the project's repository.}
+Default: the working directory}
 
-\item{bib_file}{File path to a .bib file used for citing references in
-the report}
+\item{spp_image}{Filepath to a custom species image to be used on the
+report cover. Supported file extension is .png.
+If empty, searches \code{asar} resources for a matching species name.
+
+Default: NULL}
+
+\item{bib_file}{File path to bibliography file (\code{.bib}) used for citing references in
+the report
+
+Default: "asar_references.bib"}
 
 \item{new_template}{TRUE/FALSE; Create a new template? If true,
 will pull the last saved stock assessment report skeleton.
-Default is false.}
 
-\item{rerender_skeleton}{Re-create the "skeleton.qmd" in your outline when
-changes to the main skeleton need to be made. This reproduces the
-yaml, output (if changed), preamble quantities, and restructures your
-sectioning in the skeleton if indicated. All files in your folder
-will remain as is.}
+Default: FALSE}
 
-\item{custom}{TRUE/FALSE; Build custom sectioning for the
-template, rather than the default for stock assessments in
-your region? Default is false.}
+\item{rerender_skeleton}{TRUE/FALSE; Update the skeleton YAML and structure
+(R parameters, preamble, and skeleton sectioning) if relevant or indicated.
+All files in your folder, such as the \code{.qmd} child docs, will remain as is.
 
-\item{custom_sections}{List of existing sections to include in
-the custom template. Note: this only includes sections within
-list.files(system.file("templates", "skeleton",
-package = "asar")). The name of the section, rather than the
-name of the file, can be used (e.g., 'abstract' rather than
-'00_abstract.qmd'). If adding a new section, also use
-parameters 'new_section' and 'section_location'.}
+Default: FALSE}
 
-\item{new_section}{Names of section(s) (e.g., introduction, results) or
+\item{custom_sections}{List of existing sections to include in a custom
+template (rather than the default for stock assessments in your region).
+If adding a new section, also use arguments 'new_section' and 'section_location'.
+
+Default: NULL
+
+Options: sections within
+\code{list.files(system.file("templates", "skeleton", package = "asar"))}.
+The name of the section, rather than the name of the file, can be used
+(e.g., 'abstract' rather than '00_abstract.qmd').}
+
+\item{new_section}{Names of section(s) (e.g., "Special Section") or
 subsection(s) (e.g., a section within the introduction) that will be
 added to the document. Please make a short list if >1 section/subsection
 will be added. The template will be created as a quarto document, added
-into the skeleton, and saved for reference.}
+into the skeleton, and saved for reference.
+
+Default: NULL}
 
 \item{section_location}{Where new section(s)/subsection(s) will be added to
 the skeleton template. Please use the notation of 'placement-section'.
 For example, 'in-introduction' signifies that the new content would
 be created as a child document and added into the 02_introduction.qmd.
 To add >1 (sub)section, make the location a list corresponding to the
-order of (sub)section names listed in the 'new_section' parameter.}
+order of (sub)section names listed in the 'new_section' parameter.
 
-\item{parameters}{TRUE/FALSE; For
-parameterization of the script. Default is true.}
+Default: NULL}
 
-\item{param_names}{List of parameter names that will be called
-in the document. Parameters automatically included:
-office, region, species (each of which are listed as
-individual parameters for this function, above).}
+\item{custom_params}{Character vector of additional custom parameter
+names and values to include in the skeleton YAML. For example, a
+parameter "year2" and its value "2026" would have an entry of
+\code{c("year2" = "2026")}. Parameters automatically included: office, region,
+species (each of which are listed as individual parameters for this
+function, above).
 
-\item{param_values}{List of values associated with the order
-of parameter names. Parameters automatically included:
-office, region, species (each of which are listed as
-individual parameters for this function, above).}
+Default: NULL}
 
 \item{...}{Additional arguments passed into functions used in create_template
-such as \code{create_citation()}, \code{format_quarto()}, \code{add_chunk()}, ect}
+such as \code{create_citation()} or \code{create_yaml()}.}
 }
 \value{
-Create template and pull skeleton for a stock assessment report.
-Function builds a YAML specific to the region and utilizes current
-resources and workflows from different U.S. Fishery Science Centers.
-General sections are called as child documents in this skeleton and
-each of the child documents should be edited separately.
+Path to the created \verb{report/} directory containing files
+needed to produce the stock assessment report. Side effects include
+the creation of a directory structure, \code{.qmd} files, and support
+files (e.g., images, \code{.bib}, \code{.tex}).
 }
 \description{
-To see templates included in the base skeleton, please run
-'list.files(system.file('templates','skeleton', package = 'asar'))'
-in the console.
+Generates a set of Quarto files (.qmd) that set up a stock assessment report
+with supporting files. Function builds a YAML specific to the region and
+utilizes current resources and workflows from different NOAA Fishery Science
+Centers. Automates authorship, bibliography, and other report components.
+}
+\details{
+The function creates a \verb{report/} subdirectory within \code{file_dir}.
+The primary file is a "skeleton" Quarto document that calls various
+sections as child documents. The skeleton will be named based on arguments
+provided to \code{create_template()}. For instance, in example 2, below,
+the filename would be 'sar_Dover_sole_skeleton.qmd'.
+
+The skeleton contains several sections that should require little to no
+editing by the user. These sections include: the yaml, Parameters R chunk,
+Preamble R chunk, Disclaimer, and Citations.
+
+Report content is called as child documents in this skeleton. Each child
+document (e.g., '01_executive_summary.qmd', '02_introduction.qmd') should
+be edited separately.
+
+To see report templates included in the base skeleton, run
+\code{list.files(system.file('templates','skeleton', package = 'asar'))}.
+
+For help with editing any of the sections in the skeleton, please see the
+cheatsheet, tutorial, and other resources available at \url{https://nmfs-ost.github.io/asar/}.
 }
 \examples{
 \dontrun{
@@ -186,7 +240,6 @@ asar::create_template(
   authors = c("John Snow" = "AFSC"),
   new_section = c("a_new_section", "another_new_section"),
   section_location = c("before-introduction", "after-introduction"),
-  custom = TRUE,
   custom_sections = c("executive_summary", "introduction")
 )
 
@@ -198,19 +251,19 @@ create_template(
   species = "Bluefish",
   spp_latin = "Pomatomus saltatrix",
   year = 2010,
-  authors = c("John Snow", "Danny Phantom", "Patrick Star"),
+  authors = c("John Snow" = "NEFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC-ML"),
   title = "Management Track Assessments Spring 2024",
-  parameters = TRUE,
-  param_names = c("region", "year"),
-  param_values = c("my_region", "2024"),
+  custom_params = c("region2" = "North Coast", "year2" = "2026"),
   model_results = here::here("folder", "std_output.rda"),
   new_section = "an_additional_section",
   section_location = "before-discussion",
   type = "sar",
-  custom = TRUE,
   custom_sections = c("executive_summary", "introduction", "discussion"),
   spp_image = "dir/containing/spp_image"
 )
 }
 
+}
+\seealso{
+\code{\link[=add_authors]{add_authors()}}, \code{\link[=add_base_section]{add_base_section()}}, \code{\link[=add_child]{add_child()}}, \code{\link[=add_chunk]{add_chunk()}}, \code{\link[=add_base_section]{add_base_section()}}, \code{\link[=add_section]{add_section()}}, \code{\link[=create_citation]{create_citation()}}, \code{\link[=create_figures_doc]{create_figures_doc()}}, \code{\link[=create_tables_doc]{create_tables_doc()}}, \code{\link[=create_title]{create_title()}}, \code{\link[=create_yaml]{create_yaml()}}, \code{\link[=format_quarto]{format_quarto()}}
 }

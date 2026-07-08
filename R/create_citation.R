@@ -58,7 +58,7 @@ create_citation <- function(
       )
 
     # Extract location of primary author
-    primary_author_office <- utils::read.csv(system.file("resources", "affiliation_info.csv", package = "asar", mustWork = TRUE)) |>
+    primary_author_office <- asar::affiliation_info |>
       dplyr::filter(affiliation == author_data_frame$office[1])
 
     # Check

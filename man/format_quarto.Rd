@@ -7,10 +7,18 @@
 format_quarto(format = "pdf", type = "sar")
 }
 \arguments{
-\item{format}{Rendering format (pdf, html, or docx).}
+\item{format}{Report rendering format. Note: "docx" is currently unsupported
+and will default to "pdf".
 
-\item{type}{Type of report to build. Default is "sar" (NOAA Fisheries
-Stock Assessment Report).}
+Default: "pdf"
+
+Options: "pdf", "html"}
+
+\item{type}{Report template type.
+
+Default: "sar" (a NOAA standard "Stock Assessment Report")
+
+Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and Fishery Evaluation)}
 }
 \value{
 This function returns part of a quarto YAML header

@@ -52,6 +52,9 @@ In this case, you can disregard the preamble chunk (its label is 'output_and_qua
 
 Yes! You can convert your own output into the expected standardized format without `stockplotr::convert_output()`, by following the guidance in the ["Standardizing Assessment Model Output" `stockplotr` vignette](https://nmfs-ost.github.io/stockplotr/articles/convert_output_details.html).
 
+## Where are the acronyms for each office (for the `authors` argument)?
+Run `asar::affiliation_info` to see a list of the acronyms for each office.
+
 ## `create_template()` isn't working. What do I do?
 
 This could mean a lot of things. Most of the time, when `create_template()` is not working, it means you are missing a key argument to the function. Make sure to read the error message(s) clearly and check the 'report' folder where all of the file were created. If you have exhausted your options and double checked that you have all of the correct arguments, then please open an [issue](https://github.com/nmfs-ost/asar/issues).

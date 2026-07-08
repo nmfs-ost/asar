@@ -10,7 +10,7 @@ create_yaml(
   region = NULL,
   species = "species",
   spp_latin = NULL,
-  spp_image = "",
+  spp_image = NULL,
   year = NULL,
   bib_name = NULL,
   bib_file = "asar_references.bib",
@@ -20,52 +20,72 @@ create_yaml(
   prev_skeleton = NULL,
   prev_format = NULL,
   parameters = TRUE,
-  param_names = NULL,
-  param_values = NULL,
+  custom_params = NULL,
   type = "SAR"
 )
 }
 \arguments{
-\item{format}{Rendering format (pdf, html, or docx).}
+\item{format}{Report rendering format. Note: "docx" is currently unsupported
+and will default to "pdf".
 
-\item{office}{Regional Fisheries Science Center producing the
-report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).}
+Default: "pdf"
 
-\item{region}{Full name of region in which the species is
-evaluated (if applicable). If the region is not specified for
-your center or species, do not use this variable.}
+Options: "pdf", "html"}
 
-\item{species}{Full common name for target species. Split
-naming with a space and capitalize first letter(s). Example:
-"Dover sole".}
+\item{office}{Regional Fisheries Science Center producing the report.
 
-\item{spp_latin}{Latin name for the target species. Example:
-"Pomatomus saltatrix".}
+Default: NULL
 
-\item{spp_image}{File path to the species' image if not
-using the image included in the project's repository.}
+Options: "AFSC", "NEFSC", "NWFSC", "PIFSC", "SEFSC", "SWFSC"}
 
-\item{year}{Year the assessment is being conducted. Default
-is the year in which the report is rendered.}
+\item{region}{Full name of the stock's sub-region, if applicable.
+If the region is not specified for your center or species, leave default.
+Example: "US West Coast".
+
+Default: NULL}
+
+\item{species}{Common name of target species. Split multi-word names
+with space and capitalize first letter(s). Example: "Dover sole".
+
+Default: "species"}
+
+\item{spp_latin}{Latin name of target species. Example: "Pomatomus saltatrix".
+
+Default: NULL}
+
+\item{spp_image}{Filepath to a custom species image to be used on the
+report cover. Supported file extension is .png.
+If empty, searches \code{asar} resources for a matching species name.
+
+Default: NULL}
+
+\item{year}{Year the assessment is conducted.
+
+Default: the year in which the report is rendered.}
 
 \item{bib_name}{Name of a bib file being added into the yaml. For example,
 "asar.bib".}
 
-\item{bib_file}{File path to a .bib file used for citing references in
-the report}
+\item{bib_file}{File path to bibliography file (\code{.bib}) used for citing references in
+the report
+
+Default: "asar_references.bib"}
 
 \item{author_list}{A list of strings containing pre-formatted author names
 and affiliations that would be found in the format in a yaml of a quarto
 file when using base R function \code{cat()}.}
 
-\item{title}{A custom title that is an alternative to the default title (composed
-in asar::create_title()). Example: "Management Track Assessments Spring 2024".}
+\item{title}{Custom report title superceding the default composed in
+\code{asar::create_title()}. Example: "Management Track Assessments Spring
+2024".
 
-\item{rerender_skeleton}{Re-create the "skeleton.qmd" in your outline when
-changes to the main skeleton need to be made. This reproduces the
-yaml, output (if changed), preamble quantities, and restructures your
-sectioning in the skeleton if indicated. All files in your folder
-will remain as is.}
+Default: \verb{[TITLE]}. If species and region are provided, a title will be generated based on the report type, species, and region.}
+
+\item{rerender_skeleton}{TRUE/FALSE; Update the skeleton YAML and structure
+(R parameters, preamble, and skeleton sectioning) if relevant or indicated.
+All files in your folder, such as the \code{.qmd} child docs, will remain as is.
+
+Default: FALSE}
 
 \item{prev_skeleton}{Vector of strings containing all the lines of the
 previous skeleton file. File is read in using the function readLines from
@@ -74,21 +94,20 @@ base R.}
 \item{prev_format}{The format that the previous skeleton was directed to
 render to. Parameter is inherited from create_template.}
 
-\item{parameters}{TRUE/FALSE; For
-parameterization of the script. Default is true.}
+\item{custom_params}{Character vector of additional custom parameter
+names and values to include in the skeleton YAML. For example, a
+parameter "year2" and its value "2026" would have an entry of
+\code{c("year2" = "2026")}. Parameters automatically included: office, region,
+species (each of which are listed as individual parameters for this
+function, above).
 
-\item{param_names}{List of parameter names that will be called
-in the document. Parameters automatically included:
-office, region, species (each of which are listed as
-individual parameters for this function, above).}
+Default: NULL}
 
-\item{param_values}{List of values associated with the order
-of parameter names. Parameters automatically included:
-office, region, species (each of which are listed as
-individual parameters for this function, above).}
+\item{type}{Report template type.
 
-\item{type}{Type of report to build. Default is "sar" (NOAA Fisheries
-Stock Assessment Report).}
+Default: "sar" (a NOAA standard "Stock Assessment Report")
+
+Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and Fishery Evaluation)}
 }
 \value{
 Create a string indicating the important formatting pieces for a
@@ -123,8 +142,7 @@ create_yaml(
   region = NULL,
   format = "pdf",
   parameters = TRUE,
-  param_names = NULL,
-  param_values = NULL,
+  custom_params = NULL,
   bib_file = "path/asar_references.bib",
   bib_name = "asar_references.bib",
   year = 2025

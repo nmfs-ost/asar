@@ -47,8 +47,7 @@
 #'   region = NULL,
 #'   format = "pdf",
 #'   parameters = TRUE,
-#'   param_names = NULL,
-#'   param_values = NULL,
+#'   custom_params = NULL,
 #'   bib_file = "path/asar_references.bib",
 #'   bib_name = "asar_references.bib",
 #'   year = 2025
@@ -60,7 +59,7 @@ create_yaml <- function(
   region = NULL,
   species = "species",
   spp_latin = NULL,
-  spp_image = "",
+  spp_image = NULL,
   year = NULL,
   bib_name = NULL,
   bib_file = "asar_references.bib",
@@ -70,10 +69,13 @@ create_yaml <- function(
   prev_skeleton = NULL,
   prev_format = NULL,
   parameters = TRUE,
-  param_names = NULL,
-  param_values = NULL,
+  custom_params = NULL,
   type = "SAR"
 ) {
+  
+  param_names <- custom_params |> names()
+  param_values <- custom_params |> unname()
+  
   # check first if want to rerender current skeleton
   if (rerender_skeleton) {
     # Extract yaml from current template
@@ -139,25 +141,36 @@ create_yaml <- function(
         yaml <- append(yaml, "params:", after = grep("output-file:", yaml))
       }
       # if species, office, and latin are updated - replace in space
-      if (!is.null(species) & any(grepl("species: 'species'", yaml))) {
-        yaml <- stringr::str_replace(yaml, yaml[grep("species: 'species'", yaml)], paste("  ", " ", "species: ", "'", species, "'", sep = ""))
+      if (is.null(species)) {
+      } else if (species == "species") {
+        yaml <- stringr::str_replace(yaml, "species: '.*'", "species: ''")
+      } else if (any(grepl("species: '.*'", yaml))) {
+        yaml <- stringr::str_replace(yaml, "species: '.*'", paste0("species: '", species, "'"))
       }
-      if (length(office) == 1 & !is.null(office) & any(grepl("office: ''", yaml))) {
-        yaml <- stringr::str_replace(yaml, yaml[grep("office: ''", yaml)], paste("  ", " ", "office: ", "'\\gls{", tolower(office), "}'", sep = ""))
+      if (length(office) == 1 && !is.null(office) && any(grepl("office: '.*'", yaml))) {
+        yaml <- stringr::str_replace(
+          yaml, 
+          "office: '.*'", 
+          paste0("office: '\\gls{", tolower(office), "}'"))
       }
-      if (!is.null(spp_latin) & any(grepl("spp_latin: ''", yaml))) {
-        yaml <- stringr::str_replace(yaml, yaml[grep("spp_latin: ''", yaml)], paste("  ", " ", "spp_latin: ", "'", spp_latin, "'", sep = ""))
+      if (!is.null(spp_latin) & any(grepl("spp_latin: '.*'", yaml))) {
+        yaml <- stringr::str_replace(
+          yaml, 
+          "spp_latin: '.*'", 
+          paste0("spp_latin: '", spp_latin, "'"))
       }
-      if (!is.null(region)) {
-        if (any(grepl("region: ''", yaml))) {
-          yaml <- stringr::str_replace(yaml, yaml[grep("region: ''", yaml)], paste("  ", " ", "region: ", "'", region, "'", sep = ""))
+      if (is.na(region)){region <- NULL}
+      if (!is.null(region) && any(grepl("region: '.*'", yaml))) {
+          yaml <- stringr::str_replace(
+            yaml, 
+            "region: '.*'", 
+            paste0("region: '", region, "'"))
         }
-      }
       # if params are not entered - use previous ones else change
       # TODO: add check for params not being replicated of default
       if (!is.null(param_names) | !is.null(param_values)) {
         if (length(param_names) != length(param_values)) {
-          print("Please define ALL parameter names (param_names) and values (param_values).")
+          print("Please define ALL parameter names and values in `custom_params`.")
         } else {
           add_params <- NULL
           for (i in seq_along(param_names)) {
@@ -219,7 +232,12 @@ create_yaml <- function(
     )
 
     # Add species image on title page
-    if (spp_image == "") {
+    if (species == "species") {
+      yaml <- paste0(
+        yaml,
+        "cover: ", "\n"
+      )
+    } else if (is.null(spp_image)) {
       yaml <- paste0(
         yaml,
         # image as pulled in from above
@@ -278,7 +296,7 @@ create_yaml <- function(
       if (!is.null(param_names) & !is.null(param_values)) {
         # check there are the same number of names and values
         if (length(param_names) != length(param_values)) {
-          print("Please define ALL parameter names (param_names) and values (param_values).")
+          print("Please define ALL parameter names and values in `custom_params`.")
         } else {
           add_params <- NULL
           for (i in seq_along(param_names)) {
