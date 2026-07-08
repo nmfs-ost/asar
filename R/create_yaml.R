@@ -72,10 +72,9 @@ create_yaml <- function(
   custom_params = NULL,
   type = "SAR"
 ) {
-  
   param_names <- custom_params |> names()
   param_values <- custom_params |> unname()
-  
+
   # check first if want to rerender current skeleton
   if (rerender_skeleton) {
     # Extract yaml from current template
@@ -141,31 +140,35 @@ create_yaml <- function(
         yaml <- append(yaml, "params:", after = grep("output-file:", yaml))
       }
       # if species, office, and latin are updated - replace in space
-      if (is.null(species)) {
-      } else if (species == "species") {
+      if (is.null(species)) {} else if (species == "species") {
         yaml <- stringr::str_replace(yaml, "species: '.*'", "species: ''")
       } else if (any(grepl("species: '.*'", yaml))) {
         yaml <- stringr::str_replace(yaml, "species: '.*'", paste0("species: '", species, "'"))
       }
       if (length(office) == 1 && !is.null(office) && any(grepl("office: '.*'", yaml))) {
         yaml <- stringr::str_replace(
-          yaml, 
-          "office: '.*'", 
-          paste0("office: '\\gls{", tolower(office), "}'"))
+          yaml,
+          "office: '.*'",
+          paste0("office: '\\gls{", tolower(office), "}'")
+        )
       }
       if (!is.null(spp_latin) & any(grepl("spp_latin: '.*'", yaml))) {
         yaml <- stringr::str_replace(
-          yaml, 
-          "spp_latin: '.*'", 
-          paste0("spp_latin: '", spp_latin, "'"))
+          yaml,
+          "spp_latin: '.*'",
+          paste0("spp_latin: '", spp_latin, "'")
+        )
       }
-      if (is.na(region)){region <- NULL}
+      if (is.na(region)) {
+        region <- NULL
+      }
       if (!is.null(region) && any(grepl("region: '.*'", yaml))) {
-          yaml <- stringr::str_replace(
-            yaml, 
-            "region: '.*'", 
-            paste0("region: '", region, "'"))
-        }
+        yaml <- stringr::str_replace(
+          yaml,
+          "region: '.*'",
+          paste0("region: '", region, "'")
+        )
+      }
       # if params are not entered - use previous ones else change
       # TODO: add check for params not being replicated of default
       if (!is.null(param_names) | !is.null(param_values)) {
