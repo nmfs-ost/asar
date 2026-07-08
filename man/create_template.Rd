@@ -25,8 +25,7 @@ create_template(
   custom_sections = NULL,
   new_section = NULL,
   section_location = NULL,
-  param_names = NULL,
-  param_values = NULL,
+  custom_params = NULL,
   ...
 )
 }
@@ -159,17 +158,12 @@ order of (sub)section names listed in the 'new_section' parameter.
 
 Default: NULL}
 
-\item{param_names}{List of additional custom parameter names to include in
-the skeleton YAML. Parameters automatically included: office, region,
-species (each of which are listed as individual parameters for this function,
-above).
-
-Default: NULL}
-
-\item{param_values}{List of values associated with the order
-of parameter names. Parameters automatically included:
-office, region, species (each of which are listed as
-individual parameters for this function, above).
+\item{custom_params}{Character vector of additional custom parameter
+names and values to include in the skeleton YAML. For example, a
+parameter "year2" and its value "2026" would have an entry of
+\code{c("year2" = "2026")}. Parameters automatically included: office, region,
+species (each of which are listed as individual parameters for this
+function, above).
 
 Default: NULL}
 
@@ -259,8 +253,7 @@ create_template(
   year = 2010,
   authors = c("John Snow" = "NEFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC-ML"),
   title = "Management Track Assessments Spring 2024",
-  param_names = c("region2", "year2"),
-  param_values = c("my_region2", "2024"),
+  custom_params = c("region2" = "North Coast", "year2" = "2026"),
   model_results = here::here("folder", "std_output.rda"),
   new_section = "an_additional_section",
   section_location = "before-discussion",

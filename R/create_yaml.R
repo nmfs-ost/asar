@@ -47,8 +47,7 @@
 #'   region = NULL,
 #'   format = "pdf",
 #'   parameters = TRUE,
-#'   param_names = NULL,
-#'   param_values = NULL,
+#'   custom_params = NULL,
 #'   bib_file = "path/asar_references.bib",
 #'   bib_name = "asar_references.bib",
 #'   year = 2025
@@ -70,10 +69,13 @@ create_yaml <- function(
   prev_skeleton = NULL,
   prev_format = NULL,
   parameters = TRUE,
-  param_names = NULL,
-  param_values = NULL,
+  custom_params = NULL,
   type = "SAR"
 ) {
+  
+  param_names <- custom_params |> names()
+  param_values <- custom_params |> unname()
+  
   # check first if want to rerender current skeleton
   if (rerender_skeleton) {
     # Extract yaml from current template
@@ -168,7 +170,7 @@ create_yaml <- function(
       # TODO: add check for params not being replicated of default
       if (!is.null(param_names) | !is.null(param_values)) {
         if (length(param_names) != length(param_values)) {
-          print("Please define ALL parameter names (param_names) and values (param_values).")
+          print("Please define ALL parameter names and values in `custom_params`.")
         } else {
           add_params <- NULL
           for (i in seq_along(param_names)) {
@@ -294,7 +296,7 @@ create_yaml <- function(
       if (!is.null(param_names) & !is.null(param_values)) {
         # check there are the same number of names and values
         if (length(param_names) != length(param_values)) {
-          print("Please define ALL parameter names (param_names) and values (param_values).")
+          print("Please define ALL parameter names and values in `custom_params`.")
         } else {
           add_params <- NULL
           for (i in seq_along(param_names)) {
