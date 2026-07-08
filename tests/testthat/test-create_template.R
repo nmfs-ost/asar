@@ -140,10 +140,10 @@ test_that("create_template() creates correct files", {
 
   # erase temporary testing files
   unlink(fs::path(path, "report"), recursive = T)
-  
-  
+
+
   # Test case 3: custom sections
-  
+
   create_template(
     new_template = TRUE,
     format = "pdf",
@@ -156,11 +156,11 @@ test_that("create_template() creates correct files", {
   ) |>
     suppressWarnings() |>
     suppressMessages()
-  
+
   long_inputs_output_path <- file.path(path, "report")
   object_report_files <- list.files(long_inputs_output_path)
   object_support_files <- list.files(file.path(long_inputs_output_path, "support_files"))
-  
+
   # Define expected report files for Rex sole
   expect_report_files <- c(
     "01_executive_summary.qmd",
@@ -186,13 +186,13 @@ test_that("create_template() creates correct files", {
     "us_doc_logo.png",
     "cjfas.csl"
   )
-  
+
   # Check if all expected report files are created for Rex sole
   expect_true(all(sort(expect_report_files) == sort(object_report_files)))
-  
+
   # Check if all expected support files are created for Rex sole
   expect_true(all(sort(expect_rex_sole_support_files) == sort(object_support_files)))
-  
+
   # erase temporary testing files
   unlink(fs::path(path, "report"), recursive = T)
 })
