@@ -12,24 +12,30 @@ add_authors(authors, rerender_skeleton = FALSE, prev_skeleton = NULL)
 
 - authors:
 
-  A character vector of author names with their accompanying
-  affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington
-  office would have an entry of c("Jane Doe"="NWFSC-SWA"). Information
-  on NOAA offices is found in a database located in the package:
-  `system.file("resources", "affiliation_info.csv", package = "asar")`.
-  Keys to the office addresses follow the naming convention of the
-  office acronym (ex. NWFSC) with a dash followed by the first initial
-  of the city then the 2 letter abbreviation for the state the office is
-  located in. If the city has 2 or more words such as Panama City, the
-  first initial of each word is used in the key (ex. Panama City,
-  Florida = PCFL)
+  A character vector of author names and affiliations. For example, a
+  Jane Doe at the NWFSC Seattle, Washington office would have an entry
+  of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices can be found
+  with:
+  [`asar::affiliation_info`](nmfs-ost.github.io/asar/reference/affiliation_info.md).
+  Keys to the office addresses follow the naming convention of: office
+  acronym (ex. NWFSC), a hyphen (-), the first initial of the city, and
+  then the two-letter abbreviation for the state the office is located
+  in. If the city has two or more words (e.g., Panama City), the first
+  initial of each word is used in the key (ex. Panama City, Florida =
+  PCFL).
+
+  Default: NULL
+
+  Options: See
+  [`asar::affiliation_info`](nmfs-ost.github.io/asar/reference/affiliation_info.md).
 
 - rerender_skeleton:
 
-  Re-create the "skeleton.qmd" in your outline when changes to the main
-  skeleton need to be made. This reproduces the yaml, output (if
-  changed), preamble quantities, and restructures your sectioning in the
-  skeleton if indicated. All files in your folder will remain as is.
+  TRUE/FALSE; Update the skeleton YAML and structure (R parameters,
+  preamble, and skeleton sectioning) if relevant or indicated. All files
+  in your folder, such as the `.qmd` child docs, will remain as is.
+
+  Default: FALSE
 
 - prev_skeleton:
 

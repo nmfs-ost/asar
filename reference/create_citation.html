@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">asar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.4.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Generate Citation for Stock Assessment Report</h1>
-      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/2.4.0/R/create_citation.R" class="external-link"><code>R/create_citation.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/R/create_citation.R" class="external-link"><code>R/create_citation.R</code></a></small>
       <div class="d-none name"><code>create_citation.Rd</code></div>
     </div>
 
@@ -65,26 +65,29 @@
 
 
 <dl><dt id="arg-authors">authors<a class="anchor" aria-label="anchor" href="#arg-authors"></a></dt>
-<dd><p>A character vector of author names with their accompanying
-affiliations. For example, a Jane Doe at the NWFSC Seattle, Washington office
+<dd><p>A character vector of author names and affiliations.
+For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
-is found in a database located in the package: <code>system.file("resources",
-"affiliation_info.csv", package = "asar")</code>. Keys to the office addresses
-follow the naming convention of the office acronym (ex. NWFSC) with a dash
-followed by the first initial of the city then the 2 letter abbreviation for
-the state the office is located in. If the city has 2 or more words such as
-Panama City, the first initial of each word is used in the key
-(ex. Panama City, Florida = PCFL)</p></dd>
+can be found with: <code><a href="affiliation_info.html">asar::affiliation_info</a></code>. Keys to the office addresses
+follow the naming convention of: office acronym (ex. NWFSC), a hyphen (-),
+the first initial of the city, and then the two-letter abbreviation for
+the state the office is located in. If the city has two or more words (e.g.,
+Panama City), the first initial of each word is used in the key
+(ex. Panama City, Florida = PCFL).</p>
+<p>Default: NULL</p>
+<p>Options: See <code><a href="affiliation_info.html">asar::affiliation_info</a></code>.</p></dd>
 
 
 <dt id="arg-title">title<a class="anchor" aria-label="anchor" href="#arg-title"></a></dt>
-<dd><p>A custom title that is an alternative to the default title (composed
-in asar::create_title()). Example: "Management Track Assessments Spring 2024".</p></dd>
+<dd><p>Custom report title superceding the default composed in
+<code><a href="create_title.html">asar::create_title()</a></code>. Example: "Management Track Assessments Spring
+2024".</p>
+<p>Default: <code>[TITLE]</code>. If species and region are provided, a title will be generated based on the report type, species, and region.</p></dd>
 
 
 <dt id="arg-year">year<a class="anchor" aria-label="anchor" href="#arg-year"></a></dt>
-<dd><p>Year the assessment is being conducted. Default
-is the year in which the report is rendered.</p></dd>
+<dd><p>Year the assessment is conducted.</p>
+<p>Default: the year in which the report is rendered.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -115,7 +118,7 @@ with <code>asar</code>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

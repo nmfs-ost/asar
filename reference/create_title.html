@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">asar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.4.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Write Stock Assessment Report Title</h1>
-      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/2.4.0/R/create_title.R" class="external-link"><code>R/create_title.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/R/create_title.R" class="external-link"><code>R/create_title.R</code></a></small>
       <div class="d-none name"><code>create_title.Rd</code></div>
     </div>
 
@@ -69,35 +69,38 @@
 
 
 <dl><dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
-<dd><p>Type of report to build. Default is "sar" (NOAA Fisheries
-Stock Assessment Report).</p></dd>
+<dd><p>Report template type.</p>
+<p>Default: "sar" (a NOAA standard "Stock Assessment Report")</p>
+<p>Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and Fishery Evaluation)</p></dd>
 
 
 <dt id="arg-office">office<a class="anchor" aria-label="anchor" href="#arg-office"></a></dt>
-<dd><p>Regional Fisheries Science Center producing the
-report (i.e., AFSC, NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).</p></dd>
+<dd><p>Regional Fisheries Science Center producing the report.</p>
+<p>Default: NULL</p>
+<p>Options: "AFSC", "NEFSC", "NWFSC", "PIFSC", "SEFSC", "SWFSC"</p></dd>
 
 
 <dt id="arg-species">species<a class="anchor" aria-label="anchor" href="#arg-species"></a></dt>
-<dd><p>Full common name for target species. Split
-naming with a space and capitalize first letter(s). Example:
-"Dover sole".</p></dd>
+<dd><p>Common name of target species. Split multi-word names
+with space and capitalize first letter(s). Example: "Dover sole".</p>
+<p>Default: "species"</p></dd>
 
 
 <dt id="arg-spp-latin">spp_latin<a class="anchor" aria-label="anchor" href="#arg-spp-latin"></a></dt>
-<dd><p>Latin name for the target species. Example:
-"Pomatomus saltatrix".</p></dd>
+<dd><p>Latin name of target species. Example: "Pomatomus saltatrix".</p>
+<p>Default: NULL</p></dd>
 
 
 <dt id="arg-region">region<a class="anchor" aria-label="anchor" href="#arg-region"></a></dt>
-<dd><p>Full name of region in which the species is
-evaluated (if applicable). If the region is not specified for
-your center or species, do not use this variable.</p></dd>
+<dd><p>Full name of the stock's sub-region, if applicable.
+If the region is not specified for your center or species, leave default.
+Example: "US West Coast".</p>
+<p>Default: NULL</p></dd>
 
 
 <dt id="arg-year">year<a class="anchor" aria-label="anchor" href="#arg-year"></a></dt>
-<dd><p>Year the assessment is being conducted. Default
-is the year in which the report is rendered.</p></dd>
+<dd><p>Year the assessment is conducted.</p>
+<p>Default: the year in which the report is rendered.</p></dd>
 
 
 <dt id="arg-complex">complex<a class="anchor" aria-label="anchor" href="#arg-complex"></a></dt>
@@ -130,7 +133,7 @@ assessment report.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

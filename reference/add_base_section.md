@@ -12,12 +12,16 @@ add_base_section(custom_sections = NULL)
 
 - custom_sections:
 
-  List of existing sections to include in the custom template. Note:
-  this only includes sections within list.files(system.file("templates",
-  "skeleton", package = "asar")). The name of the section, rather than
-  the name of the file, can be used (e.g., 'abstract' rather than
-  '00_abstract.qmd'). If adding a new section, also use parameters
-  'new_section' and 'section_location'.
+  List of existing sections to include in a custom template (rather than
+  the default for stock assessments in your region). If adding a new
+  section, also use arguments 'new_section' and 'section_location'.
+
+  Default: NULL
+
+  Options: sections within
+  `list.files(system.file("templates", "skeleton", package = "asar"))`.
+  The name of the section, rather than the name of the file, can be used
+  (e.g., 'abstract' rather than '00_abstract.qmd').
 
 ## Value
 

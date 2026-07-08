@@ -51,6 +51,12 @@ by following the guidance in the [“Standardizing Assessment Model
 Output” `stockplotr`
 vignette](https://nmfs-ost.github.io/stockplotr/articles/convert_output_details.html).
 
+### Where are the acronyms for each office (for the `authors` argument)?
+
+Run
+[`asar::affiliation_info`](nmfs-ost.github.io/asar/reference/affiliation_info.md)
+to see a list of the acronyms for each office.
+
 ### `create_template()` isn’t working. What do I do?
 
 This could mean a lot of things. Most of the time, when

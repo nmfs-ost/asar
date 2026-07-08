@@ -32,6 +32,9 @@
 - [`add_tagging()`](nmfs-ost.github.io/asar/reference/add_tagging.md) :
   Add tagging structure to latex documents produced from quarto
 
+- [`affiliation_info`](nmfs-ost.github.io/asar/reference/affiliation_info.md)
+  : Author affiliations
+
 - [`create_citation()`](nmfs-ost.github.io/asar/reference/create_citation.md)
   : Generate Citation for Stock Assessment Report
 

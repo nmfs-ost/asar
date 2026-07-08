@@ -1,5 +1,5 @@
 pandoc: 3.8.3
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   articles/accessibility_guide: accessibility_guide.html
@@ -17,7 +17,7 @@ articles:
   articles/snippets/save-caps-alttext: snippets/save-caps-alttext.html
   articles/std_guidelines: std_guidelines.html
   articles/snippets/write-caps-alttext: snippets/write-caps-alttext.html
-last_built: 2026-07-02T18:11Z
+last_built: 2026-07-08T13:00Z
 urls:
   reference: nmfs-ost.github.io/asar/reference
   article: nmfs-ost.github.io/asar/articles

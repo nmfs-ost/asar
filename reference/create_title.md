@@ -20,33 +20,48 @@ create_title(
 
 - type:
 
-  Type of report to build. Default is "sar" (NOAA Fisheries Stock
-  Assessment Report).
+  Report template type.
+
+  Default: "sar" (a NOAA standard "Stock Assessment Report")
+
+  Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management
+  Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock
+  Assessment and Fishery Evaluation)
 
 - office:
 
-  Regional Fisheries Science Center producing the report (i.e., AFSC,
-  NEFSC, NWFSC, PIFSC, SEFSC, SWFSC).
+  Regional Fisheries Science Center producing the report.
+
+  Default: NULL
+
+  Options: "AFSC", "NEFSC", "NWFSC", "PIFSC", "SEFSC", "SWFSC"
 
 - species:
 
-  Full common name for target species. Split naming with a space and
+  Common name of target species. Split multi-word names with space and
   capitalize first letter(s). Example: "Dover sole".
+
+  Default: "species"
 
 - spp_latin:
 
-  Latin name for the target species. Example: "Pomatomus saltatrix".
+  Latin name of target species. Example: "Pomatomus saltatrix".
+
+  Default: NULL
 
 - region:
 
-  Full name of region in which the species is evaluated (if applicable).
-  If the region is not specified for your center or species, do not use
-  this variable.
+  Full name of the stock's sub-region, if applicable. If the region is
+  not specified for your center or species, leave default. Example: "US
+  West Coast".
+
+  Default: NULL
 
 - year:
 
-  Year the assessment is being conducted. Default is the year in which
-  the report is rendered.
+  Year the assessment is conducted.
+
+  Default: the year in which the report is rendered.
 
 - complex:
 

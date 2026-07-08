@@ -22,20 +22,26 @@ add_section(
 
 - custom_sections:
 
-  List of existing sections to include in the custom template. Note:
-  this only includes sections within list.files(system.file("templates",
-  "skeleton", package = "asar")). The name of the section, rather than
-  the name of the file, can be used (e.g., 'abstract' rather than
-  '00_abstract.qmd'). If adding a new section, also use parameters
-  'new_section' and 'section_location'.
+  List of existing sections to include in a custom template (rather than
+  the default for stock assessments in your region). If adding a new
+  section, also use arguments 'new_section' and 'section_location'.
+
+  Default: NULL
+
+  Options: sections within
+  `list.files(system.file("templates", "skeleton", package = "asar"))`.
+  The name of the section, rather than the name of the file, can be used
+  (e.g., 'abstract' rather than '00_abstract.qmd').
 
 - new_section:
 
-  Names of section(s) (e.g., introduction, results) or subsection(s)
-  (e.g., a section within the introduction) that will be added to the
-  document. Please make a short list if \>1 section/subsection will be
-  added. The template will be created as a quarto document, added into
-  the skeleton, and saved for reference.
+  Names of section(s) (e.g., "Special Section") or subsection(s) (e.g.,
+  a section within the introduction) that will be added to the document.
+  Please make a short list if \>1 section/subsection will be added. The
+  template will be created as a quarto document, added into the
+  skeleton, and saved for reference.
+
+  Default: NULL
 
 - section_location:
 
@@ -45,6 +51,8 @@ add_section(
   child document and added into the 02_introduction.qmd. To add \>1
   (sub)section, make the location a list corresponding to the order of
   (sub)section names listed in the 'new_section' parameter.
+
+  Default: NULL
 
 ## Value
 

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">asar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.4.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Add selected sections to outline</h1>
-      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/2.4.0/R/add_base_section.R" class="external-link"><code>R/add_base_section.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/R/add_base_section.R" class="external-link"><code>R/add_base_section.R</code></a></small>
       <div class="d-none name"><code>add_base_section.Rd</code></div>
     </div>
 
@@ -61,13 +61,14 @@
 
 
 <dl><dt id="arg-custom-sections">custom_sections<a class="anchor" aria-label="anchor" href="#arg-custom-sections"></a></dt>
-<dd><p>List of existing sections to include in
-the custom template. Note: this only includes sections within
-list.files(system.file("templates", "skeleton",
-package = "asar")). The name of the section, rather than the
-name of the file, can be used (e.g., 'abstract' rather than
-'00_abstract.qmd'). If adding a new section, also use
-parameters 'new_section' and 'section_location'.</p></dd>
+<dd><p>List of existing sections to include in a custom
+template (rather than the default for stock assessments in your region).
+If adding a new section, also use arguments 'new_section' and 'section_location'.</p>
+<p>Default: NULL</p>
+<p>Options: sections within
+<code>list.files(system.file("templates", "skeleton", package = "asar"))</code>.
+The name of the section, rather than the name of the file, can be used
+(e.g., 'abstract' rather than '00_abstract.qmd').</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -111,7 +112,7 @@ outline for a stock assessment</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

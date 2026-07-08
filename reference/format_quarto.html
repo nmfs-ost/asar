@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">asar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.4.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Add Formatting Arguments for YAML Header</h1>
-      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/2.4.0/R/format_quarto.R" class="external-link"><code>R/format_quarto.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/R/format_quarto.R" class="external-link"><code>R/format_quarto.R</code></a></small>
       <div class="d-none name"><code>format_quarto.Rd</code></div>
     </div>
 
@@ -61,12 +61,16 @@
 
 
 <dl><dt id="arg-format">format<a class="anchor" aria-label="anchor" href="#arg-format"></a></dt>
-<dd><p>Rendering format (pdf, html, or docx).</p></dd>
+<dd><p>Report rendering format. Note: "docx" is currently unsupported
+and will default to "pdf".</p>
+<p>Default: "pdf"</p>
+<p>Options: "pdf", "html"</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
-<dd><p>Type of report to build. Default is "sar" (NOAA Fisheries
-Stock Assessment Report).</p></dd>
+<dd><p>Report template type.</p>
+<p>Default: "sar" (a NOAA standard "Stock Assessment Report")</p>
+<p>Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and Fishery Evaluation)</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -91,7 +95,7 @@ involved in formatting the document during rendering.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>
