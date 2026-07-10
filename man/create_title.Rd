@@ -19,7 +19,9 @@ create_title(
 
 Default: "sar" (a NOAA standard "Stock Assessment Report")
 
-Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and Fishery Evaluation)}
+Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track),
+"pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and
+Fishery Evaluation), "sedar" (SouthEast Data, Assessment, and Review)}
 
 \item{office}{Regional Fisheries Science Center producing the report.
 

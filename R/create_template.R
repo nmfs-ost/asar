@@ -16,7 +16,9 @@
 #'
 #' Default: "sar" (a NOAA standard "Stock Assessment Report")
 #'
-#' Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and Fishery Evaluation)
+#' Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track),
+#' "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and 
+#' Fishery Evaluation), "sedar" (SouthEast Data, Assessment, and Review)
 #'
 #' @param office Regional Fisheries Science Center producing the report.
 #'
@@ -265,21 +267,26 @@ create_template <- function(
       "Pacific Fishery Management Council" = "pfmc",
       "Stock Assessment and Fishery Evaluation" = "safe",
       "Stock Assessment Report" = "skeleton",
+      "SouthEast Data, Assessment, and Review" = "sedar",
+      "SouthEast Data Assessment and Review" = "sedar",
       "sar" = "skeleton",
       "pfmc" = "pfmc",
       "nemt" = "nemt",
       "safe" = "safe",
+      "sedar" = "sedar",
+      "SEDAR" = "sedar",
       {
         type_fxn <- function() {
           selection <- utils::menu(
             title = "Unrecognized template type. Please select an option below: ",
-            choices = c("Default", "Pacific Fisheries Management Council", "Northeast Management Track", "SAFE")
+            choices = c("Default", "Pacific Fisheries Management Council", "Northeast Management Track", "SAFE", "SEDAR")
           )
           type <- switch(as.character(selection),
             "1" = "skeleton",
             "2" = "pfmc",
             "3" = "nemt",
             "4" = "safe",
+            "5" = "sedar",
             {
               "skeleton"
             }
@@ -462,7 +469,15 @@ create_template <- function(
 
     asar_folder <- system.file("templates", package = "asar")
     # copy files from specific type folder
-    current_folder <- ifelse(rerender_skeleton, subdir, file.path(asar_folder, type))
+    if (rerender_skeleton){
+      current_folder <- subdir
+    } else {
+      current_folder <- file.path(asar_folder,
+                                  # sedar report files identical to skeleton
+                                  ifelse(type == tolower("sedar"),
+                                         "skeleton",
+                                         type))
+    }
     new_folder <- subdir
 
     ##### Identify files to copy ----

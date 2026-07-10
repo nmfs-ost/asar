@@ -220,7 +220,12 @@ create_yaml <- function(
       toad <- paste(author_list[[i]], sep = ",")
       add_authors <- paste0(add_authors, toad) # -> add_authors
     }
-    yaml <- paste0(yaml, add_authors)
+    
+    sedar_author <- "  - name: 'SEDAR'\n    affiliations: \n        address: '4055 Faber Place Drive, Suite 201' \n        city: 'North Charleston' \n        state: 'SC' \n        postal-code: '29405' \n"
+
+    yaml <- ifelse(type == "sedar",
+                   paste0(yaml, sedar_author),
+                   paste0(yaml, add_authors))
 
     # Add other parts
     yaml <- paste0(
