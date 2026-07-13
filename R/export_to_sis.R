@@ -2,6 +2,10 @@
 #'
 #' Submit completed stock assessment data to SIS via a Google Drive folder.
 #' 
+#' @param key_quantities_dir Location of the key_quantities.csv
+#' file created when any `stockplotr` figure or table is exported.
+#' 
+#' Default: The working directory.
 #' 
 #' @param model_identifier Argument used to distinguish between base model
 #' and a new, updated model sent in subsequent submission. Optional.
@@ -130,7 +134,8 @@
 #' @param ASSESSMENT_ID Unique numeric identifier assigned to all 
 #'  stock assessment records. Assigned automatically by SIS.
 #'  
-#' @param ENTITY_ID Entity unique identifier value. Assigned automatically by SIS.
+#' @param ENTITY_ID Entity unique identifier value. Assigned
+#' automatically by SIS.
 #' 
 #' @param AS_YEAR Year the assessment was completed. Assigned
 #'  automatically by SIS.
@@ -138,14 +143,12 @@
 #' @param AS_MONTH Month the assessment was completed. Assigned
 #' automatically by SIS.
 #'   
-#'   
 #' @param AS_LAST_DATA_YEAR Year of the "latest" data used in the assessment. 
 #'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   Default: value extracted as the "landings.end.year" key quantity
+#'   within the key_quantities.csv file imported via `key_quantities_dir`.
 #'   
 #' @param AS_B_BASIS The basis of the biomass unit.
-#'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
 #'   
 #'   Options:
 #'   \itemize{
@@ -160,8 +163,6 @@
 #'     
 #' @param AS_F_BASIS The basis of the Fishing Mortality unit. 
 #'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
-#'   
 #'   Options: 1, 2, 3, 4, 5, 6, 7. Descriptions of each level are as follows:
 #'   \itemize{
 #'     \item (1) Max F at Age
@@ -175,7 +176,8 @@
 #'   
 #' @param AS_FMSY Estimated and/or calculated value of Fishing Mortality at MSY. 
 #'  
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   Default: value extracted as the "F.FMSY.end.yr" key quantity
+#'   within the key_quantities.csv file imported via `key_quantities_dir`.
 
 #' @param AS_F_BEST Best estimate of Fishing Mortality. 
 #'  
@@ -200,7 +202,8 @@
 #' @param AS_BMSY Estimated stock size that would, on average, produce the maximum 
 #'   sustainable yield when fished at a level equal to FMSY.
 #'  
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   Default: value extracted as the "bmsy" key quantity
+#'   within the key_quantities.csv file imported via `key_quantities_dir`.
 #'   
 #' @param AS_B_MIN Minimum estimated value within the approved confidence interval 
 #'   of the Biomass estimate. Equivalent to the value of Best B Confidence 
@@ -235,8 +238,6 @@
 #' @param AS_F_UNIT Unit of measure corresponding to the fishing mortality estimate. 
 #'   Linked to F Basis selections.
 #'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
-#'   
 #'   Options: 1, 2, 3, 4, 5, 6, 7. Descriptions of each level are as follows:
 #'   \itemize{
 #'     \item (1) Apical F = Max F at Age
@@ -250,8 +251,6 @@
 #'   
 #' @param AS_B_UNIT Unit of measure corresponding to the biomass estimate.
 #'  Linked to B Basis selections.
-#' 
-#'  Default: value automatically extracted from {asar} and/or {stockplotr} files.
 #'  
 #'  Options: 1, 2, 3, 4, 5, 6, 7, 8. Descriptions of each level are as follows:
 #'   \itemize{
@@ -457,6 +456,7 @@
 #' }
 #'
 export_to_sis <- function(
+  key_quantities_dir = "key_quantities.csv",
   # SIS summary
   model_identifier = "base",
   AS_POINT_OF_CONTACT,
@@ -472,15 +472,15 @@ export_to_sis <- function(
   ENTITY_ID,
   AS_YEAR,
   AS_MONTH,
-  AS_LAST_DATA_YEAR,
+  AS_LAST_DATA_YEAR = NULL,
   AS_B_BASIS,
   AS_F_BASIS,
-  AS_FMSY,
+  AS_FMSY = NULL,
   AS_F_BEST,
   AS_FLIMIT_BASIS,
   AS_B_YEAR,
   AS_B_MAX,
-  AS_BMSY,
+  AS_BMSY = NULL,
   AS_B_MIN,
   AS_B_BEST,
   AS_BMSY_BASIS,
@@ -522,6 +522,31 @@ export_to_sis <- function(
   # colnames: Year; Catch (Metric Tons); Spawners (Metric Tons); Recruitment (Recruits - Age 1);	Fmort (Fully-selected F)
   TIME_SERIES
 ){
+  
+  kqs <- read.csv(fs::path(key_quantities_dir, "key_quantities.csv"), stringsAsFactors = FALSE)
+  
+  if (is.null(AS_LAST_DATA_YEAR)){
+    AS_LAST_DATA_YEAR <- kqs |>
+      dplyr::filter(key_quantity == "landings.end.year") |>
+      dplyr::select(value) |>
+      as.numeric()
+  }
+  
+  if (is.null(AS_FMSY)){
+    AS_FMSY <- kqs |>
+      dplyr::filter(key_quantity == "F.FMSY.end.yr") |>
+      dplyr::select(value) |>
+      as.numeric()
+  }
+  
+  
+  if (is.null(AS_BMSY)){
+    AS_BMSY <- kqs |>
+      dplyr::filter(key_quantity == "F.FMSY.end.yr") |>
+      dplyr::select(value) |>
+      as.numeric()
+  }
+   
   
   summary <- paste0(
     '{"ASSESSMENT_ID":"', ASSESSMENT_ID,
