@@ -281,16 +281,11 @@ Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 
 Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 
-\item{AS_BMSY_BASIS}{Basis for the estimated BMSY value.
-
-Default: value automatically extracted from model file, though user input
-may be required.}
+\item{AS_BMSY_BASIS}{Basis for the estimated BMSY value. Example: "B35\%"}
 
 \item{AS_FMSY_BASIS}{Estimated fishing mortality rate that, on average,
-would produce the maximum sustainable yield from a stock at BMSY.
-
-Default: value automatically extracted from model file, though user input
-may be required.}
+would produce the maximum sustainable yield from a stock at BMSY. Example:
+"F35\% as proxy"}
 
 \item{AS_FLIMIT}{Recommended fishing mortality limit from the assessment,
 above which the stock would be considered to be experiencing overfishing.
@@ -330,26 +325,18 @@ Options: 1, 2, 3, 4, 5, 6, 7, 8. Descriptions of each level are as follows:
 \item (8) Number of Fish - Total Stock Abundance
 }}
 
-\item{AS_MODEL}{Model software package used to complete the final version of the assessment.
+\item{AS_MODEL}{Model software package used to complete the final version of the assessment. Example: "SS"}
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
-
-\item{AS_MODEL_VERSION}{Version of the software package used to complete the final stock assessment.
-
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+\item{AS_MODEL_VERSION}{Version of the software package used to complete the final stock assessment. Example: "3.30.22"}
 
 \item{AS_ENSEMBLE_FLAG}{Whether the assessment was completed using an ensemble
 or multimodeling approach.
-
-Default: value automatically extracted from {asar} and/or {stockplotr} files.
 
 Options: "Y" (yes), "N" (no)}
 
 \item{AS_F_TRANSFORM}{Indicator identifying Fishing Mortality best estimates
 that include terminal year transformations (e.g., retrospective corrections
 or multi-year averaging).
-
-Default: value automatically extracted from {asar} and/or {stockplotr} files.
 
 Options: "Y" (yes), "N" (no)}
 
@@ -366,8 +353,6 @@ Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 \item{AS_B_TRANSFORM}{Indicator identifying Biomass best estimates that
 include terminal year transformations (e.g., retrospective corrections or
 multi-year averaging).
-
-Default: value automatically extracted from {asar} and/or {stockplotr} files.
 
 Options: "Y" (yes), "N" (no)}
 
@@ -430,8 +415,6 @@ Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 
 \item{AS_MSY_Unit}{Unit associated with the MSY value.
-
-Default: value automatically extracted from {asar} and/or {stockplotr} files.
 
 Options:
 \itemize{
