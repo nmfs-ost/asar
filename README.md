@@ -56,6 +56,21 @@ along with Quarto (v1.6.0 or greater). Use one of the previous download
 instructions to also install `stockplotr` by replacing 'asar' with 'stockplotr'.
 Install quarto using the above options or base R `install.packages("quarto")`.
 
+### Installing on Linux machines
+
+`asar` requires `pdftools` to be installed, which on Linux requires the installation of `poppler`.
+
+We suggest using the following workflow to install `poppler` on Linux machines:
+
+1. Open your terminal and run the following commands:
+```
+sudo apt-get update
+sudo apt-get install -y libpoppler-cpp-dev
+```
+
+2. Open a new R session and install `pdftools`:
+`pak::pak("pdftools")`
+
 ## Example
 
 The following code will allow the user to replicate the [2023 petrale sole stock assessment](https://www.pcouncil.org/documents/2024/02/status-of-petrale-sole-eopsetta-jordanialong-the-u-s-west-coast-in-2023.pdf/) 
