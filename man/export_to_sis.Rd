@@ -42,16 +42,16 @@ export_to_sis(
   AS_ENSEMBLE_FLAG,
   AS_F_TRANSFORM,
   AS_B_RANGE_BASIS,
-  AS_B_RANGE,
+  AS_B_RANGE = 95,
   AS_B_TRANSFORM,
   AS_F_MAX,
   AS_F_MIN,
   AS_F_RANGE_BASIS,
-  AS_F_RANGE,
+  AS_F_RANGE = 95,
   AS_F_MSY_MAX,
   AS_F_MSY_MIN,
   AS_F_MSY_RANGE_BASIS,
-  AS_F_MSY_RANGE,
+  AS_F_MSY_RANGE = 95,
   AS_FTARGET,
   AS_FTARGET_BASIS,
   AS_MSY,
@@ -59,11 +59,11 @@ export_to_sis(
   AS_MSY_MAX,
   AS_MSY_MIN,
   AS_MSY_RANGE_BASIS,
-  AS_MSY_RANGE,
+  AS_MSY_RANGE = 95,
   AS_BMSY_MAX,
   AS_BMSY_MIN,
   AS_BMSY_RANGE_BASIS,
-  AS_BMSY_RANGE,
+  AS_BMSY_RANGE = 95,
   TIME_SERIES
 )
 }
@@ -348,7 +348,7 @@ Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 \item{AS_B_RANGE}{Percentile range of the confidence intervals
 provided for the stock assessment. Optional.
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: 95}
 
 \item{AS_B_TRANSFORM}{Indicator identifying Biomass best estimates that
 include terminal year transformations (e.g., retrospective corrections or
@@ -376,7 +376,7 @@ Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 \item{AS_F_RANGE}{Percentile range of the confidence intervals provided for
 the stock assessment. Optional.
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: 95}
 
 \item{AS_F_MSY_MAX}{Maximum estimated value within the approved confidence interval
 of the Fishing Mortality estimate. This field should be equivalent to the
@@ -398,7 +398,7 @@ Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 \item{AS_F_MSY_RANGE}{Percentile range of the confidence intervals provided for
 the stock assessment. Optional.
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: 95}
 
 \item{AS_FTARGET}{Value of the Ftarget estimate produced by a stock assessment.
 This is often used for stocks in a rebuilding plan.
@@ -406,9 +406,7 @@ This is often used for stocks in a rebuilding plan.
 Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 
 \item{AS_FTARGET_BASIS}{Approach used to calculate the Ftarget estimate produced
-by a stock assessment.
-
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+by a stock assessment.}
 
 \item{AS_MSY}{Value of the MSY estimated by the assessment.
 
@@ -445,7 +443,7 @@ Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 \item{AS_MSY_RANGE}{Percentile range of the confidence intervals provided for
 the stock assessment. Optional.
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: 95}
 
 \item{AS_BMSY_MAX}{Maximum estimated value within the approved confidence interval
 of the Fishing Mortality estimate. This field should be equivalent to the
@@ -467,7 +465,7 @@ Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 \item{AS_BMSY_RANGE}{Percentile range of the confidence intervals provided for
 the stock assessment. Optional.
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: 95}
 }
 \description{
 Submit completed stock assessment data to SIS via a Google Drive folder.
