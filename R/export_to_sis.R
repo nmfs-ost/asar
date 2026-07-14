@@ -215,16 +215,11 @@
 #'  
 #'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
 #'   
-#' @param AS_BMSY_BASIS Basis for the estimated BMSY value. 
-#'  
-#'   Default: value automatically extracted from model file, though user input 
-#'   may be required.
+#' @param AS_BMSY_BASIS Basis for the estimated BMSY value. Example: "B35%"
 #'   
 #' @param AS_FMSY_BASIS Estimated fishing mortality rate that, on average, 
-#'   would produce the maximum sustainable yield from a stock at BMSY. 
-#'  
-#'   Default: value automatically extracted from model file, though user input 
-#'   may be required.
+#'   would produce the maximum sustainable yield from a stock at BMSY. Example:
+#'   "F35% as proxy"
 #'   
 #' @param AS_FLIMIT Recommended fishing mortality limit from the assessment, 
 #'   above which the stock would be considered to be experiencing overfishing. 
@@ -264,26 +259,19 @@
 #'     \item (8) Number of Fish - Total Stock Abundance
 #'   }
 #'   
-#' @param AS_MODEL Model software package used to complete the final version of the assessment. 
-#'  
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#' @param AS_MODEL Model software package used to complete the final version of the assessment. Example: "SS"
 #'   
-#' @param AS_MODEL_VERSION Version of the software package used to complete the final stock assessment. 
+#' @param AS_MODEL_VERSION Version of the software package used to complete the final stock assessment. Example: "3.30.22"
 #'  
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
 #'   
 #' @param AS_ENSEMBLE_FLAG Whether the assessment was completed using an ensemble
 #'  or multimodeling approach. 
-#'  
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
 #'  
 #'   Options: "Y" (yes), "N" (no)
 #'   
 #' @param AS_F_TRANSFORM Indicator identifying Fishing Mortality best estimates 
 #' that include terminal year transformations (e.g., retrospective corrections 
 #' or multi-year averaging).
-#' 
-#'  Default: value automatically extracted from {asar} and/or {stockplotr} files.
 #' 
 #'  Options: "Y" (yes), "N" (no)
 #'   
@@ -300,8 +288,6 @@
 #' @param AS_B_TRANSFORM Indicator identifying Biomass best estimates that 
 #' include terminal year transformations (e.g., retrospective corrections or 
 #' multi-year averaging).
-#' 
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
 #'   
 #'   Options: "Y" (yes), "N" (no)
 #' 
@@ -368,8 +354,6 @@
 #'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
 #'   
 #' @param AS_MSY_Unit Unit associated with the MSY value.
-#'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
 #'   
 #'   Options:
 #'   \itemize{
