@@ -283,7 +283,7 @@
 #' @param AS_B_RANGE Percentile range of the confidence intervals 
 #'   provided for the stock assessment. Optional. 
 #'  
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   Default: 95
 #'   
 #' @param AS_B_TRANSFORM Indicator identifying Biomass best estimates that 
 #' include terminal year transformations (e.g., retrospective corrections or 
@@ -315,7 +315,7 @@
 #' @param AS_F_RANGE Percentile range of the confidence intervals provided for 
 #'   the stock assessment. Optional.
 #'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   Default: 95
 #'   
 #' @param AS_F_MSY_MAX Maximum estimated value within the approved confidence interval 
 #'   of the Fishing Mortality estimate. This field should be equivalent to the 
@@ -337,7 +337,7 @@
 #' @param AS_F_MSY_RANGE Percentile range of the confidence intervals provided for 
 #'   the stock assessment. Optional.
 #'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   Default: 95
 #'   
 #' @param AS_FTARGET Value of the Ftarget estimate produced by a stock assessment. 
 #'   This is often used for stocks in a rebuilding plan.
@@ -346,8 +346,6 @@
 #'   
 #' @param AS_FTARGET_BASIS Approach used to calculate the Ftarget estimate produced 
 #'   by a stock assessment.
-#'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
 #'   
 #' @param AS_MSY Value of the MSY estimated by the assessment.
 #'   
@@ -384,7 +382,7 @@
 #' @param AS_MSY_RANGE Percentile range of the confidence intervals provided for 
 #'   the stock assessment. Optional.
 #'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   Default: 95
 #'   
 #' @param AS_BMSY_MAX Maximum estimated value within the approved confidence interval 
 #'   of the Fishing Mortality estimate. This field should be equivalent to the 
@@ -406,7 +404,7 @@
 #' @param AS_BMSY_RANGE Percentile range of the confidence intervals provided for 
 #'   the stock assessment. Optional.
 #'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   Default: 95
 #' 
 #' 
 #' 
@@ -478,16 +476,16 @@ export_to_sis <- function(
   AS_ENSEMBLE_FLAG,
   AS_F_TRANSFORM,
   AS_B_RANGE_BASIS,
-  AS_B_RANGE,
+  AS_B_RANGE = 95,
   AS_B_TRANSFORM,
   AS_F_MAX,
   AS_F_MIN,
   AS_F_RANGE_BASIS,
-  AS_F_RANGE,
+  AS_F_RANGE = 95,
   AS_F_MSY_MAX,
   AS_F_MSY_MIN,
   AS_F_MSY_RANGE_BASIS,
-  AS_F_MSY_RANGE,
+  AS_F_MSY_RANGE = 95,
   AS_FTARGET,
   AS_FTARGET_BASIS,
   AS_MSY,
@@ -495,11 +493,11 @@ export_to_sis <- function(
   AS_MSY_MAX,
   AS_MSY_MIN,
   AS_MSY_RANGE_BASIS,
-  AS_MSY_RANGE,
+  AS_MSY_RANGE = 95,
   AS_BMSY_MAX,
   AS_BMSY_MIN,
   AS_BMSY_RANGE_BASIS,
-  AS_BMSY_RANGE,
+  AS_BMSY_RANGE = 95,
   
   # SIS time series
   # this is formatted as a string to be imported as JSON into SIS, but could be formatted as a df and converted to JSON in the function
@@ -616,4 +614,5 @@ export_to_sis <- function(
     # Trim underscores from the beginning and end
     stringr::str_remove("^_+|_+$")
   
+  #TODO: create pipeline to upload to Google Drive via API once created
 }
