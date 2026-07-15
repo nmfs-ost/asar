@@ -10,7 +10,7 @@
 <!-- Response to the most recent previous STAR panel and SSC recommendations for remedying deficiencies in the most recent previous full assessment. This is not required for an update assessment.  
 Is this required if there are no "deficiencies"? -->
 
-## Model Structure and Assumptions {#sec-model-structure-and-assumptions}
+## Model Structure and Assumptions {#sec-model-structure}
 
 
 ### Model Changes from the Last Assessment {#sec-model-changes-from-the-last-assessment}
