@@ -5,7 +5,7 @@
 
 <!-- Very brief text here for (IT will do) -->
 
-## Response to most recent STAR panel and SSC recommendations {#sec-response-to-most-recent-star-panel-and-ssc-recommendations}
+## Response to most recent STAR panel and SSC recommendations {#sec-response-to-panel}
 
 <!-- Response to the most recent previous STAR panel and SSC recommendations for remedying deficiencies in the most recent previous full assessment. This is not required for an update assessment.  
 Is this required if there are no "deficiencies"? -->
