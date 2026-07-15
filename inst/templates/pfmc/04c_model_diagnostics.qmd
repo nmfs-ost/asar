@@ -23,6 +23,6 @@ If possible, ranges depicting uncertainty should include at least three runs: (a
 
 <!-- Evaluation of model parameters. Likelihood profile for the base model over key parameters (typically natural morality, stock-recruit steepness, and equilibrium recruitment, or R0). The profile should indicate all likelihood values for individual components (e.g., indices by survey, compositional data for each type and fleet).   -->
 
-## Unresolved Problems and Major Uncertainties {#sec-unresolved-problems-and-major-uncertainties}
+## Unresolved Problems and Major Uncertainties {#sec-problems-and-uncertainties}
 
 <!-- Describe any special issues (e.g., unbalanced or questionable data, missing survey data) that complicate scientific assessment, questions about the best model scenario. -->

@@ -10,7 +10,7 @@
 
 ## Harvest Projections and Decision Tables {#sec-harvest-projections-and-decision-tables}
 
-## Evaluation of Scientific Uncertainty {#sec-evaluation-of-scientific-uncertainty}
+## Evaluation of Scientific Uncertainty {#sec-scientific-uncertainty}
 
 ## Regional management considerations {#sec-regional-management-considerations}
 
