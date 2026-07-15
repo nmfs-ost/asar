@@ -8,7 +8,7 @@ If standardized software (e.g., Stock Synthesis) is used, give reference to tech
 
 
 
-## Description of Alternative Models {#sec-description-of-alternative-models}
+## Description of Alternative Models {#sec-alternative-models}
 
 <!--- Description of alternative models included in the assessment, if any (e.g., alternative M values or likelihood weights); note that the base model (i.e., the model most recently accepted by the SSC, either after reviewing the previous year’s final assessment or the current year’s preliminary assessment) must be included
 Per recommendation of the SSC (10/15), please use the following convention for numbering models:
@@ -18,7 +18,7 @@ Specifically, please use one of the following four options to distinguish “maj
 --->
 
 
-## Parameters Estimated Outside the Assessment Model {#sec-parameters-estimated-outside-the-assessment-model}
+## Parameters Estimated Outside the Assessment Model {#sec-outside-estimated-parameters}
 
 <!---
 (Use the above heading for Tiers 1-3)

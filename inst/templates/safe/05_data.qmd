@@ -58,7 +58,7 @@ Catch at age or catch at length (including sample sizes), as appropriate
 
 ## Survey {#sec-survey}
 
-### Biomass Estimates from Trawl Surveys {#sec-biomass-estimates-from-trawl-surveys}
+### Biomass Estimates from Trawl Surveys {#sec-biomass-estimates-trawl}
 
 <!---
 Survey biomass estimates, including at least one measure of sampling variability such as standard error, CV, or 95% confidence interval (for stocks managed as complexes, be sure to report the sampling variability for the complex-wide survey biomass estimate, not just the individual stocks). 
