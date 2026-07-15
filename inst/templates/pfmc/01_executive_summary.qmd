@@ -20,13 +20,13 @@
 ## Exploitation status {#sec-exploitation-status .unnumbered}
 
 
-## Ecosystem considerations {#sec-ecosystem-considerations .unnumbered}
+## Ecosystem considerations {#sec-ecosystem-considerations-summary .unnumbered}
 
 
-## Reference points {#sec-reference-points .unnumbered}
+## Reference points {#sec-reference-points-summary .unnumbered}
 
 
-## Management performance {#sec-management-performance .unnumbered}
+## Management performance {#sec-management-performance-summary .unnumbered}
 
 
 ## Unresolved problems and major uncertainties {#sec-unresolved-problems-and-major-uncertainties .unnumbered}
@@ -35,7 +35,7 @@
 ## Decision table and projections {#sec-decision-table-and-projections .unnumbered}
 
 
-## Scientific uncertainty {#sec-scientific-uncertainty .unnumbered}
+## Scientific uncertainty {#sec-scientific-uncertainty-summary .unnumbered}
 
 
-## Research and data needs {#sec-research-and-data-needs .unnumbered}
+## Research and data needs {#sec-research-and-data-needs-summary .unnumbered}
