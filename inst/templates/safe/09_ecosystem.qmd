@@ -1,13 +1,13 @@
 # Ecosystem Considerations
 
-## Ecosystem Effects on the Stock
+## Ecosystem Effects on the Stock {#sec-ecosystem-effects-on-the-stock}
 
 <!---
 1. Predator population trends (historically, in the present, and in the foreseeable future). These trends could affect stock mortality rates over time. 
 2. Changes in habitat quality (historically, in the present, and in the foreseeable future). Changes in the physical environment such as temperature, currents, or ice distribution could affect stock migration and distribution patterns, recruitment success, or direct effects of temperature on growth.
 --->
 
-## Fishery Effects on the Ecosystem 
+## Fishery Effects on the Ecosystem {#sec-fishery-effects-on-the-ecosystem}
 
 <!---
 1. Fishery-specific contribution to bycatch of prohibited species, forage (including herring and juvenile pollock), HAPC biota (in particular, species common to the target fishery), marine mammals, birds, and other sensitive non-target species (including top predators such as sharks, expressed as a percentage of the total bycatch of that species. 

@@ -1,8 +1,8 @@
 # Data Gaps and Research Priorities
 
 
-## Life history and habitat utilization
+## Life history and habitat utilization {#sec-life-history-and-habitat-utilization}
 
 
-## Assessment Data
+## Assessment Data {#sec-assessment-data}
 

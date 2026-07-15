@@ -1,31 +1,31 @@
-## Harvest recommendations
+## Harvest recommendations {#sec-harvest-recommendations}
 
 
-### Amendment 56 Reference Points
+### Amendment 56 Reference Points {#sec-amendment-56-reference-points}
 
 
-### Specification of OFL and Maximum Permissible ABC
+### Specification of OFL and Maximum Permissible ABC {#sec-specification-of-ofl-and-maximum-permissible-abc}
 
 
-## Risk Table and ABC recommendation
+## Risk Table and ABC recommendation {#sec-risk-table-and-abc-recommendation}
 
 
-#### Assessment considerations
+#### Assessment considerations {#sec-assessment-considerations}
 
 
-#### Population dynamics considerations
+#### Population dynamics considerations {#sec-population-dynamics-considerations}
 
 
-#### Environmental/Ecosystem considerations
+#### Environmental/Ecosystem considerations {#sec-environmental-ecosystem-considerations}
 
 
-#### Fishery performance
+#### Fishery performance {#sec-fishery-performance}
 
 
-#### Summary and ABC recommendation
+#### Summary and ABC recommendation {#sec-summary-and-abc-recommendation}
 
 
-### Area Allocation of Harvests
+### Area Allocation of Harvests {#sec-area-allocation-of-harvests}
 
 
-### Status Determination
+### Status Determination {#sec-status-determination}

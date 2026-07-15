@@ -40,9 +40,9 @@ data.frame(
   )
 ```
 
-## Fishery
+## Fishery {#sec-fishery}
 
-### Catch
+### Catch {#sec-catch}
 
 <!---
 Catch as used in the model (by area and gear if that is how it is used in the model). 
@@ -50,26 +50,26 @@ This table may omitted if this table simply duplicates the catch table shown und
 In an appendix, present removals from sources other than those that are included in the Alaska Region’s official estimate of catch (e.g., removals due to scientific surveys, subsistence fishing, recreational fishing, fisheries managed under other FMPs.)
 --->
 
-### Age and Size Composition
+### Age and Size Composition {#sec-age-and-size-composition}
 
 <!---
 Catch at age or catch at length (including sample sizes), as appropriate
 --->
 
-## Survey
+## Survey {#sec-survey}
 
-### Biomass Estimates from Trawl Surveys
+### Biomass Estimates from Trawl Surveys {#sec-biomass-estimates-from-trawl-surveys}
 
 <!---
 Survey biomass estimates, including at least one measure of sampling variability such as standard error, CV, or 95% confidence interval (for stocks managed as complexes, be sure to report the sampling variability for the complex-wide survey biomass estimate, not just the individual stocks). 
 Complex-wide variance could be computed simply by summing the variances from the survey estimates.
 --->
 
-### Age and Size Composition 
+### Age and Size Composition {#sec-age-and-size-composition}
 
 <!---
 Survey numbers at age or numbers at length (including sample sizes), as appropriate
 --->
 
-### Maturity Data
+### Maturity Data {#sec-maturity-data}
 

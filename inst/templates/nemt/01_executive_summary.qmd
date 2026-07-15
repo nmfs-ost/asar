@@ -15,13 +15,13 @@ recommend stock status. Also, provide qualitative descriptions of stock status b
 6. Respond to any review panel comments or SSC concerns from the most recent prior research or management track assessment.
 --->
 
-## State of stock{-}
+## State of stock {#sec-state-of-stock .unnumbered}
 
 
-## Projections{-}
+## Projections {#sec-projections .unnumbered}
 
 
-## Special comments{-}
+## Special comments {#sec-special-comments .unnumbered}
 
 <!--- 1. What are the most important sources of uncertainty in this stock assessment? Explain, and describe qualitatively how they affect the assessment results (such as estimates of biomass, F, recruitment, and population projections).
 2. Does this assessment model have a retrospective pattern? If so, is the pattern minor, or major? (A major retrospective pattern occurs when the adjusted SSB or F_Full lies outside of the approximate joint confidence region for SSB and F_Full).

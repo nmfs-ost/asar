@@ -2,40 +2,40 @@
 
 <!--- Where possible, the executive summary should paraphrase the shared content of the body of the report to minimize redundancy.--->
 
-## Stock{-}
+## Stock {#sec-stock .unnumbered}
 
 
-## Catches{-}
+## Catches {#sec-catches .unnumbered}
 
 
-## Data and assessment{-}
+## Data and assessment {#sec-data-and-assessment .unnumbered}
 
 
-## Stock biomass and dynamics{-}
+## Stock biomass and dynamics {#sec-stock-biomass-and-dynamics .unnumbered}
 
 
-## Recruitment{-}
+## Recruitment {#sec-recruitment .unnumbered}
 
 
-## Exploitation status{-}
+## Exploitation status {#sec-exploitation-status .unnumbered}
 
 
-## Ecosystem considerations{-}
+## Ecosystem considerations {#sec-ecosystem-considerations .unnumbered}
 
 
-## Reference points{-}
+## Reference points {#sec-reference-points .unnumbered}
 
 
-## Management performance{-}
+## Management performance {#sec-management-performance .unnumbered}
 
 
-## Unresolved problems and major uncertainties{-}
+## Unresolved problems and major uncertainties {#sec-unresolved-problems-and-major-uncertainties .unnumbered}
 
 
-## Decision table and projections{-}
+## Decision table and projections {#sec-decision-table-and-projections .unnumbered}
 
 
-## Scientific uncertainty{-}
+## Scientific uncertainty {#sec-scientific-uncertainty .unnumbered}
 
 
-## Research and data needs{-}
+## Research and data needs {#sec-research-and-data-needs .unnumbered}

@@ -10,14 +10,14 @@ Description of effort and CPUE
 Information on discards of this stock or stock complex (from directed fishery for this stock or stock complex)
 --->
 
-## Description of the Directed Fishery
+## Description of the Directed Fishery {#sec-description-of-the-directed-fishery}
 
 
-### Catch Patterns
+### Catch Patterns {#sec-catch-patterns}
 
 
-### Bycatch and Discards
+### Bycatch and Discards {#sec-bycatch-and-discards}
 
 
-## Management Measures 
+## Management Measures {#sec-management-measures}
 
