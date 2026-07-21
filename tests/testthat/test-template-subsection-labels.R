@@ -30,13 +30,14 @@ test_that("base template section labels are unique within each template folder",
 
     for (file in files) {
       lines <- readLines(file, warn = FALSE)
-      matches <- regmatches(lines, gregexpr("\\{#sec-[^\\s}]+", lines))
+      matches <- stringr::str_extract_all(lines, "(?<=\\{)[^}]+(?=\\})")
       labels <- unlist(matches)
-      labels <- gsub("^\\{#", "", labels)
+      # Remove any "labels" not containing #sec-
+      labels <- labels[grepl("^#sec-", labels)]
       sec_labels <- c(sec_labels, labels)
     }
 
     dupes <- unique(sec_labels[duplicated(sec_labels)])
-    expect_length(dupes, 0, info = template_dir)
+    expect_length(dupes, 0)
   }
 })
