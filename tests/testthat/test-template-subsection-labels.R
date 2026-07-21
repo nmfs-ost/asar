@@ -38,6 +38,6 @@ test_that("base template section labels are unique within each template folder",
     }
 
     dupes <- unique(sec_labels[duplicated(sec_labels)])
-    expect_length(dupes, 0, info = template_dir)
+    expect_length(dupes, 0)
   }
 })
