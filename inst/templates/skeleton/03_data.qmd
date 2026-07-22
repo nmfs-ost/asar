@@ -2,26 +2,26 @@
 
 <!--- Provide temporal and spatial resolutions or sample size where appropriate for each of the subsections, below.--->
 
-## Life History
+## Life History {#sec-life-history}
 
 <!-- Describe the stock's growth, maturity, fecundity, natural mortality, meristics, etc. -->
 
-## Catch
+## Catch {#sec-catch}
 
 <!-- Describe the retained and discarded. -->
 
-## Indices and Standardization
+## Indices and Standardization {#sec-indices-and-standardization}
 
 <!-- Describe both the fishery dependent and independent data. -->
 
-## Composition Data
+## Composition Data {#sec-composition-data}
 
 <!-- Describe composition data related to age and length, including  aging error and reweighting. -->
 
-## Absolute Abundance
+## Absolute Abundance {#sec-absolute-abundance}
 
 <!-- Describe absolute abundance, if applicable. -->
 
-## Environmental/Ecosystem Indicator Data
+## Environmental/Ecosystem Indicator Data {#sec-environmental-ecosystem-indicator-data}
 
 <!-- Describe the environmental/ecosystem indicator data. If none are considered, include a blanket statement. -->

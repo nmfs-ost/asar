@@ -1,6 +1,6 @@
 # Executive Summary
 
-## Summary of Changes in Assessment Inputs
+## Summary of Changes in Assessment Inputs {#sec-summary-of-changes-in-assessment-inputs}
 
 <!---
 List of changes (if any) in the input data, including estimated catches assumed for the current year and projected catches for current year + 1 and current year + 2.
@@ -11,7 +11,7 @@ Common mistakes in this section include: 1) listing something that *has not* cha
 --->
 
 
-## Summary of Results
+## Summary of Results {#sec-summary-of-results}
 
 <!---
 List of changes (if any) in the input data, including estimated catches assumed for the current year and projected catches for current year + 1 and current year + 2.

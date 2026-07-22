@@ -1,6 +1,6 @@
 # Management 
 
-## Reference Points
+## Reference Points {#sec-reference-points}
 
 <!-- 1. Unfished spawning stock biomass, summary age biomass, and recruitment, along with unfished spawning stock output.  -->
 <!-- 2. Reference points based on B40% for rockfish and round fish and on B25% for flatfish (spawning biomass and/or output, SPR, exploitation rate, equilibrium yield).  -->
@@ -8,13 +8,13 @@
 <!-- 4. Reference points based on MSY (if estimated) (spawning biomass and/or output, SPR, exploitation rate, equilibrium yield).  -->
 <!-- 5. Equilibrium yield curve showing various BMSY proxies.   -->
 
-## Harvest Projections and Decision Tables
+## Harvest Projections and Decision Tables {#sec-harvest-projections-and-decision-tables}
 
-## Evaluation of Scientific Uncertainty
+## Evaluation of Scientific Uncertainty {#sec-scientific-uncertainty}
 
-## Regional management considerations
+## Regional management considerations {#sec-regional-management-considerations}
 
-## Research and Data Needs
+## Research and Data Needs {#sec-research-and-data-needs}
 
 <!-- 1. Describe progress on Research and Data Needs items identified in the most recent previous stock assessment document and associated STAR panel report.  -->
 <!-- 2. Describe new research and data needs and specify their priority (high, medium, low).  -->

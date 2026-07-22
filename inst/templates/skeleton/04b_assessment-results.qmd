@@ -2,13 +2,13 @@
 
 <!-- For each of the following subsections, please describe the results for the base model. -->
 
-### Parameter Estimates
+### Parameter Estimates {#sec-parameter-estimates}
 
 
-### Time Series
+### Time Series {#sec-time-series}
 
 
-### Model Fits
+### Model Fits {#sec-model-fits}
 
 
-### Model Diagnostics
+### Model Diagnostics {#sec-model-diagnostics}

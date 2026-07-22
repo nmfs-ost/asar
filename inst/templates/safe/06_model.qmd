@@ -1,6 +1,6 @@
 # Analytical approach
 
-## General Model Structure
+## General Model Structure {#sec-general-model-structure}
 
 <!--- Description of overall modeling approach (e.g., age/size structured versus biomass dynamic, maximum likelihood versus Bayesian)
 If standardized software (e.g., Stock Synthesis) is used, give reference to technical documentation where variables and equations are described.  If standardized software is not used, then list variables and equations used in the assessment model(s) in tables or appendices as appropriate.
@@ -8,7 +8,7 @@ If standardized software (e.g., Stock Synthesis) is used, give reference to tech
 
 
 
-## Description of Alternative Models
+## Description of Alternative Models {#sec-alternative-models}
 
 <!--- Description of alternative models included in the assessment, if any (e.g., alternative M values or likelihood weights); note that the base model (i.e., the model most recently accepted by the SSC, either after reviewing the previous year’s final assessment or the current year’s preliminary assessment) must be included
 Per recommendation of the SSC (10/15), please use the following convention for numbering models:
@@ -18,13 +18,13 @@ Specifically, please use one of the following four options to distinguish “maj
 --->
 
 
-## Parameters Estimated Outside the Assessment Model
+## Parameters Estimated Outside the Assessment Model {#sec-outside-estimated-parameters}
 
 <!---
 (Use the above heading for Tiers 1-3)
 --->
 
-## Parameter Estimates
+## Parameter Estimates {#sec-parameter-estimates}
 
 <!---
 (Use the above heading for Tiers 4-6)  
@@ -33,7 +33,7 @@ List of parameters that are estimated independently of others (e.g., the natural
 Description of how these parameters are estimated (methods do not necessarily have to be statistical; e.g., *M* could be estimated by referencing a previously published value)
 --->
 
-## Parameters Estimated Inside the Assessment Model
+## Parameters Estimated Inside the Assessment Model {#sec-parameters-estimated-inside-the-assessment-model}
 
 <!---
 (This section should be omitted for Tiers 4-6)  

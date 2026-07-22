@@ -1,7 +1,7 @@
-## Base Model Results
+## Base Model Results {#sec-base-model-results}
 
 
-### Parameter Estimates
+### Parameter Estimates {#sec-parameter-estimates}
 
 <!-- Table listing all explicit parameters in the stock assessment model used for base model, their purpose (e.g., recruitment parameter, selectivity parameter) and whether or not the parameter was actually estimated in the stock assessment model. Include the associated asymptotic standard error estimates.  -->
 
@@ -11,11 +11,11 @@
 
 <!-- Parameter uncertainty (variance estimation conditioned on a given model, estimation framework, data set choice, and weighting scheme). This element for evaluating uncertainty includes expressing uncertainty in derived outputs of the model and estimating CVs using appropriate methods (e.g., bootstrap, asymptotic methods, Bayesian approaches, such as MCMC).   -->
 
-### Fits to the Data
+### Fits to the Data {#sec-fits-to-the-data}
 
 <!-- Residual analysis for the base-run configuration, e.g., residual plots, time series plots of observed and predicted values, etc.   -->
 
-### Population Trajectory
+### Population Trajectory {#sec-population-trajectory}
 
 <!-- Time-series of total biomass, summary biomass, and spawning biomass (and/or spawning output), depletion relative to B0, recruitment and fishing mortality (1-SPR) (or exploitation rate estimates if fishing mortality not available) (table and figures).  -->
 
