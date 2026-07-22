@@ -1,0 +1,70 @@
+# Stock Assessment Model Configuration {#sec-mod-config}
+
+## Model Configuration
+
+
+### Initial Conditions
+
+
+### Temporal Structure
+
+
+### Spatial Structure
+
+
+### Life History
+
+
+### Recruitment Dynamics
+
+
+### Fleet Structure and Surveys
+
+
+### Selectivity
+
+
+### Retention
+
+
+### Landings and Associated Length and Age Compositions
+
+
+### Discards and Associated Length Compositions
+
+
+### Indices
+
+
+## Goodness of Fit and Assumed Error Structure
+
+
+## Estimated Parameters
+
+
+## Model Diagnostics
+
+
+### Residual Analysis
+
+
+### Correlation Analysis
+
+
+### Profile Likelihoods
+
+
+### Jitter Analysis
+
+
+### Retrospective Analysis
+
+
+### Jack-knife Analysis on Indices of Abundance
+
+
+### Additional Diagnostics
+
+
+## Sensitivity Runs
+

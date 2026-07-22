@@ -1,0 +1,68 @@
+# Data Review and Update {#sec-data}
+
+
+## Stock Structure and Management Unit
+
+
+## Life History Parameters
+
+
+### Morphometric and Conversion Factors
+
+
+### Age and Growth
+
+
+### Natural Mortality
+
+
+### Maturity
+
+
+### Sexual Transition
+
+
+### Fecundity
+
+
+### Discard Mortality
+
+
+## Fishery-Dependent Data
+
+
+### Commercial Landings
+
+
+### Recreational Landings
+
+
+### Commercial Discards
+
+
+### Recreational Discards
+
+
+### Commercial Size Composition
+
+
+### Recreational Size Composition
+
+
+### Commercial Age Composition
+
+
+### Recreational Age Composition
+
+
+### Commercial Catch Per Unit of Effort Indices of Abundance
+
+
+### Recreational Catch Per Unit of Effort Indices of Abundance
+
+
+## Fishery-Independent Surveys
+
+
+## Environmental Considerations and Contributions from Stakeholders
+
