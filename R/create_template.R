@@ -469,15 +469,9 @@ create_template <- function(
 
     asar_folder <- system.file("templates", package = "asar")
     # copy files from specific type folder
-    if (rerender_skeleton){
-      current_folder <- subdir
-    } else {
-      current_folder <- file.path(asar_folder,
-                                  # sedar report files identical to skeleton
-                                  ifelse(type == tolower("sedar"),
-                                         "skeleton",
-                                         type))
-    }
+    current_folder <- ifelse(rerender_skeleton,
+                             subdir,
+                             file.path(asar_folder, type))
     new_folder <- subdir
 
     ##### Identify files to copy ----
@@ -1130,7 +1124,10 @@ create_template <- function(
       citation <- create_citation(
         authors = authors,
         title = title,
-        year = year
+        year = year,
+        type = ifelse(tolower(office) == "sefsc",
+                      "sedar",
+                      type)
       )
       cli::cli_alert_success("Added report citation.")
     }

@@ -223,7 +223,7 @@ create_yaml <- function(
     
     sedar_author <- "  - name: 'SEDAR'\n    affiliations: \n        address: '4055 Faber Place Drive, Suite 201' \n        city: 'North Charleston' \n        state: 'SC' \n        postal-code: '29405' \n"
 
-    yaml <- ifelse(office == "SEFSC",
+    yaml <- ifelse(tolower(type) == "sedar",
                    paste0(yaml, sedar_author),
                    paste0(yaml, add_authors))
 
