@@ -29,7 +29,6 @@ Imports:
     fs,
     glue,
     gt,
-    naniar,
     purrr,
     stats,
     stringi,
