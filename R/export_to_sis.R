@@ -176,9 +176,9 @@
 #'   
 #' @param AS_FMSY Estimated and/or calculated value of Fishing Mortality at MSY. 
 #'  
-#'   Default: value extracted as the "F.FMSY.end.yr" key quantity
+#'   Default: value extracted as the "F.MSY.terminal" key quantity
 #'   within the key_quantities.csv file imported via `key_quantities_dir`.
-
+#'   
 #' @param AS_F_BEST Best estimate of Fishing Mortality. Typically,
 #' Best F = Terminal F for the stock assessment unless the estimation
 #' has undergone some transformation (e.g., averaging or retrospective
@@ -205,7 +205,8 @@
 #'   of the Biomass estimate. Equivalent to the value of Best B Confidence 
 #'   Interval Upper estimate. 
 #'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   Default: value extracted as the "B.terminal.max" key quantity
+#'   within the key_quantities.csv file imported via `key_quantities_dir`.
 #'   
 #' @param AS_BMSY Estimated stock size that would, on average, produce the maximum 
 #'   sustainable yield when fished at a level equal to FMSY.
@@ -217,7 +218,8 @@
 #'   of the Biomass estimate. Equivalent to the value of Best B Confidence 
 #'   Interval Lower estimate. 
 #'  
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   Default: value extracted as the "B.terminal.max" key quantity
+#'   within the key_quantities.csv file imported via `key_quantities_dir`.
 #'   
 #' @param AS_B_BEST Best estimate of Biomass. Typically, Best B = Terminal 
 #' B for the stock assessment unless the estimation has undergone some
@@ -316,14 +318,16 @@
 #'   of the Fishing Mortality estimate. This field should be equivalent to the 
 #'   value of Best F Confidence Interval Upper estimate.
 #'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   Default: value extracted as the "F.terminal.max" key quantity
+#'   within the key_quantities.csv file imported via `key_quantities_dir`.
 #'   
 #' @param AS_F_MIN Minimum estimated value within the approved confidence interval 
 #'   of the Fishing Mortality estimate. This field should be equivalent to the 
 #'   value of Best F Confidence Interval Lower estimate.
 #'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
-#'   
+#'   Default: value extracted as the "F.terminal.min" key quantity
+#'   within the key_quantities.csv file imported via `key_quantities_dir`.
+#'      
 #' @param AS_F_RANGE_BASIS Approach used to calculate the confidence intervals 
 #'   provided for the stock assessment. Optional.
 #'   
@@ -340,14 +344,16 @@
 #'   of the Fishing Mortality estimate. This field should be equivalent to the 
 #'   value of Fmsy Confidence Interval Upper estimate.
 #'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   Default: value extracted as the "F.MSY.terminal.max" key quantity
+#'   within the key_quantities.csv file imported via `key_quantities_dir`.
 #'   
 #' @param AS_F_MSY_MIN Minimum estimated value within the approved confidence interval 
 #'   of the Fishing Mortality estimate. This field should be equivalent to the 
 #'   value of Fmsy Confidence Interval Lower estimate.
 #'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
-#'   
+#'   Default: value extracted as the "F.MSY.terminal.min" key quantity
+#'   within the key_quantities.csv file imported via `key_quantities_dir`.
+#'      
 #' @param AS_F_MSY_RANGE_BASIS Approach used to calculate the confidence intervals 
 #'   provided for the stock assessment. Optional.
 #'   
@@ -527,7 +533,7 @@ export_to_sis <- function(
   
   if (is.null(AS_FMSY)){
     AS_FMSY <- kqs |>
-      dplyr::filter(key_quantity == "F.FMSY.end.yr") |>
+      dplyr::filter(key_quantity == "F.MSY.terminal") |>
       dplyr::select(value) |>
       as.numeric()
   }
@@ -596,6 +602,49 @@ export_to_sis <- function(
       as.numeric()
   }
   
+  if (is.null(AS_B_MIN)){
+    AS_B_MIN <- kqs |>
+      dplyr::filter(key_quantity == "B.terminal.min") |>
+      dplyr::select(value) |>
+      as.numeric()
+  }
+  
+  if (is.null(AS_B_MAX)){
+    AS_B_MAX <- kqs |>
+      dplyr::filter(key_quantity == "B.terminal.max") |>
+      dplyr::select(value) |>
+      as.numeric()
+  }
+  
+  
+  if (is.null(AS_F_MIN)){
+    AS_F_MIN <- kqs |>
+      dplyr::filter(key_quantity == "F.terminal.min") |>
+      dplyr::select(value) |>
+      as.numeric()
+  }
+  
+  if (is.null(AS_F_MAX)){
+    AS_F_MAX <- kqs |>
+      dplyr::filter(key_quantity == "F.terminal.max") |>
+      dplyr::select(value) |>
+      as.numeric()
+  }
+  
+  if (is.null(AS_F_MSY_MAX)){
+    AS_F_MSY_MAX <- kqs |>
+      dplyr::filter(key_quantity == "F.MSY.terminal.max") |>
+      dplyr::select(value) |>
+      as.numeric()
+  }
+  
+  if (is.null(AS_F_MSY_MIN)){
+    AS_F_MSY_MIN <- kqs |>
+      dplyr::filter(key_quantity == "F.MSY.terminal.min") |>
+      dplyr::select(value) |>
+      as.numeric()
+  }
+
   summary <- paste0(
     '{"ASSESSMENT_ID":"', ASSESSMENT_ID,
     '","AS_YEAR":"', AS_YEAR,
