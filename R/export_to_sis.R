@@ -179,13 +179,22 @@
 #'   Default: value extracted as the "F.FMSY.end.yr" key quantity
 #'   within the key_quantities.csv file imported via `key_quantities_dir`.
 
-#' @param AS_F_BEST Best estimate of Fishing Mortality. 
+#' @param AS_F_BEST Best estimate of Fishing Mortality. Typically,
+#' Best F = Terminal F for the stock assessment unless the estimation
+#' has undergone some transformation (e.g., averaging or retrospective
+#' adjustment).
 #'  
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'   Default: value extracted as the "F.terminal.est" key quantity
+#'   within the key_quantities.csv file imported via `key_quantities_dir`.
 #'   
-#' @param AS_FLIMIT_BASIS Basis for the recommended fishing mortality limit - 
-#'   calculated or directly estimated. Example: "F from 2024 asmt corresponding 
-#'   to 2023 OFL"
+#' @param AS_FLIMIT_BASIS Basis for the recommended fishing mortality limit,
+#' calculated or directly estimated. Only utilized in Alaska as assessments
+#' utilize catch projections in the current year, so overfishing stock
+#' status is always reviewed against the last "complete" year of fishing
+#' activity. Most stocks utilize Flimit = Fmsy. Example: "F from 2024 asmt
+#' corresponding to 2023 OFL". Optional.
+#' 
+#' Default: NULL
 #'   
 #' @param AS_B_YEAR Year of the Biomass estimate for the stock. 
 #'  
@@ -210,9 +219,12 @@
 #'  
 #'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
 #'   
-#' @param AS_B_BEST Best estimate of Biomass. 
+#' @param AS_B_BEST Best estimate of Biomass. Typically, Best B = Terminal 
+#' B for the stock assessment unless the estimation has undergone some
+#' transformation (e.g., averaging or retrospective adjustment).
 #'  
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'  Default: value extracted as the "B.terminal.est" key quantity
+#'  within the key_quantities.csv file imported via `key_quantities_dir`.
 #'   
 #' @param AS_BMSY_BASIS Basis for the estimated BMSY value. Example: "B35%"
 #'   
@@ -226,7 +238,9 @@
 #'   Default: value extracted as the "F.limit" key quantity
 #'   within the key_quantities.csv file imported via `key_quantities_dir`.
 #'   
-#' @param AS_F_YEAR Year of the Fishing Mortality estimate for the stock.
+#' @param AS_F_YEAR Terminal year estimate of stock Fishing Mortality.
+#' Always corresponds to the year of the Best estimate of Fishing Mortality
+#' (AS_F_BEST).
 #'  
 #'   Default: value extracted as the "F.terminal.year" key quantity
 #'   within the key_quantities.csv file imported via `key_quantities_dir`.
@@ -279,7 +293,9 @@
 #' @param AS_B_RANGE_BASIS Approach used to calculate the confidence 
 #'   intervals provided for the stock assessment. Optional.
 #'  
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'  Default: NULL
+#'  
+#'  Options: "Asymptotic", "Credible", "Bootstrapped", user-specified
 #'   
 #' @param AS_B_RANGE Percentile range of the confidence intervals 
 #'   provided for the stock assessment. Optional. 
@@ -311,7 +327,9 @@
 #' @param AS_F_RANGE_BASIS Approach used to calculate the confidence intervals 
 #'   provided for the stock assessment. Optional.
 #'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'  Default: NULL
+#'  
+#'  Options: "Asymptotic", "Credible", "Bootstrapped", user-specified
 #'   
 #' @param AS_F_RANGE Percentile range of the confidence intervals provided for 
 #'   the stock assessment. Optional.
@@ -333,8 +351,10 @@
 #' @param AS_F_MSY_RANGE_BASIS Approach used to calculate the confidence intervals 
 #'   provided for the stock assessment. Optional.
 #'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
-#'   
+#'  Default: NULL
+#'  
+#'  Options: "Asymptotic", "Credible", "Bootstrapped", user-specified
+#'  
 #' @param AS_F_MSY_RANGE Percentile range of the confidence intervals provided for 
 #'   the stock assessment. Optional.
 #'   
@@ -373,7 +393,9 @@
 #' @param AS_MSY_RANGE_BASIS Approach used to calculate the confidence intervals 
 #'   provided for the stock assessment. Optional.
 #'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
+#'  Default: NULL
+#'  
+#'  Options: "Asymptotic", "Credible", "Bootstrapped", user-specified
 #'   
 #' @param AS_MSY_RANGE Percentile range of the confidence intervals provided for 
 #'   the stock assessment. Optional.
@@ -397,8 +419,10 @@
 #' @param AS_BMSY_RANGE_BASIS Approach used to calculate the confidence intervals 
 #'   provided for the stock assessment. Optional.
 #'   
-#'   Default: value automatically extracted from {asar} and/or {stockplotr} files.
-#'   
+#'  Default: NULL
+#'  
+#'  Options: "Asymptotic", "Credible", "Bootstrapped", user-specified
+#'  
 #' @param AS_BMSY_RANGE Percentile range of the confidence intervals provided for 
 #'   the stock assessment. Optional.
 #'   
@@ -444,7 +468,7 @@ export_to_sis <- function(
   AS_F_BASIS,
   AS_FMSY = NULL,
   AS_F_BEST,
-  AS_FLIMIT_BASIS,
+  AS_FLIMIT_BASIS = NULL,
   AS_B_YEAR = NULL,
   AS_B_MAX,
   AS_BMSY = NULL,
@@ -553,6 +577,21 @@ export_to_sis <- function(
   if (is.null(AS_FLIMIT)){
     AS_FLIMIT <- kqs |>
       dplyr::filter(key_quantity == "F.limit") |>
+      dplyr::select(value) |>
+      as.numeric()
+  }
+  
+  
+  if (is.null(AS_B_BEST)){
+    AS_B_BEST <- kqs |>
+      dplyr::filter(key_quantity == "B.terminal.est") |>
+      dplyr::select(value) |>
+      as.numeric()
+  }
+  
+  if (is.null(AS_F_BEST)){
+    AS_F_BEST <- kqs |>
+      dplyr::filter(key_quantity == "F.terminal.est") |>
       dplyr::select(value) |>
       as.numeric()
   }
