@@ -242,7 +242,7 @@ Options: 1, 2, 3, 4, 5, 6, 7. Descriptions of each level are as follows:
 
 \item{AS_FMSY}{Estimated and/or calculated value of Fishing Mortality at MSY.
 
-Default: value extracted as the "F.FMSY.end.yr" key quantity
+Default: value extracted as the "F.MSY.terminal" key quantity
 within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 
 \item{AS_F_BEST}{Best estimate of Fishing Mortality. Typically,
@@ -271,7 +271,8 @@ within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 of the Biomass estimate. Equivalent to the value of Best B Confidence
 Interval Upper estimate.
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: value extracted as the "B.terminal.max" key quantity
+within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 
 \item{AS_BMSY}{Estimated stock size that would, on average, produce the maximum
 sustainable yield when fished at a level equal to FMSY.
@@ -283,7 +284,8 @@ within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 of the Biomass estimate. Equivalent to the value of Best B Confidence
 Interval Lower estimate.
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: value extracted as the "B.terminal.max" key quantity
+within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 
 \item{AS_B_BEST}{Best estimate of Biomass. Typically, Best B = Terminal
 B for the stock assessment unless the estimation has undergone some
@@ -377,13 +379,15 @@ Options: "Y" (yes), "N" (no)}
 of the Fishing Mortality estimate. This field should be equivalent to the
 value of Best F Confidence Interval Upper estimate.
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: value extracted as the "F.terminal.max" key quantity
+within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 
 \item{AS_F_MIN}{Minimum estimated value within the approved confidence interval
 of the Fishing Mortality estimate. This field should be equivalent to the
 value of Best F Confidence Interval Lower estimate.
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: value extracted as the "F.terminal.min" key quantity
+within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 
 \item{AS_F_RANGE_BASIS}{Approach used to calculate the confidence intervals
 provided for the stock assessment. Optional.
@@ -401,13 +405,15 @@ Default: 95}
 of the Fishing Mortality estimate. This field should be equivalent to the
 value of Fmsy Confidence Interval Upper estimate.
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: value extracted as the "F.MSY.terminal.max" key quantity
+within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 
 \item{AS_F_MSY_MIN}{Minimum estimated value within the approved confidence interval
 of the Fishing Mortality estimate. This field should be equivalent to the
 value of Fmsy Confidence Interval Lower estimate.
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: value extracted as the "F.MSY.terminal.min" key quantity
+within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 
 \item{AS_F_MSY_RANGE_BASIS}{Approach used to calculate the confidence intervals
 provided for the stock assessment. Optional.
