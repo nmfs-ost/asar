@@ -25,7 +25,7 @@ export_to_sis(
   AS_F_BASIS,
   AS_FMSY = NULL,
   AS_F_BEST,
-  AS_FLIMIT_BASIS,
+  AS_FLIMIT_BASIS = NULL,
   AS_B_YEAR = NULL,
   AS_B_MAX,
   AS_BMSY = NULL,
@@ -245,13 +245,22 @@ Options: 1, 2, 3, 4, 5, 6, 7. Descriptions of each level are as follows:
 Default: value extracted as the "F.FMSY.end.yr" key quantity
 within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 
-\item{AS_F_BEST}{Best estimate of Fishing Mortality.
+\item{AS_F_BEST}{Best estimate of Fishing Mortality. Typically,
+Best F = Terminal F for the stock assessment unless the estimation
+has undergone some transformation (e.g., averaging or retrospective
+adjustment).
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: value extracted as the "F.terminal.est" key quantity
+within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 
-\item{AS_FLIMIT_BASIS}{Basis for the recommended fishing mortality limit -
-calculated or directly estimated. Example: "F from 2024 asmt corresponding
-to 2023 OFL"}
+\item{AS_FLIMIT_BASIS}{Basis for the recommended fishing mortality limit,
+calculated or directly estimated. Only utilized in Alaska as assessments
+utilize catch projections in the current year, so overfishing stock
+status is always reviewed against the last "complete" year of fishing
+activity. Most stocks utilize Flimit = Fmsy. Example: "F from 2024 asmt
+corresponding to 2023 OFL". Optional.
+
+Default: NULL}
 
 \item{AS_B_YEAR}{Year of the Biomass estimate for the stock.
 
@@ -276,9 +285,12 @@ Interval Lower estimate.
 
 Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 
-\item{AS_B_BEST}{Best estimate of Biomass.
+\item{AS_B_BEST}{Best estimate of Biomass. Typically, Best B = Terminal
+B for the stock assessment unless the estimation has undergone some
+transformation (e.g., averaging or retrospective adjustment).
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: value extracted as the "B.terminal.est" key quantity
+within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 
 \item{AS_BMSY_BASIS}{Basis for the estimated BMSY value. Example: "B35\%"}
 
@@ -292,7 +304,9 @@ above which the stock would be considered to be experiencing overfishing.
 Default: value extracted as the "F.limit" key quantity
 within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 
-\item{AS_F_YEAR}{Year of the Fishing Mortality estimate for the stock.
+\item{AS_F_YEAR}{Terminal year estimate of stock Fishing Mortality.
+Always corresponds to the year of the Best estimate of Fishing Mortality
+(AS_F_BEST).
 
 Default: value extracted as the "F.terminal.year" key quantity
 within the key_quantities.csv file imported via \code{key_quantities_dir}.}
@@ -344,7 +358,9 @@ Options: "Y" (yes), "N" (no)}
 \item{AS_B_RANGE_BASIS}{Approach used to calculate the confidence
 intervals provided for the stock assessment. Optional.
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: NULL
+
+Options: "Asymptotic", "Credible", "Bootstrapped", user-specified}
 
 \item{AS_B_RANGE}{Percentile range of the confidence intervals
 provided for the stock assessment. Optional.
@@ -372,7 +388,9 @@ Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 \item{AS_F_RANGE_BASIS}{Approach used to calculate the confidence intervals
 provided for the stock assessment. Optional.
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: NULL
+
+Options: "Asymptotic", "Credible", "Bootstrapped", user-specified}
 
 \item{AS_F_RANGE}{Percentile range of the confidence intervals provided for
 the stock assessment. Optional.
@@ -394,7 +412,9 @@ Default: value automatically extracted from {asar} and/or {stockplotr} files.}
 \item{AS_F_MSY_RANGE_BASIS}{Approach used to calculate the confidence intervals
 provided for the stock assessment. Optional.
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: NULL
+
+Options: "Asymptotic", "Credible", "Bootstrapped", user-specified}
 
 \item{AS_F_MSY_RANGE}{Percentile range of the confidence intervals provided for
 the stock assessment. Optional.
@@ -434,7 +454,9 @@ value of MSY Confidence Interval Lower estimate.}
 \item{AS_MSY_RANGE_BASIS}{Approach used to calculate the confidence intervals
 provided for the stock assessment. Optional.
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: NULL
+
+Options: "Asymptotic", "Credible", "Bootstrapped", user-specified}
 
 \item{AS_MSY_RANGE}{Percentile range of the confidence intervals provided for
 the stock assessment. Optional.
@@ -458,7 +480,9 @@ within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 \item{AS_BMSY_RANGE_BASIS}{Approach used to calculate the confidence intervals
 provided for the stock assessment. Optional.
 
-Default: value automatically extracted from {asar} and/or {stockplotr} files.}
+Default: NULL
+
+Options: "Asymptotic", "Credible", "Bootstrapped", user-specified}
 
 \item{AS_BMSY_RANGE}{Percentile range of the confidence intervals provided for
 the stock assessment. Optional.
