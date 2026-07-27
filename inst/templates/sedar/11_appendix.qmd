@@ -1,0 +1,9 @@
+\appendix
+\setcounter{figure}{0}
+\setcounter{table}{0}
+
+# Appendices {#sec-appendix}
+
+<!--- 
+Any information relevant for evaluation of the stock either during SSC or management review should be included in the appendix. The main assessment document should contain the minimum necessary information to inform and provide management advice for the stock while additional materials can be found in the appendix.
+--->

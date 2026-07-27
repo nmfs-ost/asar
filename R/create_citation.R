@@ -19,10 +19,22 @@
 create_citation <- function(
   authors = NULL,
   title = "[TITLE]",
-  year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
+  year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
+  type = NULL
 ) {
   # Check if authors is input - improved from previous fxn so did not fail
   if (is.null(authors) | any(authors == "")) {
+    if (tolower(type) == "sedar"){
+      citation <- paste0(
+        "{{< pagebreak >}} \n",
+        "\n",
+        "Please cite this publication as: \n",
+        "\n",
+        "SEDAR. ",
+        year, ". ",
+        title, ". SEDAR, North Charleston SC. \\pageref*{LastPage}{} pp."
+      )
+    } else {
     cli::cli_alert_warning("Authorship not defined.")
     cli::cli_alert_info("Did you forget to specify `authors`?")
     # Define default citation - needs authors editing
@@ -35,7 +47,7 @@ create_citation <- function(
       title, ". National Marine Fisheries Service, ",
       "[CITY], [STATE]. \\pageref*{LastPage}{} pp."
     )
-  } else {
+  } } else {
     # Authored by Kelli Johnson in previous PR
     author_data_frame <- data.frame(office = authors) |>
       tibble::rownames_to_column("input") |>
@@ -141,7 +153,7 @@ create_citation <- function(
       "\n",
       "Please cite this publication as: \n",
       "\n",
-      ifelse(primary_author_office[["office"]] == "SEFSC", "SEDAR.", author_list),
+      ifelse(primary_author_office[["office"]] == "SEFSC" | tolower(type) == "sedar", "SEDAR.", author_list),
       " ", year, ". ",
       glue::glue("{title}"), ". ",
       region_specific_part,

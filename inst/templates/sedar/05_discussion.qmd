@@ -1,0 +1,3 @@
+# Discussion {#sec-discussion}
+
+<!--- The discussion is dependent on analyst/assessment/region. Include subsections discussing ecosystem considerations (if applicable) and research recommendations/improvements to the assessment. --->

@@ -16,4 +16,5 @@ This folder contains various files which support the creation of materials for r
   * `preamble` R file used to extract key quantities from model results file used in asar report (`preamble.R`)
   * Images of species used for asar report cover pages (`spp_img` folder)
   * US Dept of Commerce logo placed on report title page (`us_doc_logo.png`)
-* The `templates` sub-folder contains the child documents used for each report "type": Northeast management track (nemt); Pacific Fisheries Marine Council (pfmc); Stock Assessment and Fishery Evaluation (safe); standard report format (skeleton)
+* The `templates` sub-folder contains the child documents used for each report "type": Northeast management track (nemt); Pacific Fisheries Marine Council (pfmc); Stock Assessment and Fishery Evaluation (safe); SouthEast Data, Assessment, and Review (sedar),
+standard report format (skeleton)

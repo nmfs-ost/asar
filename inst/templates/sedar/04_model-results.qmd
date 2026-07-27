@@ -1,0 +1,55 @@
+# Stock Assessment Model Results {#sec-model-results}
+
+## Estimated Parameters
+
+
+## Fishing Mortality
+
+
+## Selectivity
+
+
+## Recruitment
+
+
+## Biomass and Abundance Trajectories
+
+
+## Model Fit and Residual Analysis
+
+
+### Landings
+
+
+### Discards
+
+
+### Indices
+
+
+### Length Compositions
+
+
+### Age Compositions
+
+## Model Diagnostics
+
+### Correlation Analysis
+
+
+### Profile Likelihoods
+
+
+### Jitter Analysis
+
+
+### Retrospective Analysis
+
+
+### Bridging Analysis
+
+
+### Sensitivity Model Runs
+
+
+

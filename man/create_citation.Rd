@@ -7,7 +7,8 @@
 create_citation(
   authors = NULL,
   title = "[TITLE]",
-  year = format(as.POSIXct(Sys.Date(), format = "\%YYYY-\%mm-\%dd"), "\%Y")
+  year = format(as.POSIXct(Sys.Date(), format = "\%YYYY-\%mm-\%dd"), "\%Y"),
+  type = NULL
 )
 }
 \arguments{
@@ -34,6 +35,14 @@ Default: \verb{[TITLE]}. If species and region are provided, a title will be gen
 \item{year}{Year the assessment is conducted.
 
 Default: the year in which the report is rendered.}
+
+\item{type}{Report template type.
+
+Default: "sar" (a NOAA standard "Stock Assessment Report")
+
+Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track),
+"pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and
+Fishery Evaluation), "sedar" (SouthEast Data, Assessment, and Review)}
 }
 \value{
 Generate a citation for use in publications and other
