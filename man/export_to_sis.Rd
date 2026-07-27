@@ -48,10 +48,10 @@ export_to_sis(
   AS_F_MIN,
   AS_F_RANGE_BASIS = NULL,
   AS_F_RANGE = 95,
-  AS_F_MSY_MAX,
-  AS_F_MSY_MIN,
-  AS_F_MSY_RANGE_BASIS = NULL,
-  AS_F_MSY_RANGE = 95,
+  AS_FMSY_MAX,
+  AS_FMSY_MIN,
+  AS_FMSY_RANGE_BASIS = NULL,
+  AS_FMSY_RANGE = 95,
   AS_FTARGET = NULL,
   AS_FTARGET_BASIS,
   AS_MSY,
@@ -401,28 +401,28 @@ the stock assessment. Optional.
 
 Default: 95}
 
-\item{AS_F_MSY_MAX}{Maximum estimated value within the approved confidence interval
+\item{AS_FMSY_MAX}{Maximum estimated value within the approved confidence interval
 of the Fishing Mortality estimate. This field should be equivalent to the
 value of Fmsy Confidence Interval Upper estimate.
 
 Default: value extracted as the "F.MSY.terminal.max" key quantity
 within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 
-\item{AS_F_MSY_MIN}{Minimum estimated value within the approved confidence interval
+\item{AS_FMSY_MIN}{Minimum estimated value within the approved confidence interval
 of the Fishing Mortality estimate. This field should be equivalent to the
 value of Fmsy Confidence Interval Lower estimate.
 
 Default: value extracted as the "F.MSY.terminal.min" key quantity
 within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 
-\item{AS_F_MSY_RANGE_BASIS}{Approach used to calculate the confidence intervals
+\item{AS_FMSY_RANGE_BASIS}{Approach used to calculate the confidence intervals
 provided for the stock assessment. Optional.
 
 Default: NULL
 
 Options: "Asymptotic", "Credible", "Bootstrapped", user-specified}
 
-\item{AS_F_MSY_RANGE}{Percentile range of the confidence intervals provided for
+\item{AS_FMSY_RANGE}{Percentile range of the confidence intervals provided for
 the stock assessment. Optional.
 
 Default: 95}
