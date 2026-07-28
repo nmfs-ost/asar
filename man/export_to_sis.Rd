@@ -29,6 +29,8 @@ export_to_sis(
   AS_B_YEAR = NULL,
   AS_B_MAX,
   AS_BMSY = NULL,
+  AS_B_BMSY_RATIO = NULL,
+  AS_STOCK_LEVEL_BMSY = NULL,
   AS_B_MIN,
   AS_B_BEST,
   AS_BMSY_BASIS,
@@ -55,7 +57,7 @@ export_to_sis(
   AS_FTARGET = NULL,
   AS_FTARGET_BASIS,
   AS_MSY,
-  AS_MSY_Unit,
+  AS_MSY_UNIT,
   AS_MSY_MAX,
   AS_MSY_MIN,
   AS_MSY_RANGE_BASIS = NULL,
@@ -78,7 +80,7 @@ export_to_sis(
   AS_IAS_BLIMIT_BASIS = NULL,
   AS_IAS_BMSY = NULL,
   AS_IAS_BMSY_BASIS = NULL,
-  TIME_SERIES = NA
+  TIME_SERIES = NULL
 )
 }
 \arguments{
@@ -294,6 +296,19 @@ sustainable yield when fished at a level equal to FMSY.
 Default: value extracted as the "B.msy" key quantity
 within the key_quantities.csv file imported via \code{key_quantities_dir}.}
 
+\item{AS_B_BMSY_RATIO}{Ratio of B / Bmsy.
+Automatically calculated by SIS. Optional.
+
+Default: NULL}
+
+\item{AS_STOCK_LEVEL_BMSY}{Whether the stock is
+above, near, or below Bmsy based upon the value
+provided in the AS_B_BMSY_RATIO field. Optional.
+
+Options: "Above", "Near" (between 80\% and 99\%), "Below" (<80\%)
+
+Default: NULL}
+
 \item{AS_B_MIN}{Minimum estimated value within the approved confidence interval
 of the Biomass estimate. Equivalent to the value of Best B Confidence
 Interval Lower estimate.
@@ -452,7 +467,7 @@ by a stock assessment.}
 
 \item{AS_MSY}{Value of the MSY estimated by the assessment.}
 
-\item{AS_MSY_Unit}{Unit associated with the MSY value.
+\item{AS_MSY_UNIT}{Unit associated with the MSY value.
 
 Options:
 \itemize{
@@ -576,7 +591,7 @@ The function will format and upload this data to a specific Google Drive folder.
 \examples{
 \dontrun{
 export_to_sis(
-  key_quantities_dir = "key_quantities.csv",
+  key_quantities_dir = getwd(),
   model_identifier = "base",
   AS_POINT_OF_CONTACT = "patrick.star@myemail.gov",
   AS_CATCH_DATA = 5,
@@ -624,6 +639,7 @@ export_to_sis(
   AS_B_RANGE_BASIS = "Credible",
   AS_B_RANGE = 95,
   AS_BMSY = 103743,
+  AS_STOCK_LEVEL_BMSY = "Above",
   AS_BMSY_BASIS = "B35\%",
   AS_BMSY_MIN = 85000,
   AS_BMSY_MAX = 120000,
@@ -632,7 +648,7 @@ export_to_sis(
   AS_BLIMIT = 51871.5,
   AS_BLIMIT_BASIS = "50\% * Bmsy",
   AS_MSY = 100,
-  AS_MSY_Unit = "Metric tons",
+  AS_MSY_UNIT = "Metric tons",
   AS_MSY_MIN = 80,
   AS_MSY_MAX = 120,
   AS_MSY_RANGE_BASIS = "Bootstrapped",
@@ -649,7 +665,7 @@ export_to_sis(
   AS_IAS_BLIMIT_BASIS = "msy",
   AS_IAS_BMSY = 0.99,
   AS_IAS_BMSY_BASIS = "msy",
-  TIME_SERIES = NA
+  TIME_SERIES = NULL
 )
 }
 
