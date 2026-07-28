@@ -105,7 +105,7 @@
 #'   }
 #'   
 #' @param AS_TYPE Type of stock assessment, with regards to approach, technique, 
-#'   effort level, and complexity (NOAA, 2018).
+#'   effort level, and complexity (NOAA, 2018). Assigned automatically by SIS.
 #'   
 #'   Options: "Research Stock Assessment", "Research/Operational Stock Assessment", "Operational Assessment", "Stock Monitoring Update". Descriptions of each type are as follows:
 #'   \itemize{
@@ -434,6 +434,57 @@
 #'   
 #'   Default: 95
 #' 
+#' @param AS_BLIMIT Stock size threshold, below which the stock is considered to be overfished.
+#' 
+#' @param AS_BLIMIT_BASIS Basis for the Blimit estimate.
+#' Examples: (0.7*Bmsy), B25%, etc.
+#' 
+#' @param AS_B_COMMENT Specific comments associated with the best estimate of biomass for this assessment. 1,000 character limit.
+#' 
+#' @param AS_F_COMMENT Specific comments associated with the best estimate of fishing mortality for this assessment. 1,000 character limit.
+#' 
+#' @param AS_IAS_FLIMIT International commission F limit estimate. Optional.
+#' 
+#' Default: NULL
+#' 
+#' @param AS_IAS_FLIMIT_BASIS International commission estimate of Flimit estimation method. Example: "msy".
+#' Optional.
+#' 
+#' Default: NULL
+#' 
+#' @param AS_IAS_FMSY International commission estimate of Fmsy. Optional.
+#' 
+#' Default: NULL
+#' 
+#' @param AS_IAS_FMSY_BASIS International commission estimate of Fmsy estimation method. Optional.
+#'
+#' Default: NULL
+#' 
+#' @param AS_IAS_FTARGET International commission estimate of Ftarget. Optional.
+#' 
+#' Default: NULL
+#' 
+#' @param AS_IAS_FTARGET_BASIS International commission estimate of Ftarget estimation method. Optional.
+#' 
+#' Default: NULL
+#' 
+#' @param AS_IAS_BLIMIT International commission biomass limit estimate. Optional.
+#' 
+#' Default: NULL
+#' 
+#' @param AS_IAS_BLIMIT_BASIS International commission estimate of Blimit estimation method. Optional.
+#' 
+#' Default: NULL
+#' 
+#' @param AS_IAS_BMSY International commission estimate of Bmsy. Optional.
+#' 
+#' Default: NULL
+#' 
+#' @param AS_IAS_BMSY_BASIS International commission estimate of Bmsy estimation method. Optional.
+#' 
+#' Default: NULL
+#'
+#' 
 #' @details This function acts within the following workflow:
 #' 
 #' 1. When a stock assessment is scheduled to conclude, SIS will generate an
@@ -448,7 +499,80 @@
 #' @examples
 #' \dontrun{
 #' export_to_sis(
-#'  TODO: add example
+#'   key_quantities_dir = "key_quantities.csv",
+#'   model_identifier = "base",
+#'   AS_POINT_OF_CONTACT = "patrick.star@myemail.gov",
+#'   AS_CATCH_DATA = 5,
+#'   AS_ABUNDANCE_DATA = 5,
+#'   AS_BIOLOGICAL_DATA = 4,
+#'   AS_ECOSYSTEM_DATA = 2,
+#'   AS_COMP_DATA = 4,
+#'   AS_MODEL_CAT = 6,
+#'   AS_TYPE = "Research & Operational",
+#'   AS_REVIEW_TYPE = 3,
+#'   ASSESSMENT_ID = 13879,
+#'   ENTITY_ID = 10026,
+#'   AS_YEAR = 2024,
+#'   AS_MONTH = 12,
+#'   AS_LAST_DATA_YEAR = 2024,
+#'   AS_B_BASIS = "Spawning Stock Biomass",
+#'   AS_F_BASIS = 2,
+#'   AS_F_UNIT = 2,
+#'   AS_B_UNIT = 1,
+#'   AS_MODEL = "SS",
+#'   AS_MODEL_VERSION = "3.30.22",
+#'   AS_ENSEMBLE_FLAG = "N",
+#'   AS_F_TRANSFORM = "N",
+#'   AS_B_TRANSFORM = "N",
+#'   AS_F_BEST = 0.074,
+#'   AS_F_YEAR = 2023,
+#'   AS_F_MIN = 0.09,
+#'   AS_F_MAX = 0.09,
+#'   AS_F_RANGE_BASIS = "Asymptotic",
+#'   AS_F_RANGE = 95,
+#'   AS_FMSY = 0.17,
+#'   AS_FMSY_BASIS = "F35% as proxy",
+#'   AS_FMSY_MIN = 0.10,
+#'   AS_FMSY_MAX = 0.25,
+#'   AS_FMSY_RANGE_BASIS = "Asymptotic",
+#'   AS_FMSY_RANGE = 90,
+#'   AS_FLIMIT = 0.208,
+#'   AS_FLIMIT_BASIS = "F from 2024 asmt corresponding to 2023 OFL",
+#'   AS_FTARGET = 0.136,
+#'   AS_FTARGET_BASIS = "80% Fmsy",
+#'   AS_B_BEST = 147511,
+#'   AS_B_YEAR = 2024,
+#'   AS_B_MIN = 134463,
+#'   AS_B_MAX = 160559,
+#'   AS_B_RANGE_BASIS = "Credible",
+#'   AS_B_RANGE = 95,
+#'   AS_BMSY = 103743,
+#'   AS_BMSY_BASIS = "B35%",
+#'   AS_BMSY_MIN = 85000,
+#'   AS_BMSY_MAX = 120000,
+#'   AS_BMSY_RANGE_BASIS = "Bootstrapped",
+#'   AS_BMSY_RANGE = 99,
+#'   AS_BLIMIT = 51871.5,
+#'   AS_BLIMIT_BASIS = "50% * Bmsy",
+#'   AS_MSY = 100,
+#'   AS_MSY_Unit = "Metric tons",
+#'   AS_MSY_MIN = 80,
+#'   AS_MSY_MAX = 120,
+#'   AS_MSY_RANGE_BASIS = "Bootstrapped",
+#'   AS_MSY_RANGE = 99,
+#'   AS_B_COMMENT = "Biomass estimate based on latest bottom trawl survey.",
+#'   AS_F_COMMENT = "Fully selected F calculated across age classes 5-10.",
+#'   AS_IAS_FLIMIT = 0.35,
+#'   AS_IAS_FLIMIT_BASIS = "msy",
+#'   AS_IAS_FMSY = 0.99,
+#'   AS_IAS_FMSY_BASIS = "msy",
+#'   AS_IAS_FTARGET = 0.99,
+#'   AS_IAS_FTARGET_BASIS = "msy",
+#'   AS_IAS_BLIMIT = 0.35,
+#'   AS_IAS_BLIMIT_BASIS = "msy",
+#'   AS_IAS_BMSY = 0.99,
+#'   AS_IAS_BMSY_BASIS = "msy",
+#'   TIME_SERIES = NA
 #' )
 #' }
 #'
@@ -513,12 +637,34 @@ export_to_sis <- function(
   AS_BMSY_MIN = NULL,
   AS_BMSY_RANGE_BASIS = NULL,
   AS_BMSY_RANGE = 95,
+  AS_BLIMIT,
+  AS_BLIMIT_BASIS,
+  AS_B_COMMENT = NULL,
+  AS_F_COMMENT = NULL,
+  AS_IAS_FLIMIT = NULL,
+  AS_IAS_FLIMIT_BASIS = NULL,
+  AS_IAS_FMSY = NULL,
+  AS_IAS_FMSY_BASIS = NULL,
+  AS_IAS_FTARGET = NULL,
+  AS_IAS_FTARGET_BASIS = NULL,
+  AS_IAS_BLIMIT = NULL,
+  AS_IAS_BLIMIT_BASIS = NULL,
+  AS_IAS_BMSY = NULL,
+  AS_IAS_BMSY_BASIS = NULL,
   
   # SIS time series
   # this is formatted as a string to be imported as JSON into SIS, but could be formatted as a df and converted to JSON in the function
   # colnames: Year; Catch (Metric Tons); Spawners (Metric Tons); Recruitment (Recruits - Age 1);	Fmort (Fully-selected F)
-  TIME_SERIES
+  TIME_SERIES = NA
 ){
+  
+  if (nchar(AS_B_COMMENT) > 1000){
+    stop("AS_B_COMMENT exceeds 1,000 character limit")
+  }
+  
+  if (nchar(AS_F_COMMENT) > 1000){
+    stop("AS_F_COMMENT exceeds 1,000 character limit")
+  }
   
   kqs <- read.csv(fs::path(key_quantities_dir,
                            "key_quantities.csv"), 
@@ -644,6 +790,81 @@ export_to_sis <- function(
       dplyr::select(value) |>
       as.numeric()
   }
+  
+  
+
+  # Explicitly Required Fields
+  required_fields <- c(
+    "AS_REVIEW_TYPE",
+    "AS_LAST_DATA_YEAR",
+    "AS_MODEL",
+    "AS_POINT_OF_CONTACT",
+    "AS_CATCH_DATA",
+    "AS_ABUNDANCE_DATA",
+    "AS_BIOLOGICAL_DATA",
+    "AS_ECOSYSTEM_DATA",
+    "AS_COMP_DATA",
+    "AS_MODEL_CAT",
+    "Category",
+    "Primary"
+  )
+  
+  # Optional Fields
+  optional_fields <- c(
+    "AS_B_BMSY_RATIO",
+    "AS_F_FLIMIT_RATIO",
+    "AS_F_FMSY_RATIO",
+    "AS_B_RANGE_BASIS",
+    "AS_B_RANGE",
+    "AS_F_RANGE_BASIS",
+    "AS_F_RANGE",
+    "AS_FMSY_RANGE_BASIS",
+    "AS_FMSY_RANGE",
+    "AS_MSY_RANGE_BASIS",
+    "AS_MSY_RANGE",
+    "AS_BMSY_RANGE_BASIS",
+    "AS_BMSY_RANGE", 
+    "AS_IAS_FLIMIT", 
+    "AS_IAS_FLIMIT_BASIS",
+    "AS_IAS_FMSY", 
+    "AS_IAS_FMSY_BASIS",
+    "AS_IAS_FTARGET",
+    "AS_IAS_FTARGET_BASIS", 
+    "AS_IAS_BLIMIT", 
+    "AS_IAS_BLIMIT_BASIS", 
+    "AS_IAS_BMSY",
+    "AS_IAS_BMSY_BASIS"
+  )
+  
+  # Unspecified / Default Required Fields (All remaining fields)
+  default_required_fields <- c(
+    "ASSESSMENT_ID", "AS_YEAR", "AS_MONTH", "AS_B_BASIS", "AS_F_BASIS", 
+    "AS_FMSY", "AS_F_BEST", "AS_FLIMIT_BASIS", "AS_B_YEAR", "AS_B_MAX", 
+    "AS_BMSY", "AS_STOCK_LEVEL_BMSY", "AS_B_MIN", "AS_B_BEST", "AS_BMSY_BASIS", 
+    "AS_FMSY_BASIS", "AS_FLIMIT", "AS_F_YEAR", "ENTITY_ID", "DATE_CREATED", 
+    "CREATED_BY", "DATE_MODIFIED", "MODIFIED_BY", "AS_LOCKED_FLAG", "AS_F_UNIT", 
+    "AS_B_UNIT", "AS_MODEL_VERSION", "AS_LEAD_LAB", "AS_TIMESERIES_LOCKED_FLAG", 
+    "AS_SURVEY_LINK_LOCKED_FLAG", "AS_TYPE", "AS_ENSEMBLE_FLAG", "AS_FISCAL_YEAR", 
+    "AS_F_TRANSFORM", "AS_B_TRANSFORM", "AS_LOCKED_FLAG_BY", "AS_LOCKED_FLAG_DATE", 
+    "AS_TIMESERIES_LOCKED_FLAG_BY", "AS_TIMESERIES_LOCKED_FLAG_DATE", 
+    "AS_SURVEY_LINK_LOCKED_FLAG_BY", "AS_SURVEY_LINK_LOCKED_FLAG_DATE", 
+    "PLANNED_ASSESSMENT_ID", "ENT_ID", "ENT_NAME", "ATS_CNT", "ASL_CNT", 
+    "AS_F_MAX", "AS_F_MIN", "AS_FMSY_MAX", "AS_FMSY_MIN", "AS_FTARGET", 
+    "AS_FTARGET_BASIS", "AS_MSY", "AS_MSY_UNIT", "AS_MSY_MAX", "AS_MSY_MIN", 
+    "AS_BMSY_MAX", "AS_BMSY_MIN", "AS_BLIMIT", "AS_BLIMIT_BASIS", "AS_B_COMMENT", 
+    "AS_F_COMMENT"
+    
+    # Time Series & Surveys Metadata are optional
+    
+  )
+
+  all_required_fields <- c(required_fields, default_required_fields)
+  if (any(is.null(mget(all_required_fields)))){
+    missing_fields <- all_required_fields[sapply(all_required_fields, function(x) is.null(get(x)))]
+    stop(paste("Missing required fields:", paste(missing_fields, collapse = ", ")))
+  }
+  
+  
 
   summary <- paste0(
     '{"ASSESSMENT_ID":"', ASSESSMENT_ID,
@@ -703,6 +924,20 @@ export_to_sis <- function(
     '"," AS_BMSY_MIN":"', AS_BMSY_MIN,
     '"," AS_BMSY_RANGE_BASIS":"', AS_BMSY_RANGE_BASIS,
     '"," AS_BMSY_RANGE":"', AS_BMSY_RANGE,
+    '"," AS_BLIMIT":"', AS_BLIMIT,
+    '"," AS_BLIMIT_BASIS":"', AS_BLIMIT_BASIS,
+    '"," AS_B_COMMENT":"', AS_B_COMMENT,
+    '"," AS_F_COMMENT":"', AS_F_COMMENT,
+    '"," AS_IAS_FLIMIT":"', AS_IAS_FLIMIT,
+    '"," AS_IAS_FLIMIT_BASIS":"', AS_IAS_FLIMIT_BASIS,
+    '"," AS_IAS_FMSY":"', AS_IAS_FMSY,
+    '"," AS_IAS_FMSY_BASIS":"', AS_IAS_FMSY_BASIS,
+    '"," AS_IAS_FTARGET":"', AS_IAS_FTARGET,
+    '"," AS_IAS_FTARGET_BASIS":"', AS_IAS_FTARGET_BASIS,
+    '"," AS_IAS_BLIMIT":"', AS_IAS_BLIMIT,
+    '"," AS_IAS_BLIMIT_BASIS":"', AS_IAS_BLIMIT_BASIS,
+    '"," AS_IAS_BMSY":"', AS_IAS_BMSY,
+    '"," AS_IAS_BMSY_BASIS":"', AS_IAS_BMSY_BASIS,
     '"," model_identifier ":"', model_identifier, '"}'
   )
   
