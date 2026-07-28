@@ -213,6 +213,19 @@
 #'  
 #'   Default: value extracted as the "B.msy" key quantity
 #'   within the key_quantities.csv file imported via `key_quantities_dir`.
+#'
+#' @param AS_B_BMSY_RATIO Ratio of B / Bmsy.
+#' Automatically calculated by SIS. Optional.
+#' 
+#' Default: NULL
+#'
+#' @param AS_STOCK_LEVEL_BMSY Whether the stock is
+#' above, near, or below Bmsy based upon the value
+#' provided in the AS_B_BMSY_RATIO field. Optional.
+#' 
+#' Options: "Above", "Near" (between 80% and 99%), "Below" (<80%)
+#' 
+#' Default: NULL
 #'   
 #' @param AS_B_MIN Minimum estimated value within the approved confidence interval 
 #'   of the Biomass estimate. Equivalent to the value of Best B Confidence 
@@ -377,7 +390,7 @@
 #'   
 #' @param AS_MSY Value of the MSY estimated by the assessment.
 #'   
-#' @param AS_MSY_Unit Unit associated with the MSY value.
+#' @param AS_MSY_UNIT Unit associated with the MSY value.
 #'   
 #'   Options:
 #'   \itemize{
@@ -484,7 +497,7 @@
 #' 
 #' Default: NULL
 #'
-#' 
+#'  
 #' @details This function acts within the following workflow:
 #' 
 #' 1. When a stock assessment is scheduled to conclude, SIS will generate an
@@ -499,7 +512,7 @@
 #' @examples
 #' \dontrun{
 #' export_to_sis(
-#'   key_quantities_dir = "key_quantities.csv",
+#'   key_quantities_dir = getwd(),
 #'   model_identifier = "base",
 #'   AS_POINT_OF_CONTACT = "patrick.star@myemail.gov",
 #'   AS_CATCH_DATA = 5,
@@ -547,6 +560,7 @@
 #'   AS_B_RANGE_BASIS = "Credible",
 #'   AS_B_RANGE = 95,
 #'   AS_BMSY = 103743,
+#'   AS_STOCK_LEVEL_BMSY = "Above",
 #'   AS_BMSY_BASIS = "B35%",
 #'   AS_BMSY_MIN = 85000,
 #'   AS_BMSY_MAX = 120000,
@@ -555,7 +569,7 @@
 #'   AS_BLIMIT = 51871.5,
 #'   AS_BLIMIT_BASIS = "50% * Bmsy",
 #'   AS_MSY = 100,
-#'   AS_MSY_Unit = "Metric tons",
+#'   AS_MSY_UNIT = "Metric tons",
 #'   AS_MSY_MIN = 80,
 #'   AS_MSY_MAX = 120,
 #'   AS_MSY_RANGE_BASIS = "Bootstrapped",
@@ -572,7 +586,7 @@
 #'   AS_IAS_BLIMIT_BASIS = "msy",
 #'   AS_IAS_BMSY = 0.99,
 #'   AS_IAS_BMSY_BASIS = "msy",
-#'   TIME_SERIES = NA
+#'   TIME_SERIES = NULL
 #' )
 #' }
 #'
@@ -602,6 +616,8 @@ export_to_sis <- function(
   AS_B_YEAR = NULL,
   AS_B_MAX,
   AS_BMSY = NULL,
+  AS_B_BMSY_RATIO = NULL,
+  AS_STOCK_LEVEL_BMSY = NULL,
   AS_B_MIN,
   AS_B_BEST,
   AS_BMSY_BASIS,
@@ -628,7 +644,7 @@ export_to_sis <- function(
   AS_FTARGET = NULL,
   AS_FTARGET_BASIS,
   AS_MSY,
-  AS_MSY_Unit,
+  AS_MSY_UNIT,
   AS_MSY_MAX,
   AS_MSY_MIN,
   AS_MSY_RANGE_BASIS = NULL,
@@ -655,7 +671,7 @@ export_to_sis <- function(
   # SIS time series
   # this is formatted as a string to be imported as JSON into SIS, but could be formatted as a df and converted to JSON in the function
   # colnames: Year; Catch (Metric Tons); Spawners (Metric Tons); Recruitment (Recruits - Age 1);	Fmort (Fully-selected F)
-  TIME_SERIES = NA
+  TIME_SERIES = NULL
 ){
   
   if (nchar(AS_B_COMMENT) > 1000){
@@ -804,9 +820,7 @@ export_to_sis <- function(
     "AS_BIOLOGICAL_DATA",
     "AS_ECOSYSTEM_DATA",
     "AS_COMP_DATA",
-    "AS_MODEL_CAT",
-    "Category",
-    "Primary"
+    "AS_MODEL_CAT"
   )
   
   # Optional Fields
@@ -841,14 +855,9 @@ export_to_sis <- function(
     "ASSESSMENT_ID", "AS_YEAR", "AS_MONTH", "AS_B_BASIS", "AS_F_BASIS", 
     "AS_FMSY", "AS_F_BEST", "AS_FLIMIT_BASIS", "AS_B_YEAR", "AS_B_MAX", 
     "AS_BMSY", "AS_STOCK_LEVEL_BMSY", "AS_B_MIN", "AS_B_BEST", "AS_BMSY_BASIS", 
-    "AS_FMSY_BASIS", "AS_FLIMIT", "AS_F_YEAR", "ENTITY_ID", "DATE_CREATED", 
-    "CREATED_BY", "DATE_MODIFIED", "MODIFIED_BY", "AS_LOCKED_FLAG", "AS_F_UNIT", 
-    "AS_B_UNIT", "AS_MODEL_VERSION", "AS_LEAD_LAB", "AS_TIMESERIES_LOCKED_FLAG", 
-    "AS_SURVEY_LINK_LOCKED_FLAG", "AS_TYPE", "AS_ENSEMBLE_FLAG", "AS_FISCAL_YEAR", 
-    "AS_F_TRANSFORM", "AS_B_TRANSFORM", "AS_LOCKED_FLAG_BY", "AS_LOCKED_FLAG_DATE", 
-    "AS_TIMESERIES_LOCKED_FLAG_BY", "AS_TIMESERIES_LOCKED_FLAG_DATE", 
-    "AS_SURVEY_LINK_LOCKED_FLAG_BY", "AS_SURVEY_LINK_LOCKED_FLAG_DATE", 
-    "PLANNED_ASSESSMENT_ID", "ENT_ID", "ENT_NAME", "ATS_CNT", "ASL_CNT", 
+    "AS_FMSY_BASIS", "AS_FLIMIT", "AS_F_YEAR", "ENTITY_ID", "AS_F_UNIT", 
+    "AS_B_UNIT", "AS_MODEL_VERSION", "AS_TYPE", "AS_ENSEMBLE_FLAG", 
+    "AS_F_TRANSFORM", "AS_B_TRANSFORM", 
     "AS_F_MAX", "AS_F_MIN", "AS_FMSY_MAX", "AS_FMSY_MIN", "AS_FTARGET", 
     "AS_FTARGET_BASIS", "AS_MSY", "AS_MSY_UNIT", "AS_MSY_MAX", "AS_MSY_MIN", 
     "AS_BMSY_MAX", "AS_BMSY_MIN", "AS_BLIMIT", "AS_BLIMIT_BASIS", "AS_B_COMMENT", 
@@ -866,94 +875,116 @@ export_to_sis <- function(
   
   
 
-  summary <- paste0(
-    '{"ASSESSMENT_ID":"', ASSESSMENT_ID,
-    '","AS_YEAR":"', AS_YEAR,
-    '","AS_MONTH":"', AS_MONTH,
-    '","AS_REVIEW_TYPE":"', AS_REVIEW_TYPE,
-    '","AS_LAST_DATA_YEAR":"', AS_LAST_DATA_YEAR,
-    '","AS_B_BASIS":"', AS_B_BASIS,
-    '","AS_F_BASIS":"', AS_F_BASIS,
-    '","AS_FMSY":"', AS_FMSY,
-    '","AS_F_BEST":"', AS_F_BEST,
-    '","AS_FLIMIT_BASIS":"', AS_FLIMIT_BASIS,
-    '","AS_B_YEAR":"', AS_B_YEAR,
-    '","AS_B_MAX":"', AS_B_MAX,
-    '","AS_BMSY":"', AS_BMSY,
-    '","AS_B_MIN":"', AS_B_MIN,
-    '","AS_B_BEST":"', AS_B_BEST,
-    '","AS_BMSY_BASIS":"', AS_BMSY_BASIS,
-    '","AS_FMSY_BASIS":"', AS_FMSY_BASIS,
-    '","AS_FLIMIT":"', AS_FLIMIT,
-    '","AS_F_YEAR":"', AS_F_YEAR,
-    '","ENTITY_ID":"', ENTITY_ID,
-    '","AS_F_UNIT":"', AS_F_UNIT,
-    '","AS_B_UNIT":"', AS_B_UNIT,
-    '","AS_MODEL":"', AS_MODEL,
-    '","AS_MODEL_VERSION":"', AS_MODEL_VERSION,
-    '","AS_POINT_OF_CONTACT":"', AS_POINT_OF_CONTACT,
-    '","AS_CATCH_DATA":"', AS_CATCH_DATA,
-    '","AS_ABUNDANCE_DATA":"', AS_ABUNDANCE_DATA,
-    '","AS_BIOLOGICAL_DATA":"', AS_BIOLOGICAL_DATA,
-    '","AS_ECOSYSTEM_DATA":"', AS_ECOSYSTEM_DATA,
-    '","AS_COMP_DATA":"', AS_COMP_DATA,
-    '","AS_MODEL_CAT":"', AS_MODEL_CAT,
-    '","AS_TYPE":"', AS_TYPE,
-    '","AS_ENSEMBLE_FLAG":"', AS_ENSEMBLE_FLAG,
-    '"," AS_F_TRANSFORM":"', AS_F_TRANSFORM,
-    '"," AS_B_RANGE_BASIS":"', AS_B_RANGE_BASIS,
-    '"," AS_B_RANGE":"', AS_B_RANGE,
-    '"," AS_B_TRANSFORM":"', AS_B_TRANSFORM,
-    '"," AS_F_MAX":"', AS_F_MAX,
-    '"," AS_F_MIN":"', AS_F_MIN,
-    '"," AS_F_RANGE_BASIS":"', AS_F_RANGE_BASIS,
-    '"," AS_F_RANGE":"', AS_F_RANGE,
-    '"," AS_FMSY_MAX":"', AS_FMSY_MAX,
-    '"," AS_FMSY_MIN":"', AS_FMSY_MIN,
-    '"," AS_FMSY_RANGE_BASIS":"', AS_FMSY_RANGE_BASIS,
-    '"," AS_FMSY_RANGE":"', AS_FMSY_RANGE,
-    '"," AS_FTARGET":"', AS_FTARGET,
-    '"," AS_FTARGET_BASIS":"', AS_FTARGET_BASIS,
-    '"," AS_MSY":"', AS_MSY,
-    '"," AS_MSY_Unit":"', AS_MSY_Unit,
-    '"," AS_MSY_MAX":"', AS_MSY_MAX,
-    '"," AS_MSY_MIN":"', AS_MSY_MIN,
-    '"," AS_MSY_RANGE_BASIS":"', AS_MSY_RANGE_BASIS,
-    '"," AS_MSY_RANGE":"', AS_MSY_RANGE,
-    '"," AS_BMSY_MAX":"', AS_BMSY_MAX,
-    '"," AS_BMSY_MIN":"', AS_BMSY_MIN,
-    '"," AS_BMSY_RANGE_BASIS":"', AS_BMSY_RANGE_BASIS,
-    '"," AS_BMSY_RANGE":"', AS_BMSY_RANGE,
-    '"," AS_BLIMIT":"', AS_BLIMIT,
-    '"," AS_BLIMIT_BASIS":"', AS_BLIMIT_BASIS,
-    '"," AS_B_COMMENT":"', AS_B_COMMENT,
-    '"," AS_F_COMMENT":"', AS_F_COMMENT,
-    '"," AS_IAS_FLIMIT":"', AS_IAS_FLIMIT,
-    '"," AS_IAS_FLIMIT_BASIS":"', AS_IAS_FLIMIT_BASIS,
-    '"," AS_IAS_FMSY":"', AS_IAS_FMSY,
-    '"," AS_IAS_FMSY_BASIS":"', AS_IAS_FMSY_BASIS,
-    '"," AS_IAS_FTARGET":"', AS_IAS_FTARGET,
-    '"," AS_IAS_FTARGET_BASIS":"', AS_IAS_FTARGET_BASIS,
-    '"," AS_IAS_BLIMIT":"', AS_IAS_BLIMIT,
-    '"," AS_IAS_BLIMIT_BASIS":"', AS_IAS_BLIMIT_BASIS,
-    '"," AS_IAS_BMSY":"', AS_IAS_BMSY,
-    '"," AS_IAS_BMSY_BASIS":"', AS_IAS_BMSY_BASIS,
-    '"," model_identifier ":"', model_identifier, '"}'
+  summary_list <- list(
+    ASSESSMENT_ID = ASSESSMENT_ID,
+    AS_YEAR = AS_YEAR,
+    AS_MONTH = AS_MONTH,
+    AS_REVIEW_TYPE = AS_REVIEW_TYPE,
+    AS_LAST_DATA_YEAR = AS_LAST_DATA_YEAR,
+    AS_B_BASIS = AS_B_BASIS,
+    AS_F_BASIS = AS_F_BASIS,
+    AS_FMSY = AS_FMSY,
+    AS_F_BEST = AS_F_BEST,
+    AS_FLIMIT_BASIS = AS_FLIMIT_BASIS,
+    AS_B_YEAR = AS_B_YEAR,
+    AS_B_MAX = AS_B_MAX,
+    AS_BMSY = AS_BMSY,
+    AS_B_BMSY_RATIO = AS_B_BMSY_RATIO,
+    AS_STOCK_LEVEL_BMSY = AS_STOCK_LEVEL_BMSY,
+    AS_B_MIN = AS_B_MIN,
+    AS_B_BEST = AS_B_BEST,
+    AS_BMSY_BASIS = AS_BMSY_BASIS,
+    AS_FMSY_BASIS = AS_FMSY_BASIS,
+    AS_FLIMIT = AS_FLIMIT,
+    AS_F_YEAR = AS_F_YEAR,
+    ENTITY_ID = ENTITY_ID,
+    DATE_CREATED = NULL,
+    CREATED_BY = NULL,
+    DATE_MODIFIED = NULL,
+    MODIFIED_BY = NULL,
+    AS_LOCKED_FLAG = NULL,
+    AS_F_UNIT = AS_F_UNIT,
+    AS_B_UNIT = AS_B_UNIT,
+    AS_MODEL = AS_MODEL,
+    AS_MODEL_VERSION = AS_MODEL_VERSION,
+    AS_LEAD_LAB = NULL,
+    AS_POINT_OF_CONTACT = AS_POINT_OF_CONTACT,
+    AS_TIMESERIES_LOCKED_FLAG = NULL,
+    AS_SURVEY_LINK_LOCKED_FLAG = NULL,
+    AS_CATCH_DATA = AS_CATCH_DATA,
+    AS_ABUNDANCE_DATA = AS_ABUNDANCE_DATA,
+    AS_BIOLOGICAL_DATA = AS_BIOLOGICAL_DATA,
+    AS_ECOSYSTEM_DATA = AS_ECOSYSTEM_DATA,
+    AS_COMP_DATA = AS_COMP_DATA,
+    AS_MODEL_CAT = AS_MODEL_CAT,
+    AS_TYPE = AS_TYPE,
+    AS_ENSEMBLE_FLAG = AS_ENSEMBLE_FLAG,
+    AS_FISCAL_YEAR = NULL,
+    AS_F_TRANSFORM = AS_F_TRANSFORM,
+    AS_B_RANGE_BASIS = AS_B_RANGE_BASIS,
+    AS_B_RANGE = AS_B_RANGE,
+    AS_B_TRANSFORM = AS_B_TRANSFORM,
+    AS_LOCKED_FLAG_BY = NULL,
+    AS_LOCKED_FLAG_DATE = NULL, 
+    AS_TIMESERIES_LOCKED_FLAG_BY = NULL, 
+    AS_TIMESERIES_LOCKED_FLAG_DATE = NULL, 
+    AS_SURVEY_LINK_LOCKED_FLAG_BY = NULL, 
+    AS_SURVEY_LINK_LOCKED_FLAG_DATE = NULL,
+    PLANNED_ASSESSMENT_ID = NULL,
+    ENT_ID = NULL, 
+    ENT_NAME = NULL, 
+    ATS_CNT = NULL, 
+    ASL_CNT = NULL,
+    AS_F_MAX = AS_F_MAX,
+    AS_F_MIN = AS_F_MIN,
+    AS_F_RANGE_BASIS = AS_F_RANGE_BASIS,
+    AS_F_RANGE = AS_F_RANGE,
+    AS_FMSY_MAX = AS_FMSY_MAX,
+    AS_FMSY_MIN = AS_FMSY_MIN,
+    AS_FMSY_RANGE_BASIS = AS_FMSY_RANGE_BASIS,
+    AS_FMSY_RANGE = AS_FMSY_RANGE,
+    AS_FTARGET = AS_FTARGET,
+    AS_FTARGET_BASIS = AS_FTARGET_BASIS,
+    AS_MSY = AS_MSY,
+    AS_MSY_UNIT = AS_MSY_UNIT,
+    AS_MSY_MAX = AS_MSY_MAX,
+    AS_MSY_MIN = AS_MSY_MIN,
+    AS_MSY_RANGE_BASIS = AS_MSY_RANGE_BASIS,
+    AS_MSY_RANGE = AS_MSY_RANGE,
+    AS_BMSY_MAX = AS_BMSY_MAX,
+    AS_BMSY_MIN = AS_BMSY_MIN,
+    AS_BMSY_RANGE_BASIS = AS_BMSY_RANGE_BASIS,
+    AS_BMSY_RANGE = AS_BMSY_RANGE,
+    AS_BLIMIT = AS_BLIMIT,
+    AS_BLIMIT_BASIS = AS_BLIMIT_BASIS,
+    AS_B_COMMENT = AS_B_COMMENT,
+    AS_F_COMMENT = AS_F_COMMENT,
+    AS_IAS_FLIMIT = AS_IAS_FLIMIT,
+    AS_IAS_FLIMIT_BASIS = AS_IAS_FLIMIT_BASIS,
+    AS_IAS_FMSY = AS_IAS_FMSY,
+    AS_IAS_FMSY_BASIS = AS_IAS_FMSY_BASIS,
+    AS_IAS_FTARGET = AS_IAS_FTARGET,
+    AS_IAS_FTARGET_BASIS = AS_IAS_FTARGET_BASIS,
+    AS_IAS_BLIMIT = AS_IAS_BLIMIT,
+    AS_IAS_BLIMIT_BASIS = AS_IAS_BLIMIT_BASIS,
+    AS_IAS_BMSY = AS_IAS_BMSY,
+    AS_IAS_BMSY_BASIS = AS_IAS_BMSY_BASIS,
+    model_identifier = model_identifier
   )
   
   # left off here
-  TIME_SERIES <- data.frame(
-    Year = c(2000, 2001, 2002),
-    Catch_Metric_Tons = c(1000, 1100, 1200),
-    Spawners_Metric_Tons = c(5000, 5500, 6000),
-    Recruitment_Recruits_Age_1 = c(10000, 11000, 12000),
-    Fmort_Fully_selected_F = c(0.1, 0.15, 0.2)
-  )
+  # TIME_SERIES <- data.frame(
+  #   Year = c(2000, 2001, 2002),
+  #   Catch_Metric_Tons = c(1000, 1100, 1200),
+  #   Spawners_Metric_Tons = c(5000, 5500, 6000),
+  #   Recruitment_Recruits_Age_1 = c(10000, 11000, 12000),
+  #   Fmort_Fully_selected_F = c(0.1, 0.15, 0.2)
+  # )
   
-  time_series <- TIME_SERIES |>
-    tidyr::pivot_longer(cols = -Year, names_to = "Metric", values_to = "Value") |>
-    tidyr::unite("Metric_Unit", Metric, sep = "_") |>
-    tidyr::pivot_wider(names_from = Metric_Unit, values_from = Value)
+  # time_series <- TIME_SERIES |>
+  #   tidyr::pivot_longer(cols = -Year, names_to = "Metric", values_to = "Value") |>
+  #   tidyr::unite("Metric_Unit", Metric, sep = "_") |>
+  #   tidyr::pivot_wider(names_from = Metric_Unit, values_from = Value)
   
   # final filename
   filename <- paste0(ASSESSMENT_ID, "_", ENTITY_ID, "_", model_identifier, ".json")  |>
@@ -963,6 +994,13 @@ export_to_sis <- function(
     stringr::str_replace_all("_+", "_") |>
     # Trim underscores from the beginning and end
     stringr::str_remove("^_+|_+$")
+  
+  jsonlite::write_json(
+    x = summary_list, 
+    path = file.path(getwd(), filename), 
+    pretty = TRUE,       # Formats the JSON with clean indentation
+    auto_unbox = TRUE    # Ensures single values don't convert to JSON arrays ([13879])
+  )
   
   #TODO: create pipeline to upload to Google Drive via API once created
 }
