@@ -64,7 +64,21 @@ export_to_sis(
   AS_BMSY_MIN = NULL,
   AS_BMSY_RANGE_BASIS = NULL,
   AS_BMSY_RANGE = 95,
-  TIME_SERIES
+  AS_BLIMIT,
+  AS_BLIMIT_BASIS,
+  AS_B_COMMENT = NULL,
+  AS_F_COMMENT = NULL,
+  AS_IAS_FLIMIT = NULL,
+  AS_IAS_FLIMIT_BASIS = NULL,
+  AS_IAS_FMSY = NULL,
+  AS_IAS_FMSY_BASIS = NULL,
+  AS_IAS_FTARGET = NULL,
+  AS_IAS_FTARGET_BASIS = NULL,
+  AS_IAS_BLIMIT = NULL,
+  AS_IAS_BLIMIT_BASIS = NULL,
+  AS_IAS_BMSY = NULL,
+  AS_IAS_BMSY_BASIS = NULL,
+  TIME_SERIES = NA
 )
 }
 \arguments{
@@ -171,7 +185,7 @@ Options: 0, 1, 2, 3, 4, 5, 6. Descriptions of each level are as follows:
 }}
 
 \item{AS_TYPE}{Type of stock assessment, with regards to approach, technique,
-effort level, and complexity (NOAA, 2018).
+effort level, and complexity (NOAA, 2018). Assigned automatically by SIS.
 
 Options: "Research Stock Assessment", "Research/Operational Stock Assessment", "Operational Assessment", "Stock Monitoring Update". Descriptions of each type are as follows:
 \itemize{
@@ -494,6 +508,56 @@ Options: "Asymptotic", "Credible", "Bootstrapped", user-specified}
 the stock assessment. Optional.
 
 Default: 95}
+
+\item{AS_BLIMIT}{Stock size threshold, below which the stock is considered to be overfished.}
+
+\item{AS_BLIMIT_BASIS}{Basis for the Blimit estimate.
+Examples: (0.7*Bmsy), B25\%, etc.}
+
+\item{AS_B_COMMENT}{Specific comments associated with the best estimate of biomass for this assessment. 1,000 character limit.}
+
+\item{AS_F_COMMENT}{Specific comments associated with the best estimate of fishing mortality for this assessment. 1,000 character limit.}
+
+\item{AS_IAS_FLIMIT}{International commission F limit estimate. Optional.
+
+Default: NULL}
+
+\item{AS_IAS_FLIMIT_BASIS}{International commission estimate of Flimit estimation method. Example: "msy".
+Optional.
+
+Default: NULL}
+
+\item{AS_IAS_FMSY}{International commission estimate of Fmsy. Optional.
+
+Default: NULL}
+
+\item{AS_IAS_FMSY_BASIS}{International commission estimate of Fmsy estimation method. Optional.
+
+Default: NULL}
+
+\item{AS_IAS_FTARGET}{International commission estimate of Ftarget. Optional.
+
+Default: NULL}
+
+\item{AS_IAS_FTARGET_BASIS}{International commission estimate of Ftarget estimation method. Optional.
+
+Default: NULL}
+
+\item{AS_IAS_BLIMIT}{International commission biomass limit estimate. Optional.
+
+Default: NULL}
+
+\item{AS_IAS_BLIMIT_BASIS}{International commission estimate of Blimit estimation method. Optional.
+
+Default: NULL}
+
+\item{AS_IAS_BMSY}{International commission estimate of Bmsy. Optional.
+
+Default: NULL}
+
+\item{AS_IAS_BMSY_BASIS}{International commission estimate of Bmsy estimation method. Optional.
+
+Default: NULL}
 }
 \description{
 Submit completed stock assessment data to SIS via a Google Drive folder.
@@ -512,7 +576,80 @@ The function will format and upload this data to a specific Google Drive folder.
 \examples{
 \dontrun{
 export_to_sis(
- TODO: add example
+  key_quantities_dir = "key_quantities.csv",
+  model_identifier = "base",
+  AS_POINT_OF_CONTACT = "patrick.star@myemail.gov",
+  AS_CATCH_DATA = 5,
+  AS_ABUNDANCE_DATA = 5,
+  AS_BIOLOGICAL_DATA = 4,
+  AS_ECOSYSTEM_DATA = 2,
+  AS_COMP_DATA = 4,
+  AS_MODEL_CAT = 6,
+  AS_TYPE = "Research & Operational",
+  AS_REVIEW_TYPE = 3,
+  ASSESSMENT_ID = 13879,
+  ENTITY_ID = 10026,
+  AS_YEAR = 2024,
+  AS_MONTH = 12,
+  AS_LAST_DATA_YEAR = 2024,
+  AS_B_BASIS = "Spawning Stock Biomass",
+  AS_F_BASIS = 2,
+  AS_F_UNIT = 2,
+  AS_B_UNIT = 1,
+  AS_MODEL = "SS",
+  AS_MODEL_VERSION = "3.30.22",
+  AS_ENSEMBLE_FLAG = "N",
+  AS_F_TRANSFORM = "N",
+  AS_B_TRANSFORM = "N",
+  AS_F_BEST = 0.074,
+  AS_F_YEAR = 2023,
+  AS_F_MIN = 0.09,
+  AS_F_MAX = 0.09,
+  AS_F_RANGE_BASIS = "Asymptotic",
+  AS_F_RANGE = 95,
+  AS_FMSY = 0.17,
+  AS_FMSY_BASIS = "F35\% as proxy",
+  AS_FMSY_MIN = 0.10,
+  AS_FMSY_MAX = 0.25,
+  AS_FMSY_RANGE_BASIS = "Asymptotic",
+  AS_FMSY_RANGE = 90,
+  AS_FLIMIT = 0.208,
+  AS_FLIMIT_BASIS = "F from 2024 asmt corresponding to 2023 OFL",
+  AS_FTARGET = 0.136,
+  AS_FTARGET_BASIS = "80\% Fmsy",
+  AS_B_BEST = 147511,
+  AS_B_YEAR = 2024,
+  AS_B_MIN = 134463,
+  AS_B_MAX = 160559,
+  AS_B_RANGE_BASIS = "Credible",
+  AS_B_RANGE = 95,
+  AS_BMSY = 103743,
+  AS_BMSY_BASIS = "B35\%",
+  AS_BMSY_MIN = 85000,
+  AS_BMSY_MAX = 120000,
+  AS_BMSY_RANGE_BASIS = "Bootstrapped",
+  AS_BMSY_RANGE = 99,
+  AS_BLIMIT = 51871.5,
+  AS_BLIMIT_BASIS = "50\% * Bmsy",
+  AS_MSY = 100,
+  AS_MSY_Unit = "Metric tons",
+  AS_MSY_MIN = 80,
+  AS_MSY_MAX = 120,
+  AS_MSY_RANGE_BASIS = "Bootstrapped",
+  AS_MSY_RANGE = 99,
+  AS_B_COMMENT = "Biomass estimate based on latest bottom trawl survey.",
+  AS_F_COMMENT = "Fully selected F calculated across age classes 5-10.",
+  AS_IAS_FLIMIT = 0.35,
+  AS_IAS_FLIMIT_BASIS = "msy",
+  AS_IAS_FMSY = 0.99,
+  AS_IAS_FMSY_BASIS = "msy",
+  AS_IAS_FTARGET = 0.99,
+  AS_IAS_FTARGET_BASIS = "msy",
+  AS_IAS_BLIMIT = 0.35,
+  AS_IAS_BLIMIT_BASIS = "msy",
+  AS_IAS_BMSY = 0.99,
+  AS_IAS_BMSY_BASIS = "msy",
+  TIME_SERIES = NA
 )
 }
 
