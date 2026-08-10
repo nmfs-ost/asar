@@ -1053,34 +1053,7 @@ create_template <- function(
           c(authors_in_skel, names(authors))
         )
 
-        cit_authors <- data.frame(authors) |>
-          tidyr::separate_wider_regex(
-            cols = authors,
-            # Caitlin Allen Akselrud is the only non-hyphenated dual last name
-            # and needs to be included as its own pattern.
-            # The second pattern allows for first initials rather than first name
-            patterns = c(first = "Caitlin |^[A-Z]. |.*[a-z] ", last = ".*$")
-          ) |>
-          tidyr::separate_wider_delim(
-            cols = last,
-            delim = ". ",
-            names = c("mi", "last"),
-            too_few = "align_end"
-          ) |>
-          dplyr::mutate(
-            first = gsub(" ", "", first),
-            mi = ifelse(is.na(mi), "", paste0(mi, "."))
-          ) |>
-          dplyr::mutate(
-            first_initial = gsub("([A-Z])[a-z]+", "\\1.", first),
-            bib = purrr::pmap(
-              list(x = first_initial, y = mi, z = last),
-              \(x, y, z) utils::toBibtex(utils::person(given = c(x, y), family = z))
-            )
-          ) |>
-          dplyr::pull(bib) |>
-          gsub(pattern = " $", replacement = "") |>
-          glue::glue_collapse(sep = ", ", last = ", and ")
+        cit_authors <- format_citation_authors(authors)
 
         # replace authors in citation
         if (authors_in_skel[1] == "FIRST LAST") {
