@@ -2,132 +2,6 @@
 ####    Utilities    ####
 #########################
 
-#---- create_citation ----
-#' Generate Citation for Stock Assessment Report
-#'
-#' @inheritParams create_template
-#'
-#' @return Generate a citation for use in publications and other
-#' references associated with the stock assessment report produced
-#' with `asar`.
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' create_citation(
-#'   title = "SA Report for Jellyfish",
-#'   authors = c("Danny Phantom" = "SWFSC-LJCA", "John Snow" = "AFSC-ABL", "Jane Doe" = "NWFSC-SWA"),
-#'   year = 2024
-#' )
-#' }
-#'
-create_citation <- function(
-  authors = NULL,
-  title = "[TITLE]",
-  year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
-) {
-  # Check if authors is input - improved from previous fxn so did not fail
-  if (is.null(authors) | any(authors == "")) {
-    cli::cli_alert_warning("Authorship not defined.")
-    cli::cli_alert_info("Did you forget to specify `authors`?")
-    # Define default citation - needs authors editing
-    citation <- paste0(
-      "{{< pagebreak >}} \n",
-      "\n",
-      "Please cite this publication as: \n",
-      "\n",
-      "[AUTHOR NAME]. [YEAR]. ",
-      title, ". National Marine Fisheries Service, ",
-      "[CITY], [STATE]. \\pageref*{LastPage}{} pp."
-    )
-  } else {
-    author_data_frame <- data.frame(office = authors)
-
-    # Extract location of primary author
-    primary_author_office <- asar::affiliation_info |>
-      dplyr::filter(affiliation == author_data_frame$office[1])
-
-    # Check
-    if (nrow(primary_author_office) < 1) {
-      cli::cli_alert_warning("No location found for primary author.")
-      cli::cli_alert("Please edit the citation in the 'skeleton.qmd'.")
-      cit <- paste0(
-        "{{< pagebreak >}} \n",
-        "\n",
-        "Please cite this publication as: \n",
-        "\n",
-        "[AUTHOR NAME]. [YEAR]. ",
-        title, ". National Marine Fisheries Service, ",
-        "[CITY], [STATE]. \\pageref*{LastPage}{} pp."
-      )
-    } else {
-      author_list <- format_citation_authors(names(authors))
-    }
-
-    # Authored by Sam Schiano with contributions from Kelli Johnson
-
-    region_specific_part <- switch(primary_author_office[["office"]],
-      "AFSC" = {
-        paste0(
-          "North Pacific Fishery Management Council, Anchorage, AK. Available from ",
-          "https://www.npfmc.org/library/safe-reports/"
-        )
-      },
-      "NWFSC" = {
-        paste0(
-          "Prepared by [COMMITTEE]."
-        )
-      },
-      "SEFSC" = {
-        paste0(
-          "SEDAR, North Charleston SC. [XX] pp. ",
-          "available online at: http://sedarweb.org/"
-        )
-      },
-      "SWFSC" = {
-        paste0(
-          "Pacific Fishery Management Council, Portland, OR. Available from https://www.pcouncil.org/stock-assessments-and-fishery-evaluation-safe-documents/."
-        )
-      },
-      "PIFSC" = {
-        paste0(
-          "NOAA Tech. Memo. [TECH MEMO NUMBER]",
-          ", "
-        )
-      },
-      "NEFSC" = {
-        paste0(
-          primary_author_office[["name"]], ", ",
-          primary_author_office[["city"]], ", ",
-          primary_author_office[["state"]], ". "
-        )
-      },
-      {
-        # Default
-        paste0(
-          ". National Marine Fisheries Service, ",
-          "[CITY], [STATE]. "
-        )
-      }
-    )
-    # Pull together parts of citation
-    citation <- paste0(
-      "{{< pagebreak >}} \n",
-      "\n",
-      "Please cite this publication as: \n",
-      "\n",
-      ifelse(primary_author_office[["office"]] == "SEFSC", "SEDAR.", author_list),
-      " ", year, ". ",
-      glue::glue("{title}"), ". ",
-      region_specific_part,
-      " \\pageref*{LastPage}{} pp."
-    )
-  }
-
-  # Add citation as .qmd to add into template
-  citation
-}
-
 #---- get_ncol ----
 # Helper for SS3 output converter
 # Sourced from r4ss
@@ -371,6 +245,7 @@ gt_split <- function(
 }
 
 #----Fix figures/tables docs with duplicate chunks----
+
 fix_duplicate_chunks <- function(doc_path,
                                  doc_type) {
   new_figs_doc <- readLines(doc_path) |>
@@ -466,4 +341,75 @@ fix_duplicate_chunks <- function(doc_path,
     writeLines(as.character(unlist(modified_doc)), doc_path)
     cli::cli_alert_success(sprintf("Successfully resolved %d duplicate chunk label issues in {doc_type} doc.", nrow(duplicates)))
   }
+}
+
+#----------------------------------------------------------
+
+#' Format author names for a citation
+#'
+#' Converts author names to the family-name-first format used in report
+#' citations. Names containing given and family names are abbreviated using
+#' their initials. A name with only one component, such as an initialism or a
+#' mononym, is retained as the family name rather than causing name parsing to
+#' fail.
+#'
+#' @param author_names A character vector containing one author name per
+#'   element.
+#'
+#' @return A single character string containing the formatted author names,
+#'   separated according to standard citation conventions.
+#' @keywords internal
+#' @noRd
+format_citation_authors <- function(author_names) {
+  author_names <- trimws(author_names)
+  single_component <- !grepl("\\s", author_names)
+  formatted_names <- character(length(author_names))
+  
+  # A single component cannot be reliably divided into given and family
+  # names. Treating it as the family name preserves initials and mononyms.
+  formatted_names[single_component] <- vapply(
+    author_names[single_component],
+    \(name) utils::toBibtex(utils::person(family = name)),
+    character(1)
+  )
+  
+  if (any(!single_component)) {
+    formatted_names[!single_component] <- data.frame(
+      input = author_names[!single_component]
+    ) |>
+      tidyr::separate_wider_regex(
+        cols = input,
+        # Caitlin Allen Akselrud is the only non-hyphenated dual last name
+        # and needs to be included as its own pattern. The second pattern
+        # allows for first initials rather than first names.
+        patterns = c(first = "Caitlin |^[A-Z]. |.*[a-z] ", last = ".*$")
+      ) |>
+      tidyr::separate_wider_delim(
+        cols = last,
+        delim = ". ",
+        names = c("mi", "last"),
+        too_few = "align_end"
+      ) |>
+      dplyr::mutate(
+        first = gsub(" ", "", first),
+        mi = ifelse(is.na(mi), "", paste0(mi, ".")),
+        first_initial = gsub("([A-Z])[a-z]+", "\\1.", first),
+        bib = purrr::pmap_chr(
+          list(x = first_initial, y = mi, z = last),
+          \(x, y, z) {
+            utils::toBibtex(
+              utils::person(given = c(x, y), family = z)
+            )
+          }
+        )
+      ) |>
+      dplyr::pull(bib)
+  }
+  
+  formatted_names |>
+    # `toBibtex()` adds a comma after a person with only a family name.
+    # Remove it along with the trailing whitespace before joining authors.
+    sub(pattern = ",?\\s*$", replacement = "") |>
+    glue::glue_collapse(sep = ", ", last = ", and ") |>
+    as.character()
 }
