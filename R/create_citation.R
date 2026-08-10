@@ -130,7 +130,7 @@ create_citation <- function(
       {
         # Default
         paste0(
-          ". National Marine Fisheries Service, ",
+          "National Marine Fisheries Service, ",
           "[CITY], [STATE]. "
         )
       }
