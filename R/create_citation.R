@@ -36,26 +36,7 @@ create_citation <- function(
       "[CITY], [STATE]. \\pageref*{LastPage}{} pp."
     )
   } else {
-    # Authored by Kelli Johnson in previous PR
-    author_data_frame <- data.frame(office = authors) |>
-      tibble::rownames_to_column("input") |>
-      tidyr::separate_wider_regex(
-        cols = input,
-        # Caitlin Allen Akselrud is the only non-hyphenated dual last name
-        # and needs to be included as its own pattern.
-        # The second pattern allows for first initials rather than first name
-        patterns = c(first = "Caitlin |^[A-Z]. |.*[a-z] ", last = ".*$")
-      ) |>
-      tidyr::separate_wider_delim(
-        cols = last,
-        delim = ". ",
-        names = c("mi", "last"),
-        too_few = "align_end"
-      ) |>
-      dplyr::mutate(
-        first = gsub(" ", "", first),
-        mi = ifelse(is.na(mi), "", paste0(mi, "."))
-      )
+    author_data_frame <- data.frame(office = authors)
 
     # Extract location of primary author
     primary_author_office <- asar::affiliation_info |>
@@ -75,18 +56,7 @@ create_citation <- function(
         "[CITY], [STATE]. \\pageref*{LastPage}{} pp."
       )
     } else {
-      # Author naming convention formatting
-      author_list <- author_data_frame |>
-        dplyr::mutate(
-          first_initial = gsub("([A-Z])[a-z]+", "\\1.", first),
-          bib = purrr::pmap(
-            list(x = first_initial, y = mi, z = last),
-            \(x, y, z) utils::toBibtex(utils::person(given = c(x, y), family = z))
-          )
-        ) |>
-        dplyr::pull(bib) |>
-        gsub(pattern = " $", replacement = "") |>
-        glue::glue_collapse(sep = ", ", last = ", and ")
+      author_list <- format_citation_authors(names(authors))
     }
 
     # Authored by Sam Schiano with contributions from Kelli Johnson
