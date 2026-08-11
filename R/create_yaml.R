@@ -1,6 +1,8 @@
 #' Create string for yml header in quarto file
 #'
 #' @inheritParams create_template
+#' @param parameters Logical indicating whether to include parameters
+#' in the yaml. Default is TRUE.
 #' @param author_list A vector of strings containing pre-formatted author names
 #' and affiliations that would be found in the format in a yaml of a quarto
 #' file when using base R function `cat()`.
