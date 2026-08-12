@@ -511,6 +511,54 @@
 #'
 #' @examples
 #' \dontrun{
+#' stockplotr::save_all_plots(dat = stockplotr::example_data)
+#' export_to_sis(
+#'   AS_MODEL = "SS3",
+#'   AS_POINT_OF_CONTACT = "patrick.star@myemail.gov",
+#'   AS_CATCH_DATA = 5,
+#'   AS_ABUNDANCE_DATA = 5,
+#'   AS_BIOLOGICAL_DATA = 4,
+#'   AS_ECOSYSTEM_DATA = 3,
+#'   AS_COMP_DATA = 4,
+#'   AS_MODEL_CAT = 1,
+#'   AS_REVIEW_TYPE = 3,
+#'   ASSESSMENT_ID = 1000,
+#'   AS_YEAR = 2026,
+#'   AS_MONTH = 12,
+#'   AS_B_BASIS = "Spawning Stock Biomass",
+#'   AS_F_BASIS = 1,
+#'   AS_FLIMIT_BASIS = "F from 2024 asmt corresponding to 2023 OFL",
+#'   AS_STOCK_LEVEL_BMSY = "Near",
+#'   AS_B_MIN = 8000,
+#'   AS_B_MAX = 15000,
+#'   AS_B_BEST = 12000,
+#'   AS_F_MIN = 0.5,
+#'   AS_F_MAX = 2.0,
+#'   AS_F_BEST = 1.5,
+#'   AS_FMSY_MAX = 2.0,
+#'   AS_FMSY_MIN = 0.5,
+#'   AS_BMSY_BASIS = "B35%",
+#'   AS_FMSY_BASIS = "F35% as proxy",
+#'   ENTITY_ID = 10026,
+#'   AS_F_UNIT = 2,
+#'   AS_B_UNIT = 2,
+#'   AS_MODEL_VERSION = "1.0",
+#'   AS_TYPE = "Research & Operational",
+#'   AS_ENSEMBLE_FLAG = "N",
+#'   AS_F_TRANSFORM = "Y",
+#'   AS_B_TRANSFORM = "Y",
+#'   AS_FTARGET_BASIS = "Example basis",
+#'   AS_MSY = 100,
+#'   AS_MSY_UNIT = "lbs",
+#'   AS_MSY_MAX = 150,
+#'   AS_MSY_MIN = 50,
+#'   AS_BLIMIT = 200,
+#'   AS_BLIMIT_BASIS = "B25%",
+#'   AS_B_COMMENT = "B Comment",
+#'   AS_F_COMMENT = "F Comment"
+#' )
+#' }
+#' \dontrun{
 #' export_to_sis(
 #'   key_quantities_dir = getwd(),
 #'   model_identifier = "base",
@@ -591,7 +639,7 @@
 #' }
 #'
 export_to_sis <- function(
-  key_quantities_dir = "key_quantities.csv",
+  key_quantities_dir = getwd(),
   # SIS summary
   model_identifier = "base",
   AS_POINT_OF_CONTACT,
@@ -674,12 +722,16 @@ export_to_sis <- function(
   TIME_SERIES = NULL
 ){
   
-  if (nchar(AS_B_COMMENT) > 1000){
+  if (!is.null(AS_B_COMMENT)){
+      if (nchar(AS_B_COMMENT) > 1000){
     stop("AS_B_COMMENT exceeds 1,000 character limit")
-  }
-  
-  if (nchar(AS_F_COMMENT) > 1000){
-    stop("AS_F_COMMENT exceeds 1,000 character limit")
+      }
+    }
+
+  if (!is.null(AS_F_COMMENT)){
+    if (nchar(AS_F_COMMENT) > 1000){
+      stop("AS_F_COMMENT exceeds 1,000 character limit")
+    }
   }
   
   kqs <- read.csv(fs::path(key_quantities_dir,
@@ -721,7 +773,7 @@ export_to_sis <- function(
       as.numeric()
   }
   
-    if (is.null(AS_B_YEAR)){
+  if (is.null(AS_B_YEAR)){
     AS_B_YEAR <- kqs |>
       dplyr::filter(key_quantity == "B.terminal.year") |>
       dplyr::select(value) |>
@@ -749,29 +801,28 @@ export_to_sis <- function(
       as.numeric()
   }
   
-  
-  if (is.null(AS_B_BEST)){
+  if (!exists("AS_B_BEST") || is.null(AS_B_BEST)){
     AS_B_BEST <- kqs |>
       dplyr::filter(key_quantity == "B.terminal.est") |>
       dplyr::select(value) |>
       as.numeric()
   }
   
-  if (is.null(AS_F_BEST)){
+  if (!exists("AS_F_BEST") || is.null(AS_F_BEST)){
     AS_F_BEST <- kqs |>
       dplyr::filter(key_quantity == "F.terminal.est") |>
       dplyr::select(value) |>
       as.numeric()
   }
   
-  if (is.null(AS_B_MIN)){
+  if (!exists("AS_B_MIN") || is.null(AS_B_MIN)){
     AS_B_MIN <- kqs |>
       dplyr::filter(key_quantity == "B.terminal.min") |>
       dplyr::select(value) |>
       as.numeric()
   }
   
-  if (is.null(AS_B_MAX)){
+  if (!exists("AS_B_MAX") || is.null(AS_B_MAX)){
     AS_B_MAX <- kqs |>
       dplyr::filter(key_quantity == "B.terminal.max") |>
       dplyr::select(value) |>
@@ -779,28 +830,28 @@ export_to_sis <- function(
   }
   
   
-  if (is.null(AS_F_MIN)){
+  if (!exists("AS_F_MIN") || is.null(AS_F_MIN)){
     AS_F_MIN <- kqs |>
       dplyr::filter(key_quantity == "F.terminal.min") |>
       dplyr::select(value) |>
       as.numeric()
   }
   
-  if (is.null(AS_F_MAX)){
+  if (!exists("AS_F_MAX") || is.null(AS_F_MAX)){
     AS_F_MAX <- kqs |>
       dplyr::filter(key_quantity == "F.terminal.max") |>
       dplyr::select(value) |>
       as.numeric()
   }
   
-  if (is.null(AS_FMSY_MAX)){
+  if (!exists("AS_FMSY_MAX") || is.null(AS_FMSY_MAX)){
     AS_FMSY_MAX <- kqs |>
       dplyr::filter(key_quantity == "F.MSY.terminal.max") |>
       dplyr::select(value) |>
       as.numeric()
   }
   
-  if (is.null(AS_FMSY_MIN)){
+  if (!exists("AS_FMSY_MIN") || is.null(AS_FMSY_MIN)){
     AS_FMSY_MIN <- kqs |>
       dplyr::filter(key_quantity == "F.MSY.terminal.min") |>
       dplyr::select(value) |>
@@ -868,12 +919,13 @@ export_to_sis <- function(
   )
 
   all_required_fields <- c(required_fields, default_required_fields)
-  if (any(is.null(mget(all_required_fields)))){
-    missing_fields <- all_required_fields[sapply(all_required_fields, function(x) is.null(get(x)))]
-    stop(paste("Missing required fields:", paste(missing_fields, collapse = ", ")))
+  missing_fields <- all_required_fields[sapply(all_required_fields, function(x) {!exists(x) || is.null(get(x))})]
+  if (length(missing_fields) > 0){
+    cli::cli_bullets(c(
+      "x" = "Missing {length(missing_fields)} required field{?s}:",
+      stats::setNames(as.character(missing_fields), rep("*", length(missing_fields)))
+    ))    
   }
-  
-  
 
   summary_list <- list(
     ASSESSMENT_ID = ASSESSMENT_ID,
@@ -972,6 +1024,8 @@ export_to_sis <- function(
     model_identifier = model_identifier
   )
   
+  summary_list <- replace(summary_list, sapply(summary_list, is.null), "")
+                           
   # left off here
   # TIME_SERIES <- data.frame(
   #   Year = c(2000, 2001, 2002),
@@ -987,17 +1041,18 @@ export_to_sis <- function(
   #   tidyr::pivot_wider(names_from = Metric_Unit, values_from = Value)
   
   # final filename
-  filename <- paste0(ASSESSMENT_ID, "_", ENTITY_ID, "_", model_identifier, ".json")  |>
+  filename <- paste0(ASSESSMENT_ID, "_", ENTITY_ID, "_", model_identifier)  |>
     # Replace non-alphanumeric/hyphen/underscore characters with "_"
     stringr::str_replace_all("[^a-zA-Z0-9_-]", "_") |>
     # Collapse consecutive underscores into one
     stringr::str_replace_all("_+", "_") |>
     # Trim underscores from the beginning and end
-    stringr::str_remove("^_+|_+$")
+    stringr::str_remove("^_+|_+$") |>
+    paste0(".json")
   
   jsonlite::write_json(
     x = summary_list, 
-    path = file.path(getwd(), filename), 
+    path = fs::path(getwd(), filename), 
     pretty = TRUE,       # Formats the JSON with clean indentation
     auto_unbox = TRUE    # Ensures single values don't convert to JSON arrays ([13879])
   )
