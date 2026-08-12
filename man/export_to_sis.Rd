@@ -5,7 +5,7 @@
 \title{Export key quantities to SIS via Google Drive}
 \usage{
 export_to_sis(
-  key_quantities_dir = "key_quantities.csv",
+  key_quantities_dir = getwd(),
   model_identifier = "base",
   AS_POINT_OF_CONTACT,
   AS_CATCH_DATA,
@@ -589,6 +589,54 @@ The function will format and upload this data to a specific Google Drive folder.
 }
 }
 \examples{
+\dontrun{
+stockplotr::save_all_plots(dat = stockplotr::example_data)
+export_to_sis(
+  AS_MODEL = "SS3",
+  AS_POINT_OF_CONTACT = "patrick.star@myemail.gov",
+  AS_CATCH_DATA = 5,
+  AS_ABUNDANCE_DATA = 5,
+  AS_BIOLOGICAL_DATA = 4,
+  AS_ECOSYSTEM_DATA = 3,
+  AS_COMP_DATA = 4,
+  AS_MODEL_CAT = 1,
+  AS_REVIEW_TYPE = 3,
+  ASSESSMENT_ID = 1000,
+  AS_YEAR = 2026,
+  AS_MONTH = 12,
+  AS_B_BASIS = "Spawning Stock Biomass",
+  AS_F_BASIS = 1,
+  AS_FLIMIT_BASIS = "F from 2024 asmt corresponding to 2023 OFL",
+  AS_STOCK_LEVEL_BMSY = "Near",
+  AS_B_MIN = 8000,
+  AS_B_MAX = 15000,
+  AS_B_BEST = 12000,
+  AS_F_MIN = 0.5,
+  AS_F_MAX = 2.0,
+  AS_F_BEST = 1.5,
+  AS_FMSY_MAX = 2.0,
+  AS_FMSY_MIN = 0.5,
+  AS_BMSY_BASIS = "B35\%",
+  AS_FMSY_BASIS = "F35\% as proxy",
+  ENTITY_ID = 10026,
+  AS_F_UNIT = 2,
+  AS_B_UNIT = 2,
+  AS_MODEL_VERSION = "1.0",
+  AS_TYPE = "Research & Operational",
+  AS_ENSEMBLE_FLAG = "N",
+  AS_F_TRANSFORM = "Y",
+  AS_B_TRANSFORM = "Y",
+  AS_FTARGET_BASIS = "Example basis",
+  AS_MSY = 100,
+  AS_MSY_UNIT = "lbs",
+  AS_MSY_MAX = 150,
+  AS_MSY_MIN = 50,
+  AS_BLIMIT = 200,
+  AS_BLIMIT_BASIS = "B25\%",
+  AS_B_COMMENT = "B Comment",
+  AS_F_COMMENT = "F Comment"
+)
+}
 \dontrun{
 export_to_sis(
   key_quantities_dir = getwd(),
