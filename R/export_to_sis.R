@@ -1025,7 +1025,14 @@ export_to_sis <- function(
   )
   
   summary_list <- replace(summary_list, sapply(summary_list, is.null), "")
-                           
+  summary_list <- replace(summary_list, sapply(summary_list, is.na), "")
+  
+  for (i in seq_along(summary_list)) {
+    if (is.double(summary_list[[i]])){
+      summary_list <- lapply(summary_list, function(x) as.character(x))
+    }
+  }
+  
   # left off here
   # TIME_SERIES <- data.frame(
   #   Year = c(2000, 2001, 2002),
@@ -1059,3 +1066,4 @@ export_to_sis <- function(
   
   #TODO: create pipeline to upload to Google Drive via API once created
 }
+
