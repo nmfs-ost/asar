@@ -20,8 +20,19 @@
 \makenoidxglossaries
 \loadglsentries{report_glossary.tex}
 
+% Font setup (LuaLaTeX/XeLaTeX via Quarto)
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+
+% Explicit face mapping for Latin Modern Sans
+\setsansfont{Latin Modern Sans}[]
+
+% Make entire document sans-serif
+\setmainfont{Latin Modern Sans}[]
+\renewcommand{\familydefault}{\sfdefault}
+
 % \usepackage{lmodern}
-\usepackage[T1]{fontenc}
+% \usepackage[T1]{fontenc}
 
 \newfontfamily\sectionfont[Color=Black]{Latin Modern Sans}
 \newfontfamily\subsectionfont[Color=Black]{Latin Modern Sans}
