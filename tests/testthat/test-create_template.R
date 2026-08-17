@@ -238,6 +238,44 @@ test_that("warning is triggered for existing files", {
   unlink(fs::path(path, "report"), recursive = T)
 })
 
+test_that("rerender updates legacy figures/tables order in skeleton", {
+  create_template() |> suppressWarnings()
+
+  report_dir <- fs::path(getwd(), "report")
+  skeleton_path <- fs::path(report_dir, "sar_species_skeleton.qmd")
+  skeleton <- readLines(skeleton_path)
+  figures_idx <- grep("08_figures.qmd", skeleton, fixed = TRUE)
+  tables_idx <- grep("09_tables.qmd", skeleton, fixed = TRUE)
+
+  skeleton[figures_idx] <- stringr::str_replace(skeleton[figures_idx], "08_figures.qmd", "08_tables.qmd")
+  skeleton[tables_idx] <- stringr::str_replace(skeleton[tables_idx], "09_tables.qmd", "09_figures.qmd")
+  writeLines(skeleton, skeleton_path)
+
+  file.rename(
+    from = fs::path(report_dir, "08_figures.qmd"),
+    to = fs::path(report_dir, "09_figures.qmd")
+  )
+  file.rename(
+    from = fs::path(report_dir, "09_tables.qmd"),
+    to = fs::path(report_dir, "08_tables.qmd")
+  )
+
+  create_template(rerender_skeleton = TRUE) |> suppressWarnings()
+
+  updated_skeleton <- readLines(skeleton_path)
+  updated_figures_idx <- grep("08_figures.qmd", updated_skeleton, fixed = TRUE)
+  updated_tables_idx <- grep("09_tables.qmd", updated_skeleton, fixed = TRUE)
+
+  expect_true(file.exists(fs::path(report_dir, "08_figures.qmd")))
+  expect_true(file.exists(fs::path(report_dir, "09_tables.qmd")))
+  expect_false(file.exists(fs::path(report_dir, "09_figures.qmd")))
+  expect_false(file.exists(fs::path(report_dir, "08_tables.qmd")))
+  expect_length(grep("09_figures.qmd|08_tables.qmd", updated_skeleton), 0)
+  expect_lt(updated_figures_idx, updated_tables_idx)
+
+  unlink(report_dir, recursive = TRUE)
+})
+
 test_that("file_dir works", {
   dir <- fs::path(getwd(), "data")
   on.exit(unlink(dir, recursive = TRUE), add = TRUE)

@@ -663,6 +663,37 @@ create_template <- function(
       # prev_skeleton <- NULL
     } # close if rerender
 
+    legacy_tables_docs <- c("08_tables.qmd", "05_tables.qmd", "11_tables.qmd")
+    current_tables_docs <- c("09_tables.qmd", "06_tables.qmd", "12_tables.qmd")
+    legacy_figures_docs <- c("09_figures.qmd", "06_figures.qmd", "12_figures.qmd")
+    current_figures_docs <- c("08_figures.qmd", "05_figures.qmd", "11_figures.qmd")
+
+    legacy_match <- which(
+      file.exists(fs::path(subdir, legacy_tables_docs)) &
+        file.exists(fs::path(subdir, legacy_figures_docs)) &
+        !file.exists(fs::path(subdir, current_tables_docs)) &
+        !file.exists(fs::path(subdir, current_figures_docs))
+    )
+    using_legacy_doc_order <- rerender_skeleton && length(legacy_match) > 0
+    if (using_legacy_doc_order) {
+      legacy_match <- legacy_match[1]
+      legacy_tables_doc_name <- legacy_tables_docs[legacy_match]
+      current_tables_doc_name <- current_tables_docs[legacy_match]
+      legacy_figures_doc_name <- legacy_figures_docs[legacy_match]
+      current_figures_doc_name <- current_figures_docs[legacy_match]
+
+      file.rename(
+        from = fs::path(subdir, legacy_tables_doc_name),
+        to = fs::path(subdir, current_tables_doc_name)
+      )
+      file.rename(
+        from = fs::path(subdir, legacy_figures_doc_name),
+        to = fs::path(subdir, current_figures_doc_name)
+      )
+
+      cli::cli_alert_info("Detected legacy figure/table document order in the skeleton. asar will switch to {.file {current_figures_doc_name}} before {.file {current_tables_doc_name}}.")
+    }
+
     # created tables doc
     if (!rerender_skeleton) {
       {
@@ -688,7 +719,11 @@ create_template <- function(
       # suppressWarnings()
     } else {
       # extract name for tables.qmd from report folder
-      tables_doc_name <- list.files(file_dir, pattern = "tables.qmd")
+      tables_doc_name <- if (using_legacy_doc_order) {
+        current_tables_doc_name
+      } else {
+        list.files(file_dir, pattern = "tables.qmd")
+      }
     }
 
     # Create figures qmd
@@ -712,7 +747,11 @@ create_template <- function(
       }
     } else {
       # extract name for figures.qmd from report folder
-      figures_doc_name <- list.files(file_dir, pattern = "figures.qmd")
+      figures_doc_name <- if (using_legacy_doc_order) {
+        current_figures_doc_name
+      } else {
+        list.files(file_dir, pattern = "figures.qmd")
+      }
     }
 
     # Part I
@@ -1110,6 +1149,25 @@ create_template <- function(
       ) |>
         unlist() |>
         purrr::discard(~ .x == "")
+
+      if (using_legacy_doc_order) {
+        sections <- sections |>
+          stringr::str_replace_all(legacy_tables_doc_name, current_tables_doc_name) |>
+          stringr::str_replace_all(legacy_figures_doc_name, current_figures_doc_name)
+
+        figure_position <- which(sections == current_figures_doc_name)
+        table_position <- which(sections == current_tables_doc_name)
+        if (length(figure_position) == 1 && length(table_position) == 1 && figure_position > table_position) {
+          sections <- sections[sections != current_figures_doc_name]
+          table_position <- which(sections == current_tables_doc_name)
+          sections <- append(
+            sections,
+            current_figures_doc_name,
+            after = table_position - 1
+          )
+        }
+      }
+
       # add sections as list
       sections <- add_child(
         sections,
