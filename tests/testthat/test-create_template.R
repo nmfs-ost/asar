@@ -260,7 +260,8 @@ test_that("rerender updates legacy figures/tables order in skeleton", {
     to = fs::path(report_dir, "08_tables.qmd")
   )
 
-  create_template(rerender_skeleton = TRUE) |> suppressWarnings()
+  create_template(rerender_skeleton = TRUE,
+                  file_dir = "report") |> suppressWarnings()
 
   updated_skeleton <- readLines(skeleton_path)
   updated_figures_idx <- grep("08_figures.qmd", updated_skeleton, fixed = TRUE)
@@ -352,8 +353,8 @@ test_that("model_results metadata file created", {
     "05_discussion.qmd",
     "06_acknowledgments.qmd",
     "07_references.qmd",
-    "09_tables.qmd",
     "08_figures.qmd",
+    "09_tables.qmd",
     # "10_notes.qmd",
     "11_appendix.qmd",
     "sar_species_skeleton.qmd",
@@ -373,7 +374,6 @@ test_that("model_results metadata file created", {
 
   # erase temporary testing files
   unlink(file_path, recursive = T)
-  file.remove(fs::path(getwd(), "std_output.rda"))
 })
 
 test_that("function aborts if `authors` improperly formatted", {
