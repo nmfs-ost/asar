@@ -691,7 +691,8 @@ create_template <- function(
         to = fs::path(subdir, current_figures_doc_name)
       )
 
-      cli::cli_alert_info("Detected legacy figure/table document order in the skeleton. asar will switch to {.file {current_figures_doc_name}} before {.file {current_tables_doc_name}}.")
+      cli::cli_alert_info("Detected legacy figure/table document order in the skeleton. asar now uses {.file {current_figures_doc_name}} & {.file {current_tables_doc_name}} to maintain an accurate Table of Contents.")
+      cli::cli_alert_info("Skeleton will be updated to show figures before tables.")
     }
 
     # created tables doc
