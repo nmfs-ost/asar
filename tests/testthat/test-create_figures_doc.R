@@ -6,7 +6,7 @@ test_that("Creates expected start of nearly empty figures doc", {
   )
 
   # read in figures doc
-  figure_content <- readLines("09_figures.qmd")
+  figure_content <- readLines("08_figures.qmd")
   # extract first line
   head_figure_content <- figure_content[1]
   # remove line numbers and collapse
@@ -24,7 +24,7 @@ test_that("Creates expected start of nearly empty figures doc", {
   )
 
   # erase temporary testing files
-  file.remove(fs::path(getwd(), "09_figures.qmd"))
+  file.remove(fs::path(getwd(), "08_figures.qmd"))
 })
 
 test_that("Creates expected start of figures doc with figure", {
@@ -41,7 +41,7 @@ test_that("Creates expected start of figures doc with figure", {
   )
 
   # read in figures doc
-  figure_content <- readLines("09_figures.qmd")
+  figure_content <- readLines("08_figures.qmd")
   # extract first 6 lines
   head_figure_content <- head(figure_content, 6)
   # remove line numbers and collapse
@@ -57,7 +57,7 @@ test_that("Creates expected start of figures doc with figure", {
   )
 
   # erase temporary testing files
-  file.remove(fs::path(getwd(), "09_figures.qmd"))
+  file.remove(fs::path(getwd(), "08_figures.qmd"))
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
   file.remove(fs::path(getwd(), "key_quantities.csv"))
   unlink(fs::path(getwd(), "figures"), recursive = T)
@@ -80,7 +80,7 @@ test_that("Formerly empty figures doc renders correctly", {
   )
 
   # read in figures doc
-  figure_content <- readLines(file.path(getwd(), "report", "09_figures.qmd"))
+  figure_content <- readLines(file.path(getwd(), "report", "08_figures.qmd"))
   # extract first 7 lines
   head_figure_content <- head(figure_content, 7)
   # remove line numbers and collapse
@@ -125,7 +125,7 @@ test_that("Formerly empty figures doc renders correctly", {
 #   )
 #
 #   # erase temporary testing files
-#   file.remove(fs::path(getwd(), "09_figures.qmd"))
+#   file.remove(fs::path(getwd(), "08_figures.qmd"))
 #   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
 #   file.remove(fs::path(getwd(), "key_quantities.csv"))
 #   unlink(fs::path(getwd(), "figures"), recursive = T)
@@ -155,7 +155,7 @@ test_that("Adds new figure from figures folder.", {
   )
 
   # read in figures doc
-  figure_content <- readLines(file.path(getwd(), "report", "09_figures.qmd"))
+  figure_content <- readLines(file.path(getwd(), "report", "08_figures.qmd"))
   # Remove the first lines so test doesn't test path differences
   # Note: you CAN NOT test rendering with this approach
   figure_content <- figure_content[-c(3:11)]

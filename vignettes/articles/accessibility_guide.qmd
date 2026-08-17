@@ -147,7 +147,7 @@ There is no one-size-fits-all approach for explaining what a figure is conveying
 
 To edit your rda’s alt text, follow these steps:
 
-1.  Open your report's 09_figures.qmd file.
+1.  Open your report's 08_figures.qmd file.
 2.  Run the first code chunk, which saves the filepath of your rda directory as an object (it has the label `"set-rda-dir-figs"`).
 3.  Find the two code chunks associated with the figure you're interested (e.g., recruitment). Run the first chunk, which will have "setup" in the label (e.g., `"fig-recruitment-setup"`,`"fig-spawning_biomass-setup"`, etc.).
 4.  **Add to the alt text by** pasting the existing alt text with a new string *within the chunk*. To do this, find your existing alt text object, which is an object named with the figure's topic and "alt_text" (e.g., `recruitment_alt_text`). Then, make an object (a string) containing your additional text (e.g., `new_alt_text`). Then, paste together the existing alt text object and your new text object. For example:
@@ -178,7 +178,7 @@ recruitment_alt_text <- new_alt_text
 
 **NOTES**:
 
-1.  Changes to your alt text will be saved within your 09_figures.qmd file, but not within the rda file itself. To directly edit the rda file's alt text or caption, assign a new value to the text you wish to change. For example, if your rda is called `rda` and you want to change the caption to "my new caption", you'd enter the following command: `rda[["caption"]] <- "my new caption"`. To change the alt text, you'd change "caption" to "alt_text" (e.g., `rda[["alt_text"]] <- "my new alt text"`.). Save the changes to the rda's file by entering the following command (in this example, our rda is called "biomass_figure.rda"): `save(rda, file = 'biomass_figure.rda')`.
+1.  Changes to your alt text will be saved within your 08_figures.qmd file, but not within the rda file itself. To directly edit the rda file's alt text or caption, assign a new value to the text you wish to change. For example, if your rda is called `rda` and you want to change the caption to "my new caption", you'd enter the following command: `rda[["caption"]] <- "my new caption"`. To change the alt text, you'd change "caption" to "alt_text" (e.g., `rda[["alt_text"]] <- "my new alt text"`.). Save the changes to the rda's file by entering the following command (in this example, our rda is called "biomass_figure.rda"): `save(rda, file = 'biomass_figure.rda')`.
 
 2.  Edit figure and table captions with the same process. Just substitute mentions of alt text with caption.
 

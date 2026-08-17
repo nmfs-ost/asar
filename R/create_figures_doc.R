@@ -256,7 +256,7 @@ rm(rda)\n
       ifelse(
         any(grepl("_figures.qmd$", list.files(subdir))),
         list.files(subdir)[grep("_figures.qmd", list.files(subdir))],
-        "09_figures.qmd"
+        "08_figures.qmd"
       )
     ),
     append = append
@@ -266,7 +266,7 @@ rm(rda)\n
   doc_path <- ifelse(
     any(grepl("_figures.qmd$", list.files(subdir))),
     fs::path(subdir, list.files(subdir)[grep("_figures.qmd", list.files(subdir))]),
-    fs::path(subdir, "09_figures.qmd")
+    fs::path(subdir, "08_figures.qmd")
   )
 
   fix_duplicate_chunks(

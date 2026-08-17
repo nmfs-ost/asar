@@ -582,7 +582,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
       ifelse(
         any(grepl("_tables.qmd$", list.files(subdir))),
         list.files(subdir)[grep("_tables.qmd", list.files(subdir))],
-        "08_tables.qmd"
+        "09_tables.qmd"
       )
     ),
     append = append
@@ -592,7 +592,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
   doc_path <- ifelse(
     any(grepl("_tables.qmd$", list.files(subdir))),
     fs::path(subdir, list.files(subdir)[grep("_tables.qmd", list.files(subdir))]),
-    fs::path(subdir, "08_tables.qmd")
+    fs::path(subdir, "09_tables.qmd")
   )
 
   fix_duplicate_chunks(

@@ -667,9 +667,9 @@ create_template <- function(
     if (!rerender_skeleton) {
       {
         tables_doc_name <- switch(type,
-          "nemt" = "05_tables.qmd",
-          "safe" = "11_tables.qmd",
-          "08_tables.qmd"
+          "nemt" = "06_tables.qmd",
+          "safe" = "12_tables.qmd",
+          "09_tables.qmd"
         )
         tables_doc <- ""
         utils::capture.output(cat(tables_doc),
@@ -694,9 +694,9 @@ create_template <- function(
     # Create figures qmd
     if (!rerender_skeleton) {
       figures_doc_name <- switch(type,
-        "nemt" = "06_figures.qmd",
-        "safe" = "12_figures.qmd",
-        "09_figures.qmd"
+        "nemt" = "05_figures.qmd",
+        "safe" = "11_figures.qmd",
+        "08_figures.qmd"
       )
 
       create_figures_doc(
@@ -704,9 +704,9 @@ create_template <- function(
         figures_dir = figures_dir
       )
       # rename figures doc
-      if (figures_doc_name != "09_figures.qmd") {
+      if (figures_doc_name != "08_figures.qmd") {
         file.rename(
-          from = fs::path(subdir, "09_figures.qmd"),
+          from = fs::path(subdir, "08_figures.qmd"),
           to = fs::path(subdir, figures_doc_name)
         )
       }
