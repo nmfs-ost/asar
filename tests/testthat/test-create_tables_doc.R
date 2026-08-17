@@ -196,3 +196,31 @@ test_that("Legacy tables doc name is renamed to new order", {
 
   file.remove(fs::path(getwd(), "09_tables.qmd"))
 })
+
+test_that("Legacy NEMT tables doc name is renamed to new order", {
+  writeLines("# Tables {#sec-tables}", "05_tables.qmd")
+
+  create_tables_doc(
+    subdir = getwd(),
+    tables_dir = getwd()
+  )
+
+  expect_true(file.exists("06_tables.qmd"))
+  expect_false(file.exists("05_tables.qmd"))
+
+  file.remove(fs::path(getwd(), "06_tables.qmd"))
+})
+
+test_that("Legacy SAFE tables doc name is renamed to new order", {
+  writeLines("# Tables {#sec-tables}", "11_tables.qmd")
+
+  create_tables_doc(
+    subdir = getwd(),
+    tables_dir = getwd()
+  )
+
+  expect_true(file.exists("12_tables.qmd"))
+  expect_false(file.exists("11_tables.qmd"))
+
+  file.remove(fs::path(getwd(), "12_tables.qmd"))
+})

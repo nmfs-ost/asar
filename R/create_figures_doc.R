@@ -249,18 +249,40 @@ rm(rda)\n
       )
     )
   }
-  legacy_figures_doc <- fs::path(subdir, "09_figures.qmd")
-  current_figures_doc <- fs::path(subdir, "08_figures.qmd")
-  using_legacy_figures_doc <- file.exists(legacy_figures_doc) && !file.exists(current_figures_doc)
+  legacy_figures_docs <- c("09_figures.qmd", "06_figures.qmd", "12_figures.qmd")
+  current_figures_docs <- c("08_figures.qmd", "05_figures.qmd", "11_figures.qmd")
+  legacy_tables_docs <- c("08_tables.qmd", "05_tables.qmd", "11_tables.qmd")
+  current_tables_docs <- c("09_tables.qmd", "06_tables.qmd", "12_tables.qmd")
+
+  legacy_match <- which(
+    file.exists(fs::path(subdir, legacy_figures_docs)) &
+      !file.exists(fs::path(subdir, current_figures_docs))
+  )
+  using_legacy_figures_doc <- length(legacy_match) > 0
+  if (using_legacy_figures_doc) {
+    legacy_match <- legacy_match[1]
+    legacy_figures_doc_name <- legacy_figures_docs[legacy_match]
+    legacy_tables_doc_name <- legacy_tables_docs[legacy_match]
+    current_figures_doc_name <- current_figures_docs[legacy_match]
+    current_tables_doc_name <- current_tables_docs[legacy_match]
+  }
 
   if (using_legacy_figures_doc) {
-    cli::cli_alert_info("Detected legacy figure/table document order ({.file 08_tables.qmd} then {.file 09_figures.qmd}). {asar} now uses {.file 08_figures.qmd} then {.file 09_tables.qmd} to keep table-of-contents entries in logical order.")
+    cli::cli_alert_info("Detected legacy figure/table document order ({.file {legacy_tables_doc_name}} then {.file {legacy_figures_doc_name}}). {asar} now uses {.file {current_figures_doc_name}} then {.file {current_tables_doc_name}} to keep table-of-contents entries in logical order.")
+  }
+
+  current_figures_doc <- if (using_legacy_figures_doc) {
+    fs::path(subdir, current_figures_doc_name)
+  } else if (any(file.exists(fs::path(subdir, current_figures_docs)))) {
+    fs::path(subdir, current_figures_docs[which(file.exists(fs::path(subdir, current_figures_docs)))[1]])
+  } else {
+    fs::path(subdir, "08_figures.qmd")
   }
 
   figures_doc_name <- if (using_legacy_figures_doc) {
-    "09_figures.qmd"
+    legacy_figures_doc_name
   } else if (file.exists(current_figures_doc)) {
-    "08_figures.qmd"
+    basename(current_figures_doc)
   } else if (any(grepl("_figures.qmd$", list.files(subdir)))) {
     list.files(subdir)[grep("_figures.qmd$", list.files(subdir))][1]
   } else {
@@ -273,7 +295,8 @@ rm(rda)\n
     append = append
   )
 
-  if (using_legacy_figures_doc && file.exists(legacy_figures_doc)) {
+  if (using_legacy_figures_doc) {
+    legacy_figures_doc <- fs::path(subdir, legacy_figures_doc_name)
     file.rename(
       from = legacy_figures_doc,
       to = current_figures_doc

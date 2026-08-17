@@ -187,3 +187,31 @@ test_that("Legacy figures doc name is renamed to new order", {
 
   file.remove(fs::path(getwd(), "08_figures.qmd"))
 })
+
+test_that("Legacy NEMT figures doc name is renamed to new order", {
+  writeLines("# Figures {#sec-figures}", "06_figures.qmd")
+
+  create_figures_doc(
+    subdir = getwd(),
+    figures_dir = getwd()
+  )
+
+  expect_true(file.exists("05_figures.qmd"))
+  expect_false(file.exists("06_figures.qmd"))
+
+  file.remove(fs::path(getwd(), "05_figures.qmd"))
+})
+
+test_that("Legacy SAFE figures doc name is renamed to new order", {
+  writeLines("# Figures {#sec-figures}", "12_figures.qmd")
+
+  create_figures_doc(
+    subdir = getwd(),
+    figures_dir = getwd()
+  )
+
+  expect_true(file.exists("11_figures.qmd"))
+  expect_false(file.exists("12_figures.qmd"))
+
+  file.remove(fs::path(getwd(), "11_figures.qmd"))
+})
