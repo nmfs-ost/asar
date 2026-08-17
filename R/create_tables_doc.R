@@ -594,7 +594,8 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
   }
 
   if (using_legacy_tables_doc) {
-    cli::cli_alert_info("Detected legacy figure/table document order ({.file {legacy_tables_doc_name}} then {.file {legacy_figures_doc_name}}). {asar} now uses {.file {current_figures_doc_name}} then {.file {current_tables_doc_name}} to keep table-of-contents entries in logical order.")
+      cli::cli_alert_info("Detected legacy figure/table document order ({.file {legacy_tables_doc_name}} & {.file {legacy_figures_doc_name}}). asar now uses {.file {current_figures_doc_name}} & {.file {current_tables_doc_name}} to maintain an accurate Table of Contents.")
+      cli::cli_alert_info("{.file {legacy_tables_doc_name}} will be renamed to {.file {current_tables_doc_name}}.")
   }
 
   current_tables_doc <- if (using_legacy_tables_doc) {
