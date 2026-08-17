@@ -575,25 +575,45 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     )
   }
 
+  legacy_tables_doc <- fs::path(subdir, "08_tables.qmd")
+  current_tables_doc <- fs::path(subdir, "09_tables.qmd")
+  using_legacy_tables_doc <- file.exists(legacy_tables_doc) && !file.exists(current_tables_doc)
+
+  if (using_legacy_tables_doc) {
+    cli::cli_alert_info("Detected legacy figure/table document order ({.file 08_tables.qmd} then {.file 09_figures.qmd}). {asar} now uses {.file 08_figures.qmd} then {.file 09_tables.qmd} to keep table-of-contents entries in logical order.")
+  }
+
+  tables_doc_name <- if (using_legacy_tables_doc) {
+    "08_tables.qmd"
+  } else if (file.exists(current_tables_doc)) {
+    "09_tables.qmd"
+  } else if (any(grepl("_tables.qmd$", list.files(subdir)))) {
+    list.files(subdir)[grep("_tables.qmd$", list.files(subdir))][1]
+  } else {
+    "09_tables.qmd"
+  }
+
   # Save tables doc to template folder
   utils::capture.output(cat(tables_doc),
-    file = paste0(
-      subdir, "/",
-      ifelse(
-        any(grepl("_tables.qmd$", list.files(subdir))),
-        list.files(subdir)[grep("_tables.qmd", list.files(subdir))],
-        "09_tables.qmd"
-      )
-    ),
+    file = fs::path(subdir, tables_doc_name),
     append = append
   )
 
+  if (using_legacy_tables_doc && file.exists(legacy_tables_doc)) {
+    file.rename(
+      from = legacy_tables_doc,
+      to = current_tables_doc
+    )
+  }
+
   # Read through tables doc and warn about identical labels
-  doc_path <- ifelse(
-    any(grepl("_tables.qmd$", list.files(subdir))),
-    fs::path(subdir, list.files(subdir)[grep("_tables.qmd", list.files(subdir))]),
-    fs::path(subdir, "09_tables.qmd")
-  )
+  doc_path <- if (file.exists(current_tables_doc)) {
+    current_tables_doc
+  } else if (any(grepl("_tables.qmd$", list.files(subdir)))) {
+    fs::path(subdir, list.files(subdir)[grep("_tables.qmd$", list.files(subdir))][1])
+  } else {
+    current_tables_doc
+  }
 
   fix_duplicate_chunks(
     doc_path = doc_path,

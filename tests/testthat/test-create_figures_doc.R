@@ -173,3 +173,17 @@ test_that("Adds new figure from figures folder.", {
   unlink(fs::path(getwd(), "figures"), recursive = T)
   unlink(fs::path(getwd(), "report"), recursive = T)
 })
+
+test_that("Legacy figures doc name is renamed to new order", {
+  writeLines("# Figures {#sec-figures}", "09_figures.qmd")
+
+  create_figures_doc(
+    subdir = getwd(),
+    figures_dir = getwd()
+  )
+
+  expect_true(file.exists("08_figures.qmd"))
+  expect_false(file.exists("09_figures.qmd"))
+
+  file.remove(fs::path(getwd(), "08_figures.qmd"))
+})

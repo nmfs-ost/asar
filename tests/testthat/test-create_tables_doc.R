@@ -182,3 +182,17 @@ test_that("Adds new table from tables folder.", {
   unlink(fs::path("tables"), recursive = T)
   unlink(fs::path("report"), recursive = T)
 })
+
+test_that("Legacy tables doc name is renamed to new order", {
+  writeLines("# Tables {#sec-tables}", "08_tables.qmd")
+
+  create_tables_doc(
+    subdir = getwd(),
+    tables_dir = getwd()
+  )
+
+  expect_true(file.exists("09_tables.qmd"))
+  expect_false(file.exists("08_tables.qmd"))
+
+  file.remove(fs::path(getwd(), "09_tables.qmd"))
+})

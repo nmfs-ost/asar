@@ -1,6 +1,6 @@
 ### Add custom tables and figures {#sec-add-plots_coding}
 
-In your 'report' folder, open your figures and tables docs (probably named something like '09_tables.qmd' and '08_figures.qmd'). Add the following code there.
+In your 'report' folder, open your figures and tables docs (probably named something like '08_figures.qmd' and '09_tables.qmd'). Add the following code there.
 
 **IMPORTANT**: The label in your captions/alt text csv must match the label in your plot's chunk options, **MINUS the "fig-" or "tab-"**. For example, the label "custom_table1" in the csv would match up properly with the "tbl-custom_table1" label in a code chunk.
 The same rule applies for figures: "custom_figure1" in the csv would match up with "fig-custom_figure1" in the chunk options' label.

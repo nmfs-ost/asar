@@ -249,25 +249,45 @@ rm(rda)\n
       )
     )
   }
+  legacy_figures_doc <- fs::path(subdir, "09_figures.qmd")
+  current_figures_doc <- fs::path(subdir, "08_figures.qmd")
+  using_legacy_figures_doc <- file.exists(legacy_figures_doc) && !file.exists(current_figures_doc)
+
+  if (using_legacy_figures_doc) {
+    cli::cli_alert_info("Detected legacy figure/table document order ({.file 08_tables.qmd} then {.file 09_figures.qmd}). {asar} now uses {.file 08_figures.qmd} then {.file 09_tables.qmd} to keep table-of-contents entries in logical order.")
+  }
+
+  figures_doc_name <- if (using_legacy_figures_doc) {
+    "09_figures.qmd"
+  } else if (file.exists(current_figures_doc)) {
+    "08_figures.qmd"
+  } else if (any(grepl("_figures.qmd$", list.files(subdir)))) {
+    list.files(subdir)[grep("_figures.qmd$", list.files(subdir))][1]
+  } else {
+    "08_figures.qmd"
+  }
+
   # Save figures doc to template folder
   utils::capture.output(cat(figures_doc),
-    file = paste0(
-      subdir, "/",
-      ifelse(
-        any(grepl("_figures.qmd$", list.files(subdir))),
-        list.files(subdir)[grep("_figures.qmd", list.files(subdir))],
-        "08_figures.qmd"
-      )
-    ),
+    file = fs::path(subdir, figures_doc_name),
     append = append
   )
 
+  if (using_legacy_figures_doc && file.exists(legacy_figures_doc)) {
+    file.rename(
+      from = legacy_figures_doc,
+      to = current_figures_doc
+    )
+  }
+
   # Read through figures doc and warn about identical labels
-  doc_path <- ifelse(
-    any(grepl("_figures.qmd$", list.files(subdir))),
-    fs::path(subdir, list.files(subdir)[grep("_figures.qmd", list.files(subdir))]),
-    fs::path(subdir, "08_figures.qmd")
-  )
+  doc_path <- if (file.exists(current_figures_doc)) {
+    current_figures_doc
+  } else if (any(grepl("_figures.qmd$", list.files(subdir)))) {
+    fs::path(subdir, list.files(subdir)[grep("_figures.qmd$", list.files(subdir))][1])
+  } else {
+    current_figures_doc
+  }
 
   fix_duplicate_chunks(
     doc_path = doc_path,
