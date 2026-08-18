@@ -9,7 +9,23 @@
 
 ## List of Participants
 
+```{r}
+#| label: 'tab-participants'
+#| warnings: false 
+#| eval: true
+#| tbl-cap: "Participants involved in the SEDAR workshop."
+#| tbl-pos: 't'
+
+participants <- data.frame(
+  "Appointee" = c("Example Participant", "", "", "", "", ""),
+  "Function" = c("Lead Analyst", "", "", "", "", ""),
+  "Affiliation" = c("Beaufort, NC", "", "", "", "", "")
+)
+
+gt::gt(participants)
+
+```
+
 
 ## List of Working Papers and Reference Documents
-
 
