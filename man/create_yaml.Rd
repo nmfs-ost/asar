@@ -94,6 +94,9 @@ base R.}
 \item{prev_format}{The format that the previous skeleton was directed to
 render to. Parameter is inherited from create_template.}
 
+\item{parameters}{Logical indicating whether to include parameters
+in the yaml. Default is TRUE.}
+
 \item{custom_params}{Character vector of additional custom parameter
 names and values to include in the skeleton YAML. For example, a
 parameter "year2" and its value "2026" would have an entry of

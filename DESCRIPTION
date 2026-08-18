@@ -23,7 +23,6 @@ Depends:
     R (>= 4.1.0)
 Imports: 
     cli,
-    data.table,
     dplyr,
     forstringr,
     fs,
@@ -35,7 +34,6 @@ Imports:
     stringi,
     stringr,
     svDialogs,
-    tibble,
     tidyr,
     tinytex,
     utils
