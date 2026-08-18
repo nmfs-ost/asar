@@ -364,7 +364,7 @@ format_citation_authors <- function(author_names) {
   author_names <- trimws(author_names)
   single_component <- !grepl("\\s", author_names)
   formatted_names <- character(length(author_names))
-  
+
   # A single component cannot be reliably divided into given and family
   # names. Treating it as the family name preserves initials and mononyms.
   formatted_names[single_component] <- vapply(
@@ -372,7 +372,7 @@ format_citation_authors <- function(author_names) {
     \(name) utils::toBibtex(utils::person(family = name)),
     character(1)
   )
-  
+
   if (any(!single_component)) {
     formatted_names[!single_component] <- data.frame(
       input = author_names[!single_component]
@@ -405,7 +405,7 @@ format_citation_authors <- function(author_names) {
       ) |>
       dplyr::pull(bib)
   }
-  
+
   formatted_names |>
     # `toBibtex()` adds a comma after a person with only a family name.
     # Remove it along with the trailing whitespace before joining authors.
