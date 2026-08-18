@@ -125,6 +125,11 @@ create_yaml(
   The format that the previous skeleton was directed to render to.
   Parameter is inherited from create_template.
 
+- parameters:
+
+  Logical indicating whether to include parameters in the yaml. Default
+  is TRUE.
+
 - custom_params:
 
   Character vector of additional custom parameter names and values to
