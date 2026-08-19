@@ -51,21 +51,28 @@
     </names>
   </macro>
   <macro name="author-short">
-    <names variable="author">
-      <name form="short" and="text" delimiter=", " initialize-with=". "/>
-      <substitute>
-        <names variable="editor"/>
-        <names variable="translator"/>
-        <choose>
-          <if type="bill book graphic legal_case legislation motion_picture report song" match="any">
-            <text variable="title" form="short" font-style="italic"/>
-          </if>
-          <else>
-            <text variable="title" form="short" quotes="true"/>
-          </else>
-        </choose>
-      </substitute>
-    </names>
+    <choose>
+      <if type="report" variable="genre" match="all">
+        <text variable="publisher"/>
+      </if>
+      <else>
+        <names variable="author">
+          <name form="short" and="text" delimiter=", " initialize-with=". "/>
+          <substitute>
+            <names variable="editor"/>
+            <names variable="translator"/>
+            <choose>
+              <if type="bill book graphic legal_case legislation motion_picture report song" match="any">
+                <text variable="title" form="short" font-style="italic"/>
+              </if>
+              <else>
+                <text variable="title" form="short" quotes="true"/>
+              </else>
+            </choose>
+          </substitute>
+        </names>
+      </else>
+    </choose>
   </macro>
   <macro name="access">
     <choose>
@@ -142,6 +149,40 @@
       </else>
     </choose>
   </macro>
+  <macro name="issued-month-year">
+    <choose>
+      <if variable="issued">
+        <group delimiter=" ">
+          <date variable="issued">
+            <date-part name="month" form="short"/>
+          </date>
+          <date variable="issued">
+            <date-part name="year"/>
+          </date>
+        </group>
+      </if>
+      <else>
+        <text term="no date" form="short"/>
+      </else>
+    </choose>
+  </macro>
+  <macro name="stock-assessment-access">
+    <choose>
+      <if variable="URL DOI" match="any">
+        <group delimiter=" ">
+          <text value="Accessible at"/>
+          <choose>
+            <if variable="URL">
+              <text variable="URL"/>
+            </if>
+            <else>
+              <text variable="DOI"/>
+            </else>
+          </choose>
+        </group>
+      </if>
+    </choose>
+  </macro>
   <macro name="edition">
     <choose>
       <if type="bill book chapter graphic legal_case legislation motion_picture paper-conference report song" match="any">
@@ -207,18 +248,31 @@
       <key variable="issued"/>
     </sort>
     <layout suffix=".">
-      <group delimiter=". ">
-        <group delimiter=". ">
-          <text macro="author"/>
-          <text macro="issued"/>
-          <text variable="title"/>
-          <text macro="locators"/>
-        </group>
-        <group delimiter=". ">
-          <text macro="publisher"/>
-          <text macro="access"/>
-        </group>
-      </group>
+      <choose>
+        <if type="report" variable="genre" match="all">
+          <group delimiter=". ">
+            <text variable="publisher"/>
+            <text macro="issued-month-year"/>
+            <text variable="title"/>
+            <text variable="publisher-place"/>
+            <text macro="stock-assessment-access"/>
+          </group>
+        </if>
+        <else>
+          <group delimiter=". ">
+            <group delimiter=". ">
+              <text macro="author"/>
+              <text macro="issued"/>
+              <text variable="title"/>
+              <text macro="locators"/>
+            </group>
+            <group delimiter=". ">
+              <text macro="publisher"/>
+              <text macro="access"/>
+            </group>
+          </group>
+        </else>
+      </choose>
     </layout>
   </bibliography>
 </style>
