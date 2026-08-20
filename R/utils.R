@@ -382,6 +382,9 @@ format_citation_authors <- function(author_names) {
         parts = stringr::str_split(input, "\\s+"),
         first = purrr::map_chr(parts, 1),
         remainder = purrr::map(parts, \(x) x[-1]),
+        # Caitlin Allen Akselrud is the only non-hyphenated dual last name
+        # and needs to be included as its own pattern. The second pattern
+        # allows for first initials rather than first names.
         is_caitlin = input == "Caitlin Allen Akselrud",
         remainder = purrr::pmap(
           list(remainder, is_caitlin),
