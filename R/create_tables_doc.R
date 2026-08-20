@@ -575,68 +575,41 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     )
   }
 
-  legacy_tables_docs <- c("08_tables.qmd", "05_tables.qmd", "11_tables.qmd")
-  current_tables_docs <- c("09_tables.qmd", "06_tables.qmd", "12_tables.qmd")
-  legacy_figures_docs <- c("09_figures.qmd", "06_figures.qmd", "12_figures.qmd")
-  current_figures_docs <- c("08_figures.qmd", "05_figures.qmd", "11_figures.qmd")
-
-  legacy_match <- which(
-    file.exists(fs::path(subdir, legacy_tables_docs)) &
-      !file.exists(fs::path(subdir, current_tables_docs))
+  tab_doc_data <- id_fig_tab_num(
+    subdir = subdir,
+    fig_or_tab = "table"
   )
-  using_legacy_tables_doc <- length(legacy_match) > 0
-  if (using_legacy_tables_doc) {
-    legacy_match <- legacy_match[1]
-    legacy_tables_doc_name <- legacy_tables_docs[legacy_match]
-    legacy_figures_doc_name <- legacy_figures_docs[legacy_match]
-    current_tables_doc_name <- current_tables_docs[legacy_match]
-    current_figures_doc_name <- current_figures_docs[legacy_match]
-  }
-
-  if (using_legacy_tables_doc) {
-    cli::cli_alert_info("Detected legacy figure/table document order ({.file {legacy_tables_doc_name}} & {.file {legacy_figures_doc_name}}). asar now uses {.file {current_figures_doc_name}} & {.file {current_tables_doc_name}} to maintain an accurate Table of Contents.")
-    cli::cli_alert_info("{.file {legacy_tables_doc_name}} will be renamed to {.file {current_tables_doc_name}}.")
-  }
-
-  current_tables_doc <- if (using_legacy_tables_doc) {
-    fs::path(subdir, current_tables_doc_name)
-  } else if (any(file.exists(fs::path(subdir, current_tables_docs)))) {
-    fs::path(subdir, current_tables_docs[which(file.exists(fs::path(subdir, current_tables_docs)))[1]])
+  legacy_tab_status <- ifelse(!is.null(tab_doc_data),
+                              tab_doc_data[[1]],
+                              FALSE)
+  legacy_doc_name <- tab_doc_data[[2]]
+  if (!is.null(tab_doc_data)){
+    current_doc_name <- tab_doc_data[[3]]
+  } else if (exists("existing_tables_doc")) {
+    current_doc_name <- basename(existing_tables_doc)
   } else {
-    fs::path(subdir, "09_tables.qmd")
+    current_doc_name <- "09_tables.qmd"
   }
-
-  tables_doc_name <- if (using_legacy_tables_doc) {
-    legacy_tables_doc_name
-  } else if (file.exists(current_tables_doc)) {
-    basename(current_tables_doc)
-  } else if (any(grepl("_tables.qmd$", list.files(subdir)))) {
-    list.files(subdir)[grep("_tables.qmd$", list.files(subdir))][1]
-  } else {
-    "09_tables.qmd"
-  }
-
   # Save tables doc to template folder
   utils::capture.output(cat(tables_doc),
-    file = fs::path(subdir, tables_doc_name),
-    append = append
+                        file = fs::path(subdir, current_doc_name),
+                        append = append
   )
-
-  if (using_legacy_tables_doc) {
-    legacy_tables_doc <- fs::path(subdir, legacy_tables_doc_name)
+  
+  if (legacy_tab_status) {
+    legacy_tables_doc <- fs::path(subdir, legacy_doc_name)
     file.rename(
-      from = legacy_tables_doc,
-      to = current_tables_doc
+      from = legacy_doc_name,
+      to = current_doc_name
     )
   }
-
   # Read through tables doc and warn about identical labels
-  doc_path <- if (file.exists(current_tables_doc)) {
-    current_tables_doc
+  doc_path <- if (file.exists(current_doc_name)) {
+    current_doc_name
   } else if (any(grepl("_tables.qmd$", list.files(subdir)))) {
     fs::path(subdir, list.files(subdir)[grep("_tables.qmd$", list.files(subdir))][1])
   } else {
-    current_tables_doc
+    current_doc_name
   }
 
   fix_duplicate_chunks(

@@ -413,3 +413,61 @@ format_citation_authors <- function(author_names) {
     glue::glue_collapse(sep = ", ", last = ", and ") |>
     as.character()
 }
+
+#-------- update figures/tables doc numbers
+
+id_fig_tab_num <- function(subdir,
+                           fig_or_tab) {
+  
+  if (fig_or_tab == "figure"){
+    legacy_docs <- c("09_figures.qmd", "06_figures.qmd", "12_figures.qmd")
+    current_docs <- c("08_figures.qmd", "05_figures.qmd", "11_figures.qmd")
+  } else {
+    legacy_docs <- c("08_tables.qmd", "05_tables.qmd", "11_tables.qmd")
+    current_docs <- c("09_tables.qmd", "06_tables.qmd", "12_tables.qmd")
+  }
+  
+  legacy_match <- which(
+    file.exists(fs::path(subdir, legacy_docs)) &
+      !file.exists(fs::path(subdir, current_docs))
+  )
+  using_legacy_doc <- length(legacy_match) > 0
+  if (using_legacy_doc) {
+    legacy_match <- legacy_match[1]
+    legacy_doc_name <- legacy_docs[legacy_match]
+    current_doc_name <- current_docs[legacy_match]
+
+    cli::cli_alert_info("Detected legacy figure/table document order ({.file {legacy_doc_name}} & {.file {legacy_doc_name}}). asar now uses {.file {current_doc_name}} & {.file {current_doc_name}} to maintain an accurate Table of Contents.")
+    cli::cli_alert_info("{.file {legacy_doc_name}} will be renamed to {.file {current_doc_name}}.")
+  }
+  
+  current_doc_path <- if (using_legacy_doc) {
+    fs::path(subdir, current_doc_name)
+  } else if (any(file.exists(fs::path(subdir, current_docs)))) {
+    fs::path(subdir, current_docs[which(file.exists(fs::path(subdir, current_docs)))[1]])
+  } else {
+    fs::path(subdir, current_docs[1])
+  }
+  
+  qmd_suffix <- ifelse(fig_or_tab == "figure",
+                     "_figures.qmd$", 
+                     "_tables.qmd$")
+  
+  qmd_name <- if (using_legacy_doc) {
+    legacy_doc_name
+  } else if (file.exists(current_doc_path)) {
+    basename(current_doc_path)
+  } else if (any(grepl(qmd_suffix, list.files(subdir)))) {
+    list.files(subdir)[grep(qmd_suffix, list.files(subdir))][1]
+  } else {
+    fs::path(subdir, "08_figures.qmd")
+  }
+ 
+  if (using_legacy_doc) {
+    return(
+      list(using_legacy_doc = using_legacy_doc,
+         legacy_doc_name = legacy_doc_name,
+         current_doc_name = current_doc_name)
+    )
+  }
+}
