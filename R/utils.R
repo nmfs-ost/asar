@@ -413,3 +413,108 @@ format_citation_authors <- function(author_names) {
     glue::glue_collapse(sep = ", ", last = ", and ") |>
     as.character()
 }
+
+#------- extract values for export_to_sis() time series data
+
+extract_sis_ts <- function(figures_tables_dir) {
+  if (!dir.exists(fs::path(figures_tables_dir, "figures"))) {
+    cli::cli_abort("The 'figures' folder is not found in the figures_tables_dir {figures_tables_dir}.")
+  }
+  if (!dir.exists(fs::path(figures_tables_dir, "tables"))) {
+    cli::cli_abort("The 'tables' folder is not found in the figures_tables_dir {figures_tables_dir}.")
+  }
+    
+  # CATCH
+  # load in table_catch() rda
+  # extract the data
+  # summarize by any col by year that's not estimate
+  # that's the new catch data
+  
+  # ABUNDANCE
+  tryCatch(
+    {
+      load(fs::path(figures_tables_dir, "figures", "abundance_at_age_figure.rda"))
+      aaa <- rda[["figure"]][["layers"]][["geom_line"]]$data
+      aaa_summary <- aaa |>
+        dplyr::group_by(year) |>
+        dplyr::summarise(sum = sum(total_fish)) |>
+        dplyr::rename(abundance = sum)
+    },
+    error = function(e) {
+      cli::cli_alert_warning("The 'abundance_at_age_figure.rda' file is not found in the figures folder. Abundance data will not be extracted.")
+      aaa_summary <<- NULL
+    }
+  )
+  
+  # SPAWNERS
+  tryCatch({
+    load(fs::path(figures_tables_dir, "figures", "spawning_biomass_figure.rda"))
+    sb <- rda[["figure"]][["layers"]][["geom_line"]]$data
+    sb_summary <- sb |>
+      dplyr::group_by(year) |>
+      dplyr::summarise(sum = sum(estimate)) |>
+      dplyr::rename(spawning_biomass = sum)
+  },
+  error = function(e) {
+    cli::cli_alert_warning("The 'spawning_biomass_figure.rda' file is not found in the figures folder. Spawning biomass data will not be extracted.")
+    sb_summary <<- NULL
+  }
+  )
+  
+  # RECRUITMENT
+  tryCatch({
+    load(fs::path(figures_tables_dir, "figures", "recruitment_figure.rda"))
+  rec <- rda[["figure"]][["layers"]][["geom_line"]]$data
+  rec_summary <- rec |>
+    dplyr::group_by(year) |>
+    dplyr::summarise(sum = sum(predicted_recruitment)) |>
+    dplyr::rename(recruitment = sum)
+  },
+  error = function(e) {
+    cli::cli_alert_warning("The 'recruitment_figure.rda' file is not found in the figures folder. Recruitment data will not be extracted.")
+    rec_summary <<- NULL
+  })
+  
+  # FISHING MORTALITY
+  tryCatch({
+    load(fs::path(figures_tables_dir, "figures", "fishing_mortality_figure.rda"))
+  fm <- rda[["figure"]][["layers"]][["geom_line"]]$data
+  fm_summary <- fm |>
+    dplyr::group_by(year) |>
+    dplyr::summarise(mean = mean(estimate)) |>
+    dplyr::rename(fishing_mortality = mean)
+  },
+  error = function(e) {
+    cli::cli_alert_warning("The 'fishing_mortality_figure.rda' file is not found in the figures folder. Fishing mortality data will not be extracted.")
+    fm_summary <<- NULL
+  })
+  
+  # INDEX
+  tryCatch({
+    load(fs::path(figures_tables_dir, "figures", "index_figure.rda"))
+    index <- rda[["figure"]][["layers"]][["geom_line"]]$data
+    index_summary <- index |>
+      dplyr::group_by(year) |>
+      dplyr::summarise(mean = mean(estimate)) |>
+      dplyr::rename(index = mean)
+  },
+  error = function(e) {
+    cli::cli_alert_warning("The 'index_figure.rda' file is not found in the figures folder. Index data will not be extracted.")
+    index_summary <<- NULL
+  })
+  
+  
+  summaries <- c("aaa_summary", "sb_summary", "rec_summary", "fm_summary", "index_summary")
+  
+  # join all summaries by year
+  all_summaries <- c()
+  for (i in seq_along(summaries)) {
+    if (i == 1) {
+      all_summaries <- get(summaries[i])
+    } else {
+      all_summaries <- dplyr::full_join(all_summaries,
+                                        get(summaries[i]),
+                                        by = "year")
+    }
+  }
+}
