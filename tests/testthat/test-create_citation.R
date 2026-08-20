@@ -34,3 +34,27 @@ test_that("single-component author names are supported", {
   expect_match(mononym_citation, "Joe 2024", fixed = TRUE)
   expect_match(mixed_citation, "SB, and Kuriyama, P. T. 2024", fixed = TRUE)
 })
+
+test_that("duplicate author names are supported in citations", {
+  same_name_same_affiliation <- create_citation(
+    authors = c("Jane Doe" = "SWFSC", "Jane Doe" = "SWFSC"),
+    title = "Check",
+    year = 2024
+  )
+
+  same_name_different_affiliation <- create_citation(
+    authors = c("Jane Doe" = "SWFSC", "Jane Doe" = "AFSC"),
+    title = "Check",
+    year = 2024
+  )
+
+  same_last_with_middle_name <- create_citation(
+    authors = c("Jane A. Doe" = "SWFSC", "Jane Doe" = "SWFSC"),
+    title = "Check",
+    year = 2024
+  )
+
+  expect_match(same_name_same_affiliation, "Doe, J., and Doe, J. 2024", fixed = TRUE)
+  expect_match(same_name_different_affiliation, "Doe, J., and Doe, J. 2024", fixed = TRUE)
+  expect_match(same_last_with_middle_name, "Doe, J. A., and Doe, J. 2024", fixed = TRUE)
+})

@@ -370,6 +370,24 @@ test_that("function aborts if `authors` improperly formatted", {
   unlink(fs::path(path, "report"), recursive = T)
 })
 
+test_that("create_template() supports repeated author names", {
+  author_cases <- list(
+    c("Jane Doe" = "SWFSC", "Jane Doe" = "SWFSC"),
+    c("Jane Doe" = "SWFSC", "Jane Doe" = "AFSC"),
+    c("Jane A. Doe" = "SWFSC", "Jane Doe" = "SWFSC")
+  )
+
+  for (authors in author_cases) {
+    expect_no_error(
+      create_template(
+        authors = authors
+      )
+    )
+
+    unlink(fs::path(getwd(), "report"), recursive = TRUE)
+  }
+})
+
 test_that("Incompatible formats are recognized, produce warnings/errors", {
   path <- getwd()
 

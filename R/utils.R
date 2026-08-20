@@ -374,36 +374,40 @@ format_citation_authors <- function(author_names) {
   )
   
   if (any(!single_component)) {
-    formatted_names[!single_component] <- data.frame(
-      input = author_names[!single_component]
-    ) |>
-      tidyr::separate_wider_regex(
-        cols = input,
-        # Caitlin Allen Akselrud is the only non-hyphenated dual last name
-        # and needs to be included as its own pattern. The second pattern
-        # allows for first initials rather than first names.
-        patterns = c(first = "Caitlin |^[A-Z]. |.*[a-z] ", last = ".*$")
-      ) |>
-      tidyr::separate_wider_delim(
-        cols = last,
-        delim = ". ",
-        names = c("mi", "last"),
-        too_few = "align_end"
-      ) |>
-      dplyr::mutate(
-        first = gsub(" ", "", first),
-        mi = ifelse(is.na(mi), "", paste0(mi, ".")),
-        first_initial = gsub("([A-Z])[a-z]+", "\\1.", first),
-        bib = purrr::pmap_chr(
-          list(x = first_initial, y = mi, z = last),
-          \(x, y, z) {
-            utils::toBibtex(
-              utils::person(given = c(x, y), family = z)
-            )
-          }
+    formatted_names[!single_component] <- vapply(
+      author_names[!single_component],
+      \(name) {
+        normalized_name <- paste(strsplit(trimws(name), "\\s+")[[1]], collapse = " ")
+        parts <- strsplit(normalized_name, "\\s+")[[1]]
+        first <- parts[1]
+        remainder <- parts[-1]
+
+        # Caitlin Allen Akselrud is a non-hyphenated dual last name.
+        if (identical(normalized_name, "Caitlin Allen Akselrud")) {
+          remainder <- c("Allen", "Akselrud")
+        }
+
+        mi <- ""
+        if (length(remainder) > 1 && grepl("^[A-Za-z]\\.$", remainder[1])) {
+          mi <- remainder[1]
+          remainder <- remainder[-1]
+        }
+
+        first_initial <- if (grepl("^[A-Z]\\.$", first)) {
+          first
+        } else {
+          gsub("([A-Z])[a-z]+", "\\1.", first)
+        }
+
+        utils::toBibtex(
+          utils::person(
+            given = c(first_initial, mi),
+            family = paste(remainder, collapse = " ")
+          )
         )
-      ) |>
-      dplyr::pull(bib)
+      },
+      character(1)
+    )
   }
   
   formatted_names |>
