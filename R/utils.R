@@ -374,40 +374,48 @@ format_citation_authors <- function(author_names) {
   )
   
   if (any(!single_component)) {
-    formatted_names[!single_component] <- vapply(
-      author_names[!single_component],
-      \(name) {
-        normalized_name <- paste(strsplit(trimws(name), "\\s+")[[1]], collapse = " ")
-        parts <- strsplit(normalized_name, "\\s+")[[1]]
-        first <- parts[1]
-        remainder <- parts[-1]
-
-        # Caitlin Allen Akselrud is a non-hyphenated dual last name.
-        if (identical(normalized_name, "Caitlin Allen Akselrud")) {
-          remainder <- c("Allen", "Akselrud")
-        }
-
-        mi <- ""
-        if (length(remainder) > 1 && grepl("^[A-Za-z]\\.$", remainder[1])) {
-          mi <- remainder[1]
-          remainder <- remainder[-1]
-        }
-
-        first_initial <- if (grepl("^[A-Z]\\.$", first)) {
-          first
-        } else {
-          gsub("([A-Z])[a-z]+", "\\1.", first)
-        }
-
-        utils::toBibtex(
-          utils::person(
-            given = c(first_initial, mi),
-            family = paste(remainder, collapse = " ")
-          )
+    formatted_names[!single_component] <- tibble::tibble(
+      input = author_names[!single_component]
+    ) |>
+      dplyr::mutate(
+        input = stringr::str_squish(input),
+        parts = stringr::str_split(input, "\\s+"),
+        first = purrr::map_chr(parts, 1),
+        remainder = purrr::map(parts, \(x) x[-1]),
+        is_caitlin = input == "Caitlin Allen Akselrud",
+        remainder = purrr::pmap(
+          list(remainder, is_caitlin),
+          \(x, y) if (y) c("Allen", "Akselrud") else x
+        ),
+        has_mi = purrr::map_lgl(
+          remainder,
+          \(x) length(x) > 1 && stringr::str_detect(x[1], "^[A-Za-z]\\.$")
+        ),
+        mi = purrr::map2_chr(
+          remainder,
+          has_mi,
+          \(x, y) if (y) x[1] else ""
+        ),
+        last = purrr::map2_chr(
+          remainder,
+          has_mi,
+          \(x, y) paste(if (y) x[-1] else x, collapse = " ")
+        ),
+        first_initial = dplyr::if_else(
+          stringr::str_detect(first, "^[A-Z]\\.$"),
+          first,
+          stringr::str_replace(first, "^([A-Z])[a-z]+$", "\\1.")
+        ),
+        bib = purrr::pmap_chr(
+          list(x = first_initial, y = mi, z = last),
+          \(x, y, z) {
+            utils::toBibtex(
+              utils::person(given = c(x, y), family = z)
+            )
+          }
         )
-      },
-      character(1)
-    )
+      ) |>
+      dplyr::pull(bib)
   }
   
   formatted_names |>
