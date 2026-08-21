@@ -415,59 +415,67 @@ format_citation_authors <- function(author_names) {
 }
 
 #-------- update figures/tables doc numbers
+#
+#' Identify correct figure/table qmd name
+#' 
+#' @param subdir The subdirectory containing the figures or tables document.
+#' 
+#' Default: working directory (getwd())
+#' 
+#' @param fig_or_tab Character string. Specifies application to a figure or table doc.
+#' Options: "figure", "table"
+#' 
+#' Default: "figure"
+#' 
+#' @param type Character string. Specifies the type of document.
+#' 
+#' Options: "default" (SAR), "nemt", "safe"
+#' 
+#' Default: "default"
+#' 
+#' @return A list containing information about the identified figure or table doc,
+#' including whether a legacy document is being used, the names of the legacy
+#' and current documents, and the detected document name.
+#' @noRd
 
-id_fig_tab_num <- function(subdir,
-                           fig_or_tab) {
-  
-  if (fig_or_tab == "figure"){
-    legacy_docs <- c("09_figures.qmd", "06_figures.qmd", "12_figures.qmd")
-    current_docs <- c("08_figures.qmd", "05_figures.qmd", "11_figures.qmd")
+id_fig_tab_num <- function(subdir = getwd(),
+                           fig_or_tab = "figure",
+                           type = "default") {
+  if (fig_or_tab == "figure") {
+    legacy_docs <- c(default = "09_figures.qmd", nemt = "06_figures.qmd", safe = "12_figures.qmd")
+    current_docs <- c(default = "08_figures.qmd", nemt = "05_figures.qmd", safe = "11_figures.qmd")
+    qmd_suffix <- "_figures.qmd$"
   } else {
-    legacy_docs <- c("08_tables.qmd", "05_tables.qmd", "11_tables.qmd")
-    current_docs <- c("09_tables.qmd", "06_tables.qmd", "12_tables.qmd")
+    legacy_docs <- c(default = "08_tables.qmd", nemt = "05_tables.qmd", safe = "11_tables.qmd")
+    current_docs <- c(default = "09_tables.qmd", nemt = "06_tables.qmd", safe = "12_tables.qmd")
+    qmd_suffix <- "_tables.qmd$"
   }
   
-  legacy_match <- which(
-    file.exists(fs::path(subdir, legacy_docs)) &
-      !file.exists(fs::path(subdir, current_docs))
-  )
-  using_legacy_doc <- length(legacy_match) > 0
+  legacy_doc_name <- legacy_docs[[type]]
+  current_doc_name <- current_docs[[type]]
+  
+  using_legacy_doc <- file.exists(fs::path(subdir, legacy_doc_name)) &&
+    !file.exists(fs::path(subdir, current_doc_name))
+  
+  detected_doc_name <- if (using_legacy_doc) {
+    legacy_doc_name
+  } else if (file.exists(fs::path(subdir, current_doc_name))) {
+    current_doc_name
+  } else if (any(grepl(qmd_suffix, list.files(subdir)))) {
+    list.files(subdir)[grep(qmd_suffix, list.files(subdir))][1]
+  } else {
+    current_doc_name
+  }
+  
   if (using_legacy_doc) {
-    legacy_match <- legacy_match[1]
-    legacy_doc_name <- legacy_docs[legacy_match]
-    current_doc_name <- current_docs[legacy_match]
-
     cli::cli_alert_info("Detected legacy figure/table document order ({.file {legacy_doc_name}} & {.file {legacy_doc_name}}). asar now uses {.file {current_doc_name}} & {.file {current_doc_name}} to maintain an accurate Table of Contents.")
     cli::cli_alert_info("{.file {legacy_doc_name}} will be renamed to {.file {current_doc_name}}.")
   }
   
-  current_doc_path <- if (using_legacy_doc) {
-    fs::path(subdir, current_doc_name)
-  } else if (any(file.exists(fs::path(subdir, current_docs)))) {
-    fs::path(subdir, current_docs[which(file.exists(fs::path(subdir, current_docs)))[1]])
-  } else {
-    fs::path(subdir, current_docs[1])
-  }
-  
-  qmd_suffix <- ifelse(fig_or_tab == "figure",
-                     "_figures.qmd$", 
-                     "_tables.qmd$")
-  
-  qmd_name <- if (using_legacy_doc) {
-    legacy_doc_name
-  } else if (file.exists(current_doc_path)) {
-    basename(current_doc_path)
-  } else if (any(grepl(qmd_suffix, list.files(subdir)))) {
-    list.files(subdir)[grep(qmd_suffix, list.files(subdir))][1]
-  } else {
-    fs::path(subdir, "08_figures.qmd")
-  }
- 
-  if (using_legacy_doc) {
-    return(
-      list(using_legacy_doc = using_legacy_doc,
-         legacy_doc_name = legacy_doc_name,
-         current_doc_name = current_doc_name)
-    )
-  }
+  list(
+    using_legacy_doc = using_legacy_doc,
+    legacy_doc_name = legacy_doc_name,
+    current_doc_name = current_doc_name,
+    detected_doc_name = detected_doc_name
+  )
 }
