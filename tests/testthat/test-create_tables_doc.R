@@ -6,7 +6,7 @@ test_that("Creates expected start of nearly empty tables doc", {
   )
 
   # read in tables doc
-  table_content <- readLines("08_tables.qmd")
+  table_content <- readLines("09_tables.qmd")
   # extract first line
   head_table_content <- table_content[1]
   # remove line numbers and collapse
@@ -24,7 +24,7 @@ test_that("Creates expected start of nearly empty tables doc", {
   )
 
   # erase temporary testing files
-  file.remove(fs::path(getwd(), "08_tables.qmd"))
+  file.remove(fs::path(getwd(), "09_tables.qmd"))
 })
 
 test_that("Creates expected start of tables doc with table", {
@@ -41,7 +41,7 @@ test_that("Creates expected start of tables doc with table", {
   )
 
   # read in tables doc
-  table_content <- readLines("08_tables.qmd")
+  table_content <- readLines("09_tables.qmd")
   # extract first 7 lines
   head_table_content <- head(table_content, 7)
   # remove line numbers and collapse
@@ -57,7 +57,7 @@ test_that("Creates expected start of tables doc with table", {
   )
 
   # erase temporary testing files
-  file.remove(fs::path(getwd(), "08_tables.qmd"))
+  file.remove(fs::path(getwd(), "09_tables.qmd"))
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
   file.remove(fs::path(getwd(), "key_quantities.csv"))
   unlink(fs::path(getwd(), "tables"), recursive = T)
@@ -87,7 +87,7 @@ test_that("Creates expected start of tables doc with table", {
 #   )
 #
 #   # erase temporary testing files
-#   file.remove(fs::path(getwd(), "08_tables.qmd"))
+#   file.remove(fs::path(getwd(), "09_tables.qmd"))
 #   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
 #   file.remove(fs::path(getwd(), "key_quantities.csv"))
 #   unlink(fs::path(getwd(), "tables"), recursive = T)
@@ -112,7 +112,7 @@ test_that("Formerly empty tables doc renders correctly", {
   )
 
   # read in tables doc
-  table_content <- readLines(file.path(getwd(), "report", "08_tables.qmd"))
+  table_content <- readLines(file.path(getwd(), "report", "09_tables.qmd"))
   # extract first 8 lines
   head_table_content <- head(table_content, 8)
   # remove line numbers and collapse
@@ -128,7 +128,7 @@ test_that("Formerly empty tables doc renders correctly", {
   )
 
   # erase temporary testing files
-  # file.remove(fs::path(getwd(), "08_tables.qmd"))
+  # file.remove(fs::path(getwd(), "09_tables.qmd"))
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
   file.remove(fs::path(getwd(), "key_quantities.csv"))
   unlink(fs::path(getwd(), "tables"), recursive = T)
@@ -164,7 +164,7 @@ test_that("Adds new table from tables folder.", {
   )
 
   # read in figures doc
-  table_content <- readLines(file.path(getwd(), "report", "08_tables.qmd"))
+  table_content <- readLines(file.path(getwd(), "report", "09_tables.qmd"))
   # Remove the first lines so test doesn't test path differences
   # Note: you CAN NOT test rendering with this approach
   table_content <- table_content[-c(3:11)]
@@ -180,5 +180,53 @@ test_that("Adds new table from tables folder.", {
   file.remove(fs::path("captions_alt_text.csv"))
   file.remove(fs::path("key_quantities.csv"))
   unlink(fs::path("tables"), recursive = T)
+  unlink(fs::path("report"), recursive = T)
+})
+
+test_that("Legacy tables doc name is renamed to new order", {
+  # standalone doc
+  create_tables_doc(
+    subdir = getwd(),
+    tables_dir = getwd()
+  )
+
+  expect_true(file.exists("09_tables.qmd"))
+  expect_false(file.exists("08_tables.qmd"))
+
+  file.remove(fs::path(getwd(), "09_tables.qmd"))
+
+  # legacy-named doc
+  create_tables_doc()
+
+  file.rename(
+    from = file.path(getwd(),"09_tables.qmd"),
+    to   = file.path(getwd(), "08_tables.qmd")
+  )
+  
+  expect_true(file.exists(file.path(getwd(), "report", "06_tables.qmd")))
+  expect_false(file.exists(file.path(getwd(), "report", "05_tables.qmd")))
+
+  create_tables_doc()
+  expect_true(file.exists("09_tables.qmd"))
+  expect_false(file.exists("08_tables.qmd"))
+
+  file.remove(fs::path(getwd(), "09_tables.qmd"))
+})
+
+test_that("nemt tables doc name is named correctly", {
+  create_template(type = "nemt")
+
+  expect_true(file.exists(file.path("report", "06_tables.qmd")))
+  expect_false(file.exists(file.path("report", "05_tables.qmd")))
+
+  unlink(fs::path("report"), recursive = T)
+})
+
+test_that("safe tables doc name is named correctly", {
+  create_template(type = "safe")
+  
+  expect_true(file.exists(file.path("report", "12_tables.qmd")))
+  expect_false(file.exists(file.path("report", "11_tables.qmd")))
+  
   unlink(fs::path("report"), recursive = T)
 })
