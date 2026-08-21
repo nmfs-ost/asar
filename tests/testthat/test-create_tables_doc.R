@@ -184,8 +184,7 @@ test_that("Adds new table from tables folder.", {
 })
 
 test_that("Legacy tables doc name is renamed to new order", {
-  writeLines("# Tables {#sec-tables}", "08_tables.qmd")
-
+  # standalone doc
   create_tables_doc(
     subdir = getwd(),
     tables_dir = getwd()
@@ -195,28 +194,39 @@ test_that("Legacy tables doc name is renamed to new order", {
   expect_false(file.exists("08_tables.qmd"))
 
   file.remove(fs::path(getwd(), "09_tables.qmd"))
-})
 
-test_that("Legacy NEMT tables doc name is renamed to new order", {
-  create_template(
-    type = "nemt"
+  # legacy-named doc
+  create_tables_doc()
+
+  file.rename(
+    from = file.path(getwd(),"09_tables.qmd"),
+    to   = file.path(getwd(), "08_tables.qmd")
   )
   
   expect_true(file.exists(file.path(getwd(), "report", "06_tables.qmd")))
   expect_false(file.exists(file.path(getwd(), "report", "05_tables.qmd")))
 
-  unlink(file.path(getwd(), "report"), recursive = T)
+  create_tables_doc()
+  expect_true(file.exists("09_tables.qmd"))
+  expect_false(file.exists("08_tables.qmd"))
+
+  file.remove(fs::path(getwd(), "09_tables.qmd"))
 })
 
+test_that("nemt tables doc name is named correctly", {
+  create_template(type = "nemt")
 
+  expect_true(file.exists(file.path("report", "06_tables.qmd")))
+  expect_false(file.exists(file.path("report", "05_tables.qmd")))
 
-test_that("Legacy SAFE tables doc name is renamed to new order", {
-  create_template(
-    type = "safe"
-  )
+  unlink(fs::path("report"), recursive = T)
+})
 
-  expect_true(file.exists(fs::path("report", "12_tables.qmd")))
-  expect_false(file.exists(fs::path("report", "11_tables.qmd")))
-
-  unlink(fs::path(getwd(), "report"), recursive = T)
+test_that("safe tables doc name is named correctly", {
+  create_template(type = "safe")
+  
+  expect_true(file.exists(file.path("report", "12_tables.qmd")))
+  expect_false(file.exists(file.path("report", "11_tables.qmd")))
+  
+  unlink(fs::path("report"), recursive = T)
 })

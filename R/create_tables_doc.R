@@ -37,63 +37,36 @@
 #' )
 #' }
 create_tables_doc <- function(subdir = getwd(),
-                              tables_dir = getwd(),
-                              tables_doc_name = NULL) {
-  # NOTE: essential_columns = 1 for all tables split using export_split_tbls() in
-  # the code below.
-  # To customize essential_columns, the user must run export_split_tbls() manually
-  # and specify essential_columns. Then, the split table will be imported into
-  # the tables doc as is.
-  # Upon adding more tables to stockplotr, the code may need to be altered to
-  # specify essential_columns for stockplotr-created tables.
-
-  # set portrait page width (in)
+                              tables_dir = getwd()) {
   portrait_pg_width <- 5
-
-  # set landscape page width (in)
   landscape_pg_width <- 8
-
-  empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
-
-  tab_header <- "# Tables {#sec-tables}\n \n"
-
-  existing_table_docs <- list.files(subdir)[grepl("_tables.qmd$", list.files(subdir))]
-  target_table_doc_name <- if (!is.null(tables_doc_name)) {
-    tables_doc_name
-  } else if (length(existing_table_docs) > 0) {
-    existing_table_docs[1]
-  } else {
-    "09_tables.qmd"
-  }
-  target_table_doc <- fs::path(subdir, target_table_doc_name)
   
-  # append table-producing code to non-empty tables doc, if it exists, vs. overwriting it
+  empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
+  
+  tab_header <- "# Tables {#sec-tables}\n \n"
+  
   append <- FALSE
   if (file.exists(target_table_doc)) {
     existing_tables_doc <- target_table_doc
     table_content <- readLines(existing_tables_doc) |>
       suppressWarnings()
-
+    
     if ("# Tables {#sec-tables}" %in% table_content) {
       append <- TRUE
       cli::cli_alert_info("Tables doc will be appended to include tables in `tables_dir`.")
-
-      # remove empty_doc_text
+      
       updated_content <- gsub(empty_doc_text, "", table_content, fixed = TRUE)
       writeLines(updated_content, existing_tables_doc)
     }
   } else {
-    # existing_figs_doc <- NULL
     table_content <- ""
   }
-
-  # add header
+  
   tables_doc_header <- ifelse(append,
-    "",
-    tab_header
+                              "",
+                              tab_header
   )
-
-  # add chunk that creates object as the directory of all rdas
+  
   if (!(any(grepl(
     "#| label: 'set-rda-dir-tbls'",
     table_content,
@@ -106,7 +79,6 @@ create_tables_doc <- function(subdir = getwd(),
           tables_dir <- fs::path('{tables_dir}', 'tables')"
         ),
         label = "set-rda-dir-tbls",
-        # add_option = TRUE,
         chunk_option = c(
           "echo: false",
           "warning: false",
@@ -118,98 +90,74 @@ create_tables_doc <- function(subdir = getwd(),
   } else {
     tables_doc_setup <- ""
   }
-
+  
   tables_doc <- ""
-
-  # list all files in tables
+  
   file_list <- list.files(file.path(tables_dir, "tables"))
-
-  # create sublist of only rda table files
+  
   rda_tab_list <- file_list[grepl(".rda", file_list)]
-
-  # Check if rda already exists and remove from list
-  # Check if rda or non-rda already exists and remove from list
+  
   new_rda <- FALSE
   if (file.exists(target_table_doc)) {
     existing_tbls_doc <- target_table_doc
     table_content <- readLines(existing_tbls_doc) |>
       suppressWarnings()
-    # find all instances of figures
     existing_rda_tabs <- vapply(rda_tab_list, function(x) {
       any(grepl(x, table_content, fixed = TRUE))
     }, FUN.VALUE = logical(1))
     rda_tab_list <- rda_tab_list[!existing_rda_tabs]
-    # add condition for message to add "new" into message
     new_rda <- ifelse(
       length(existing_rda_tabs) > 0,
       TRUE,
       FALSE
     )
   }
-
-  # remove rda table files that have an associated "split" version
-  # remove "_split" from filenames
+  
   remove_split_names <- gsub("_split", "", rda_tab_list)
-  # identify duplicates in remove_split_names
   dup_tab <- remove_split_names[duplicated(remove_split_names) | duplicated(remove_split_names, fromLast = TRUE)]
-  # remove duplicates in remove_split_names to create final list
   final_rda_tab_list <- rda_tab_list[!(remove_split_names %in% dup_tab & !grepl("_split", rda_tab_list))]
-
-  # create sublist of only non-rda table files
-  # non.rda_tab_list <- file_list[!grepl(".rda", file_list)]
-
-  # create two-chunk system to plot each rda table
+  
   create_tab_chunks <- function(tab = NA,
                                 tables_dir = getwd()) {
-    # test whether table has been split
     split <- grepl("split", tab)
-
+    
     tab_shortname <- ifelse(split,
-      stringr::str_remove(tab, "_table_split.rda"),
-      stringr::str_remove(tab, "_table.rda")
+                            stringr::str_remove(tab, "_table_split.rda"),
+                            stringr::str_remove(tab, "_table.rda")
     )
-
-    # identify table orientation
-    # split tables will always be extra-wide
+    
     tbl_orient <- ifelse(split,
-      "extra-wide",
-      ID_tbl_width_class(
-        plot_name = tab_shortname,
-        tables_dir = tables_dir,
-        portrait_pg_width = portrait_pg_width
-      )
+                         "extra-wide",
+                         ID_tbl_width_class(
+                           plot_name = tab_shortname,
+                           tables_dir = tables_dir,
+                           portrait_pg_width = portrait_pg_width
+                         )
     )
-
-    # identify table length: regular (1 landscape page) or long (>1 landscape page)
+    
     tbl_length <- ID_tbl_length_class(
       plot_name = tab_shortname,
       tables_dir = tables_dir
     )
-
+    
     table_specs <- list(tbl_orient, tbl_length)
-
+    
     tbl_class <- dplyr::case_when(
-      table_specs[[1]] == "regular" & table_specs[[2]] == "regular" ~ "reg_reg", # 38 rows / portrait
-      table_specs[[1]] == "regular" & table_specs[[2]] == "long" ~ "reg_long", # 38 rows, split / portrait
-      table_specs[[1]] == "wide" & table_specs[[2]] == "regular" ~ "wide_reg", # 28 rows / landscape
-      table_specs[[1]] == "wide" & table_specs[[2]] == "long" ~ "wide_long", # 28 rows, split / landscape
-      table_specs[[1]] == "extra-wide" & table_specs[[2]] == "regular" ~ "ewide_reg", # 28 rows, split / landscape
-      table_specs[[1]] == "extra-wide" & table_specs[[2]] == "long" ~ "ewide_long", # 28 rows, split / landscape
+      table_specs[[1]] == "regular" & table_specs[[2]] == "regular" ~ "reg_reg",
+      table_specs[[1]] == "regular" & table_specs[[2]] == "long" ~ "reg_long",
+      table_specs[[1]] == "wide" & table_specs[[2]] == "regular" ~ "wide_reg",
+      table_specs[[1]] == "wide" & table_specs[[2]] == "long" ~ "wide_long",
+      table_specs[[1]] == "extra-wide" & table_specs[[2]] == "regular" ~ "ewide_reg",
+      table_specs[[1]] == "extra-wide" & table_specs[[2]] == "long" ~ "ewide_long",
       TRUE ~ "unknown"
     )
-
+    
     if (tbl_class == "unknown") {
       cli::cli_abort("Unknown table class. Check table is an acceptable `gt` table.")
     }
-
-    # set max number of rows per table based on orientation
-    max_rows <- ifelse(tbl_orient == "regular",
-      38, # max rows for portrait
-      28
-    ) # max rows for landscape
-
-    ## import table, caption
-    ## do this for all tables
+    
+    max_rows <- ifelse(tbl_orient == "regular", 38, 28)
+    
     tables_doc_plot_setup1 <- paste0(
       add_chunk(
         paste0(
@@ -225,8 +173,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
       ),
       "\n"
     )
-
-    ## add table if it is intact on a portrait page
+    
     if (tbl_class == "reg_reg") {
       tables_doc_plot_setup2 <- paste0(
         add_chunk(
@@ -237,7 +184,6 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
             "    ) \n"
           ),
           label = glue::glue("tbl-{tab_shortname}"),
-          # add_option = TRUE,
           chunk_option = c(
             "echo: false",
             "warnings: false",
@@ -250,11 +196,9 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
         "\n"
       )
     }
-
-    ## add table if it is intact, rotated on a landscape page
+    
     if (tbl_class == "wide_reg") {
       tables_doc_plot_setup2 <- paste0(
-        # add landscape braces before R chunk
         "::: {.landscape}\n\n",
         add_chunk(
           glue::glue(
@@ -268,7 +212,6 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
             "  ) \n"
           ),
           label = glue::glue("tbl-{tab_shortname}"),
-          # add_option = TRUE,
           chunk_option = c(
             "echo: false",
             "warnings: false",
@@ -279,32 +222,22 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
           )
         ),
         "\n",
-        # add landscape braces after R chunk
         ":::\n"
       )
     }
-
-    ## add table if it is long enough to be shown on >1 portrait ("reg_long") OR landscape ("wide_long") page
-    ### only differences: latter has landscape braces and narrower cols
+    
     if (tbl_class == "reg_long" | tbl_class == "wide_long") {
-      # identify number of tables in rda
       load(fs::path(tables_dir, "tables", tab))
-      # split_tables <- length(table_list)
-      # identify number of tables that each split table must be further split
-      # into, with different rows per table
       split_table_rows <- length(rda[[1]]$`_data`[[1]])
       split_tables_rowwise <- ceiling(split_table_rows / max_rows)
-
-      # prepare text for chunk that will display split tables
+      
       tables_doc_plot_setup2 <- ""
       for (i in 1:as.numeric(split_tables_rowwise)) {
-        # add a chunk for each table
         tables_doc_plot_setup2 <- paste0(
           tables_doc_plot_setup2,
-          # add landscape braces before R chunk if tbl_class == "wide_long"
           ifelse(tbl_class == "wide_long",
-            "::: {.landscape}\n\n",
-            ""
+                 "::: {.landscape}\n\n",
+                 ""
           ),
           add_chunk(
             paste0(
@@ -330,37 +263,30 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
               "tbl-pos: 't'"
             )
           ),
-          # add landscape braces after R chunk if tbl_class == "wide_long"
           ifelse(tbl_class == "wide_long",
-            ":::\n",
-            "\n"
+                 ":::\n",
+                 "\n"
           )
         )
       }
     }
-
-    ## add table if it is wide enough to be rotated and shown on >1 landscape
+    
     if (tbl_class == "ewide_reg") {
       if (split) {
-        # identify number of split tables
         load(fs::path(tables_dir, "tables", tab))
         split_tables <- length(table_list)
       } else {
-        # split extra-wide tables into smaller tables and export AND
-        # identify number of split tables IF not already split
         split_tables <- export_split_tbls(
           tables_dir = tables_dir,
           plot_name = tab,
           essential_columns = 1
         )
-
-        # identify number of split tables
+        
         tab <- gsub("table", "table_split", tab)
         load(fs::path(tables_dir, "tables", tab))
         split_tables <- length(table_list)
       }
-
-      # add a chunk to import split tables
+      
       tables_doc_plot_setup2_import <- paste0(
         add_chunk(
           paste0(
@@ -371,7 +297,6 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
             tab_shortname, "_cap_split <- names(", tab_shortname, "_table_split_rda)"
           ),
           label = glue::glue("tbl-{tab_shortname}-labels"),
-          # add_option = TRUE,
           chunk_option = c(
             "echo: false",
             "warnings: false",
@@ -380,13 +305,11 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
         ),
         "\n"
       )
-      # prepare text for chunk that will display split tables
+      
       tables_doc_plot_setup2_display <- ""
       for (i in 1:as.numeric(split_tables)) {
-        # add a chunk for each table
         tables_doc_plot_setup2_display <- paste0(
           tables_doc_plot_setup2_display,
-          # add landscape braces before R chunk
           "::: {.landscape}\n\n",
           add_chunk(
             paste0(
@@ -411,44 +334,35 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
             )
           ),
           "\n",
-          # add landscape braces after R chunk
           ":::\n"
         )
       }
-
+      
       tables_doc_plot_setup2 <- paste0(
         tables_doc_plot_setup2_import,
         tables_doc_plot_setup2_display,
         "{{< pagebreak >}} \n\n"
       )
     }
-
-    ## add table if it is wide and long enough to be rotated and split across >1 landscape pages
+    
     if (tbl_class == "ewide_long") {
       if (split) {
-        # identify number of split tables
         load(fs::path(tables_dir, "tables", tab))
         split_tables <- length(table_list)
       } else {
-        # split extra-wide tables into smaller tables and export AND
-        # identify number of split tables IF not already split
         split_tables <- export_split_tbls(
           tables_dir = tables_dir,
           plot_name = tab,
           essential_columns = 1
         )
-
-        # identify number of split tables
+        
         tab <- gsub("table", "table_split", tab)
         load(fs::path(tables_dir, "tables", tab))
         split_tables <- length(table_list)
       }
-      # identify number of tables that each split table must be further split
-      # into, with different rows per table
       split_table_rows <- length(table_list[[1]]$`_data`[[1]])
       split_tables_rowwise <- ceiling(split_table_rows / max_rows)
-
-      # add a chunk to import split tables
+      
       tables_doc_plot_setup2_import <- paste0(
         add_chunk(
           paste0(
@@ -459,7 +373,6 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
             tab_shortname, "_cap_split <- names(", tab_shortname, "_table_split_rda)"
           ),
           label = glue::glue("tbl-{tab_shortname}-labels"),
-          # add_option = TRUE,
           chunk_option = c(
             "echo: false",
             "warnings: false",
@@ -468,14 +381,12 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
         ),
         "\n"
       )
-      # prepare text for chunk that will display split tables
+      
       tables_doc_plot_setup2_display <- ""
       for (i in 1:as.numeric(split_tables)) {
         for (j in 1:as.numeric(split_tables_rowwise)) {
-          # add a chunk for each table
           tables_doc_plot_setup2_display <- paste0(
             tables_doc_plot_setup2_display,
-            # add landscape braces before R chunk
             "::: {.landscape}\n\n",
             add_chunk(
               paste0(
@@ -502,32 +413,31 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
               )
             ),
             "\n",
-            # add landscape braces after R chunk
             ":::\n"
           )
         }
       }
-
+      
       tables_doc_plot_setup2 <- paste0(
         tables_doc_plot_setup2_import,
         tables_doc_plot_setup2_display
       )
     }
-
+    
     paste0(
       tables_doc_plot_setup1,
       tables_doc_plot_setup2,
       "{{< pagebreak >}} \n\n"
     )
   }
-
+  
   if (length(rda_tab_list) == 0) {
     if (!file.exists(target_table_doc)) {
       cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
-        wrap = TRUE
+                             wrap = TRUE
       )
       cli::cli_alert_info("For `create_tables_doc` to incorporate tables, there must be:",
-        wrap = TRUE
+                          wrap = TRUE
       )
       cli::cli_ol(c(
         "a 'tables' folder in {fs::path(tables_dir)}",
@@ -542,9 +452,8 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     }
   } else {
     cli::cli_alert_success("Found {length(final_rda_tab_list)}{ifelse(new_rda, ' new ', ' ')}table{?s} in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
-      wrap = TRUE
+                           wrap = TRUE
     )
-    # paste rda table code chunks into one object
     if (length(final_rda_tab_list) > 0) {
       rda_tables_doc <- ""
       for (i in seq_along(final_rda_tab_list)) {
@@ -552,71 +461,51 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
           tab = final_rda_tab_list[i],
           tables_dir = tables_dir
         )
-
+        
         rda_tables_doc <- paste0(rda_tables_doc, tab_chunk)
       }
     }
-    # if (length(non.rda_tab_list) > 0){
-    #   non.rda_tables_doc <- ""
-    #   for (i in seq_along(non.rda_tab_list)){
-    #     # remove file extension
-    #     tab_name <- stringr::str_extract(non.rda_tab_list[i],
-    #                                      "^[^.]+")
-    #     # remove "_table", if present
-    #     tab_name <- sub("_table", "", tab_name)
-    #     tab_chunk <- paste0(
-    #       "![Your caption here](", fs::path("tables",
-    #                                         non.rda_tab_list[i]),
-    #       "){#tab-",
-    #       tab_name,
-    #       "}\n\n"
-    #     )
-    #
-    #     non.rda_tables_doc <- paste0(non.rda_tables_doc, tab_chunk)
-    #   }
-    # } else {
-    #   message(paste0("Note: No table files in a non-rda format (e.g., .jpg, .png) were found in '",  fs::path(tables_dir, "tables") , "'."))
-    # }
-
-    # combine tables_doc setup with table chunks
+    
     tables_doc <- paste0(
       tables_doc_header,
       tables_doc_setup,
       ifelse(exists("rda_tables_doc"),
-        rda_tables_doc,
-        ""
-      ) # ,
-      # ifelse(exists("non.rda_tables_doc"),
-      #        non.rda_tables_doc,
-      #        "")
+             rda_tables_doc,
+             ""
+      )
     )
   }
-
-  tab_doc_data <- id_fig_tab_num(
-    subdir = subdir,
-    fig_or_tab = "table",
-    type = "default"
-  )
   
-  legacy_tab_status <- isTRUE(tab_doc_data$using_legacy_doc)
+  doc_info <- migrate_legacy_docs(subdir, doc_type = "tables")
   
-  # Save tables doc to template folder
+  if (doc_info$using_legacy) {
+    cli::cli_alert_info("Detected legacy figure/table document order ({.file {doc_info$legacy_name}}). asar now uses {.file {doc_info$current_name}} to maintain an accurate Table of Contents.")
+    cli::cli_alert_info("{.file {doc_info$legacy_name}} will be renamed to {.file {doc_info$current_name}}.")
+  }
+  
+  tables_doc_name <- if (doc_info$using_legacy) {
+    doc_info$legacy_name
+  } else {
+    doc_info$resolved_name
+  }
+  
   utils::capture.output(cat(tables_doc),
-                        file = target_table_doc,
+                        file = fs::path(subdir, tables_doc_name),
                         append = append
   )
   
-  if (legacy_tab_status && !is.null(tab_doc_data$detected_doc_name)) {
+  if (doc_info$using_legacy) {
     file.rename(
-      from = fs::path(subdir, tab_doc_data$detected_doc_name),
-      to = fs::path(subdir, tab_doc_data$current_doc_name)
+      from = fs::path(subdir, doc_info$legacy_name),
+      to   = fs::path(subdir, doc_info$current_name)
     )
     target_table_doc <- fs::path(subdir, tab_doc_data$current_doc_name)
   }
   
-  # Read through tables doc and warn about identical labels
+  current_tables_doc <- fs::path(subdir, doc_info$resolved_name)
+  
   fix_duplicate_chunks(
-    doc_path = target_table_doc,
+    doc_path = current_tables_doc,
     doc_type = "Tables"
   )
 }

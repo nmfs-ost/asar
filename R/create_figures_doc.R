@@ -25,20 +25,9 @@ create_figures_doc <- function(subdir = getwd(),
                                figures_dir = getwd(),
                                figures_doc_name = NULL) {
   empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
-
+  
   fig_header <- "# Figures {#sec-figures}\n \n"
   
-  existing_fig_docs <- list.files(subdir)[grepl("_figures.qmd$", list.files(subdir))]
-  target_fig_doc_name <- if (!is.null(figures_doc_name)) {
-    figures_doc_name
-  } else if (length(existing_fig_docs) > 0) {
-    existing_fig_docs[1]
-  } else {
-    "08_figures.qmd"
-  }
-  target_fig_doc <- fs::path(subdir, target_fig_doc_name)
-
-  # append figure-producing code to non-empty figures doc, if it exists, vs. overwriting it
   append <- FALSE
   if (file.exists(target_fig_doc)) {
     existing_figs_doc <- target_fig_doc
@@ -47,23 +36,19 @@ create_figures_doc <- function(subdir = getwd(),
     if ("# Figures {#sec-figures}" %in% figure_content) {
       append <- TRUE
       cli::cli_alert_info("Figures doc will be appended to include figures in `figures_dir`.")
-
-      # remove empty_doc_text
+      
       updated_content <- gsub(empty_doc_text, "", figure_content, fixed = TRUE)
       writeLines(updated_content, existing_figs_doc)
     }
   } else {
-    # existing_figs_doc <- NULL
     figure_content <- ""
   }
-
+  
   figures_doc_header <- ifelse(append,
-    "",
-    fig_header
+                               "",
+                               fig_header
   )
-
-  # add chunk that creates object as the directory of all rdas
-  # check if the current setup already has the setup chunk
+  
   if (!(any(grepl(
     "#| label: 'set-rda-dir-figs'",
     figure_content,
@@ -79,56 +64,45 @@ create_figures_doc <- function(subdir = getwd(),
   } else {
     figures_doc_setup <- ""
   }
-
+  
   figures_doc <- ""
-
-  # list all files in figures
+  
   file_list <- list.files(file.path(figures_dir, "figures"))
-
-  # create sublist of only rda figure files
+  
   rda_fig_list <- file_list[grepl("_figure.rda", file_list)]
-  # create sublist of only non-rda figure files
   non.rda_fig_list <- file_list[!grepl(".rda", file_list)]
-
-  # Check if rda or non-rda already exists and remove from list
+  
   new_rda <- FALSE
   new_non.rda <- FALSE
   if (file.exists(target_fig_doc)) {
     existing_figs_doc <- target_fig_doc
     figure_content <- readLines(existing_figs_doc) |>
       suppressWarnings()
-    # find all instances of figures
     existing_rda_figs <- vapply(rda_fig_list, function(x) {
       any(grepl(x, figure_content, fixed = TRUE))
     }, FUN.VALUE = logical(1))
     rda_fig_list <- rda_fig_list[!existing_rda_figs]
-    # add condition for message to add "new" into message
     new_rda <- ifelse(
       length(existing_rda_figs) > 0,
       TRUE,
       FALSE
     )
-    # find instances of non-rda and remove
     existing_non.rda_figs <- vapply(non.rda_fig_list, function(x) {
       any(grepl(x, figure_content, fixed = TRUE))
     }, FUN.VALUE = logical(1))
     non.rda_fig_list <- non.rda_fig_list[!existing_non.rda_figs]
-    # add condition for message to add "new" into message
     new_non.rda <- ifelse(
       length(existing_non.rda_figs) > 0,
       TRUE,
       FALSE
     )
   }
-
-  # create two-chunk system to plot each rda figure
+  
   create_fig_chunks <- function(fig = NA,
                                 figures_dir = getwd()) {
     fig_shortname <- stringr::str_remove(fig, "_figure.rda")
-
-    ## import plot, caption, alt text
+    
     figures_doc_plot_setup1 <- paste0(
-      # figures_doc,
       add_chunk(
         paste0(
           "# load rda
@@ -146,14 +120,11 @@ rm(rda)\n
       ),
       "\n"
     )
-
-    ## make figure chunk
+    
     figures_doc_plot_setup2 <- paste0(
-      # figures_doc_plot_setup1,
       add_chunk(
         paste0(fig_shortname, "_plot"),
         label = glue::glue("fig-{fig_shortname}"),
-        # add_option = TRUE,
         chunk_option = c(
           "echo: false",
           "warning: false",
@@ -167,20 +138,20 @@ rm(rda)\n
       ),
       "\n"
     )
-
+    
     paste0(
       figures_doc_plot_setup1,
       figures_doc_plot_setup2
     )
   }
-
+  
   if (length(file_list) == 0) {
     if (!file.exists(target_fig_doc)) {
       cli::cli_alert_warning("Found zero figure files in {fs::path(figures_dir, 'figures')}.",
-        wrap = TRUE
+                             wrap = TRUE
       )
       cli::cli_alert_info("For `create_figures_doc` to incorporate figures, there must be:",
-        wrap = TRUE
+                          wrap = TRUE
       )
       cli::cli_ol(c(
         "a 'figures' folder in {fs::path(figures_dir)}",
@@ -194,10 +165,9 @@ rm(rda)\n
       cli::cli_alert("No new figures detected.")
     }
   } else {
-    # paste rda figure code chunks into one object
     if (length(rda_fig_list) > 0) {
       cli::cli_alert_success("Found {length(rda_fig_list)}{ifelse(new_rda, ' new ', ' ')}figure{?s} in an rda format (i.e., .rda) in {fs::path(figures_dir, 'figures')}.",
-        wrap = TRUE
+                             wrap = TRUE
       )
       rda_figures_doc <- ""
       for (i in seq_along(rda_fig_list)) {
@@ -205,7 +175,7 @@ rm(rda)\n
           fig = rda_fig_list[i],
           figures_dir = figures_dir
         )
-
+        
         rda_figures_doc <- paste0(
           rda_figures_doc, fig_chunk,
           "{{< pagebreak >}} \n\n"
@@ -213,21 +183,19 @@ rm(rda)\n
       }
     } else {
       cli::cli_alert_warning("Found zero figures in an rda format (i.e., .rda) in {fs::path(figures_dir, 'figures')}.",
-        wrap = TRUE
+                             wrap = TRUE
       )
     }
     if (length(non.rda_fig_list) > 0) {
       cli::cli_alert_success("Found {length(non.rda_fig_list)}{ifelse(new_non.rda, ' new ', ' ')}figure{?s} in a non-rda format (e.g., .jpg, .png) in {fs::path(figures_dir, 'figures')}.",
-        wrap = TRUE
+                             wrap = TRUE
       )
       non.rda_figures_doc <- ""
       for (i in seq_along(non.rda_fig_list)) {
-        # remove file extension
         fig_name <- stringr::str_extract(
           non.rda_fig_list[i],
           "^[^.]+"
         )
-        # remove "_figure", if present
         fig_name <- sub("_figure", "", fig_name)
         fig_chunk <- paste0(
           "![Your caption here](", fs::path(
@@ -239,19 +207,17 @@ rm(rda)\n
           "}\n\n",
           "{{< pagebreak >}} \n\n"
         )
-
+        
         non.rda_figures_doc <- paste0(non.rda_figures_doc, fig_chunk)
       }
     } else {
       cli::cli_alert_warning("Found zero figure files in a non-rda format (e.g., .jpg, .png) in {fs::path(figures_dir, 'figures')}.",
-        wrap = TRUE
+                             wrap = TRUE
       )
     }
-
-    # combine figures_doc setup with figure chunks
+    
     figures_doc <- paste0(
       figures_doc_header,
-      # ifelse(!append, figures_doc_setup, ""),
       figures_doc_setup,
       ifelse(
         exists("rda_figures_doc"),
@@ -265,33 +231,37 @@ rm(rda)\n
       )
     )
   }
-
-  fig_doc_data <- id_fig_tab_num(
-    subdir = subdir,
-    fig_or_tab = "figure",
-    type = "default"
-  )
   
-  legacy_fig_status <- isTRUE(fig_doc_data$using_legacy_doc)
-  # detected_doc_name  <- fig_doc_data$detected_doc_name
+  doc_info <- migrate_legacy_docs(subdir, doc_type = "figures")
   
-  # Save figures doc to template folder
+  if (doc_info$using_legacy) {
+    cli::cli_alert_info("Detected legacy figure/table document order ({.file {doc_info$legacy_name}}). asar now uses {.file {doc_info$current_name}} to maintain an accurate Table of Contents.")
+    cli::cli_alert_info("{.file {doc_info$legacy_name}} will be renamed to {.file {doc_info$current_name}}.")
+  }
+  
+  figures_doc_name <- if (doc_info$using_legacy) {
+    doc_info$legacy_name
+  } else {
+    doc_info$resolved_name
+  }
+  
   utils::capture.output(cat(figures_doc),
-                        file = target_fig_doc,
+                        file = fs::path(subdir, figures_doc_name),
                         append = append
   )
   
-  if (legacy_fig_status && !is.null(fig_doc_data$detected_doc_name)) {
+  if (doc_info$using_legacy) {
     file.rename(
-      from = fs::path(subdir, fig_doc_data$detected_doc_name),
-      to = fs::path(subdir, fig_doc_data$current_doc_name)
+      from = fs::path(subdir, doc_info$legacy_name),
+      to   = fs::path(subdir, doc_info$current_name)
     )
     target_fig_doc <- fs::path(subdir, fig_doc_data$current_doc_name)
   }
   
-  # Read through figures doc and warn about identical labels
+  current_figures_doc <- fs::path(subdir, doc_info$resolved_name)
+  
   fix_duplicate_chunks(
-    doc_path = target_fig_doc,
+    doc_path = current_figures_doc,
     doc_type = "Figures"
   )
 }
