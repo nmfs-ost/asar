@@ -82,7 +82,7 @@ test_that("Formerly empty figures doc renders correctly", {
   # read in figures doc
   figure_content <- readLines(file.path(getwd(), "report", "08_figures.qmd"))
   # extract first 7 lines
-  head_figure_content <- head(figure_content, 7)
+  head_figure_content <- head(figure_content, 6)
   # remove line numbers and collapse
   fc_pasted <- paste(head_figure_content, collapse = "")
 
@@ -175,43 +175,72 @@ test_that("Adds new figure from figures folder.", {
 })
 
 test_that("Legacy figures doc name is renamed to new order", {
-  writeLines("# Figures {#sec-figures}", "09_figures.qmd")
-
-  create_figures_doc(
-    subdir = getwd(),
-    figures_dir = getwd()
+  # standalone figures doc
+  create_figures_doc()
+  
+  file.rename(
+    from = file.path(getwd(),"08_figures.qmd"),
+    to   = file.path(getwd(), "09_figures.qmd")
   )
+  
+  create_figures_doc()
 
   expect_true(file.exists("08_figures.qmd"))
   expect_false(file.exists("09_figures.qmd"))
 
   file.remove(fs::path(getwd(), "08_figures.qmd"))
+  
+  # figures doc within report directory
+  create_template()
+  
+  file.rename(
+    from = file.path(getwd(), "report", "08_figures.qmd"),
+    to   = file.path(getwd(), "report", "09_figures.qmd")
+  )
+  
+  create_template(rerender_skeleton = TRUE,
+                  species = "my species",
+                  file_dir = file.path(getwd(), "report"))
+  
+  expect_true(file.exists(file.path(getwd(), "report", "08_figures.qmd")))
+  expect_false(file.exists(file.path(getwd(), "report", "09_figures.qmd")))
+  
+  unlink(fs::path(getwd(), "report"), recursive = T)
+  
 })
 
 test_that("Legacy NEMT figures doc name is renamed to new order", {
-  writeLines("# Figures {#sec-figures}", "06_figures.qmd")
-
-  create_figures_doc(
-    subdir = getwd(),
-    figures_dir = getwd()
+  create_template(type = "nemt")
+  
+  file.rename(
+    from = file.path(getwd(), "report", "05_figures.qmd"),
+    to   = file.path(getwd(), "report", "06_figures.qmd")
   )
-
-  expect_true(file.exists("05_figures.qmd"))
-  expect_false(file.exists("06_figures.qmd"))
-
-  file.remove(fs::path(getwd(), "05_figures.qmd"))
+  
+  create_template(rerender_skeleton = TRUE,
+                  species = "my species",
+                  file_dir = file.path(getwd(), "report"))
+  
+  expect_true(file.exists(file.path(getwd(), "report", "05_figures.qmd")))
+  expect_false(file.exists(file.path(getwd(), "report", "06_figures.qmd")))
+  
+  unlink(fs::path(getwd(), "report"), recursive = T)
 })
 
 test_that("Legacy SAFE figures doc name is renamed to new order", {
-  writeLines("# Figures {#sec-figures}", "12_figures.qmd")
-
-  create_figures_doc(
-    subdir = getwd(),
-    figures_dir = getwd()
+  create_template(type = "nemt")
+  
+  file.rename(
+    from = file.path(getwd(), "report", "11_figures.qmd"),
+    to   = file.path(getwd(), "report", "12_figures.qmd")
   )
-
-  expect_true(file.exists("11_figures.qmd"))
-  expect_false(file.exists("12_figures.qmd"))
-
-  file.remove(fs::path(getwd(), "11_figures.qmd"))
+  
+  create_template(rerender_skeleton = TRUE,
+                  species = "my species",
+                  file_dir = file.path(getwd(), "report"))
+  
+  expect_true(file.exists(file.path(getwd(), "report", "11_figures.qmd")))
+  expect_false(file.exists(file.path(getwd(), "report", "12_figures.qmd")))
+  
+  unlink(fs::path(getwd(), "report"), recursive = T)
 })

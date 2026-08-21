@@ -259,39 +259,35 @@ create_template <- function(
   ...
 ) {
   # Check input type
-  if (interactive()) {
-    type <- switch(type,
-      "Northeast Management Track" = "nemt",
-      "Pacific Fishery Management Council" = "pfmc",
-      "Stock Assessment and Fishery Evaluation" = "safe",
-      "Stock Assessment Report" = "skeleton",
-      "sar" = "skeleton",
-      "pfmc" = "pfmc",
-      "nemt" = "nemt",
-      "safe" = "safe",
-      {
-        type_fxn <- function() {
-          selection <- utils::menu(
-            title = "Unrecognized template type. Please select an option below: ",
-            choices = c("Default", "Pacific Fisheries Management Council", "Northeast Management Track", "SAFE")
-          )
-          type <- switch(as.character(selection),
-            "1" = "skeleton",
-            "2" = "pfmc",
-            "3" = "nemt",
-            "4" = "safe",
-            {
-              "skeleton"
-            }
-          )
-          return(type)
-        }
-        type_fxn()
-      }
-    )
-  } else {
-    type <- "skeleton"
-  }
+  type <- switch(type,
+                 "Northeast Management Track"         = "nemt",
+                 "Pacific Fishery Management Council" = "pfmc",
+                 "Stock Assessment and Fishery Evaluation" = "safe",
+                 "Stock Assessment Report"            = "skeleton",
+                 "sar"                                = "skeleton",
+                 "pfmc"                               = "pfmc",
+                 "nemt"                               = "nemt",
+                 "safe"                               = "safe",
+                 "skeleton"                           = "skeleton",
+                 {
+                   # If unrecognized AND interactive, show prompt
+                   if (interactive()) {
+                     selection <- utils::menu(
+                       title = "Unrecognized template type. Please select an option below: ",
+                       choices = c("Default", "Pacific Fisheries Management Council", "Northeast Management Track", "SAFE")
+                     )
+                     switch(as.character(selection),
+                            "1" = "skeleton",
+                            "2" = "pfmc",
+                            "3" = "nemt",
+                            "4" = "safe",
+                            "skeleton"
+                     )
+                   } else {
+                     "skeleton"
+                   }
+                 }
+  )
 
   if (!is.null(office) & length(office) == 1) {
     office <- match.arg(office, choices = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"), several.ok = FALSE)
@@ -683,14 +679,26 @@ create_template <- function(
       tab_doc_data$using_legacy_doc &&
       fig_doc_data$using_legacy_doc
     if (using_legacy_doc_order) {
-      file.rename(
-        from = fs::path(subdir, legacy_tables_doc_name),
-        to = fs::path(subdir, current_tables_doc_name)
-      )
-      file.rename(
-        from = fs::path(subdir, legacy_figures_doc_name),
-        to = fs::path(subdir, current_figures_doc_name)
-      )
+      # 1. Safely copy & remove old table file
+      old_tbl_path <- fs::path(subdir, legacy_tables_doc_name)
+      new_tbl_path <- fs::path(subdir, current_tables_doc_name)
+      if (file.exists(old_tbl_path) && legacy_tables_doc_name != current_tables_doc_name) {
+        file.copy(from = old_tbl_path, to = new_tbl_path, overwrite = TRUE)
+        file.remove(old_tbl_path)
+      }
+      
+      # 2. Safely copy & remove old figure file (prevents 09_figures.qmd from persisting)
+      old_fig_path <- fs::path(subdir, legacy_figures_doc_name)
+      new_fig_path <- fs::path(subdir, current_figures_doc_name)
+      if (file.exists(old_fig_path) && legacy_figures_doc_name != current_figures_doc_name) {
+        file.copy(from = old_fig_path, to = new_fig_path, overwrite = TRUE)
+        file.remove(old_fig_path)
+      }
+      
+      # 3. Clean up prev_skeleton so knit_child references don't recreate the old filenames
+      prev_skeleton <- prev_skeleton |>
+        stringr::str_replace_all(legacy_tables_doc_name, current_tables_doc_name) |>
+        stringr::str_replace_all(legacy_figures_doc_name, current_figures_doc_name)
       
       cli::cli_alert_info("Detected legacy figure/table document order in the skeleton. asar now uses {.file {current_figures_doc_name}} & {.file {current_tables_doc_name}} to maintain an accurate Table of Contents.")
       cli::cli_alert_info("Skeleton will be updated to show figures before tables.")

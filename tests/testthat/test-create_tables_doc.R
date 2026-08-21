@@ -201,12 +201,14 @@ test_that("Legacy NEMT tables doc name is renamed to new order", {
   create_template(
     type = "nemt"
   )
+  
+  expect_true(file.exists(file.path(getwd(), "report", "06_tables.qmd")))
+  expect_false(file.exists(file.path(getwd(), "report", "05_tables.qmd")))
 
-  expect_true(file.exists(fs::path("report", "06_tables.qmd")))
-  expect_false(file.exists(fs::path("report", "05_tables.qmd")))
-
-  unlink(fs::path(getwd(), "report"), recursive = T)
+  unlink(file.path(getwd(), "report"), recursive = T)
 })
+
+
 
 test_that("Legacy SAFE tables doc name is renamed to new order", {
   create_template(

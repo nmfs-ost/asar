@@ -283,9 +283,10 @@ rm(rda)\n
   
   if (legacy_fig_status && !is.null(fig_doc_data$detected_doc_name)) {
     file.rename(
-      from = fig_doc_data$detected_doc_name,
-      to = target_fig_doc_name
+      from = fs::path(subdir, fig_doc_data$detected_doc_name),
+      to = fs::path(subdir, fig_doc_data$current_doc_name)
     )
+    target_fig_doc <- fs::path(subdir, fig_doc_data$current_doc_name)
   }
   
   # Read through figures doc and warn about identical labels

@@ -608,9 +608,10 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
   
   if (legacy_tab_status && !is.null(tab_doc_data$detected_doc_name)) {
     file.rename(
-      from = tab_doc_data$detected_doc_name,
-      to = target_table_doc_name
+      from = fs::path(subdir, tab_doc_data$detected_doc_name),
+      to = fs::path(subdir, tab_doc_data$current_doc_name)
     )
+    target_table_doc <- fs::path(subdir, tab_doc_data$current_doc_name)
   }
   
   # Read through tables doc and warn about identical labels
