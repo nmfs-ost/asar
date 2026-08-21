@@ -175,7 +175,18 @@ test_that("Adds new figure from figures folder.", {
 })
 
 test_that("Legacy figures doc name is renamed to new order", {
-  # standalone figures doc
+  # standalone doc
+  create_figures_doc(
+    subdir = getwd(),
+    figures_dir = getwd()
+  )
+  
+  expect_true(file.exists("08_figures.qmd"))
+  expect_false(file.exists("09_figures.qmd"))
+  
+  file.remove(fs::path(getwd(), "08_figures.qmd"))
+  
+  # legacy-named doc
   create_figures_doc()
   
   file.rename(
@@ -184,10 +195,9 @@ test_that("Legacy figures doc name is renamed to new order", {
   )
   
   create_figures_doc()
-
   expect_true(file.exists("08_figures.qmd"))
   expect_false(file.exists("09_figures.qmd"))
-
+  
   file.remove(fs::path(getwd(), "08_figures.qmd"))
   
   # figures doc within report directory
@@ -209,38 +219,20 @@ test_that("Legacy figures doc name is renamed to new order", {
   
 })
 
-test_that("Legacy NEMT figures doc name is renamed to new order", {
+test_that("nemt figures doc name is named correctly", {
   create_template(type = "nemt")
   
-  file.rename(
-    from = file.path(getwd(), "report", "05_figures.qmd"),
-    to   = file.path(getwd(), "report", "06_figures.qmd")
-  )
+  expect_true(file.exists(file.path("report", "05_figures.qmd")))
+  expect_false(file.exists(file.path("report", "06_figures.qmd")))
   
-  create_template(rerender_skeleton = TRUE,
-                  species = "my species",
-                  file_dir = file.path(getwd(), "report"))
-  
-  expect_true(file.exists(file.path(getwd(), "report", "05_figures.qmd")))
-  expect_false(file.exists(file.path(getwd(), "report", "06_figures.qmd")))
-  
-  unlink(fs::path(getwd(), "report"), recursive = T)
+  unlink(fs::path("report"), recursive = T)
 })
 
-test_that("Legacy SAFE figures doc name is renamed to new order", {
-  create_template(type = "nemt")
+test_that("safe figures doc name is named correctly", {
+  create_template(type = "safe")
   
-  file.rename(
-    from = file.path(getwd(), "report", "11_figures.qmd"),
-    to   = file.path(getwd(), "report", "12_figures.qmd")
-  )
+  expect_true(file.exists(file.path("report", "11_figures.qmd")))
+  expect_false(file.exists(file.path("report", "12_figures.qmd")))
   
-  create_template(rerender_skeleton = TRUE,
-                  species = "my species",
-                  file_dir = file.path(getwd(), "report"))
-  
-  expect_true(file.exists(file.path(getwd(), "report", "11_figures.qmd")))
-  expect_false(file.exists(file.path(getwd(), "report", "12_figures.qmd")))
-  
-  unlink(fs::path(getwd(), "report"), recursive = T)
+  unlink(fs::path("report"), recursive = T)
 })
