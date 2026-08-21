@@ -27,6 +27,23 @@ test_that("Creates expected start of nearly empty tables doc", {
   file.remove(fs::path(getwd(), "08_tables.qmd"))
 })
 
+test_that("Uses explicit tables doc name without creating default tables doc", {
+  report_dir <- fs::path(getwd(), "report")
+  dir.create(report_dir, recursive = TRUE, showWarnings = FALSE)
+  file.create(fs::path(report_dir, "06_tables.qmd"))
+
+  create_tables_doc(
+    subdir = report_dir,
+    tables_dir = getwd(),
+    tables_doc_name = "06_tables.qmd"
+  )
+
+  expect_true(file.exists(fs::path(report_dir, "06_tables.qmd")))
+  expect_false(file.exists(fs::path(report_dir, "08_tables.qmd")))
+
+  unlink(report_dir, recursive = TRUE)
+})
+
 test_that("Creates expected start of tables doc with table", {
   stockplotr::table_landings(
     stockplotr::example_data,

@@ -27,6 +27,23 @@ test_that("Creates expected start of nearly empty figures doc", {
   file.remove(fs::path(getwd(), "09_figures.qmd"))
 })
 
+test_that("Uses explicit figures doc name without creating default figures doc", {
+  report_dir <- fs::path(getwd(), "report")
+  dir.create(report_dir, recursive = TRUE, showWarnings = FALSE)
+  file.create(fs::path(report_dir, "05_figures.qmd"))
+
+  create_figures_doc(
+    subdir = report_dir,
+    figures_dir = getwd(),
+    figures_doc_name = "05_figures.qmd"
+  )
+
+  expect_true(file.exists(fs::path(report_dir, "05_figures.qmd")))
+  expect_false(file.exists(fs::path(report_dir, "09_figures.qmd")))
+
+  unlink(report_dir, recursive = TRUE)
+})
+
 test_that("Creates expected start of figures doc with figure", {
   stockplotr::plot_biomass(
     dat = stockplotr::example_data,

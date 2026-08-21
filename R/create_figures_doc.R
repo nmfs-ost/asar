@@ -3,6 +3,9 @@
 #' @param subdir Location of subdirectory storing the assessment report template
 #' @param figures_dir The location of the "figures" folder, which contains
 #' figures files.
+#' @param figures_doc_name Optional filename for the figures document written in
+#' `subdir` (e.g., `"05_figures.qmd"`). If NULL, the function auto-detects an
+#' existing `*_figures.qmd` file, or defaults to `"09_figures.qmd"`.
 #'
 #' @return A quarto document with pre-loaded R chunk that adds the
 #' stock assessment tables from the nmfs-ost/stockplotr R package. The
@@ -17,15 +20,26 @@
 #' )
 #' }
 create_figures_doc <- function(subdir = getwd(),
-                               figures_dir = getwd()) {
+                               figures_dir = getwd(),
+                               figures_doc_name = NULL) {
   empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
 
   fig_header <- "# Figures {#sec-figures}\n \n"
 
+  existing_fig_docs <- list.files(subdir)[grepl("_figures.qmd$", list.files(subdir))]
+  target_fig_doc_name <- if (!is.null(figures_doc_name)) {
+    figures_doc_name
+  } else if (length(existing_fig_docs) > 0) {
+    existing_fig_docs[1]
+  } else {
+    "09_figures.qmd"
+  }
+  target_fig_doc <- fs::path(subdir, target_fig_doc_name)
+
   # append figure-producing code to non-empty figures doc, if it exists, vs. overwriting it
   append <- FALSE
-  if (length(file.path(subdir, list.files(subdir, pattern = "figures.qmd"))) == 1) {
-    existing_figs_doc <- file.path(subdir, list.files(subdir, pattern = "figures.qmd"))
+  if (file.exists(target_fig_doc)) {
+    existing_figs_doc <- target_fig_doc
     figure_content <- readLines(existing_figs_doc) |>
       suppressWarnings()
     if ("# Figures {#sec-figures}" %in% figure_content) {
@@ -77,8 +91,8 @@ create_figures_doc <- function(subdir = getwd(),
   # Check if rda or non-rda already exists and remove from list
   new_rda <- FALSE
   new_non.rda <- FALSE
-  if (length(file.path(subdir, list.files(subdir, pattern = "figures.qmd"))) == 1) {
-    existing_figs_doc <- file.path(subdir, list.files(subdir, pattern = "figures.qmd"))
+  if (file.exists(target_fig_doc)) {
+    existing_figs_doc <- target_fig_doc
     figure_content <- readLines(existing_figs_doc) |>
       suppressWarnings()
     # find all instances of figures
@@ -159,7 +173,7 @@ rm(rda)\n
   }
 
   if (length(file_list) == 0) {
-    if (length(file.path(subdir, list.files(subdir, pattern = "figures.qmd"))) != 1) {
+    if (!file.exists(target_fig_doc)) {
       cli::cli_alert_warning("Found zero figure files in {fs::path(figures_dir, 'figures')}.",
         wrap = TRUE
       )
@@ -251,23 +265,12 @@ rm(rda)\n
   }
   # Save figures doc to template folder
   utils::capture.output(cat(figures_doc),
-    file = paste0(
-      subdir, "/",
-      ifelse(
-        any(grepl("_figures.qmd$", list.files(subdir))),
-        list.files(subdir)[grep("_figures.qmd", list.files(subdir))],
-        "09_figures.qmd"
-      )
-    ),
+    file = target_fig_doc,
     append = append
   )
 
   # Read through figures doc and warn about identical labels
-  doc_path <- ifelse(
-    any(grepl("_figures.qmd$", list.files(subdir))),
-    fs::path(subdir, list.files(subdir)[grep("_figures.qmd", list.files(subdir))]),
-    fs::path(subdir, "09_figures.qmd")
-  )
+  doc_path <- target_fig_doc
 
   fix_duplicate_chunks(
     doc_path = doc_path,

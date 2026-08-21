@@ -4,13 +4,21 @@
 \alias{create_figures_doc}
 \title{Create Quarto Document of Figures}
 \usage{
-create_figures_doc(subdir = getwd(), figures_dir = getwd())
+create_figures_doc(
+  subdir = getwd(),
+  figures_dir = getwd(),
+  figures_doc_name = NULL
+)
 }
 \arguments{
 \item{subdir}{Location of subdirectory storing the assessment report template}
 
 \item{figures_dir}{The location of the "figures" folder, which contains
 figures files.}
+
+\item{figures_doc_name}{Optional filename for the figures document written in
+\code{subdir} (e.g., \code{"05_figures.qmd"}). If NULL, the function auto-detects an
+existing \code{*_figures.qmd} file, or defaults to \code{"09_figures.qmd"}.}
 }
 \value{
 A quarto document with pre-loaded R chunk that adds the

@@ -4,13 +4,21 @@
 \alias{create_tables_doc}
 \title{Create Quarto Document of Tables}
 \usage{
-create_tables_doc(subdir = getwd(), tables_dir = getwd())
+create_tables_doc(
+  subdir = getwd(),
+  tables_dir = getwd(),
+  tables_doc_name = NULL
+)
 }
 \arguments{
 \item{subdir}{Location of subdirectory storing the assessment report template}
 
 \item{tables_dir}{The location of the "tables" folder, which contains tables
 files.}
+
+\item{tables_doc_name}{Optional filename for the tables document written in
+\code{subdir} (e.g., \code{"06_tables.qmd"}). If NULL, the function auto-detects an
+existing \code{*_tables.qmd} file, or defaults to \code{"08_tables.qmd"}.}
 }
 \value{
 Create a quarto document as part of a stock assessment outline with

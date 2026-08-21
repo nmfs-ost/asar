@@ -710,7 +710,8 @@ create_template <- function(
 
         create_tables_doc(
           subdir = subdir,
-          tables_dir = tables_dir
+          tables_dir = tables_dir,
+          tables_doc_name = tables_doc_name
         )
       } # |>
       # suppressMessages() |>
@@ -737,7 +738,8 @@ create_template <- function(
 
       create_figures_doc(
         subdir = subdir,
-        figures_dir = figures_dir
+        figures_dir = figures_dir,
+        figures_doc_name = figures_doc_name
       )
     } else {
       # extract name for figures.qmd from report folder

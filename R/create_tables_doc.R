@@ -17,6 +17,9 @@
 #' @inheritParams create_figures_doc
 #' @param tables_dir The location of the "tables" folder, which contains tables
 #' files.
+#' @param tables_doc_name Optional filename for the tables document written in
+#' `subdir` (e.g., `"06_tables.qmd"`). If NULL, the function auto-detects an
+#' existing `*_tables.qmd` file, or defaults to `"08_tables.qmd"`.
 #'
 #' @return Create a quarto document as part of a stock assessment outline with
 #' pre-loaded R chunks that add stock assessment tables from the nmfs-ost/stockplotr
@@ -31,7 +34,8 @@
 #' )
 #' }
 create_tables_doc <- function(subdir = getwd(),
-                              tables_dir = getwd()) {
+                              tables_dir = getwd(),
+                              tables_doc_name = NULL) {
   # NOTE: essential_columns = 1 for all tables split using export_split_tbls() in
   # the code below.
   # To customize essential_columns, the user must run export_split_tbls() manually
@@ -50,10 +54,20 @@ create_tables_doc <- function(subdir = getwd(),
 
   tab_header <- "# Tables {#sec-tables}\n \n"
 
+  existing_table_docs <- list.files(subdir)[grepl("_tables.qmd$", list.files(subdir))]
+  target_table_doc_name <- if (!is.null(tables_doc_name)) {
+    tables_doc_name
+  } else if (length(existing_table_docs) > 0) {
+    existing_table_docs[1]
+  } else {
+    "08_tables.qmd"
+  }
+  target_table_doc <- fs::path(subdir, target_table_doc_name)
+
   # append table-producing code to non-empty tables doc, if it exists, vs. overwriting it
   append <- FALSE
-  if (length(file.path(subdir, list.files(subdir, pattern = "tables.qmd"))) == 1) {
-    existing_tables_doc <- file.path(subdir, list.files(subdir, pattern = "tables.qmd"))
+  if (file.exists(target_table_doc)) {
+    existing_tables_doc <- target_table_doc
     table_content <- readLines(existing_tables_doc) |>
       suppressWarnings()
 
@@ -113,8 +127,8 @@ create_tables_doc <- function(subdir = getwd(),
   # Check if rda already exists and remove from list
   # Check if rda or non-rda already exists and remove from list
   new_rda <- FALSE
-  if (length(file.path(subdir, list.files(subdir, pattern = "tables.qmd"))) == 1) {
-    existing_tbls_doc <- file.path(subdir, list.files(subdir, pattern = "tables.qmd"))
+  if (file.exists(target_table_doc)) {
+    existing_tbls_doc <- target_table_doc
     table_content <- readLines(existing_tbls_doc) |>
       suppressWarnings()
     # find all instances of figures
@@ -505,7 +519,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
   }
 
   if (length(rda_tab_list) == 0) {
-    if (length(file.path(subdir, list.files(subdir, pattern = "tables.qmd"))) != 1) {
+    if (!file.exists(target_table_doc)) {
       cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
         wrap = TRUE
       )
@@ -577,23 +591,12 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
 
   # Save tables doc to template folder
   utils::capture.output(cat(tables_doc),
-    file = paste0(
-      subdir, "/",
-      ifelse(
-        any(grepl("_tables.qmd$", list.files(subdir))),
-        list.files(subdir)[grep("_tables.qmd", list.files(subdir))],
-        "08_tables.qmd"
-      )
-    ),
+    file = target_table_doc,
     append = append
   )
 
   # Read through tables doc and warn about identical labels
-  doc_path <- ifelse(
-    any(grepl("_tables.qmd$", list.files(subdir))),
-    fs::path(subdir, list.files(subdir)[grep("_tables.qmd", list.files(subdir))]),
-    fs::path(subdir, "08_tables.qmd")
-  )
+  doc_path <- target_table_doc
 
   fix_duplicate_chunks(
     doc_path = doc_path,
