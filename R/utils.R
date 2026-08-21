@@ -428,3 +428,44 @@ format_citation_authors <- function(author_names) {
     glue::glue_collapse(sep = ", ", last = ", and ") |>
     as.character()
 }
+
+#---- identify figure/table qmd numbering ----
+id_fig_tab_num <- function(subdir,
+                           fig_or_tab = c("figure", "table"),
+                           type = c("default", "nemt", "safe")) {
+  fig_or_tab <- match.arg(fig_or_tab)
+  type <- match.arg(type)
+
+  if (fig_or_tab == "figure") {
+    legacy_docs <- c(default = "09_figures.qmd", nemt = "06_figures.qmd", safe = "12_figures.qmd")
+    current_docs <- c(default = "08_figures.qmd", nemt = "05_figures.qmd", safe = "11_figures.qmd")
+    qmd_suffix <- "_figures.qmd$"
+  } else {
+    legacy_docs <- c(default = "08_tables.qmd", nemt = "05_tables.qmd", safe = "11_tables.qmd")
+    current_docs <- c(default = "09_tables.qmd", nemt = "06_tables.qmd", safe = "12_tables.qmd")
+    qmd_suffix <- "_tables.qmd$"
+  }
+
+  legacy_doc_name <- legacy_docs[[type]]
+  current_doc_name <- current_docs[[type]]
+
+  using_legacy_doc <- file.exists(fs::path(subdir, legacy_doc_name)) &&
+    !file.exists(fs::path(subdir, current_doc_name))
+
+  detected_doc_name <- if (using_legacy_doc) {
+    legacy_doc_name
+  } else if (file.exists(fs::path(subdir, current_doc_name))) {
+    current_doc_name
+  } else if (any(grepl(qmd_suffix, list.files(subdir)))) {
+    list.files(subdir)[grep(qmd_suffix, list.files(subdir))][1]
+  } else {
+    current_doc_name
+  }
+
+  list(
+    using_legacy_doc = using_legacy_doc,
+    legacy_doc_name = legacy_doc_name,
+    current_doc_name = current_doc_name,
+    detected_doc_name = detected_doc_name
+  )
+}
