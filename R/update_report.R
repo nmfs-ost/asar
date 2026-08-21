@@ -122,11 +122,20 @@ update_report <- function(
   # citation
   # preamble
   # section chunks
-  skeleton_file <- list.files(report_dir, pattern = "skeleton\\.qmd", full.names = TRUE)
+  # Run create_template but with rerender_skeleton = TRUE
+  # TODO: change once rerender is outside of create_template
+  # TODO: reset author section in skeleton -- remove all previous authorship (does this work?)
   
-  if (length(skeleton_file) == 0) {
-    cli::cli_abort("No skeleton.qmd file found in the previous report directory.")
-  }
-  skeleton <- readLines(skeleton_file)
+  create_template(
+    rerender_skeleton = TRUE,
+    dir = file_dir,
+    authors = authors,
+    model_results = model_results,
+    year = year,
+    format = format,
+    region = region,
+    new_section = new_section,
+    section_location = section_location
+  )
   
 }
