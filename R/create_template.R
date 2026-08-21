@@ -721,7 +721,7 @@ create_template <- function(
       tables_doc_name <- if (using_legacy_doc_order) {
         current_tables_doc_name
       } else {
-        list.files(file_dir, pattern = "tables.qmd")
+        tab_doc_data$detected_doc_name
       }
     }
 
@@ -746,7 +746,7 @@ create_template <- function(
       figures_doc_name <- if (using_legacy_doc_order) {
         current_figures_doc_name
       } else {
-        list.files(file_dir, pattern = "figures.qmd")
+        fig_doc_data$detected_doc_name
       }
     }
 

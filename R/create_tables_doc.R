@@ -54,14 +54,12 @@ create_tables_doc <- function(subdir = getwd(),
 
   tab_header <- "# Tables {#sec-tables}\n \n"
 
-  existing_table_docs <- list.files(subdir)[grepl("_tables.qmd$", list.files(subdir))]
-  target_table_doc_name <- if (!is.null(tables_doc_name)) {
-    tables_doc_name
-  } else if (length(existing_table_docs) > 0) {
-    existing_table_docs[1]
-  } else {
-    "08_tables.qmd"
-  }
+  target_table_doc_name <- resolve_fig_tab_doc_name(
+    subdir = subdir,
+    fig_or_tab = "table",
+    doc_name = tables_doc_name,
+    fallback_doc_name = "08_tables.qmd"
+  )
   target_table_doc <- fs::path(subdir, target_table_doc_name)
 
   # append table-producing code to non-empty tables doc, if it exists, vs. overwriting it

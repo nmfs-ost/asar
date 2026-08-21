@@ -469,3 +469,50 @@ id_fig_tab_num <- function(subdir,
     detected_doc_name = detected_doc_name
   )
 }
+
+#---- resolve figure/table doc name ----
+resolve_fig_tab_doc_name <- function(subdir,
+                                     fig_or_tab = c("figure", "table"),
+                                     doc_name = NULL,
+                                     fallback_doc_name = NULL) {
+  fig_or_tab <- match.arg(fig_or_tab)
+
+  if (!is.null(doc_name)) {
+    return(doc_name)
+  }
+
+  doc_data <- lapply(c("default", "nemt", "safe"), function(doc_type) {
+    id_fig_tab_num(
+      subdir = subdir,
+      fig_or_tab = fig_or_tab,
+      type = doc_type
+    )
+  })
+
+  existing_legacy <- vapply(doc_data, function(x) {
+    x$using_legacy_doc && file.exists(fs::path(subdir, x$legacy_doc_name))
+  }, FUN.VALUE = logical(1))
+  if (any(existing_legacy)) {
+    return(doc_data[[which(existing_legacy)[1]]]$legacy_doc_name)
+  }
+
+  existing_current <- vapply(doc_data, function(x) {
+    file.exists(fs::path(subdir, x$current_doc_name))
+  }, FUN.VALUE = logical(1))
+  if (any(existing_current)) {
+    return(doc_data[[which(existing_current)[1]]]$current_doc_name)
+  }
+
+  existing_detected <- vapply(doc_data, function(x) {
+    file.exists(fs::path(subdir, x$detected_doc_name))
+  }, FUN.VALUE = logical(1))
+  if (any(existing_detected)) {
+    return(doc_data[[which(existing_detected)[1]]]$detected_doc_name)
+  }
+
+  if (!is.null(fallback_doc_name)) {
+    return(fallback_doc_name)
+  }
+
+  doc_data[[1]]$detected_doc_name
+}

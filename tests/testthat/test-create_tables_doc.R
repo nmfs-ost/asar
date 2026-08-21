@@ -45,6 +45,8 @@ test_that("Uses explicit tables doc name without creating default tables doc", {
 })
 
 test_that("Creates expected start of tables doc with table", {
+  create_template()
+
   stockplotr::table_landings(
     stockplotr::example_data,
     make_rda = TRUE,
@@ -53,19 +55,24 @@ test_that("Creates expected start of tables doc with table", {
 
   # create tables doc
   create_tables_doc(
-    subdir = getwd(),
+    subdir = file.path(getwd(), "report"),
     tables_dir = getwd()
   )
 
   # read in tables doc
-  table_content <- readLines("08_tables.qmd")
-  # extract first 7 lines
-  head_table_content <- head(table_content, 7)
+  tables_doc_name <- id_fig_tab_num(
+    subdir = file.path(getwd(), "report"),
+    fig_or_tab = "table",
+    type = "default"
+  )$detected_doc_name
+  table_content <- readLines(file.path(getwd(), "report", tables_doc_name))
+  # extract first 8 lines
+  head_table_content <- head(table_content, 8)
   # remove line numbers and collapse
   fc_pasted <- paste(head_table_content, collapse = "")
 
   # expected tables doc head
-  expected_head_table_content <- "# Tables {#sec-tables} ```{r} #| label: 'set-rda-dir-tbls'#| echo: false #| warning: false #| include: false"
+  expected_head_table_content <- "# Tables {#sec-tables} ```{r} #| label: 'set-rda-dir-tbls'#| echo: false #| warning: false #| include: falselibrary(gt)"
 
   # test expectation of start of tables doc
   testthat::expect_equal(
@@ -74,10 +81,10 @@ test_that("Creates expected start of tables doc with table", {
   )
 
   # erase temporary testing files
-  file.remove(fs::path(getwd(), "08_tables.qmd"))
   file.remove(fs::path(getwd(), "captions_alt_text.csv"))
   file.remove(fs::path(getwd(), "key_quantities.csv"))
   unlink(fs::path(getwd(), "tables"), recursive = T)
+  unlink(fs::path(getwd(), "report"), recursive = T)
 })
 
 # moot bc new checks account for this
@@ -129,7 +136,12 @@ test_that("Formerly empty tables doc renders correctly", {
   )
 
   # read in tables doc
-  table_content <- readLines(file.path(getwd(), "report", "08_tables.qmd"))
+  tables_doc_name <- id_fig_tab_num(
+    subdir = file.path(getwd(), "report"),
+    fig_or_tab = "table",
+    type = "default"
+  )$detected_doc_name
+  table_content <- readLines(file.path(getwd(), "report", tables_doc_name))
   # extract first 8 lines
   head_table_content <- head(table_content, 8)
   # remove line numbers and collapse
@@ -153,7 +165,7 @@ test_that("Formerly empty tables doc renders correctly", {
 })
 
 test_that("Adds new table from tables folder.", {
-  # Create one figure
+  # Create one table
   stockplotr::table_landings(
     dat = stockplotr::example_data,
     make_rda = TRUE,
@@ -174,21 +186,26 @@ test_that("Adds new table from tables folder.", {
     to = file.path(getwd(), "tables", "land_table.rda")
   )
 
-  # rerender figures doc, appending new figure
+  # rerender tables doc, appending new table
   create_tables_doc(
     subdir = file.path(getwd(), "report"),
     tables_dir = getwd()
   )
 
-  # read in figures doc
-  table_content <- readLines(file.path(getwd(), "report", "08_tables.qmd"))
+  # read in tables doc
+  tables_doc_name <- id_fig_tab_num(
+    subdir = file.path(getwd(), "report"),
+    fig_or_tab = "table",
+    type = "default"
+  )$detected_doc_name
+  table_content <- readLines(file.path(getwd(), "report", tables_doc_name))
   # Remove the first lines so test doesn't test path differences
   # Note: you CAN NOT test rendering with this approach
   table_content <- table_content[-c(3:11)]
   # remove line numbers and collapse
   fc_pasted <- paste(table_content, collapse = "\n")
 
-  # test expectation of start of figures doc
+  # test expectation of start of tables doc
   expect_snapshot(
     cat(fc_pasted)
   )

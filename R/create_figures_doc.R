@@ -26,14 +26,12 @@ create_figures_doc <- function(subdir = getwd(),
 
   fig_header <- "# Figures {#sec-figures}\n \n"
 
-  existing_fig_docs <- list.files(subdir)[grepl("_figures.qmd$", list.files(subdir))]
-  target_fig_doc_name <- if (!is.null(figures_doc_name)) {
-    figures_doc_name
-  } else if (length(existing_fig_docs) > 0) {
-    existing_fig_docs[1]
-  } else {
-    "09_figures.qmd"
-  }
+  target_fig_doc_name <- resolve_fig_tab_doc_name(
+    subdir = subdir,
+    fig_or_tab = "figure",
+    doc_name = figures_doc_name,
+    fallback_doc_name = "09_figures.qmd"
+  )
   target_fig_doc <- fs::path(subdir, target_fig_doc_name)
 
   # append figure-producing code to non-empty figures doc, if it exists, vs. overwriting it
