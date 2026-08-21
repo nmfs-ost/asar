@@ -1,38 +1,20 @@
+#' Call previous assessment report and update
+#'
+#' @inheritParams create_template
+#' @param file_dir String of the path where the new report folder and files 
+#' should be located.
+#' @param previous_file_dir String of the path where the previous report files 
+#' are located.
+#'
+#' @returns Creates a new folder of pre-filled assessment report files for the 
+#' next assessment cycle.
+#' @export
+#'
+#' @examples
 update_report <- function(
-    dir = "report",
-    new_dir = getwd()
-) {
-  # Identify location of previous folder and copy over to new directory
-  # Don't copy old figures and tables
-  # Run create_template(rerender_skeleton = TRUE) with new arguments
-  # Take out rerender from own function?
-  
-  # Create "report" folder in new dir
-  dir.create(file.path(new_dir, "report"))
-  
-  previous_report_files <- list.files(dir, recursive = TRUE)
-  from_path <- file.path(dir, previous_report_files)
-  to_path <- file.path(new_dir, previous_report_files)
-  # copy files to new folder
-  # currently not working - showing warning:
-  # Warning message:
-  # In FUN(X[[i]], ...) :
-  #   'C:\Users\samantha.schiano.NMFS\Documents\test_folder' already exists
-  vapply(
-    unique(dirname(to_path)),
-    dir.create,
-    logical(1),
-    recursive = TRUE,
-    showWarnings = TRUE
-  )
-  
-  file.copy(from_path,to_path, overwrite = FALSE)
-}
-
-call_report <- function(
     file_dir = getwd(),
-    previous_file_dir,
-    author = NULL,
+    previous_file_dir, # required
+    authors = NULL,
     model_results = NULL,
     year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
     format = "pdf",
@@ -53,7 +35,7 @@ call_report <- function(
   if (type == "SAR") type <- "skeleton"
   
   # Check if the previous report directory exists
-  if (!dir.exists(previous_file_dir)) {
+  if (!dir.exists(file.path(previous_file_dir, "report"))) {
     stop("The previous report directory does not exist.")
   }
   
@@ -99,16 +81,14 @@ call_report <- function(
       reset_figures <- "y"
     }
     if (regexpr(reset_figures, "y", ignore.case = TRUE) == 1) {
-      figures_doc_name <- prev_files[grepl("figures\\.qmd$", prev_files)]
-      figures_doc <- paste0(
-        "# Figures \n \n",
-        "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
+      # Remove previous file
+      file.remove(
+        stringr::str_match(prev_files, "figures")
       )
-      utils::capture.output(cat(figures_doc), file = fs::path(file_dir, figures_doc_name), append = FALSE)
-      # TODO: Uncomment below and replace with above code once function is adjusted for defaults
-      # create_figures_doc(
-      #   subdir = report_dir
-      # )
+      # Create figures doc
+      create_figures_doc(
+        subdir = report_dir
+      )
       cli::cli_alert_info("Figures document reset to default.")
     } else if (regexpr(reset_figures, "n", ignore.case = TRUE) == 1) {
       cli::cli_alert_info("Previous assessment figures qmd retained.")
@@ -120,19 +100,17 @@ call_report <- function(
     if (!interactive()) {
       reset_tables <- "y"
     }
-    if (regexpr(reset_figures, "y", ignore.case = TRUE) == 1) {
-      tables_doc_name <- prev_files[grepl("tables\\.qmd$", prev_files)]
-      tables_doc <- paste0(
-        "# Figures \n \n",
-        "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
+    if (regexpr(reset_tables, "y", ignore.case = TRUE) == 1) {
+      # Remove previous file
+      file.remove(
+        stringr::str_match(prev_files, "tables")
       )
-      utils::capture.output(cat(tables_doc), file = fs::path(file_dir, tables_doc_name), append = FALSE)
-      # TODO: Uncomment below and replace with above code once function is adjusted for defaults
-      # create_tables_doc(
-      #   subdir = report_dir
-      # )
+      # Create tables doc
+      create_tables_doc(
+        subdir = report_dir
+      )
       cli::cli_alert_info("Tables document reset to default.")
-    } else if (regexpr(reset_figures, "n", ignore.case = TRUE) == 1) {
+    } else if (regexpr(reset_tables, "n", ignore.case = TRUE) == 1) {
       cli::cli_alert_info("Previous assessment tables qmd retained.")
     }
   }
