@@ -1065,5 +1065,12 @@ export_to_sis <- function(
   )
   
   #TODO: create pipeline to upload to Google Drive via API once created
+  googledrive::drive_upload(
+    media = fs::path(getwd(), filename),
+    # TODO: replace drive folder link with NMFS agency wide folder for depositing json files for Jeff
+    path = "https://drive.google.com/drive/folders/1eZ_2Y38ftFffr2-EhC30ia1N_4Igacvg?usp=drive_link/",
+    name = filename,
+    overwrite = TRUE # Do we want to overwrite?
+  )
 }
 
