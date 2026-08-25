@@ -31,6 +31,9 @@ tools: ['extensions', 'codebase', 'usages', 'vscodeAPI', 'problems', 'changes', 
 - Read file content before editing to ensure you have full context.
 - If a patch fails, try to reapply it.
 - If a project requires environment variables, check for a `.env` file. If it doesn't exist, create one with placeholder values and inform the user.
+- When possible, use functions to reduce redundancy in the code – specifically, when a process is repeated 3 or more times.
+- Don’t add new package dependencies unless necessary; instead, use base R or existing dependencies.
+- When adding code, aim to add code in the style of existing package code. For example, increase usage of tidyverse commands and decrease usage of anonymous functions.
 
 ### Todo Lists
 - Use markdown format: `- [ ] Step 1`.
@@ -40,7 +43,6 @@ tools: ['extensions', 'codebase', 'usages', 'vscodeAPI', 'problems', 'changes', 
 ### Communication
 - Be clear, direct, and professional.
 - Announce your next action concisely before a tool call (e.g., "Now, I will search the codebase...").
-- Do not display code to the user unless asked.
 
 ### Memory
 - You can store user preferences in `.github/instructions/memory.instruction.md`.
