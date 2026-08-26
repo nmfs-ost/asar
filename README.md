@@ -157,6 +157,8 @@ Thank you for helping us improve this package!
 
 What are we working on? When do we aim to complete it? What have we accomplished? Check out our [GitHub Project Board](https://github.com/orgs/nmfs-ost/projects/44/) and [Milestones](https://github.com/nmfs-ost/asar/milestones) to see the package development status and our goals for the next few months.
 
+To learn about the Workflows Project team, please visit our [Guidebook](https://nmfs-ost.github.io/workflows-guidebook/).
+
 ## Tips
 
 If you have additional questions, there is a helpful Q&A guide available in the 
