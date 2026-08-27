@@ -2,18 +2,18 @@
 % Please edit documentation in R/create_blank_sis.R
 \name{create_blank_sis}
 \alias{create_blank_sis}
-\title{Create blank template for SIS data transfer}
+\title{Create blank templates for SIS data transfer}
 \usage{
 create_blank_sis(dir)
 }
 \arguments{
-\item{dir}{Location to save blank template ("sis_data_template.csv") used to
+\item{dir}{Location to save blank templates ("sis_assmt_template.csv" and "sis_ts_template.csv") used to
 hold data that will be transmitted to SIS.
 
 Default: the working directory (getwd())}
 }
 \description{
-Create blank template for SIS data transfer
+Create blank templates for SIS data transfer
 }
 \examples{
 \dontrun{
