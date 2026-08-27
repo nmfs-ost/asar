@@ -89,10 +89,11 @@
 #'
 #' Default: NULL
 #'
-#' @param bib_file File path to bibliography file (`.bib`) used for citing references in
-#' the report
+#' @param bib_file File path to additional bibliography file (`.bib`) used for citing references in
+#' the report. By default, all bibliogrphy files from the journals package and 
+#' references for all NMFS stock assessment reports are provided.
 #'
-#' Default: "asar_references.bib"
+#' Default: NULL
 #'
 #' @param new_template TRUE/FALSE; Create a new template? If true,
 #' will pull the last saved stock assessment report skeleton.
@@ -249,7 +250,7 @@ create_template <- function(
   tables_dir = getwd(),
   figures_dir = getwd(),
   spp_image = NULL,
-  bib_file = "asar_references.bib",
+  bib_file = NULL,
   new_template = TRUE,
   rerender_skeleton = FALSE,
   custom_sections = NULL,
@@ -495,16 +496,18 @@ create_template <- function(
     }
 
     # Add bib file
-    if (bib_file == "asar_references.bib") {
-      bib_loc <- system.file("resources", "asar_references.bib", package = "asar")
-      bib_name <- bib_file
+    if (is.null(bib_file)) {
+      if (!rerender_skeleton) {
+        bib_dir <- file.path(subdir, "bibliography_files")
+        dir.create(bib_dir, recursive = FALSE)
+        journals::download_bibs(bib_dir)
+        bib_file <- list.files(bib_dir, pattern = ".bib", full.names = TRUE)
+        bib_name <- list.files(bib_dir, pattern = ".bib", full.names = FALSE)
+      } else {
+        bib_name <- NULL
+      }
     } else {
-      # check if enter file exists
-      # if (!file.exists(bib_file)) stop(".bib file not found.")
-      cli::cli_alert_warning("Bibliography file {bib_file} not in the report directory.")
-      cli::cli_alert_info("The file will not be read in on render if not in the same path as the skeleton file.")
-
-      bib_loc <- bib_file # dirname(bib_file)
+      file.copy(bib_file, subdir, overwrite = TRUE) |> suppressWarnings()
       bib_name <- stringr::str_extract(bib_file, "[^/]+$") # utils::tail(stringr::str_split(bib_file, "/")[[1]], n = 1)
     }
 
@@ -570,7 +573,7 @@ create_template <- function(
     } else {
       #### Copy template files to report folder ----
       # Check if there are already files in the folder
-      if (length(list.files(subdir)) < 2) {
+      if (length(list.files(subdir)) < 3) {
         # copy quarto files
         file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
         # copy before-body tex
@@ -581,8 +584,6 @@ create_template <- function(
         create_inheader_tex(species = species, year = year, subdir = supdir)
         # Copy species image from package
         file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
-        # Copy bib file
-        file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
         # Copy us doc logo
         file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         # Copy glossary
@@ -639,8 +640,6 @@ create_template <- function(
           create_inheader_tex(species = species, year = year, subdir = supdir)
           # Copy species image from package
           file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
-          # Copy bib file
-          file.copy(bib_loc, subdir, overwrite = TRUE) |> suppressWarnings()
           # Copy us doc logo
           file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
           # Copy glossary
