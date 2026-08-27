@@ -36,11 +36,11 @@ export_to_sis <- function(
     dplyr::select(-Explanation, -Default)
   
   # check data for required fields and character limits
-  if (nchar(sis_assmt_data$Value[sis_assmt_data$Argument == "AS_B_COMMENT"]) > 1000){
+  if (nchar(sis_assmt_data$Value[sis_assmt_data$Variable == "AS_B_COMMENT"]) > 1000){
     stop("AS_B_COMMENT exceeds 1,000 character limit")
   }
 
-  if (nchar(sis_assmt_data$Value[sis_assmt_data$Argument == "AS_F_COMMENT"]) > 1000){
+  if (nchar(sis_assmt_data$Value[sis_assmt_data$Variable == "AS_F_COMMENT"]) > 1000){
     stop("AS_F_COMMENT exceeds 1,000 character limit")
   }
 
@@ -48,18 +48,18 @@ export_to_sis <- function(
     dplyr::filter(Optional == "NO") |>
     dplyr::filter(Value == "") 
   
-  missing_vars <- length(required_missing$Argument)
+  missing_vars <- length(required_missing$Variable)
   if (missing_vars > 0){
     cli::cli_bullets(c(
       "x" = "Missing {missing_vars} required field{?s}:",
-      stats::setNames(as.character(required_missing$Argument), rep("*", missing_vars))
+      stats::setNames(as.character(required_missing$Variable), rep("*", missing_vars))
     ))
     stop("Please provide values for the missing required fields in sis_data.csv, then rerun the function.")
   }
   
   # add empty fields for SIS to fill in
   null_fields <- data.frame(
-    Argument = c(
+    Variable = c(
       "DATE_CREATED",
       "CREATED_BY",
       "DATE_MODIFIED",
@@ -86,7 +86,7 @@ export_to_sis <- function(
   sis_assmt_data <- sis_assmt_data |>
     dplyr::select(-Optional) |>
     dplyr::mutate(Value = as.character(Value)) |>
-    dplyr::full_join(null_fields, by = c("Argument", "Value"))
+    dplyr::full_join(null_fields, by = c("Variable", "Value"))
   
   
   # read in, clean, check, format time series data
@@ -113,15 +113,15 @@ export_to_sis <- function(
 
   # name json file
   assess_ID <- sis_assmt_data |>
-    dplyr::filter(Argument == "ASSESSMENT_ID") |>
+    dplyr::filter(Variable == "ASSESSMENT_ID") |>
     dplyr::pull(Value)
   
   entity_ID <- sis_assmt_data |>
-    dplyr::filter(Argument == "ENTITY_ID") |>
+    dplyr::filter(Variable == "ENTITY_ID") |>
     dplyr::pull(Value)
   
   model_identifier <- sis_assmt_data |>
-    dplyr::filter(Argument == "MODEL_IDENTIFIER") |>
+    dplyr::filter(Variable == "MODEL_IDENTIFIER") |>
     dplyr::pull(Value)
   
   if (length(model_identifier) == 0 || is.na(model_identifier) || model_identifier == "") {
@@ -140,34 +140,54 @@ export_to_sis <- function(
   
   
   # prep datasets for conversion into json
-  sis_list <- setNames(as.list(sis_assmt_data$Value), sis_assmt_data$Argument)
+  sis_list <- setNames(as.list(sis_assmt_data$Value), sis_assmt_data$Variable)
   
-  categories <- sis_ts_data |>
+  primary_cat <- sis_ts_data |>
     dplyr::filter(Primary == "Y") |>
     dplyr::pull(Category)
+  
+  # create data matrix
+  categories <- unlist(sis_ts_data["Category"])
+  
+  ts_matrix <- sis_ts_data |>
+    dplyr::select(Year, Category, Value) |>
+    tidyr::pivot_wider(names_from = Category,
+                       values_from = Value) |>
+    dplyr::arrange(Year) |>
+    as.matrix() |>
+    unname()
   
   nested_list <- list(
     SUMMARY = sis_list,
     TIMESERIES = list(
       PARAMETERS = list(
-        TSC_NAME = categories
+        TSC_NAME = categories,
+        TSP_PRIMARY_FLAG = primary_cat,
+        TSP_DESC = unlist(sis_ts_data["Description"]),
+        TSP_UNIT = unlist(sis_ts_data["Unit"])
       ),
-      DATA = ts_data_matrix
+      DATA = ts_matrix
     )
-    # SUMMARY = as.list(sis_list[1, ]),
   )
   
   
   # write json file
   jsonlite::write_json(
-    x = sis_list, 
+    x = nested_list, 
     path = fs::path(getwd(), filename), 
     pretty = TRUE,       # Formats the JSON with clean indentation
     auto_unbox = TRUE    # Ensures single values don't convert to JSON arrays ([13879])
   )
   
-  # TODO: Make breakpoint to let author decide if json file is accurate and ready to upload to Google Drive
+  # Let author decide if json file is accurate and ready to upload to Google Drive
+  cli::cli_alert_success("json file exported to {fs::path(getwd(), filename)}.")
+  ready_q <- readline("Do you want to transmit it to Google Drive? (Y/N)")
   
+  if (!interactive()) {ready_q <- "y"}
+  if (regexpr(ready_q, "n", ignore.case = TRUE) == 1) {
+    cli::cli_abort("Transmission to Google Drive aborted.")
+  }
+
   #TODO: create pipeline to upload to Google Drive via API once created
   googledrive::drive_upload(
     media = fs::path(getwd(), filename),
