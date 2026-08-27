@@ -142,32 +142,52 @@ export_to_sis <- function(
   # prep datasets for conversion into json
   sis_list <- setNames(as.list(sis_assmt_data$Value), sis_assmt_data$Argument)
   
-  categories <- sis_ts_data |>
+  primary_cat <- sis_ts_data |>
     dplyr::filter(Primary == "Y") |>
     dplyr::pull(Category)
+  
+  # create data matrix
+  categories <- unlist(sis_ts_data["Category"])
+  
+  ts_matrix <- sis_ts_data |>
+    dplyr::select(Year, Category, Value) |>
+    tidyr::pivot_wider(names_from = Category,
+                       values_from = Value) |>
+    dplyr::arrange(Year) |>
+    as.matrix() |>
+    unname()
   
   nested_list <- list(
     SUMMARY = sis_list,
     TIMESERIES = list(
       PARAMETERS = list(
-        TSC_NAME = categories
+        TSC_NAME = categories,
+        TSP_PRIMARY_FLAG = primary_cat,
+        TSP_DESC = unlist(sis_ts_data["Description"]),
+        TSP_UNIT = unlist(sis_ts_data["Unit"])
       ),
-      DATA = ts_data_matrix
+      DATA = ts_matrix
     )
-    # SUMMARY = as.list(sis_list[1, ]),
   )
   
   
   # write json file
   jsonlite::write_json(
-    x = sis_list, 
+    x = nested_list, 
     path = fs::path(getwd(), filename), 
     pretty = TRUE,       # Formats the JSON with clean indentation
     auto_unbox = TRUE    # Ensures single values don't convert to JSON arrays ([13879])
   )
   
-  # TODO: Make breakpoint to let author decide if json file is accurate and ready to upload to Google Drive
+  # Let author decide if json file is accurate and ready to upload to Google Drive
+  cli::cli_alert_success("json file exported to {fs::path(getwd(), filename)}.")
+  ready_q <- readline("Do you want to transmit it to Google Drive? (Y/N)")
   
+  if (!interactive()) {ready_q <- "y"}
+  if (regexpr(ready_q, "n", ignore.case = TRUE) == 1) {
+    cli::cli_abort("Transmission to Google Drive aborted.")
+  }
+
   #TODO: create pipeline to upload to Google Drive via API once created
   googledrive::drive_upload(
     media = fs::path(getwd(), filename),
