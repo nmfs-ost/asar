@@ -28,6 +28,7 @@ Imports:
     fs,
     glue,
     gt,
+    journals,
     purrr,
     stats,
     stringi,
