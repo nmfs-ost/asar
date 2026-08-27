@@ -45,7 +45,8 @@ test_that("create_template() creates correct files", {
     "sar_species_skeleton.qmd",
     #   "model_results_metadata.md",
     "report_glossary.tex",
-    "asar_references.bib",
+    # "asar_references.bib",
+    "bibliography_files",
     "support_files"
   )
 
@@ -117,9 +118,10 @@ test_that("create_template() creates correct files", {
     # "10_notes.qmd",
     "11_appendix.qmd",
     "sar_Dover_sole_skeleton.qmd",
-    "asar_references.bib",
+    # "asar_references.bib",
     "preamble.R",
     "report_glossary.tex",
+    "bibliography_files",
     "support_files"
   )
   # Define expected support files for Dover sole
@@ -172,9 +174,10 @@ test_that("create_template() creates correct files", {
     "08_figures.qmd",
     "11_appendix.qmd",
     "sar_Rex_sole_skeleton.qmd",
-    "asar_references.bib",
+    # "asar_references.bib",
     "preamble.R",
     "report_glossary.tex",
+    "bibliography_files",
     "support_files"
   )
   # Define expected support files for Rex sole
@@ -442,7 +445,8 @@ test_that("model_results metadata file created", {
     "preamble.R",
     "std_output_metadata.md",
     "report_glossary.tex",
-    "asar_references.bib",
+    # "asar_references.bib",
+    "bibliography_files",
     "support_files"
   )
 
