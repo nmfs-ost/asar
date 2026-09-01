@@ -258,38 +258,32 @@ create_template <- function(
   custom_params = NULL,
   ...
 ) {
-  # Check input type
-  if (interactive()) {
-    type <- switch(type,
-      "Northeast Management Track" = "nemt",
-      "Pacific Fishery Management Council" = "pfmc",
-      "Stock Assessment and Fishery Evaluation" = "safe",
-      "Stock Assessment Report" = "skeleton",
-      "sar" = "skeleton",
-      "pfmc" = "pfmc",
-      "nemt" = "nemt",
-      "safe" = "safe",
-      {
-        type_fxn <- function() {
-          selection <- utils::menu(
-            title = "Unrecognized template type. Please select an option below: ",
-            choices = c("Default", "Pacific Fisheries Management Council", "Northeast Management Track", "SAFE")
-          )
-          type <- switch(as.character(selection),
-            "1" = "skeleton",
-            "2" = "pfmc",
-            "3" = "nemt",
-            "4" = "safe",
-            {
-              "skeleton"
-            }
-          )
-          return(type)
-        }
-        type_fxn()
-      }
+  type_map <- c(
+    "Northeast Management Track" = "nemt",
+    "Pacific Fishery Management Council" = "pfmc",
+    "Stock Assessment and Fishery Evaluation" = "safe",
+    "Stock Assessment Report" = "skeleton",
+    "sar" = "skeleton",
+    "pfmc" = "pfmc",
+    "nemt" = "nemt",
+    "safe" = "safe",
+    "skeleton" = "skeleton"
+  )
+  
+  if (type %in% names(type_map)) {
+    type <- unname(type_map[type])
+  } else if (isTRUE(interactive) || (is.function(interactive) && interactive())) {
+    selection <- utils::menu(
+      title = "Unrecognized template type. Please select an option below: ",
+      choices = c("Default", "Pacific Fisheries Management Council", "Northeast Management Track", "SAFE")
     )
-  } else {
+    type <- switch(as.character(selection),
+                   "2" = "pfmc",
+                   "3" = "nemt",
+                   "4" = "safe",
+                   "skeleton"
+    )
+    } else {
     type <- "skeleton"
   }
 
