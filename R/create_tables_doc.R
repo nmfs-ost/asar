@@ -599,13 +599,13 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
   if (legacy_tab_status) {
     legacy_tables_doc <- fs::path(subdir, legacy_doc_name)
     file.rename(
-      from = legacy_doc_name,
-      to = current_doc_name
+      from = legacy_tables_doc,
+      to = fs::path(subdir, current_doc_name)
     )
   }
   # Read through tables doc and warn about identical labels
-  doc_path <- if (file.exists(current_doc_name)) {
-    current_doc_name
+  doc_path <- if (file.exists(fs::path(subdir, current_doc_name))) {
+    fs::path(subdir, current_doc_name)
   } else if (any(grepl("_tables.qmd$", list.files(subdir)))) {
     fs::path(subdir, list.files(subdir)[grep("_tables.qmd$", list.files(subdir))][1])
   } else {

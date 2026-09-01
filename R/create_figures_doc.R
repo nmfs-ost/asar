@@ -274,8 +274,8 @@ rm(rda)\n
   if (legacy_fig_status) {
     legacy_figures_doc <- fs::path(subdir, legacy_doc_name)
     file.rename(
-      from = legacy_doc_name,
-      to = current_doc_name
+      from = legacy_figures_doc,
+      to = fs::path(subdir, current_doc_name)
     )
   }
 
