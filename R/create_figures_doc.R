@@ -37,7 +37,6 @@ create_figures_doc <- function(subdir = getwd(),
       writeLines(updated_content, existing_figs_doc)
     }
   } else {
-    # existing_figs_doc <- NULL
     figure_content <- ""
   }
 
@@ -112,7 +111,6 @@ create_figures_doc <- function(subdir = getwd(),
 
     ## import plot, caption, alt text
     figures_doc_plot_setup1 <- paste0(
-      # figures_doc,
       add_chunk(
         paste0(
           "# load rda
@@ -133,11 +131,9 @@ rm(rda)\n
 
     ## make figure chunk
     figures_doc_plot_setup2 <- paste0(
-      # figures_doc_plot_setup1,
       add_chunk(
         paste0(fig_shortname, "_plot"),
         label = glue::glue("fig-{fig_shortname}"),
-        # add_option = TRUE,
         chunk_option = c(
           "echo: false",
           "warning: false",
@@ -235,7 +231,6 @@ rm(rda)\n
     # combine figures_doc setup with figure chunks
     figures_doc <- paste0(
       figures_doc_header,
-      # ifelse(!append, figures_doc_setup, ""),
       figures_doc_setup,
       ifelse(
         exists("rda_figures_doc"),
@@ -249,47 +244,38 @@ rm(rda)\n
       )
     )
   }
-
-  fig_doc_data <- id_fig_tab_num(
-                        subdir = subdir,
-                        fig_or_tab = "figure"
-                      )
-  legacy_fig_status <- ifelse(!is.null(fig_doc_data),
-                              fig_doc_data[[1]],
-                              FALSE)
-  legacy_doc_name <- fig_doc_data[[2]]
-  if (!is.null(fig_doc_data)){
-    current_doc_name <- fig_doc_data[[3]]
-  } else if (exists("existing_figs_doc")) {
-    current_doc_name <- basename(existing_figs_doc)
+  
+  doc_info <- migrate_legacy_docs(subdir, doc_type = "figures")
+  
+  if (doc_info$using_legacy) {
+    cli::cli_alert_info("Detected legacy figure/table document order ({.file {doc_info$legacy_name}}). asar now uses {.file {doc_info$current_name}} to maintain an accurate Table of Contents.")
+    cli::cli_alert_info("{.file {doc_info$legacy_name}} will be renamed to {.file {doc_info$current_name}}.")
+  }
+  
+  figures_doc_name <- if (doc_info$using_legacy) {
+    doc_info$legacy_name
   } else {
-    current_doc_name <- "08_figures.qmd"
+    doc_info$resolved_name
   }
   # Save figures doc to template folder
+  
   utils::capture.output(cat(figures_doc),
-    file = fs::path(subdir, current_doc_name),
-    append = append
+                        file = fs::path(subdir, figures_doc_name),
+                        append = append
   )
-
-  if (legacy_fig_status) {
-    legacy_figures_doc <- fs::path(subdir, legacy_doc_name)
+  
+  if (doc_info$using_legacy) {
     file.rename(
-      from = legacy_figures_doc,
-      to = fs::path(subdir, current_doc_name)
+      from = fs::path(subdir, doc_info$legacy_name),
+      to   = fs::path(subdir, doc_info$current_name)
     )
   }
-
   # Read through figures doc and warn about identical labels
-  doc_path <- if (file.exists(current_doc_name)) {
-    current_doc_name
-  } else if (any(grepl("_figures.qmd$", list.files(subdir)))) {
-    fs::path(subdir, list.files(subdir)[grep("_figures.qmd$", list.files(subdir))][1])
-  } else {
-    current_doc_name
-  }
-
+  
+  current_figures_doc <- fs::path(subdir, doc_info$resolved_name)
+  
   fix_duplicate_chunks(
-    doc_path = doc_path,
+    doc_path = current_figures_doc,
     doc_type = "Figures"
   )
 }

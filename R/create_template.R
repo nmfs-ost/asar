@@ -656,66 +656,43 @@ create_template <- function(
       } # close check for previous files & respective copying
       # prev_skeleton <- NULL
     } # close if rerender
-
-    legacy_tables_docs <- c("08_tables.qmd", "05_tables.qmd", "11_tables.qmd")
-    current_tables_docs <- c("09_tables.qmd", "06_tables.qmd", "12_tables.qmd")
-    legacy_figures_docs <- c("09_figures.qmd", "06_figures.qmd", "12_figures.qmd")
-    current_figures_docs <- c("08_figures.qmd", "05_figures.qmd", "11_figures.qmd")
-
-    legacy_match <- which(
-      file.exists(fs::path(subdir, legacy_tables_docs)) &
-        file.exists(fs::path(subdir, legacy_figures_docs)) &
-        !file.exists(fs::path(subdir, current_tables_docs)) &
-        !file.exists(fs::path(subdir, current_figures_docs))
-    )
-    using_legacy_doc_order <- rerender_skeleton && length(legacy_match) > 0
+    
+    # Handle legacy document order and migration
+    fig_info <- migrate_legacy_docs(subdir, doc_type = "figures", rerender_skeleton = rerender_skeleton)
+    tbl_info <- migrate_legacy_docs(subdir, doc_type = "tables", rerender_skeleton = rerender_skeleton)
+    
+    using_legacy_doc_order <- fig_info$using_legacy || tbl_info$using_legacy
+    
     if (using_legacy_doc_order) {
-      legacy_match <- legacy_match[1]
-      legacy_tables_doc_name <- legacy_tables_docs[legacy_match]
-      current_tables_doc_name <- current_tables_docs[legacy_match]
-      legacy_figures_doc_name <- legacy_figures_docs[legacy_match]
-      current_figures_doc_name <- current_figures_docs[legacy_match]
-
-      file.rename(
-        from = fs::path(subdir, legacy_tables_doc_name),
-        to = fs::path(subdir, current_tables_doc_name)
-      )
-      file.rename(
-        from = fs::path(subdir, legacy_figures_doc_name),
-        to = fs::path(subdir, current_figures_doc_name)
-      )
-
-      cli::cli_alert_info("Detected legacy figure/table document order in the skeleton. asar now uses {.file {current_figures_doc_name}} & {.file {current_tables_doc_name}} to maintain an accurate Table of Contents.")
-      cli::cli_alert_info("Skeleton will be updated to show figures before tables.")
+      file.rename(from = fs::path(subdir, tbl_info$legacy_name), to = fs::path(subdir, tbl_info$current_name))
+      file.rename(from = fs::path(subdir, fig_info$legacy_name), to = fs::path(subdir, fig_info$current_name))
+      
+      cli::cli_alert_info("Detected legacy figure/table document order in the skeleton. asar will switch to {.file {fig_info$current_name}} before {.file {tbl_info$current_name}}.")
     }
-
-    # created tables doc
+    
+    # Created tables doc
     if (!rerender_skeleton) {
-      {
-        tables_doc_name <- switch(type,
-          "nemt" = "06_tables.qmd",
-          "safe" = "12_tables.qmd",
-          "09_tables.qmd"
-        )
-        tables_doc <- ""
-        utils::capture.output(cat(tables_doc),
-          file = fs::path(subdir, tables_doc_name),
-          append = FALSE
-        ) |>
-          suppressMessages() |>
-          suppressWarnings()
-
-        create_tables_doc(
-          subdir = subdir,
-          tables_dir = tables_dir
-        )
-      } # |>
-      # suppressMessages() |>
-      # suppressWarnings()
+      tables_doc_name <- switch(type,
+                                "nemt" = "06_tables.qmd",
+                                "safe" = "12_tables.qmd",
+                                "09_tables.qmd"
+      )
+      tables_doc <- ""
+      utils::capture.output(cat(tables_doc),
+                            file = fs::path(subdir, tables_doc_name),
+                            append = FALSE
+      ) |>
+        suppressMessages() |>
+        suppressWarnings()
+      
+      create_tables_doc(
+        subdir = subdir,
+        tables_dir = tables_dir
+      )
     } else {
       # extract name for tables.qmd from report folder
       tables_doc_name <- if (using_legacy_doc_order) {
-        current_tables_doc_name
+        tbl_info$current_name
       } else {
         list.files(file_dir, pattern = "tables.qmd")
       }
@@ -724,9 +701,9 @@ create_template <- function(
     # Create figures qmd
     if (!rerender_skeleton) {
       figures_doc_name <- switch(type,
-        "nemt" = "05_figures.qmd",
-        "safe" = "11_figures.qmd",
-        "08_figures.qmd"
+                                 "nemt" = "05_figures.qmd",
+                                 "safe" = "11_figures.qmd",
+                                 "08_figures.qmd"
       )
 
       create_figures_doc(
@@ -743,7 +720,7 @@ create_template <- function(
     } else {
       # extract name for figures.qmd from report folder
       figures_doc_name <- if (using_legacy_doc_order) {
-        current_figures_doc_name
+        fig_info$current_name
       } else {
         list.files(file_dir, pattern = "figures.qmd")
       }
@@ -838,10 +815,7 @@ create_template <- function(
             "spp_latin <- params$spp_latin \n",
             "office <- params$office",
             if (!is.null(region)) {
-              paste0(
-                "\n",
-                "region <- params$region"
-              )
+              paste0("\n", "region <- params$region")
             },
             if (!is.null(param_names)) {
               paste0(
@@ -884,10 +858,7 @@ create_template <- function(
           "spp_latin <- params$spp_latin \n",
           "office <- params$office",
           if (!is.null(region)) {
-            paste0(
-              "\n",
-              "region <- params$region"
-            )
+            paste0("\n", "region <- params$region")
           },
           if (!is.null(param_names)) {
             paste0(
@@ -899,6 +870,7 @@ create_template <- function(
         label = "R_parameters"
       )
     }
+    
     params_chunk <- add_chunk(
       paste0(
         "# Parameters \n",
@@ -908,10 +880,7 @@ create_template <- function(
         "spp_latin <- params$spp_latin \n",
         "office <- params$office",
         if (!is.null(region)) {
-          paste0(
-            "\n",
-            "region <- params$region"
-          )
+          paste0("\n", "region <- params$region")
         },
         if (!is.null(param_names)) {
           paste0(
@@ -922,7 +891,7 @@ create_template <- function(
       ),
       label = "R_parameters"
     )
-
+    
     ##### Preamble ----
     # Add preamble
     # add in quantities and output data R chunk
@@ -957,6 +926,7 @@ create_template <- function(
       subdir,
       overwrite = TRUE
     ) |> suppressWarnings()
+    
     preamble <- add_chunk(
       paste0(
         "# load converted output from stockplotr::convert_output() \n",
@@ -1008,7 +978,7 @@ create_template <- function(
         end_line <- grep("```", prev_skeleton)[grep("```", prev_skeleton) > start_line][1]
         # preamble <- paste(prev_skeleton[start_line:end_line], collapse = "\n")
         preamble <- prev_skeleton[start_line:end_line]
-
+        
         if (!is.null(model_results)) {
           # show message and make README stating model_results info
           mod_time <- as.character(file.info(fs::path(model_results), extra_cols = FALSE)$ctime)
@@ -1065,14 +1035,14 @@ create_template <- function(
       } else if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         cli::cli_alert_warning("Report template files were not copied into your directory.")
         cli::cli_alert_info("If you wish to update the template with new parameters or output files, please edit the {report_name} in your local folder.",
-          wrap = TRUE
+                            wrap = TRUE
         )
       }
     } # close if rerender
 
     ##### Disclaimer ----
     disclaimer <- "{{< pagebreak >}}\n\n## Disclaimer {.unnumbered .unlisted}\n\nThese materials do not constitute a formal publication and are for information only. They are in a pre-review, pre-decisional state and should not be formally cited or reproduced. They are to be considered provisional and do not represent any determination or policy of NOAA or the Department of Commerce.\n"
-
+    
     ##### Citation ----
     # Add page for citation of assessment report
     if (rerender_skeleton) {
@@ -1086,7 +1056,7 @@ create_template <- function(
           names(authors),
           c(authors_in_skel, names(authors))
         )
-
+        
         cit_authors <- format_citation_authors(authors)
 
         # replace authors in citation
@@ -1106,7 +1076,7 @@ create_template <- function(
           )
         }
       }
-
+      
       if (!is.null(species) | !is.null(region) | !is.null(spp_latin)) {
         # update title in citation
         citation <- stringr::str_replace(
@@ -1117,7 +1087,6 @@ create_template <- function(
         )
       }
       cli::cli_alert_success("Added report citation.")
-      # }
     } else {
       citation <- create_citation(
         authors = authors,
@@ -1126,8 +1095,7 @@ create_template <- function(
       )
       cli::cli_alert_success("Added report citation.")
     }
-
-
+    
     ##### Create report outline ----
     # Include tables and figures in template
     # at this point, files_to_copy is the most updated outline
@@ -1135,7 +1103,7 @@ create_template <- function(
     ###### Rerender & not custom ----
     # add check if user set custom sections
     if (!is.null(new_section) || !is.null(custom_sections)) custom <- TRUE
-
+    
     if (rerender_skeleton & is.null(custom_sections)) {
       # identify all previous sections
       sections <- stringr::str_extract_all(
@@ -1144,20 +1112,20 @@ create_template <- function(
       ) |>
         unlist() |>
         purrr::discard(~ .x == "")
-
+      
       if (using_legacy_doc_order) {
         sections <- sections |>
-          stringr::str_replace_all(legacy_tables_doc_name, current_tables_doc_name) |>
-          stringr::str_replace_all(legacy_figures_doc_name, current_figures_doc_name)
-
-        figure_position <- which(sections == current_figures_doc_name)
-        table_position <- which(sections == current_tables_doc_name)
+          stringr::str_replace_all(tbl_info$legacy_name, tbl_info$current_name) |>
+          stringr::str_replace_all(fig_info$legacy_name, fig_info$current_name)
+        
+        figure_position <- which(sections == fig_info$current_name)
+        table_position <- which(sections == tbl_info$current_name)
         if (length(figure_position) == 1 && length(table_position) == 1 && figure_position > table_position) {
-          sections <- sections[sections != current_figures_doc_name]
-          table_position <- which(sections == current_tables_doc_name)
+          sections <- sections[sections != fig_info$current_name]
+          table_position <- which(sections == tbl_info$current_name)
           sections <- append(
             sections,
-            current_figures_doc_name,
+            fig_info$current_name,
             after = table_position - 1
           )
         }
@@ -1182,7 +1150,7 @@ create_template <- function(
         section_list <- add_base_section(files_to_copy)
         # Create sections object to add into template
         sections <- add_child(section_list,
-          label = stringr::str_extract(unlist(section_list), "(?<=_).+(?=\\.qmd$)")
+                              label = stringr::str_extract(unlist(section_list), "(?<=_).+(?=\\.qmd$)")
         )
       } else { # custom = TRUE
         # Create custom template using existing sections and new sections from analyst
@@ -1216,7 +1184,7 @@ create_template <- function(
           }
           # reorder sec_list1 alphabetically so that 11_appendix goes to end of list
           sec_list1 <- sec_list1[order(names(stats::setNames(sec_list1, sec_list1)))]
-
+          
           sec_list2 <- add_section(
             new_section = new_section,
             section_location = section_location,
@@ -1243,9 +1211,9 @@ create_template <- function(
       sections,
       sep = "\n"
     )
-
+    
     cli::cli_alert_success("Created report template.")
-
+    
     ##### Save skeleton ----
     # Save template as .qmd to render
     utils::capture.output(cat(report_template), file = file.path(subdir, ifelse(rerender_skeleton, new_report_name, report_name)), append = FALSE)
@@ -1257,14 +1225,14 @@ create_template <- function(
       if (!interactive()) {
         question1 <- "y"
       }
-
+      
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         file.remove(file.path(file_dir, report_name))
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
         cli::cli_alert_info("Skeleton file retained.")
       }
     }
-
+    
     ##### Final message ----
     # Print message
     if (rerender_skeleton) {
@@ -1272,7 +1240,7 @@ create_template <- function(
     } else {
       cli::cli_alert_success("Saved report template in directory {subdir}.")
       cli::cli_alert_info("To proceed, please edit sections within the report template in order to produce a completed stock assessment report.",
-        wrap = TRUE
+                          wrap = TRUE
       )
     }
     # Open file for analyst
