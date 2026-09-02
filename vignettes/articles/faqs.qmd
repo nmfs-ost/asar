@@ -126,7 +126,7 @@ Rerending a skeleton using `rerender = TRUE` can be a helpful and reproducible w
 - office
 - custom_sections
 - new_section & section_location
-- param_names & param_values
+- custom_params
 
 We plan to include future functionality to also include bib_file and spp_image as functional arguments when using `rerender = TRUE`.
 
