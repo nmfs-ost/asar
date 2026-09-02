@@ -229,7 +229,7 @@ task.*
 
 To edit your rda’s alt text, follow these steps:
 
-1.  Open your report’s 09_figures.qmd file.
+1.  Open your report’s 08_figures.qmd file.
 2.  Run the first code chunk, which saves the filepath of your rda
     directory as an object (it has the label `"set-rda-dir-figs"`).
 3.  Find the two code chunks associated with the figure you’re
@@ -274,7 +274,7 @@ recruitment_alt_text <- new_alt_text
 
 **NOTES**:
 
-1.  Changes to your alt text will be saved within your 09_figures.qmd
+1.  Changes to your alt text will be saved within your 08_figures.qmd
     file, but not within the rda file itself. To directly edit the rda
     file’s alt text or caption, assign a new value to the text you wish
     to change. For example, if your rda is called `rda` and you want to

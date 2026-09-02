@@ -170,7 +170,7 @@ check which version you have and update it.
 ### My figure and table references aren’t in chronological order in the report. How do I fix this?
 
 You will notice that the order of your figures and tables in their
-respective 08_tables.qmd and 09_figures.qmd docs will determine their
+respective 08_figures.qmd and 09_tables.qmd docs will determine their
 numbers in the report. This might result in Table 2 being referenced
 before Table 1, for instance, in your report.
 
@@ -184,7 +184,7 @@ Quarto. We are choosing to focus on building other features for `asar`.
 
 However, we understand that some will strongly prefer to set the order
 of their tables and figures. You *can* try manually changing the order
-of the figure and table chunks in the 08_tables.qmd and 09_figures.qmd
+of the figure and table chunks in the 08_figures.qmd and 09_tables.qmd
 docs, but this isn’t a reproducible or permanent solution.
 
 ### Why are there absolute, rather than relative, filepaths for `tables_dir` and `figures_dir` at the tops of my figures and tables docs?

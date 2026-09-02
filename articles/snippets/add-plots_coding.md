@@ -3,7 +3,7 @@
 ### Add custom tables and figures
 
 In your ‘report’ folder, open your figures and tables docs (probably
-named something like ‘08_tables.qmd’ and ‘09_figures.qmd’). Add the
+named something like ‘08_figures.qmd’ and ‘09_tables.qmd’). Add the
 following code there.
 
 **IMPORTANT**: The label in your captions/alt text csv must match the

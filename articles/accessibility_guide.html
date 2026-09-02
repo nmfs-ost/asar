@@ -209,7 +209,7 @@
 </h4>
 <p>To edit your rda’s alt text, follow these steps:</p>
 <ol type="1">
-<li>Open your report’s 09_figures.qmd file.</li>
+<li>Open your report’s 08_figures.qmd file.</li>
 <li>Run the first code chunk, which saves the filepath of your rda directory as an object (it has the label <code>"set-rda-dir-figs"</code>).</li>
 <li>Find the two code chunks associated with the figure you’re interested (e.g., recruitment). Run the first chunk, which will have “setup” in the label (e.g., <code>"fig-recruitment-setup"</code>,<code>"fig-spawning_biomass-setup"</code>, etc.).</li>
 <li>
@@ -243,7 +243,7 @@
 </div>
 <p><strong>NOTES</strong>:</p>
 <ol type="1">
-<li><p>Changes to your alt text will be saved within your 09_figures.qmd file, but not within the rda file itself. To directly edit the rda file’s alt text or caption, assign a new value to the text you wish to change. For example, if your rda is called <code>rda</code> and you want to change the caption to “my new caption”, you’d enter the following command: <code>rda[["caption"]] &lt;- "my new caption"</code>. To change the alt text, you’d change “caption” to “alt_text” (e.g., <code>rda[["alt_text"]] &lt;- "my new alt text"</code>.). Save the changes to the rda’s file by entering the following command (in this example, our rda is called “biomass_figure.rda”): <code>save(rda, file = 'biomass_figure.rda')</code>.</p></li>
+<li><p>Changes to your alt text will be saved within your 08_figures.qmd file, but not within the rda file itself. To directly edit the rda file’s alt text or caption, assign a new value to the text you wish to change. For example, if your rda is called <code>rda</code> and you want to change the caption to “my new caption”, you’d enter the following command: <code>rda[["caption"]] &lt;- "my new caption"</code>. To change the alt text, you’d change “caption” to “alt_text” (e.g., <code>rda[["alt_text"]] &lt;- "my new alt text"</code>.). Save the changes to the rda’s file by entering the following command (in this example, our rda is called “biomass_figure.rda”): <code>save(rda, file = 'biomass_figure.rda')</code>.</p></li>
 <li><p>Edit figure and table captions with the same process. Just substitute mentions of alt text with caption.</p></li>
 <li><p>As stated earlier, if you see text that looks like a placeholder (e.g., “The x axis, showing the year, spans from B.start.year to B.end.year…”), that means that there was at least one instance where our tool failed to extract a specific value from the model results and substitute it into the placeholder. Please make sure that your alt text and captions contain the expected values before moving forward with your report. Check out the inst/resources/captions_alt_text_template.csv file in the <code>stockplotr</code> package to view the template with placeholders.</p></li>
 <li><p>If you add a special character (e.g., percentage sign (%) or dollar sign ($); see <a href="https://en.wikibooks.org/wiki/LaTeX/Special_Characters#Other_symbols" class="external-link">full list on this wiki page</a>), please add two backslashes before the character to avoid issues compiling your report later on (specifically, the conversion from Quarto to LaTeX via Pandoc, and then compilation of the LaTeX report after running <code><a href="../reference/add_accessibility.html">add_accessibility()</a></code> or <code><a href="../reference/add_alttext.html">add_alttext()</a></code>). For example, “The 95% CI” would be written as “The 95\\% CI”.</p></li>
