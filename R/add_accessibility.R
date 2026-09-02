@@ -32,7 +32,6 @@
 #' workflow. It first applies document tagging via add_tagging() and then
 #' injects alternative text using add_alttext().
 #' 
-#'
 #' @return No return value. Modifies files on disk and optionally renders a .pdf.
 #'
 #' @export

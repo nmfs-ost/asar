@@ -12,17 +12,23 @@ add_tagging(
 )
 }
 \arguments{
-\item{x}{.tex file containing report. Typically produced after initially
-rendering the skeleton made from create_template.}
+\item{x}{.tex The name of the .tex file to modify.
 
-\item{dir}{directory where the tex file is located that will be edited}
+Default: "...skeleton.qmd"}
 
-\item{compile}{Indicate whether the document (X) should be
-rendered after these files are changed. Default TRUE.}
+\item{dir}{The directory containing the .tex file.
 
-\item{rename}{Indicate a name for the new tex file produced from this
-function. There is no need to include ".tex" in the name. Defaults to current
-name and overwrites the current tex file.}
+Default: the working directory (\code{getwd()}).}
+
+\item{compile}{Logical. If TRUE, renders the .tex file into a .pdf after
+modifications are complete.
+
+Default: TRUE}
+
+\item{rename}{Optional new name for the modified .tex file (exclude
+the ".tex" extension). If NULL, the original file is overwritten.
+
+Default: NULL}
 }
 \value{
 This function was made to help add in
