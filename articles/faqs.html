@@ -149,6 +149,21 @@ Error: Failed to install 'unknown package' from GitHub:
 <p>You can render child documents (e.g., “01_introduction.qmd”) as HTML files. These files will show you if your code is working, but not what the document will look like in your final report as it lacks the formatting specified in your skeleton’s YAML.</p>
 <p>As a workaround, we recommend making some temporary edits to the skeleton. You could alter irrelevant code chunks by 1) commenting them out or 2) setting <code>eval: false</code> in those chunks’ options. Then, once you render the skeleton, the report’s formatting will be preserved.</p>
 <p>You could manually add a YAML specifying the format as PDF into the child document, but this would not show the report’s full formatting and would have to be removed before rendering the report skeleton.</p>
+</section><section class="level2"><h3 class="anchored" id="what-arguments-can-i-use-when-trying-to-rerender-my-skeleton">What arguments can I use when trying to rerender my skeleton?<a class="anchor" aria-label="anchor" href="#what-arguments-can-i-use-when-trying-to-rerender-my-skeleton"></a>
+</h3>
+<p>Rerendering a skeleton using <code>rerender = TRUE</code> can be a helpful and reproducible way to making edits to your skeleton document and leaving a record of your process for future you and future assessment scientists. The current arguments that can be called to adjust your skeleton file when <code>rerender = TRUE</code> are:</p>
+<ul>
+<li>format</li>
+<li>authors</li>
+<li>species</li>
+<li>region</li>
+<li>spp_latin</li>
+<li>office</li>
+<li>custom_sections</li>
+<li>new_section &amp; section_location</li>
+<li>custom_params</li>
+</ul>
+<p>We plan to include future functionality to also include bib_file and spp_image as functional arguments when using <code>rerender = TRUE</code>.</p>
 </section></section><section class="section level2"><h2 id="tables-and-figures">Tables and Figures<a class="anchor" aria-label="anchor" href="#tables-and-figures"></a>
 </h2>
 <section class="level2"><h3 class="anchored" id="why-arent-my-tables-andor-figures-displaying-on-landscape-oriented-pages-when-the-landscape-braces-are-present">Why aren’t my tables and/or figures displaying on landscape-oriented pages when the landscape braces are present?<a class="anchor" aria-label="anchor" href="#why-arent-my-tables-andor-figures-displaying-on-landscape-oriented-pages-when-the-landscape-braces-are-present"></a>
