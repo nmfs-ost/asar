@@ -331,9 +331,15 @@ commercial product or activity by DOC or the United States Government.
 - [`format_quarto()`](nmfs-ost.github.io/asar/reference/format_quarto.md)
   : Add Formatting Arguments for YAML Header
 
+- [`get_doc_order()`](nmfs-ost.github.io/asar/reference/get_doc_order.md)
+  : Map legacy document names to current document names
+
 - [`gt_split()`](nmfs-ost.github.io/asar/reference/gt_split.md) :
 
   Split a table into a group of tables (a `gt_group`)
+
+- [`migrate_legacy_docs()`](nmfs-ost.github.io/asar/reference/migrate_legacy_docs.md)
+  : Detect, rename, and resolve legacy document paths
 
 - [`render_lg_table()`](nmfs-ost.github.io/asar/reference/render_lg_table.md)
   : Split an extra-wide table into multiple tables
