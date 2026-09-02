@@ -15,9 +15,9 @@ test_that("Can trace template files from package", {
     "07_references.qmd",
     # "10_notes.qmd",
     "11_appendix.qmd"
-    # "09_figures.qmd",
+    # "08_figures.qmd",
     # "in-header.tex",
-    # "08_tables.qmd",
+    # "09_tables.qmd",
     # "title.tex"
   )
   expect_equal(list.files(path), base_temp_files)
@@ -37,8 +37,8 @@ test_that("create_template() creates correct files", {
     "05_discussion.qmd",
     "06_acknowledgments.qmd",
     "07_references.qmd",
-    "08_tables.qmd",
-    "09_figures.qmd",
+    "09_tables.qmd",
+    "08_figures.qmd",
     # "10_notes.qmd",
     "11_appendix.qmd",
     "preamble.R",
@@ -112,8 +112,8 @@ test_that("create_template() creates correct files", {
     "05_discussion.qmd",
     "06_acknowledgments.qmd",
     "07_references.qmd",
-    "08_tables.qmd",
-    "09_figures.qmd",
+    "09_tables.qmd",
+    "08_figures.qmd",
     # "10_notes.qmd",
     "11_appendix.qmd",
     "sar_Dover_sole_skeleton.qmd",
@@ -168,8 +168,8 @@ test_that("create_template() creates correct files", {
     "03_data.qmd",
     "06_acknowledgments.qmd",
     "07_references.qmd",
-    "08_tables.qmd",
-    "09_figures.qmd",
+    "09_tables.qmd",
+    "08_figures.qmd",
     "11_appendix.qmd",
     "sar_Rex_sole_skeleton.qmd",
     "asar_references.bib",
@@ -236,6 +236,128 @@ test_that("warning is triggered for existing files", {
 
   # erase temporary testing files
   unlink(fs::path(path, "report"), recursive = T)
+})
+
+test_that("rerender updates SAR legacy figures/tables order in skeleton", {
+  # SAR
+  create_template() |> suppressWarnings()
+  
+  report_dir <- fs::path(getwd(), "report")
+  skeleton_path <- fs::path(report_dir, "sar_species_skeleton.qmd")
+  skeleton <- readLines(skeleton_path)
+  figures_idx <- grep("08_figures.qmd", skeleton, fixed = TRUE)
+  tables_idx <- grep("09_tables.qmd", skeleton, fixed = TRUE)
+  
+  skeleton[figures_idx] <- stringr::str_replace(skeleton[figures_idx], "08_figures.qmd", "08_tables.qmd")
+  skeleton[tables_idx] <- stringr::str_replace(skeleton[tables_idx], "09_tables.qmd", "09_figures.qmd")
+  writeLines(skeleton, skeleton_path)
+  
+  file.rename(
+    from = fs::path(report_dir, "08_figures.qmd"),
+    to = fs::path(report_dir, "09_figures.qmd")
+  )
+  file.rename(
+    from = fs::path(report_dir, "09_tables.qmd"),
+    to = fs::path(report_dir, "08_tables.qmd")
+  )
+  
+  create_template(rerender_skeleton = TRUE,
+                  file_dir = "report") |> suppressWarnings()
+  
+  updated_skeleton <- readLines(skeleton_path)
+  updated_figures_idx <- grep("08_figures.qmd", updated_skeleton, fixed = TRUE)
+  updated_tables_idx <- grep("09_tables.qmd", updated_skeleton, fixed = TRUE)
+  
+  expect_true(file.exists(fs::path(report_dir, "08_figures.qmd")))
+  expect_true(file.exists(fs::path(report_dir, "09_tables.qmd")))
+  expect_false(file.exists(fs::path(report_dir, "09_figures.qmd")))
+  expect_false(file.exists(fs::path(report_dir, "08_tables.qmd")))
+  expect_lt(updated_figures_idx, updated_tables_idx)
+  
+  unlink(report_dir, recursive = TRUE)
+  
+})
+
+test_that("rerender updates SAFE legacy figures/tables order in skeleton", {
+
+  # SAFE
+  create_template(type = "safe")
+  
+  report_dir <- fs::path(getwd(), "report")
+  skeleton_path <- fs::path(report_dir, "safe_species_skeleton.qmd")
+  skeleton <- readLines(skeleton_path)
+  figures_idx <- grep("11_figures.qmd", skeleton, fixed = TRUE)
+  tables_idx <- grep("12_tables.qmd", skeleton, fixed = TRUE)
+  
+  skeleton[figures_idx] <- stringr::str_replace(skeleton[figures_idx], "11_figures.qmd", "11_tables.qmd")
+  skeleton[tables_idx] <- stringr::str_replace(skeleton[tables_idx], "12_tables.qmd", "12_figures.qmd")
+  writeLines(skeleton, skeleton_path)
+  
+  file.rename(
+    from = fs::path(report_dir, "11_figures.qmd"),
+    to = fs::path(report_dir, "12_figures.qmd")
+  )
+  file.rename(
+    from = fs::path(report_dir, "12_tables.qmd"),
+    to = fs::path(report_dir, "11_tables.qmd")
+  )
+  
+  create_template(rerender_skeleton = TRUE,
+                  type = "safe",
+                  file_dir = "report") |> suppressWarnings()
+  
+  updated_skeleton <- readLines(skeleton_path)
+  updated_figures_idx <- grep("11_figures.qmd", updated_skeleton, fixed = TRUE)
+  updated_tables_idx <- grep("12_tables.qmd", updated_skeleton, fixed = TRUE)
+  
+  expect_true(file.exists(fs::path(report_dir, "11_figures.qmd")))
+  expect_true(file.exists(fs::path(report_dir, "12_tables.qmd")))
+  expect_false(file.exists(fs::path(report_dir, "12_figures.qmd")))
+  expect_false(file.exists(fs::path(report_dir, "11_tables.qmd")))
+  expect_lt(updated_figures_idx, updated_tables_idx)
+  
+  unlink(report_dir, recursive = TRUE)
+
+})
+
+test_that("rerender updates NEMT legacy figures/tables order in skeleton", {
+  # NEMT
+  create_template(type = "nemt")
+  
+  report_dir <- fs::path(getwd(), "report")
+  skeleton_path <- fs::path(report_dir, "nemt_species_skeleton.qmd")
+  skeleton <- readLines(skeleton_path)
+  figures_idx <- grep("05_figures.qmd", skeleton, fixed = TRUE)
+  tables_idx <- grep("06_tables.qmd", skeleton, fixed = TRUE)
+  
+  skeleton[figures_idx] <- stringr::str_replace(skeleton[figures_idx], "05_figures.qmd", "05_tables.qmd")
+  skeleton[tables_idx] <- stringr::str_replace(skeleton[tables_idx], "06_tables.qmd", "06_figures.qmd")
+  writeLines(skeleton, skeleton_path)
+  
+  file.rename(
+    from = fs::path(report_dir, "05_figures.qmd"),
+    to = fs::path(report_dir, "06_figures.qmd")
+  )
+  file.rename(
+    from = fs::path(report_dir, "06_tables.qmd"),
+    to = fs::path(report_dir, "05_tables.qmd")
+  )
+  
+  create_template(rerender_skeleton = TRUE,
+                  type = "nemt",
+                  file_dir = "report") |> suppressWarnings()
+  
+  updated_skeleton <- readLines(skeleton_path)
+  updated_figures_idx <- grep("05_figures.qmd", updated_skeleton, fixed = TRUE)
+  updated_tables_idx <- grep("06_tables.qmd", updated_skeleton, fixed = TRUE)
+  
+  expect_true(file.exists(fs::path(report_dir, "05_figures.qmd")))
+  expect_true(file.exists(fs::path(report_dir, "06_tables.qmd")))
+  expect_false(file.exists(fs::path(report_dir, "06_figures.qmd")))
+  expect_false(file.exists(fs::path(report_dir, "05_tables.qmd")))
+  expect_lt(updated_figures_idx, updated_tables_idx)
+  
+  unlink(report_dir, recursive = TRUE)
 })
 
 test_that("file_dir works", {
@@ -314,8 +436,8 @@ test_that("model_results metadata file created", {
     "05_discussion.qmd",
     "06_acknowledgments.qmd",
     "07_references.qmd",
-    "08_tables.qmd",
-    "09_figures.qmd",
+    "08_figures.qmd",
+    "09_tables.qmd",
     # "10_notes.qmd",
     "11_appendix.qmd",
     "sar_species_skeleton.qmd",
@@ -335,7 +457,6 @@ test_that("model_results metadata file created", {
 
   # erase temporary testing files
   unlink(file_path, recursive = T)
-  file.remove(fs::path(getwd(), "std_output.rda"))
 })
 
 test_that("function aborts if `authors` improperly formatted", {

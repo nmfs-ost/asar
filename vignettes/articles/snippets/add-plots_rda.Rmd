@@ -1,6 +1,6 @@
 ### Add custom tables and figures {#sec-add-plots_rda}
 
-This step will alter your figures and tables docs (probably named something like '08_tables.qmd' and '09_figures.qmd'), located in your 'report' folder.
+This step will alter your figures and tables docs (probably named something like '08_figures.qmd' and '09_tables.qmd'), located in your 'report' folder.
 
 As a reminder, this workflow assumes that you have tables and/or figures stored in rda files. If you don't have those rda files, please see the [Export your custom tables and figures](#sec-export-custom-figs-tables) section to create them.
 

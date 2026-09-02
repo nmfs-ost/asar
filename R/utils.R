@@ -428,3 +428,90 @@ format_citation_authors <- function(author_names) {
     glue::glue_collapse(sep = ", ", last = ", and ") |>
     as.character()
 }
+
+#' Map legacy document names to current document names
+#'
+#' @return A list containing vector mappings for legacy and current
+#'   tables and figures files.
+get_doc_order <- function() {
+  list(
+    legacy_tables  = c("08_tables.qmd",  "05_tables.qmd",  "11_tables.qmd"),
+    current_tables = c("09_tables.qmd",  "06_tables.qmd",  "12_tables.qmd"),
+    legacy_figs    = c("09_figures.qmd", "06_figures.qmd", "12_figures.qmd"),
+    current_figs   = c("08_figures.qmd", "05_figures.qmd", "11_figures.qmd")
+  )
+}
+
+#' Detect, rename, and resolve legacy document paths
+#'
+#' @param subdir Directory where template files are located.
+#' @param doc_type String. Document type.
+#' 
+#' Options: "figures", "tables"
+#' 
+#' @param rerender_skeleton Logical indicating if rerendering active.
+#' 
+#' Default: FALSE
+#'
+#' @return A list containing `using_legacy` (logical), `legacy_name`, `current_name`,
+#'   and `resolved_name`.
+migrate_legacy_docs <- function(subdir,
+                                doc_type,
+                                rerender_skeleton = FALSE) {
+  mapping <- get_doc_order()
+  
+  # Determine target vectors based on type requested
+  if (doc_type == "figures") {
+    legacy_docs  <- mapping$legacy_figs
+    current_docs <- mapping$current_figs
+  } else {
+    legacy_docs  <- mapping$legacy_tables
+    current_docs <- mapping$current_tables
+  }
+  
+  # Check for existing legacy files in subdir (both figs and tables exist in legacy format)
+  legacy_match <- which(
+    file.exists(fs::path(subdir, mapping$legacy_figs)) &
+      file.exists(fs::path(subdir, mapping$legacy_tables)) &
+      !file.exists(fs::path(subdir, mapping$current_figs)) &
+      !file.exists(fs::path(subdir, mapping$current_tables))
+  )
+  
+  # Fallback check when called independently per file type
+  if (length(legacy_match) == 0) {
+    legacy_match <- which(
+      file.exists(fs::path(subdir, legacy_docs)) &
+        !file.exists(fs::path(subdir, current_docs))
+    )
+  }
+  
+  using_legacy <- (rerender_skeleton || doc_type != "skeleton") && length(legacy_match) > 0
+  
+  if (using_legacy) {
+    idx <- legacy_match[1]
+    legacy_name  <- legacy_docs[idx]
+    current_name <- current_docs[idx]
+    
+    return(list(
+      using_legacy  = TRUE,
+      legacy_name   = legacy_name,
+      current_name  = current_name,
+      resolved_name = current_name
+    ))
+  }
+  
+  # Fallback for standard non-legacy paths
+  existing_current <- current_docs[file.exists(fs::path(subdir, current_docs))]
+  resolved_name <- if (length(existing_current) > 0) {
+    existing_current[1]
+  } else {
+    current_docs[1]
+  }
+  
+  list(
+    using_legacy  = FALSE,
+    legacy_name   = NULL,
+    current_name  = current_docs[1],
+    resolved_name = resolved_name
+  )
+}
