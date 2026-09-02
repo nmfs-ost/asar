@@ -677,13 +677,6 @@ create_template <- function(
         "safe" = "12_tables.qmd",
         "09_tables.qmd"
       )
-      tables_doc <- ""
-      utils::capture.output(cat(tables_doc),
-        file = fs::path(subdir, tables_doc_name),
-        append = FALSE
-      ) |>
-        suppressMessages() |>
-        suppressWarnings()
 
       create_tables_doc(
         subdir = subdir,
