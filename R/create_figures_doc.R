@@ -244,26 +244,26 @@ rm(rda)\n
       )
     )
   }
-  
+
   doc_info <- migrate_legacy_docs(subdir, doc_type = "figures")
-  
+
   if (doc_info$using_legacy) {
     cli::cli_alert_info("Detected legacy figure/table document order ({.file {doc_info$legacy_name}}). asar now uses {.file {doc_info$current_name}} to maintain an accurate Table of Contents.")
     cli::cli_alert_info("{.file {doc_info$legacy_name}} will be renamed to {.file {doc_info$current_name}}.")
   }
-  
+
   figures_doc_name <- if (doc_info$using_legacy) {
     doc_info$legacy_name
   } else {
     doc_info$resolved_name
   }
   # Save figures doc to template folder
-  
+
   utils::capture.output(cat(figures_doc),
-                        file = fs::path(subdir, figures_doc_name),
-                        append = append
+    file = fs::path(subdir, figures_doc_name),
+    append = append
   )
-  
+
   if (doc_info$using_legacy) {
     file.rename(
       from = fs::path(subdir, doc_info$legacy_name),
@@ -271,9 +271,9 @@ rm(rda)\n
     )
   }
   # Read through figures doc and warn about identical labels
-  
+
   current_figures_doc <- fs::path(subdir, doc_info$resolved_name)
-  
+
   fix_duplicate_chunks(
     doc_path = current_figures_doc,
     doc_type = "Figures"

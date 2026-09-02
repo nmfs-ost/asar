@@ -130,7 +130,7 @@ create_tables_doc <- function(subdir = getwd(),
 
   # remove rda table files that have an associated "split" version
   # remove "_split" from filenames
-  
+
   remove_split_names <- gsub("_split", "", rda_tab_list)
   # identify duplicates in remove_split_names
   dup_tab <- remove_split_names[duplicated(remove_split_names) | duplicated(remove_split_names, fromLast = TRUE)]
@@ -147,8 +147,8 @@ create_tables_doc <- function(subdir = getwd(),
     split <- grepl("split", tab)
 
     tab_shortname <- ifelse(split,
-                            stringr::str_remove(tab, "_table_split.rda"),
-                            stringr::str_remove(tab, "_table.rda")
+      stringr::str_remove(tab, "_table_split.rda"),
+      stringr::str_remove(tab, "_table.rda")
     )
 
     # identify table orientation
@@ -310,8 +310,8 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
             )
           ),
           ifelse(tbl_class == "wide_long",
-                 ":::\n",
-                 "\n"
+            ":::\n",
+            "\n"
           )
         )
       }
@@ -559,31 +559,31 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
       tables_doc_header,
       tables_doc_setup,
       ifelse(exists("rda_tables_doc"),
-             rda_tables_doc,
-             ""
+        rda_tables_doc,
+        ""
       )
     )
   }
-  
+
   doc_info <- migrate_legacy_docs(subdir, doc_type = "tables")
-  
+
   if (doc_info$using_legacy) {
     cli::cli_alert_info("Detected legacy figure/table document order ({.file {doc_info$legacy_name}}). asar now uses {.file {doc_info$current_name}} to maintain an accurate Table of Contents.")
     cli::cli_alert_info("{.file {doc_info$legacy_name}} will be renamed to {.file {doc_info$current_name}}.")
   }
-  
+
   tables_doc_name <- if (doc_info$using_legacy) {
     doc_info$legacy_name
   } else {
     doc_info$resolved_name
   }
   # Save tables doc to template folder
-  
+
   utils::capture.output(cat(tables_doc),
-                        file = fs::path(subdir, tables_doc_name),
-                        append = append
+    file = fs::path(subdir, tables_doc_name),
+    append = append
   )
-  
+
   if (doc_info$using_legacy) {
     file.rename(
       from = fs::path(subdir, doc_info$legacy_name),
@@ -591,9 +591,9 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
     )
   }
   # Read through tables doc and warn about identical labels
-  
+
   current_tables_doc <- fs::path(subdir, doc_info$resolved_name)
-  
+
   fix_duplicate_chunks(
     doc_path = current_tables_doc,
     doc_type = "Tables"
