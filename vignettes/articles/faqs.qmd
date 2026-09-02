@@ -116,7 +116,7 @@ You could manually add a YAML specifying the format as PDF into the child docume
 
 ## What arguments can I use when trying to rerender my skeleton?
 
-Rerending a skeleton using `rerender = TRUE` can be a helpful and reproducible way to making edits to your skeleton document and leaving a record of your process for future you and future assessment scientists. The current arguments that can be called to adjust your skeleton file when `rerender = TRUE` are:
+Rerendering a skeleton using `rerender = TRUE` can be a helpful and reproducible way to making edits to your skeleton document and leaving a record of your process for future you and future assessment scientists. The current arguments that can be called to adjust your skeleton file when `rerender = TRUE` are:
 
 - format
 - authors
