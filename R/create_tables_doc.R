@@ -63,6 +63,9 @@ create_tables_doc <- function(subdir = getwd(),
 
       # remove empty_doc_text
       updated_content <- gsub(empty_doc_text, "", table_content, fixed = TRUE)
+      if (length(updated_content) >= 3 && updated_content[3] == "") {
+        updated_content <- updated_content[-3]
+      }
       writeLines(updated_content, existing_tables_doc)
     }
   } else {
