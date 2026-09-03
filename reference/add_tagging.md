@@ -17,23 +17,30 @@ add_tagging(
 
 - x:
 
-  .tex file containing report. Typically produced after initially
-  rendering the skeleton made from create_template.
+  .tex The name of the .tex file to modify.
+
+  Default: "...skeleton.qmd"
 
 - dir:
 
-  directory where the tex file is located that will be edited
+  The directory containing the .tex file.
+
+  Default: the working directory
+  ([`getwd()`](https://rdrr.io/r/base/getwd.html)).
 
 - compile:
 
-  Indicate whether the document (X) should be rendered after these files
-  are changed. Default TRUE.
+  Logical. If TRUE, renders the .tex file into a .pdf after
+  modifications are complete.
+
+  Default: TRUE
 
 - rename:
 
-  Indicate a name for the new tex file produced from this function.
-  There is no need to include ".tex" in the name. Defaults to current
-  name and overwrites the current tex file.
+  Optional new name for the modified .tex file (exclude the ".tex"
+  extension). If NULL, the original file is overwritten.
+
+  Default: NULL
 
 ## Value
 
