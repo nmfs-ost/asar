@@ -1132,22 +1132,37 @@ create_template <- function(
         unlist() |>
         purrr::discard(~ .x == "")
 
-      if (using_legacy_doc_order) {
-        sections <- sections |>
-          stringr::str_replace_all(tbl_info$legacy_name, tbl_info$current_name) |>
-          stringr::str_replace_all(fig_info$legacy_name, fig_info$current_name)
+      has_legacy_tables <- can_rename_legacy_doc(tbl_info)
+      has_legacy_figures <- can_rename_legacy_doc(fig_info)
 
-        figure_position <- which(sections == fig_info$current_name)
-        table_position <- which(sections == tbl_info$current_name)
-        if (length(figure_position) == 1 && length(table_position) == 1 && figure_position > table_position) {
-          sections <- sections[sections != fig_info$current_name]
-          table_position <- which(sections == tbl_info$current_name)
-          sections <- append(
-            sections,
-            fig_info$current_name,
-            after = table_position - 1
-          )
-        }
+      if (has_legacy_tables) {
+        sections <- stringr::str_replace_all(
+          sections,
+          tbl_info$legacy_name,
+          tbl_info$current_name
+        )
+      }
+      if (has_legacy_figures) {
+        sections <- stringr::str_replace_all(
+          sections,
+          fig_info$legacy_name,
+          fig_info$current_name
+        )
+      }
+
+      figure_name <- if (has_legacy_figures) fig_info$current_name else figures_doc_name
+      table_name <- if (has_legacy_tables) tbl_info$current_name else tables_doc_name
+
+      figure_position <- which(sections == figure_name)
+      table_position <- which(sections == table_name)
+      if (length(figure_position) == 1 && length(table_position) == 1 && figure_position > table_position) {
+        sections <- sections[sections != figure_name]
+        table_position <- which(sections == table_name)
+        sections <- append(
+          sections,
+          figure_name,
+          after = table_position - 1
+        )
       }
 
       # add sections as list
