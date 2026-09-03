@@ -23,6 +23,34 @@ test_that("Can trace template files from package", {
   expect_equal(list.files(path), base_temp_files)
 })
 
+test_that("create_template() uses journals bibliographies by default", {
+  local_mocked_bindings(
+    download_bibs = function(path, ...) {
+      writeLines("@article{test-reference}", file.path(path, "test-references.bib"))
+    },
+    .package = "journals"
+  )
+  output_dir <- local_tempdir()
+
+  create_template(file_dir = output_dir, bib_file = NULL) |>
+    suppressWarnings() |>
+    suppressMessages()
+
+  report_dir <- file.path(output_dir, "report")
+  bibliography_dir <- file.path(report_dir, "bibliography_files")
+  bib_files <- list.files(bibliography_dir, pattern = "\\.bib$")
+  skeleton <- readLines(file.path(report_dir, "sar_species_skeleton.qmd"))
+
+  expect_true(dir.exists(bibliography_dir))
+  expect_length(bib_files, 1L)
+  expect_true(any(grepl(
+    paste0("bibliography_files/", bib_files),
+    skeleton,
+    fixed = TRUE
+  )))
+  expect_false(file.exists(file.path(report_dir, "asar_references.bib")))
+})
+
 test_that("create_template() creates correct files", {
   # Define expected report files
   expect_report_files <- c(
