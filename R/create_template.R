@@ -661,13 +661,39 @@ create_template <- function(
     fig_info <- migrate_legacy_docs(subdir, doc_type = "figures", rerender_skeleton = rerender_skeleton)
     tbl_info <- migrate_legacy_docs(subdir, doc_type = "tables", rerender_skeleton = rerender_skeleton)
 
-    using_legacy_doc_order <- fig_info$using_legacy || tbl_info$using_legacy
+    can_rename_legacy_doc <- function(doc_info) {
+      isTRUE(doc_info$using_legacy) &&
+        !is.null(doc_info$legacy_name) &&
+        length(doc_info$legacy_name) == 1 &&
+        !is.null(doc_info$current_name) &&
+        length(doc_info$current_name) == 1
+    }
 
-    if (using_legacy_doc_order) {
-      file.rename(from = fs::path(subdir, tbl_info$legacy_name), to = fs::path(subdir, tbl_info$current_name))
-      file.rename(from = fs::path(subdir, fig_info$legacy_name), to = fs::path(subdir, fig_info$current_name))
+    renamed_tables_doc <- FALSE
+    if (can_rename_legacy_doc(tbl_info)) {
+      from <- fs::path(subdir, tbl_info$legacy_name)
+      to <- fs::path(subdir, tbl_info$current_name)
+      if (!identical(from, to) && file.exists(from)) {
+        renamed_tables_doc <- file.rename(from = from, to = to)
+      }
+    }
 
-      cli::cli_alert_info("Detected legacy figure/table document order in the skeleton. asar will switch to {.file {fig_info$current_name}} before {.file {tbl_info$current_name}}.")
+    renamed_figures_doc <- FALSE
+    if (can_rename_legacy_doc(fig_info)) {
+      from <- fs::path(subdir, fig_info$legacy_name)
+      to <- fs::path(subdir, fig_info$current_name)
+      if (!identical(from, to) && file.exists(from)) {
+        renamed_figures_doc <- file.rename(from = from, to = to)
+      }
+    }
+
+    if (renamed_figures_doc || renamed_tables_doc) {
+      renamed_docs <- c(
+        if (renamed_figures_doc) paste0("{.file ", fig_info$current_name, "}"),
+        if (renamed_tables_doc) paste0("{.file ", tbl_info$current_name, "}")
+      )
+      cli::cli_alert_info("Detected legacy figure/table document order in the skeleton.")
+      cli::cli_alert_info("asar switched to {toString(renamed_docs)}.")
     }
 
     # Created tables doc
@@ -684,7 +710,7 @@ create_template <- function(
       )
     } else {
       # extract name for tables.qmd from report folder
-      tables_doc_name <- if (using_legacy_doc_order) {
+      tables_doc_name <- if (can_rename_legacy_doc(tbl_info)) {
         tbl_info$current_name
       } else {
         list.files(file_dir, pattern = "tables.qmd")
@@ -712,7 +738,7 @@ create_template <- function(
       }
     } else {
       # extract name for figures.qmd from report folder
-      figures_doc_name <- if (using_legacy_doc_order) {
+      figures_doc_name <- if (can_rename_legacy_doc(fig_info)) {
         fig_info$current_name
       } else {
         list.files(file_dir, pattern = "figures.qmd")

@@ -363,6 +363,66 @@ test_that("rerender updates NEMT legacy figures/tables order in skeleton", {
   unlink(report_dir, recursive = TRUE)
 })
 
+test_that("rerender handles mixed state with legacy tables only", {
+  create_template() |> suppressWarnings()
+
+  report_dir <- fs::path(getwd(), "report")
+  skeleton_path <- fs::path(report_dir, "sar_species_skeleton.qmd")
+  skeleton <- readLines(skeleton_path)
+  tables_idx <- grep("09_tables.qmd", skeleton, fixed = TRUE)
+
+  skeleton[tables_idx] <- stringr::str_replace(skeleton[tables_idx], "09_tables.qmd", "08_tables.qmd")
+  writeLines(skeleton, skeleton_path)
+
+  file.rename(
+    from = fs::path(report_dir, "09_tables.qmd"),
+    to = fs::path(report_dir, "08_tables.qmd")
+  )
+
+  expect_no_error(
+    create_template(
+      rerender_skeleton = TRUE,
+      file_dir = "report"
+    ) |> suppressWarnings()
+  )
+
+  expect_true(file.exists(fs::path(report_dir, "08_figures.qmd")))
+  expect_true(file.exists(fs::path(report_dir, "09_tables.qmd")))
+  expect_false(file.exists(fs::path(report_dir, "08_tables.qmd")))
+
+  unlink(report_dir, recursive = TRUE)
+})
+
+test_that("rerender handles mixed state with legacy figures only", {
+  create_template() |> suppressWarnings()
+
+  report_dir <- fs::path(getwd(), "report")
+  skeleton_path <- fs::path(report_dir, "sar_species_skeleton.qmd")
+  skeleton <- readLines(skeleton_path)
+  figures_idx <- grep("08_figures.qmd", skeleton, fixed = TRUE)
+
+  skeleton[figures_idx] <- stringr::str_replace(skeleton[figures_idx], "08_figures.qmd", "09_figures.qmd")
+  writeLines(skeleton, skeleton_path)
+
+  file.rename(
+    from = fs::path(report_dir, "08_figures.qmd"),
+    to = fs::path(report_dir, "09_figures.qmd")
+  )
+
+  expect_no_error(
+    create_template(
+      rerender_skeleton = TRUE,
+      file_dir = "report"
+    ) |> suppressWarnings()
+  )
+
+  expect_true(file.exists(fs::path(report_dir, "08_figures.qmd")))
+  expect_true(file.exists(fs::path(report_dir, "09_tables.qmd")))
+  expect_false(file.exists(fs::path(report_dir, "09_figures.qmd")))
+
+  unlink(report_dir, recursive = TRUE)
+})
+
 test_that("file_dir works", {
   dir <- fs::path(getwd(), "data")
   on.exit(unlink(dir, recursive = TRUE), add = TRUE)
