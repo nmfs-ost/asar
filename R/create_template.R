@@ -502,13 +502,13 @@ create_template <- function(
         dir.create(bib_dir, recursive = FALSE)
         journals::download_bibs(bib_dir)
         bib_file <- list.files(bib_dir, pattern = ".bib", full.names = TRUE)
-        bib_name <- list.files(bib_dir, pattern = ".bib", full.names = FALSE)
+        bib_name <- basename(bib_file)
       } else {
         bib_name <- NULL
       }
     } else {
       file.copy(bib_file, subdir, overwrite = TRUE) |> suppressWarnings()
-      bib_name <- stringr::str_extract(bib_file, "[^/]+$") # utils::tail(stringr::str_split(bib_file, "/")[[1]], n = 1)
+      bib_name <- basename(bib_file)
     }
 
     #### Read in previous skeleton if rerender ----
