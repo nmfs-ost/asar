@@ -239,6 +239,8 @@ test_that("warning is triggered for existing files", {
 })
 
 test_that("rerender updates SAR legacy figures/tables order in skeleton", {
+  # don't run on GitHub because can't rename files in the GH testing env
+  skip_on_ci()
   # SAR
   create_template() |> suppressWarnings()
 
@@ -280,6 +282,8 @@ test_that("rerender updates SAR legacy figures/tables order in skeleton", {
 })
 
 test_that("rerender updates SAFE legacy figures/tables order in skeleton", {
+  # don't run on GitHub because can't rename files in the GH testing env
+  skip_on_ci()
   # SAFE
   create_template(type = "safe")
 
@@ -322,6 +326,8 @@ test_that("rerender updates SAFE legacy figures/tables order in skeleton", {
 })
 
 test_that("rerender updates NEMT legacy figures/tables order in skeleton", {
+  # don't run on GitHub because can't rename files in the GH testing env
+  skip_on_ci()
   # NEMT
   create_template(type = "nemt")
 
@@ -398,25 +404,14 @@ test_that("file_dir works", {
 })
 
 test_that("model_results metadata file created", {
-  # identify wd on github to debug failing test there (but not locally)
-  # dat <- stockplotr::convert_output(
-  #   file = fs::path("fixtures", "ss3_models", "models", "Hake_2018", "Report.sso"),
-  #   model = "ss3",
-  #   save_dir = getwd()
-  # )
-  # print(paste0("The working directory is: ", getwd()))
-  # message(paste0("The working directory is: ", getwd()))
-
   create_template(
-    # model_results = "std_output.rda",
+    model_results = "std_output.rda",
     format = "pdf",
     office = "NWFSC",
-    # species = "Dover sole",
+    species = "Dover sole",
     spp_latin = "Pomatomus saltatrix",
     year = 2010,
-    authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
-    include_affiliation = TRUE,
-    parameters = FALSE
+    authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC")
   )
 
   # message("create_template run")
@@ -443,9 +438,9 @@ test_that("model_results metadata file created", {
     "09_tables.qmd",
     # "10_notes.qmd",
     "11_appendix.qmd",
-    "sar_species_skeleton.qmd",
+    "sar_Dover_sole_skeleton.qmd",
     "preamble.R",
-    # "std_output_metadata.md",
+    "std_output_metadata.md",
     "report_glossary.tex",
     "asar_references.bib",
     "support_files"

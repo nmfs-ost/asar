@@ -661,13 +661,39 @@ create_template <- function(
     fig_info <- migrate_legacy_docs(subdir, doc_type = "figures", rerender_skeleton = rerender_skeleton)
     tbl_info <- migrate_legacy_docs(subdir, doc_type = "tables", rerender_skeleton = rerender_skeleton)
 
-    using_legacy_doc_order <- fig_info$using_legacy || tbl_info$using_legacy
+    can_rename_legacy_doc <- function(doc_info) {
+      isTRUE(doc_info$using_legacy) &&
+        !is.null(doc_info$legacy_name) &&
+        length(doc_info$legacy_name) == 1 &&
+        !is.null(doc_info$current_name) &&
+        length(doc_info$current_name) == 1
+    }
+    
+    renamed_tables_doc <- FALSE
+    if (can_rename_legacy_doc(tbl_info)) {
+      from <- fs::path(subdir, tbl_info$legacy_name)
+      to <- fs::path(subdir, tbl_info$current_name)
+      if (!identical(from, to) && file.exists(from)) {
+        renamed_tables_doc <- file.rename(from = from, to = to)
+      }
+    }
 
-    if (using_legacy_doc_order) {
-      file.rename(from = fs::path(subdir, tbl_info$legacy_name), to = fs::path(subdir, tbl_info$current_name))
-      file.rename(from = fs::path(subdir, fig_info$legacy_name), to = fs::path(subdir, fig_info$current_name))
-
-      cli::cli_alert_info("Detected legacy figure/table document order in the skeleton. asar will switch to {.file {fig_info$current_name}} before {.file {tbl_info$current_name}}.")
+    renamed_figures_doc <- FALSE
+    if (can_rename_legacy_doc(fig_info)) {
+      from <- fs::path(subdir, fig_info$legacy_name)
+      to <- fs::path(subdir, fig_info$current_name)
+      if (!identical(from, to) && file.exists(from)) {
+        renamed_figures_doc <- file.rename(from = from, to = to)
+      }
+    }
+    
+    if (renamed_figures_doc || renamed_tables_doc) {
+      renamed_docs <- c(
+        if (renamed_figures_doc) paste0("{.file ", fig_info$current_name, "}"),
+        if (renamed_tables_doc) paste0("{.file ", tbl_info$current_name, "}")
+      )
+      cli::cli_alert_info("Detected legacy figure/table document order in the skeleton.")
+      cli::cli_alert_info("asar switched to {toString(renamed_docs)}.")
     }
 
     # Created tables doc
@@ -691,7 +717,7 @@ create_template <- function(
       )
     } else {
       # extract name for tables.qmd from report folder
-      tables_doc_name <- if (using_legacy_doc_order) {
+      tables_doc_name <- if (can_rename_legacy_doc(tbl_info)) {
         tbl_info$current_name
       } else {
         list.files(file_dir, pattern = "tables.qmd")
@@ -719,7 +745,7 @@ create_template <- function(
       }
     } else {
       # extract name for figures.qmd from report folder
-      figures_doc_name <- if (using_legacy_doc_order) {
+      figures_doc_name <- if (can_rename_legacy_doc(fig_info)) {
         fig_info$current_name
       } else {
         list.files(file_dir, pattern = "figures.qmd")
@@ -1113,22 +1139,37 @@ create_template <- function(
         unlist() |>
         purrr::discard(~ .x == "")
 
-      if (using_legacy_doc_order) {
-        sections <- sections |>
-          stringr::str_replace_all(tbl_info$legacy_name, tbl_info$current_name) |>
-          stringr::str_replace_all(fig_info$legacy_name, fig_info$current_name)
-
-        figure_position <- which(sections == fig_info$current_name)
-        table_position <- which(sections == tbl_info$current_name)
-        if (length(figure_position) == 1 && length(table_position) == 1 && figure_position > table_position) {
-          sections <- sections[sections != fig_info$current_name]
-          table_position <- which(sections == tbl_info$current_name)
-          sections <- append(
-            sections,
-            fig_info$current_name,
-            after = table_position - 1
-          )
-        }
+      has_legacy_tables <- can_rename_legacy_doc(tbl_info)
+      has_legacy_figures <- can_rename_legacy_doc(fig_info)
+      
+      if (has_legacy_tables) {
+        sections <- stringr::str_replace_all(
+          sections,
+          tbl_info$legacy_name,
+          tbl_info$current_name
+        )
+      }
+      if (has_legacy_figures) {
+        sections <- stringr::str_replace_all(
+          sections,
+          fig_info$legacy_name,
+          fig_info$current_name
+        )
+      }
+      
+      figure_name <- if (has_legacy_figures) fig_info$current_name else figures_doc_name
+      table_name <- if (has_legacy_tables) tbl_info$current_name else tables_doc_name
+      
+      figure_position <- which(sections == figure_name)
+      table_position <- which(sections == table_name)
+      if (length(figure_position) == 1 && length(table_position) == 1 && figure_position > table_position) {
+        sections <- sections[sections != figure_name]
+        table_position <- which(sections == table_name)
+        sections <- append(
+          sections,
+          figure_name,
+          after = table_position - 1
+        )
       }
 
       # add sections as list
