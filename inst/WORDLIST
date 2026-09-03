@@ -44,7 +44,6 @@ RStudio
 RTF
 Rceattle
 Rerendering
-rerendering
 Rmarkdown
 Rockfish
 Rockfishes
@@ -60,6 +59,7 @@ TOC
 TinyTeX
 Vladlena
 ak
+alttext
 asis
 bcurrent
 blockquote
@@ -79,6 +79,7 @@ findability
 flextable
 flextables
 frac
+getwd
 gls
 goa
 hardcoding
@@ -116,6 +117,7 @@ rdat
 rda’s
 readLines
 rerender
+rerendering
 reweighting
 roboto
 saltatrix
