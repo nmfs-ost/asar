@@ -668,7 +668,7 @@ create_template <- function(
         !is.null(doc_info$current_name) &&
         length(doc_info$current_name) == 1
     }
-    
+
     renamed_tables_doc <- FALSE
     if (can_rename_legacy_doc(tbl_info)) {
       from <- fs::path(subdir, tbl_info$legacy_name)
@@ -686,7 +686,7 @@ create_template <- function(
         renamed_figures_doc <- file.rename(from = from, to = to)
       }
     }
-    
+
     if (renamed_figures_doc || renamed_tables_doc) {
       renamed_docs <- c(
         if (renamed_figures_doc) paste0("{.file ", fig_info$current_name, "}"),
@@ -1134,7 +1134,7 @@ create_template <- function(
 
       has_legacy_tables <- can_rename_legacy_doc(tbl_info)
       has_legacy_figures <- can_rename_legacy_doc(fig_info)
-      
+
       if (has_legacy_tables) {
         sections <- stringr::str_replace_all(
           sections,
@@ -1149,10 +1149,10 @@ create_template <- function(
           fig_info$current_name
         )
       }
-      
+
       figure_name <- if (has_legacy_figures) fig_info$current_name else figures_doc_name
       table_name <- if (has_legacy_tables) tbl_info$current_name else tables_doc_name
-      
+
       figure_position <- which(sections == figure_name)
       table_position <- which(sections == table_name)
       if (length(figure_position) == 1 && length(table_position) == 1 && figure_position > table_position) {
