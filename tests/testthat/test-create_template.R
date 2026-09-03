@@ -243,6 +243,7 @@ test_that("rerender updates SAR legacy figures/tables order in skeleton", {
   create_template() |> suppressWarnings()
 
   report_dir <- fs::path(getwd(), "report")
+  on.exit(unlink(report_dir, recursive = TRUE), add = TRUE)
   skeleton_path <- fs::path(report_dir, "sar_species_skeleton.qmd")
   skeleton <- readLines(skeleton_path)
   figures_idx <- grep("08_figures.qmd", skeleton, fixed = TRUE)
@@ -252,14 +253,14 @@ test_that("rerender updates SAR legacy figures/tables order in skeleton", {
   skeleton[tables_idx] <- stringr::str_replace(skeleton[tables_idx], "09_tables.qmd", "09_figures.qmd")
   writeLines(skeleton, skeleton_path)
 
-  file.rename(
+  expect_true(file.rename(
     from = fs::path(report_dir, "08_figures.qmd"),
     to = fs::path(report_dir, "09_figures.qmd")
-  )
-  file.rename(
+  ))
+  expect_true(file.rename(
     from = fs::path(report_dir, "09_tables.qmd"),
     to = fs::path(report_dir, "08_tables.qmd")
-  )
+  ))
 
   create_template(
     rerender_skeleton = TRUE,
@@ -284,6 +285,7 @@ test_that("rerender updates SAFE legacy figures/tables order in skeleton", {
   create_template(type = "safe")
 
   report_dir <- fs::path(getwd(), "report")
+  on.exit(unlink(report_dir, recursive = TRUE), add = TRUE)
   skeleton_path <- fs::path(report_dir, "safe_species_skeleton.qmd")
   skeleton <- readLines(skeleton_path)
   figures_idx <- grep("11_figures.qmd", skeleton, fixed = TRUE)
@@ -293,14 +295,14 @@ test_that("rerender updates SAFE legacy figures/tables order in skeleton", {
   skeleton[tables_idx] <- stringr::str_replace(skeleton[tables_idx], "12_tables.qmd", "12_figures.qmd")
   writeLines(skeleton, skeleton_path)
 
-  file.rename(
+  expect_true(file.rename(
     from = fs::path(report_dir, "11_figures.qmd"),
     to = fs::path(report_dir, "12_figures.qmd")
-  )
-  file.rename(
+  ))
+  expect_true(file.rename(
     from = fs::path(report_dir, "12_tables.qmd"),
     to = fs::path(report_dir, "11_tables.qmd")
-  )
+  ))
 
   create_template(
     rerender_skeleton = TRUE,
@@ -326,6 +328,7 @@ test_that("rerender updates NEMT legacy figures/tables order in skeleton", {
   create_template(type = "nemt")
 
   report_dir <- fs::path(getwd(), "report")
+  on.exit(unlink(report_dir, recursive = TRUE), add = TRUE)
   skeleton_path <- fs::path(report_dir, "nemt_species_skeleton.qmd")
   skeleton <- readLines(skeleton_path)
   figures_idx <- grep("05_figures.qmd", skeleton, fixed = TRUE)
@@ -335,14 +338,14 @@ test_that("rerender updates NEMT legacy figures/tables order in skeleton", {
   skeleton[tables_idx] <- stringr::str_replace(skeleton[tables_idx], "06_tables.qmd", "06_figures.qmd")
   writeLines(skeleton, skeleton_path)
 
-  file.rename(
+  expect_true(file.rename(
     from = fs::path(report_dir, "05_figures.qmd"),
     to = fs::path(report_dir, "06_figures.qmd")
-  )
-  file.rename(
+  ))
+  expect_true(file.rename(
     from = fs::path(report_dir, "06_tables.qmd"),
     to = fs::path(report_dir, "05_tables.qmd")
-  )
+  ))
 
   create_template(
     rerender_skeleton = TRUE,
@@ -363,10 +366,70 @@ test_that("rerender updates NEMT legacy figures/tables order in skeleton", {
   unlink(report_dir, recursive = TRUE)
 })
 
+test_that("rerender updates SAFE legacy order when interactive is TRUE or FALSE", {
+  on.exit(unlink(fs::path(getwd(), "report"), recursive = TRUE), add = TRUE)
+  for (is_interactive in c(TRUE, FALSE)) {
+    create_template(type = "safe")
+
+    report_dir <- fs::path(getwd(), "report")
+    skeleton_path <- fs::path(report_dir, "safe_species_skeleton.qmd")
+    skeleton <- readLines(skeleton_path)
+    figures_idx <- grep("11_figures.qmd", skeleton, fixed = TRUE)
+    tables_idx <- grep("12_tables.qmd", skeleton, fixed = TRUE)
+
+    skeleton[figures_idx] <- stringr::str_replace(skeleton[figures_idx], "11_figures.qmd", "11_tables.qmd")
+    skeleton[tables_idx] <- stringr::str_replace(skeleton[tables_idx], "12_tables.qmd", "12_figures.qmd")
+    writeLines(skeleton, skeleton_path)
+
+    expect_true(file.rename(
+      from = fs::path(report_dir, "11_figures.qmd"),
+      to = fs::path(report_dir, "12_figures.qmd")
+    ))
+    expect_true(file.rename(
+      from = fs::path(report_dir, "12_tables.qmd"),
+      to = fs::path(report_dir, "11_tables.qmd")
+    ))
+
+    if (is_interactive) {
+      testthat::local_mocked_bindings(
+        interactive = function() TRUE,
+        readline = function(...) "y",
+        .package = "base"
+      )
+    } else {
+      testthat::local_mocked_bindings(
+        interactive = function() FALSE,
+        .package = "base"
+      )
+    }
+
+    expect_no_error(
+      create_template(
+        rerender_skeleton = TRUE,
+        type = "safe",
+        file_dir = "report"
+      ) |> suppressWarnings()
+    )
+
+    updated_skeleton <- readLines(skeleton_path)
+    updated_figures_idx <- grep("11_figures.qmd", updated_skeleton, fixed = TRUE)
+    updated_tables_idx <- grep("12_tables.qmd", updated_skeleton, fixed = TRUE)
+
+    expect_true(file.exists(fs::path(report_dir, "11_figures.qmd")))
+    expect_true(file.exists(fs::path(report_dir, "12_tables.qmd")))
+    expect_false(file.exists(fs::path(report_dir, "12_figures.qmd")))
+    expect_false(file.exists(fs::path(report_dir, "11_tables.qmd")))
+    expect_lt(updated_figures_idx, updated_tables_idx)
+
+    unlink(report_dir, recursive = TRUE)
+  }
+})
+
 test_that("rerender handles mixed state with legacy tables only", {
   create_template() |> suppressWarnings()
 
   report_dir <- fs::path(getwd(), "report")
+  on.exit(unlink(report_dir, recursive = TRUE), add = TRUE)
   skeleton_path <- fs::path(report_dir, "sar_species_skeleton.qmd")
   skeleton <- readLines(skeleton_path)
   tables_idx <- grep("09_tables.qmd", skeleton, fixed = TRUE)
@@ -374,10 +437,10 @@ test_that("rerender handles mixed state with legacy tables only", {
   skeleton[tables_idx] <- stringr::str_replace(skeleton[tables_idx], "09_tables.qmd", "08_tables.qmd")
   writeLines(skeleton, skeleton_path)
 
-  file.rename(
+  expect_true(file.rename(
     from = fs::path(report_dir, "09_tables.qmd"),
     to = fs::path(report_dir, "08_tables.qmd")
-  )
+  ))
 
   expect_no_error(
     create_template(
@@ -397,6 +460,7 @@ test_that("rerender handles mixed state with legacy figures only", {
   create_template() |> suppressWarnings()
 
   report_dir <- fs::path(getwd(), "report")
+  on.exit(unlink(report_dir, recursive = TRUE), add = TRUE)
   skeleton_path <- fs::path(report_dir, "sar_species_skeleton.qmd")
   skeleton <- readLines(skeleton_path)
   figures_idx <- grep("08_figures.qmd", skeleton, fixed = TRUE)
@@ -404,10 +468,10 @@ test_that("rerender handles mixed state with legacy figures only", {
   skeleton[figures_idx] <- stringr::str_replace(skeleton[figures_idx], "08_figures.qmd", "09_figures.qmd")
   writeLines(skeleton, skeleton_path)
 
-  file.rename(
+  expect_true(file.rename(
     from = fs::path(report_dir, "08_figures.qmd"),
     to = fs::path(report_dir, "09_figures.qmd")
-  )
+  ))
 
   expect_no_error(
     create_template(

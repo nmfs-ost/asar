@@ -708,6 +708,13 @@ create_template <- function(
         subdir = subdir,
         tables_dir = tables_dir
       )
+      # rename tables doc
+      if (tables_doc_name != "09_tables.qmd") {
+        file.rename(
+          from = fs::path(subdir, "09_tables.qmd"),
+          to = fs::path(subdir, tables_doc_name)
+        )
+      }
     } else {
       # extract name for tables.qmd from report folder
       tables_doc_name <- if (can_rename_legacy_doc(tbl_info)) {
