@@ -502,6 +502,9 @@ create_template <- function(
         dir.create(bib_dir, recursive = FALSE)
         journals::download_bibs(bib_dir)
         bib_file <- list.files(bib_dir, pattern = ".bib", full.names = TRUE)
+        # Remove .sty file and copy to main report folder
+        # file.copy(list.files(bib_dir, pattern = ".sty", full.names = TRUE), subdir, overwrite = FALSE) |> suppressWarnings()
+        # file.remove(list.files(bib_dir, pattern = ".sty", full.names = TRUE))
         bib_name <- basename(bib_file)
       } else {
         bib_name <- NULL
@@ -573,7 +576,7 @@ create_template <- function(
     } else {
       #### Copy template files to report folder ----
       # Check if there are already files in the folder
-      if (length(list.files(subdir)) < 3) {
+      if (length(list.files(subdir)) < 4) {
         # copy quarto files
         file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
         # copy before-body tex
