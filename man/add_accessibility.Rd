@@ -46,8 +46,8 @@ for figures and tables.
 }
 \details{
 This function acts as a wrapper for the asar package's accessibility
-workflow. It first applies document tagging via add_tagging() and then
-injects alternative text using add_alttext().
+workflow. It first applies document tagging via \link[asar]{add_tagging} and then
+injects alternative text using \link[asar]{add_alttext}.
 }
 \examples{
 \dontrun{
@@ -76,4 +76,7 @@ add_accessibility(
 )
 }
 
+}
+\seealso{
+\code{\link[=add_alttext]{add_alttext()}}, \code{\link[=add_tagging]{add_tagging()}}
 }

@@ -29,10 +29,12 @@
 #' 
 #' @details
 #' This function acts as a wrapper for the asar package's accessibility
-#' workflow. It first applies document tagging via add_tagging() and then
-#' injects alternative text using add_alttext().
+#' workflow. It first applies document tagging via \link[asar]{add_tagging} and then
+#' injects alternative text using \link[asar]{add_alttext}.
 #' 
 #' @return No return value. Modifies files on disk and optionally renders a .pdf.
+#'
+#' @seealso [add_alttext()], [add_tagging()]
 #'
 #' @export
 #'
