@@ -51,28 +51,21 @@
     </names>
   </macro>
   <macro name="author-short">
-    <choose>
-      <if type="report" variable="genre" match="all">
-        <text variable="publisher"/>
-      </if>
-      <else>
-        <names variable="author">
-          <name form="short" and="text" delimiter=", " initialize-with=". "/>
-          <substitute>
-            <names variable="editor"/>
-            <names variable="translator"/>
-            <choose>
-              <if type="bill book graphic legal_case legislation motion_picture report song" match="any">
-                <text variable="title" form="short" font-style="italic"/>
-              </if>
-              <else>
-                <text variable="title" form="short" quotes="true"/>
-              </else>
-            </choose>
-          </substitute>
-        </names>
-      </else>
-    </choose>
+    <names variable="author">
+      <name form="short" and="text" delimiter=", " initialize-with=". "/>
+      <substitute>
+        <names variable="editor"/>
+        <names variable="translator"/>
+        <choose>
+          <if type="bill book graphic legal_case legislation motion_picture report song" match="any">
+            <text variable="title" form="short" font-style="italic"/>
+          </if>
+          <else>
+            <text variable="title" form="short" quotes="true"/>
+          </else>
+        </choose>
+      </substitute>
+    </names>
   </macro>
   <macro name="access">
     <choose>
@@ -251,10 +244,11 @@
       <choose>
         <if type="report" variable="genre" match="all">
           <group delimiter=". ">
-            <text variable="publisher"/>
-            <text macro="issued-month-year"/>
+            <text macro="author"/>
+            <text macro="issued-year"/>
             <text variable="title"/>
-            <text variable="publisher-place"/>
+            <text variable="publisher"/>
+            <text variable="number-of-pages" suffix=" p."/>
             <text macro="stock-assessment-access"/>
           </group>
         </if>
