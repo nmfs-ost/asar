@@ -499,12 +499,15 @@ create_template <- function(
     if (is.null(bib_file)) {
       if (!rerender_skeleton) {
         bib_dir <- file.path(subdir, "bibliography_files")
-        dir.create(bib_dir, recursive = FALSE)
+        if (dir.exists(bib_dir) == TRUE) {
+          dir.create(bib_dir, recursive = FALSE)
+        }
         journals::download_bibs(bib_dir)
-        bib_file <- list.files(bib_dir, pattern = ".bib", full.names = TRUE)
+        bib_file_paths <- list.files(bib_dir, pattern = ".bib", full.names = TRUE)
+        bib_file <- bib_file_paths[!grepl(".sty", bib_file_paths)]
         # Remove .sty file and copy to main report folder
-        # file.copy(list.files(bib_dir, pattern = ".sty", full.names = TRUE), subdir, overwrite = FALSE) |> suppressWarnings()
-        # file.remove(list.files(bib_dir, pattern = ".sty", full.names = TRUE))
+        file.copy(list.files(bib_dir, pattern = ".sty", full.names = TRUE), subdir, overwrite = FALSE) |> suppressWarnings()
+        file.remove(list.files(bib_dir, pattern = ".sty", full.names = TRUE))
         bib_name <- basename(bib_file)
       } else {
         bib_name <- NULL
@@ -513,6 +516,18 @@ create_template <- function(
       file.copy(bib_file, subdir, overwrite = TRUE) |> suppressWarnings()
       bib_name <- basename(bib_file)
     }
+    
+    # append asar citation to first .bib
+    asar_citation <- "
+@Manual{asar_2026,
+  title = {asar: Build NOAA Stock Assessment Report},
+  author = {Samantha Schiano and Sophie Breitbart and Steve Saul},
+  year = {2026},
+  note = {R package version 2.2.0},
+  url = {https://github.com/nmfs-ost/asar},
+}"
+    
+    write(asar_citation, file = bib_file[1], append = TRUE)
 
     #### Read in previous skeleton if rerender ----
     # Check if this is a rerender of the skeleton file
@@ -576,6 +591,11 @@ create_template <- function(
     } else {
       #### Copy template files to report folder ----
       # Check if there are already files in the folder
+      # Only files present should be:
+      # 1. bibliography_files folder
+      # 2. support_files folder
+      # 3. journals-bibnames.sty
+      # 4. ?
       if (length(list.files(subdir)) < 4) {
         # copy quarto files
         file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
