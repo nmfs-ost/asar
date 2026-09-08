@@ -24,15 +24,28 @@ test_that("Can trace template files from package", {
 })
 
 test_that("create_template() uses journals bibliographies by default", {
-  local_mocked_bindings(
-    download_bibs = function(path, ...) {
-      writeLines("@article{test-reference}", file.path(path, "test-references.bib"))
-    },
-    .package = "journals"
+  # Current journals bib files
+  # journals_bibs_path <- file.path(getwd(), "journals_bibs")
+  # dir.create(journals_bibs_path)
+  # journals::download_bibs(journals_bibs_path)
+  # journals_bibs <- list.files(journals_bibs_path, full.names = FALSE)
+  journals_bibs <- c(
+    "aquaculture.bib",
+    "canjfishaquatsci.bib",
+    "conservation-policy-management.bib",
+    "ecology.bib",
+    "fish.bib",
+    "fishres.bib",
+    "icesjmarsci.bib",
+    "jfishbiol.bib",
+    # "journals-bibnames.sty", # exclude sty
+    "oceanography-limnology.bib",
+    "transamfishsoc.bib"
   )
-  output_dir <- local_tempdir()
 
-  create_template(file_dir = output_dir, bib_file = NULL) |>
+  output_dir <- getwd()
+  
+  create_template(bib_file = NULL) |>
     suppressWarnings() |>
     suppressMessages()
 
@@ -42,13 +55,15 @@ test_that("create_template() uses journals bibliographies by default", {
   skeleton <- readLines(file.path(report_dir, "sar_species_skeleton.qmd"))
 
   expect_true(dir.exists(bibliography_dir))
-  expect_length(bib_files, 1L)
+  expect_equal(bib_files, journals_bibs)
   expect_true(any(grepl(
     paste0("bibliography_files/", bib_files),
     skeleton,
     fixed = TRUE
   )))
   expect_false(file.exists(file.path(report_dir, "asar_references.bib")))
+  
+  unlink(fs::path(output_dir, "report"), recursive = T)
 })
 
 test_that("create_template() creates correct files", {
@@ -73,6 +88,7 @@ test_that("create_template() creates correct files", {
     "sar_species_skeleton.qmd",
     #   "model_results_metadata.md",
     "report_glossary.tex",
+    "journals-bibnames.sty",
     # "asar_references.bib",
     "bibliography_files",
     "support_files"
@@ -149,6 +165,7 @@ test_that("create_template() creates correct files", {
     # "asar_references.bib",
     "preamble.R",
     "report_glossary.tex",
+    "journals-bibnames.sty",
     "bibliography_files",
     "support_files"
   )
@@ -205,6 +222,7 @@ test_that("create_template() creates correct files", {
     # "asar_references.bib",
     "preamble.R",
     "report_glossary.tex",
+    "journals-bibnames.sty",
     "bibliography_files",
     "support_files"
   )
@@ -474,6 +492,7 @@ test_that("model_results metadata file created", {
     "std_output_metadata.md",
     "report_glossary.tex",
     # "asar_references.bib",
+    "journals-bibnames.sty",
     "bibliography_files",
     "support_files"
   )
