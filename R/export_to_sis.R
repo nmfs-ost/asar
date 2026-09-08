@@ -100,15 +100,19 @@ export_to_sis <- function(
     dplyr::filter(Primary == "Y") |>
     dplyr::pull(Category)
   
-  if (length(primary_type) > 1) {
-    cli::cli_abort("Multiple categories are marked as 'Y' in the 'Primary' column. Only one category can be designated as 'Y'.")
+  if (length(primary_type) > 2) {
+    cli::cli_abort("More than two categories are marked as 'Y' in the 'Primary' column. Only two categories can be designated as 'Y'.")
   } else if (length(primary_type) == 0) {
-    cli::cli_abort("Zero categories are marked as 'Y' in the 'Primary' column. One category ('Spawners' or 'Biomass') must be designated as 'Y'.")
+    cli::cli_abort("Zero categories are marked as 'Y' in the 'Primary' column. At least one and at most two categories can be chosen as a Primary time series: Fmort OR Recruitment OR Catch, and Spawners OR Biomass.")
   } else {
-    if (primary_type %notin% c("Spawners", "Biomass")){
-      cli::cli_abort("Neither 'Spawners' nor 'Biomass' categories marked as 'Y'. One of these categories must be designated as 'Y'.")
+    primary_options1 <- c("Fmort", "Recruitment", "Catch")
+    primary_options2 <- c("Spawners", "Biomass")
+    if (any(primary_type %notin% primary_options1) & any(primary_type %notin% primary_options2)){
+      cli::cli_abort("At least one and at most two categories can be chosen as a Primary time series: Fmort OR Recruitment OR Catch, and Spawners OR Biomass. One of these categories must be designated as 'Y'.")
     }
   }
+  
+  # TODO: Add checks for missing values and warn user if present
 
 
   # name json file
