@@ -90,7 +90,7 @@
 #' Default: NULL
 #'
 #' @param bib_file File path to additional bibliography file (`.bib`) used for citing references in
-#' the report. By default, all bibliogrphy files from the journals package and 
+#' the report. By default, all bibliography files are sourced from the \pkg{journals} package and 
 #' references for all NMFS stock assessment reports are provided.
 #'
 #' Default: NULL
@@ -496,12 +496,12 @@ create_template <- function(
     }
 
     # Add bib file
+    bib_dir <- file.path(subdir, "bibliography_files")
+    if (dir.exists(bib_dir) == TRUE) {
+      dir.create(bib_dir, recursive = FALSE)
+    }
     if (is.null(bib_file)) {
       if (!rerender_skeleton) {
-        bib_dir <- file.path(subdir, "bibliography_files")
-        if (dir.exists(bib_dir) == TRUE) {
-          dir.create(bib_dir, recursive = FALSE)
-        }
         journals::download_bibs(bib_dir)
         bib_file_paths <- list.files(bib_dir, pattern = ".bib", full.names = TRUE)
         bib_file <- bib_file_paths[!grepl(".sty", bib_file_paths)]
@@ -513,7 +513,7 @@ create_template <- function(
         bib_name <- NULL
       }
     } else {
-      file.copy(bib_file, subdir, overwrite = TRUE) |> suppressWarnings()
+      file.copy(bib_file, bib_dir, overwrite = TRUE) |> suppressWarnings()
       bib_name <- basename(bib_file)
     }
     
