@@ -70,8 +70,18 @@ create_figures_doc <- function(subdir = getwd(),
 
   # create sublist of only rda figure files
   rda_fig_list <- file_list[grepl("_figure.rda", file_list)]
+  # create list of executive summary figures
+  exec_sum_fig_list <- c("biomass_figure.rda", "fishing_mortality_figure.rda")
+  # remove exec_sum_fig_list from rda_fig_list
+  if (any(rda_fig_list %in% exec_sum_fig_list)) {
+    exec_sum_fig_list <- exec_sum_fig_list[exec_sum_fig_list %in% rda_fig_list]
+    cli::cli_alert_info("The following figure{?s} will be excluded from the figures doc because they will be in the Executive Summary: {paste(exec_sum_fig_list, collapse = ', ')}")
+    rda_fig_list <- rda_fig_list[!rda_fig_list %in% exec_sum_fig_list]
+  }
+  
   # create sublist of only non-rda figure files
   non.rda_fig_list <- file_list[!grepl(".rda", file_list)]
+
 
   # Check if rda or non-rda already exists and remove from list
   new_rda <- FALSE
@@ -227,6 +237,33 @@ rm(rda)\n
         wrap = TRUE
       )
     }
+    
+    if (length(exec_sum_fig_list) > 0) {
+      es_figures_doc <- ""
+      for (i in seq_along(exec_sum_fig_list)) {
+        fig_chunk <- create_fig_chunks(
+          fig = exec_sum_fig_list[i],
+          figures_dir = figures_dir
+        )
+        
+        es_figures_doc <- paste0(
+          es_figures_doc, fig_chunk
+         # ,"{{< pagebreak >}} \n\n"
+        )
+      }
+      es_figures_doc <- paste0(
+        # setup chunk
+        paste0(
+          add_chunk(
+            glue::glue("figures_dir <- fs::path('{figures_dir}', 'figures')"),
+            label = "set-rda-dir-figs-es"
+          ),
+          "\n"
+        ),
+        # figure chunks
+        es_figures_doc
+      )
+    }
 
     # combine figures_doc setup with figure chunks
     figures_doc <- paste0(
@@ -263,6 +300,13 @@ rm(rda)\n
     file = fs::path(subdir, figures_doc_name),
     append = append
   )
+  
+  # add exec summary figures to ES qmd
+  if (file.exists(fs::path(subdir, "01_executive_summary.qmd"))) {
+  exec_sum <- readLines(fs::path(subdir, "01_executive_summary.qmd"))
+  exec_sum <- sub("<!-- Multiple figures and tables designed for.*", es_figures_doc, exec_sum)
+  writeLines(exec_sum, fs::path(subdir, "01_executive_summary.qmd"))    
+  }
 
   if (doc_info$using_legacy) {
     file.rename(
