@@ -488,6 +488,7 @@ create_template <- function(
     before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "asar")
     # header_file <- system.file("resources", "formatting_files", "in-header.tex", package = "asar")
     # format_files <- list(before_body_file, header_file)
+    create_blank_sis(dir = file.path(subdir, "report"))
 
     #### Links to files for yaml ----
     if (is.null(spp_image) && species == "species") {
@@ -600,6 +601,7 @@ create_template <- function(
         )
         # copy before-body tex
         if (!file.exists(file_dir, "support_files", "before-body.tex")) file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
+        if (!file.exists(file_dir, "support_files", "sis_assmt_template.csv") & !file.exists("sis_ts_template.csv")) create_blank_sis(supdir)
         # customize titlepage tex
         if (!file.exists(file_dir, "support_files", "_titlepage.tex") | !is.null(species)) create_titlepage_tex(office = office, subdir = supdir, species = species)
         # customize in-header tex
@@ -637,6 +639,8 @@ create_template <- function(
         }
         # copy csl file
         file.copy(system.file("resources", "cjfas.csl", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+        # copy blank sis ts and assessment templates if not present
+        create_blank_sis(dir = file.path(supdir, "report"))
         # show message and make README stating model_results info
         if (!is.null(model_results)) {
           mod_time <- as.character(file.info(fs::path(model_results), extra_cols = FALSE)$ctime)
@@ -684,6 +688,8 @@ create_template <- function(
           file.copy(system.file("resources", "us_doc_logo.png", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
           # Copy glossary
           file.copy(system.file("glossary", "report_glossary.tex", package = "asar"), subdir, overwrite = FALSE) |> suppressWarnings()
+          # copy blank sis ts and assessment templates if not present
+          create_blank_sis(dir = file.path(supdir, "report"))
           # Copy html format file if applicable
           if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
         } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
