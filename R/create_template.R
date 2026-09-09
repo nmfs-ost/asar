@@ -504,21 +504,20 @@ create_template <- function(
     if (dir.exists(bib_dir) == TRUE) {
       dir.create(bib_dir, recursive = FALSE)
     }
-    if (is.null(bib_file)) {
-      if (!rerender_skeleton) {
-        journals::download_bibs(bib_dir)
-        bib_file_paths <- list.files(bib_dir, pattern = ".bib", full.names = TRUE)
-        bib_file <- bib_file_paths[!grepl(".sty", bib_file_paths)]
-        # Remove .sty file and copy to main report folder
-        file.copy(list.files(bib_dir, pattern = ".sty", full.names = TRUE), subdir, overwrite = FALSE) |> suppressWarnings()
-        file.remove(list.files(bib_dir, pattern = ".sty", full.names = TRUE))
-        bib_name <- basename(bib_file)
-      } else {
-        bib_name <- NULL
-      }
-    } else {
+    
+    if (!rerender_skeleton) {
+      journals::download_bibs(bib_dir)
+      bib_file_paths <- list.files(bib_dir, pattern = ".bib", full.names = TRUE)
+      base_bib_file <- bib_file_paths[!grepl(".sty", bib_file_paths)]
+      # Remove .sty file and copy to main report folder
+      file.copy(list.files(bib_dir, pattern = ".sty", full.names = TRUE), subdir, overwrite = FALSE) |> suppressWarnings()
+      file.remove(list.files(bib_dir, pattern = ".sty", full.names = TRUE))
+      bib_name <- basename(base_bib_file)
+    }
+    # Add bib file if bib_file is not NULL
+    if (!is.null(bib_file)) {
       file.copy(bib_file, bib_dir, overwrite = TRUE) |> suppressWarnings()
-      bib_name <- basename(bib_file)
+      bib_name <- c(bib_name, basename(bib_file))
     }
     
     # append asar citation to first .bib
