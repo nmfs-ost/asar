@@ -91,7 +91,11 @@
 #'
 #' @param bib_file File path to additional bibliography file (`.bib`) used for citing references in
 #' the report. By default, all bibliography files are sourced from the \pkg{journals} package and 
-#' references for all NMFS stock assessment reports are provided.
+#' references for all NMFS stock assessment reports are provided. To see a full 
+#' list of journals included in these files, please visit the
+#' [{journals} README](https://github.com/nmfs-ost/journals/blob/main/README.md) 
+#' or see the description at the top of each bib file. It is 
+#' recommended to open these files in a text editor rather than R.
 #'
 #' Default: NULL
 #'
