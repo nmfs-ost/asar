@@ -21,6 +21,20 @@ create_citation <- function(
   title = "[TITLE]",
   year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
 ) {
+  # Based on the following bib entry
+  # @techreport{bredeck_2026,
+  #   type           = {stockassessment}, % CSL maps 'type' in bibtex to 'genre'
+  #   title            = {Status of Petrale Sole off the U.S. West Coast},
+  #   author       = {Bredeck, Samantha},
+  #   institution = {NOAA Fisheries OST},
+  #   address     = {Silver Spring, MD},
+  #   DOI           = {DOI-123-456}, % or URL
+  #   URL           = {https://github.com/nmfs-ost/asar},
+  #   year           = {2025},
+  #   month       = {Sep}
+  # }
+  # Authors. Year. Title. Publishing office. # p. Accessible at [URL/DOI].
+  
   # Check if authors is input - improved from previous fxn so did not fail
   if (is.null(authors) | any(authors == "")) {
     cli::cli_alert_warning("Authorship not defined.")
@@ -33,7 +47,7 @@ create_citation <- function(
       "\n",
       "[AUTHOR NAME]. [YEAR]. ",
       title, ". National Marine Fisheries Service, ",
-      "[CITY], [STATE]. \\pageref*{LastPage}{} pp."
+      "[CITY], [STATE]. \\pageref*{LastPage}{} pp. Accessible at [URL/DOI]."
     )
   } else {
     author_data_frame <- data.frame(office = authors)
@@ -62,46 +76,23 @@ create_citation <- function(
     # Authored by Sam Schiano with contributions from Kelli Johnson
 
     region_specific_part <- switch(primary_author_office[["office"]],
-      "AFSC" = {
-        paste0(
-          "North Pacific Fishery Management Council, Anchorage, AK. Available from ",
-          "https://www.npfmc.org/library/safe-reports/"
-        )
-      },
-      "NWFSC" = {
-        paste0(
-          "Prepared by [COMMITTEE]."
-        )
-      },
-      "SEFSC" = {
-        paste0(
-          "SEDAR, North Charleston SC. [XX] pp. ",
-          "available online at: http://sedarweb.org/"
-        )
-      },
-      "SWFSC" = {
-        paste0(
-          "Pacific Fishery Management Council, Portland, OR. Available from https://www.pcouncil.org/stock-assessments-and-fishery-evaluation-safe-documents/."
-        )
-      },
-      "PIFSC" = {
-        paste0(
-          "NOAA Tech. Memo. [TECH MEMO NUMBER]",
-          ", "
-        )
-      },
+      "AFSC"  = "North Pacific Fishery Management Council, Anchorage, AK. \\pageref*{LastPage}{} pp. Available from https://www.npfmc.org/library/safe-reports/",
+      "NWFSC" = "Pacific Fishery Management Council, Portland, OR. \\pageref*{LastPage}{} pp. Available from https://www.pcouncil.org/stock-assessments-and-fishery-evaluation-safe-documents/",
+      "SEFSC" = "SEDAR, North Charleston SC. \\pageref*{LastPage}{} pp. available online at: http://sedarweb.org/",
+      "SWFSC" = "Pacific Fishery Management Council, Portland, OR. \\pageref*{LastPage}{} pp. Available from https://www.pcouncil.org/stock-assessments-and-fishery-evaluation-safe-documents/",
+      "PIFSC" = "Pacific Islands Fisheries Science Center. [CITY] [STATE]. \\pageref*{LastPage}{} pp. Available at [URL/DOI]",
       "NEFSC" = {
         paste0(
           primary_author_office[["name"]], ", ",
           primary_author_office[["city"]], ", ",
-          primary_author_office[["state"]], ". "
+          primary_author_office[["state"]], ". \\pageref*{LastPage}{} pp. Available at https://apps-nefsc.fisheries.noaa.gov/saw/sasi.php"
         )
       },
       {
         # Default
         paste0(
           "National Marine Fisheries Service, ",
-          "[CITY], [STATE]. "
+          "[CITY], [STATE]. \\pageref*{LastPage}{} pp. Available at [URL/DOI]"
         )
       }
     )
@@ -111,11 +102,10 @@ create_citation <- function(
       "\n",
       "Please cite this publication as: \n",
       "\n",
-      ifelse(primary_author_office[["office"]] == "SEFSC", "SEDAR.", author_list),
+      author_list,
       " ", year, ". ",
       glue::glue("{title}"), ". ",
-      region_specific_part,
-      " \\pageref*{LastPage}{} pp."
+      region_specific_part
     )
   }
 
