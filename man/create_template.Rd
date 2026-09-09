@@ -19,7 +19,7 @@ create_template(
   tables_dir = getwd(),
   figures_dir = getwd(),
   spp_image = NULL,
-  bib_file = "asar_references.bib",
+  bib_file = NULL,
   new_template = TRUE,
   rerender_skeleton = FALSE,
   custom_sections = NULL,
@@ -114,10 +114,15 @@ If empty, searches \code{asar} resources for a matching species name.
 
 Default: NULL}
 
-\item{bib_file}{File path to bibliography file (\code{.bib}) used for citing references in
-the report
+\item{bib_file}{File path to additional bibliography file (\code{.bib}) used for citing references in
+the report. By default, all bibliography files are sourced from the \pkg{journals} package and
+references for all NMFS stock assessment reports are provided. To see a full
+list of journals included in these files, please visit the
+\href{https://github.com/nmfs-ost/journals/blob/main/README.md}{{journals} README}
+or see the description at the top of each bib file. It is
+recommended to open these files in a text editor rather than R.
 
-Default: "asar_references.bib"}
+Default: NULL}
 
 \item{new_template}{TRUE/FALSE; Create a new template? If true,
 will pull the last saved stock assessment report skeleton.
