@@ -21,6 +21,30 @@ create_figures_doc <- function(subdir = getwd(),
   empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
 
   fig_header <- "# Figures {#sec-figures}\n \n"
+  
+  # list all files in figures
+  file_list <- list.files(file.path(figures_dir, "figures"))
+  
+  # create sublist of only rda figure files
+  rda_fig_list <- file_list[grepl("_figure.rda", file_list)]
+  # create list of executive summary figures
+  exec_sum_fig_list <- c("biomass_figure.rda", "fishing_mortality_figure.rda")
+  # create list of executive summary figures in the rda figure list
+  selected_exec_sum_fig_list <- exec_sum_fig_list[exec_sum_fig_list %in% rda_fig_list]
+  
+  # remove exec_sum_fig_list from rda_fig_list
+  if (length(selected_exec_sum_fig_list) > 0) {
+    cli::cli_alert_success("Found {length(selected_exec_sum_fig_list)} Executive Summary figure{?s} in {fs::path(figures_dir, 'figures')}: {paste(selected_exec_sum_fig_list, collapse = ', ')}")
+    rda_fig_list <- rda_fig_list[!rda_fig_list %in% selected_exec_sum_fig_list]
+    if (length(rda_fig_list) == 0) {
+      rda_fig_list <- NULL
+    }
+  } else {
+    selected_exec_sum_fig_list <- NULL
+  }
+  
+  # create sublist of only non-rda figure files
+  non.rda_fig_list <- file_list[!grepl(".rda", file_list)]
 
   # append figure-producing code to non-empty figures doc, if it exists, vs. overwriting it
   append <- FALSE
@@ -28,13 +52,15 @@ create_figures_doc <- function(subdir = getwd(),
     existing_figs_doc <- file.path(subdir, list.files(subdir, pattern = "figures.qmd"))
     figure_content <- readLines(existing_figs_doc) |>
       suppressWarnings()
-    if ("# Figures {#sec-figures}" %in% figure_content) {
+    if ("# Figures {#sec-figures}" %in% figure_content & !is.null(rda_fig_list)) {
       append <- TRUE
       cli::cli_alert_info("Figures doc will be appended to include figures in `figures_dir`.")
 
       # remove empty_doc_text
       updated_content <- gsub(empty_doc_text, "", figure_content, fixed = TRUE)
       writeLines(updated_content, existing_figs_doc)
+    } else {
+      figure_content <- ""
     }
   } else {
     figure_content <- ""
@@ -64,23 +90,6 @@ create_figures_doc <- function(subdir = getwd(),
   }
 
   figures_doc <- ""
-
-  # list all files in figures
-  file_list <- list.files(file.path(figures_dir, "figures"))
-
-  # create sublist of only rda figure files
-  rda_fig_list <- file_list[grepl("_figure.rda", file_list)]
-  # create list of executive summary figures
-  exec_sum_fig_list <- c("biomass_figure.rda", "fishing_mortality_figure.rda")
-  # remove exec_sum_fig_list from rda_fig_list
-  if (any(rda_fig_list %in% exec_sum_fig_list)) {
-    exec_sum_fig_list <- exec_sum_fig_list[exec_sum_fig_list %in% rda_fig_list]
-    cli::cli_alert_info("The following figure{?s} will be excluded from the figures doc because they will be in the Executive Summary: {paste(exec_sum_fig_list, collapse = ', ')}")
-    rda_fig_list <- rda_fig_list[!rda_fig_list %in% exec_sum_fig_list]
-  }
-  
-  # create sublist of only non-rda figure files
-  non.rda_fig_list <- file_list[!grepl(".rda", file_list)]
 
 
   # Check if rda or non-rda already exists and remove from list
@@ -202,12 +211,12 @@ rm(rda)\n
         )
       }
     } else {
-      cli::cli_alert_warning("Found zero figures in an rda format (i.e., .rda) in {fs::path(figures_dir, 'figures')}.",
+      cli::cli_alert_warning("Found zero Figures section figures in an rda format (i.e., .rda) in {fs::path(figures_dir, 'figures')}.",
         wrap = TRUE
       )
     }
     if (length(non.rda_fig_list) > 0) {
-      cli::cli_alert_success("Found {length(non.rda_fig_list)}{ifelse(new_non.rda, ' new ', ' ')}figure{?s} in a non-rda format (e.g., .jpg, .png) in {fs::path(figures_dir, 'figures')}.",
+      cli::cli_alert_success("Found {length(non.rda_fig_list)}{ifelse(new_non.rda, ' new ', ' ')} Figures section figure{?s} in a non-rda format (e.g., .jpg, .png) in {fs::path(figures_dir, 'figures')}.",
         wrap = TRUE
       )
       non.rda_figures_doc <- ""
@@ -233,16 +242,16 @@ rm(rda)\n
         non.rda_figures_doc <- paste0(non.rda_figures_doc, fig_chunk)
       }
     } else {
-      cli::cli_alert_warning("Found zero figure files in a non-rda format (e.g., .jpg, .png) in {fs::path(figures_dir, 'figures')}.",
+      cli::cli_alert_warning("Found zero figures in a non-rda format (e.g., .jpg, .png) in {fs::path(figures_dir, 'figures')}.",
         wrap = TRUE
       )
     }
     
-    if (length(exec_sum_fig_list) > 0) {
+    if (!is.null(selected_exec_sum_fig_list)) {
       es_figures_doc <- ""
-      for (i in seq_along(exec_sum_fig_list)) {
+      for (i in seq_along(selected_exec_sum_fig_list)) {
         fig_chunk <- create_fig_chunks(
-          fig = exec_sum_fig_list[i],
+          fig = selected_exec_sum_fig_list[i],
           figures_dir = figures_dir
         )
         
@@ -302,10 +311,10 @@ rm(rda)\n
   )
   
   # add exec summary figures to ES qmd
-  if (file.exists(fs::path(subdir, "01_executive_summary.qmd"))) {
-  exec_sum <- readLines(fs::path(subdir, "01_executive_summary.qmd"))
-  exec_sum <- sub("<!-- Multiple figures and tables designed for.*", es_figures_doc, exec_sum)
-  writeLines(exec_sum, fs::path(subdir, "01_executive_summary.qmd"))    
+  if (file.exists(fs::path(subdir, "01_executive_summary.qmd")) & !is.null(selected_exec_sum_fig_list)) {
+    exec_sum <- readLines(fs::path(subdir, "01_executive_summary.qmd"))
+    exec_sum <- sub("<!-- Multiple figures and tables designed for.*", es_figures_doc, exec_sum)
+    writeLines(exec_sum, fs::path(subdir, "01_executive_summary.qmd"))    
   }
 
   if (doc_info$using_legacy) {
