@@ -513,15 +513,9 @@ create_template <- function(
       file.copy(list.files(bib_dir, pattern = ".sty", full.names = TRUE), subdir, overwrite = FALSE) |> suppressWarnings()
       file.remove(list.files(bib_dir, pattern = ".sty", full.names = TRUE))
       bib_name <- basename(base_bib_file)
-    }
-    # Add bib file if bib_file is not NULL
-    if (!is.null(bib_file)) {
-      file.copy(bib_file, bib_dir, overwrite = TRUE) |> suppressWarnings()
-      bib_name <- c(bib_name, basename(bib_file))
-    }
-    
-    # append asar citation to first .bib
-    asar_citation <- "
+      
+      # append asar citation to first .bib
+      asar_citation <- "
 @Manual{asar_2026,
   title = {asar: Build NOAA Stock Assessment Report},
   author = {Samantha Schiano and Sophie Breitbart and Steve Saul},
@@ -529,9 +523,17 @@ create_template <- function(
   note = {R package version 2.2.0},
   url = {https://github.com/nmfs-ost/asar},
 }"
+      
+      write(asar_citation, file = base_bib_file[1], append = TRUE)
+    }
+    # Add bib file if bib_file is not NULL
+    if (!is.null(bib_file)) {
+      file.copy(bib_file, bib_dir, overwrite = TRUE) |> suppressWarnings()
+      bib_name <- c(bib_name, basename(bib_file))
+    } else {
+      bib_name <- NULL
+    }
     
-    write(asar_citation, file = bib_file[1], append = TRUE)
-
     #### Read in previous skeleton if rerender ----
     # Check if this is a rerender of the skeleton file
     if (rerender_skeleton) {
