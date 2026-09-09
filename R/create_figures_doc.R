@@ -195,7 +195,7 @@ rm(rda)\n
   } else {
     # paste rda figure code chunks into one object
     if (length(rda_fig_list) > 0) {
-      cli::cli_alert_success("Found {length(rda_fig_list)}{ifelse(new_rda, ' new ', ' ')}figure{?s} in an rda format (i.e., .rda) in {fs::path(figures_dir, 'figures')}.",
+      cli::cli_alert_success("Found {length(rda_fig_list)}{ifelse(new_rda, ' new ', ' ')} Figures section figure{?s} in an rda format (i.e., .rda) in {fs::path(figures_dir, 'figures')}.",
         wrap = TRUE
       )
       rda_figures_doc <- ""
@@ -313,8 +313,13 @@ rm(rda)\n
   # add exec summary figures to ES qmd
   if (file.exists(fs::path(subdir, "01_executive_summary.qmd")) & !is.null(selected_exec_sum_fig_list)) {
     exec_sum <- readLines(fs::path(subdir, "01_executive_summary.qmd"))
-    exec_sum <- sub("<!-- Multiple figures and tables designed for.*", es_figures_doc, exec_sum)
-    writeLines(exec_sum, fs::path(subdir, "01_executive_summary.qmd"))    
+    placeholder_snippet <- "<!-- Multiple figures and tables designed for"
+    if (any(grepl(placeholder_snippet, exec_sum, fixed = TRUE))) {
+      exec_sum <- sub("<!-- Multiple figures and tables designed for.*", es_figures_doc, exec_sum)      
+    } else {
+      exec_sum <- sub("## Assessment Model {#sec-assessment-model}", paste0(es_figures_doc, "## Assessment Model {#sec-assessment-model}"), exec_sum, fixed = TRUE)       
+    }
+    writeLines(exec_sum, fs::path(subdir, "01_executive_summary.qmd"))
   }
 
   if (doc_info$using_legacy) {
