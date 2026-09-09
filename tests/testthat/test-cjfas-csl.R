@@ -18,6 +18,7 @@ test_that("cjfas CSL includes stock-assessment report formatting", {
         '            <text macro="issued-year"/>',
         '            <text variable="title"/>',
         '            <text variable="publisher"/>',
+        '            <text variable="publisher-place"/>',
         '            <text variable="number-of-pages" suffix=" p."/>',
         '            <text macro="stock-assessment-access"/>'
       ),
