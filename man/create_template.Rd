@@ -114,7 +114,7 @@ If empty, searches \code{asar} resources for a matching species name.
 
 Default: NULL}
 
-\item{bib_file}{File path to additional bibliography file (\code{.bib}) used for citing references in
+\item{bib_file}{File path to an existing additional bibliography file (\code{.bib}) used for citing references in
 the report. By default, all bibliography files are sourced from the \pkg{journals} package and
 references for all NMFS stock assessment reports are provided. To see a full
 list of journals included in these files, please visit the
