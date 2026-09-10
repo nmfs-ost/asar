@@ -16,8 +16,6 @@
 #' @param author_list A list of strings containing pre-formatted author names
 #' and affiliations that would be found in the format in a yaml of a quarto
 #' file when using base R function `cat()`.
-#' @param bib_name Name of a bib file being added into the yaml. For example,
-#' "asar.bib".
 #'
 #' @return Create a string indicating the important formatting pieces for a
 #' quarto file for a stock assessment report.
@@ -50,7 +48,6 @@
 #'   format = "pdf",
 #'   parameters = TRUE,
 #'   custom_params = NULL,
-#'   bib_file = "path/asar_references.bib",
 #'   bib_name = "asar_references.bib",
 #'   year = 2025
 #' )
@@ -64,7 +61,6 @@ create_yaml <- function(
   spp_image = NULL,
   year = NULL,
   bib_name = NULL,
-  bib_file = "asar_references.bib",
   author_list = NULL,
   title = "[TITLE]",
   rerender_skeleton = FALSE,
@@ -189,20 +185,12 @@ create_yaml <- function(
     } # close if params to be included in template
 
     # add bib file name
-    if (bib_name != "asar_references.bib") {
-      # check if input bib file contains a path
-      if (file.exists(bib_file)) {
-        cli::cli_alert("Copying bibliography file to report folder...")
-        file.copy(bib_file, file_dir)
-        # bib_file_only <- stringr::str_extract(bib_file, "[^/]+$")
-        bib_format <- paste("-  ", bib_name, sep = "")
-      } else if (!file.exists(file.path(file_dir, bib_file))) {
-        cli::cli_alert_warning("Bibliography file {bib_file} is not in the report directory. The file will not be read in on render if it is not in the same path as the skeleton file.",
-          wrap = TRUE
-        )
-        bib_format <- paste("-  ", bib_name, sep = "")
-      }
+    if (!is.null(bib_name)) {
+      bib_format <- paste("-  bibliography_files/", bib_name, sep = "")
+      # add to yaml
+      yaml <- append(yaml, bib_format, after = grep("bibliography:", yaml))
     }
+    
     yaml <- paste(yaml, collapse = " \n")
   } else { # not rerendering skeleton
     # Creating YAML
@@ -322,11 +310,10 @@ create_yaml <- function(
     # )
 
     # Add option for bib file
-    # if (!is.null(bib_file)) {
     bib <- glue::glue(
       "bibliography: ", "\n"
     )
-    bib_all <- paste0("  ", "- ", bib_file, "\n", collapse = "")
+    bib_all <- paste0("  ", "- ", paste0("bibliography_files/", bib_name), "\n", collapse = "")
     bib <- glue::glue("{bib} \n {bib_all}")
     yaml <- paste(yaml, bib, sep = "")
     # add citation style
@@ -335,7 +322,6 @@ create_yaml <- function(
       "csl: support_files/cjfas.csl\n"
     )
     # }
-    # add in else statement once a national .bib file is made
 
     # Close yaml
     yaml <- glue::glue("{yaml}---\n")

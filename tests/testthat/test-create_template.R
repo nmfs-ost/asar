@@ -23,6 +23,49 @@ test_that("Can trace template files from package", {
   expect_equal(list.files(path), base_temp_files)
 })
 
+test_that("create_template() uses journals bibliographies by default", {
+  # Current journals bib files
+  # journals_bibs_path <- file.path(getwd(), "journals_bibs")
+  # dir.create(journals_bibs_path)
+  # journals::download_bibs(journals_bibs_path)
+  # journals_bibs <- list.files(journals_bibs_path, full.names = FALSE)
+  journals_bibs <- c(
+    "aquaculture.bib",
+    "canjfishaquatsci.bib",
+    "conservation-policy-management.bib",
+    "ecology.bib",
+    "fish.bib",
+    "fishres.bib",
+    "icesjmarsci.bib",
+    "jfishbiol.bib",
+    # "journals-bibnames.sty", # exclude sty
+    "oceanography-limnology.bib",
+    "transamfishsoc.bib"
+  )
+
+  output_dir <- getwd()
+  
+  create_template(bib_file = NULL) |>
+    suppressWarnings() |>
+    suppressMessages()
+
+  report_dir <- file.path(output_dir, "report")
+  bibliography_dir <- file.path(report_dir, "bibliography_files")
+  bib_files <- list.files(bibliography_dir, pattern = "\\.bib$")
+  skeleton <- readLines(file.path(report_dir, "sar_species_skeleton.qmd"))
+
+  expect_true(dir.exists(bibliography_dir))
+  expect_equal(bib_files, journals_bibs)
+  expect_true(any(grepl(
+    paste0("bibliography_files/", bib_files),
+    skeleton,
+    fixed = TRUE
+  )))
+  expect_false(file.exists(file.path(report_dir, "asar_references.bib")))
+  
+  unlink(fs::path(output_dir, "report"), recursive = T)
+})
+
 test_that("create_template() creates correct files", {
   # Define expected report files
   expect_report_files <- c(
@@ -45,7 +88,9 @@ test_that("create_template() creates correct files", {
     "sar_species_skeleton.qmd",
     #   "model_results_metadata.md",
     "report_glossary.tex",
-    "asar_references.bib",
+    "journals-bibnames.sty",
+    # "asar_references.bib",
+    "bibliography_files",
     "support_files"
   )
 
@@ -117,9 +162,11 @@ test_that("create_template() creates correct files", {
     # "10_notes.qmd",
     "11_appendix.qmd",
     "sar_Dover_sole_skeleton.qmd",
-    "asar_references.bib",
+    # "asar_references.bib",
     "preamble.R",
     "report_glossary.tex",
+    "journals-bibnames.sty",
+    "bibliography_files",
     "support_files"
   )
   # Define expected support files for Dover sole
@@ -172,9 +219,11 @@ test_that("create_template() creates correct files", {
     "08_figures.qmd",
     "11_appendix.qmd",
     "sar_Rex_sole_skeleton.qmd",
-    "asar_references.bib",
+    # "asar_references.bib",
     "preamble.R",
     "report_glossary.tex",
+    "journals-bibnames.sty",
+    "bibliography_files",
     "support_files"
   )
   # Define expected support files for Rex sole
@@ -442,7 +491,9 @@ test_that("model_results metadata file created", {
     "preamble.R",
     "std_output_metadata.md",
     "report_glossary.tex",
-    "asar_references.bib",
+    # "asar_references.bib",
+    "journals-bibnames.sty",
+    "bibliography_files",
     "support_files"
   )
 
