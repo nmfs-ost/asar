@@ -90,11 +90,11 @@
 #' Default: NULL
 #'
 #' @param bib_file File path to an existing additional bibliography file (`.bib`) used for citing references in
-#' the report. By default, all bibliography files are sourced from the \pkg{journals} package and 
-#' references for all NMFS stock assessment reports are provided. To see a full 
+#' the report. By default, all bibliography files are sourced from the \pkg{journals} package and
+#' references for all NMFS stock assessment reports are provided. To see a full
 #' list of journals included in these files, please visit the
-#' [{journals} README](https://github.com/nmfs-ost/journals/blob/main/README.md) 
-#' or see the description at the top of each bib file. It is 
+#' [{journals} README](https://github.com/nmfs-ost/journals/blob/main/README.md)
+#' or see the description at the top of each bib file. It is
 #' recommended to open these files in a text editor rather than R.
 #'
 #' Default: NULL
@@ -504,7 +504,7 @@ create_template <- function(
     if (!dir.exists(bib_dir)) {
       dir.create(bib_dir, recursive = FALSE)
     }
-    
+
     if (!rerender_skeleton) {
       journals::download_bibs(bib_dir)
       bib_file_paths <- list.files(bib_dir, pattern = ".bib", full.names = TRUE)
@@ -513,7 +513,7 @@ create_template <- function(
       file.copy(list.files(bib_dir, pattern = ".sty", full.names = TRUE), subdir, overwrite = FALSE) |> suppressWarnings()
       file.remove(list.files(bib_dir, pattern = ".sty", full.names = TRUE))
       bib_name <- basename(base_bib_file)
-      
+
       # append asar citation to first .bib
       asar_citation <- "
 @Manual{asar_2026,
@@ -534,7 +534,7 @@ create_template <- function(
       file.copy(bib_file, bib_dir, overwrite = TRUE) |> suppressWarnings()
       bib_name <- c(bib_name, basename(bib_file))
     }
-    
+
     #### Read in previous skeleton if rerender ----
     # Check if this is a rerender of the skeleton file
     if (rerender_skeleton) {

@@ -190,7 +190,7 @@ create_yaml <- function(
       # add to yaml
       yaml <- append(yaml, bib_format, after = grep("bibliography:", yaml))
     }
-    
+
     yaml <- paste(yaml, collapse = " \n")
   } else { # not rerendering skeleton
     # Creating YAML
