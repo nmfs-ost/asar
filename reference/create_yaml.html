@@ -62,7 +62,7 @@
 <span>  spp_image <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  year <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  bib_name <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  bib_file <span class="op">=</span> <span class="st">"asar_references.bib"</span>,</span>
+<span>  bib_file <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  author_list <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  title <span class="op">=</span> <span class="st">"[TITLE]"</span>,</span>
 <span>  rerender_skeleton <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -127,9 +127,14 @@ If empty, searches <code>asar</code> resources for a matching species name.</p>
 
 
 <dt id="arg-bib-file">bib_file<a class="anchor" aria-label="anchor" href="#arg-bib-file"></a></dt>
-<dd><p>File path to bibliography file (<code>.bib</code>) used for citing references in
-the report</p>
-<p>Default: "asar_references.bib"</p></dd>
+<dd><p>File path to an existing additional bibliography file (<code>.bib</code>) used for citing references in
+the report. By default, all bibliography files are sourced from the <span class="pkg">journals</span> package and
+references for all NMFS stock assessment reports are provided. To see a full
+list of journals included in these files, please visit the
+<a href="https://github.com/nmfs-ost/journals/blob/main/README.md" class="external-link">journals README</a>
+or see the description at the top of each bib file. It is
+recommended to open these files in a text editor rather than R.</p>
+<p>Default: NULL</p></dd>
 
 
 <dt id="arg-author-list">author_list<a class="anchor" aria-label="anchor" href="#arg-author-list"></a></dt>

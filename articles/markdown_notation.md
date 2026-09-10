@@ -165,11 +165,12 @@ The following are some of the ways you can tell quarto to evaluate code:
 
 ### References
 
-`asar` comes with a default .bib file which contains example references,
-but users are encouraged to replace it or expand upon it with their own
-.bib files for references in their report. To references an article or
-other references from the file within the test use the following
-notation:
+`asar` comes with a series of .bib files by default which contains
+references for many commonly referenced fisheries journals from the
+package [{journals}](https://github.com/nmfs-ost/journals). In the near
+future, the bib files will also include citations for all NOAA Fisheries
+stock assessment reports. To references an article or other references
+from the file within the test use the following notation:
 
 > “The dynasty fell within the year 1206, leaving the Vikings in a state
 > of unrest (`@Biddle_1992`).”
@@ -191,6 +192,12 @@ year. This is not always the case, so it is advised that users check
 their bib file for the proper citation or use the Visual editor that
 provides a convenient drop down with a list of suggested citations base
 on author name, year, or keyword from the title.
+
+When using `asar`, there is the option to use the default bib files or
+load your own. To use your own file, simply set `bib_file` in
+[`create_template()`](nmfs-ost.github.io/asar/reference/create_template.md)
+to the full path name of your .bib file and it will be included in the
+skeleton’s yaml.
 
 ### Combinations
 

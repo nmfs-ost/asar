@@ -77,7 +77,7 @@ Centers. Automates authorship, bibliography, and other report components.</p>
 <span>  tables_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  figures_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  spp_image <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  bib_file <span class="op">=</span> <span class="st">"asar_references.bib"</span>,</span>
+<span>  bib_file <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  new_template <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  rerender_skeleton <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  custom_sections <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -187,9 +187,14 @@ If empty, searches <code>asar</code> resources for a matching species name.</p>
 
 
 <dt id="arg-bib-file">bib_file<a class="anchor" aria-label="anchor" href="#arg-bib-file"></a></dt>
-<dd><p>File path to bibliography file (<code>.bib</code>) used for citing references in
-the report</p>
-<p>Default: "asar_references.bib"</p></dd>
+<dd><p>File path to an existing additional bibliography file (<code>.bib</code>) used for citing references in
+the report. By default, all bibliography files are sourced from the <span class="pkg">journals</span> package and
+references for all NMFS stock assessment reports are provided. To see a full
+list of journals included in these files, please visit the
+<a href="https://github.com/nmfs-ost/journals/blob/main/README.md" class="external-link">journals README</a>
+or see the description at the top of each bib file. It is
+recommended to open these files in a text editor rather than R.</p>
+<p>Default: NULL</p></dd>
 
 
 <dt id="arg-new-template">new_template<a class="anchor" aria-label="anchor" href="#arg-new-template"></a></dt>
@@ -301,9 +306,9 @@ cheatsheet, tutorial, and other resources available at <a href="https://nmfs-ost
 <span class="r-in"><span>    <span class="st">"Danny Phantom"</span> <span class="op">=</span> <span class="st">"NEFSC"</span>,</span></span>
 <span class="r-in"><span>    <span class="st">"Patrick Star"</span> <span class="op">=</span> <span class="st">"SEFSC-ML"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span>,</span></span>
-<span class="r-in"><span>  model_results <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"folder"</span>, <span class="st">"std_output.rda"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  figures_dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  tables_dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"tables_folder_location"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  model_results <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"folder"</span>, <span class="st">"std_output.rda"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  figures_dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  tables_dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"tables_folder_location"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  new_section <span class="op">=</span> <span class="st">"an_additional_section"</span>,</span></span>
 <span class="r-in"><span>  section_location <span class="op">=</span> <span class="st">"after-introduction"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -332,7 +337,7 @@ cheatsheet, tutorial, and other resources available at <a href="https://nmfs-ost
 <span class="r-in"><span>  authors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"John Snow"</span> <span class="op">=</span> <span class="st">"NEFSC"</span>, <span class="st">"Danny Phantom"</span> <span class="op">=</span> <span class="st">"SWFSC"</span>, <span class="st">"Patrick Star"</span> <span class="op">=</span> <span class="st">"SEFSC-ML"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  title <span class="op">=</span> <span class="st">"Management Track Assessments Spring 2024"</span>,</span></span>
 <span class="r-in"><span>  custom_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"region2"</span> <span class="op">=</span> <span class="st">"North Coast"</span>, <span class="st">"year2"</span> <span class="op">=</span> <span class="st">"2026"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  model_results <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"folder"</span>, <span class="st">"std_output.rda"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  model_results <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="st">"folder"</span>, <span class="st">"std_output.rda"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  new_section <span class="op">=</span> <span class="st">"an_additional_section"</span>,</span></span>
 <span class="r-in"><span>  section_location <span class="op">=</span> <span class="st">"before-discussion"</span>,</span></span>
 <span class="r-in"><span>  type <span class="op">=</span> <span class="st">"sar"</span>,</span></span>

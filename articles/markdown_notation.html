@@ -445,7 +445,7 @@
 </tbody>
 </table></section></section><section class="level2"><h3 class="anchored" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h3>
-<p><code>asar</code> comes with a default .bib file which contains example references, but users are encouraged to replace it or expand upon it with their own .bib files for references in their report. To references an article or other references from the file within the test use the following notation:</p>
+<p><code>asar</code> comes with a series of .bib files by default which contains references for many commonly referenced fisheries journals from the package <a href="https://github.com/nmfs-ost/journals" class="external-link">{journals}</a>. In the near future, the bib files will also include citations for all NOAA Fisheries stock assessment reports. To references an article or other references from the file within the test use the following notation:</p>
 <blockquote>
 <p>“The dynasty fell within the year 1206, leaving the Vikings in a state of unrest (<code>@Biddle_1992</code>).”</p>
 </blockquote>
@@ -455,6 +455,7 @@
 </blockquote>
 <p>The citation will format according to Canadian Journal of Fisheries and Aquatic Sciences standards and include the citation in <code>07_references.qmd</code>. This default citation style is set in the skeleton file’s YAML (<code>csl: support_files/cjfas.csl</code>). You can change the citation style by substituting the “cjfas.csl” file.</p>
 <p>A good rule of thumb to follow is that references are cited use the @ symbol followed by the first author’s last name then the publication year. This is not always the case, so it is advised that users check their bib file for the proper citation or use the Visual editor that provides a convenient drop down with a list of suggested citations base on author name, year, or keyword from the title.</p>
+<p>When using <code>asar</code>, there is the option to use the default bib files or load your own. To use your own file, simply set <code>bib_file</code> in <code><a href="../reference/create_template.html">create_template()</a></code> to the full path name of your .bib file and it will be included in the skeleton’s yaml.</p>
 </section><section class="level2"><h3 class="anchored" id="combinations">Combinations<a class="anchor" aria-label="anchor" href="#combinations"></a>
 </h3>
 <p>A lot of the notation in this document can be combined for a highly customizable document. For example, you can bold or italicize a link by surrounding the notation to insert a link by asterisks (*):</p>

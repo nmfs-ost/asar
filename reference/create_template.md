@@ -24,7 +24,7 @@ create_template(
   tables_dir = getwd(),
   figures_dir = getwd(),
   spp_image = NULL,
-  bib_file = "asar_references.bib",
+  bib_file = NULL,
   new_template = TRUE,
   rerender_skeleton = FALSE,
   custom_sections = NULL,
@@ -158,10 +158,16 @@ create_template(
 
 - bib_file:
 
-  File path to bibliography file (`.bib`) used for citing references in
-  the report
+  File path to an existing additional bibliography file (`.bib`) used
+  for citing references in the report. By default, all bibliography
+  files are sourced from the journals package and references for all
+  NMFS stock assessment reports are provided. To see a full list of
+  journals included in these files, please visit the [journals
+  README](https://github.com/nmfs-ost/journals/blob/main/README.md) or
+  see the description at the top of each bib file. It is recommended to
+  open these files in a text editor rather than R.
 
-  Default: "asar_references.bib"
+  Default: NULL
 
 - new_template:
 
