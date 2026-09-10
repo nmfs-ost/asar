@@ -82,7 +82,7 @@ test_that("Formerly empty figures doc renders correctly", {
   # read in figures doc
   figure_content <- readLines(file.path(getwd(), "report", "08_figures.qmd"))
   # extract first 7 lines
-  head_figure_content <- head(figure_content, 7)
+  head_figure_content <- head(figure_content, 6)
   # remove line numbers and collapse
   fc_pasted <- paste(head_figure_content, collapse = "")
 
@@ -134,7 +134,7 @@ test_that("Formerly empty figures doc renders correctly", {
 # DO NOT RERUN MANUALLY -- snapshot path will not be correct if it adjusts and test will fail
 test_that("Adds new figure from figures folder.", {
   # Create one figure
-  stockplotr::plot_biomass(
+  stockplotr::plot_landings(
     dat = stockplotr::example_data,
     make_rda = TRUE,
     module = "TIME_SERIES"

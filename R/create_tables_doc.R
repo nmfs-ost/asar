@@ -49,6 +49,40 @@ create_tables_doc <- function(subdir = getwd(),
   empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
 
   tab_header <- "# Tables {#sec-tables}\n \n"
+  
+  # list all files in tables
+  file_list <- list.files(file.path(tables_dir, "tables"))
+  
+  # create sublist of only rda table files
+  rda_tab_list <- file_list[grepl(".rda", file_list)]
+  
+  if (length(rda_tab_list) == 0) {
+      cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
+                             wrap = TRUE
+      )
+      cli::cli_alert_info("For `create_tables_doc` to incorporate tables, there must be:",
+                          wrap = TRUE
+      )
+      cli::cli_ol(c(
+        "a 'tables' folder in {fs::path(tables_dir)}",
+        ".rda files in the 'tables' folder"
+      ))
+      }
+  # create list of executive summary tables
+  exec_sum_tab_list <- c("projections_table.rda", "total_catch_table.rda")
+  # create list of executive summary tables in the rda table list
+  selected_exec_sum_tab_list <- exec_sum_tab_list[exec_sum_tab_list %in% rda_tab_list]
+  
+  # remove exec_sum_tab_list from rda_tab_list
+  if (length(selected_exec_sum_tab_list) > 0) {
+    cli::cli_alert_success("Found {length(selected_exec_sum_tab_list)} Executive Summary table{?s} in {fs::path(tables_dir, 'tables')}: {paste(selected_exec_sum_tab_list, collapse = ', ')}")
+    rda_tab_list <- rda_tab_list[!rda_tab_list %in% selected_exec_sum_tab_list]
+    if (length(rda_tab_list) == 0) {
+      rda_tab_list <- NULL
+    }
+  } else {
+    selected_exec_sum_tab_list <- NULL
+  }
 
   # append table-producing code to non-empty tables doc, if it exists, vs. overwriting it
   append <- FALSE
@@ -57,7 +91,7 @@ create_tables_doc <- function(subdir = getwd(),
     table_content <- readLines(existing_tables_doc) |>
       suppressWarnings()
 
-    if ("# Tables {#sec-tables}" %in% table_content) {
+    if ("# Tables {#sec-tables}" %in% table_content & !is.null(rda_tab_list)) {
       append <- TRUE
       cli::cli_alert_info("Tables doc will be appended to include tables in `tables_dir`.")
 
@@ -104,12 +138,6 @@ create_tables_doc <- function(subdir = getwd(),
   }
 
   tables_doc <- ""
-
-  # list all files in tables
-  file_list <- list.files(file.path(tables_dir, "tables"))
-
-  # create sublist of only rda table files
-  rda_tab_list <- file_list[grepl(".rda", file_list)]
 
   # Check if rda already exists and remove from list
   # Check if rda or non-rda already exists and remove from list
@@ -502,16 +530,6 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
 
   if (length(rda_tab_list) == 0) {
     if (length(file.path(subdir, list.files(subdir, pattern = "tables.qmd"))) != 1) {
-      cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
-        wrap = TRUE
-      )
-      cli::cli_alert_info("For `create_tables_doc` to incorporate tables, there must be:",
-        wrap = TRUE
-      )
-      cli::cli_ol(c(
-        "a 'tables' folder in {fs::path(tables_dir)}",
-        ".rda files in the 'tables' folder"
-      ))
       tables_doc <- paste0(
         tables_doc_header,
         empty_doc_text
@@ -520,7 +538,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
       cli::cli_alert("No new tables detected.")
     }
   } else {
-    cli::cli_alert_success("Found {length(final_rda_tab_list)}{ifelse(new_rda, ' new ', ' ')}table{?s} in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
+    cli::cli_alert_success("Found {length(final_rda_tab_list)}{ifelse(new_rda, ' new ', ' ')} Tables section table{?s} in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
       wrap = TRUE
     )
     # paste rda table code chunks into one object
@@ -535,28 +553,42 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
         rda_tables_doc <- paste0(rda_tables_doc, tab_chunk)
       }
     }
-    # if (length(non.rda_tab_list) > 0){
-    #   non.rda_tables_doc <- ""
-    #   for (i in seq_along(non.rda_tab_list)){
-    #     # remove file extension
-    #     tab_name <- stringr::str_extract(non.rda_tab_list[i],
-    #                                      "^[^.]+")
-    #     # remove "_table", if present
-    #     tab_name <- sub("_table", "", tab_name)
-    #     tab_chunk <- paste0(
-    #       "![Your caption here](", fs::path("tables",
-    #                                         non.rda_tab_list[i]),
-    #       "){#tab-",
-    #       tab_name,
-    #       "}\n\n"
-    #     )
-    #
-    #     non.rda_tables_doc <- paste0(non.rda_tables_doc, tab_chunk)
-    #   }
-    # } else {
-    #   message(paste0("Note: No table files in a non-rda format (e.g., .jpg, .png) were found in '",  fs::path(tables_dir, "tables") , "'."))
-    # }
-
+    }
+  if (!is.null(selected_exec_sum_tab_list)) {
+    es_tables_doc <- ""
+    for (i in seq_along(selected_exec_sum_tab_list)) {
+      tab_chunk <- create_tab_chunks(
+        tab = selected_exec_sum_tab_list[i],
+        tables_dir = tables_dir
+      )
+      
+      es_tables_doc <- paste0(
+        es_tables_doc, tab_chunk
+        # ,"{{< pagebreak >}} \n\n"
+      )
+    }
+    es_tables_doc <- paste0(
+      # setup chunk
+      paste0(
+        add_chunk(
+          glue::glue(
+            "library(gt)
+          tables_dir <- fs::path('{tables_dir}', 'tables')"
+          ),
+          label = "set-rda-dir-tbls-es",
+          chunk_option = c(
+            "echo: false",
+            "warning: false",
+            "include: false"
+          )
+        ),
+        "\n"
+      ),
+      # table chunks
+      es_tables_doc
+    )
+  }
+    
     # combine tables_doc setup with table chunks
     tables_doc <- paste0(
       tables_doc_header,
@@ -566,6 +598,17 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
         ""
       )
     )
+  
+  # add exec summary tables to ES qmd
+  if (file.exists(fs::path(subdir, "01_executive_summary.qmd")) & !is.null(selected_exec_sum_tab_list)) {
+    exec_sum <- readLines(fs::path(subdir, "01_executive_summary.qmd"))
+    placeholder_snippet <- "<!-- Multiple figures and tables designed for"
+    if (any(grepl(placeholder_snippet, exec_sum, fixed = TRUE))) {
+      exec_sum <- sub("<!-- Multiple figures and tables designed for.*", es_tables_doc, exec_sum)      
+    } else {
+      exec_sum <- sub("## Assessment Model {#sec-assessment-model}", paste0(es_tables_doc, "## Assessment Model {#sec-assessment-model}"), exec_sum, fixed = TRUE)       
+    }
+    writeLines(exec_sum, fs::path(subdir, "01_executive_summary.qmd"))
   }
 
   doc_info <- migrate_legacy_docs(subdir, doc_type = "tables")

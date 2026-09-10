@@ -8,27 +8,27 @@
       #| warnings: false 
       #| eval: true
       # load rda
-      load(file.path(figures_dir, 'biomass_figure.rda'))
+      load(file.path(figures_dir, 'landings_figure.rda'))
       
       # save rda with plot-specific name
-      biomass_plot_rda <- rda
+      landings_plot_rda <- rda
       
       # remove generic rda object
       rm(rda)
       
       # save figure, caption, and alt text as separate objects
-      biomass_plot <- biomass_plot_rda$figure
-      biomass_cap <- biomass_plot_rda$caption
-      biomass_alt_text <- biomass_plot_rda$alt_text
+      landings_plot <- landings_plot_rda$figure
+      landings_cap <- landings_plot_rda$caption
+      landings_alt_text <- landings_plot_rda$alt_text
       ``` 
       
       ```{r} 
-      #| label: 'fig-biomass'
+      #| label: 'fig-landings'
       #| echo: false 
       #| warning: false 
-      #| fig-cap: !expr biomass_cap 
-      #| fig-alt: !expr biomass_alt_text
-      biomass_plot
+      #| fig-cap: !expr landings_cap 
+      #| fig-alt: !expr landings_alt_text
+      landings_plot
       ``` 
       
       {{< pagebreak >}} 
