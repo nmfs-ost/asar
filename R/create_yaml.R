@@ -48,7 +48,6 @@
 #'   format = "pdf",
 #'   parameters = TRUE,
 #'   custom_params = NULL,
-#'   bib_file = "path/asar_references.bib",
 #'   bib_name = "asar_references.bib",
 #'   year = 2025
 #' )
@@ -62,7 +61,6 @@ create_yaml <- function(
   spp_image = NULL,
   year = NULL,
   bib_name = NULL,
-  bib_file = NULL,
   author_list = NULL,
   title = "[TITLE]",
   rerender_skeleton = FALSE,
@@ -188,8 +186,9 @@ create_yaml <- function(
 
     # add bib file name
     if (!is.null(bib_name)) {
-      new_bib_name <- bib_name[grepl(bib_name), new_bibs]
-      bib_format <- paste("-  ", bib_name, sep = "")
+      bib_format <- paste("-  bibliography_files/", bib_name, sep = "")
+      # add to yaml
+      yaml <- append(yaml, bib_format, after = grep("bibliography:", yaml))
     }
     
     yaml <- paste(yaml, collapse = " \n")
@@ -311,7 +310,6 @@ create_yaml <- function(
     # )
 
     # Add option for bib file
-    # if (!is.null(bib_file)) {
     bib <- glue::glue(
       "bibliography: ", "\n"
     )

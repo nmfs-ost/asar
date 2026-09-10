@@ -501,7 +501,7 @@ create_template <- function(
 
     # Add bib file
     bib_dir <- file.path(subdir, "bibliography_files")
-    if (dir.exists(bib_dir) == TRUE) {
+    if (!dir.exists(bib_dir)) {
       dir.create(bib_dir, recursive = FALSE)
     }
     
@@ -525,13 +525,13 @@ create_template <- function(
 }"
       
       write(asar_citation, file = base_bib_file[1], append = TRUE)
+    } else {
+      bib_name <- NULL
     }
     # Add bib file if bib_file is not NULL
     if (!is.null(bib_file)) {
       file.copy(bib_file, bib_dir, overwrite = TRUE) |> suppressWarnings()
       bib_name <- c(bib_name, basename(bib_file))
-    } else {
-      bib_name <- NULL
     }
     
     #### Read in previous skeleton if rerender ----
@@ -841,7 +841,6 @@ create_template <- function(
       parameters = parameters,
       custom_params = custom_params,
       bib_name = bib_name,
-      bib_file = bib_file,
       year = year,
       type = type
     )
