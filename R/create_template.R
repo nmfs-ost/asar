@@ -523,8 +523,9 @@ create_template <- function(
   note = {R package version 2.2.0},
   url = {https://github.com/nmfs-ost/asar},
 }"
-      
-      write(asar_citation, file = base_bib_file[1], append = TRUE)
+      if (!is.na(base_bib_file[1]) && nzchar(base_bib_file[1])) {
+        write(asar_citation, file = base_bib_file[1], append = TRUE)
+      }
     } else {
       bib_name <- NULL
     }
