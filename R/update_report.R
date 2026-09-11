@@ -24,7 +24,16 @@ update_report <- function(
 ) {
   #### set up ----
   # Add "report" to previous report file path - user does not have to include this
-  previous_file_dir <- glue::glue("{previous_file_dir}/report")
+  if (!grepl("report",previous_file_dir)) {
+    previous_file_dir <- glue::glue("{previous_file_dir}/report")
+    if (!dir.exists(previous_file_dir)) {
+      stop("The previous report directory does not exist.")
+    }
+  }
+  # check for skeleton file in previous folder
+  if (!any(grepl("skeleton.qmd", list.files(previous_file_dir, full.names = FALSE)))) {
+    cli::cli_abort("No skeleton file found. Please use `create_template` to generate a new template")
+  }
   
   # Identify report type
   type <- stringr::str_extract(
@@ -32,12 +41,7 @@ update_report <- function(
     # find characters before the first _
     "(?<=^)[^_]+"
   )
-  if (type == "SAR") type <- "skeleton"
-  
-  # Check if the previous report directory exists
-  if (!dir.exists(file.path(previous_file_dir, "report"))) {
-    stop("The previous report directory does not exist.")
-  }
+  if (tolower(type) == "sar") type <- "skeleton"
   
   # Create the report directory if it doesn't exist
   report_dir <- file.path(file_dir, "report")
@@ -47,10 +51,10 @@ update_report <- function(
   
   #### copy files ----
   # Copy previous assessment files over
-  prev_files <-list.files(
+  prev_files <- list.files(
     previous_file_dir, 
     # qmd, bib files, glossary, and preamble
-    pattern = "\\.qmd$|\\.bib$|report_glossary\\.tex$|preamble\\.R$"
+    pattern = "\\.qmd$|report_glossary\\.tex$|preamble\\.R$|.sty$"
   )
   file.copy(glue::glue("{previous_file_dir}/{prev_files}"), report_dir)
   # Copy support files
@@ -65,13 +69,51 @@ update_report <- function(
     supdir, 
     recursive = TRUE
   )
+  # Copy bib folder
+  prev_bib_files <- list.files(file.path(previous_file_dir, 'bibliography_files'), full.names = TRUE)
+  # create new folder and copy into
+  bibdir <- file.path(report_dir, "bibliography_files")
+  if (!dir.exists(bibdir)) {
+    dir.create(bibdir)
+  }
+  file.copy(
+    prev_bib_files, 
+    bibdir, 
+    recursive = TRUE
+  )
+  
   # warning which files are not in the standard framework
-  std_files <- list.files(file.path(system.file("templates", package = "asar"), type))
-  # select "section" qmd from prev_files and remove skeleton, figures, and tables docs
-  prev_file_outline <- prev_files[grepl("\\.qmd$", prev_files)]
-  prev_file_outline <- prev_file_outline[!grepl("skeleton|figures|tables", prev_file_outline)]
-  non_std_files <- setdiff(prev_file_outline, std_files)
-  if (length(non_std_files) > 0) cli::cli_alert_info("Non-standard section files exist.")
+  if (type == "skeleton") {
+    std_files <- list.files(file.path(system.file("templates", package = "asar"), type))
+    # select "section" qmd from prev_files and remove skeleton, figures, and tables docs
+    prev_file_outline <- prev_files[grepl("\\.qmd$", prev_files)]
+    prev_file_outline <- prev_file_outline[!grepl("skeleton|figures|tables", prev_file_outline)]
+    non_std_files <- setdiff(prev_file_outline, std_files)
+      if (length(non_std_files) > 0) cli::cli_alert_info("Non-standard section files exist.")
+  }
+
+  #### Update skeleton ----
+  # part of skeleton:
+  # yaml
+  # disclaimer
+  # citation
+  # preamble
+  # section chunks
+  # Run create_template but with rerender_skeleton = TRUE
+  # TODO: change once rerender is outside of create_template
+  # TODO: reset author section in skeleton -- remove all previous authorship (does this work?)
+  # Update skeleton with new year, authors, model results, region, if added
+  create_template(
+    rerender_skeleton = TRUE,
+    dir = file_dir,
+    authors = authors,
+    model_results = model_results,
+    year = year,
+    format = format,
+    region = region,
+    new_section = new_section,
+    section_location = section_location
+  )
   
   #### reset tables and figures docs ----
   
@@ -114,28 +156,4 @@ update_report <- function(
       cli::cli_alert_info("Previous assessment tables qmd retained.")
     }
   }
-  
-  #### update skeleton ----
-  # part of skeleton:
-  # yaml
-  # disclaimer
-  # citation
-  # preamble
-  # section chunks
-  # Run create_template but with rerender_skeleton = TRUE
-  # TODO: change once rerender is outside of create_template
-  # TODO: reset author section in skeleton -- remove all previous authorship (does this work?)
-  
-  create_template(
-    rerender_skeleton = TRUE,
-    dir = file_dir,
-    authors = authors,
-    model_results = model_results,
-    year = year,
-    format = format,
-    region = region,
-    new_section = new_section,
-    section_location = section_location
-  )
-  
 }
