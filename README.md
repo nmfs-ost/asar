@@ -3,6 +3,7 @@
 
 <!-- badges: start -->
 [![Lifecycle: stable](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable) [![R-CMD-check](https://github.com/nmfs-ost/asar/actions/workflows/call-r-cmd-check.yml/badge.svg)](https://github.com/nmfs-ost/asar/actions/workflows/call-r-cmd-check.yml) [![coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/nmfs-ost/asar/refs/heads/badges/coverage-badge.json)](https://github.com/nmfs-ost/asar/tree/badges)
+[![A software badge showing that this tool has passed the FIT quality checks](https://img.shields.io/badge/FIT_quality_checks-passed-759A06)](https://nmfs-ost.github.io/noaa-fit)
 <!-- badges: end -->
 
 Download using the directions below and fill in `create_template.R` function with 
