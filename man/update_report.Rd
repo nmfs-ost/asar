@@ -13,7 +13,9 @@ update_report(
   format = "pdf",
   region = NULL,
   new_section = NULL,
-  section_location = NULL
+  section_location = NULL,
+  figures_dir = getwd(),
+  tables_dir = getwd()
 )
 }
 \arguments{
@@ -76,6 +78,16 @@ To add >1 (sub)section, make the location a list corresponding to the
 order of (sub)section names listed in the 'new_section' parameter.
 
 Default: NULL}
+
+\item{figures_dir}{The location of the "figures" folder, which contains
+figures files
+
+Default: the working directory}
+
+\item{tables_dir}{The location of the "tables" folder, which contains tables
+files
+
+Default: the working directory}
 }
 \value{
 Creates a new folder of pre-filled assessment report files for the
@@ -83,4 +95,12 @@ next assessment cycle.
 }
 \description{
 Call previous assessment report and update
+}
+\examples{
+\dontrun{
+update_report(
+  previous_file_dir = "~/testing/goa_2023/report",
+  file_dir = "~/testing/goa_2025",
+  model_results = "../new_std_res.rda"
+}
 }
