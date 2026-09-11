@@ -13,6 +13,12 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' update_report(
+#'   previous_file_dir = "~/testing/goa_2023/report",
+#'   file_dir = "~/testing/goa_2025",
+#'   model_results = "../new_std_res.rda"
+#' }
 update_report <- function(
     file_dir = getwd(),
     previous_file_dir, # required
@@ -112,6 +118,8 @@ update_report <- function(
     file_dir = report_dir,
     authors = authors,
     model_results = model_results,
+    species = species,
+    spp_latin = spp_latin,
     year = year,
     format = format,
     region = region,
