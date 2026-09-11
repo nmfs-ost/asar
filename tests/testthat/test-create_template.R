@@ -44,7 +44,7 @@ test_that("create_template() uses journals bibliographies by default", {
   )
 
   output_dir <- getwd()
-  
+
   create_template(bib_file = NULL) |>
     suppressWarnings() |>
     suppressMessages()
@@ -62,7 +62,7 @@ test_that("create_template() uses journals bibliographies by default", {
     fixed = TRUE
   )))
   expect_false(file.exists(file.path(report_dir, "asar_references.bib")))
-  
+
   unlink(fs::path(output_dir, "report"), recursive = T)
 })
 

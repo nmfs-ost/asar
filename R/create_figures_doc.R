@@ -21,17 +21,17 @@ create_figures_doc <- function(subdir = getwd(),
   empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade figures."
 
   fig_header <- "# Figures {#sec-figures}\n \n"
-  
+
   # list all files in figures
   file_list <- list.files(file.path(figures_dir, "figures"))
-  
+
   # create sublist of only rda figure files
   rda_fig_list <- file_list[grepl("_figure.rda", file_list)]
   # create list of executive summary figures
   exec_sum_fig_list <- c("biomass_figure.rda", "fishing_mortality_figure.rda")
   # create list of executive summary figures in the rda figure list
   selected_exec_sum_fig_list <- exec_sum_fig_list[exec_sum_fig_list %in% rda_fig_list]
-  
+
   # remove exec_sum_fig_list from rda_fig_list
   if (length(selected_exec_sum_fig_list) > 0) {
     cli::cli_alert_success("Found {length(selected_exec_sum_fig_list)} Executive Summary figure{?s} in {fs::path(figures_dir, 'figures')}: {paste(selected_exec_sum_fig_list, collapse = ', ')}")
@@ -42,7 +42,7 @@ create_figures_doc <- function(subdir = getwd(),
   } else {
     selected_exec_sum_fig_list <- NULL
   }
-  
+
   # create sublist of only non-rda figure files
   non.rda_fig_list <- file_list[!grepl(".rda", file_list)]
 
@@ -246,7 +246,7 @@ rm(rda)\n
         wrap = TRUE
       )
     }
-    
+
     if (!is.null(selected_exec_sum_fig_list)) {
       es_figures_doc <- ""
       for (i in seq_along(selected_exec_sum_fig_list)) {
@@ -254,10 +254,10 @@ rm(rda)\n
           fig = selected_exec_sum_fig_list[i],
           figures_dir = figures_dir
         )
-        
+
         es_figures_doc <- paste0(
           es_figures_doc, fig_chunk
-         # ,"{{< pagebreak >}} \n\n"
+          # ,"{{< pagebreak >}} \n\n"
         )
       }
       es_figures_doc <- paste0(
@@ -309,15 +309,15 @@ rm(rda)\n
     file = fs::path(subdir, figures_doc_name),
     append = append
   )
-  
+
   # add exec summary figures to ES qmd
   if (file.exists(fs::path(subdir, "01_executive_summary.qmd")) & !is.null(selected_exec_sum_fig_list)) {
     exec_sum <- readLines(fs::path(subdir, "01_executive_summary.qmd"))
     placeholder_snippet <- "<!-- Multiple figures and tables designed for"
     if (any(grepl(placeholder_snippet, exec_sum, fixed = TRUE))) {
-      exec_sum <- sub("<!-- Multiple figures and tables designed for.*", es_figures_doc, exec_sum)      
+      exec_sum <- sub("<!-- Multiple figures and tables designed for.*", es_figures_doc, exec_sum)
     } else {
-      exec_sum <- sub("## Assessment Model {#sec-assessment-model}", paste0(es_figures_doc, "## Assessment Model {#sec-assessment-model}"), exec_sum, fixed = TRUE)       
+      exec_sum <- sub("## Assessment Model {#sec-assessment-model}", paste0(es_figures_doc, "## Assessment Model {#sec-assessment-model}"), exec_sum, fixed = TRUE)
     }
     writeLines(exec_sum, fs::path(subdir, "01_executive_summary.qmd"))
   }
