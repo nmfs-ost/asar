@@ -1,6 +1,8 @@
 #' Call previous assessment report and update
 #'
 #' @inheritParams create_template
+#' @inheritParams create_figures_dir
+#' @inheritParams create_tables_dir
 #' @param file_dir String of the path where the new report folder and files 
 #' should be located.
 #' @param previous_file_dir String of the path where the previous report files 
@@ -20,7 +22,9 @@ update_report <- function(
     format = "pdf",
     region = NULL, # just in case this changes
     new_section = NULL,
-    section_location = NULL
+    section_location = NULL,
+    figures_dir = getwd(),
+    tables_dir = getwd()
 ) {
   #### set up ----
   # Add "report" to previous report file path - user does not have to include this
@@ -54,7 +58,7 @@ update_report <- function(
   prev_files <- list.files(
     previous_file_dir, 
     # qmd, bib files, glossary, and preamble
-    pattern = "\\.qmd$|report_glossary\\.tex$|preamble\\.R$|.sty$"
+    pattern = "\\.qmd$|.bib$|report_glossary\\.tex$|preamble\\.R$|.sty$"
   )
   file.copy(glue::glue("{previous_file_dir}/{prev_files}"), report_dir)
   # Copy support files
@@ -105,7 +109,7 @@ update_report <- function(
   # Update skeleton with new year, authors, model results, region, if added
   create_template(
     rerender_skeleton = TRUE,
-    dir = file_dir,
+    file_dir = report_dir,
     authors = authors,
     model_results = model_results,
     year = year,
@@ -114,6 +118,7 @@ update_report <- function(
     new_section = new_section,
     section_location = section_location
   )
+  # TODO: update year in title
   
   #### reset tables and figures docs ----
   
@@ -125,11 +130,15 @@ update_report <- function(
     if (regexpr(reset_figures, "y", ignore.case = TRUE) == 1) {
       # Remove previous file
       file.remove(
-        stringr::str_match(prev_files, "figures")
+        file.path(
+          report_dir,
+          prev_files[grep("figures.qmd", prev_files)]
+        )
       )
       # Create figures doc
       create_figures_doc(
-        subdir = report_dir
+        subdir = report_dir,
+        figures_dir = figures_dir
       )
       cli::cli_alert_info("Figures document reset to default.")
     } else if (regexpr(reset_figures, "n", ignore.case = TRUE) == 1) {
@@ -145,7 +154,10 @@ update_report <- function(
     if (regexpr(reset_tables, "y", ignore.case = TRUE) == 1) {
       # Remove previous file
       file.remove(
-        stringr::str_match(prev_files, "tables")
+        file.path(
+          report_dir,
+          prev_files[grep("tables.qmd", prev_files)]
+        )
       )
       # Create tables doc
       create_tables_doc(
