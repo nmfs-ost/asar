@@ -1,7 +1,7 @@
 # code that is pulled from create_template(rerender_skeleton)
 # was located in another branch 'call-prev-report'
 
-update_skeleton <- function(
+rerender_skeleton <- function(
     file_dir
 ) {
   # Add in report to file_dir
@@ -198,6 +198,7 @@ update_skeleton <- function(
     stop("Not currently working")
   } else {
     # identify all previous sections
+    files_to_copy <- stringr::str_extract(prev_skeleton[grep("knitr::knit_child", prev_skeleton)], "(?<=knit_child\\(').*?(?=\\')")
     sections <- stringr::str_extract_all(
       prev_skeleton,
       "(?<=['`])[^']+\\.qmd(?=['`])"

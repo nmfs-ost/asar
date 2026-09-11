@@ -300,59 +300,59 @@ create_template <- function(
   }
 
   #### Rerender skeleton ----
-  if (rerender_skeleton) {
-    # TODO: set up situation where species, region can be changed
-    report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
-    if (length(report_name) == 0) cli::cli_abort("No skeleton quarto file found in the `file_dir` ({file_dir}).")
-    if (length(report_name) > 1) cli::cli_abort("Multiple skeleton quarto files found in the `file_dir` ({file_dir}).")
-
-    prev_report_name <- gsub("_skeleton.qmd", "", report_name)
-    # Extract type
-    type <- stringr::str_extract(tolower(prev_report_name), "^[a-z]+")
-    # Extract region unless region is changed or updated
-    # identify region from the skeleton
-    prev_skeleton <- readLines(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))
-    if (is.null(region)) {
-      region <- stringr::str_extract(
-        prev_skeleton[grep("region: ", prev_skeleton)],
-        "(?<=')[^']+(?=')"
-      )
-    }
-    region_name <- ifelse(
-      region != "NA", # !is.null(region) | !is.na(region)
-      toupper(stringr::str_c(stringr::str_extract_all(region, "\\b[A-Za-z]")[[1]], collapse = "")),
-      stringr::str_extract(prev_report_name, "(?<=_)[A-Z]+(?=_)")
-    )
-    # report name without type
-    report_name_1 <- gsub(
-      glue::glue("{type}_"),
-      "",
-      prev_report_name
-    )
-    # Extract species unless species is renamed
-    species <- ifelse(
-      species != "species",
-      species,
-      gsub(
-        "_",
-        " ",
-        gsub(glue::glue("{region_name}_"), "", report_name_1)
-      )
-    )
-
-    new_report_name <- paste0(
-      type, "_",
-      ifelse(
-        is.null(region) | is.na(region) | region == "NA",
-        "",
-        glue::glue("{region_name}_")
-      ),
-      ifelse(is.null(species), "species", stringr::str_replace_all(species, " ", "_")), "_",
-      "skeleton.qmd"
-    )
-    # make sure type is changed to skeleton
-    if (type == "sar") type <- "skeleton"
-  } else {
+  # if (rerender_skeleton) {
+    # # TODO: set up situation where species, region can be changed
+    # report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
+    # if (length(report_name) == 0) cli::cli_abort("No skeleton quarto file found in the `file_dir` ({file_dir}).")
+    # if (length(report_name) > 1) cli::cli_abort("Multiple skeleton quarto files found in the `file_dir` ({file_dir}).")
+    # 
+    # prev_report_name <- gsub("_skeleton.qmd", "", report_name)
+    # # Extract type
+    # type <- stringr::str_extract(tolower(prev_report_name), "^[a-z]+")
+    # # Extract region unless region is changed or updated
+    # # identify region from the skeleton
+    # prev_skeleton <- readLines(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))
+    # if (is.null(region)) {
+    #   region <- stringr::str_extract(
+    #     prev_skeleton[grep("region: ", prev_skeleton)],
+    #     "(?<=')[^']+(?=')"
+    #   )
+    # }
+    # region_name <- ifelse(
+    #   region != "NA", # !is.null(region) | !is.na(region)
+    #   toupper(stringr::str_c(stringr::str_extract_all(region, "\\b[A-Za-z]")[[1]], collapse = "")),
+    #   stringr::str_extract(prev_report_name, "(?<=_)[A-Z]+(?=_)")
+    # )
+    # # report name without type
+    # report_name_1 <- gsub(
+    #   glue::glue("{type}_"),
+    #   "",
+    #   prev_report_name
+    # )
+    # # Extract species unless species is renamed
+    # species <- ifelse(
+    #   species != "species",
+    #   species,
+    #   gsub(
+    #     "_",
+    #     " ",
+    #     gsub(glue::glue("{region_name}_"), "", report_name_1)
+    #   )
+    # )
+    # 
+    # new_report_name <- paste0(
+    #   type, "_",
+    #   ifelse(
+    #     is.null(region) | is.na(region) | region == "NA",
+    #     "",
+    #     glue::glue("{region_name}_")
+    #   ),
+    #   ifelse(is.null(species), "species", stringr::str_replace_all(species, " ", "_")), "_",
+    #   "skeleton.qmd"
+    # )
+    # # make sure type is changed to skeleton
+    # if (type == "sar") type <- "skeleton"
+  # } else {
     # Name report
     if (!is.null(type)) {
       report_name <- paste0(
@@ -429,7 +429,7 @@ create_template <- function(
     } else {
       cli::cli_abort("Format not recognized. Please use pdf, html, or docx.")
     }
-  }
+  # }
 
   # TODO: add switch here instead of if
   # if (!is.null(office) & length(office) == 1) {
