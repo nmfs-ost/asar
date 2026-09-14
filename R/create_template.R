@@ -557,17 +557,17 @@ create_template <- function(
         prev_skeleton[grep("format:", prev_skeleton) + 1],
         "[a-z]+"
       )
-      year <- ifelse(
-        is.na(as.numeric(stringr::str_extract(
-          prev_skeleton[grep("title:", prev_skeleton)],
-          "[0-9]+"
-        ))),
-        year,
-        as.numeric(stringr::str_extract(
-          prev_skeleton[grep("title:", prev_skeleton)],
-          "[0-9]+"
-        ))
-      )
+      # year <- ifelse(
+      #   is.na(as.numeric(stringr::str_extract(
+      #     prev_skeleton[grep("title:", prev_skeleton)],
+      #     "[0-9]+"
+      #   ))),
+      #   year,
+      #   as.numeric(stringr::str_extract(
+      #     prev_skeleton[grep("title:", prev_skeleton)],
+      #     "[0-9]+"
+      #   ))
+      # )
       # Add in species image if updated in rerender
       if (!is.null(spp_image)) {
         file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
