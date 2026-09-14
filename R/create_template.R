@@ -455,6 +455,7 @@ create_template <- function(
     
     #### Read in previous skeleton if rerender ----
     # Check if this is a rerender of the skeleton file
+
     #### Copy template files to report folder ----
     # Check if there are already files in the folder
     # Only files present should be:
