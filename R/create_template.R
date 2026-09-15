@@ -427,13 +427,6 @@ create_template <- function(
     }
   }
 
-  # TODO: add switch here instead of if
-  # if (!is.null(office) & length(office) == 1) {
-  #   office <- match.arg(office, several.ok = FALSE)
-  # } else if (length(office) > 1) {
-  #   office <- ""
-  # }
-
   # Create subdirectory for files
   subdir <- ifelse(
     grepl("/report", file_dir) || file_dir == "report",
@@ -475,14 +468,14 @@ create_template <- function(
         custom_sections <- c(custom_sections, "references")
       }
     } else {
-      if (rerender_skeleton) {
-        # id the order of the files in the skeleton and copy over in that order
-        files_to_copy <- stringr::str_extract(prev_skeleton[grep("knitr::knit_child", prev_skeleton)], "(?<=knit_child\\(').*?(?=\\')")
-        # copy over template files from past one rather than new blanks
-        # files_to_copy <- list.files(current_folder)[grepl(".qmd", list.files(current_folder))]
-      } else {
+      # if (rerender_skeleton) {
+      #   # id the order of the files in the skeleton and copy over in that order
+      #   files_to_copy <- stringr::str_extract(prev_skeleton[grep("knitr::knit_child", prev_skeleton)], "(?<=knit_child\\(').*?(?=\\')")
+      #   # copy over template files from past one rather than new blanks
+      #   # files_to_copy <- list.files(current_folder)[grepl(".qmd", list.files(current_folder))]
+      # } else {
         files_to_copy <- list.files(current_folder)
-      }
+      # }
     }
 
     before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "asar")
@@ -548,63 +541,64 @@ create_template <- function(
 
     #### Read in previous skeleton if rerender ----
     # Check if this is a rerender of the skeleton file
-    if (rerender_skeleton) {
-      # read format in skeleton & check if format is identified in the rerender call
-      if (!file.exists(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))) stop("No skeleton quarto file found in the working directory.")
-      prev_skeleton <- readLines(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))
-      # extract previous format
-      prev_format <- stringr::str_extract(
-        prev_skeleton[grep("format:", prev_skeleton) + 1],
-        "[a-z]+"
-      )
-      
-      # Update to current year
-      # prev_year <- as.numeric(stringr::str_extract(
+    # if (rerender_skeleton) {
+      # # read format in skeleton & check if format is identified in the rerender call
+      # if (!file.exists(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))) stop("No skeleton quarto file found in the working directory.")
+      # prev_skeleton <- readLines(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))
+      # # extract previous format
+      # prev_format <- stringr::str_extract(
+      #   prev_skeleton[grep("format:", prev_skeleton) + 1],
+      #   "[a-z]+"
+      # )
+      # year <- ifelse(
+      #   is.na(as.numeric(stringr::str_extract(
       #     prev_skeleton[grep("title:", prev_skeleton)],
-      #     "[0-9]+"))
-      
-      # Add in species image if updated in rerender
-      if (!is.null(spp_image)) {
-        file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
-        # Change path to spp image since finished copying for yaml
-        if (file.exists(spp_image)) {
-          spp_image <- file.path("support_files", stringr::str_extract(spp_image, "(?<=/)[^/]+$"))
-        }
-      }
-      # if it is previously html and the rerender species html then need to copy over html formatting
-      if (tolower(prev_format) != "html" & tolower(format) == "html") {
-        if (!file.exists(file.path(file_dir, "support_files", "theme.scss"))) file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
-      }
-      if (tolower(prev_format) != "pdf" & tolower(format) == "pdf") {
-        if (is.null(species)) {
-          species <- tolower(stringr::str_extract(
-            prev_skeleton[grep("species: ", prev_skeleton)],
-            "(?<=')[^']+(?=')"
-          ))
-        }
-        if (is.null(office)) {
-          office <- stringr::str_extract(
-            prev_skeleton[grep("office: ", prev_skeleton)],
-            "(?<=')[^']+(?=')"
-          )
-        }
-        # year - default to current year
-        cli::cli_alert_warning("Undefined year.")
-        cli::cli_alert_info("Please identify year in your arguments or manually change it in the skeleton if value is incorrect.",
-          wrap = TRUE
-        )
-        # copy before-body tex
-        if (!file.exists(file_dir, "support_files", "before-body.tex")) file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
-        # customize titlepage tex
-        if (!file.exists(file_dir, "support_files", "_titlepage.tex") | !is.null(species)) create_titlepage_tex(office = office, subdir = supdir, species = species)
-        # customize in-header tex -- run this even on rerender
-        create_inheader_tex(species = species, year = year, subdir = supdir)
-      }
-      if (tolower(format)=="pdf") {
-        # customize in-header tex -- run this even on rerender
-        create_inheader_tex(species = species, year = year, subdir = supdir)
-      }
-    } else {
+      #     "[0-9]+"
+      #   ))),
+      #   year,
+      #   as.numeric(stringr::str_extract(
+      #     prev_skeleton[grep("title:", prev_skeleton)],
+      #     "[0-9]+"
+      #   ))
+      # )
+      # # Add in species image if updated in rerender
+      # if (!is.null(spp_image)) {
+      #   file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
+      #   # Change path to spp image since finished copying for yaml
+      #   if (file.exists(spp_image)) {
+      #     spp_image <- file.path("support_files", stringr::str_extract(spp_image, "(?<=/)[^/]+$"))
+      #   }
+      # }
+      # # if it is previously html and the rerender species html then need to copy over html formatting
+      # if (tolower(prev_format) != "html" & tolower(format) == "html") {
+      #   if (!file.exists(file.path(file_dir, "support_files", "theme.scss"))) file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+      # }
+      # if (tolower(prev_format) != "pdf" & tolower(format) == "pdf") {
+      #   if (is.null(species)) {
+      #     species <- tolower(stringr::str_extract(
+      #       prev_skeleton[grep("species: ", prev_skeleton)],
+      #       "(?<=')[^']+(?=')"
+      #     ))
+      #   }
+      #   if (is.null(office)) {
+      #     office <- stringr::str_extract(
+      #       prev_skeleton[grep("office: ", prev_skeleton)],
+      #       "(?<=')[^']+(?=')"
+      #     )
+      #   }
+      #   # year - default to current year
+      #   cli::cli_alert_warning("Undefined year.")
+      #   cli::cli_alert_info("Please identify year in your arguments or manually change it in the skeleton if value is incorrect.",
+      #     wrap = TRUE
+      #   )
+      #   # copy before-body tex
+      #   if (!file.exists(file_dir, "support_files", "before-body.tex")) file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
+      #   # customize titlepage tex
+      #   if (!file.exists(file_dir, "support_files", "_titlepage.tex") | !is.null(species)) create_titlepage_tex(office = office, subdir = supdir, species = species)
+      #   # customize in-header tex
+      #   if (!file.exists(file_dir, "support_files", "in-header.tex") | !is.null(species)) create_inheader_tex(species = species, year = year, subdir = supdir)
+      # }
+    # } else {
       #### Copy template files to report folder ----
       # Check if there are already files in the folder
       # Only files present should be:
@@ -693,7 +687,7 @@ create_template <- function(
         }
       } # close check for previous files & respective copying
       # prev_skeleton <- NULL
-    } # close if rerender
+    # } # close if rerender
 
     # Handle legacy document order and migration
     fig_info <- migrate_legacy_docs(subdir, doc_type = "figures", rerender_skeleton = rerender_skeleton)
@@ -735,7 +729,7 @@ create_template <- function(
     }
 
     # Created tables doc
-    if (!rerender_skeleton) {
+    # if (!rerender_skeleton) {
       tables_doc_name <- switch(type,
         "nemt" = "06_tables.qmd",
         "safe" = "12_tables.qmd",
@@ -746,17 +740,17 @@ create_template <- function(
         subdir = subdir,
         tables_dir = tables_dir
       )
-    } else {
-      # extract name for tables.qmd from report folder
-      tables_doc_name <- if (can_rename_legacy_doc(tbl_info)) {
-        tbl_info$current_name
-      } else {
-        list.files(file_dir, pattern = "tables.qmd")
-      }
-    }
+    # } else {
+    #   # extract name for tables.qmd from report folder
+    #   tables_doc_name <- if (can_rename_legacy_doc(tbl_info)) {
+    #     tbl_info$current_name
+    #   } else {
+    #     list.files(file_dir, pattern = "tables.qmd")
+    #   }
+    # }
 
     # Create figures qmd
-    if (!rerender_skeleton) {
+    # if (!rerender_skeleton) {
       figures_doc_name <- switch(type,
         "nemt" = "05_figures.qmd",
         "safe" = "11_figures.qmd",
@@ -774,14 +768,15 @@ create_template <- function(
           to = fs::path(subdir, figures_doc_name)
         )
       }
-    } else {
-      # extract name for figures.qmd from report folder
-      figures_doc_name <- if (can_rename_legacy_doc(fig_info)) {
-        fig_info$current_name
-      } else {
-        list.files(file_dir, pattern = "figures.qmd")
-      }
-    }
+    # } else {
+    #   # extract name for figures.qmd from report folder
+    #   figures_doc_name <- if (can_rename_legacy_doc(fig_info)) {
+    #     fig_info$current_name
+    #   } else {
+    #     list.files(file_dir, pattern = "figures.qmd")
+    #   }
+    # }
+    # }
 
     # Part I
     # Create a report template file to render for the region and species
@@ -790,22 +785,19 @@ create_template <- function(
     # Extract region based on param if it was previously found
     if (title == "[TITLE]") {
       # TODO: update below so title gets updated if new input is added such as region/species/office
-      if (rerender_skeleton) {
-        old_title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
-        if (old_title == "'Stock Assessment Report Template'" || species != "species" || !is.null(region) || !is.null(spp_latin)) {
-          title <- create_title(
-            office = office,
-            species = species,
-            spp_latin = spp_latin,
-            region = region,
-            type = type,
-            year = year
-          )
-        } else {
-          # replace year with current year
-          title <- stringr::str_replace(old_title, "[0-9]+", as.character(year))
-        }
-      } else {
+      # if (rerender_skeleton) {
+      #   old_title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
+      #   if (old_title == "'Stock Assessment Report Template'" || !is.null(office) || species != "species" || !is.null(region) || year != format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y") || !is.null(spp_latin)) {
+      #     title <- create_title(
+      #       office = office,
+      #       species = species,
+      #       spp_latin = spp_latin,
+      #       region = region,
+      #       type = type,
+      #       year = ifelse(is.na(year), format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"), year)
+      #     )
+      #   }
+      # } else {
         title <- create_title(
           office = office,
           species = species,
@@ -814,15 +806,15 @@ create_template <- function(
           type = type,
           year = year
         )
-      }
+      # }
     }
 
     # Authors and affiliations
     # Parameters to add authorship to YAML
     author_list <- add_authors(
-      prev_skeleton = ifelse(rerender_skeleton, prev_skeleton, NULL),
+      # prev_skeleton = ifelse(rerender_skeleton, prev_skeleton, NULL),
       authors = authors, # need to put this in case there is a rerender otherwise it would not use the correct argument
-      rerender_skeleton = rerender_skeleton
+      rerender_skeleton = FALSE
     )
 
     # Create yaml
@@ -862,52 +854,52 @@ create_template <- function(
     if (!rerender_skeleton) cli::cli_alert_success("Built YAML header.")
 
     ##### Params chunk ----
-    if (rerender_skeleton) {
-      params_chunk_start <- grep("R_parameters", prev_skeleton) - 1
-      if (!any(grepl("R_parameters", prev_skeleton)) & parameters) {
-        params_chunk <- add_chunk(
-          paste0(
-            "# Parameters \n",
-            "spp <- params$species \n",
-            "SPP <- params$species \n",
-            "species <- params$species \n",
-            "spp_latin <- params$spp_latin \n",
-            "office <- params$office",
-            if (!is.null(region)) {
-              paste0("\n", "region <- params$region")
-            },
-            if (!is.null(param_names)) {
-              paste0(
-                "\n",
-                paste0(param_names, " <- ", "params$", param_names, collapse = " \n")
-              )
-            }
-          ),
-          label = "R_parameters"
-        )
-      } else if (parameters) {
-        params_chunk_end <- grep("```", prev_skeleton)[which(grep("```", prev_skeleton) > params_chunk_start)][1]
-        params_chunk <- prev_skeleton[params_chunk_start:params_chunk_end]
-        # Add in region if it's not null
-        if (!is.null(region) & !any(grepl("region <- params$region", params_chunk))) {
-          params_chunk <- append(
-            params_chunk,
-            "region <- params$region",
-            after = params_chunk_end - 1
-          )
-        }
-        if (!is.null(param_values) & !is.null(param_names)) {
-          for (i in length(param_values)) {
-            add_param <- glue::glue("{param_names[i]} <- params${param_names[i]}")
-            params_chunk <- append(
-              params_chunk,
-              add_param,
-              after = params_chunk_end - 1
-            )
-          }
-        }
-      }
-    } else {
+    # if (rerender_skeleton) {
+      # params_chunk_start <- grep("R_parameters", prev_skeleton) - 1
+      # if (!any(grepl("R_parameters", prev_skeleton)) & parameters) {
+      #   params_chunk <- add_chunk(
+      #     paste0(
+      #       "# Parameters \n",
+      #       "spp <- params$species \n",
+      #       "SPP <- params$species \n",
+      #       "species <- params$species \n",
+      #       "spp_latin <- params$spp_latin \n",
+      #       "office <- params$office",
+      #       if (!is.null(region)) {
+      #         paste0("\n", "region <- params$region")
+      #       },
+      #       if (!is.null(param_names)) {
+      #         paste0(
+      #           "\n",
+      #           paste0(param_names, " <- ", "params$", param_names, collapse = " \n")
+      #         )
+      #       }
+      #     ),
+      #     label = "R_parameters"
+      #   )
+      # } else if (parameters) {
+      #   params_chunk_end <- grep("```", prev_skeleton)[which(grep("```", prev_skeleton) > params_chunk_start)][1]
+      #   params_chunk <- prev_skeleton[params_chunk_start:params_chunk_end]
+      #   # Add in region if it's not null
+      #   if (!is.null(region) & !any(grepl("region <- params$region", params_chunk))) {
+      #     params_chunk <- append(
+      #       params_chunk,
+      #       "region <- params$region",
+      #       after = params_chunk_end - 1
+      #     )
+      #   }
+      #   if (!is.null(param_values) & !is.null(param_names)) {
+      #     for (i in length(param_values)) {
+      #       add_param <- glue::glue("{param_names[i]} <- params${param_names[i]}")
+      #       params_chunk <- append(
+      #         params_chunk,
+      #         add_param,
+      #         after = params_chunk_end - 1
+      #       )
+      #     }
+      #   }
+      # }
+    # } else {
       params_chunk <- add_chunk(
         paste0(
           "# Parameters \n",
@@ -928,7 +920,7 @@ create_template <- function(
         ),
         label = "R_parameters"
       )
-    }
+    # }
 
     params_chunk <- add_chunk(
       paste0(
@@ -961,7 +953,7 @@ create_template <- function(
       # identify type of file and adjust load in
       # df_name <- stringr::str_extract(model_results, "(?<=/)[^/]+(?=\\.[^./]+$)") # extract the name of the data frame from the file name
       # Assuming user saved converted output
-      load_method <- glue::glue("load({deparse(substitute(model_results))}) \n")
+      load_method <- glue::glue("load({model_results}) \n")
       # output_file_type <- stringr::str_extract(model_results, "(?<=\\.)[a-zA-Z]+$")
       # load_method <- switch(
       #   output_file_type,
@@ -1024,136 +1016,136 @@ create_template <- function(
     )
 
     # extract old preamble if don't want to change
-    if (rerender_skeleton) {
-      question1 <- readline("Update the preamble to match entered arguments? (Y/N)")
-
-      # answer question1 as n if session isn't interactive
-      if (!interactive()) {
-        question1 <- "n"
-      }
-      if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
-        start_line <- grep("label: 'preamble'", prev_skeleton) - 1
-        # find next trailing "```"` in case it was edited at the end
-        end_line <- grep("```", prev_skeleton)[grep("```", prev_skeleton) > start_line][1]
-        # preamble <- paste(prev_skeleton[start_line:end_line], collapse = "\n")
-        preamble <- prev_skeleton[start_line:end_line]
-
-        if (!is.null(model_results)) {
-          # show message and make README stating model_results info
-          mod_time <- as.character(file.info(fs::path(model_results), extra_cols = FALSE)$ctime)
-          mod_msg <- paste(
-            "Report is based upon model output from", model_results,
-            "that was last modified on:", mod_time
-          )
-          cli::cli_alert_info(mod_msg)
-          writeLines(
-            mod_msg,
-            fs::path(
-              subdir,
-              paste0(
-                gsub(".rda", "", basename(model_results)),
-                "_metadata.md"
-              )
-            )
-          )
-          prev_results_line <- grep("output <- ", preamble)[1]
-          prev_results <- stringr::str_replace(
-            preamble[prev_results_line],
-            "(?<=output\\s{0,5}<-).*",
-            deparse(substitute(model_results))
-          )
-          # add back in pipe
-          prev_results <- paste0(prev_results, " |>")
-          preamble <- append(preamble, prev_results, after = prev_results_line)[-prev_results_line]
-
-          # change chunk eval to true
-          if (any(grepl("eval: false", preamble))) {
-            chunk_eval_line <- grep("eval: ", preamble)
-            eval_line_new <- stringr::str_replace(
-              preamble[chunk_eval_line],
-              "eval: false",
-              "eval: true"
-            )
-            preamble <- paste(
-              append(
-                preamble,
-                eval_line_new,
-                after = chunk_eval_line
-              )[-chunk_eval_line],
-              collapse = "\n"
-            )
-          }
-          preamble <- paste(preamble, collapse = "\n")
-
-          # if (!grepl(".csv", model_results)) warning("Model results are not in csv format - Will not work on render")
-        } else {
-          cli::cli_alert_info("Preamble maintained.")
-          cli::cli_alert_info("Model results not updated.")
-          preamble <- paste(preamble, collapse = "\n")
-        }
-      } else if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
-        cli::cli_alert_warning("Report template files were not copied into your directory.")
-        cli::cli_alert_info("If you wish to update the template with new parameters or output files, please edit the {report_name} in your local folder.",
-          wrap = TRUE
-        )
-      }
-    } # close if rerender
+    # if (rerender_skeleton) {
+    #   question1 <- readline("Update the preamble to match entered arguments? (Y/N)")
+    # 
+    #   # answer question1 as n if session isn't interactive
+    #   if (!interactive()) {
+    #     question1 <- "n"
+    #   }
+    #   if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+    #     start_line <- grep("label: 'preamble'", prev_skeleton) - 1
+    #     # find next trailing "```"` in case it was edited at the end
+    #     end_line <- grep("```", prev_skeleton)[grep("```", prev_skeleton) > start_line][1]
+    #     # preamble <- paste(prev_skeleton[start_line:end_line], collapse = "\n")
+    #     preamble <- prev_skeleton[start_line:end_line]
+    # 
+    #     if (!is.null(model_results)) {
+    #       # show message and make README stating model_results info
+    #       mod_time <- as.character(file.info(fs::path(model_results), extra_cols = FALSE)$ctime)
+    #       mod_msg <- paste(
+    #         "Report is based upon model output from", model_results,
+    #         "that was last modified on:", mod_time
+    #       )
+    #       cli::cli_alert_info(mod_msg)
+    #       writeLines(
+    #         mod_msg,
+    #         fs::path(
+    #           subdir,
+    #           paste0(
+    #             gsub(".rda", "", basename(model_results)),
+    #             "_metadata.md"
+    #           )
+    #         )
+    #       )
+    #       prev_results_line <- grep("output <- ", preamble)[1]
+    #       prev_results <- stringr::str_replace(
+    #         preamble[prev_results_line],
+    #         "(?<=output\\s{0,5}<-).*",
+    #         deparse(substitute(model_results))
+    #       )
+    #       # add back in pipe
+    #       prev_results <- paste0(prev_results, " |>")
+    #       preamble <- append(preamble, prev_results, after = prev_results_line)[-prev_results_line]
+    # 
+    #       # change chunk eval to true
+    #       if (any(grepl("eval: false", preamble))) {
+    #         chunk_eval_line <- grep("eval: ", preamble)
+    #         eval_line_new <- stringr::str_replace(
+    #           preamble[chunk_eval_line],
+    #           "eval: false",
+    #           "eval: true"
+    #         )
+    #         preamble <- paste(
+    #           append(
+    #             preamble,
+    #             eval_line_new,
+    #             after = chunk_eval_line
+    #           )[-chunk_eval_line],
+    #           collapse = "\n"
+    #         )
+    #       }
+    #       preamble <- paste(preamble, collapse = "\n")
+    # 
+    #       # if (!grepl(".csv", model_results)) warning("Model results are not in csv format - Will not work on render")
+    #     } else {
+    #       cli::cli_alert_info("Preamble maintained.")
+    #       cli::cli_alert_info("Model results not updated.")
+    #       preamble <- paste(preamble, collapse = "\n")
+    #     }
+    #   } else if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+    #     cli::cli_alert_warning("Report template files were not copied into your directory.")
+    #     cli::cli_alert_info("If you wish to update the template with new parameters or output files, please edit the {report_name} in your local folder.",
+    #       wrap = TRUE
+    #     )
+    #   }
+    # } # close if rerender
 
     ##### Disclaimer ----
     disclaimer <- "{{< pagebreak >}}\n\n## Disclaimer {.unnumbered .unlisted}\n\nThese materials do not constitute a formal publication and are for information only. They are in a pre-review, pre-decisional state and should not be formally cited or reproduced. They are to be considered provisional and do not represent any determination or policy of NOAA or the Department of Commerce.\n"
 
     ##### Citation ----
     # Add page for citation of assessment report
-    if (rerender_skeleton) {
-      # Extract citation from previous skeleton
-      citation <- prev_skeleton[grep("Please cite this publication as:", prev_skeleton) + 2]
-      if (!is.null(authors)) {
-        authors_in_skel <- prev_skeleton[grep("  - name: ", prev_skeleton)]
-        authors_in_skel <- stringr::str_remove_all(authors_in_skel[seq(1, length(authors_in_skel), 2)], "^.*- name: '|'$")
-        authors <- ifelse(
-          authors_in_skel == "FIRST LAST",
-          names(authors),
-          c(authors_in_skel, names(authors))
-        )
-
-        cit_authors <- format_citation_authors(authors)
-
-        # replace authors in citation
-        if (authors_in_skel[1] == "FIRST LAST") {
-          citation <- stringr::str_replace(
-            citation,
-            # regex to identify characters in the beginning of the string before the year
-            "\\[AUTHOR NAME\\].",
-            cit_authors
-          )
-        } else {
-          citation <- stringr::str_replace(
-            citation,
-            # regex to identify characters in the beginning of the string before the year
-            "^.*?(?=\\s\\d{4}\\.)",
-            cit_authors
-          )
-        }
-      }
-
-      if (!is.null(species) | !is.null(region) | !is.null(spp_latin)) {
-        # update title in citation
-        citation <- stringr::str_replace(
-          citation,
-          "(?<=\\d{4}\\.\\s).*?(?=\\.\\sNOAA Fisheries)",
-          # "(?<=\\.\\s)(Stock Assessment Report Template)(?=\\.)",
-          title
-        )
-      }
-      cli::cli_alert_success("Added report citation.")
-    } else {
+    # if (rerender_skeleton) {
+    #   # Extract citation from previous skeleton
+    #   citation <- prev_skeleton[grep("Please cite this publication as:", prev_skeleton) + 2]
+    #   if (!is.null(authors)) {
+    #     authors_in_skel <- prev_skeleton[grep("  - name: ", prev_skeleton)]
+    #     authors_in_skel <- stringr::str_remove_all(authors_in_skel[seq(1, length(authors_in_skel), 2)], "^.*- name: '|'$")
+    #     authors <- ifelse(
+    #       authors_in_skel == "FIRST LAST",
+    #       names(authors),
+    #       c(authors_in_skel, names(authors))
+    #     )
+    # 
+    #     cit_authors <- format_citation_authors(authors)
+    # 
+    #     # replace authors in citation
+    #     if (authors_in_skel[1] == "FIRST LAST") {
+    #       citation <- stringr::str_replace(
+    #         citation,
+    #         # regex to identify characters in the beginning of the string before the year
+    #         "\\[AUTHOR NAME\\].",
+    #         cit_authors
+    #       )
+    #     } else {
+    #       citation <- stringr::str_replace(
+    #         citation,
+    #         # regex to identify characters in the beginning of the string before the year
+    #         "^.*?(?=\\s\\d{4}\\.)",
+    #         cit_authors
+    #       )
+    #     }
+    #   }
+    # 
+    #   if (!is.null(species) | !is.null(region) | !is.null(spp_latin)) {
+    #     # update title in citation
+    #     citation <- stringr::str_replace(
+    #       citation,
+    #       "(?<=\\d{4}\\.\\s).*?(?=\\.\\sNOAA Fisheries)",
+    #       # "(?<=\\.\\s)(Stock Assessment Report Template)(?=\\.)",
+    #       title
+    #     )
+    #   }
+    #   cli::cli_alert_success("Added report citation.")
+    # } else {
       citation <- create_citation(
         authors = authors,
         title = title,
         year = year
       )
       cli::cli_alert_success("Added report citation.")
-    }
+    # }
 
     ##### Create report outline ----
     # Include tables and figures in template
