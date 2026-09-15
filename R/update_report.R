@@ -118,15 +118,12 @@ update_report <- function(
     file_dir = report_dir,
     authors = authors,
     model_results = model_results,
-    species = species,
-    spp_latin = spp_latin,
     year = year,
     format = format,
     region = region,
     new_section = new_section,
     section_location = section_location
   )
-  # TODO: update year in title
   
   #### reset tables and figures docs ----
   
