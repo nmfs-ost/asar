@@ -161,26 +161,11 @@ rerender_skeleton <- function(
     bib_name <- c(bib_name, basename(bib_file))
   }
   
-  #### yaml ----
-  yaml <- create_yaml(
-    prev_format = prev_format,
-    format = format,
+  #### Authors ----
+  author_list <- add_authors(
     prev_skeleton = prev_skeleton,
-    author_list = author_list,
-    title = title,
-    rerender_skeleton = TRUE,
-    office = office,
-    spp_image = spp_image,
-    species = species,
-    spp_latin = spp_latin,
-    region = region,
-    parameters = parameters,
-    param_names = param_names,
-    param_values = param_values,
-    bib_name = bib_name,
-    bib_file = bib_file,
-    year = year,
-    type = type
+    authors = authors, # need to put this in case there is a rerender otherwise it would not use the correct argument
+    rerender_skeleton = TRUE
   )
   
   #### Params chunk ----
@@ -228,6 +213,28 @@ rerender_skeleton <- function(
       }
     }
   }
+  
+  #### yaml ----
+  yaml <- create_yaml(
+    prev_format = prev_format,
+    format = format,
+    prev_skeleton = prev_skeleton,
+    author_list = author_list,
+    title = title,
+    rerender_skeleton = TRUE,
+    office = office,
+    spp_image = spp_image,
+    species = species,
+    spp_latin = spp_latin,
+    region = region,
+    parameters = parameters,
+    param_names = param_names,
+    param_values = param_values,
+    bib_name = bib_name,
+    bib_file = bib_file,
+    year = year,
+    type = type
+  )
   
   #### preamble ----
   question1 <- readline("Update the preamble to match entered arguments? (Y/N)")
@@ -374,9 +381,71 @@ rerender_skeleton <- function(
     )
   }
   
-  #### ID sections to include in skeleton
+  #### Create report outline (sections) ----
   # id the order of the files in the skeleton and copy over in that order
   files_to_copy <- stringr::str_extract(prev_skeleton[grep("knitr::knit_child", prev_skeleton)], "(?<=knit_child\\(').*?(?=\\')")
+  
+  if (!is.null(new_section) || !is.null(custom_sections)) custom <- TRUE
+  
+  if (is.null(custom_sections)) {
+    # identify all previous sections
+    sections <- stringr::str_extract_all(
+      prev_skeleton,
+      "(?<=['`])[^']+\\.qmd(?=['`])"
+    ) |>
+      unlist() |>
+      purrr::discard(~ .x == "")
+    
+    has_legacy_tables <- can_rename_legacy_doc(tbl_info)
+    has_legacy_figures <- can_rename_legacy_doc(fig_info)
+    
+    if (has_legacy_tables) {
+      sections <- stringr::str_replace_all(
+        sections,
+        tbl_info$legacy_name,
+        tbl_info$current_name
+      )
+    }
+    if (has_legacy_figures) {
+      sections <- stringr::str_replace_all(
+        sections,
+        fig_info$legacy_name,
+        fig_info$current_name
+      )
+    }
+    
+    figure_name <- if (has_legacy_figures) fig_info$current_name else figures_doc_name
+    table_name <- if (has_legacy_tables) tbl_info$current_name else tables_doc_name
+    
+    figure_position <- which(sections == figure_name)
+    table_position <- which(sections == table_name)
+    if (length(figure_position) == 1 && length(table_position) == 1 && figure_position > table_position) {
+      sections <- sections[sections != figure_name]
+      table_position <- which(sections == table_name)
+      sections <- append(
+        sections,
+        figure_name,
+        after = table_position - 1
+      )
+    }
+    
+    # add sections as list
+    sections <- add_child(
+      sections,
+      label = gsub(".qmd", "", unlist(sections))
+    )
+  } else {
+    sections <- custom_true(
+      new_section = new_section,
+      section_location = section_location,
+      custom_sections = custom_sections,
+      files_to_copy = files_to_copy,
+      tables_doc_name = tables_doc_name,
+      figures_doc_name = figures_doc_name,
+      subdir = subdir
+    )
+  }
+  
   
   #### Pull together template ----
   report_template <- paste(
@@ -391,4 +460,22 @@ rerender_skeleton <- function(
   )
   #### save skeleton file ----
   utils::capture.output(cat(report_template), file = file.path(file_dir, new_report_name), append = FALSE)
+  
+  # Delete old skeleton
+  if (length(grep("skeleton.qmd", list.files(file_dir, pattern = "skeleton.qmd"))) > 1) {
+    question1 <- readline("Deleting previous skeleton file... Do you want to proceed? (Y/N)")
+    
+    # answer question1 as y if session isn't interactive
+    if (!interactive()) {
+      question1 <- "y"
+    }
+    
+    if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
+      file.remove(file.path(file_dir, report_name))
+    } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
+      cli::cli_alert_info("Skeleton file retained.")
+    }
+  }
+  # Print message
+  cli::cli_alert_success("Updated report skeleton in directory {subdir}.")
 }
