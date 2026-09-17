@@ -1,11 +1,49 @@
-# code that is pulled from create_template(rerender_skeleton)
-# was located in another branch 'call-prev-report'
-
+#' Rerender skeleton quarto document
+#'
+#' @inheritParams create_template
+#' @param file_dir Required. Directory where the skeleton file is located. Can include or leave out the report folder in the path.
+#'
+#' @returns Update the "skeleton" file produce after running `create_template`. 
+#' Prevents the loss of data in child documents and make easy updates without 
+#' prior knowledge of quarto.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' rerender_skeleton(
+#' file_dir = getwd(),
+#' species = "Red Snapper",
+#' office = "SEFSC",
+#' region = "Gulf of America",
+#' year = 2027,
+#' authors = c("Jane Doe" = "SEFSC")
+#' )
+#' }
 rerender_skeleton <- function(
-    file_dir
+    file_dir,
+    species = "species",
+    spp_latin = NULL,
+    office = NULL,
+    region = NULL,
+    year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
+    custom_sections = NULL,
+    new_section = NULL,
+    section_location = NULL,
+    custom_params = NULL,
+    title = "[TITLE]",
+    model_results = NULL,
+    bib_file = NULL,
+    type = "sar",
+    spp_image = NULL,
+    format = "pdf",
+    authors = NULL
 ) {
   # Add in report to file_dir
-  file_dir <- file.path(file_dir, "report")
+  if (!grepl("report", file_dir)) file_dir <- file.path(file_dir, "report")
+  # ID other directories
+  supdir <- file.path(file_dir, "support_files")
+  bibdir <- file.path(file_dir, "bibliography_files")
+  
   #### Read in previous skeleton ----
   # TODO: set up situation where species, region can be changed
   report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
@@ -14,7 +52,7 @@ rerender_skeleton <- function(
   
   prev_report_name <- gsub("_skeleton.qmd", "", report_name)
   # Extract type
-  type <- stringr::str_extract(prev_report_name, "^[A-Z]+")
+  type <- stringr::str_extract(prev_report_name, "^[a-z]+")
   # Extract region unless region is changed or updated
   # identify region from the skeleton
   prev_skeleton <- readLines(file.path(file_dir, list.files(file_dir, pattern = "skeleton.qmd")))
@@ -64,14 +102,11 @@ rerender_skeleton <- function(
     prev_skeleton[grep("format:", prev_skeleton) + 1],
     "[a-z]+"
   )
-  year <- as.numeric(stringr::str_extract(
+  prev_year <- as.numeric(stringr::str_extract(
     prev_skeleton[grep("title:", prev_skeleton)],
     "[0-9]+"
   ))
-  # Add in species image if updated in rerender
-  if (species != "species") {
-    file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
-  }
+  
   # Add in species image if updated in rerender
   if (!is.null(spp_image)) {
     file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
@@ -79,12 +114,17 @@ rerender_skeleton <- function(
     if (file.exists(spp_image)) {
       spp_image <- file.path("support_files", stringr::str_extract(spp_image, "(?<=/)[^/]+$"))
     }
+  } else if (is.null(spp_image) && species != "species") {
+    spp_image <- system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar") 
+    # file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
+    # spp image name for yaml
+    spp_image <- glue::glue("support_files/{basename(spp_image)}")
   }
   # if it is previously html and the rerender species html then need to copy over html formatting
   if (tolower(prev_format) != "html" & tolower(format) == "html") {
     if (!file.exists(file.path(file_dir, "support_files", "theme.scss"))) file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
   }
-  if (tolower(prev_format != "pdf" & tolower(format) == "pdf")) {
+  if (tolower(prev_format) != "pdf" & tolower(format) == "pdf") {
     if (is.null(species)) {
       species <- tolower(stringr::str_extract(
         prev_skeleton[grep("species: ", prev_skeleton)],
@@ -115,6 +155,9 @@ rerender_skeleton <- function(
   
   #### Figs and tabs docs ----
   # extract name for tables.qmd from report folder
+  fig_info <- migrate_legacy_docs(file_dir, doc_type = "figures", rerender_skeleton = FALSE)
+  tbl_info <- migrate_legacy_docs(file_dir, doc_type = "tables", rerender_skeleton = FALSE)
+  
   tables_doc_name <- if (can_rename_legacy_doc(tbl_info)) {
     tbl_info$current_name
   } else {
@@ -130,7 +173,7 @@ rerender_skeleton <- function(
   #### Adjust the title ---- 
   if (title == "[TITLE]") {
     title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
-    if (title == "'Stock Assessment Report Template' " & (!is.null(office) | !is.null(species) | !is.null(region))) {
+    if (title == "'Stock Assessment Report Template'" & (!is.null(office) | !is.null(species) | !is.null(region))) {
       title <- create_title(
         office = office,
         species = species,
@@ -141,23 +184,16 @@ rerender_skeleton <- function(
       )
     }
   }
-  
-  #### authors ---- 
-  # this may not be the case for calling in report
-  author_list <- add_authors(
-    prev_skeleton = prev_skeleton, NULL,
-    author = author, # need to put this in case there is a rerender otherwise it would not use the correct argument
-    rerender_skeleton = TRUE
-  )
-  
-  
-  
+
   #### Initialize bib name ----
-  bib_name <- NULL
+  # bib_name <- NULL
+  # Extract previous bib file names
+  lines_after_bib <- prev_skeleton[(grep("bibliography:", prev_skeleton)[1] + 1):(grep("csl:", prev_skeleton)[1] - 1)]
+  bib_name <- basename(stringr::str_replace_all(lines_after_bib, "  - ", ""))
   # Add bib file if bib_file is not NULL
   # Note: this is copied from create_template
   if (!is.null(bib_file)) {
-    file.copy(bib_file, bib_dir, overwrite = TRUE) |> suppressWarnings()
+    file.copy(bib_file, bibdir, overwrite = TRUE) |> suppressWarnings()
     bib_name <- c(bib_name, basename(bib_file))
   }
   
@@ -166,6 +202,32 @@ rerender_skeleton <- function(
     prev_skeleton = prev_skeleton,
     authors = authors, # need to put this in case there is a rerender otherwise it would not use the correct argument
     rerender_skeleton = TRUE
+  )
+  
+  #### Parameters for yaml ----
+  # Unpack
+  parameters <- TRUE
+  param_names <- custom_params |> names()
+  param_values <- custom_params |> unname()
+
+  #### yaml ----
+  yaml <- create_yaml(
+    prev_format = prev_format,
+    format = format,
+    prev_skeleton = prev_skeleton,
+    author_list = author_list,
+    title = title,
+    rerender_skeleton = TRUE,
+    office = office,
+    spp_image = spp_image,
+    species = species,
+    spp_latin = spp_latin,
+    region = region,
+    parameters = parameters,
+    custom_params = custom_params,
+    bib_name = bib_name,
+    year = year,
+    type = type
   )
   
   #### Params chunk ----
@@ -214,28 +276,6 @@ rerender_skeleton <- function(
     }
   }
   
-  #### yaml ----
-  yaml <- create_yaml(
-    prev_format = prev_format,
-    format = format,
-    prev_skeleton = prev_skeleton,
-    author_list = author_list,
-    title = title,
-    rerender_skeleton = TRUE,
-    office = office,
-    spp_image = spp_image,
-    species = species,
-    spp_latin = spp_latin,
-    region = region,
-    parameters = parameters,
-    param_names = param_names,
-    param_values = param_values,
-    bib_name = bib_name,
-    bib_file = bib_file,
-    year = year,
-    type = type
-  )
-  
   #### preamble ----
   question1 <- readline("Update the preamble to match entered arguments? (Y/N)")
   
@@ -261,7 +301,7 @@ rerender_skeleton <- function(
       writeLines(
         mod_msg,
         fs::path(
-          subdir,
+          file_dir,
           paste0(
             gsub(".rda", "", basename(model_results)),
             "_metadata.md"
@@ -272,7 +312,7 @@ rerender_skeleton <- function(
       prev_results <- stringr::str_replace(
         preamble[prev_results_line],
         "(?<=output\\s{0,5}<-).*",
-        deparse(substitute(model_results))
+        model_results # deparse(substitute(model_results))
       )
       # add back in pipe
       prev_results <- paste0(prev_results, " |>")
@@ -314,7 +354,7 @@ rerender_skeleton <- function(
     # copy preamble code into report folder
     file.copy(
       system.file("resources", "preamble.R", package = "asar"),
-      subdir,
+      file_dir,
       overwrite = TRUE
     ) |> suppressWarnings()
     
@@ -352,40 +392,28 @@ rerender_skeleton <- function(
   disclaimer <- "{{< pagebreak >}}\n\n## Disclaimer {.unnumbered .unlisted}\n\nThese materials do not constitute a formal publication and are for information only. They are in a pre-review, pre-decisional state and should not be formally cited or reproduced. They are to be considered provisional and do not represent any determination or policy of NOAA or the Department of Commerce.\n"
   
   #### citation ----
-  if (!is.null(title) | !is.null(species) | !is.null(year) | !is.null(author)) {
+  if (title != "[TITLE]" | !is.null(species) | !is.null(year) | !is.null(authors)) {
     citation_line <- grep("Please cite this publication as:", prev_skeleton) + 2
-    citation <- glue::glue("{{< pagebreak >}} \n\n Please cite this publication as: \n\n {prev_skeleton[citation_line]}\n\n")
+    # citation <- glue::glue("{{< pagebreak >}} \n\n Please cite this publication as: \n\n {prev_skeleton[citation_line]}\n\n")
+    # create the updated citation
+    citation <- create_citation(
+      authors = authors,
+      title = title,
+      year = year
+    )
   } else {
     author <- grep("  - name: ", prev_skeleton)
     citation <- create_citation(
-      author = author,
-      ...
+      authors = authors
     )
     cli::cli_alert_success("Added report citation.")
-  }
-  if (custom) { 
-    stop("Not currently working")
-  } else {
-    # identify all previous sections
-    files_to_copy <- stringr::str_extract(prev_skeleton[grep("knitr::knit_child", prev_skeleton)], "(?<=knit_child\\(').*?(?=\\')")
-    sections <- stringr::str_extract_all(
-      prev_skeleton,
-      "(?<=['`])[^']+\\.qmd(?=['`])"
-    ) |>
-      unlist() |>
-      purrr::discard(~ .x == "")
-    # add sections as list
-    sections <- add_child(
-      sections,
-      label = gsub(".qmd", "", unlist(sections))
-    )
   }
   
   #### Create report outline (sections) ----
   # id the order of the files in the skeleton and copy over in that order
   files_to_copy <- stringr::str_extract(prev_skeleton[grep("knitr::knit_child", prev_skeleton)], "(?<=knit_child\\(').*?(?=\\')")
   
-  if (!is.null(new_section) || !is.null(custom_sections)) custom <- TRUE
+  if (!is.null(new_section) || !is.null(custom_sections)) custom <- TRUE else custom <- FALSE
   
   if (is.null(custom_sections)) {
     # identify all previous sections
@@ -442,11 +470,10 @@ rerender_skeleton <- function(
       files_to_copy = files_to_copy,
       tables_doc_name = tables_doc_name,
       figures_doc_name = figures_doc_name,
-      subdir = subdir
+      subdir = file_dir
     )
   }
-  
-  
+
   #### Pull together template ----
   report_template <- paste(
     yaml,
