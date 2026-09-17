@@ -506,6 +506,16 @@ create_template <- function(
             )
           )
         )
+        # copy before-body tex
+        if (!file.exists(file_dir, "support_files", "before-body.tex")) file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
+        # customize titlepage tex
+        if (!file.exists(file_dir, "support_files", "_titlepage.tex") | !is.null(species)) create_titlepage_tex(office = office, subdir = supdir, species = species)
+        # customize in-header tex -- run this even on rerender
+        create_inheader_tex(species = species, year = year, subdir = supdir)
+      }
+      if (tolower(format)=="pdf") {
+        # customize in-header tex -- run this even on rerender
+        create_inheader_tex(species = species, year = year, subdir = supdir)
       }
     } else {
       cli::cli_alert_warning("There are files in this location.")
