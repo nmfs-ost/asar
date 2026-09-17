@@ -136,8 +136,8 @@ test_that("Adds new figure from figures folder.", {
   # Create one figure
   stockplotr::plot_landings(
     dat = stockplotr::example_data,
-    make_rda = TRUE,
-    module = "TIME_SERIES"
+    # make_rda = TRUE,
+    module = "CATCH"
   )
 
   create_template()
