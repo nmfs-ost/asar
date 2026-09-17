@@ -31,6 +31,7 @@ test_that("create_template() uses journals bibliographies by default", {
   # journals_bibs <- list.files(journals_bibs_path, full.names = FALSE)
   journals_bibs <- c(
     "aquaculture.bib",
+    "asar_citation.bib",
     "canjfishaquatsci.bib",
     "conservation-policy-management.bib",
     "ecology.bib",
@@ -45,7 +46,7 @@ test_that("create_template() uses journals bibliographies by default", {
 
   output_dir <- getwd()
   
-  create_template(bib_file = NULL) |>
+  create_template() |>
     suppressWarnings() |>
     suppressMessages()
 
@@ -64,6 +65,20 @@ test_that("create_template() uses journals bibliographies by default", {
   expect_false(file.exists(file.path(report_dir, "asar_references.bib")))
   
   unlink(fs::path(output_dir, "report"), recursive = T)
+})
+
+test_that("create_template adds asar citation bib only when bib_file = NULL",{
+  create_template(bib_file = NULL)
+  expect_bib_file <- "@Manual{asar_2026,
+  title = {asar: Build NOAA Stock Assessment Report},
+  author = {Samantha Schiano and Sophie Breitbart and Steve Saul},
+  year = {2026},
+  note = {R package version 2.2.0},
+  url = {https://github.com/nmfs-ost/asar},
+}"
+  produced_bib_file <- readLines(file.path(getwd(), "report", "bibliography_files", "asar_citation.bib"))
+  expect_equal(expect_bib_file, paste(produced_bib_file, collapse = "\n"))
+  unlink(fs::path(getwd(), "report"), recursive = T)
 })
 
 test_that("create_template() creates correct files", {

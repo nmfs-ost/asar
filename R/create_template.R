@@ -93,6 +93,8 @@
 #'   If a path is provided, the custom file is used and journal templates are skipped. 
 #'   If `TRUE`, default journal `.bib` templates are downloaded. 
 #'   If `FALSE` or `NULL` (default), a minimal `.bib` file containing only the `asar` package citation is created.
+#'   
+#' Default: TRUE
 #'
 #' @param new_template TRUE/FALSE; Create a new template? If true,
 #' will pull the last saved stock assessment report skeleton.
@@ -249,7 +251,7 @@ create_template <- function(
   tables_dir = getwd(),
   figures_dir = getwd(),
   spp_image = NULL,
-  bib_file = NULL,
+  bib_file = TRUE,
   new_template = TRUE,
   rerender_skeleton = FALSE,
   custom_sections = NULL,
@@ -504,20 +506,22 @@ create_template <- function(
 
     # asar citation 
       asar_citation <- "@Manual{asar_2026,
-                            title = {asar: Build NOAA Stock Assessment Report},
-                            author = {Samantha Schiano and Sophie Breitbart and Steve Saul},
-                            year = {2026},
-                            note = {R package version 2.2.0},
-                            url = {https://github.com/nmfs-ost/asar},
-                          }"
+  title = {asar: Build NOAA Stock Assessment Report},
+  author = {Samantha Schiano and Sophie Breitbart and Steve Saul},
+  year = {2026},
+  note = {R package version 2.2.0},
+  url = {https://github.com/nmfs-ost/asar},
+}"
 
     if (!rerender_skeleton) {
+      # make asar bib in all conditions
+      asar_bib_path <- file.path(bib_dir, "asar_citation.bib")
+      write(asar_citation, file = asar_bib_path)
+      bib_name <- c("asar_citation.bib")
       if (is.character(bib_file)) {
        # File provided: Copy the custom bib and create the asar citation .bib
         file.copy(bib_file, bib_dir, overwrite = TRUE) |> suppressWarnings()
-        asar_bib_path <- file.path(bib_dir, "asar_citation.bib")
-        write(asar_citation, file = asar_bib_path)
-        bib_name <- c(basename(bib_file), "asar_citation.bib")
+        bib_name <- c(bib_name, basename(bib_file))
     } else if (isTRUE(bib_file)) {
         # TRUE: Download the journal packages bib and create the asar citation .bib
         journals::download_bibs(bib_dir)
@@ -531,22 +535,16 @@ create_template <- function(
           file.remove(sty_files)
         }
         
-        asar_bib_path <- file.path(bib_dir, "asar_citation.bib")
-        write(asar_citation, file = asar_bib_path)
+        bib_name <- basename(base_bib_file)
         
-        bib_name <- c(basename(base_bib_file), "asar_citation.bib")
-        
-      } else {
-        # FALSE or NULL: Just make the asar citation .bib
-        asar_bib_path <- file.path(bib_dir, "asar_citation.bib")
-        write(asar_citation, file = asar_bib_path)
-        
-        bib_name <- "asar_citation.bib"
-      }
-    } else {
-      # Rerendering the skeleton: Don't touch anything
-      bib_name <- NULL
-    }
+      } # else { # else use default made above
+      #   # FALSE or NULL: Just make the asar citation .bib
+      #   bib_name <- "asar_citation.bib"
+      # }
+    } # else {
+    #   # Rerendering the skeleton: Don't touch anything
+    #   bib_name <- NULL
+    # }
 
     #### Read in previous skeleton if rerender ----
     # Check if this is a rerender of the skeleton file
