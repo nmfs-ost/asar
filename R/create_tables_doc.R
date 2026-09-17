@@ -49,30 +49,30 @@ create_tables_doc <- function(subdir = getwd(),
   empty_doc_text <- "Please refer to the `stockplotr` package downloaded from remotes::install_github('nmfs-ost/stockplotr') to add premade tables."
 
   tab_header <- "# Tables {#sec-tables}\n \n"
-  
+
   # list all files in tables
   file_list <- list.files(file.path(tables_dir, "tables"))
-  
+
   # create sublist of only rda table files
   rda_tab_list <- file_list[grepl(".rda", file_list)]
-  
+
   if (length(rda_tab_list) == 0) {
-      cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
-                             wrap = TRUE
-      )
-      cli::cli_alert_info("For `create_tables_doc` to incorporate tables, there must be:",
-                          wrap = TRUE
-      )
-      cli::cli_ol(c(
-        "a 'tables' folder in {fs::path(tables_dir)}",
-        ".rda files in the 'tables' folder"
-      ))
-      }
+    cli::cli_alert_warning("Found zero tables in an rda format (i.e., .rda) in {fs::path(tables_dir, 'tables')}.",
+      wrap = TRUE
+    )
+    cli::cli_alert_info("For `create_tables_doc` to incorporate tables, there must be:",
+      wrap = TRUE
+    )
+    cli::cli_ol(c(
+      "a 'tables' folder in {fs::path(tables_dir)}",
+      ".rda files in the 'tables' folder"
+    ))
+  }
   # create list of executive summary tables
   exec_sum_tab_list <- c("projections_table.rda", "total_catch_table.rda")
   # create list of executive summary tables in the rda table list
   selected_exec_sum_tab_list <- exec_sum_tab_list[exec_sum_tab_list %in% rda_tab_list]
-  
+
   # remove exec_sum_tab_list from rda_tab_list
   if (length(selected_exec_sum_tab_list) > 0) {
     cli::cli_alert_success("Found {length(selected_exec_sum_tab_list)} Executive Summary table{?s} in {fs::path(tables_dir, 'tables')}: {paste(selected_exec_sum_tab_list, collapse = ', ')}")
@@ -553,7 +553,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
         rda_tables_doc <- paste0(rda_tables_doc, tab_chunk)
       }
     }
-    }
+  }
   if (!is.null(selected_exec_sum_tab_list)) {
     es_tables_doc <- ""
     for (i in seq_along(selected_exec_sum_tab_list)) {
@@ -561,7 +561,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
         tab = selected_exec_sum_tab_list[i],
         tables_dir = tables_dir
       )
-      
+
       es_tables_doc <- paste0(
         es_tables_doc, tab_chunk
         # ,"{{< pagebreak >}} \n\n"
@@ -588,25 +588,25 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
       es_tables_doc
     )
   }
-    
-    # combine tables_doc setup with table chunks
-    tables_doc <- paste0(
-      tables_doc_header,
-      tables_doc_setup,
-      ifelse(exists("rda_tables_doc"),
-        rda_tables_doc,
-        ""
-      )
+
+  # combine tables_doc setup with table chunks
+  tables_doc <- paste0(
+    tables_doc_header,
+    tables_doc_setup,
+    ifelse(exists("rda_tables_doc"),
+      rda_tables_doc,
+      ""
     )
-  
+  )
+
   # add exec summary tables to ES qmd
   if (file.exists(fs::path(subdir, "01_executive_summary.qmd")) & !is.null(selected_exec_sum_tab_list)) {
     exec_sum <- readLines(fs::path(subdir, "01_executive_summary.qmd"))
     placeholder_snippet <- "<!-- Multiple figures and tables designed for"
     if (any(grepl(placeholder_snippet, exec_sum, fixed = TRUE))) {
-      exec_sum <- sub("<!-- Multiple figures and tables designed for.*", es_tables_doc, exec_sum)      
+      exec_sum <- sub("<!-- Multiple figures and tables designed for.*", es_tables_doc, exec_sum)
     } else {
-      exec_sum <- sub("## Assessment Model {#sec-assessment-model}", paste0(es_tables_doc, "## Assessment Model {#sec-assessment-model}"), exec_sum, fixed = TRUE)       
+      exec_sum <- sub("## Assessment Model {#sec-assessment-model}", paste0(es_tables_doc, "## Assessment Model {#sec-assessment-model}"), exec_sum, fixed = TRUE)
     }
     writeLines(exec_sum, fs::path(subdir, "01_executive_summary.qmd"))
   }

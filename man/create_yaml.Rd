@@ -13,7 +13,6 @@ create_yaml(
   spp_image = NULL,
   year = NULL,
   bib_name = NULL,
-  bib_file = NULL,
   author_list = NULL,
   title = "[TITLE]",
   rerender_skeleton = FALSE,
@@ -65,16 +64,6 @@ Default: the year in which the report is rendered.}
 
 \item{bib_name}{Name of a bib file being added into the yaml. For example,
 "asar.bib".}
-
-\item{bib_file}{File path to an existing additional bibliography file (\code{.bib}) used for citing references in
-the report. By default, all bibliography files are sourced from the \pkg{journals} package and
-references for all NMFS stock assessment reports are provided. To see a full
-list of journals included in these files, please visit the
-\href{https://github.com/nmfs-ost/journals/blob/main/README.md}{{journals} README}
-or see the description at the top of each bib file. It is
-recommended to open these files in a text editor rather than R.
-
-Default: NULL}
 
 \item{author_list}{A list of strings containing pre-formatted author names
 and affiliations that would be found in the format in a yaml of a quarto
@@ -151,7 +140,6 @@ create_yaml(
   format = "pdf",
   parameters = TRUE,
   custom_params = NULL,
-  bib_file = "path/asar_references.bib",
   bib_name = "asar_references.bib",
   year = 2025
 )
