@@ -21,7 +21,6 @@ create_template(
   spp_image = NULL,
   bib_file = NULL,
   new_template = TRUE,
-  rerender_skeleton = FALSE,
   custom_sections = NULL,
   new_section = NULL,
   section_location = NULL,
@@ -129,12 +128,6 @@ will pull the last saved stock assessment report skeleton.
 
 Default: FALSE}
 
-\item{rerender_skeleton}{TRUE/FALSE; Update the skeleton YAML and structure
-(R parameters, preamble, and skeleton sectioning) if relevant or indicated.
-All files in your folder, such as the \code{.qmd} child docs, will remain as is.
-
-Default: FALSE}
-
 \item{custom_sections}{List of existing sections to include in a custom
 template (rather than the default for stock assessments in your region).
 If adding a new section, also use arguments 'new_section' and 'section_location'.
@@ -214,7 +207,6 @@ create_template(
   new_section = "a_new_section",
   section_location = "before-introduction"
 )
-
 
 create_template(
   new_template = TRUE,
