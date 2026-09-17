@@ -535,7 +535,7 @@ create_template <- function(
           file.remove(sty_files)
         }
         
-        bib_name <- c(bib_name, basename(base_bib_file))
+        bib_name <- basename(base_bib_file)
         
       } # else { # else use default made above
       #   # FALSE or NULL: Just make the asar citation .bib
