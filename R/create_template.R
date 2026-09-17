@@ -101,12 +101,6 @@
 #'
 #' Default: FALSE
 #'
-#' @param rerender_skeleton TRUE/FALSE; Update the skeleton YAML and structure
-#' (R parameters, preamble, and skeleton sectioning) if relevant or indicated.
-#' All files in your folder, such as the `.qmd` child docs, will remain as is.
-#'
-#' Default: FALSE
-#'
 #' @param custom_sections List of existing sections to include in a custom
 #' template (rather than the default for stock assessments in your region).
 #' If adding a new section, also use arguments 'new_section' and 'section_location'.
@@ -252,7 +246,6 @@ create_template <- function(
   spp_image = NULL,
   bib_file = TRUE,
   new_template = TRUE,
-  rerender_skeleton = FALSE,
   custom_sections = NULL,
   new_section = NULL,
   section_location = NULL,
@@ -395,7 +388,7 @@ create_template <- function(
 
     asar_folder <- system.file("templates", package = "asar")
     # copy files from specific type folder
-    current_folder <- ifelse(rerender_skeleton, subdir, file.path(asar_folder, type))
+    current_folder <- file.path(asar_folder, type)
     new_folder <- subdir
 
     ##### Identify files to copy ----
@@ -432,10 +425,17 @@ create_template <- function(
       dir.create(bib_dir, recursive = FALSE)
     }
     
-    bib_name <- NULL
-
-    # asar citation 
-      asar_citation <- "@Manual{asar_2026,
+    journals::download_bibs(bib_dir)
+    bib_file_paths <- list.files(bib_dir, pattern = ".bib", full.names = TRUE)
+    base_bib_file <- bib_file_paths[!grepl(".sty", bib_file_paths)]
+    # Remove .sty file and copy to main report folder
+    file.copy(list.files(bib_dir, pattern = ".sty", full.names = TRUE), subdir, overwrite = FALSE) |> suppressWarnings()
+    file.remove(list.files(bib_dir, pattern = ".sty", full.names = TRUE))
+    bib_name <- basename(base_bib_file)
+    
+    # append asar citation to first .bib
+    asar_citation <- "
+@Manual{asar_2026,
   title = {asar: Build NOAA Stock Assessment Report},
   author = {Samantha Schiano and Sophie Breitbart and Steve Saul},
   year = {2026},
@@ -443,39 +443,16 @@ create_template <- function(
   url = {https://github.com/nmfs-ost/asar},
 }"
 
-    if (!rerender_skeleton) {
-      # make asar bib in all conditions
-      asar_bib_path <- file.path(bib_dir, "asar_citation.bib")
-      write(asar_citation, file = asar_bib_path)
-      bib_name <- c("asar_citation.bib")
-      if (is.character(bib_file)) {
-       # File provided: Copy the custom bib and create the asar citation .bib
-        file.copy(bib_file, bib_dir, overwrite = TRUE) |> suppressWarnings()
-        bib_name <- c(bib_name, basename(bib_file))
-    } else if (isTRUE(bib_file)) {
-        # TRUE: Download the journal packages bib and create the asar citation .bib
-        journals::download_bibs(bib_dir)
-        bib_file_paths <- list.files(bib_dir, pattern = ".bib", full.names = TRUE)
-        base_bib_file <- bib_file_paths[!grepl(".sty", bib_file_paths)]
-        
-        # Move .sty file to main report folder
-        sty_files <- list.files(bib_dir, pattern = ".sty", full.names = TRUE)
-        if (length(sty_files) > 0) {
-          file.copy(sty_files, subdir, overwrite = FALSE) |> suppressWarnings()
-          file.remove(sty_files)
-        }
-        
-        bib_name <- basename(base_bib_file)
-        
-      } # else { # else use default made above
-      #   # FALSE or NULL: Just make the asar citation .bib
-      #   bib_name <- "asar_citation.bib"
-      # }
-    } # else {
-    #   # Rerendering the skeleton: Don't touch anything
-    #   bib_name <- NULL
-    # }
-
+    if (!is.na(base_bib_file[1]) && nzchar(base_bib_file[1])) {
+      write(asar_citation, file = base_bib_file[1], append = TRUE)
+    }
+    
+    # Add bib file if bib_file is not NULL
+    if (!is.null(bib_file)) {
+      file.copy(bib_file, bib_dir, overwrite = TRUE) |> suppressWarnings()
+      bib_name <- c(bib_name, basename(bib_file))
+    }
+    
     #### Read in previous skeleton if rerender ----
     # Check if this is a rerender of the skeleton file
     #### Copy template files to report folder ----
@@ -571,14 +548,6 @@ create_template <- function(
     # Maybe this should go through deprecation in x amnt of time?
     fig_info <- migrate_legacy_docs(subdir, doc_type = "figures", rerender_skeleton = FALSE)
     tbl_info <- migrate_legacy_docs(subdir, doc_type = "tables", rerender_skeleton = FALSE)
-
-    can_rename_legacy_doc <- function(doc_info) {
-      isTRUE(doc_info$using_legacy) &&
-        !is.null(doc_info$legacy_name) &&
-        length(doc_info$legacy_name) == 1 &&
-        !is.null(doc_info$current_name) &&
-        length(doc_info$current_name) == 1
-    }
 
     renamed_tables_doc <- FALSE
     if (can_rename_legacy_doc(tbl_info)) {
