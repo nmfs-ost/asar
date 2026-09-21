@@ -186,15 +186,16 @@ rerender_skeleton <- function(
   }
 
   #### Initialize bib name ----
-  # bib_name <- NULL
-  # Extract previous bib file names
-  lines_after_bib <- prev_skeleton[(grep("bibliography:", prev_skeleton)[1] + 1):(grep("csl:", prev_skeleton)[1] - 1)]
-  bib_name <- basename(stringr::str_replace_all(lines_after_bib, "  - ", ""))
+  # Don't need to extract previous bib names bc create_yaml with rerender modifies the lines rather than build the whole thing
+  # lines_after_bib <- prev_skeleton[(grep("bibliography:", prev_skeleton)[1] + 1):(grep("csl:", prev_skeleton)[1] - 1)]
+  # bib_name <- basename(stringr::str_replace_all(lines_after_bib, "  - ", ""))
   # Add bib file if bib_file is not NULL
   # Note: this is copied from create_template
   if (!is.null(bib_file)) {
     file.copy(bib_file, bibdir, overwrite = TRUE) |> suppressWarnings()
     bib_name <- c(bib_name, basename(bib_file))
+  } else {
+    bib_name <- NULL
   }
   
   #### Authors ----
@@ -223,7 +224,7 @@ rerender_skeleton <- function(
     species = species,
     spp_latin = spp_latin,
     region = region,
-    parameters = parameters,
+    parameters = TRUE,
     custom_params = custom_params,
     bib_name = bib_name,
     year = year,
@@ -261,7 +262,7 @@ rerender_skeleton <- function(
       params_chunk <- append(
         params_chunk,
         "region <- params$region",
-        after = params_chunk_end - 1
+        after =  length(params_chunk) - 1
       )
     }
     if (!is.null(param_values) & !is.null(param_names)) {
@@ -270,7 +271,7 @@ rerender_skeleton <- function(
         params_chunk <- append(
           params_chunk,
           add_param,
-          after = params_chunk_end - 1
+          after =  length(params_chunk) - 1
         )
       }
     }
@@ -478,7 +479,7 @@ rerender_skeleton <- function(
   report_template <- paste(
     yaml,
     "\\printnoidxglossaries \n",
-    params_chunk,
+    paste(params_chunk, collapse = "\n"),
     preamble,
     disclaimer,
     citation,
@@ -504,5 +505,5 @@ rerender_skeleton <- function(
     }
   }
   # Print message
-  cli::cli_alert_success("Updated report skeleton in directory {subdir}.")
+  cli::cli_alert_success("Updated report skeleton in directory {file_dir}.")
 }
