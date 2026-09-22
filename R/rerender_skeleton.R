@@ -193,7 +193,7 @@ rerender_skeleton <- function(
   # Note: this is copied from create_template
   if (!is.null(bib_file)) {
     file.copy(bib_file, bibdir, overwrite = TRUE) |> suppressWarnings()
-    bib_name <- c(bib_name, basename(bib_file))
+    bib_name <- basename(bib_file)
   } else {
     bib_name <- NULL
   }
