@@ -425,32 +425,40 @@ create_template <- function(
       dir.create(bib_dir, recursive = FALSE)
     }
     
-    journals::download_bibs(bib_dir)
-    bib_file_paths <- list.files(bib_dir, pattern = ".bib", full.names = TRUE)
-    base_bib_file <- bib_file_paths[!grepl(".sty", bib_file_paths)]
-    # Remove .sty file and copy to main report folder
-    file.copy(list.files(bib_dir, pattern = ".sty", full.names = TRUE), subdir, overwrite = FALSE) |> suppressWarnings()
-    file.remove(list.files(bib_dir, pattern = ".sty", full.names = TRUE))
-    bib_name <- basename(base_bib_file)
+    bib_name <- NULL
     
-    # append asar citation to first .bib
-    asar_citation <- "
-@Manual{asar_2026,
-  title = {asar: Build NOAA Stock Assessment Report},
-  author = {Samantha Schiano and Sophie Breitbart and Steve Saul},
-  year = {2026},
-  note = {R package version 2.2.0},
-  url = {https://github.com/nmfs-ost/asar},
+    # asar citation 
+    asar_citation <- "@Manual{asar_2026,
+title = {asar: Build NOAA Stock Assessment Report},
+author = {Samantha Schiano and Sophie Breitbart and Steve Saul},
+year = {2026},
+note = {R package version 2.2.0},
+url = {https://github.com/nmfs-ost/asar},
 }"
-
-    if (!is.na(base_bib_file[1]) && nzchar(base_bib_file[1])) {
-      write(asar_citation, file = base_bib_file[1], append = TRUE)
-    }
     
-    # Add bib file if bib_file is not NULL
-    if (!is.null(bib_file)) {
+    # make asar bib in all conditions
+    asar_bib_path <- file.path(bib_dir, "asar_citation.bib")
+    write(asar_citation, file = asar_bib_path)
+    bib_name <- c("asar_citation.bib")
+    if (is.character(bib_file)) {
+      # File provided: Copy the custom bib and create the asar citation .bib
       file.copy(bib_file, bib_dir, overwrite = TRUE) |> suppressWarnings()
       bib_name <- c(bib_name, basename(bib_file))
+    } else if (isTRUE(bib_file)) {
+      # TRUE: Download the journal packages bib and create the asar citation .bib
+      journals::download_bibs(bib_dir)
+      bib_file_paths <- list.files(bib_dir, pattern = ".bib", full.names = TRUE)
+      base_bib_file <- bib_file_paths[!grepl(".sty", bib_file_paths)]
+      
+      # Move .sty file to main report folder
+      sty_files <- list.files(bib_dir, pattern = ".sty", full.names = TRUE)
+      if (length(sty_files) > 0) {
+        file.copy(sty_files, subdir, overwrite = FALSE) |> suppressWarnings()
+        file.remove(sty_files)
+      }
+      
+      bib_name <- basename(base_bib_file)
+      
     }
     
     #### Read in previous skeleton if rerender ----
