@@ -171,7 +171,7 @@ rerender_skeleton <- function(
   }
   
   #### Adjust the title ---- 
-  if (title == "[TITLE]") {
+  if (title == "'Stock Assessment Report Template'" || title == "[TITLE]") {
     title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
     if (title == "'Stock Assessment Report Template'" & (!is.null(office) | !is.null(species) | !is.null(region))) {
       title <- create_title(
