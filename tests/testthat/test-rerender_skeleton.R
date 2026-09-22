@@ -179,3 +179,38 @@ test_that("office is updated in skeleton", {
   unlink(report_dir, recursive = TRUE)
 })
 
+test_that("year is changed throughout document", {
+  create_template(
+    bib_file = FALSE,
+    species = "Red snapper",
+    office = "SEFSC",
+    region = "South Atlantic",
+    authors = c("Jane Doe" = "SEFSC"),
+    year = 2023)
+  
+  report_dir <- fs::path(getwd(), "report")
+  rerender_skeleton(file_dir = report_dir, year = 2027)
+  
+  # find year in title, citation, output_file, in-header.tex
+  skeleton <- readLines(fs::path(report_dir, "sar_SA_Red_snapper_skeleton.qmd"))
+  title <- stringr::str_replace(
+    skeleton[grep("title: ", skeleton)],
+    "title: ",
+    ""
+  ) |> stringr::str_extract("\\d{4}")
+  citation <- stringr::str_extract(
+    skeleton[grep("Please cite this publication as: ", skeleton) + 2],
+    "\\d{4}")
+  output_file <- stringr::str_replace(
+    skeleton[grep("output-file: ", skeleton)],
+    "output-file: ",
+    ""
+  ) |> stringr::str_extract("\\d{4}")
+  in_header_lines <- readLines(fs::path(report_dir, "support_files", "in-header.tex"))
+  in_header <- in_header_lines[grep("\\ohead[]{\\headmark} \\cofoot[\\pagemark]{\\pagemark}", in_header_lines, fixed = TRUE) + 1] |>
+    stringr::str_extract("\\d{4}")
+  
+  # tests
+  expect_all_equal(c(title, citation, output_file, in_header), "2027")
+  
+})
