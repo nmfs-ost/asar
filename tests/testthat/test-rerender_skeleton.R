@@ -2,7 +2,7 @@ test_that("rerender updates SAR legacy figures/tables order in skeleton", {
   # don't run on GitHub because can't rename files in the GH testing env
   skip_on_ci()
   # SAR
-  create_template() |> suppressWarnings()
+  create_template(bib_file = FALSE) |> suppressWarnings()
   
   report_dir <- fs::path(getwd(), "report")
   skeleton_path <- fs::path(report_dir, "sar_species_skeleton.qmd")
@@ -44,7 +44,7 @@ test_that("rerender updates SAFE legacy figures/tables order in skeleton", {
   # don't run on GitHub because can't rename files in the GH testing env
   skip_on_ci()
   # SAFE
-  create_template(type = "safe")
+  create_template(type = "safe", bib_file = FALSE)
   
   report_dir <- fs::path(getwd(), "report")
   skeleton_path <- fs::path(report_dir, "safe_species_skeleton.qmd")
@@ -87,7 +87,7 @@ test_that("rerender updates NEMT legacy figures/tables order in skeleton", {
   # don't run on GitHub because can't rename files in the GH testing env
   skip_on_ci()
   # NEMT
-  create_template(type = "nemt")
+  create_template(type = "nemt", bib_file = FALSE)
   
   report_dir <- fs::path(getwd(), "report")
   skeleton_path <- fs::path(report_dir, "nemt_species_skeleton.qmd")
@@ -125,3 +125,57 @@ test_that("rerender updates NEMT legacy figures/tables order in skeleton", {
   
   unlink(report_dir, recursive = TRUE)
 })
+
+test_that("species is updated in skeleton.",{
+  create_template(bib_file = FALSE)
+  
+  report_dir <- fs::path(getwd(), "report")
+  file_names <- list.files(report_dir, full.names = FALSE)
+  skeleton_name <- file_names[grepl("species_skeleton.qmd", file_names)]
+  skeleton <- readLines(fs::path(report_dir, skeleton_name))
+  init_species_params <- skeleton[grep("species:", skeleton, fixed = TRUE)]
+  
+  # rerender for species
+  rerender_skeleton(file_dir = report_dir, species = "Red snapper")
+  
+  re_file_names <- list.files(report_dir, full.names = FALSE)
+  rerender_skeleton_name <- re_file_names[grepl("_skeleton.qmd", re_file_names)]
+  rerender_skeleton <- readLines(fs::path(report_dir, rerender_skeleton_name))
+  rerender_species_params <- rerender_skeleton[grep("species:", rerender_skeleton, fixed = TRUE)]
+  
+  # species is updated in params
+  expect_equal("   species: 'Red snapper' ", rerender_species_params)
+  # species is updated in skeleton
+  expect_no_match(skeleton_name, rerender_skeleton_name)
+  # species changed in params
+  expect_no_match(init_species_params, rerender_species_params)
+  
+  unlink(report_dir, recursive = TRUE)
+})
+
+test_that("office is updated in skeleton", {
+  create_template(bib_file = FALSE)
+  
+  report_dir <- fs::path(getwd(), "report")
+  file_names <- list.files(report_dir, full.names = FALSE)
+  skeleton_name <- file_names[grepl("_skeleton.qmd", file_names)]
+  skeleton <- readLines(fs::path(report_dir, skeleton_name))
+  init_office_params <- skeleton[grep("office:", skeleton, fixed = TRUE)]
+  
+  # rerender for office
+  rerender_skeleton(file_dir = report_dir, office = "NEFSC")
+  
+  re_file_names <- list.files(report_dir, full.names = FALSE)
+  rerender_skeleton_name <- re_file_names[grepl("_skeleton.qmd", re_file_names)]
+  rerender_skeleton <- readLines(fs::path(report_dir, rerender_skeleton_name))
+  rerender_office_params <- rerender_skeleton[grep("office:", rerender_skeleton, fixed = TRUE)]
+  
+  # office is updated in params
+  expect_equal("   office: 'gls{nefsc}' ", rerender_office_params)
+  # office changed in params
+  # cannot test bc negative interaction with {}
+  # expect_no_match(init_office_params, rerender_office_params)
+  
+  unlink(report_dir, recursive = TRUE)
+})
+
