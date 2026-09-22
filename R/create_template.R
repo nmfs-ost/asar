@@ -429,11 +429,11 @@ create_template <- function(
     
     # asar citation 
     asar_citation <- "@Manual{asar_2026,
-title = {asar: Build NOAA Stock Assessment Report},
-author = {Samantha Schiano and Sophie Breitbart and Steve Saul},
-year = {2026},
-note = {R package version 2.2.0},
-url = {https://github.com/nmfs-ost/asar},
+  title = {asar: Build NOAA Stock Assessment Report},
+  author = {Samantha Schiano and Sophie Breitbart and Steve Saul},
+  year = {2026},
+  note = {R package version 2.2.0},
+  url = {https://github.com/nmfs-ost/asar},
 }"
     
     # make asar bib in all conditions
