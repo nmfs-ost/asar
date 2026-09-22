@@ -147,11 +147,11 @@ rerender_skeleton <- function(
     if (!file.exists(file_dir, "support_files", "before-body.tex")) file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
     # customize titlepage tex
     if (!file.exists(file_dir, "support_files", "_titlepage.tex") | !is.null(species)) create_titlepage_tex(office = office, subdir = supdir, species = species)
-    # customize in-header tex
-    if (!file.exists(file_dir, "support_files", "in-header.tex") | !is.null(species)) create_inheader_tex(species = species, year = year, subdir = supdir)
     # copy new spp image if updated
     if (!is.null(species)) file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
   }
+  # customize in-header tex -- always run to update year
+  if (tolower(format) == "pdf") create_inheader_tex(species = species, year = year, subdir = supdir)
   
   #### Figs and tabs docs ----
   # extract name for tables.qmd from report folder
@@ -171,7 +171,8 @@ rerender_skeleton <- function(
   }
   
   #### Adjust the title ---- 
-  if (title == "'Stock Assessment Report Template'" || title == "[TITLE]") {
+  old_title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
+  if (old_title == "'Stock Assessment Report Template'") {
     title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
     if (title == "'Stock Assessment Report Template'" & (!is.null(office) | !is.null(species) | !is.null(region))) {
       title <- create_title(
@@ -183,8 +184,11 @@ rerender_skeleton <- function(
         year = year
       )
     }
+  } else {
+    # replace year
+    title <- stringr::str_replace(old_title, "[0-9]+", as.character(year))
   }
-
+  
   #### Initialize bib name ----
   # Don't need to extract previous bib names bc create_yaml with rerender modifies the lines rather than build the whole thing
   # lines_after_bib <- prev_skeleton[(grep("bibliography:", prev_skeleton)[1] + 1):(grep("csl:", prev_skeleton)[1] - 1)]
