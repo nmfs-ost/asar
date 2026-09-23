@@ -557,17 +557,12 @@ create_template <- function(
         prev_skeleton[grep("format:", prev_skeleton) + 1],
         "[a-z]+"
       )
-      year <- ifelse(
-        is.na(as.numeric(stringr::str_extract(
-          prev_skeleton[grep("title:", prev_skeleton)],
-          "[0-9]+"
-        ))),
-        year,
-        as.numeric(stringr::str_extract(
-          prev_skeleton[grep("title:", prev_skeleton)],
-          "[0-9]+"
-        ))
-      )
+      
+      # Update to current year
+      # prev_year <- as.numeric(stringr::str_extract(
+      #     prev_skeleton[grep("title:", prev_skeleton)],
+      #     "[0-9]+"))
+      
       # Add in species image if updated in rerender
       if (!is.null(spp_image)) {
         file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
@@ -602,8 +597,12 @@ create_template <- function(
         if (!file.exists(file_dir, "support_files", "before-body.tex")) file.copy(before_body_file, supdir, overwrite = FALSE) |> suppressWarnings()
         # customize titlepage tex
         if (!file.exists(file_dir, "support_files", "_titlepage.tex") | !is.null(species)) create_titlepage_tex(office = office, subdir = supdir, species = species)
-        # customize in-header tex
-        if (!file.exists(file_dir, "support_files", "in-header.tex") | !is.null(species)) create_inheader_tex(species = species, year = year, subdir = supdir)
+        # customize in-header tex -- run this even on rerender
+        create_inheader_tex(species = species, year = year, subdir = supdir)
+      }
+      if (tolower(format)=="pdf") {
+        # customize in-header tex -- run this even on rerender
+        create_inheader_tex(species = species, year = year, subdir = supdir)
       }
     } else {
       #### Copy template files to report folder ----
@@ -793,15 +792,18 @@ create_template <- function(
       # TODO: update below so title gets updated if new input is added such as region/species/office
       if (rerender_skeleton) {
         old_title <- sub("title: ", "", prev_skeleton[grep("title:", prev_skeleton)])
-        if (old_title == "'Stock Assessment Report Template'" || !is.null(office) || species != "species" || !is.null(region) || year != format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y") || !is.null(spp_latin)) {
+        if (old_title == "'Stock Assessment Report Template'" || species != "species" || !is.null(region) || !is.null(spp_latin)) {
           title <- create_title(
             office = office,
             species = species,
             spp_latin = spp_latin,
             region = region,
             type = type,
-            year = ifelse(is.na(year), format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"), year)
+            year = year
           )
+        } else {
+          # replace year with current year
+          title <- stringr::str_replace(old_title, "[0-9]+", as.character(year))
         }
       } else {
         title <- create_title(
