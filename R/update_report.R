@@ -109,12 +109,9 @@ update_report <- function(
   # citation
   # preamble
   # section chunks
-  # Run create_template but with rerender_skeleton = TRUE
-  # TODO: change once rerender is outside of create_template
   # TODO: reset author section in skeleton -- remove all previous authorship (does this work?)
   # Update skeleton with new year, authors, model results, region, if added
-  create_template(
-    rerender_skeleton = TRUE,
+  rerender_skeleton(
     file_dir = report_dir,
     authors = authors,
     model_results = model_results,
