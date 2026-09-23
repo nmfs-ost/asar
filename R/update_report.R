@@ -4,10 +4,13 @@
 #' @inheritParams create_figures_dir
 #' @inheritParams create_tables_dir
 #' @param file_dir String of the path where the new report folder and files 
-#' should be located.
+#' should be located. Required.
 #' @param previous_file_dir String of the path where the previous report files 
-#' are located.
+#' are located. Required.
+#' @param reset_tables_and_figures Logical indicating whether to reset tables 
+#' and figures Quarto documents.
 #'
+#' Default: FALSE
 #' @returns Creates a new folder of pre-filled assessment report files for the 
 #' next assessment cycle.
 #' @export
@@ -30,7 +33,8 @@ update_report <- function(
     new_section = NULL,
     section_location = NULL,
     figures_dir = getwd(),
-    tables_dir = getwd()
+    tables_dir = getwd(),
+    reset_tables_and_figures = FALSE
 ) {
   #### set up ----
   # Add "report" to previous report file path - user does not have to include this
@@ -123,51 +127,34 @@ update_report <- function(
   )
   
   #### reset tables and figures docs ----
-  
-  if (any(grepl("figures\\.qmd$", prev_files))) {
-    reset_figures <- readline("Figures document already exists. Do you want to reset it? [y/n]")
-    if (!interactive()) {
-      reset_figures <- "y"
-    }
-    if (regexpr(reset_figures, "y", ignore.case = TRUE) == 1) {
-      # Remove previous file
-      file.remove(
-        file.path(
-          report_dir,
-          prev_files[grep("figures.qmd", prev_files)]
-        )
+  if (reset_tables_and_figures) {
+    # Remove previous file
+    file.remove(
+      file.path(
+        report_dir,
+        prev_files[grep("figures.qmd", prev_files)]
       )
-      # Create figures doc
-      create_figures_doc(
-        subdir = report_dir,
-        figures_dir = figures_dir
-      )
-      cli::cli_alert_info("Figures document reset to default.")
-    } else if (regexpr(reset_figures, "n", ignore.case = TRUE) == 1) {
-      cli::cli_alert_info("Previous assessment figures qmd retained.")
-    }
+    )
+    # Create figures doc
+    create_figures_doc(
+      subdir = report_dir,
+      figures_dir = figures_dir
+    )
+    cli::cli_alert_info("Figures document reset to default.")
   }
   
-  if (any(grepl("tables\\.qmd$", prev_files))) {
-    reset_tables <- readline("Tables document already exists. Do you want to reset it? [y/n]")
-    if (!interactive()) {
-      reset_tables <- "y"
-    }
-    if (regexpr(reset_tables, "y", ignore.case = TRUE) == 1) {
-      # Remove previous file
-      file.remove(
-        file.path(
-          report_dir,
-          prev_files[grep("tables.qmd", prev_files)]
-        )
+  if (reset_tables_and_figures) {
+    # Remove previous file
+    file.remove(
+      file.path(
+        report_dir,
+        prev_files[grep("tables.qmd", prev_files)]
       )
-      # Create tables doc
-      create_tables_doc(
-        subdir = report_dir
-      )
-      cli::cli_alert_info("Tables document reset to default.")
-    } else if (regexpr(reset_tables, "n", ignore.case = TRUE) == 1) {
-      cli::cli_alert_info("Previous assessment tables qmd retained.")
-    }
+    )
+    # Create tables doc
+    create_tables_doc(
+      subdir = report_dir
+    )
+    cli::cli_alert_info("Tables document reset to default.")
   }
 }
