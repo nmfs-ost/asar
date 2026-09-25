@@ -75,6 +75,12 @@ file when using base R function \code{cat()}.}
 
 Default: \verb{[TITLE]}. If species and region are provided, a title will be generated based on the report type, species, and region.}
 
+\item{rerender_skeleton}{TRUE/FALSE; Update the skeleton YAML and structure
+(R parameters, preamble, and skeleton sectioning) if relevant or indicated.
+All files in your folder, such as the \code{.qmd} child docs, will remain as is.
+
+Default: FALSE}
+
 \item{prev_skeleton}{Vector of strings containing all the lines of the
 previous skeleton file. File is read in using the function readLines from
 base R.}

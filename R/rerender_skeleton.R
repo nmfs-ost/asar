@@ -1,7 +1,13 @@
 #' Rerender skeleton quarto document
 #'
 #' @inheritParams create_template
-#' @param file_dir Required. Directory where the skeleton file is located. Can include or leave out the report folder in the path.
+#' @param file_dir Required. Directory where the skeleton file is located. Can 
+#' include or leave out the report folder in the path.
+#' @param bib_file A character string of the path to a custom `.bib` file, or a logical. 
+#'   If a path is provided, the custom file is added to the skeleton and copied 
+#'   into the bibliography files folder.
+#'   
+#' Default: NULL
 #'
 #' @returns Update the "skeleton" file produce after running `create_template`. 
 #' Prevents the loss of data in child documents and make easy updates without 
