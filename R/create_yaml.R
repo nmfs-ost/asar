@@ -1,6 +1,11 @@
 #' Create string for yml header in quarto file
 #'
 #' @inheritParams create_template
+#' @param rerender_skeleton TRUE/FALSE; Update the skeleton YAML and structure
+#' (R parameters, preamble, and skeleton sectioning) if relevant or indicated.
+#' All files in your folder, such as the `.qmd` child docs, will remain as is.
+#'
+#' Default: FALSE
 #' @param parameters Logical indicating whether to include parameters
 #' in the yaml. Default is TRUE.
 #' @param author_list A vector of strings containing pre-formatted author names
