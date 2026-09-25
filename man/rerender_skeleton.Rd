@@ -25,7 +25,8 @@ rerender_skeleton(
 )
 }
 \arguments{
-\item{file_dir}{Required. Directory where the skeleton file is located. Can include or leave out the report folder in the path.}
+\item{file_dir}{Required. Directory where the skeleton file is located. Can
+include or leave out the report folder in the path.}
 
 \item{species}{Common name of target species. Split multi-word names
 with space and capitalize first letter(s). Example: "Dover sole".
@@ -101,13 +102,9 @@ skeleton .qmd file that will be created within the 'report' folder.
 
 Default: NULL}
 
-\item{bib_file}{File path to an existing additional bibliography file (\code{.bib}) used for citing references in
-the report. By default, all bibliography files are sourced from the \pkg{journals} package and
-references for all NMFS stock assessment reports are provided. To see a full
-list of journals included in these files, please visit the
-\href{https://github.com/nmfs-ost/journals/blob/main/README.md}{{journals} README}
-or see the description at the top of each bib file. It is
-recommended to open these files in a text editor rather than R.
+\item{bib_file}{A character string of the path to a custom \code{.bib} file, or a logical.
+If a path is provided, the custom file is added to the skeleton and copied
+into the bibliography files folder.
 
 Default: NULL}
 

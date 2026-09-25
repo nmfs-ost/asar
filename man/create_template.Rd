@@ -19,12 +19,13 @@ create_template(
   tables_dir = getwd(),
   figures_dir = getwd(),
   spp_image = NULL,
-  bib_file = NULL,
+  bib_file = TRUE,
   new_template = TRUE,
   custom_sections = NULL,
   new_section = NULL,
   section_location = NULL,
   custom_params = NULL,
+  rerender_skeleton = lifecycle::deprecated(),
   ...
 )
 }
@@ -113,15 +114,12 @@ If empty, searches \code{asar} resources for a matching species name.
 
 Default: NULL}
 
-\item{bib_file}{File path to an existing additional bibliography file (\code{.bib}) used for citing references in
-the report. By default, all bibliography files are sourced from the \pkg{journals} package and
-references for all NMFS stock assessment reports are provided. To see a full
-list of journals included in these files, please visit the
-\href{https://github.com/nmfs-ost/journals/blob/main/README.md}{{journals} README}
-or see the description at the top of each bib file. It is
-recommended to open these files in a text editor rather than R.
+\item{bib_file}{A character string of the path to a custom \code{.bib} file, or a logical.
+If a path is provided, the custom file is used and journal templates are skipped.
+If \code{TRUE}, default journal \code{.bib} templates are downloaded.
+If \code{FALSE} or \code{NULL} (default), a minimal \code{.bib} file containing only the \code{asar} package citation is created.
 
-Default: NULL}
+Default: TRUE}
 
 \item{new_template}{TRUE/FALSE; Create a new template? If true,
 will pull the last saved stock assessment report skeleton.
@@ -164,6 +162,10 @@ species (each of which are listed as individual parameters for this
 function, above).
 
 Default: NULL}
+
+\item{rerender_skeleton}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} This argument was
+deprecated in favor of a separate function \code{rerender_skeleton()} in order to
+provide more clarity and separation of functionality.}
 
 \item{...}{Additional arguments passed into functions used in create_template
 such as \code{create_citation()} or \code{create_yaml()}.}
