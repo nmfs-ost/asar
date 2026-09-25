@@ -265,6 +265,8 @@ create_template <- function(
       what = "create_template(rerender_skeleton)", 
       details = "Please use `rerender_skeleton()` instead"
     )
+    # Set bib_file to be compatible with rerender_skeleton
+    if (!is.character(bib_file)) bib_file <- NULL
     
     # 2. Maintain backwards compatibility by executing the new logic behind the scenes
     return(rerender_skeleton(
