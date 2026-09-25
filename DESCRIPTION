@@ -29,6 +29,7 @@ Imports:
     glue,
     gt,
     journals,
+    lifecycle,
     purrr,
     stats,
     stringi,
