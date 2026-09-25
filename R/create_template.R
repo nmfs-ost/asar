@@ -137,6 +137,10 @@
 #' function, above).
 #'
 #' Default: NULL
+#' 
+#' @param rerender_skeleton `r lifecycle::badge('deprecated')` This argument was
+#'  deprecated in favor of a separate function `rerender_skeleton()` in order to 
+#'  provide more clarity and separation of functionality.
 #'
 #' @param ... Additional arguments passed into functions used in create_template
 #' such as `create_citation()` or `create_yaml()`.
@@ -250,8 +254,39 @@ create_template <- function(
   new_section = NULL,
   section_location = NULL,
   custom_params = NULL,
+  rerender_skeleton = lifecycle::deprecated(),
   ...
 ) {
+  # check for used deprecated argument
+  if (lifecycle::is_present(rerender_skeleton)) {
+    # 1. Trigger the deprecation warning
+    lifecycle::deprecate_warn(
+      when = "2.7.0", 
+      what = "create_template(rerender_skeleton)", 
+      details = "Please use `rerender_skeleton()` instead"
+    )
+    
+    # 2. Maintain backwards compatibility by executing the new logic behind the scenes
+    return(rerender_skeleton(
+      file_dir = file_dir,
+      species = species,
+      spp_latin = spp_latin,
+      office = office,
+      region = region,
+      year = year,
+      custom_sections = custom_sections,
+      new_section = new_section,
+      section_location = section_location,
+      custom_params = custom_params,
+      title = title,
+      model_results = model_results,
+      bib_file = bib_file,
+      type = type,
+      spp_image = spp_image,
+      format = format,
+      authors = authors
+    ))
+  }
   type_map <- c(
     "Northeast Management Track" = "nemt",
     "Pacific Fishery Management Council" = "pfmc",
