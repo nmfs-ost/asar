@@ -36,11 +36,11 @@ export_to_sis <- function(
     dplyr::select(-Explanation, -Default)
   
   # check data for required fields and character limits
-  if (nchar(sis_assmt_data$Value[sis_assmt_data$Variable == "AS_B_COMMENT"]) > 1000){
+  if (!is.na(sis_assmt_data$Value[sis_assmt_data$Variable == "AS_B_COMMENT"]) && nchar(sis_assmt_data$Value[sis_assmt_data$Variable == "AS_B_COMMENT"]) > 1000){
     stop("AS_B_COMMENT exceeds 1,000 character limit")
   }
 
-  if (nchar(sis_assmt_data$Value[sis_assmt_data$Variable == "AS_F_COMMENT"]) > 1000){
+  if (!is.na(sis_assmt_data$Value[sis_assmt_data$Variable == "AS_F_COMMENT"]) && nchar(sis_assmt_data$Value[sis_assmt_data$Variable == "AS_F_COMMENT"]) > 1000){
     stop("AS_F_COMMENT exceeds 1,000 character limit")
   }
 
@@ -86,13 +86,14 @@ export_to_sis <- function(
   sis_assmt_data <- sis_assmt_data |>
     dplyr::select(-Optional) |>
     dplyr::mutate(Value = as.character(Value)) |>
-    dplyr::full_join(null_fields, by = c("Variable", "Value"))
+    dplyr::full_join(null_fields, by = c("Variable", "Value")) |>
+    dplyr::mutate(Value = ifelse(is.na(Value), "", Value))
   
   
   # read in, clean, check, format time series data
   sis_ts_data <- read.csv(file.path(sis_data_dir, "sis_ts_template.csv"), stringsAsFactors = FALSE)
   
-  if (!exists(sis_ts_data$Year)){
+  if ("Year" %in% colnames(sis_ts_data) == FALSE){
     cli::cli_abort("sis_ts_template.csv is missing the 'Year' column. This column is mandatory.")
   }
   
@@ -101,7 +102,7 @@ export_to_sis <- function(
     dplyr::pull(Category)
   
   if (length(primary_type) > 2) {
-    cli::cli_abort("More than two categories are marked as 'Y' in the 'Primary' column. Only two categories can be designated as 'Y'.")
+    cli::cli_alert_danger("More than two categories are marked as 'Y' in the 'Primary' column. Only two categories can be designated as 'Y'.")
   } else if (length(primary_type) == 0) {
     cli::cli_abort("Zero categories are marked as 'Y' in the 'Primary' column. At least one and at most two categories can be chosen as a Primary time series: Fmort OR Recruitment OR Catch, and Spawners OR Biomass.")
   } else {
@@ -125,7 +126,7 @@ export_to_sis <- function(
     dplyr::pull(Value)
   
   model_identifier <- sis_assmt_data |>
-    dplyr::filter(Variable == "MODEL_IDENTIFIER") |>
+    dplyr::filter(Variable == "model_identifier") |>
     dplyr::pull(Value)
   
   if (length(model_identifier) == 0 || is.na(model_identifier) || model_identifier == "") {
@@ -146,12 +147,15 @@ export_to_sis <- function(
   # prep datasets for conversion into json
   sis_list <- setNames(as.list(sis_assmt_data$Value), sis_assmt_data$Variable)
   
+  # create data matrix
+  categories <- unique(unlist(sis_ts_data["Category"]))
+  
   primary_cat <- sis_ts_data |>
     dplyr::filter(Primary == "Y") |>
-    dplyr::pull(Category)
-  
-  # create data matrix
-  categories <- unlist(sis_ts_data["Category"])
+    dplyr::pull(Category) |>
+    unique()
+
+  primary_flags <- ifelse(categories %in% primary_cat, "Y", "N")
   
   ts_matrix <- sis_ts_data |>
     dplyr::select(Year, Category, Value) |>
@@ -166,19 +170,20 @@ export_to_sis <- function(
     TIMESERIES = list(
       PARAMETERS = list(
         TSC_NAME = categories,
-        TSP_PRIMARY_FLAG = primary_cat,
-        TSP_DESC = unlist(sis_ts_data["Description"]),
-        TSP_UNIT = unlist(sis_ts_data["Unit"])
+        TSP_PRIMARY_FLAG = primary_flags,
+        TSP_DESC = unique(unlist(sis_ts_data["Description"])),
+        TSP_UNIT = unique(unlist(sis_ts_data["Unit"]))
       ),
       DATA = ts_matrix
     )
   )
-  
+ 
   
   # write json file
   jsonlite::write_json(
     x = nested_list, 
-    path = fs::path(getwd(), filename), 
+    path = fs::path(getwd(), filename),
+    na = "string",
     pretty = TRUE,       # Formats the JSON with clean indentation
     auto_unbox = TRUE    # Ensures single values don't convert to JSON arrays ([13879])
   )
