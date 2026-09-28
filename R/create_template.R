@@ -144,6 +144,14 @@
 #'
 #' Default: NULL
 #'
+#' @param param_names `r lifecycle::badge('deprecated')` 
+#' This argument was deprecated in favor of the `custom_params` argument in order
+#' to provide more clarity and decrease necessary arguments.
+#'  
+#' @param param_values `r lifecycle::badge('deprecated')` 
+#' This argument was deprecated in favor of the `custom_params` argument in order
+#' to provide more clarity and decrease necessary arguments.
+#'
 #' @param ... Additional arguments passed into functions used in create_template
 #' such as `create_citation()` or `create_yaml()`.
 #'
@@ -258,8 +266,21 @@ create_template <- function(
   new_section = NULL,
   section_location = NULL,
   custom_params = NULL,
+  param_names = lifecycle::deprecated(),
+  param_values = lifecycle::deprecated(),
   ...
 ) {
+  
+    if (lifecycle::is_present(param_names) || lifecycle::is_present(param_values)) {
+    lifecycle::deprecate_warn(
+      when = "2.6.0", 
+      what = "create_template(param_names)", 
+      details = "Please use `custom_params` instead of `param_names` and `param_values`"
+    )
+    
+    custom_params <- setNames(param_values, param_names)
+  }
+  
   type_map <- c(
     "Northeast Management Track" = "nemt",
     "Pacific Fishery Management Council" = "pfmc",
