@@ -497,9 +497,6 @@ create_template <- function(
       bib_name <- basename(base_bib_file)
       
     }
-    
-    #### Read in previous skeleton if rerender ----
-    # Check if this is a rerender of the skeleton file
 
     #### Copy template files to report folder ----
     # Check if there are already files in the folder

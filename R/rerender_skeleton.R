@@ -51,7 +51,6 @@ rerender_skeleton <- function(
   bibdir <- file.path(file_dir, "bibliography_files")
   
   #### Read in previous skeleton ----
-  # TODO: set up situation where species, region can be changed
   report_name <- list.files(file_dir, pattern = "skeleton.qmd") # gsub(".qmd", "", list.files(file_dir, pattern = "skeleton.qmd"))
   if (length(report_name) == 0) cli::cli_abort("No skeleton quarto file found in the `file_dir` ({file_dir}).")
   if (length(report_name) > 1) cli::cli_abort("Multiple skeleton quarto files found in the `file_dir` ({file_dir}).")
