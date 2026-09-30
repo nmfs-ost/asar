@@ -79,6 +79,11 @@ rerender_skeleton <- function(
     prev_report_name
   )
   # Extract species unless species is renamed
+  prev_species <- gsub(
+    "_",
+    " ",
+    gsub(glue::glue("{region_name}_"), "", report_name_1)
+  )
   species <- ifelse(
     species != "species",
     species,
@@ -114,6 +119,7 @@ rerender_skeleton <- function(
   
   # Add in species image if updated in rerender
   if (!is.null(spp_image)) {
+    # system_spp_image <- system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar")
     file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
     # Change path to spp image since finished copying for yaml
     if (file.exists(spp_image)) {
@@ -121,7 +127,7 @@ rerender_skeleton <- function(
     }
   } else if (is.null(spp_image) && species != "species") {
     spp_image <- system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar") 
-    # file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
+    file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
     # spp image name for yaml
     spp_image <- glue::glue("support_files/{basename(spp_image)}")
   }
@@ -192,6 +198,10 @@ rerender_skeleton <- function(
   } else {
     # replace year
     title <- stringr::str_replace(old_title, "[0-9]+", as.character(year))
+  }
+  # Replace species name in title if not changed
+  if (grepl(tolower(prev_species), tolower(title))) {
+    title <- stringr::str_replace(title, stringr::str_to_title(prev_species), species)
   }
   
   #### Initialize bib name ----
