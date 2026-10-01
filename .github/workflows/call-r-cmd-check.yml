@@ -22,3 +22,6 @@ jobs:
     uses: nmfs-ost/ghactions4r/.github/workflows/r-cmd-check.yml@main
     with:
       depends_on_quarto: true
+      additional_args_macos: |
+        brew install --cask xquartz
+        ls /opt/X11/lib/libXrender.1.dylib
