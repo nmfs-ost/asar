@@ -88,8 +88,8 @@ test_that("tables and figures are reset when prompted.", {
   # init_tabs_doc <- readLines(file.path(year1_dir, "report", "09_tables.qmd"))
   # update_tabs_doc <- readLines(file.path(year2_dir, "report", "09_tables.qmd"))
   
-  expect_false(init_figs_doc == update_figs_doc)
-  # expect_false(init_tabs_doc == update_tabs_doc)
+  expect_true(length(init_figs_doc) != length(update_figs_doc))
+  # expect_true(length(init_tabs_doc) != length(update_tabs_doc))
   
   unlink("species_year1", recursive = TRUE)
   unlink("species_year2", recursive = TRUE)
