@@ -587,8 +587,6 @@ create_template <- function(
     } # close check for previous files & respective copying
 
     # Handle legacy document order and migration
-    # TODO: Not sure how setting this to rerender = FALSE always impacts this feature
-    # Maybe this should go through deprecation in x amnt of time?
     fig_info <- migrate_legacy_docs(subdir, doc_type = "figures", rerender_skeleton = FALSE)
     tbl_info <- migrate_legacy_docs(subdir, doc_type = "tables", rerender_skeleton = FALSE)
 
@@ -649,6 +647,14 @@ create_template <- function(
       file.rename(
         from = fs::path(subdir, "08_figures.qmd"),
         to = fs::path(subdir, figures_doc_name)
+      )
+    }
+    
+    # rename tables doc
+    if (tables_doc_name != "09_tables.qmd") {
+      file.rename(
+        from = fs::path(subdir, "09_tables.qmd"),
+        to = fs::path(subdir, tables_doc_name)
       )
     }
 
