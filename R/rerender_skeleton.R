@@ -531,4 +531,35 @@ rerender_skeleton <- function(
   }
   # Print message
   cli::cli_alert_success("Updated report skeleton in directory {file_dir}.")
+  
+  
+  # Handle legacy document order and migration
+  fig_doc <- list.files(file_dir, pattern = "figures.qmd")
+  tbl_doc <- list.files(file_dir, pattern = "tables.qmd")
+  
+  # if the number preceding the figures.qmd is higher than the number preceding the tables.qmd, then rename the files to match the new order
+  fig_num <- as.numeric(stringr::str_extract(fig_doc, "(?<=^)[0-9]+"))
+  tbl_num <- as.numeric(stringr::str_extract(tbl_doc, "(?<=^)[0-9]+"))
+  
+  if (!is.na(fig_num) && !is.na(tbl_num) && fig_num > tbl_num) {
+    cli::cli_alert_info("Detected legacy figure/table document order in the skeleton.")
+    
+    # Rename the files to match the new order
+    file.rename(
+      from = fs::path(file_dir, fig_doc),
+      to = fs::path(file_dir,
+                    paste0(stringi::stri_pad_left(tbl_num, 2, "0"),
+                           "_figures.qmd")
+                    )
+    )
+    file.rename(
+      from = fs::path(file_dir, tbl_doc),
+      to = fs::path(file_dir, 
+                    paste0(stringi::stri_pad_left(fig_num, 2, "0"),
+                           "_tables.qmd")
+                    )
+    )
+    cli::cli_alert_success("Changed order to match the new skeleton.")
+    
+  }
 }

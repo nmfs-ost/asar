@@ -586,40 +586,7 @@ create_template <- function(
       }
     } # close check for previous files & respective copying
 
-    # Handle legacy document order and migration
-    # TODO: Not sure how setting this to rerender = FALSE always impacts this feature
-    # Maybe this should go through deprecation in x amnt of time?
-    fig_info <- migrate_legacy_docs(subdir, doc_type = "figures", rerender_skeleton = FALSE)
-    tbl_info <- migrate_legacy_docs(subdir, doc_type = "tables", rerender_skeleton = FALSE)
-
-    renamed_tables_doc <- FALSE
-    if (can_rename_legacy_doc(tbl_info)) {
-      from <- fs::path(subdir, tbl_info$legacy_name)
-      to <- fs::path(subdir, tbl_info$current_name)
-      if (!identical(from, to) && file.exists(from)) {
-        renamed_tables_doc <- file.rename(from = from, to = to)
-      }
-    }
-
-    renamed_figures_doc <- FALSE
-    if (can_rename_legacy_doc(fig_info)) {
-      from <- fs::path(subdir, fig_info$legacy_name)
-      to <- fs::path(subdir, fig_info$current_name)
-      if (!identical(from, to) && file.exists(from)) {
-        renamed_figures_doc <- file.rename(from = from, to = to)
-      }
-    }
-
-    if (renamed_figures_doc || renamed_tables_doc) {
-      renamed_docs <- c(
-        if (renamed_figures_doc) paste0("{.file ", fig_info$current_name, "}"),
-        if (renamed_tables_doc) paste0("{.file ", tbl_info$current_name, "}")
-      )
-      cli::cli_alert_info("Detected legacy figure/table document order in the skeleton.")
-      cli::cli_alert_info("asar switched to {toString(renamed_docs)}.")
-    }
-
-    # Created tables doc
+    # Create tables doc
     tables_doc_name <- switch(
       type,
       "nemt" = "06_tables.qmd",
@@ -649,6 +616,14 @@ create_template <- function(
       file.rename(
         from = fs::path(subdir, "08_figures.qmd"),
         to = fs::path(subdir, figures_doc_name)
+      )
+    }
+    
+    # rename tables doc
+    if (tables_doc_name != "09_tables.qmd") {
+      file.rename(
+        from = fs::path(subdir, "09_tables.qmd"),
+        to = fs::path(subdir, tables_doc_name)
       )
     }
 
