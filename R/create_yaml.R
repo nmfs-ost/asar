@@ -128,7 +128,7 @@ create_yaml <- function(
 
     # add in spp image/replace if specific
     if (!is.null(spp_image)) {
-      yaml <- stringr::str_replace(yaml, yaml[grep("cover: ", yaml)], paste("cover: ", spp_image, sep = ""))
+      yaml <- stringr::str_replace(yaml, yaml[grep("cover:", yaml)], paste("cover: ", spp_image, sep = ""))
     }
 
     # Replace output-file name
