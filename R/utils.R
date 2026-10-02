@@ -602,5 +602,6 @@ custom_true <- function(
 
 find_system_spp_image <- function(species) {
   all_spp_images <- list.files(system.file("resources", "spp_img", package = "asar"), full.names = TRUE)
-  grep(species, all_spp_images, value = TRUE, ignore.case = TRUE)
+  spp_pattern <- glue::glue("\\b{stringr::str_replace_all(species, ' ', '_')}")
+  grep(spp_pattern, all_spp_images, value = TRUE, ignore.case = TRUE)
 }

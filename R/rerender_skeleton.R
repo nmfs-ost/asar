@@ -123,10 +123,14 @@ rerender_skeleton <- function(
     file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
     # Change path to spp image since finished copying for yaml
     if (file.exists(spp_image)) {
-      spp_image <- file.path("support_files", stringr::str_extract(spp_image, "(?<=/)[^/]+$"))
+      # spp_image <- file.path("support_files", stringr::str_extract(spp_image, "(?<=/)[^/]+$"))
     }
   } else if (is.null(spp_image) && species != "species") {
     spp_image <- find_system_spp_image(species)
+    if (length(spp_image) > 1) {
+      spp_image <- spp_image[1]
+      cli::cli_alert_warning("> 1 species image found for template")
+    }
     file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
     # spp image name for yaml
     # spp_image <- glue::glue("support_files/{basename(spp_image)}")
@@ -201,7 +205,7 @@ rerender_skeleton <- function(
   }
   # Replace species name in title if not changed
   if (grepl(tolower(prev_species), tolower(title))) {
-    title <- glue::glue("'{stringr::str_replace(title, stringr::str_regex(prev_species, ignore_case = TRUE), species)}'")
+    title <- glue::glue("'{stringr::str_replace(title, stringr::regex(prev_species, ignore_case = TRUE), species)}'")
   }
   
   #### Initialize bib name ----
@@ -231,6 +235,8 @@ rerender_skeleton <- function(
   param_values <- custom_params |> unname()
 
   #### yaml ----
+  # set spp_image to relative path atp
+  if (!is.null(spp_image)) spp_image <- glue::glue("support_files/{basename(spp_image)}")
   yaml <- create_yaml(
     prev_format = prev_format,
     format = format,
@@ -239,7 +245,7 @@ rerender_skeleton <- function(
     title = title,
     rerender_skeleton = TRUE,
     office = office,
-    spp_image = paste0("support_files/", basename(spp_image)),
+    spp_image = spp_image,
     species = species,
     spp_latin = spp_latin,
     region = region,

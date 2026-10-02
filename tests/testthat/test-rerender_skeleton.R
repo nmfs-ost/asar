@@ -213,4 +213,5 @@ test_that("year is changed throughout document", {
   # tests
   expect_all_equal(c(title, citation, output_file, in_header), "2027")
   
+  unlink(report_dir, recursive = TRUE)
 })
