@@ -201,7 +201,7 @@ rerender_skeleton <- function(
   }
   # Replace species name in title if not changed
   if (grepl(tolower(prev_species), tolower(title))) {
-    title <- stringr::str_replace(title, stringr::regex(prev_species, ignore_case = TRUE), species)
+    title <- glue::glue("'{stringr::str_replace(title, stringr::str_regex(prev_species, ignore_case = TRUE), species)}'")
   }
   
   #### Initialize bib name ----
