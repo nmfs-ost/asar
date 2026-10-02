@@ -597,3 +597,10 @@ custom_true <- function(
     } # close if statement for very specific sectioning
   } # close if statement for extra custom
 }
+
+#--------------------------------------------------------------
+
+find_system_spp_image <- function(species) {
+  all_spp_images <- list.files(system.file("resources", "spp_img", package = "asar"), full.names = TRUE)
+  grep(species, all_spp_images, value = TRUE, ignore.case = TRUE)
+}

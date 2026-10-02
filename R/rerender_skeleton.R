@@ -126,10 +126,10 @@ rerender_skeleton <- function(
       spp_image <- file.path("support_files", stringr::str_extract(spp_image, "(?<=/)[^/]+$"))
     }
   } else if (is.null(spp_image) && species != "species") {
-    spp_image <- system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar") 
+    spp_image <- find_system_spp_image(species)
     file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
     # spp image name for yaml
-    spp_image <- glue::glue("support_files/{basename(spp_image)}")
+    # spp_image <- glue::glue("support_files/{basename(spp_image)}")
   }
   # if it is previously html and the rerender species html then need to copy over html formatting
   if (tolower(prev_format) != "html" & tolower(format) == "html") {
@@ -239,7 +239,7 @@ rerender_skeleton <- function(
     title = title,
     rerender_skeleton = TRUE,
     office = office,
-    spp_image = spp_image,
+    spp_image = paste0("support_files/", basename(spp_image)),
     species = species,
     spp_latin = spp_latin,
     region = region,

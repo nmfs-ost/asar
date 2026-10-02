@@ -453,7 +453,7 @@ create_template <- function(
     if (is.null(spp_image) && species == "species") {
       spp_image <- ""
     } else if (is.null(spp_image) && species != "species") {
-      spp_image <- system.file("resources", "spp_img", paste(gsub(" ", "_", species), ".png", sep = ""), package = "asar")
+      spp_image <- find_system_spp_image(species)
     }
 
     # Add bib file
@@ -690,7 +690,7 @@ create_template <- function(
       title = title,
       rerender_skeleton = FALSE,
       office = office,
-      spp_image = spp_image,
+      spp_image = paste0("support_files/", basename(spp_image)),
       species = species,
       spp_latin = spp_latin,
       region = region,
