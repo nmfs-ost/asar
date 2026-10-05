@@ -15,15 +15,16 @@ update_report(
   new_section = NULL,
   section_location = NULL,
   figures_dir = getwd(),
-  tables_dir = getwd()
+  tables_dir = getwd(),
+  reset_tables_and_figures = FALSE
 )
 }
 \arguments{
 \item{file_dir}{String of the path where the new report folder and files
-should be located.}
+should be located. Required.}
 
 \item{previous_file_dir}{String of the path where the previous report files
-are located.}
+are located. Required.}
 
 \item{authors}{A character vector of author names and affiliations.
 For example, a Jane Doe at the NWFSC Seattle, Washington office
@@ -88,6 +89,11 @@ Default: the working directory}
 files
 
 Default: the working directory}
+
+\item{reset_tables_and_figures}{Logical indicating whether to reset tables
+and figures Quarto documents.
+
+Default: FALSE}
 }
 \value{
 Creates a new folder of pre-filled assessment report files for the
@@ -95,6 +101,19 @@ next assessment cycle.
 }
 \description{
 Call previous assessment report and update
+}
+\details{
+This function is designed so a report made from \code{asar::create_template()} can
+be called and updated with the follow:
+\itemize{
+\item year
+\item model results
+\item authorship
+\item check standard structure against current structure
+The intention of this function is to be able to call your previous report and
+update details for the current assessment cycle and reuse the remaining pieces
+from the previous cycle.
+}
 }
 \examples{
 \dontrun{

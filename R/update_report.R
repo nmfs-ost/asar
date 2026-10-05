@@ -13,6 +13,18 @@
 #' Default: FALSE
 #' @returns Creates a new folder of pre-filled assessment report files for the 
 #' next assessment cycle.
+#' 
+#' @details
+#' This function is designed so a report made from `asar::create_template()` can
+#'  be called and updated with the follow:
+#'  - year
+#'  - model results
+#'  - authorship
+#'  - check standard structure against current structure
+#' The intention of this function is to be able to call your previous report and
+#' update details for the current assessment cycle and reuse the remaining pieces 
+#' from the previous cycle.
+#' 
 #' @export
 #'
 #' @examples
