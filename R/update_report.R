@@ -140,6 +140,7 @@ update_report <- function(
   
   #### reset tables and figures docs ----
   if (reset_tables_and_figures) {
+    type <- stringr::str_extract(prev_report_name, "^[a-z]+")
     # Remove previous file
     file.remove(
       file.path(
@@ -166,5 +167,34 @@ update_report <- function(
       subdir = report_dir
     )
     cli::cli_alert_info("Tables document reset to default.")
-  }
+    
+    # Rename tables and figs docs if different type
+    tables_doc_name <- switch(
+      type,
+      "nemt" = "06_tables.qmd",
+      "safe" = "12_tables.qmd",
+      "09_tables.qmd"
+    )
+    figures_doc_name <- switch(
+      type,
+      "nemt" = "05_figures.qmd",
+      "safe" = "11_figures.qmd",
+      "08_figures.qmd"
+    )
+    # rename figures doc
+    if (figures_doc_name != "08_figures.qmd") {
+      file.rename(
+        from = fs::path(subdir, "08_figures.qmd"),
+        to = fs::path(subdir, figures_doc_name)
+      )
+    }
+    
+    # rename tables doc
+    if (tables_doc_name != "09_tables.qmd") {
+      file.rename(
+        from = fs::path(subdir, "09_tables.qmd"),
+        to = fs::path(subdir, tables_doc_name)
+      )
+    } # close tables doc name if statement
+  } # close reset_tables_and_figures
 }
