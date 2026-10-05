@@ -153,9 +153,7 @@ update_report <- function(
       figures_dir = figures_dir
     )
     cli::cli_alert_info("Figures document reset to default.")
-  }
-  
-  if (reset_tables_and_figures) {
+    
     # Remove previous file
     file.remove(
       file.path(
