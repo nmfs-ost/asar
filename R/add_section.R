@@ -24,6 +24,16 @@ add_section <- function(
   new_section = NULL,
   section_location = NULL
 ) {
+  # Renumbering of child docs
+  # determine order and renumber
+  # figures and tables are always after references but before appendix
+  # start with order in asar templates
+  # keep file number for old qmds -- these will get eval: false
+  # place new section according to their placement
+  # then number when order is set in the string -- 1:length(qmd files)
+  #   paste(string_of_numbers with "0x", "_", string of qmd names)
+  
+  
   if (is.null(new_section)) {
     cli::cli_abort("New section name (`new_section`) is NULL.")
   }

@@ -107,16 +107,6 @@ update_report <- function(
     bibdir, 
     recursive = TRUE
   )
-  
-  # warning which files are not in the standard framework
-  if (type == "skeleton") {
-    std_files <- list.files(file.path(system.file("templates", package = "asar"), type))
-    # select "section" qmd from prev_files and remove skeleton, figures, and tables docs
-    prev_file_outline <- prev_files[grepl("\\.qmd$", prev_files)]
-    prev_file_outline <- prev_file_outline[!grepl("skeleton|figures|tables", prev_file_outline)]
-    non_std_files <- setdiff(prev_file_outline, std_files)
-      if (length(non_std_files) > 0) cli::cli_alert_info("Non-standard section files exist.")
-  }
 
   #### Update skeleton ----
   # part of skeleton:
@@ -140,7 +130,6 @@ update_report <- function(
   
   #### reset tables and figures docs ----
   if (reset_tables_and_figures) {
-    type <- stringr::str_extract(prev_report_name, "^[a-z]+")
     # Remove previous file
     file.remove(
       file.path(

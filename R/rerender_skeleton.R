@@ -439,57 +439,32 @@ rerender_skeleton <- function(
   # id the order of the files in the skeleton and copy over in that order
   files_to_copy <- stringr::str_extract(prev_skeleton[grep("knitr::knit_child", prev_skeleton)], "(?<=knit_child\\(').*?(?=\\')")
   
+  # Warning which files are not in the standard framework
+  std_files <- list.files(file.path(system.file("templates", package = "asar"), type))
+  # select "section" qmd from prev_files and remove skeleton, figures, and tables docs
+  # prev_file_outline <- prev_files[grepl("\\.qmd$", prev_files)]
+  # prev_file_outline <- prev_file_outline[!grepl("skeleton|figures|tables", prev_file_outline)]
+  non_std_files <- setdiff(files_to_copy, std_files)[-grep("skeleton|figures|tables", setdiff(files_to_copy, std_files))]
+  # if (length(non_std_files) > 0) cli::cli_alert_info("Non-standard section files exist.")
+  if (length(non_std_files) > 0) {
+    cli::cli_alert_info("File structure out of date. Updating sections...")
+    # comment out old sectioning -- lower in code outline
+    # add new section
+    new_std_sections <- std_files[!std_files %in% files_to_copy]
+    # add new files
+    files_to_copy <- c(files_to_copy, new_std_sections)
+  }
+  
   if (!is.null(new_section) || !is.null(custom_sections)) custom <- TRUE else custom <- FALSE
   
-  if (is.null(custom_sections)) {
-    # identify all previous sections
-    sections <- stringr::str_extract_all(
-      prev_skeleton,
-      "(?<=['`])[^']+\\.qmd(?=['`])"
-    ) |>
-      unlist() |>
-      purrr::discard(~ .x == "")
-    
-    has_legacy_tables <- can_rename_legacy_doc(tbl_info)
-    has_legacy_figures <- can_rename_legacy_doc(fig_info)
-    
-    if (has_legacy_tables) {
-      sections <- stringr::str_replace_all(
-        sections,
-        tbl_info$legacy_name,
-        tbl_info$current_name
-      )
-    }
-    if (has_legacy_figures) {
-      sections <- stringr::str_replace_all(
-        sections,
-        fig_info$legacy_name,
-        fig_info$current_name
-      )
-    }
-    
-    figure_name <- if (has_legacy_figures) fig_info$current_name else figures_doc_name
-    table_name <- if (has_legacy_tables) tbl_info$current_name else tables_doc_name
-    
-    figure_position <- which(sections == figure_name)
-    table_position <- which(sections == table_name)
-    if (length(figure_position) == 1 && length(table_position) == 1 && figure_position > table_position) {
-      sections <- sections[sections != figure_name]
-      table_position <- which(sections == table_name)
-      sections <- append(
-        sections,
-        figure_name,
-        after = table_position - 1
-      )
-    }
-    
-    # add sections as list
-    sections <- add_child(
-      sections,
-      label = gsub(".qmd", "", unlist(sections))
-    )
-  } else {
-    sections <- custom_true(
+  if (!is.null(custom_sections)) {
+    # add base sections even to custom
+    if (!any(grepl("references", custom_sections))) custom_sections <- c(custom_sections, "references")
+    if (!any(grepl("acknowledgments", custom_sections))) custom_sections <- c(custom_sections, "acknowledgments")
+    files_to_copy <- unlist(files_to_copy)[c(unlist(sapply(c(custom_sections, "tables", "figures"), function(x) grep(x, files_to_copy))))]
+  
+  if (!is.null(new_section)) {
+    files_to_copy <- custom_true(
       new_section = new_section,
       section_location = section_location,
       custom_sections = custom_sections,
@@ -499,6 +474,46 @@ rerender_skeleton <- function(
       subdir = file_dir
     )
   }
+  
+  # Renumber legacy figs and tabs docs
+  has_legacy_tables <- can_rename_legacy_doc(tbl_info)
+  has_legacy_figures <- can_rename_legacy_doc(fig_info)
+
+  if (has_legacy_tables) {
+    files_to_copy <- stringr::str_replace_all(
+      files_to_copy,
+      tbl_info$legacy_name,
+      tbl_info$current_name
+    )
+  }
+  if (has_legacy_figures) {
+    files_to_copy <- stringr::str_replace_all(
+      files_to_copy,
+      fig_info$legacy_name,
+      fig_info$current_name
+    )
+  }
+
+  figure_name <- if (has_legacy_figures) fig_info$current_name else figures_doc_name
+  table_name <- if (has_legacy_tables) tbl_info$current_name else tables_doc_name
+
+  figure_position <- which(files_to_copy == figure_name)
+  table_position <- which(files_to_copy == table_name)
+  if (length(figure_position) == 1 && length(table_position) == 1 && figure_position > table_position) {
+    files_to_copy <- files_to_copy[files_to_copy != figure_name]
+    table_position <- which(files_to_copy == table_name)
+    files_to_copy <- append(
+      files_to_copy,
+      figure_name,
+      after = table_position - 1
+    )
+  }
+  
+  # add sections as list
+  sections <- add_child(
+    files_to_copy,
+    label = gsub(".qmd", "", unlist(files_to_copy))
+  )
 
   #### Pull together template ----
   report_template <- paste(

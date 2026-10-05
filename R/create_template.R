@@ -443,6 +443,7 @@ create_template <- function(
       }
     } else {
       files_to_copy <- list.files(current_folder)
+      # files_to_copy <- unlist(add_base_section(list.files(current_folder)))
     }
 
     before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "asar")
@@ -790,24 +791,22 @@ create_template <- function(
     # Include tables and figures in template
     # at this point, files_to_copy is the most updated outline
 
-    ###### Not custom ----
-    # add check if user set custom sections
-    if (!is.null(new_section) || !is.null(custom_sections)) custom <- TRUE
-    if (is.null(custom_sections)) {
-      sections <- add_child(
-        sort(c(files_to_copy, tables_doc_name, figures_doc_name)),
-        # TODO: need to remove the numbers proceeding the names as well
-        label = stringr::str_extract(sort(c(files_to_copy, tables_doc_name, figures_doc_name)), "(?<=_).+(?=\\.qmd$)")
-      )
-    } else {
+    if (!is.null(new_section) || !is.null(custom_sections)) custom <- TRUE else custom <- FALSE
+    if (custom) {
+      # atp custom sections are already done and in files_to_copy
       sections <- custom_true(
         new_section = new_section,
         section_location = section_location,
-        custom_sections = custom_sections,
+        # custom_sections = custom_sections,
         files_to_copy = files_to_copy,
         tables_doc_name = tables_doc_name,
         figures_doc_name = figures_doc_name,
         subdir = subdir
+      )
+    } else {
+      sections <- add_child(
+        sort(c(files_to_copy, tables_doc_name, figures_doc_name)),
+        label = stringr::str_extract(sort(c(files_to_copy, tables_doc_name, figures_doc_name)), "(?<=_).+(?=\\.qmd$)")
       )
     } # close if statement for custom
 
