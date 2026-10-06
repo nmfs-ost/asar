@@ -539,7 +539,8 @@ custom_true <- function(
     files_to_copy,
     tables_doc_name,
     figures_doc_name,
-    subdir
+    subdir,
+    rerender = FALSE
 ){
   # Option for building custom template
   # Create custom template from existing skeleton sections
@@ -579,18 +580,22 @@ custom_true <- function(
       # Create new sections as .qmd in folder
       # check if sections are in custom_sections list
       # if (any(stringr::str_replace(section_location, "^[a-z]+-", "") %notin% custom_sections)) {
-      if (!any(grepl(stringr::str_replace(section_location, "^[a-z]+-", ""), sec_list1))) {
+      if (!is.null(new_section) && !any(grepl(stringr::str_replace(section_location, "^[a-z]+-", ""), sec_list1))) {
         cli::cli_abort("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
       }
       # reorder sec_list1 alphabetically so that 11_appendix goes to end of list
-      sec_list1 <- sec_list1[order(names(stats::setNames(sec_list1, sec_list1)))]
+      if (!rerender) sec_list1 <- sec_list1[order(names(stats::setNames(sec_list1, sec_list1)))]
       
-      sec_list2 <- add_section(
-        new_section = new_section,
-        section_location = section_location,
-        custom_sections = sec_list1,
-        subdir = subdir
-      )
+      if (!is.null(new_section) && !is.null(section_location)) {
+        sec_list2 <- add_section(
+          new_section = new_section,
+          section_location = section_location,
+          custom_sections = sec_list1,
+          subdir = subdir
+        )
+      } else {
+        sec_list2 <- sec_list1
+      }
       # Create sections object to add into template
       add_child(
         sec_list2,

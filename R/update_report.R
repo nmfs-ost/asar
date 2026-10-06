@@ -115,6 +115,35 @@ update_report <- function(
   # citation
   # preamble
   # section chunks
+  # id the order of the files in the skeleton and copy over in that order
+  prev_skeleton <- readLines(list.files(previous_file_dir, pattern = "skeleton\\.qmd", full.names = TRUE))
+  files_to_copy <- stringr::str_extract(prev_skeleton[grep("knitr::knit_child", prev_skeleton)], "(?<=knit_child\\(').*?(?=\\')")
+  
+  # Warning which files are not in the standard framework
+  std_files <- list.files(file.path(system.file("templates", package = "asar"), type))
+  # select "section" qmd from prev_files and remove skeleton, figures, and tables docs
+  # prev_file_outline <- prev_files[grepl("\\.qmd$", prev_files)]
+  # prev_file_outline <- prev_file_outline[!grepl("skeleton|figures|tables", prev_file_outline)]
+  non_std_files <- setdiff(files_to_copy, std_files)[-grep("skeleton|figures|tables", setdiff(files_to_copy, std_files))]
+  # if (length(non_std_files) > 0) cli::cli_alert_info("Non-standard section files exist.")
+  if (length(non_std_files) > 0) {
+    cli::cli_alert_info("File structure out of date. Updating sections...")
+    # comment out old sectioning -- lower in code outline
+    # add new section
+    new_std_sections <- std_files[!std_files %in% files_to_copy]
+    # Copy in the new_std_sections
+    file.copy(
+      file.path(file.path(system.file("templates", package = "asar"), type), new_std_sections),
+      file_dir, 
+      overwrite = FALSE
+    )
+    if (length(new_std_sections) > 1) cli::cli_alert_info("New sections present in outline resulting from a change to the standard guidelines. Please review your document.")
+    # Find any added non-std sections
+    # non_std_files <- non_std_files[non_std_files %notin% new_std_sections]
+    # add new files
+    files_to_copy <- c(files_to_copy, new_std_sections)
+  }
+  
   # TODO: reset author section in skeleton -- remove all previous authorship (does this work?)
   # Update skeleton with new year, authors, model results, region, if added
   rerender_skeleton(
@@ -124,9 +153,12 @@ update_report <- function(
     year = year,
     format = format,
     region = region,
+    custom_sections = files_to_copy,
     new_section = new_section,
     section_location = section_location
   )
+  
+  # edit skeleton to change non-std chunks to eval = FALSE
   
   #### reset tables and figures docs ----
   if (reset_tables_and_figures) {
