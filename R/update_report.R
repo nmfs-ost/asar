@@ -133,15 +133,33 @@ update_report <- function(
     new_std_sections <- std_files[!std_files %in% files_to_copy]
     # Copy in the new_std_sections
     file.copy(
-      file.path(file.path(system.file("templates", package = "asar"), type), new_std_sections),
-      file_dir, 
+      file.path(system.file("templates", package = "asar"), type, new_std_sections),
+      report_dir, 
       overwrite = FALSE
     )
-    if (length(new_std_sections) > 1) cli::cli_alert_info("New sections present in outline resulting from a change to the standard guidelines. Please review your document.")
+    if (length(new_std_sections) > 1) cli::cli_alert_info("New sections present in outline resulting from a change in outlines from previous assessment to the standard guidelines. 
+                                                          Please review your document.")
     # Find any added non-std sections
     # non_std_files <- non_std_files[non_std_files %notin% new_std_sections]
     # add new files
-    files_to_copy <- c(files_to_copy, new_std_sections)
+    # add to order somehow ?
+    for (i in seq_along(new_std_sections)) {
+      sec_num <- stringr::str_extract(new_std_sections[i], "(?<=^)[0-9]+") |> as.numeric()
+      # find the next section number in files_to_copy
+      sec_nums <- as.numeric(stringr::str_extract(files_to_copy, "(?<=^)[0-9]+"))
+      # find the index of the first non-na sec_nums > sec_num
+      next_sec_index <- which(sec_nums > sec_num)[1]
+      # add section before index in there is no na before it otherwise, add it before the na
+      if (is.na(next_sec_index)) {
+        index_append <- length(sec_nums)
+      } else if (is.na(sec_nums[next_sec_index - 1])) {
+        index_append <- next_sec_index - 2
+      } else {
+        index_append <- next_sec_index - 1
+      }
+      files_to_copy <- append(files_to_copy, new_std_sections[i], after = index_append)
+    }
+    # files_to_copy <- c(files_to_copy, new_std_sections)
   }
   
   # TODO: reset author section in skeleton -- remove all previous authorship (does this work?)

@@ -459,13 +459,19 @@ rerender_skeleton <- function(
   
   if (!is.null(custom_sections)) {
     # TODO: add check if custom sections are in the sections in the skeleton ("files_to_copy")
-    if (!any(grepl(custom_sections, files_to_copy))) {
+    if (!any(custom_sections %in% files_to_copy)) {
       cli::cli_alert_info("Custom sections not found in the skeleton. Please ensure the names match those in the current skeleton or set them in the argument 'new_section'.")
     }
     # add sections even to custom
     if (!any(grepl("references", custom_sections))) custom_sections <- c(custom_sections, "references")
     if (!any(grepl("acknowledgments", custom_sections))) custom_sections <- c(custom_sections, "acknowledgments")
-    files_to_copy <- unlist(files_to_copy)[c(unlist(sapply(c(custom_sections, "tables", "figures"), function(x) grep(x, files_to_copy))))] # might not need tables and figures here
+    # if (length(custom_sections) > length(files_to_copy)) {
+    # if does not contain sections numbering -- find based on what user specified otherwise just use custom sections
+    if (any(stringr::str_detect(custom_sections, "[0-9]+_"))) {
+      files_to_copy <- custom_sections
+    } else {
+      files_to_copy <- unlist(files_to_copy)[c(unlist(sapply(custom_sections, function(x) grep(x, files_to_copy))))]
+    }
   }
   if (!is.null(new_section)) {
     sections <- custom_true(
