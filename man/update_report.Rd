@@ -12,6 +12,7 @@ update_report(
   year = format(as.POSIXct(Sys.Date(), format = "\%YYYY-\%mm-\%dd"), "\%Y"),
   format = "pdf",
   region = NULL,
+  custom_sections = TRUE,
   new_section = NULL,
   section_location = NULL,
   figures_dir = getwd(),
@@ -63,6 +64,13 @@ Example: "US West Coast".
 
 Default: NULL}
 
+\item{custom_sections}{Logical. Indicate whether the previous report had a
+customized sectioning. If TRUE, the report outline will mimic the previous
+report. If FALSE, the report will include the full standard guidelines outline
+along with any custom sectioning from the previous report.
+
+Default: FALSE}
+
 \item{new_section}{Names of section(s) (e.g., "Special Section") or
 subsection(s) (e.g., a section within the introduction) that will be
 added to the document. Please make a short list if >1 section/subsection
@@ -91,9 +99,7 @@ files
 Default: the working directory}
 
 \item{reset_tables_and_figures}{Logical indicating whether to reset tables
-and figures Quarto documents.
-
-Default: FALSE}
+and figures Quarto documents.}
 }
 \value{
 Creates a new folder of pre-filled assessment report files for the
@@ -110,9 +116,10 @@ be called and updated with the follow:
 \item model results
 \item authorship
 \item check standard structure against current structure
-The intention of this function is to be able to call your previous report and
-update details for the current assessment cycle and reuse the remaining pieces
-from the previous cycle.
+This function performs three major tasks (1) copies all files from the old
+directory to the new one, (2) updates the skeleton according the the input
+arguments using the \code{rerender_skeleton()} function, and (3) if desired,
+resets your figures and tables documents.
 }
 }
 \examples{

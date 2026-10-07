@@ -9,6 +9,10 @@
 #' are located. Required.
 #' @param reset_tables_and_figures Logical indicating whether to reset tables 
 #' and figures Quarto documents.
+#' @param custom_sections Logical. Indicate whether the previous report had a 
+#' customized sectioning. If TRUE, the report outline will mimic the previous 
+#' report. If FALSE, the report will include the full standard guidelines outline 
+#' along with any custom sectioning from the previous report.
 #'
 #' Default: FALSE
 #' @returns Creates a new folder of pre-filled assessment report files for the 
@@ -21,9 +25,10 @@
 #'  - model results
 #'  - authorship
 #'  - check standard structure against current structure
-#' The intention of this function is to be able to call your previous report and
-#' update details for the current assessment cycle and reuse the remaining pieces 
-#' from the previous cycle.
+#' This function performs three major tasks (1) copies all files from the old 
+#' directory to the new one, (2) updates the skeleton according the the input 
+#' arguments using the `rerender_skeleton()` function, and (3) if desired, 
+#' resets your figures and tables documents.
 #' 
 #' @export
 #'
@@ -42,6 +47,7 @@ update_report <- function(
     year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
     format = "pdf",
     region = NULL, # just in case this changes
+    custom_sections = TRUE,
     new_section = NULL,
     section_location = NULL,
     figures_dir = getwd(),
@@ -119,49 +125,51 @@ update_report <- function(
   prev_skeleton <- readLines(list.files(previous_file_dir, pattern = "skeleton\\.qmd", full.names = TRUE))
   files_to_copy <- stringr::str_extract(prev_skeleton[grep("knitr::knit_child", prev_skeleton)], "(?<=knit_child\\(').*?(?=\\')")
   
-  # Warning which files are not in the standard framework
-  std_files <- list.files(file.path(system.file("templates", package = "asar"), type))
-  # select "section" qmd from prev_files and remove skeleton, figures, and tables docs
-  # prev_file_outline <- prev_files[grepl("\\.qmd$", prev_files)]
-  # prev_file_outline <- prev_file_outline[!grepl("skeleton|figures|tables", prev_file_outline)]
-  non_std_files <- setdiff(files_to_copy, std_files)[-grep("skeleton|figures|tables", setdiff(files_to_copy, std_files))]
-  # if (length(non_std_files) > 0) cli::cli_alert_info("Non-standard section files exist.")
-  if (length(non_std_files) > 0) {
-    cli::cli_alert_info("File structure out of date. Updating sections...")
-    # comment out old sectioning -- lower in code outline
-    # add new section
-    new_std_sections <- std_files[!std_files %in% files_to_copy]
-    # Copy in the new_std_sections
-    file.copy(
-      file.path(system.file("templates", package = "asar"), type, new_std_sections),
-      report_dir, 
-      overwrite = FALSE
-    )
-    if (length(new_std_sections) > 1) cli::cli_alert_info("New sections present in outline resulting from a change in outlines from previous assessment to the standard guidelines. 
+  if (!custom_sections) {
+    # Warning which files are not in the standard framework
+    std_files <- list.files(file.path(system.file("templates", package = "asar"), type))
+    # select "section" qmd from prev_files and remove skeleton, figures, and tables docs
+    # prev_file_outline <- prev_files[grepl("\\.qmd$", prev_files)]
+    # prev_file_outline <- prev_file_outline[!grepl("skeleton|figures|tables", prev_file_outline)]
+    non_std_files <- setdiff(files_to_copy, std_files)[-grep("skeleton|figures|tables", setdiff(files_to_copy, std_files))]
+    # if (length(non_std_files) > 0) cli::cli_alert_info("Non-standard section files exist.")
+    if (length(non_std_files) > 0) {
+      cli::cli_alert_info("File structure out of date. Updating sections...")
+      # comment out old sectioning -- lower in code outline
+      # add new section
+      new_std_sections <- std_files[!std_files %in% files_to_copy]
+      # Copy in the new_std_sections
+      file.copy(
+        file.path(system.file("templates", package = "asar"), type, new_std_sections),
+        report_dir, 
+        overwrite = FALSE
+      )
+      if (length(new_std_sections) > 1) cli::cli_alert_info("New sections present in outline resulting from a change in outlines from previous assessment to the standard guidelines. 
                                                           Please review your document.")
-    # Find any added non-std sections
-    # non_std_files <- non_std_files[non_std_files %notin% new_std_sections]
-    # add new files
-    # add to order somehow ?
-    for (i in seq_along(new_std_sections)) {
-      sec_num <- stringr::str_extract(new_std_sections[i], "(?<=^)[0-9]+") |> as.numeric()
-      # find the next section number in files_to_copy
-      sec_nums <- as.numeric(stringr::str_extract(files_to_copy, "(?<=^)[0-9]+"))
-      # find the index of the first non-na sec_nums > sec_num
-      next_sec_index <- which(sec_nums > sec_num)[1]
-      # add section before index in there is no na before it otherwise, add it before the na
-      if (is.na(next_sec_index)) {
-        index_append <- length(sec_nums)
-      } else if (is.na(sec_nums[next_sec_index - 1])) {
-        index_append <- next_sec_index - 2
-      } else {
-        index_append <- next_sec_index - 1
+      # Find any added non-std sections
+      # non_std_files <- non_std_files[non_std_files %notin% new_std_sections]
+      # add new files
+      # add to order somehow ?
+      for (i in seq_along(new_std_sections)) {
+        sec_num <- stringr::str_extract(new_std_sections[i], "(?<=^)[0-9]+") |> as.numeric()
+        # find the next section number in files_to_copy
+        sec_nums <- as.numeric(stringr::str_extract(files_to_copy, "(?<=^)[0-9]+"))
+        # find the index of the first non-na sec_nums > sec_num
+        next_sec_index <- which(sec_nums > sec_num)[1]
+        # add section before index in there is no na before it otherwise, add it before the na
+        if (is.na(next_sec_index)) {
+          index_append <- length(sec_nums)
+        } else if (is.na(sec_nums[next_sec_index - 1])) {
+          index_append <- next_sec_index - 2
+        } else {
+          index_append <- next_sec_index - 1
+        }
+        files_to_copy <- append(files_to_copy, new_std_sections[i], after = index_append)
       }
-      files_to_copy <- append(files_to_copy, new_std_sections[i], after = index_append)
+      # files_to_copy <- c(files_to_copy, new_std_sections)
     }
-    # files_to_copy <- c(files_to_copy, new_std_sections)
   }
-  
+
   # TODO: reset author section in skeleton -- remove all previous authorship (does this work?)
   # Update skeleton with new year, authors, model results, region, if added
   rerender_skeleton(
