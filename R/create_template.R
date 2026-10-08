@@ -797,7 +797,6 @@ create_template <- function(
       sections <- custom_true(
         new_section = new_section,
         section_location = section_location,
-        # custom_sections = custom_sections,
         files_to_copy = files_to_copy,
         tables_doc_name = tables_doc_name,
         figures_doc_name = figures_doc_name,

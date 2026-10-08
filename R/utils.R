@@ -535,51 +535,16 @@ can_rename_legacy_doc <- function(doc_info) {
 custom_true <- function(
     new_section,
     section_location,
-    # custom_sections,
     files_to_copy,
     tables_doc_name,
     figures_doc_name,
     subdir,
     rerender = FALSE
 ){
-  # Option for building custom template
-  # Create custom template from existing skeleton sections
-  # if (is.null(new_section)) {
-  #   section_list <- add_base_section(files_to_copy)
-  #   # Create sections object to add into template
-  #   sections <- add_child(section_list,
-  #                         label = stringr::str_extract(unlist(section_list), "(?<=_).+(?=\\.qmd$)")
-  #   )
-  # } else { # custom = TRUE
-    # Create custom template using existing sections and new sections from analyst
-    # Add sections from package options
-    
-    # if (is.null(custom_sections)) {
-    #   # TODO: type - this needs to just pull all files from folder that
-    #   # it was copying from when custom sections is null -- DONE
-    #   
-    #   sec_list1 <- unique(c(files_to_copy, tables_doc_name, figures_doc_name))
-    #   sec_list2 <- add_section(
-    #     new_section = new_section,
-    #     section_location = section_location,
-    #     custom_sections = sec_list1,
-    #     subdir = subdir
-    #   )
-    #   
-    #   # Create sections object to add into template
-    #   sections <- add_child(
-    #     sec_list2,
-    #     label = stringr::str_remove_all(unlist(sec_list2), "^\\d{2}[a-zA-Z]?_|\\.qmd$")
-    #   )
-    # } else { # custom_sections explicit
-      
       # Add selected sections from base
-      # shouldn't need to use add_base_section here
-      # sec_list1 <- unique(c(unlist(add_base_section(files_to_copy)), tables_doc_name, figures_doc_name))
       sec_list1 <- unique(c(files_to_copy, tables_doc_name, figures_doc_name)) # not sure what the point of the unique is
       # Create new sections as .qmd in folder
       # check if sections are in custom_sections list
-      # if (any(stringr::str_replace(section_location, "^[a-z]+-", "") %notin% custom_sections)) {
       if (!is.null(new_section) && !any(grepl(stringr::str_replace(section_location, "^[a-z]+-", ""), sec_list1))) {
         cli::cli_abort("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
       }

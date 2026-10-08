@@ -439,22 +439,6 @@ rerender_skeleton <- function(
   # id the order of the files in the skeleton and copy over in that order
   files_to_copy <- stringr::str_extract(prev_skeleton[grep("knitr::knit_child", prev_skeleton)], "(?<=knit_child\\(').*?(?=\\')")
   
-  # Warning which files are not in the standard framework
-  # std_files <- list.files(file.path(system.file("templates", package = "asar"), type))
-  # # select "section" qmd from prev_files and remove skeleton, figures, and tables docs
-  # # prev_file_outline <- prev_files[grepl("\\.qmd$", prev_files)]
-  # # prev_file_outline <- prev_file_outline[!grepl("skeleton|figures|tables", prev_file_outline)]
-  # non_std_files <- setdiff(files_to_copy, std_files)[-grep("skeleton|figures|tables", setdiff(files_to_copy, std_files))]
-  # # if (length(non_std_files) > 0) cli::cli_alert_info("Non-standard section files exist.")
-  # if (length(non_std_files) > 0) {
-  #   cli::cli_alert_info("File structure out of date. Updating sections...")
-  #   # comment out old sectioning -- lower in code outline
-  #   # add new section
-  #   new_std_sections <- std_files[!std_files %in% files_to_copy]
-  #   # add new files
-  #   files_to_copy <- c(files_to_copy, new_std_sections)
-  # }
-  
   if (!is.null(new_section) || !is.null(custom_sections)) custom <- TRUE else custom <- FALSE
   
   if (!is.null(custom_sections)) {
@@ -477,7 +461,6 @@ rerender_skeleton <- function(
     sections <- custom_true(
       new_section = new_section,
       section_location = section_location,
-      # custom_sections = custom_sections,
       files_to_copy = files_to_copy,
       tables_doc_name = tables_doc_name,
       figures_doc_name = figures_doc_name,

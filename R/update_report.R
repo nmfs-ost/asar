@@ -182,6 +182,7 @@ update_report <- function(
   )
   
   # Reset authorship
+  # wondering if this should be a feature in rerender_skeleton instead
   if (reset_authors && !is.null(authors)) {
     curr_skeleton <- readLines(list.files(report_dir, pattern = "skeleton\\.qmd", full.names = TRUE))
     # format authorship
