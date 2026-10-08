@@ -17,12 +17,13 @@ add_section(
 
 - subdir:
 
-  Directory where the new sections will be saved. In the create_template
-  function, this defaults to the location where the template is saved.
+  Path. Directory where the new sections will be saved. In the
+  create_template function, this defaults to the location where the
+  template is saved.
 
 - custom_sections:
 
-  List of existing sections to include in a custom template (rather than
+  List. Existing sections to include in a custom template (rather than
   the default for stock assessments in your region). If adding a new
   section, also use arguments 'new_section' and 'section_location'.
 
@@ -35,22 +36,22 @@ add_section(
 
 - new_section:
 
-  Names of section(s) (e.g., "Special Section") or subsection(s) (e.g.,
-  a section within the introduction) that will be added to the document.
-  Please make a short list if \>1 section/subsection will be added. The
-  template will be created as a quarto document, added into the
-  skeleton, and saved for reference.
+  String. Names of section(s) (e.g., "Special Section") or subsection(s)
+  (e.g., a section within the introduction) that will be added to the
+  document. Please make a short list if \>1 section/subsection will be
+  added. The template will be created as a quarto document, added into
+  the skeleton, and saved for reference.
 
   Default: NULL
 
 - section_location:
 
-  Where new section(s)/subsection(s) will be added to the skeleton
-  template. Please use the notation of 'placement-section'. For example,
-  'in-introduction' signifies that the new content would be created as a
-  child document and added into the 02_introduction.qmd. To add \>1
-  (sub)section, make the location a list corresponding to the order of
-  (sub)section names listed in the 'new_section' parameter.
+  String. Where new section(s)/subsection(s) will be added to the
+  skeleton template. Please use the notation of 'placement-section'. For
+  example, 'in-introduction' signifies that the new content would be
+  created as a child document and added into the 02_introduction.qmd. To
+  add \>1 (sub)section, make the location a list corresponding to the
+  order of (sub)section names listed in the 'new_section' parameter.
 
   Default: NULL
 

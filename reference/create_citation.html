@@ -65,7 +65,7 @@
 
 
 <dl><dt id="arg-authors">authors<a class="anchor" aria-label="anchor" href="#arg-authors"></a></dt>
-<dd><p>A character vector of author names and affiliations.
+<dd><p>String. A character vector of author names and affiliations.
 For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
 can be found with: <code><a href="affiliation_info.html">asar::affiliation_info</a></code>. Keys to the office addresses
@@ -79,14 +79,14 @@ Panama City), the first initial of each word is used in the key
 
 
 <dt id="arg-title">title<a class="anchor" aria-label="anchor" href="#arg-title"></a></dt>
-<dd><p>Custom report title superceding the default composed in
+<dd><p>String. Custom report title superceding the default composed in
 <code><a href="create_title.html">asar::create_title()</a></code>. Example: "Management Track Assessments Spring
 2024".</p>
 <p>Default: <code>[TITLE]</code>. If species and region are provided, a title will be generated based on the report type, species, and region.</p></dd>
 
 
 <dt id="arg-year">year<a class="anchor" aria-label="anchor" href="#arg-year"></a></dt>
-<dd><p>Year the assessment is conducted.</p>
+<dd><p>Number. Year the assessment is conducted.</p>
 <p>Default: the year in which the report is rendered.</p></dd>
 
 </dl></div>

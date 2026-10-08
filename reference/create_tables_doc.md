@@ -16,11 +16,11 @@ create_tables_doc(subdir = getwd(), tables_dir = getwd())
 
 - subdir:
 
-  Location of subdirectory storing the assessment report template
+  Path. Location of subdirectory storing the assessment report template
 
 - tables_dir:
 
-  The location of the "tables" folder, which contains tables files.
+  Path. Location of the "tables" folder, which contains tables files.
 
 ## Value
 

@@ -12,10 +12,10 @@ add_authors(authors, rerender_skeleton = FALSE, prev_skeleton = NULL)
 
 - authors:
 
-  A character vector of author names and affiliations. For example, a
-  Jane Doe at the NWFSC Seattle, Washington office would have an entry
-  of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices can be found
-  with:
+  String. A character vector of author names and affiliations. For
+  example, a Jane Doe at the NWFSC Seattle, Washington office would have
+  an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices can
+  be found with:
   [`asar::affiliation_info`](nmfs-ost.github.io/asar/reference/affiliation_info.md).
   Keys to the office addresses follow the naming convention of: office
   acronym (ex. NWFSC), a hyphen (-), the first initial of the city, and
@@ -31,15 +31,16 @@ add_authors(authors, rerender_skeleton = FALSE, prev_skeleton = NULL)
 
 - rerender_skeleton:
 
-  TRUE/FALSE; Update the skeleton YAML and structure (R parameters,
-  preamble, and skeleton sectioning) if relevant or indicated. All files
-  in your folder, such as the `.qmd` child docs, will remain as is.
+  Logical. TRUE/FALSE; Update the skeleton YAML and structure (R
+  parameters, preamble, and skeleton sectioning) if relevant or
+  indicated. All files in your folder, such as the `.qmd` child docs,
+  will remain as is.
 
   Default: FALSE
 
 - prev_skeleton:
 
-  A character vector of the previous skeleton file read in through
+  List. A character vector of the previous skeleton file read in through
   [`readLines()`](https://rdrr.io/r/base/readLines.html)
 
 ## Value

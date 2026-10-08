@@ -17,28 +17,28 @@ add_tagging(
 
 - x:
 
-  .tex The name of the .tex file to modify.
+  Path. The name of the .tex file to modify.
 
   Default: "...skeleton.qmd"
 
 - dir:
 
-  The directory containing the .tex file.
+  Path. The directory containing the .tex file.
 
   Default: the working directory
   ([`getwd()`](https://rdrr.io/r/base/getwd.html)).
 
 - compile:
 
-  Logical. If TRUE, renders the .tex file into a .pdf after
+  Logical. TRUE/FALSE; If TRUE, renders the .tex file into a .pdf after
   modifications are complete.
 
   Default: TRUE
 
 - rename:
 
-  Optional new name for the modified .tex file (exclude the ".tex"
-  extension). If NULL, the original file is overwritten.
+  String. Optional new name for the modified .tex file (exclude the
+  ".tex" extension). If NULL, the original file is overwritten.
 
   Default: NULL
 

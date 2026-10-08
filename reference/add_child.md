@@ -12,15 +12,15 @@ add_child(x, label = NULL)
 
 - x:
 
-  An additional section to add into the template. Options for additional
-  sections are in the 'skeleton' folder. Appropriate files are .qmd
-  files and are formatted as such: XX_section.qmd (i.e., not a, b, c...
-  subfiles).
+  Path. An additional section to add into the template. Options for
+  additional sections are in the 'skeleton' folder. Appropriate files
+  are .qmd files and are formatted as such: XX_section.qmd (i.e., not a,
+  b, c... subfiles).
 
 - label:
 
-  Description of the child document being added. It should be short- one
-  or two words, maximum.
+  String. Description of the child document being added. It should be
+  short- one or two words, maximum.
 
 ## Value
 

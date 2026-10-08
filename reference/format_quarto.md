@@ -12,8 +12,8 @@ format_quarto(format = "pdf", type = "sar")
 
 - format:
 
-  Report rendering format. Note: "docx" is currently unsupported and
-  will default to "pdf".
+  String. Report rendering format. Note: "docx" is currently unsupported
+  and will default to "pdf".
 
   Default: "pdf"
 
@@ -21,7 +21,7 @@ format_quarto(format = "pdf", type = "sar")
 
 - type:
 
-  Report template type.
+  String. Report template type.
 
   Default: "sar" (a NOAA standard "Stock Assessment Report")
 

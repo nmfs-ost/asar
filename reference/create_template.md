@@ -39,8 +39,8 @@ create_template(
 
 - format:
 
-  Report rendering format. Note: "docx" is currently unsupported and
-  will default to "pdf".
+  String. Report rendering format. Note: "docx" is currently unsupported
+  and will default to "pdf".
 
   Default: "pdf"
 
@@ -48,7 +48,7 @@ create_template(
 
 - type:
 
-  Report template type.
+  String. Report template type.
 
   Default: "sar" (a NOAA standard "Stock Assessment Report")
 
@@ -58,7 +58,7 @@ create_template(
 
 - office:
 
-  Regional Fisheries Science Center producing the report.
+  String. Regional Fisheries Science Center producing the report.
 
   Default: NULL
 
@@ -66,37 +66,37 @@ create_template(
 
 - region:
 
-  Full name of the stock's sub-region, if applicable. If the region is
-  not specified for your center or species, leave default. Example: "US
-  West Coast".
+  String. Full name of the stock's sub-region, if applicable. If the
+  region is not specified for your center or species, leave default.
+  Example: "US West Coast".
 
   Default: NULL
 
 - species:
 
-  Common name of target species. Split multi-word names with space and
-  capitalize first letter(s). Example: "Dover sole".
+  String. Common name of target species. Split multi-word names with
+  space and capitalize first letter(s). Example: "Dover sole".
 
   Default: "species"
 
 - spp_latin:
 
-  Latin name of target species. Example: "Pomatomus saltatrix".
+  String. Latin name of target species. Example: "Pomatomus saltatrix".
 
   Default: NULL
 
 - year:
 
-  Year the assessment is conducted.
+  Number. Year the assessment is conducted.
 
   Default: the year in which the report is rendered.
 
 - authors:
 
-  A character vector of author names and affiliations. For example, a
-  Jane Doe at the NWFSC Seattle, Washington office would have an entry
-  of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices can be found
-  with:
+  String. A character vector of author names and affiliations. For
+  example, a Jane Doe at the NWFSC Seattle, Washington office would have
+  an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices can
+  be found with:
   [`asar::affiliation_info`](nmfs-ost.github.io/asar/reference/affiliation_info.md).
   Keys to the office addresses follow the naming convention of: office
   acronym (ex. NWFSC), a hyphen (-), the first initial of the city, and
@@ -112,14 +112,14 @@ create_template(
 
 - file_dir:
 
-  Directory where report files will be created.
+  Path. Directory where report files will be created.
 
   Default: the working directory
   ([`getwd()`](https://rdrr.io/r/base/getwd.html)).
 
 - title:
 
-  Custom report title superceding the default composed in
+  String. Custom report title superceding the default composed in
   [`asar::create_title()`](nmfs-ost.github.io/asar/reference/create_title.md).
   Example: "Management Track Assessments Spring 2024".
 
@@ -128,7 +128,7 @@ create_template(
 
 - model_results:
 
-  Filepath to the standardized, converted model output .rda file
+  Path. Filepath to the standardized, converted model output .rda file
   generated with
   [`stockplotr::convert_output()`](https://noaa-fisheries-integrated-toolbox.r-universe.dev/stockplotr/reference/convert_output.html),
   relative to the skeleton .qmd file that will be created within the
@@ -138,31 +138,33 @@ create_template(
 
 - tables_dir:
 
-  The location of the "tables" folder, which contains tables files
+  Path. The location of the "tables" folder, which contains tables files
 
   Default: the working directory
 
 - figures_dir:
 
-  The location of the "figures" folder, which contains figures files
+  Path. The location of the "figures" folder, which contains figures
+  files
 
   Default: the working directory
 
 - spp_image:
 
-  Filepath to a custom species image to be used on the report cover.
-  Supported file extension is .png. If empty, searches `asar` resources
-  for a matching species name.
+  Path. Filepath to a custom species image to be used on the report
+  cover. Supported file extension is .png. If empty, searches `asar`
+  resources for a matching species name.
 
   Default: NULL
 
 - bib_file:
 
-  File path to an existing additional bibliography file (`.bib`) used
-  for citing references in the report. By default, all bibliography
-  files are sourced from the journals package and references for all
-  NMFS stock assessment reports are provided. To see a full list of
-  journals included in these files, please visit the [journals
+  Path or logical. A character string of the path to a custom \`.bib\`
+  file, or a logical (TRUE/FALSE). the report. By default, all
+  bibliography files are sourced from the journals package and
+  references for all NMFS stock assessment reports are provided. To see
+  a full list of journals included in these files, please visit the
+  [journals
   README](https://github.com/nmfs-ost/journals/blob/main/README.md) or
   see the description at the top of each bib file. It is recommended to
   open these files in a text editor rather than R.
@@ -171,22 +173,23 @@ create_template(
 
 - new_template:
 
-  TRUE/FALSE; Create a new template? If true, will pull the last saved
-  stock assessment report skeleton.
+  Logical. TRUE/FALSE; Create a new template? If true, will pull the
+  last saved stock assessment report skeleton.
 
   Default: FALSE
 
 - rerender_skeleton:
 
-  TRUE/FALSE; Update the skeleton YAML and structure (R parameters,
-  preamble, and skeleton sectioning) if relevant or indicated. All files
-  in your folder, such as the `.qmd` child docs, will remain as is.
+  Logical. TRUE/FALSE; Update the skeleton YAML and structure (R
+  parameters, preamble, and skeleton sectioning) if relevant or
+  indicated. All files in your folder, such as the `.qmd` child docs,
+  will remain as is.
 
   Default: FALSE
 
 - custom_sections:
 
-  List of existing sections to include in a custom template (rather than
+  List. Existing sections to include in a custom template (rather than
   the default for stock assessments in your region). If adding a new
   section, also use arguments 'new_section' and 'section_location'.
 
@@ -199,32 +202,32 @@ create_template(
 
 - new_section:
 
-  Names of section(s) (e.g., "Special Section") or subsection(s) (e.g.,
-  a section within the introduction) that will be added to the document.
-  Please make a short list if \>1 section/subsection will be added. The
-  template will be created as a quarto document, added into the
-  skeleton, and saved for reference.
+  String. Names of section(s) (e.g., "Special Section") or subsection(s)
+  (e.g., a section within the introduction) that will be added to the
+  document. Please make a short list if \>1 section/subsection will be
+  added. The template will be created as a quarto document, added into
+  the skeleton, and saved for reference.
 
   Default: NULL
 
 - section_location:
 
-  Where new section(s)/subsection(s) will be added to the skeleton
-  template. Please use the notation of 'placement-section'. For example,
-  'in-introduction' signifies that the new content would be created as a
-  child document and added into the 02_introduction.qmd. To add \>1
-  (sub)section, make the location a list corresponding to the order of
-  (sub)section names listed in the 'new_section' parameter.
+  String. Where new section(s)/subsection(s) will be added to the
+  skeleton template. Please use the notation of 'placement-section'. For
+  example, 'in-introduction' signifies that the new content would be
+  created as a child document and added into the 02_introduction.qmd. To
+  add \>1 (sub)section, make the location a list corresponding to the
+  order of (sub)section names listed in the 'new_section' parameter.
 
   Default: NULL
 
 - custom_params:
 
-  Character vector of additional custom parameter names and values to
-  include in the skeleton YAML. For example, a parameter "year2" and its
-  value "2026" would have an entry of `c("year2" = "2026")`. Parameters
-  automatically included: office, region, species (each of which are
-  listed as individual parameters for this function, above).
+  List. Character vector of additional custom parameter names and values
+  to include in the skeleton YAML. For example, a parameter "year2" and
+  its value "2026" would have an entry of `c("year2" = "2026")`.
+  Parameters automatically included: office, region, species (each of
+  which are listed as individual parameters for this function, above).
 
   Default: NULL
 

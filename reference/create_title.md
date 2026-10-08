@@ -20,7 +20,7 @@ create_title(
 
 - type:
 
-  Report template type.
+  String. Report template type.
 
   Default: "sar" (a NOAA standard "Stock Assessment Report")
 
@@ -30,7 +30,7 @@ create_title(
 
 - office:
 
-  Regional Fisheries Science Center producing the report.
+  String. Regional Fisheries Science Center producing the report.
 
   Default: NULL
 
@@ -38,34 +38,34 @@ create_title(
 
 - species:
 
-  Common name of target species. Split multi-word names with space and
-  capitalize first letter(s). Example: "Dover sole".
+  String. Common name of target species. Split multi-word names with
+  space and capitalize first letter(s). Example: "Dover sole".
 
   Default: "species"
 
 - spp_latin:
 
-  Latin name of target species. Example: "Pomatomus saltatrix".
+  String. Latin name of target species. Example: "Pomatomus saltatrix".
 
   Default: NULL
 
 - region:
 
-  Full name of the stock's sub-region, if applicable. If the region is
-  not specified for your center or species, leave default. Example: "US
-  West Coast".
+  String. Full name of the stock's sub-region, if applicable. If the
+  region is not specified for your center or species, leave default.
+  Example: "US West Coast".
 
   Default: NULL
 
 - year:
 
-  Year the assessment is conducted.
+  Number. Year the assessment is conducted.
 
   Default: the year in which the report is rendered.
 
 - complex:
 
-  TRUE/FALSE; Is this a species complex? Default is false.
+  Logical. TRUE/FALSE; Is this a species complex? Default is false.
 
 ## Value
 

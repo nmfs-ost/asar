@@ -30,8 +30,8 @@ create_yaml(
 
 - format:
 
-  Report rendering format. Note: "docx" is currently unsupported and
-  will default to "pdf".
+  String. Report rendering format. Note: "docx" is currently unsupported
+  and will default to "pdf".
 
   Default: "pdf"
 
@@ -39,7 +39,7 @@ create_yaml(
 
 - office:
 
-  Regional Fisheries Science Center producing the report.
+  String. Regional Fisheries Science Center producing the report.
 
   Default: NULL
 
@@ -47,50 +47,52 @@ create_yaml(
 
 - region:
 
-  Full name of the stock's sub-region, if applicable. If the region is
-  not specified for your center or species, leave default. Example: "US
-  West Coast".
+  String. Full name of the stock's sub-region, if applicable. If the
+  region is not specified for your center or species, leave default.
+  Example: "US West Coast".
 
   Default: NULL
 
 - species:
 
-  Common name of target species. Split multi-word names with space and
-  capitalize first letter(s). Example: "Dover sole".
+  String. Common name of target species. Split multi-word names with
+  space and capitalize first letter(s). Example: "Dover sole".
 
   Default: "species"
 
 - spp_latin:
 
-  Latin name of target species. Example: "Pomatomus saltatrix".
+  String. Latin name of target species. Example: "Pomatomus saltatrix".
 
   Default: NULL
 
 - spp_image:
 
-  Filepath to a custom species image to be used on the report cover.
-  Supported file extension is .png. If empty, searches `asar` resources
-  for a matching species name.
+  Path. Filepath to a custom species image to be used on the report
+  cover. Supported file extension is .png. If empty, searches `asar`
+  resources for a matching species name.
 
   Default: NULL
 
 - year:
 
-  Year the assessment is conducted.
+  Number. Year the assessment is conducted.
 
   Default: the year in which the report is rendered.
 
 - bib_name:
 
-  Name of a bib file being added into the yaml. For example, "asar.bib".
+  String. Name of a bib file being added into the yaml. For example,
+  "asar.bib".
 
 - bib_file:
 
-  File path to an existing additional bibliography file (`.bib`) used
-  for citing references in the report. By default, all bibliography
-  files are sourced from the journals package and references for all
-  NMFS stock assessment reports are provided. To see a full list of
-  journals included in these files, please visit the [journals
+  Path or logical. File path to an existing additional bibliography file
+  (`.bib`) used for citing references in the report. By default, all
+  bibliography files are sourced from the journals package and
+  references for all NMFS stock assessment reports are provided. To see
+  a full list of journals included in these files, please visit the
+  [journals
   README](https://github.com/nmfs-ost/journals/blob/main/README.md) or
   see the description at the top of each bib file. It is recommended to
   open these files in a text editor rather than R.
@@ -99,14 +101,14 @@ create_yaml(
 
 - author_list:
 
-  A list of strings containing pre-formatted author names and
+  String. A list of strings containing pre-formatted author names and
   affiliations that would be found in the format in a yaml of a quarto
   file when using base R function
   [`cat()`](https://rdrr.io/r/base/cat.html).
 
 - title:
 
-  Custom report title superceding the default composed in
+  String. Custom report title superceding the default composed in
   [`asar::create_title()`](nmfs-ost.github.io/asar/reference/create_title.md).
   Example: "Management Track Assessments Spring 2024".
 
@@ -115,40 +117,41 @@ create_yaml(
 
 - rerender_skeleton:
 
-  TRUE/FALSE; Update the skeleton YAML and structure (R parameters,
-  preamble, and skeleton sectioning) if relevant or indicated. All files
-  in your folder, such as the `.qmd` child docs, will remain as is.
+  Logical. TRUE/FALSE; Update the skeleton YAML and structure (R
+  parameters, preamble, and skeleton sectioning) if relevant or
+  indicated. All files in your folder, such as the `.qmd` child docs,
+  will remain as is.
 
   Default: FALSE
 
 - prev_skeleton:
 
-  Vector of strings containing all the lines of the previous skeleton
-  file. File is read in using the function readLines from base R.
+  List. Vector of strings containing all the lines of the previous
+  skeleton file. File is read in using the function readLines from base
+  R.
 
 - prev_format:
 
-  The format that the previous skeleton was directed to render to.
-  Parameter is inherited from create_template.
+  String. The format that the previous skeleton was directed to render
+  to. Parameter is inherited from create_template.
 
 - parameters:
 
-  Logical indicating whether to include parameters in the yaml. Default
-  is TRUE.
+  Logical. TRUE/FALSE; Include parameters in the yaml. Default is TRUE.
 
 - custom_params:
 
-  Character vector of additional custom parameter names and values to
-  include in the skeleton YAML. For example, a parameter "year2" and its
-  value "2026" would have an entry of `c("year2" = "2026")`. Parameters
-  automatically included: office, region, species (each of which are
-  listed as individual parameters for this function, above).
+  List. Character vector of additional custom parameter names and values
+  to include in the skeleton YAML. For example, a parameter "year2" and
+  its value "2026" would have an entry of `c("year2" = "2026")`.
+  Parameters automatically included: office, region, species (each of
+  which are listed as individual parameters for this function, above).
 
   Default: NULL
 
 - type:
 
-  Report template type.
+  String. Report template type.
 
   Default: "sar" (a NOAA standard "Stock Assessment Report")
 

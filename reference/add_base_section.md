@@ -12,7 +12,7 @@ add_base_section(custom_sections = NULL)
 
 - custom_sections:
 
-  List of existing sections to include in a custom template (rather than
+  List. Existing sections to include in a custom template (rather than
   the default for stock assessments in your region). If adding a new
   section, also use arguments 'new_section' and 'section_location'.
 

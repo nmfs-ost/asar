@@ -12,15 +12,15 @@ create_titlepage_tex(office = "", subdir, species = "")
 
 - office:
 
-  primary science center writing the document
+  String. Primary science center writing the document
 
 - subdir:
 
-  directory where files are going to be held
+  Path. Directory where files are going to be held
 
 - species:
 
-  target species for assessment
+  String. Target species for assessment
 
 ## Value
 

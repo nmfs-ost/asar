@@ -66,13 +66,13 @@
 
 
 <dl><dt id="arg-subdir">subdir<a class="anchor" aria-label="anchor" href="#arg-subdir"></a></dt>
-<dd><p>Directory where the new sections will be saved. In the
+<dd><p>Path. Directory where the new sections will be saved. In the
 create_template function, this defaults to the location where the
 template is saved.</p></dd>
 
 
 <dt id="arg-custom-sections">custom_sections<a class="anchor" aria-label="anchor" href="#arg-custom-sections"></a></dt>
-<dd><p>List of existing sections to include in a custom
+<dd><p>List. Existing sections to include in a custom
 template (rather than the default for stock assessments in your region).
 If adding a new section, also use arguments 'new_section' and 'section_location'.</p>
 <p>Default: NULL</p>
@@ -83,7 +83,7 @@ The name of the section, rather than the name of the file, can be used
 
 
 <dt id="arg-new-section">new_section<a class="anchor" aria-label="anchor" href="#arg-new-section"></a></dt>
-<dd><p>Names of section(s) (e.g., "Special Section") or
+<dd><p>String. Names of section(s) (e.g., "Special Section") or
 subsection(s) (e.g., a section within the introduction) that will be
 added to the document. Please make a short list if &gt;1 section/subsection
 will be added. The template will be created as a quarto document, added
@@ -92,7 +92,7 @@ into the skeleton, and saved for reference.</p>
 
 
 <dt id="arg-section-location">section_location<a class="anchor" aria-label="anchor" href="#arg-section-location"></a></dt>
-<dd><p>Where new section(s)/subsection(s) will be added to
+<dd><p>String. Where new section(s)/subsection(s) will be added to
 the skeleton template. Please use the notation of 'placement-section'.
 For example, 'in-introduction' signifies that the new content would
 be created as a child document and added into the 02_introduction.qmd.

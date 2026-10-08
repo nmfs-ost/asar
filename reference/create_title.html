@@ -69,42 +69,42 @@
 
 
 <dl><dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
-<dd><p>Report template type.</p>
+<dd><p>String. Report template type.</p>
 <p>Default: "sar" (a NOAA standard "Stock Assessment Report")</p>
 <p>Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and Fishery Evaluation)</p></dd>
 
 
 <dt id="arg-office">office<a class="anchor" aria-label="anchor" href="#arg-office"></a></dt>
-<dd><p>Regional Fisheries Science Center producing the report.</p>
+<dd><p>String. Regional Fisheries Science Center producing the report.</p>
 <p>Default: NULL</p>
 <p>Options: "AFSC", "NEFSC", "NWFSC", "PIFSC", "SEFSC", "SWFSC"</p></dd>
 
 
 <dt id="arg-species">species<a class="anchor" aria-label="anchor" href="#arg-species"></a></dt>
-<dd><p>Common name of target species. Split multi-word names
+<dd><p>String. Common name of target species. Split multi-word names
 with space and capitalize first letter(s). Example: "Dover sole".</p>
 <p>Default: "species"</p></dd>
 
 
 <dt id="arg-spp-latin">spp_latin<a class="anchor" aria-label="anchor" href="#arg-spp-latin"></a></dt>
-<dd><p>Latin name of target species. Example: "Pomatomus saltatrix".</p>
+<dd><p>String. Latin name of target species. Example: "Pomatomus saltatrix".</p>
 <p>Default: NULL</p></dd>
 
 
 <dt id="arg-region">region<a class="anchor" aria-label="anchor" href="#arg-region"></a></dt>
-<dd><p>Full name of the stock's sub-region, if applicable.
+<dd><p>String. Full name of the stock's sub-region, if applicable.
 If the region is not specified for your center or species, leave default.
 Example: "US West Coast".</p>
 <p>Default: NULL</p></dd>
 
 
 <dt id="arg-year">year<a class="anchor" aria-label="anchor" href="#arg-year"></a></dt>
-<dd><p>Year the assessment is conducted.</p>
+<dd><p>Number. Year the assessment is conducted.</p>
 <p>Default: the year in which the report is rendered.</p></dd>
 
 
 <dt id="arg-complex">complex<a class="anchor" aria-label="anchor" href="#arg-complex"></a></dt>
-<dd><p>TRUE/FALSE; Is this a species complex? Default
+<dd><p>Logical. TRUE/FALSE; Is this a species complex? Default
 is false.</p></dd>
 
 </dl></div>

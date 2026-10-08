@@ -12,18 +12,19 @@ ID_tbl_width_class(tables_dir, plot_name, portrait_pg_width)
 
 - tables_dir:
 
-  The location of the "tables" folder, which contains tables files.
+  Path. The location of the "tables" folder, which contains tables
+  files.
 
 - plot_name:
 
-  Name of the .rda file containing the table
+  String. Name of the .rda file containing the table
 
 - portrait_pg_width:
 
-  The amount of space between the margins of a portrait-oriented page,
-  in inches. Represents the threshold for the maximum width of a table
-  that can be rendered on a portrait page before it needs to be resized,
-  rotated, and/or split across multiple pages.
+  Number. The amount of space between the margins of a portrait-oriented
+  page, in inches. Represents the threshold for the maximum width of a
+  table that can be rendered on a portrait page before it needs to be
+  resized, rotated, and/or split across multiple pages.
 
 ## Value
 

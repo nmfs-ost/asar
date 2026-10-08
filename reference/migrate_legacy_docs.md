@@ -12,7 +12,7 @@ migrate_legacy_docs(subdir, doc_type, rerender_skeleton = FALSE)
 
 - subdir:
 
-  Directory where template files are located.
+  Path. Directory where template files are located.
 
 - doc_type:
 
@@ -22,7 +22,7 @@ migrate_legacy_docs(subdir, doc_type, rerender_skeleton = FALSE)
 
 - rerender_skeleton:
 
-  Logical indicating if rerendering active.
+  Logical. TRUE/FALSE; Indicate if rerendering is active.
 
   Default: FALSE
 

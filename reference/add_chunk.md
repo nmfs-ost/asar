@@ -18,28 +18,29 @@ add_chunk(
 
 - x:
 
-  Content to be written within the R chunk. Wrap in quotation marks
-  ("").
+  String. Content to be written within the R chunk. Wrap in quotation
+  marks ("").
 
 - label:
 
-  The name of the chunk in the 'label:' section of the R code chunk.
-  This should be in snakecase (i.e., in which words are written in
-  lowercase and connected by underscores).
+  String. The name of the chunk in the 'label:' section of the R code
+  chunk. This should be in snakecase (i.e., in which words are written
+  in lowercase and connected by underscores).
 
 - add_option:
 
-  TRUE/FALSE; Option to add additional chunk options. Default is false.
+  Logical. TRUE/FALSE; Option to add additional chunk options. Default
+  is false.
 
 - chunk_option:
 
-  List of chunk options to add. For example: c("output: true", "error:
+  List. Chunk options to add. For example: c("output: true", "error:
   false)
 
 - rmark_option:
 
-  List of chunk options to add after indicating the language of the
-  chunk as used in Rmarkdown.
+  List. Chunk options to add after indicating the language of the chunk
+  as used in Rmarkdown.
 
 ## Value
 

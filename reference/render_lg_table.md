@@ -12,21 +12,23 @@ render_lg_table(report_gt, essential_columns, tables_dir, plot_name)
 
 - report_gt:
 
-  The extra-wide gt table.
+  List. The extra-wide gt table.
 
 - essential_columns:
 
-  The columns that will be retained between the split tables, formatted
-  as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single column).
-  Example: for the indices table, this could be the year column.
+  List. The columns that will be retained between the split tables,
+  formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
+  column). Example: for the indices table, this could be the year
+  column.
 
 - tables_dir:
 
-  The location of the "tables" folder, which contains tables files.
+  Path. The location of the "tables" folder, which contains tables
+  files.
 
 - plot_name:
 
-  Name of the .rda file containing the table
+  String. Name of the .rda file containing the table
 
 ## Value
 

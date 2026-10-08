@@ -12,11 +12,11 @@ create_figures_doc(subdir = getwd(), figures_dir = getwd())
 
 - subdir:
 
-  Location of subdirectory storing the assessment report template
+  Path. Location of subdirectory storing the assessment report template
 
 - figures_dir:
 
-  The location of the "figures" folder, which contains figures files.
+  Path. Location of the "figures" folder, which contains figures files.
 
 ## Value
 

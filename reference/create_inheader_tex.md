@@ -12,15 +12,15 @@ create_inheader_tex(species = NULL, year = NULL, subdir)
 
 - species:
 
-  common species name - used for footer
+  String. Common species name - used for footer
 
 - year:
 
-  year assessment is conducted
+  Number. Year assessment is conducted
 
 - subdir:
 
-  directory where other files will be copied into
+  Path. Directory where other files will be copied into
 
 ## Value
 

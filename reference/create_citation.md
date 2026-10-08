@@ -16,10 +16,10 @@ create_citation(
 
 - authors:
 
-  A character vector of author names and affiliations. For example, a
-  Jane Doe at the NWFSC Seattle, Washington office would have an entry
-  of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices can be found
-  with:
+  String. A character vector of author names and affiliations. For
+  example, a Jane Doe at the NWFSC Seattle, Washington office would have
+  an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices can
+  be found with:
   [`asar::affiliation_info`](nmfs-ost.github.io/asar/reference/affiliation_info.md).
   Keys to the office addresses follow the naming convention of: office
   acronym (ex. NWFSC), a hyphen (-), the first initial of the city, and
@@ -35,7 +35,7 @@ create_citation(
 
 - title:
 
-  Custom report title superceding the default composed in
+  String. Custom report title superceding the default composed in
   [`asar::create_title()`](nmfs-ost.github.io/asar/reference/create_title.md).
   Example: "Management Track Assessments Spring 2024".
 
@@ -44,7 +44,7 @@ create_citation(
 
 - year:
 
-  Year the assessment is conducted.
+  Number. Year the assessment is conducted.
 
   Default: the year in which the report is rendered.
 

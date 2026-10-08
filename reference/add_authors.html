@@ -61,7 +61,7 @@
 
 
 <dl><dt id="arg-authors">authors<a class="anchor" aria-label="anchor" href="#arg-authors"></a></dt>
-<dd><p>A character vector of author names and affiliations.
+<dd><p>String. A character vector of author names and affiliations.
 For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
 can be found with: <code><a href="affiliation_info.html">asar::affiliation_info</a></code>. Keys to the office addresses
@@ -75,14 +75,14 @@ Panama City), the first initial of each word is used in the key
 
 
 <dt id="arg-rerender-skeleton">rerender_skeleton<a class="anchor" aria-label="anchor" href="#arg-rerender-skeleton"></a></dt>
-<dd><p>TRUE/FALSE; Update the skeleton YAML and structure
+<dd><p>Logical. TRUE/FALSE; Update the skeleton YAML and structure
 (R parameters, preamble, and skeleton sectioning) if relevant or indicated.
 All files in your folder, such as the <code>.qmd</code> child docs, will remain as is.</p>
 <p>Default: FALSE</p></dd>
 
 
 <dt id="arg-prev-skeleton">prev_skeleton<a class="anchor" aria-label="anchor" href="#arg-prev-skeleton"></a></dt>
-<dd><p>A character vector of the previous skeleton file read in through <code><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines()</a></code></p></dd>
+<dd><p>List. A character vector of the previous skeleton file read in through <code><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines()</a></code></p></dd>
 
 </dl></div>
     <div class="section level2">

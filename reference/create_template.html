@@ -93,49 +93,49 @@ Centers. Automates authorship, bibliography, and other report components.</p>
 
 
 <dl><dt id="arg-format">format<a class="anchor" aria-label="anchor" href="#arg-format"></a></dt>
-<dd><p>Report rendering format. Note: "docx" is currently unsupported
+<dd><p>String. Report rendering format. Note: "docx" is currently unsupported
 and will default to "pdf".</p>
 <p>Default: "pdf"</p>
 <p>Options: "pdf", "html"</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
-<dd><p>Report template type.</p>
+<dd><p>String. Report template type.</p>
 <p>Default: "sar" (a NOAA standard "Stock Assessment Report")</p>
 <p>Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and Fishery Evaluation)</p></dd>
 
 
 <dt id="arg-office">office<a class="anchor" aria-label="anchor" href="#arg-office"></a></dt>
-<dd><p>Regional Fisheries Science Center producing the report.</p>
+<dd><p>String. Regional Fisheries Science Center producing the report.</p>
 <p>Default: NULL</p>
 <p>Options: "AFSC", "NEFSC", "NWFSC", "PIFSC", "SEFSC", "SWFSC"</p></dd>
 
 
 <dt id="arg-region">region<a class="anchor" aria-label="anchor" href="#arg-region"></a></dt>
-<dd><p>Full name of the stock's sub-region, if applicable.
+<dd><p>String. Full name of the stock's sub-region, if applicable.
 If the region is not specified for your center or species, leave default.
 Example: "US West Coast".</p>
 <p>Default: NULL</p></dd>
 
 
 <dt id="arg-species">species<a class="anchor" aria-label="anchor" href="#arg-species"></a></dt>
-<dd><p>Common name of target species. Split multi-word names
+<dd><p>String. Common name of target species. Split multi-word names
 with space and capitalize first letter(s). Example: "Dover sole".</p>
 <p>Default: "species"</p></dd>
 
 
 <dt id="arg-spp-latin">spp_latin<a class="anchor" aria-label="anchor" href="#arg-spp-latin"></a></dt>
-<dd><p>Latin name of target species. Example: "Pomatomus saltatrix".</p>
+<dd><p>String. Latin name of target species. Example: "Pomatomus saltatrix".</p>
 <p>Default: NULL</p></dd>
 
 
 <dt id="arg-year">year<a class="anchor" aria-label="anchor" href="#arg-year"></a></dt>
-<dd><p>Year the assessment is conducted.</p>
+<dd><p>Number. Year the assessment is conducted.</p>
 <p>Default: the year in which the report is rendered.</p></dd>
 
 
 <dt id="arg-authors">authors<a class="anchor" aria-label="anchor" href="#arg-authors"></a></dt>
-<dd><p>A character vector of author names and affiliations.
+<dd><p>String. A character vector of author names and affiliations.
 For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
 can be found with: <code><a href="affiliation_info.html">asar::affiliation_info</a></code>. Keys to the office addresses
@@ -149,45 +149,45 @@ Panama City), the first initial of each word is used in the key
 
 
 <dt id="arg-file-dir">file_dir<a class="anchor" aria-label="anchor" href="#arg-file-dir"></a></dt>
-<dd><p>Directory where report files will be created.</p>
+<dd><p>Path. Directory where report files will be created.</p>
 <p>Default: the working directory (<code><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd()</a></code>).</p></dd>
 
 
 <dt id="arg-title">title<a class="anchor" aria-label="anchor" href="#arg-title"></a></dt>
-<dd><p>Custom report title superceding the default composed in
+<dd><p>String. Custom report title superceding the default composed in
 <code><a href="create_title.html">asar::create_title()</a></code>. Example: "Management Track Assessments Spring
 2024".</p>
 <p>Default: <code>[TITLE]</code>. If species and region are provided, a title will be generated based on the report type, species, and region.</p></dd>
 
 
 <dt id="arg-model-results">model_results<a class="anchor" aria-label="anchor" href="#arg-model-results"></a></dt>
-<dd><p>Filepath to the standardized, converted model output
+<dd><p>Path. Filepath to the standardized, converted model output
 .rda file generated with <code><a href="https://noaa-fisheries-integrated-toolbox.r-universe.dev/stockplotr/reference/convert_output.html" class="external-link">stockplotr::convert_output()</a></code>, relative to the
 skeleton .qmd file that will be created within the 'report' folder.</p>
 <p>Default: NULL</p></dd>
 
 
 <dt id="arg-tables-dir">tables_dir<a class="anchor" aria-label="anchor" href="#arg-tables-dir"></a></dt>
-<dd><p>The location of the "tables" folder, which contains tables
+<dd><p>Path. The location of the "tables" folder, which contains tables
 files</p>
 <p>Default: the working directory</p></dd>
 
 
 <dt id="arg-figures-dir">figures_dir<a class="anchor" aria-label="anchor" href="#arg-figures-dir"></a></dt>
-<dd><p>The location of the "figures" folder, which contains
+<dd><p>Path. The location of the "figures" folder, which contains
 figures files</p>
 <p>Default: the working directory</p></dd>
 
 
 <dt id="arg-spp-image">spp_image<a class="anchor" aria-label="anchor" href="#arg-spp-image"></a></dt>
-<dd><p>Filepath to a custom species image to be used on the
+<dd><p>Path. Filepath to a custom species image to be used on the
 report cover. Supported file extension is .png.
 If empty, searches <code>asar</code> resources for a matching species name.</p>
 <p>Default: NULL</p></dd>
 
 
 <dt id="arg-bib-file">bib_file<a class="anchor" aria-label="anchor" href="#arg-bib-file"></a></dt>
-<dd><p>File path to an existing additional bibliography file (<code>.bib</code>) used for citing references in
+<dd><p>Path or logical. A character string of the path to a custom `.bib` file, or a logical (TRUE/FALSE).
 the report. By default, all bibliography files are sourced from the <span class="pkg">journals</span> package and
 references for all NMFS stock assessment reports are provided. To see a full
 list of journals included in these files, please visit the
@@ -198,20 +198,20 @@ recommended to open these files in a text editor rather than R.</p>
 
 
 <dt id="arg-new-template">new_template<a class="anchor" aria-label="anchor" href="#arg-new-template"></a></dt>
-<dd><p>TRUE/FALSE; Create a new template? If true,
+<dd><p>Logical. TRUE/FALSE; Create a new template? If true,
 will pull the last saved stock assessment report skeleton.</p>
 <p>Default: FALSE</p></dd>
 
 
 <dt id="arg-rerender-skeleton">rerender_skeleton<a class="anchor" aria-label="anchor" href="#arg-rerender-skeleton"></a></dt>
-<dd><p>TRUE/FALSE; Update the skeleton YAML and structure
+<dd><p>Logical. TRUE/FALSE; Update the skeleton YAML and structure
 (R parameters, preamble, and skeleton sectioning) if relevant or indicated.
 All files in your folder, such as the <code>.qmd</code> child docs, will remain as is.</p>
 <p>Default: FALSE</p></dd>
 
 
 <dt id="arg-custom-sections">custom_sections<a class="anchor" aria-label="anchor" href="#arg-custom-sections"></a></dt>
-<dd><p>List of existing sections to include in a custom
+<dd><p>List. Existing sections to include in a custom
 template (rather than the default for stock assessments in your region).
 If adding a new section, also use arguments 'new_section' and 'section_location'.</p>
 <p>Default: NULL</p>
@@ -222,7 +222,7 @@ The name of the section, rather than the name of the file, can be used
 
 
 <dt id="arg-new-section">new_section<a class="anchor" aria-label="anchor" href="#arg-new-section"></a></dt>
-<dd><p>Names of section(s) (e.g., "Special Section") or
+<dd><p>String. Names of section(s) (e.g., "Special Section") or
 subsection(s) (e.g., a section within the introduction) that will be
 added to the document. Please make a short list if &gt;1 section/subsection
 will be added. The template will be created as a quarto document, added
@@ -231,7 +231,7 @@ into the skeleton, and saved for reference.</p>
 
 
 <dt id="arg-section-location">section_location<a class="anchor" aria-label="anchor" href="#arg-section-location"></a></dt>
-<dd><p>Where new section(s)/subsection(s) will be added to
+<dd><p>String. Where new section(s)/subsection(s) will be added to
 the skeleton template. Please use the notation of 'placement-section'.
 For example, 'in-introduction' signifies that the new content would
 be created as a child document and added into the 02_introduction.qmd.
@@ -241,7 +241,7 @@ order of (sub)section names listed in the 'new_section' parameter.</p>
 
 
 <dt id="arg-custom-params">custom_params<a class="anchor" aria-label="anchor" href="#arg-custom-params"></a></dt>
-<dd><p>Character vector of additional custom parameter
+<dd><p>List. Character vector of additional custom parameter
 names and values to include in the skeleton YAML. For example, a
 parameter "year2" and its value "2026" would have an entry of
 <code>c("year2" = "2026")</code>. Parameters automatically included: office, region,
