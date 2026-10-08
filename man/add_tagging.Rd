@@ -12,20 +12,20 @@ add_tagging(
 )
 }
 \arguments{
-\item{x}{.tex The name of the .tex file to modify.
+\item{x}{path. The name of the .tex file to modify.
 
 Default: "...skeleton.qmd"}
 
-\item{dir}{The directory containing the .tex file.
+\item{dir}{path. The directory containing the .tex file.
 
 Default: the working directory (\code{getwd()}).}
 
-\item{compile}{Logical. If TRUE, renders the .tex file into a .pdf after
+\item{compile}{logical. If TRUE, renders the .tex file into a .pdf after
 modifications are complete.
 
 Default: TRUE}
 
-\item{rename}{Optional new name for the modified .tex file (exclude
+\item{rename}{string. Optional new name for the modified .tex file (exclude
 the ".tex" extension). If NULL, the original file is overwritten.
 
 Default: NULL}

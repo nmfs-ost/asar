@@ -1,7 +1,7 @@
 #' Write Stock Assessment Report Title
 #'
 #' @inheritParams create_template
-#' @param complex TRUE/FALSE; Is this a species complex? Default
+#' @param complex logical. TRUE/FALSE; Is this a species complex? Default
 #'  is false.
 #'
 #' @return Return a string containing a title for a NOAA Fisheries stock

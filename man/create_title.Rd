@@ -15,38 +15,38 @@ create_title(
 )
 }
 \arguments{
-\item{type}{Report template type.
+\item{type}{string. Report template type.
 
 Default: "sar" (a NOAA standard "Stock Assessment Report")
 
 Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and Fishery Evaluation)}
 
-\item{office}{Regional Fisheries Science Center producing the report.
+\item{office}{string. Regional Fisheries Science Center producing the report.
 
 Default: NULL
 
 Options: "AFSC", "NEFSC", "NWFSC", "PIFSC", "SEFSC", "SWFSC"}
 
-\item{species}{Common name of target species. Split multi-word names
+\item{species}{string. Common name of target species. Split multi-word names
 with space and capitalize first letter(s). Example: "Dover sole".
 
 Default: "species"}
 
-\item{spp_latin}{Latin name of target species. Example: "Pomatomus saltatrix".
+\item{spp_latin}{string. Latin name of target species. Example: "Pomatomus saltatrix".
 
 Default: NULL}
 
-\item{region}{Full name of the stock's sub-region, if applicable.
+\item{region}{string. Full name of the stock's sub-region, if applicable.
 If the region is not specified for your center or species, leave default.
 Example: "US West Coast".
 
 Default: NULL}
 
-\item{year}{Year the assessment is conducted.
+\item{year}{number. Year the assessment is conducted.
 
 Default: the year in which the report is rendered.}
 
-\item{complex}{TRUE/FALSE; Is this a species complex? Default
+\item{complex}{logical. TRUE/FALSE; Is this a species complex? Default
 is false.}
 }
 \value{

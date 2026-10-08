@@ -7,16 +7,16 @@
 render_lg_table(report_gt, essential_columns, tables_dir, plot_name)
 }
 \arguments{
-\item{report_gt}{The extra-wide gt table.}
+\item{report_gt}{list. The extra-wide gt table.}
 
-\item{essential_columns}{The columns that will be retained between the split
+\item{essential_columns}{list. The columns that will be retained between the split
 tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
 column). Example: for the indices table, this could be the year column.}
 
-\item{tables_dir}{The location of the "tables" folder, which contains tables
+\item{tables_dir}{path. The location of the "tables" folder, which contains tables
 files.}
 
-\item{plot_name}{Name of the .rda file containing the table}
+\item{plot_name}{string. Name of the .rda file containing the table}
 }
 \value{
 A list of the split tables.
