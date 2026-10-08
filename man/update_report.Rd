@@ -17,7 +17,8 @@ update_report(
   section_location = NULL,
   figures_dir = getwd(),
   tables_dir = getwd(),
-  reset_tables_and_figures = FALSE
+  reset_tables_and_figures = FALSE,
+  reset_authors = FALSE
 )
 }
 \arguments{
@@ -100,6 +101,9 @@ Default: the working directory}
 
 \item{reset_tables_and_figures}{Logical indicating whether to reset tables
 and figures Quarto documents.}
+
+\item{reset_authors}{Logical indicating whether to reset authorship for the
+report. Only will work if authors argument is also used.}
 }
 \value{
 Creates a new folder of pre-filled assessment report files for the
