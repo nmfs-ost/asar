@@ -9,6 +9,8 @@
 #' are located. Required.
 #' @param reset_tables_and_figures Logical indicating whether to reset tables 
 #' and figures Quarto documents.
+#' @param reset_authors Logical indicating whether to reset authorship for the 
+#' report. Only will work if authors argument is also used.
 #' @param custom_sections Logical. Indicate whether the previous report had a 
 #' customized sectioning. If TRUE, the report outline will mimic the previous 
 #' report. If FALSE, the report will include the full standard guidelines outline 
@@ -46,13 +48,14 @@ update_report <- function(
     model_results = NULL,
     year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
     format = "pdf",
-    region = NULL, # just in case this changes
+    region = NULL,
     custom_sections = TRUE,
     new_section = NULL,
     section_location = NULL,
     figures_dir = getwd(),
     tables_dir = getwd(),
-    reset_tables_and_figures = FALSE
+    reset_tables_and_figures = FALSE,
+    reset_authors = FALSE
 ) {
   #### set up ----
   # Add "report" to previous report file path - user does not have to include this
@@ -129,13 +132,10 @@ update_report <- function(
     # Warning which files are not in the standard framework
     std_files <- list.files(file.path(system.file("templates", package = "asar"), type))
     # select "section" qmd from prev_files and remove skeleton, figures, and tables docs
-    # prev_file_outline <- prev_files[grepl("\\.qmd$", prev_files)]
-    # prev_file_outline <- prev_file_outline[!grepl("skeleton|figures|tables", prev_file_outline)]
     non_std_files <- setdiff(files_to_copy, std_files)[-grep("skeleton|figures|tables", setdiff(files_to_copy, std_files))]
     # if (length(non_std_files) > 0) cli::cli_alert_info("Non-standard section files exist.")
     if (length(non_std_files) > 0) {
       cli::cli_alert_info("File structure out of date. Updating sections...")
-      # comment out old sectioning -- lower in code outline
       # add new section
       new_std_sections <- std_files[!std_files %in% files_to_copy]
       # Copy in the new_std_sections
@@ -147,9 +147,7 @@ update_report <- function(
       if (length(new_std_sections) > 1) cli::cli_alert_info("New sections present in outline resulting from a change in outlines from previous assessment to the standard guidelines. 
                                                           Please review your document.")
       # Find any added non-std sections
-      # non_std_files <- non_std_files[non_std_files %notin% new_std_sections]
       # add new files
-      # add to order somehow ?
       for (i in seq_along(new_std_sections)) {
         sec_num <- stringr::str_extract(new_std_sections[i], "(?<=^)[0-9]+") |> as.numeric()
         # find the next section number in files_to_copy
@@ -166,7 +164,6 @@ update_report <- function(
         }
         files_to_copy <- append(files_to_copy, new_std_sections[i], after = index_append)
       }
-      # files_to_copy <- c(files_to_copy, new_std_sections)
     }
   }
 
@@ -184,7 +181,23 @@ update_report <- function(
     section_location = section_location
   )
   
-  # edit skeleton to change non-std chunks to eval = FALSE
+  # Reset authorship
+  if (reset_authors && !is.null(authors)) {
+    curr_skeleton <- readLines(list.files(report_dir, pattern = "skeleton\\.qmd", full.names = TRUE))
+    # format authorship
+    author_list <- add_authors(
+      authors = authors,
+      rerender_skeleton = FALSE
+    )
+    # set author_list to lines delineated by "\n"
+    author_list <- unlist(stringr::str_split(author_list, "\n"))
+    # find location in skeleton for authors
+    first_line <- grep("author:", curr_skeleton) + 1
+    end_line <- grep("date:", curr_skeleton) - 1
+    # replace previous authors sections with author_list
+    author_updated_skeleton <- unlist(append(curr_skeleton[-(first_line:end_line)], unlist(author_list), after = first_line - 1))
+    writeLines(author_updated_skeleton, list.files(report_dir, pattern = "skeleton\\.qmd", full.names = TRUE))
+  }
   
   #### reset tables and figures docs ----
   if (reset_tables_and_figures) {
