@@ -43,28 +43,28 @@ get_ncol <- function(file, skip = 0) {
 #' smaller tables across multiple pages (in RTF and Word outputs, primarily via
 #' \link[gt]{gtsave}, or, with breaks between them when the output context is HTML.
 #'
-#' @param data List. *The gt table data object*
+#' @param data *The gt table data object*
 #'
 #'   `obj:<gt_tbl>` // **required**
 #'
 #'   This is the **gt** table object that is commonly created through use of the
 #'   [gt()] function.
 #'
-#' @param row_every_n Number. *Split at every n rows*
+#' @param row_every_n *Split at every n rows*
 #'
 #'   `scalar<numeric|integer>` // *default:* `NULL` (`optional`)
 #'
 #'   A directive to split at every *n* number of rows. This argument expects a
 #'   single numerical value.
 #'
-#' @param row_slice_i Number. *Row-slicing indices*
+#' @param row_slice_i *Row-slicing indices*
 #'
 #'   `vector<numeric|integer>` // *default:* `NULL` (`optional`)
 #'
 #'   An argument for splitting at specific row indices. Here, we expect either a
 #'   vector of index values or a function that evaluates to a numeric vector.
 #'
-#' @param col_slice_at List. *Column-slicing locations*
+#' @param col_slice_at *Column-slicing locations*
 #'
 #'   `<column-targeting expression>` // *default:* `NULL` (`optional`)
 #'

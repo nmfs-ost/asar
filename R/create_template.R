@@ -89,7 +89,7 @@
 #'
 #' Default: NULL
 #'
-#' @param bib_file Path or logical. TRUE/FALSE; A character string of the path to a custom `.bib` file, or a logical.
+#' @param bib_file Path or logical. A character string of the path to a custom `.bib` file, or a logical (TRUE/FALSE).
 #'   If a path is provided, the custom file is used and journal templates are skipped. 
 #'   If `TRUE`, default journal `.bib` templates are downloaded. 
 #'   If `FALSE` or `NULL` (default), a minimal `.bib` file containing only the `asar` package citation is created.

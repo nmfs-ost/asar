@@ -15,7 +15,7 @@
 #' asar::export_split_tbls with your preferred essential_columns value.
 #'
 #' @inheritParams create_figures_doc
-#' @param tables_dir Path. The location of the "tables" folder, which contains tables
+#' @param tables_dir Path. Location of the "tables" folder, which contains tables
 #' files.
 #'
 #' @return Create a quarto document as part of a stock assessment outline with

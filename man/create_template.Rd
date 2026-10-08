@@ -114,7 +114,7 @@ If empty, searches \code{asar} resources for a matching species name.
 
 Default: NULL}
 
-\item{bib_file}{Path or logical. File path to an existing additional bibliography file (\code{.bib}) used for citing references in
+\item{bib_file}{Path or logical. A character string of the path to a custom `.bib` file, or a logical (TRUE/FALSE).
 the report. By default, all bibliography files are sourced from the \pkg{journals} package and
 references for all NMFS stock assessment reports are provided. To see a full
 list of journals included in these files, please visit the

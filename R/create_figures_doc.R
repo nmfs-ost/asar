@@ -1,7 +1,7 @@
 #' Create Quarto Document of Figures
 #'
 #' @param subdir Path. Location of subdirectory storing the assessment report template
-#' @param figures_dir Path. The location of the "figures" folder, which contains
+#' @param figures_dir Path. Location of the "figures" folder, which contains
 #' figures files.
 #'
 #' @return A quarto document with pre-loaded R chunk that adds the
