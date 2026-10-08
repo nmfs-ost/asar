@@ -7,13 +7,13 @@
 migrate_legacy_docs(subdir, doc_type, rerender_skeleton = FALSE)
 }
 \arguments{
-\item{subdir}{path. Directory where template files are located.}
+\item{subdir}{Path. Directory where template files are located.}
 
-\item{doc_type}{string. String. Document type.
+\item{doc_type}{String. Document type.
 
 Options: "figures", "tables"}
 
-\item{rerender_skeleton}{logical. Logical indicating if rerendering active.
+\item{rerender_skeleton}{Logical. TRUE/FALSE; Indicate if rerendering is active.
 
 Default: FALSE}
 }

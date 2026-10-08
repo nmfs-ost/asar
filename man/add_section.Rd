@@ -12,11 +12,11 @@ add_section(
 )
 }
 \arguments{
-\item{subdir}{path. Directory where the new sections will be saved. In the
+\item{subdir}{Path. Directory where the new sections will be saved. In the
 create_template function, this defaults to the location where the
 template is saved.}
 
-\item{custom_sections}{list. List of existing sections to include in a custom
+\item{custom_sections}{List. Existing sections to include in a custom
 template (rather than the default for stock assessments in your region).
 If adding a new section, also use arguments 'new_section' and 'section_location'.
 
@@ -27,7 +27,7 @@ Options: sections within
 The name of the section, rather than the name of the file, can be used
 (e.g., 'abstract' rather than '00_abstract.qmd').}
 
-\item{new_section}{string. Names of section(s) (e.g., "Special Section") or
+\item{new_section}{String. Names of section(s) (e.g., "Special Section") or
 subsection(s) (e.g., a section within the introduction) that will be
 added to the document. Please make a short list if >1 section/subsection
 will be added. The template will be created as a quarto document, added
@@ -35,7 +35,7 @@ into the skeleton, and saved for reference.
 
 Default: NULL}
 
-\item{section_location}{string. Where new section(s)/subsection(s) will be added to
+\item{section_location}{String. Where new section(s)/subsection(s) will be added to
 the skeleton template. Please use the notation of 'placement-section'.
 For example, 'in-introduction' signifies that the new content would
 be created as a child document and added into the 02_introduction.qmd.

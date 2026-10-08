@@ -43,28 +43,28 @@ get_ncol <- function(file, skip = 0) {
 #' smaller tables across multiple pages (in RTF and Word outputs, primarily via
 #' \link[gt]{gtsave}, or, with breaks between them when the output context is HTML.
 #'
-#' @param data list. *The gt table data object*
+#' @param data List. *The gt table data object*
 #'
 #'   `obj:<gt_tbl>` // **required**
 #'
 #'   This is the **gt** table object that is commonly created through use of the
 #'   [gt()] function.
 #'
-#' @param row_every_n number. *Split at every n rows*
+#' @param row_every_n Number. *Split at every n rows*
 #'
 #'   `scalar<numeric|integer>` // *default:* `NULL` (`optional`)
 #'
 #'   A directive to split at every *n* number of rows. This argument expects a
 #'   single numerical value.
 #'
-#' @param row_slice_i number. *Row-slicing indices*
+#' @param row_slice_i Number. *Row-slicing indices*
 #'
 #'   `vector<numeric|integer>` // *default:* `NULL` (`optional`)
 #'
 #'   An argument for splitting at specific row indices. Here, we expect either a
 #'   vector of index values or a function that evaluates to a numeric vector.
 #'
-#' @param col_slice_at list. *Column-slicing locations*
+#' @param col_slice_at List. *Column-slicing locations*
 #'
 #'   `<column-targeting expression>` // *default:* `NULL` (`optional`)
 #'
@@ -353,7 +353,7 @@ fix_duplicate_chunks <- function(doc_path,
 #' mononym, is retained as the family name rather than causing name parsing to
 #' fail.
 #'
-#' @param author_names string. A character vector containing one author name per
+#' @param author_names String. A character vector containing one author name per
 #'   element.
 #'
 #' @return A single character string containing the formatted author names,
@@ -444,12 +444,12 @@ get_doc_order <- function() {
 
 #' Detect, rename, and resolve legacy document paths
 #'
-#' @param subdir path. Directory where template files are located.
-#' @param doc_type string. String. Document type.
+#' @param subdir Path. Directory where template files are located.
+#' @param doc_type String. Document type.
 #'
 #' Options: "figures", "tables"
 #'
-#' @param rerender_skeleton logical. Logical indicating if rerendering active.
+#' @param rerender_skeleton Logical. TRUE/FALSE; Indicate if rerendering is active.
 #'
 #' Default: FALSE
 #'

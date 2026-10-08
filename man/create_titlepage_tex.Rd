@@ -7,11 +7,11 @@
 create_titlepage_tex(office = "", subdir, species = "")
 }
 \arguments{
-\item{office}{string. primary science center writing the document}
+\item{office}{String. Primary science center writing the document}
 
-\item{subdir}{path. directory where files are going to be held}
+\item{subdir}{Path. Directory where files are going to be held}
 
-\item{species}{string. target species for assessment}
+\item{species}{String. Target species for assessment}
 }
 \value{
 Create a _titlepage.tex document that contains formatting options for

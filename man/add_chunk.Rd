@@ -13,17 +13,17 @@ add_chunk(
 )
 }
 \arguments{
-\item{x}{string. Content to be written within the R chunk. Wrap in quotation marks ("").}
+\item{x}{String. Content to be written within the R chunk. Wrap in quotation marks ("").}
 
-\item{label}{string. The name of the chunk in the 'label:' section of the R code chunk.
+\item{label}{String. The name of the chunk in the 'label:' section of the R code chunk.
 This should be in snakecase (i.e., in which words are written in lowercase and
 connected by underscores).}
 
-\item{add_option}{logical. TRUE/FALSE; Option to add additional chunk options. Default is false.}
+\item{add_option}{Logical. TRUE/FALSE; Option to add additional chunk options. Default is false.}
 
-\item{chunk_option}{list. List of chunk options to add. For example: c("output: true", "error: false)}
+\item{chunk_option}{List. Chunk options to add. For example: c("output: true", "error: false)}
 
-\item{rmark_option}{list. List of chunk options to add after indicating the language of the chunk as used in Rmarkdown.}
+\item{rmark_option}{List. Chunk options to add after indicating the language of the chunk as used in Rmarkdown.}
 }
 \value{
 Write an additional R chunk into the template using this function.

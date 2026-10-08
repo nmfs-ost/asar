@@ -1,7 +1,7 @@
 #' Add New Section or Subsection to Template
 #'
 #' @inheritParams create_template
-#' @param subdir path. Directory where the new sections will be saved. In the
+#' @param subdir Path. Directory where the new sections will be saved. In the
 #' create_template function, this defaults to the location where the
 #' template is saved.
 #'

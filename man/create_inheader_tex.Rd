@@ -7,11 +7,11 @@
 create_inheader_tex(species = NULL, year = NULL, subdir)
 }
 \arguments{
-\item{species}{string. common species name - used for footer}
+\item{species}{String. Common species name - used for footer}
 
-\item{year}{number. year assessment is conducted}
+\item{year}{Number. Year assessment is conducted}
 
-\item{subdir}{path. directory where other files will be copied into}
+\item{subdir}{Path. Directory where other files will be copied into}
 }
 \value{
 Create an in-header latex document that dynamically changes based on
