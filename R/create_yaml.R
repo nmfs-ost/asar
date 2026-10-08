@@ -1,21 +1,17 @@
 #' Create string for yml header in quarto file
 #'
 #' @inheritParams create_template
-#' @param parameters Logical indicating whether to include parameters
-#' in the yaml. Default is TRUE.
-#' @param author_list A vector of strings containing pre-formatted author names
+#' @param parameters Logical. TRUE/FALSE; Include parameters in the yaml. Default is TRUE.
+#' @param author_list String. A vector of strings containing pre-formatted author names
 #' and affiliations that would be found in the format in a yaml of a quarto
 #' file when using base R function `cat()`.
-#' @param bib_name Name of a bib file being added into the yaml. For example,
+#' @param bib_name String. Name of a bib file being added into the yaml. For example,
 #' "asar.bib".
-#' @param prev_skeleton Vector of strings containing all the lines of the
+#' @param prev_skeleton List. Vector of strings containing all the lines of the
 #' previous skeleton file. File is read in using the function readLines from
 #' base R.
-#' @param prev_format The format that the previous skeleton was directed to
+#' @param prev_format String. Format that the previous skeleton was directed to
 #' render to. Parameter is inherited from create_template.
-#' @param author_list A list of strings containing pre-formatted author names
-#' and affiliations that would be found in the format in a yaml of a quarto
-#' file when using base R function `cat()`.
 #'
 #' @return Create a string indicating the important formatting pieces for a
 #' quarto file for a stock assessment report.

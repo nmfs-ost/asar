@@ -353,7 +353,7 @@ fix_duplicate_chunks <- function(doc_path,
 #' mononym, is retained as the family name rather than causing name parsing to
 #' fail.
 #'
-#' @param author_names A character vector containing one author name per
+#' @param author_names String. A character vector containing one author name per
 #'   element.
 #'
 #' @return A single character string containing the formatted author names,
@@ -444,12 +444,12 @@ get_doc_order <- function() {
 
 #' Detect, rename, and resolve legacy document paths
 #'
-#' @param subdir Directory where template files are located.
+#' @param subdir Path. Directory where template files are located.
 #' @param doc_type String. Document type.
 #'
 #' Options: "figures", "tables"
 #'
-#' @param rerender_skeleton Logical indicating if rerendering active.
+#' @param rerender_skeleton Logical. TRUE/FALSE; Indicate if rerendering is active.
 #'
 #' Default: FALSE
 #'

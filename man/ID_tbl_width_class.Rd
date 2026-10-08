@@ -7,12 +7,12 @@
 ID_tbl_width_class(tables_dir, plot_name, portrait_pg_width)
 }
 \arguments{
-\item{tables_dir}{The location of the "tables" folder, which contains tables
+\item{tables_dir}{Path. The location of the "tables" folder, which contains tables
 files.}
 
-\item{plot_name}{Name of the .rda file containing the table}
+\item{plot_name}{String. Name of the .rda file containing the table}
 
-\item{portrait_pg_width}{The amount of space between the margins of a
+\item{portrait_pg_width}{Number. The amount of space between the margins of a
 portrait-oriented page, in inches. Represents the threshold for the maximum
 width of a table that can be rendered on a portrait page before it needs to
 be resized, rotated, and/or split across multiple pages.}

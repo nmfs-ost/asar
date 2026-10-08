@@ -25,48 +25,48 @@ create_yaml(
 )
 }
 \arguments{
-\item{format}{Report rendering format. Note: "docx" is currently unsupported
+\item{format}{String. Report rendering format. Note: "docx" is currently unsupported
 and will default to "pdf".
 
 Default: "pdf"
 
 Options: "pdf", "html"}
 
-\item{office}{Regional Fisheries Science Center producing the report.
+\item{office}{String. Regional Fisheries Science Center producing the report.
 
 Default: NULL
 
 Options: "AFSC", "NEFSC", "NWFSC", "PIFSC", "SEFSC", "SWFSC"}
 
-\item{region}{Full name of the stock's sub-region, if applicable.
+\item{region}{String. Full name of the stock's sub-region, if applicable.
 If the region is not specified for your center or species, leave default.
 Example: "US West Coast".
 
 Default: NULL}
 
-\item{species}{Common name of target species. Split multi-word names
+\item{species}{String. Common name of target species. Split multi-word names
 with space and capitalize first letter(s). Example: "Dover sole".
 
 Default: "species"}
 
-\item{spp_latin}{Latin name of target species. Example: "Pomatomus saltatrix".
+\item{spp_latin}{String. Latin name of target species. Example: "Pomatomus saltatrix".
 
 Default: NULL}
 
-\item{spp_image}{Filepath to a custom species image to be used on the
+\item{spp_image}{Path. Filepath to a custom species image to be used on the
 report cover. Supported file extension is .png.
 If empty, searches \code{asar} resources for a matching species name.
 
 Default: NULL}
 
-\item{year}{Year the assessment is conducted.
+\item{year}{Number. Year the assessment is conducted.
 
 Default: the year in which the report is rendered.}
 
-\item{bib_name}{Name of a bib file being added into the yaml. For example,
+\item{bib_name}{String. Name of a bib file being added into the yaml. For example,
 "asar.bib".}
 
-\item{bib_file}{File path to an existing additional bibliography file (\code{.bib}) used for citing references in
+\item{bib_file}{Path or logical. File path to an existing additional bibliography file (\code{.bib}) used for citing references in
 the report. By default, all bibliography files are sourced from the \pkg{journals} package and
 references for all NMFS stock assessment reports are provided. To see a full
 list of journals included in these files, please visit the
@@ -76,33 +76,32 @@ recommended to open these files in a text editor rather than R.
 
 Default: NULL}
 
-\item{author_list}{A list of strings containing pre-formatted author names
+\item{author_list}{String. A list of strings containing pre-formatted author names
 and affiliations that would be found in the format in a yaml of a quarto
 file when using base R function \code{cat()}.}
 
-\item{title}{Custom report title superceding the default composed in
+\item{title}{String. Custom report title superceding the default composed in
 \code{asar::create_title()}. Example: "Management Track Assessments Spring
 2024".
 
 Default: \verb{[TITLE]}. If species and region are provided, a title will be generated based on the report type, species, and region.}
 
-\item{rerender_skeleton}{TRUE/FALSE; Update the skeleton YAML and structure
+\item{rerender_skeleton}{Logical. TRUE/FALSE; Update the skeleton YAML and structure
 (R parameters, preamble, and skeleton sectioning) if relevant or indicated.
 All files in your folder, such as the \code{.qmd} child docs, will remain as is.
 
 Default: FALSE}
 
-\item{prev_skeleton}{Vector of strings containing all the lines of the
+\item{prev_skeleton}{List. Vector of strings containing all the lines of the
 previous skeleton file. File is read in using the function readLines from
 base R.}
 
-\item{prev_format}{The format that the previous skeleton was directed to
+\item{prev_format}{String. The format that the previous skeleton was directed to
 render to. Parameter is inherited from create_template.}
 
-\item{parameters}{Logical indicating whether to include parameters
-in the yaml. Default is TRUE.}
+\item{parameters}{Logical. TRUE/FALSE; Include parameters in the yaml. Default is TRUE.}
 
-\item{custom_params}{Character vector of additional custom parameter
+\item{custom_params}{List. Character vector of additional custom parameter
 names and values to include in the skeleton YAML. For example, a
 parameter "year2" and its value "2026" would have an entry of
 \code{c("year2" = "2026")}. Parameters automatically included: office, region,
@@ -111,7 +110,7 @@ function, above).
 
 Default: NULL}
 
-\item{type}{Report template type.
+\item{type}{String. Report template type.
 
 Default: "sar" (a NOAA standard "Stock Assessment Report")
 

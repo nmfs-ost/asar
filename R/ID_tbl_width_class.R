@@ -1,7 +1,7 @@
 #' Identify table width class
 #'
 #' @inheritParams render_lg_table
-#' @param portrait_pg_width The amount of space between the margins of a
+#' @param portrait_pg_width Number. The amount of space between the margins of a
 #' portrait-oriented page, in inches. Represents the threshold for the maximum
 #' width of a table that can be rendered on a portrait page before it needs to
 #' be resized, rotated, and/or split across multiple pages.

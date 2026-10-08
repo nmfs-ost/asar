@@ -11,7 +11,7 @@ create_citation(
 )
 }
 \arguments{
-\item{authors}{A character vector of author names and affiliations.
+\item{authors}{String. A character vector of author names and affiliations.
 For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
 can be found with: \code{asar::affiliation_info}. Keys to the office addresses
@@ -25,13 +25,13 @@ Default: NULL
 
 Options: See \code{asar::affiliation_info}.}
 
-\item{title}{Custom report title superceding the default composed in
+\item{title}{String. Custom report title superceding the default composed in
 \code{asar::create_title()}. Example: "Management Track Assessments Spring
 2024".
 
 Default: \verb{[TITLE]}. If species and region are provided, a title will be generated based on the report type, species, and region.}
 
-\item{year}{Year the assessment is conducted.
+\item{year}{Number. Year the assessment is conducted.
 
 Default: the year in which the report is rendered.}
 }

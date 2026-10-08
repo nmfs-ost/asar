@@ -5,45 +5,45 @@
 #' utilizes current resources and workflows from different NOAA Fishery Science
 #' Centers. Automates authorship, bibliography, and other report components.
 #'
-#' @param format Report rendering format. Note: "docx" is currently unsupported
+#' @param format String. Report rendering format. Note: "docx" is currently unsupported
 #' and will default to "pdf".
 #'
 #' Default: "pdf"
 #'
 #' Options: "pdf", "html"
 #'
-#' @param type Report template type.
+#' @param type String. Report template type.
 #'
 #' Default: "sar" (a NOAA standard "Stock Assessment Report")
 #'
 #' Options: "sar" (Stock Assessment Report), "nemt" (Northeast Management Track), "pfmc" (Pacific Fishery Management Council), "safe" (Stock Assessment and Fishery Evaluation)
 #'
-#' @param office Regional Fisheries Science Center producing the report.
+#' @param office String. Regional Fisheries Science Center producing the report.
 #'
 #' Default: NULL
 #'
 #' Options: "AFSC", "NEFSC", "NWFSC", "PIFSC", "SEFSC", "SWFSC"
 #'
-#' @param region Full name of the stock's sub-region, if applicable.
+#' @param region String. Full name of the stock's sub-region, if applicable.
 #' If the region is not specified for your center or species, leave default.
 #' Example: "US West Coast".
 #'
 #' Default: NULL
 #'
-#' @param species Common name of target species. Split multi-word names
+#' @param species String. Common name of target species. Split multi-word names
 #' with space and capitalize first letter(s). Example: "Dover sole".
 #'
 #' Default: "species"
 #'
-#' @param spp_latin Latin name of target species. Example: "Pomatomus saltatrix".
+#' @param spp_latin String. Latin name of target species. Example: "Pomatomus saltatrix".
 #'
 #' Default: NULL
 #'
-#' @param year Year the assessment is conducted.
+#' @param year Number. Year the assessment is conducted.
 #'
 #' Default: the year in which the report is rendered.
 #'
-#' @param authors A character vector of author names and affiliations.
+#' @param authors String. A character vector of author names and affiliations.
 #' For example, a Jane Doe at the NWFSC Seattle, Washington office
 #' would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
 #' can be found with: \code{asar::affiliation_info}. Keys to the office addresses
@@ -57,57 +57,57 @@
 #'
 #' Options: See \code{asar::affiliation_info}.
 #'
-#' @param file_dir Directory where report files will be created.
+#' @param file_dir Path. Directory where report files will be created.
 #'
 #' Default: the working directory (`getwd()`).
 #'
-#' @param title Custom report title superceding the default composed in
+#' @param title String. Custom report title superceding the default composed in
 #' \code{asar::create_title()}. Example: "Management Track Assessments Spring
 #' 2024".
 #'
 #' Default: \verb{[TITLE]}. If species and region are provided, a title will be generated based on the report type, species, and region.
 #'
-#' @param model_results Filepath to the standardized, converted model output
+#' @param model_results Path. Filepath to the standardized, converted model output
 #' .rda file generated with `stockplotr::convert_output()`, relative to the
 #' skeleton .qmd file that will be created within the 'report' folder.
 #'
 #' Default: NULL
 #'
-#' @param tables_dir The location of the "tables" folder, which contains tables
+#' @param tables_dir Path. The location of the "tables" folder, which contains tables
 #' files
 #'
 #' Default: the working directory
 #'
-#' @param figures_dir The location of the "figures" folder, which contains
+#' @param figures_dir Path. The location of the "figures" folder, which contains
 #' figures files
 #'
 #' Default: the working directory
 #'
-#' @param spp_image Filepath to a custom species image to be used on the
+#' @param spp_image Path. Filepath to a custom species image to be used on the
 #' report cover. Supported file extension is .png.
 #' If empty, searches `asar` resources for a matching species name.
 #'
 #' Default: NULL
 #'
-#' @param bib_file A character string of the path to a custom `.bib` file, or a logical. 
+#' @param bib_file Path or logical. A character string of the path to a custom `.bib` file, or a logical (TRUE/FALSE).
 #'   If a path is provided, the custom file is used and journal templates are skipped. 
 #'   If `TRUE`, default journal `.bib` templates are downloaded. 
 #'   If `FALSE` or `NULL` (default), a minimal `.bib` file containing only the `asar` package citation is created.
 #'   
 #' Default: TRUE
 #'
-#' @param new_template TRUE/FALSE; Create a new template? If true,
+#' @param new_template Logical. TRUE/FALSE; Create a new template? If true,
 #' will pull the last saved stock assessment report skeleton.
 #'
 #' Default: FALSE
 #'
-#' @param rerender_skeleton TRUE/FALSE; Update the skeleton YAML and structure
+#' @param rerender_skeleton Logical. TRUE/FALSE; Update the skeleton YAML and structure
 #' (R parameters, preamble, and skeleton sectioning) if relevant or indicated.
 #' All files in your folder, such as the `.qmd` child docs, will remain as is.
 #'
 #' Default: FALSE
 #'
-#' @param custom_sections List of existing sections to include in a custom
+#' @param custom_sections List. Existing sections to include in a custom
 #' template (rather than the default for stock assessments in your region).
 #' If adding a new section, also use arguments 'new_section' and 'section_location'.
 #'
@@ -118,7 +118,7 @@
 #' The name of the section, rather than the name of the file, can be used
 #' (e.g., 'abstract' rather than '00_abstract.qmd').
 #'
-#' @param new_section Names of section(s) (e.g., "Special Section") or
+#' @param new_section String. Names of section(s) (e.g., "Special Section") or
 #' subsection(s) (e.g., a section within the introduction) that will be
 #' added to the document. Please make a short list if >1 section/subsection
 #' will be added. The template will be created as a quarto document, added
@@ -126,7 +126,7 @@
 #'
 #' Default: NULL
 #'
-#' @param section_location Where new section(s)/subsection(s) will be added to
+#' @param section_location String. Where new section(s)/subsection(s) will be added to
 #' the skeleton template. Please use the notation of 'placement-section'.
 #' For example, 'in-introduction' signifies that the new content would
 #' be created as a child document and added into the 02_introduction.qmd.
@@ -135,7 +135,7 @@
 #'
 #' Default: NULL
 #'
-#' @param custom_params Character vector of additional custom parameter
+#' @param custom_params List. Character vector of additional custom parameter
 #' names and values to include in the skeleton YAML. For example, a
 #' parameter "year2" and its value "2026" would have an entry of
 #' `c("year2" = "2026")`. Parameters automatically included: office, region,

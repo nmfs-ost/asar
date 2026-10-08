@@ -1,10 +1,10 @@
 #' Split an extra-wide table into multiple tables
 #'
-#' @param report_gt The extra-wide gt table.
-#' @param essential_columns The columns that will be retained between the split
+#' @param report_gt List. The extra-wide gt table.
+#' @param essential_columns List. The columns that will be retained between the split
 #' tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
 #' column). Example: for the indices table, this could be the year column.
-#' @param plot_name Name of the .rda file containing the table
+#' @param plot_name String. Name of the .rda file containing the table
 #' @inheritParams create_tables_doc
 #'
 #' @return A list of the split tables.

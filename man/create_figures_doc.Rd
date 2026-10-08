@@ -7,9 +7,9 @@
 create_figures_doc(subdir = getwd(), figures_dir = getwd())
 }
 \arguments{
-\item{subdir}{Location of subdirectory storing the assessment report template}
+\item{subdir}{Path. Location of subdirectory storing the assessment report template}
 
-\item{figures_dir}{The location of the "figures" folder, which contains
+\item{figures_dir}{Path. Location of the "figures" folder, which contains
 figures files.}
 }
 \value{
