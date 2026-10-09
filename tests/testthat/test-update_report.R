@@ -94,3 +94,112 @@ test_that("tables and figures are reset when prompted.", {
   unlink("species_year1", recursive = TRUE)
   unlink("species_year2", recursive = TRUE)
 })
+
+test_that("update_report retains authorship", {
+  # create folder for initial report
+  dir.create("species_year1")
+  # create folder for "next" report
+  dir.create("species_year2")
+
+  year1_dir <- fs::path(getwd(), "species_year1")
+  year2_dir <- fs::path(getwd(), "species_year2")
+
+  # make initial report
+  create_template(
+    file_dir = "species_year1",
+    year = 2023,
+    bib_file = FALSE,
+    authors = c("John Doe" = "SEFSC")
+  )
+
+  # read skeleton and extract authors
+  init_skeleton <- readLines(list.files(file.path(year1_dir, "report"), pattern = "skeleton\\.qmd", full.names = TRUE))
+  # Find author lines
+  first_line <- grep("author:", init_skeleton) + 1
+  end_line <- grep("date:", init_skeleton) - 1
+  init_author_lines <- stringr::str_replace_all(
+    paste0(init_skeleton[first_line:end_line], collapse = ""),
+    " ",
+    ""
+  )
+
+  # update the report to the other folder
+  update_report(
+    file_dir = "species_year2",
+    previous_file_dir = "species_year1",
+    year = 2027,
+    reset_authors = FALSE
+  )
+
+  # read skeleton and extract authors
+  update_skeleton <- readLines(list.files(file.path(year2_dir, "report"), pattern = "skeleton\\.qmd", full.names = TRUE))
+  # Find author lines
+  first_line <- grep("author:", update_skeleton) + 1
+  end_line <- grep("date:", update_skeleton) - 1
+  update_author_lines <- stringr::str_replace_all(
+    paste0(update_skeleton[first_line:end_line], collapse = ""),
+    " ",
+    ""
+  )
+
+  # test if authors are retained
+  expect_true(init_author_lines == update_author_lines)
+
+  unlink("species_year1", recursive = TRUE)
+  unlink("species_year2", recursive = TRUE)
+})
+
+test_that("update_report resets authorship", {
+  # create folder for initial report
+  dir.create("species_year1")
+  # create folder for "next" report
+  dir.create("species_year2")
+  
+  year1_dir <- fs::path(getwd(), "species_year1")
+  year2_dir <- fs::path(getwd(), "species_year2")
+  
+  # make initial report
+  create_template(
+    file_dir = "species_year1",
+    year = 2023,
+    bib_file = FALSE,
+    authors = c("John Doe" = "SEFSC")
+  )
+  
+  # read skeleton and extract authors
+  init_skeleton <- readLines(list.files(file.path(year1_dir, "report"), pattern = "skeleton\\.qmd", full.names = TRUE))
+  # Find author lines
+  first_line <- grep("author:", init_skeleton) + 1
+  end_line <- grep("date:", init_skeleton) - 1
+  init_author_lines <- stringr::str_replace_all(
+    paste0(init_skeleton[first_line:end_line], collapse = ""),
+    " ",
+    ""
+  )
+  
+  # update the report to the other folder
+  update_report(
+    file_dir = "species_year2",
+    previous_file_dir = "species_year1",
+    year = 2027,
+    reset_authors = TRUE,
+    authors = c("Jane Doe" = "NEFSC")
+  )
+  
+  # read skeleton and extract authors
+  update_skeleton <- readLines(list.files(file.path(year2_dir, "report"), pattern = "skeleton\\.qmd", full.names = TRUE))
+  # Find author lines
+  first_line <- grep("author:", update_skeleton) + 1
+  end_line <- grep("date:", update_skeleton) - 1
+  update_author_lines <- stringr::str_replace_all(
+    paste0(update_skeleton[first_line:end_line], collapse = ""),
+    " ",
+    ""
+    )
+  
+  # test if authors are changed
+  expect_false(init_author_lines == update_author_lines)
+  
+  unlink("species_year1", recursive = TRUE)
+  unlink("species_year2", recursive = TRUE)
+})
