@@ -215,3 +215,145 @@ test_that("year is changed throughout document", {
   
   unlink(report_dir, recursive = TRUE)
 })
+
+test_that("Template rerenders with new section", {
+  create_template(
+    bib_file = FALSE,
+    species = "Red snapper",
+    office = "SEFSC",
+    region = "South Atlantic",
+    authors = c("Jane Doe" = "SEFSC"))
+  
+  report_dir <- fs::path(getwd(), "report")
+  rerender_skeleton(
+    file_dir = report_dir,
+    new_section = "action",
+    section_location = "after-introduction"
+  )
+  
+  # find year in title, citation, output_file, in-header.tex
+  skeleton <- readLines(fs::path(report_dir, "sar_SA_Red_snapper_skeleton.qmd"))
+  # section in outline after the introduction
+  # extract section names and id if new section is after intro
+  child_docs <- stringr::str_extract(skeleton[grep("knitr::knit_child", skeleton)], "(?<=knit_child\\(').*?(?=\\')")
+  files <- list.files(report_dir)
+  
+  # tests
+  expect_true(grep("introduction", child_docs) < grep("action", child_docs))
+  expect_true("action.qmd" %in% files)
+  
+  unlink(report_dir, recursive = TRUE)
+})
+
+test_that("new section retained on rerender.", {
+  create_template(
+    bib_file = FALSE,
+    species = "Red snapper",
+    office = "SEFSC",
+    region = "South Atlantic",
+    authors = c("Jane Doe" = "SEFSC"),
+    new_section = "action",
+    section_location = "before-discussion"
+    )
+  
+  report_dir <- fs::path(getwd(), "report")
+  rerender_skeleton(
+    file_dir = report_dir,
+    authors = c("John Doe" = "SEFSC")
+  )
+  
+  # find year in title, citation, output_file, in-header.tex
+  skeleton <- readLines(fs::path(report_dir, "sar_SA_Red_snapper_skeleton.qmd"))
+  # section in outline after the introduction
+  # extract section names and id if new section is after intro
+  child_docs <- stringr::str_extract(skeleton[grep("knitr::knit_child", skeleton)], "(?<=knit_child\\(').*?(?=\\')")
+  files <- list.files(report_dir)
+  
+  # tests
+  expect_true("action.qmd" %in% child_docs)
+  expect_true("action.qmd" %in% files)
+  
+  unlink(report_dir, recursive = TRUE)
+})
+
+test_that("Section retained on create_template when another section is added in rerender_skeleton", {
+  create_template(
+    bib_file = FALSE,
+    species = "Red snapper",
+    office = "SEFSC",
+    region = "South Atlantic",
+    authors = c("Jane Doe" = "SEFSC"),
+    new_section = "news",
+    section_location = "before-discussion"
+    )
+  
+  report_dir <- fs::path(getwd(), "report")
+  rerender_skeleton(
+    file_dir = report_dir,
+    new_section = "action",
+    section_location = "after-introduction"
+  )
+  
+  # find year in title, citation, output_file, in-header.tex
+  skeleton <- readLines(fs::path(report_dir, "sar_SA_Red_snapper_skeleton.qmd"))
+  # section in outline after the introduction
+  # extract section names and id if new section is after intro
+  child_docs <- stringr::str_extract(skeleton[grep("knitr::knit_child", skeleton)], "(?<=knit_child\\(').*?(?=\\')")
+  files <- list.files(report_dir)
+  
+  # tests
+  expect_true(grep("introduction", child_docs) < grep("action", child_docs))
+  expect_true(grep("discussion", child_docs) > grep("news", child_docs))
+  expect_true("action.qmd" %in% files)
+  expect_true("news.qmd" %in% files)
+  
+  unlink(report_dir, recursive = TRUE)
+})
+
+test_that("custom sections retained on rerender_skeleton()", {
+  create_template(
+    bib_file = FALSE,
+    species = "Red snapper",
+    office = "SEFSC",
+    region = "South Atlantic",
+    authors = c("Jane Doe" = "SEFSC"),
+    custom_sections = c("executive_summary", "assessment", "discussion")
+  )
+  
+  report_dir <- fs::path(getwd(), "report")
+  rerender_skeleton(
+    file_dir = report_dir,
+    authors = c("John Doe" = "SEFSC"),
+    new_section = "action",
+    section_location = "after-executive_summary"
+  )
+  
+  # find year in title, citation, output_file, in-header.tex
+  skeleton <- readLines(fs::path(report_dir, "sar_SA_Red_snapper_skeleton.qmd"))
+  # section in outline after the introduction
+  # extract section names and id if new section is after intro
+  child_docs <- stringr::str_extract(skeleton[grep("knitr::knit_child", skeleton)], "(?<=knit_child\\(').*?(?=\\')")
+  files <- list.files(report_dir)
+  
+  # tests
+  expect_true("02_introduction.qmd" %notin% files)
+  expect_true("02_introduction.qmd" %notin% child_docs)
+  expect_all_true(c(
+    "01_executive_summary.qmd", "04a_assessment-configuration.qmd",
+    "04b_assessment-results.qmd", "04c_assessment-sensitivity.qmd",
+    "04d_assessment-benchmarks.qmd", "04e_assessment-projections.qmd",  
+    "05_discussion.qmd"
+  ) %in% child_docs)
+  expect_all_true(c(
+    "01_executive_summary.qmd", "04a_assessment-configuration.qmd",
+    "04b_assessment-results.qmd", "04c_assessment-sensitivity.qmd",
+    "04d_assessment-benchmarks.qmd", "04e_assessment-projections.qmd",  
+    "05_discussion.qmd"
+  ) %in% files)
+  expect_true("action.qmd" %in% files)
+  expect_true("action.qmd" %in% child_docs)
+  expect_true(grep("executive_summary", child_docs) < grep("action", child_docs))
+  
+  
+  unlink(report_dir, recursive = TRUE)
+})
