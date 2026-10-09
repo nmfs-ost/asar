@@ -64,7 +64,7 @@ create_titlepage_tex <- function(office = "",
 #' @return Create an in-header latex document that dynamically changes based on
 #' the species and year along with other factors.
 #' @export
-create_inheader_tex <- function(species = NULL, year = NULL, subdir) {
+create_inheader_tex <- function(species = NULL, year = NULL, subdir, bib_file = TRUE) {
   if (is.null(year)) {
     year <- format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y")
   }
@@ -73,6 +73,7 @@ create_inheader_tex <- function(species = NULL, year = NULL, subdir) {
   )
   if (is.null(species)) {
     to_add <- paste(
+      {if (isTRUE(bib_file)) "% Link journals package\n\\usepackage{journals-bibnames}\n\n"},
       "\\usepackage[headsepline=0.005pt:,footsepline=0.005pt:,plainfootsepline,automark]{scrlayer-scrpage}", "\n",
       "\\clearpairofpagestyles", "\n",
       "\\ohead[]{\\headmark} \\cofoot[\\pagemark]{\\pagemark}", "\n",
@@ -85,6 +86,7 @@ create_inheader_tex <- function(species = NULL, year = NULL, subdir) {
     lines <- append(lines, to_add)
   } else {
     to_add <- paste(
+      {if (isTRUE(bib_file)) "% Link journals package\n\\usepackage{journals-bibnames}\n\n"},
       "\\usepackage[headsepline=0.005pt:,footsepline=0.005pt:,plainfootsepline,automark]{scrlayer-scrpage}", "\n",
       "\\clearpairofpagestyles", "\n",
       "\\ohead[]{\\headmark} \\cofoot[\\pagemark]{\\pagemark}", "\n",

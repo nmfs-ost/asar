@@ -603,7 +603,7 @@ create_template <- function(
         # customize titlepage tex
         if (!file.exists(file_dir, "support_files", "_titlepage.tex") | !is.null(species)) create_titlepage_tex(office = office, subdir = supdir, species = species)
         # customize in-header tex
-        if (!file.exists(file_dir, "support_files", "in-header.tex") | !is.null(species)) create_inheader_tex(species = species, year = year, subdir = supdir)
+        if (!file.exists(file_dir, "support_files", "in-header.tex") | !is.null(species)) create_inheader_tex(species = species, year = year, subdir = supdir, bib_file = bib_file)
       }
     } else {
       #### Copy template files to report folder ----
@@ -621,7 +621,7 @@ create_template <- function(
         # customize titlepage tex
         create_titlepage_tex(office = office, subdir = supdir, species = species)
         # customize in-header tex
-        create_inheader_tex(species = species, year = year, subdir = supdir)
+        create_inheader_tex(species = species, year = year, subdir = supdir, bib_file = bib_file)
         # Copy species image from package
         file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
         # Copy us doc logo
@@ -677,7 +677,7 @@ create_template <- function(
           # customize titlepage tex
           create_titlepage_tex(office = office, subdir = supdir, species = species)
           # customize in-header tex
-          create_inheader_tex(species = species, year = year, subdir = supdir)
+          create_inheader_tex(species = species, year = year, subdir = supdir, bib_file = bib_file)
           # Copy species image from package
           file.copy(spp_image, supdir, overwrite = FALSE) |> suppressWarnings()
           # Copy us doc logo
