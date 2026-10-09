@@ -73,27 +73,48 @@ create_inheader_tex <- function(species = NULL, year = NULL, subdir, bib_file = 
   )
   if (is.null(species)) {
     to_add <- paste(
-      {if (isTRUE(bib_file)) "% Link journals package\n\\usepackage{journals-bibnames}\n\n"},
-      "\\usepackage[headsepline=0.005pt:,footsepline=0.005pt:,plainfootsepline,automark]{scrlayer-scrpage}", "\n",
-      "\\clearpairofpagestyles", "\n",
-      "\\ohead[]{\\headmark} \\cofoot[\\pagemark]{\\pagemark}", "\n",
+      {
+        if (isTRUE(bib_file)) "% Link journals package\n\\usepackage{journals-bibnames}\n\n"
+      },
+      "\\usepackage[headsepline=0.005pt:,footsepline=0.005pt:,plainfootsepline,automark]{scrlayer-scrpage}",
+      "\n",
+      "\\clearpairofpagestyles",
+      "\n",
+      "\\ohead[]{\\headmark} \\cofoot[\\pagemark]{\\pagemark}",
+      "\n",
       # "\\lohead{", species," assessment ", year,"}","\n",
-      "\\ModifyLayer[addvoffset=-.6ex]{scrheadings.foot.above.line}", "\n",
-      "\\ModifyLayer[addvoffset=-.6ex]{plain.scrheadings.foot.above.line}", "\n",
-      "\\setkomafont{pageheadfoot}{\\small}", "\n",
+      "\\ModifyLayer[addvoffset=-.6ex]{scrheadings.foot.above.line}",
+      "\n",
+      "\\ModifyLayer[addvoffset=-.6ex]{plain.scrheadings.foot.above.line}",
+      "\n",
+      "\\setkomafont{pageheadfoot}{\\small}",
+      "\n",
       sep = ""
     )
     lines <- append(lines, to_add)
   } else {
     to_add <- paste(
-      {if (isTRUE(bib_file)) "% Link journals package\n\\usepackage{journals-bibnames}\n\n"},
-      "\\usepackage[headsepline=0.005pt:,footsepline=0.005pt:,plainfootsepline,automark]{scrlayer-scrpage}", "\n",
-      "\\clearpairofpagestyles", "\n",
-      "\\ohead[]{\\headmark} \\cofoot[\\pagemark]{\\pagemark}", "\n",
-      "\\lohead{", species, " assessment ", year, "}", "\n",
-      "\\ModifyLayer[addvoffset=-.6ex]{scrheadings.foot.above.line}", "\n",
-      "\\ModifyLayer[addvoffset=-.6ex]{plain.scrheadings.foot.above.line}", "\n",
-      "\\setkomafont{pageheadfoot}{\\small}", "\n",
+      {
+        if (isTRUE(bib_file)) "% Link journals package\n\\usepackage{journals-bibnames}\n\n"
+      },
+      "\\usepackage[headsepline=0.005pt:,footsepline=0.005pt:,plainfootsepline,automark]{scrlayer-scrpage}",
+      "\n",
+      "\\clearpairofpagestyles",
+      "\n",
+      "\\ohead[]{\\headmark} \\cofoot[\\pagemark]{\\pagemark}",
+      "\n",
+      "\\lohead{",
+      species,
+      " assessment ",
+      year,
+      "}",
+      "\n",
+      "\\ModifyLayer[addvoffset=-.6ex]{scrheadings.foot.above.line}",
+      "\n",
+      "\\ModifyLayer[addvoffset=-.6ex]{plain.scrheadings.foot.above.line}",
+      "\n",
+      "\\setkomafont{pageheadfoot}{\\small}",
+      "\n",
       sep = ""
     )
     lines <- append(lines, to_add)
