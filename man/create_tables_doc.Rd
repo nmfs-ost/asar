@@ -7,9 +7,9 @@
 create_tables_doc(subdir = getwd(), tables_dir = getwd())
 }
 \arguments{
-\item{subdir}{Location of subdirectory storing the assessment report template}
+\item{subdir}{Path. Location of subdirectory storing the assessment report template}
 
-\item{tables_dir}{The location of the "tables" folder, which contains tables
+\item{tables_dir}{Path. Location of the "tables" folder, which contains tables
 files.}
 }
 \value{

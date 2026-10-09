@@ -4,9 +4,9 @@
 
 #' Create a title page latex document
 #'
-#' @param office primary science center writing the document
-#' @param subdir directory where files are going to be held
-#' @param species target species for assessment
+#' @param office String. Primary science center writing the document
+#' @param subdir Path. Directory where files are going to be held
+#' @param species String. Target species for assessment
 #'
 #' @return Create a _titlepage.tex document that contains formatting options for
 #'  a cover page. The only thing that changes currently is the primary author's
@@ -57,9 +57,9 @@ create_titlepage_tex <- function(office = "",
 
 #' Create in-header latex document
 #'
-#' @param species common species name - used for footer
-#' @param year year assessment is conducted
-#' @param subdir directory where other files will be copied into
+#' @param species String. Common species name - used for footer
+#' @param year Number. Year assessment is conducted
+#' @param subdir Path. Directory where other files will be copied into
 #'
 #' @return Create an in-header latex document that dynamically changes based on
 #' the species and year along with other factors.

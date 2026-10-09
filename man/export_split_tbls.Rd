@@ -11,12 +11,12 @@ export_split_tbls(
 )
 }
 \arguments{
-\item{tables_dir}{The location of the "tables" folder, which contains tables
+\item{tables_dir}{Path. The location of the "tables" folder, which contains tables
 files.}
 
-\item{plot_name}{Name of the .rda file containing the table}
+\item{plot_name}{String. Name of the .rda file containing the table}
 
-\item{essential_columns}{The columns that will be retained between the split
+\item{essential_columns}{List. The columns that will be retained between the split
 tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
 column). Example: for the indices table, this could be the year column.}
 }

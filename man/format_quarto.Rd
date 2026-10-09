@@ -7,14 +7,14 @@
 format_quarto(format = "pdf", type = "sar")
 }
 \arguments{
-\item{format}{Report rendering format. Note: "docx" is currently unsupported
+\item{format}{String. Report rendering format. Note: "docx" is currently unsupported
 and will default to "pdf".
 
 Default: "pdf"
 
 Options: "pdf", "html"}
 
-\item{type}{Report template type.
+\item{type}{String. Report template type.
 
 Default: "sar" (a NOAA standard "Stock Assessment Report")
 

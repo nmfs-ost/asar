@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "asar: Build NOAA Stock Assessment Report"
+type: software
+authors:
+  - family-names: Schiano
+    given-names: Samantha
+    email: samantha.schiano@noaa.gov
+    affiliation: NOAA Fisheries
+    orcid: https://orcid.org/0009-0003-3744-6428
+  - family-names: Breitbart
+    given-names: Sophie
+    email: sophie.breitbart@noaa.gov
+    affiliation: NOAA Fisheries
+    orcid: https://orcid.org/0000-0001-9641-9786
+  - family-names: Saul
+    given-names: Steve
+    email: steven.saul@noaa.gov
+    affiliation: NOAA Fisheries
+  - family-names: Johnson
+    given-names: Kelli
+    email: kelli.johnson@noaa.gov
+    affiliation: NOAA Fisheries
+    orcid: https://orcid.org/0000-0002-5149-451X
+  - family-names: Li
+    given-names: Bai
+    email: bai.li@noaa.gov
+    affiliation: NOAA Fisheries
+    orcid: https://orcid.org/0000-0002-8249-1442
+version: 2.6.0
+license: MIT
+repository-code: https://github.com/nmfs-ost/asar
+url: https://github.com/nmfs-ost/asar

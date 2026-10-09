@@ -7,7 +7,7 @@
 add_authors(authors, rerender_skeleton = FALSE, prev_skeleton = NULL)
 }
 \arguments{
-\item{authors}{A character vector of author names and affiliations.
+\item{authors}{String. A character vector of author names and affiliations.
 For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
 can be found with: \code{asar::affiliation_info}. Keys to the office addresses
@@ -21,13 +21,13 @@ Default: NULL
 
 Options: See \code{asar::affiliation_info}.}
 
-\item{rerender_skeleton}{TRUE/FALSE; Update the skeleton YAML and structure
+\item{rerender_skeleton}{Logical. TRUE/FALSE; Update the skeleton YAML and structure
 (R parameters, preamble, and skeleton sectioning) if relevant or indicated.
 All files in your folder, such as the \code{.qmd} child docs, will remain as is.
 
 Default: FALSE}
 
-\item{prev_skeleton}{A character vector of the previous skeleton file read in through \code{readLines()}}
+\item{prev_skeleton}{List. A character vector of the previous skeleton file read in through \code{readLines()}}
 }
 \value{
 A list of authors formatted for a yaml in quarto. Viewable by running the
