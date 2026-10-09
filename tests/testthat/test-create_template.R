@@ -45,7 +45,7 @@ test_that("create_template() uses journals bibliographies by default", {
   )
 
   output_dir <- getwd()
-  
+
   create_template() |>
     suppressWarnings() |>
     suppressMessages()
@@ -63,11 +63,11 @@ test_that("create_template() uses journals bibliographies by default", {
     fixed = TRUE
   )))
   expect_false(file.exists(file.path(report_dir, "asar_references.bib")))
-  
+
   unlink(fs::path(output_dir, "report"), recursive = T)
 })
 
-test_that("create_template adds asar citation bib only when bib_file = NULL",{
+test_that("create_template adds asar citation bib only when bib_file = NULL", {
   create_template(bib_file = NULL)
   expect_bib_file <- "@Manual{asar_2026,
   title = {asar: Build NOAA Stock Assessment Report},

@@ -13,7 +13,7 @@ render_lg_table(report_gt, essential_columns, tables_dir, plot_name)
 tables, formatted as a sequence (e.g., 1:2 for columns 1-2, or 1 for a single
 column). Example: for the indices table, this could be the year column.}
 
-\item{tables_dir}{Path. The location of the "tables" folder, which contains tables
+\item{tables_dir}{Path. Location of the "tables" folder, which contains tables
 files.}
 
 \item{plot_name}{String. Name of the .rda file containing the table}
