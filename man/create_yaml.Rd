@@ -13,7 +13,6 @@ create_yaml(
   spp_image = NULL,
   year = NULL,
   bib_name = NULL,
-  bib_file = NULL,
   author_list = NULL,
   title = "[TITLE]",
   rerender_skeleton = FALSE,
@@ -150,7 +149,6 @@ create_yaml(
   format = "pdf",
   parameters = TRUE,
   custom_params = NULL,
-  bib_file = "path/asar_references.bib",
   bib_name = "asar_references.bib",
   year = 2025
 )

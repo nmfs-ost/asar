@@ -26,7 +26,13 @@ create_title <- function(
   # if(!is.null(spp_latin)) spp_latin <- paste("\\textit{", spp_latin, "}", sep = "")
 
   # Create title dependent on regional language
-  if (office == "AFSC") {
+  if (is.null(office) || office == "") {
+    if (species == "species") {
+      title <- "Stock Assessment Report Template"
+    } else {
+      title <- paste0("Stock Assessment Report for the ", species, " Stock in ", year)
+    }
+  } else if (office == "AFSC") {
     if (is.null(complex)) {
       title <- paste0("Assessment of the ", species, " Stock in the ", region)
     } else {
@@ -71,13 +77,6 @@ create_title <- function(
       # region in NW should be specified as a state
       title <- paste0("Status of the ", species, " stock in U.S. waters off the coast of ", region, " in ", year)
     }
-  } else {
-    if (species == "species" | is.null(region)) {
-      title <- "Stock Assessment Report Template"
-    } else {
-      title <- paste0("Stock Assessment Report for the ", species, " Stock in ", year)
-    }
-    # warning("office (FSC) is not defined. Please define which office you are associated with.")
   }
 
   # Cohesive title for any stock assessment

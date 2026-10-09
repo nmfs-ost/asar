@@ -1,8 +1,14 @@
 #' Create string for yml header in quarto file
 #'
 #' @inheritParams create_template
-#' @param parameters Logical. TRUE/FALSE; Include parameters in the yaml. Default is TRUE.
-#' @param author_list String. A vector of strings containing pre-formatted author names
+#' @param rerender_skeleton TRUE/FALSE; Update the skeleton YAML and structure
+#' (R parameters, preamble, and skeleton sectioning) if relevant or indicated.
+#' All files in your folder, such as the `.qmd` child docs, will remain as is.
+#'
+#' Default: FALSE
+#' @param parameters Logical indicating whether to include parameters
+#' in the yaml. Default is TRUE.
+#' @param author_list A vector of strings containing pre-formatted author names
 #' and affiliations that would be found in the format in a yaml of a quarto
 #' file when using base R function `cat()`.
 #' @param bib_name String. Name of a bib file being added into the yaml. For example,
@@ -119,7 +125,7 @@ create_yaml <- function(
 
     # add in spp image/replace if specific
     if (!is.null(spp_image)) {
-      yaml <- stringr::str_replace(yaml, yaml[grep("cover: ", yaml)], paste("cover: ", spp_image, sep = ""))
+      yaml <- stringr::str_replace(yaml, yaml[grep("cover:", yaml)], paste("cover: ", spp_image, sep = ""))
     }
 
     # Replace output-file name

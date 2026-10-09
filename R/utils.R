@@ -429,6 +429,8 @@ format_citation_authors <- function(author_names) {
     as.character()
 }
 
+#---------------------------------------------------------------
+
 #' Map legacy document names to current document names
 #'
 #' @return A list containing vector mappings for legacy and current
@@ -441,6 +443,8 @@ get_doc_order <- function() {
     current_figs   = c("08_figures.qmd", "05_figures.qmd", "11_figures.qmd")
   )
 }
+
+#-------------------------------------------------------------------
 
 #' Detect, rename, and resolve legacy document paths
 #'
@@ -514,4 +518,62 @@ migrate_legacy_docs <- function(subdir,
     current_name  = current_docs[1],
     resolved_name = resolved_name
   )
+}
+
+#--------------------------------------------------------------
+
+can_rename_legacy_doc <- function(doc_info) {
+  isTRUE(doc_info$using_legacy) &&
+    !is.null(doc_info$legacy_name) &&
+    length(doc_info$legacy_name) == 1 &&
+    !is.null(doc_info$current_name) &&
+    length(doc_info$current_name) == 1
+}
+
+#--------------------------------------------------------------
+
+custom_true <- function(
+    new_section,
+    section_location,
+    files_to_copy,
+    tables_doc_name,
+    figures_doc_name,
+    subdir,
+    rerender = FALSE
+){
+      # Add selected sections from base
+      sec_list1 <- unique(c(files_to_copy, tables_doc_name, figures_doc_name)) # not sure what the point of the unique is
+      # Create new sections as .qmd in folder
+      # check if sections are in custom_sections list
+      if (!is.null(new_section) && !any(grepl(stringr::str_replace(section_location, "^[a-z]+-", ""), sec_list1))) {
+        cli::cli_abort("Defined customizations do not match one or all of the relative placement of a new section. Please review inputs.")
+      }
+      # reorder sec_list1 alphabetically so that 11_appendix goes to end of list
+      if (!rerender) sec_list1 <- sec_list1[order(names(stats::setNames(sec_list1, sec_list1)))]
+      
+      if (!is.null(new_section) && !is.null(section_location)) {
+        sec_list2 <- add_section(
+          new_section = new_section,
+          section_location = section_location,
+          custom_sections = sec_list1,
+          subdir = subdir
+        )
+      } else {
+        sec_list2 <- sec_list1
+      }
+      # Create sections object to add into template
+      add_child(
+        sec_list2,
+        label = stringr::str_remove_all(unlist(sec_list2), "^\\d{2}[a-zA-Z]?_|\\.qmd$")
+      )
+    # } # close if statement for very specific sectioning
+  # } # close if statement for extra custom
+}
+
+#--------------------------------------------------------------
+
+find_system_spp_image <- function(species) {
+  all_spp_images <- list.files(system.file("resources", "spp_img", package = "asar"), full.names = TRUE)
+  spp_pattern <- glue::glue("\\b{stringr::str_replace_all(species, ' ', '_')}")
+  grep(spp_pattern, all_spp_images, value = TRUE, ignore.case = TRUE)
 }
