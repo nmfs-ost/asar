@@ -59,13 +59,18 @@ navbar:
       # Make the link open in a new tab
       target: "_blank"
       
-    tutorial:
-      text: Tutorial
+    tutorials:
+      text: Tutorials
       icon: fa-regular fa-map
-      href: https://connect.fisheries.noaa.gov/asar_tutorial/
-      # Make the link open in a new tab
-      target: "_blank"
+      menu:
+      - text: Tutorial
+        href: https://connect.fisheries.noaa.gov/asar_tutorial/
+        target: "_blank"
+      - text: Workshop
+        href: https://nmfs-ost.github.io/workflows-workshop/
+        target: "_blank"
+
       
   structure:
-    left: [home, overview, reference, cheatsheet, tutorial, articles, examples]
+    left: [home, overview, reference, cheatsheet, tutorials, articles, examples]
     right: [search, issue, github]
