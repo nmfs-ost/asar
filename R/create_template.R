@@ -142,6 +142,14 @@
 #'  deprecated in favor of a separate function `rerender_skeleton()` in order to 
 #'  provide more clarity and separation of functionality.
 #'
+#' @param param_names `r lifecycle::badge('deprecated')` 
+#' This argument was deprecated in favor of the `custom_params` argument in order
+#' to provide more clarity and decrease necessary arguments.
+#'  
+#' @param param_values `r lifecycle::badge('deprecated')` 
+#' This argument was deprecated in favor of the `custom_params` argument in order
+#' to provide more clarity and decrease necessary arguments.
+#'
 #' @param ... Additional arguments passed into functions used in create_template
 #' such as `create_citation()` or `create_yaml()`.
 #'
@@ -255,9 +263,21 @@ create_template <- function(
   section_location = NULL,
   custom_params = NULL,
   rerender_skeleton = lifecycle::deprecated(),
+  param_names = lifecycle::deprecated(),
+  param_values = lifecycle::deprecated(),
   ...
 ) {
-  # check for used deprecated argument
+  # check for used deprecated arguments
+  if (lifecycle::is_present(param_names) || lifecycle::is_present(param_values)) {
+    lifecycle::deprecate_warn(
+      when = "2.7.0", 
+      what = "create_template(param_names)", 
+      details = "Please use `custom_params` instead of `param_names` and `param_values`"
+    )
+    
+    custom_params <- setNames(param_values, param_names)
+  }
+ 
   if (lifecycle::is_present(rerender_skeleton)) {
     # 1. Trigger the deprecation warning
     lifecycle::deprecate_warn(
@@ -289,6 +309,7 @@ create_template <- function(
       authors = authors
     ))
   }
+
   type_map <- c(
     "Northeast Management Track" = "nemt",
     "Pacific Fishery Management Council" = "pfmc",

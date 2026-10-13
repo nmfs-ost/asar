@@ -26,6 +26,8 @@ create_template(
   section_location = NULL,
   custom_params = NULL,
   rerender_skeleton = lifecycle::deprecated(),
+  param_names = lifecycle::deprecated(),
+  param_values = lifecycle::deprecated(),
   ...
 )
 }
@@ -166,6 +168,14 @@ Default: NULL}
 \item{rerender_skeleton}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} This argument was
 deprecated in favor of a separate function \code{rerender_skeleton()} in order to
 provide more clarity and separation of functionality.}
+
+\item{param_names}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+This argument was deprecated in favor of the \code{custom_params} argument in order
+to provide more clarity and decrease necessary arguments.}
+
+\item{param_values}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+This argument was deprecated in favor of the \code{custom_params} argument in order
+to provide more clarity and decrease necessary arguments.}
 
 \item{...}{Additional arguments passed into functions used in create_template
 such as \code{create_citation()} or \code{create_yaml()}.}
