@@ -5,29 +5,45 @@
 #' @inheritParams create_tables_dir
 #' @param file_dir String of the path where the new report folder and files 
 #' should be located. Required.
+#' 
+#' Default: The working directory (`getwd()`)
+#' 
 #' @param previous_file_dir String of the path where the previous report files 
 #' are located. Required.
 #' @param reset_tables_and_figures Logical indicating whether to reset tables 
 #' and figures Quarto documents.
+#' 
+#' Default: FALSE
+#' 
 #' @param reset_authors Logical indicating whether to reset authorship for the 
 #' report. Only will work if authors argument is also used.
+#' 
+#' Default: FALSE
+#' 
 #' @param custom_sections Logical. Indicate whether the previous report had a 
 #' customized sectioning. If TRUE, the report outline will mimic the previous 
 #' report. If FALSE, the report will include the full standard guidelines outline 
 #' along with any custom sectioning from the previous report.
 #'
 #' Default: FALSE
+#' 
 #' @returns Creates a new folder of pre-filled assessment report files for the 
 #' next assessment cycle.
 #' 
 #' @details
 #' This function is designed so a report made from `asar::create_template()` can
-#'  be called and updated with the follow:
-#'  - year
-#'  - model results
-#'  - authorship
-#'  - check standard structure against current structure
-#' This function performs three major tasks (1) copies all files from the old 
+#'  be called and updated with the following:
+#'  - year (`year`)
+#'  - model results (`model_results`)
+#'  - authorship (`authors`)
+#'  - region (`region`)
+#'  - custom sections (`custom_sections `)
+#'  - new sections (`new_section and section_location`)
+#'  - figure and table folder locations (`figures_dir and tables_dir`)
+#'  - format (`format`)
+#'  - check standard structure against current structure (performed automatically)
+#'
+#' This function performs three major tasks: (1) copies all files from the old 
 #' directory to the new one, (2) updates the skeleton according the the input 
 #' arguments using the `rerender_skeleton()` function, and (3) if desired, 
 #' resets your figures and tables documents.
@@ -39,7 +55,15 @@
 #' update_report(
 #'   previous_file_dir = "~/testing/goa_2023/report",
 #'   file_dir = "~/testing/goa_2025",
-#'   model_results = "../new_std_res.rda"
+#'   model_results = "../new_std_res.rda")
+#'   
+#' update_report(
+#'   previous_file_dir = "report_a",
+#'   file_dir = "report_b",
+#'   year = 2027,
+#'   authors = c("John Doe" = "NEFSC"),
+#'   reset_authors = TRUE
+#' )
 #' }
 update_report <- function(
     file_dir = getwd(),

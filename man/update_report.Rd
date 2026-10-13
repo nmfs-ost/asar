@@ -23,12 +23,14 @@ update_report(
 }
 \arguments{
 \item{file_dir}{String of the path where the new report folder and files
-should be located. Required.}
+should be located. Required.
+
+Default: The working directory (\code{getwd()})}
 
 \item{previous_file_dir}{String of the path where the previous report files
 are located. Required.}
 
-\item{authors}{A character vector of author names and affiliations.
+\item{authors}{String. A character vector of author names and affiliations.
 For example, a Jane Doe at the NWFSC Seattle, Washington office
 would have an entry of c("Jane Doe"="NWFSC-SWA"). Information on NOAA offices
 can be found with: \code{asar::affiliation_info}. Keys to the office addresses
@@ -42,24 +44,24 @@ Default: NULL
 
 Options: See \code{asar::affiliation_info}.}
 
-\item{model_results}{Filepath to the standardized, converted model output
+\item{model_results}{Path. Filepath to the standardized, converted model output
 .rda file generated with \code{stockplotr::convert_output()}, relative to the
 skeleton .qmd file that will be created within the 'report' folder.
 
 Default: NULL}
 
-\item{year}{Year the assessment is conducted.
+\item{year}{Number. Year the assessment is conducted.
 
 Default: the year in which the report is rendered.}
 
-\item{format}{Report rendering format. Note: "docx" is currently unsupported
+\item{format}{String. Report rendering format. Note: "docx" is currently unsupported
 and will default to "pdf".
 
 Default: "pdf"
 
 Options: "pdf", "html"}
 
-\item{region}{Full name of the stock's sub-region, if applicable.
+\item{region}{String. Full name of the stock's sub-region, if applicable.
 If the region is not specified for your center or species, leave default.
 Example: "US West Coast".
 
@@ -72,7 +74,7 @@ along with any custom sectioning from the previous report.
 
 Default: FALSE}
 
-\item{new_section}{Names of section(s) (e.g., "Special Section") or
+\item{new_section}{String. Names of section(s) (e.g., "Special Section") or
 subsection(s) (e.g., a section within the introduction) that will be
 added to the document. Please make a short list if >1 section/subsection
 will be added. The template will be created as a quarto document, added
@@ -80,7 +82,7 @@ into the skeleton, and saved for reference.
 
 Default: NULL}
 
-\item{section_location}{Where new section(s)/subsection(s) will be added to
+\item{section_location}{String. Where new section(s)/subsection(s) will be added to
 the skeleton template. Please use the notation of 'placement-section'.
 For example, 'in-introduction' signifies that the new content would
 be created as a child document and added into the 02_introduction.qmd.
@@ -89,21 +91,25 @@ order of (sub)section names listed in the 'new_section' parameter.
 
 Default: NULL}
 
-\item{figures_dir}{The location of the "figures" folder, which contains
+\item{figures_dir}{Path. The location of the "figures" folder, which contains
 figures files
 
 Default: the working directory}
 
-\item{tables_dir}{The location of the "tables" folder, which contains tables
+\item{tables_dir}{Path. The location of the "tables" folder, which contains tables
 files
 
 Default: the working directory}
 
 \item{reset_tables_and_figures}{Logical indicating whether to reset tables
-and figures Quarto documents.}
+and figures Quarto documents.
+
+Default: FALSE}
 
 \item{reset_authors}{Logical indicating whether to reset authorship for the
-report. Only will work if authors argument is also used.}
+report. Only will work if authors argument is also used.
+
+Default: FALSE}
 }
 \value{
 Creates a new folder of pre-filled assessment report files for the
@@ -114,23 +120,37 @@ Call previous assessment report and update
 }
 \details{
 This function is designed so a report made from \code{asar::create_template()} can
-be called and updated with the follow:
+be called and updated with the following:
 \itemize{
-\item year
-\item model results
-\item authorship
-\item check standard structure against current structure
-This function performs three major tasks (1) copies all files from the old
+\item year (\code{year})
+\item model results (\code{model_results})
+\item authorship (\code{authors})
+\item region (\code{region})
+\item custom sections (\code{custom_sections })
+\item new sections (\verb{new_section and section_location})
+\item figure and table folder locations (\verb{figures_dir and tables_dir})
+\item format (\code{format})
+\item check standard structure against current structure (performed automatically)
+}
+
+This function performs three major tasks: (1) copies all files from the old
 directory to the new one, (2) updates the skeleton according the the input
 arguments using the \code{rerender_skeleton()} function, and (3) if desired,
 resets your figures and tables documents.
-}
 }
 \examples{
 \dontrun{
 update_report(
   previous_file_dir = "~/testing/goa_2023/report",
   file_dir = "~/testing/goa_2025",
-  model_results = "../new_std_res.rda"
+  model_results = "../new_std_res.rda")
+  
+update_report(
+  previous_file_dir = "report_a",
+  file_dir = "report_b",
+  year = 2027,
+  authors = c("John Doe" = "NEFSC"),
+  reset_authors = TRUE
+)
 }
 }

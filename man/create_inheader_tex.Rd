@@ -4,7 +4,7 @@
 \alias{create_inheader_tex}
 \title{Create in-header latex document}
 \usage{
-create_inheader_tex(species = NULL, year = NULL, subdir)
+create_inheader_tex(species = NULL, year = NULL, subdir, bib_file = TRUE)
 }
 \arguments{
 \item{species}{String. Common species name - used for footer}

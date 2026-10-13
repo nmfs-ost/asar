@@ -11,7 +11,7 @@ export_split_tbls(
 )
 }
 \arguments{
-\item{tables_dir}{Path. The location of the "tables" folder, which contains tables
+\item{tables_dir}{Path. Location of the "tables" folder, which contains tables
 files.}
 
 \item{plot_name}{String. Name of the .rda file containing the table}

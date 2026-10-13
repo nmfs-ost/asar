@@ -114,7 +114,7 @@ If empty, searches \code{asar} resources for a matching species name.
 
 Default: NULL}
 
-\item{bib_file}{A character string of the path to a custom \code{.bib} file, or a logical.
+\item{bib_file}{Path or logical. A character string of the path to a custom \code{.bib} file, or a logical (TRUE/FALSE).
 If a path is provided, the custom file is used and journal templates are skipped.
 If \code{TRUE}, default journal \code{.bib} templates are downloaded.
 If \code{FALSE} or \code{NULL} (default), a minimal \code{.bib} file containing only the \code{asar} package citation is created.
