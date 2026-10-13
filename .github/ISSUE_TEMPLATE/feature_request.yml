@@ -1,6 +1,6 @@
 name: Feature Request
 description: Request new features or changes to features
-title: "[Feature]: "
+title: "[feat]: "
 labels: ["enhancement", "triage_needed"]
 body:
   - type: markdown
@@ -10,7 +10,18 @@ body:
         filling out this report please search the existing issues to see
         if the problem has already been reported. If it has, please add a
         comment to the open issue or link to the related, but closed, issue in
-        this report.
+        this report.If this issue is related to a topic that falls into one of 
+        our [release indicators](https://github.com/nmfs-ost/asar/blob/main/CONTRIBUTING.md#release-indicators), please try your best to adjust the title from 
+        "[feat]" to the topic that best matches this issue. The release indicators 
+        are as follows:
+        - feat
+        - fix
+        - docs
+        - style
+        - refactor
+        - perf
+        - test
+        - chore
   - type: textarea
     id: problem
     attributes:
