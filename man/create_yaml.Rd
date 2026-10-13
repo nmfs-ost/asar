@@ -13,7 +13,6 @@ create_yaml(
   spp_image = NULL,
   year = NULL,
   bib_name = NULL,
-  bib_file = NULL,
   author_list = NULL,
   title = "[TITLE]",
   rerender_skeleton = FALSE,
@@ -66,17 +65,7 @@ Default: the year in which the report is rendered.}
 \item{bib_name}{String. Name of a bib file being added into the yaml. For example,
 "asar.bib".}
 
-\item{bib_file}{Path or logical. File path to an existing additional bibliography file (\code{.bib}) used for citing references in
-the report. By default, all bibliography files are sourced from the \pkg{journals} package and
-references for all NMFS stock assessment reports are provided. To see a full
-list of journals included in these files, please visit the
-\href{https://github.com/nmfs-ost/journals/blob/main/README.md}{{journals} README}
-or see the description at the top of each bib file. It is
-recommended to open these files in a text editor rather than R.
-
-Default: NULL}
-
-\item{author_list}{String. A list of strings containing pre-formatted author names
+\item{author_list}{A vector of strings containing pre-formatted author names
 and affiliations that would be found in the format in a yaml of a quarto
 file when using base R function \code{cat()}.}
 
@@ -86,7 +75,7 @@ file when using base R function \code{cat()}.}
 
 Default: \verb{[TITLE]}. If species and region are provided, a title will be generated based on the report type, species, and region.}
 
-\item{rerender_skeleton}{Logical. TRUE/FALSE; Update the skeleton YAML and structure
+\item{rerender_skeleton}{TRUE/FALSE; Update the skeleton YAML and structure
 (R parameters, preamble, and skeleton sectioning) if relevant or indicated.
 All files in your folder, such as the \code{.qmd} child docs, will remain as is.
 
@@ -96,10 +85,11 @@ Default: FALSE}
 previous skeleton file. File is read in using the function readLines from
 base R.}
 
-\item{prev_format}{String. The format that the previous skeleton was directed to
+\item{prev_format}{String. Format that the previous skeleton was directed to
 render to. Parameter is inherited from create_template.}
 
-\item{parameters}{Logical. TRUE/FALSE; Include parameters in the yaml. Default is TRUE.}
+\item{parameters}{Logical indicating whether to include parameters
+in the yaml. Default is TRUE.}
 
 \item{custom_params}{List. Character vector of additional custom parameter
 names and values to include in the skeleton YAML. For example, a
@@ -150,7 +140,6 @@ create_yaml(
   format = "pdf",
   parameters = TRUE,
   custom_params = NULL,
-  bib_file = "path/asar_references.bib",
   bib_name = "asar_references.bib",
   year = 2025
 )

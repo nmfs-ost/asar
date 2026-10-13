@@ -14,7 +14,7 @@ add_tagging(
 \arguments{
 \item{x}{Path. The name of the .tex file to modify.
 
-Default: "...skeleton.qmd"}
+Default: "...skeleton.tex"}
 
 \item{dir}{Path. The directory containing the .tex file.
 

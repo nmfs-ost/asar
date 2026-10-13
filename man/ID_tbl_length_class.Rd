@@ -7,10 +7,10 @@
 ID_tbl_length_class(tables_dir, plot_name)
 }
 \arguments{
-\item{tables_dir}{The location of the "tables" folder, which contains tables
+\item{tables_dir}{Path. Location of the "tables" folder, which contains tables
 files.}
 
-\item{plot_name}{Name of the .rda file containing the table}
+\item{plot_name}{String. Name of the .rda file containing the table}
 }
 \value{
 The length class of a table: regular or long. The result
