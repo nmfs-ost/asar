@@ -31,6 +31,8 @@ create_template(
   section_location = NULL,
   custom_params = NULL,
   rerender_skeleton = lifecycle::deprecated(),
+  param_names = lifecycle::deprecated(),
+  param_values = lifecycle::deprecated(),
   ...
 )
 ```
@@ -225,6 +227,18 @@ create_template(
   function
   [`rerender_skeleton()`](nmfs-ost.github.io/asar/reference/rerender_skeleton.md)
   in order to provide more clarity and separation of functionality.
+
+- param_names:
+
+  **\[deprecated\]** This argument was deprecated in favor of the
+  `custom_params` argument in order to provide more clarity and decrease
+  necessary arguments.
+
+- param_values:
+
+  **\[deprecated\]** This argument was deprecated in favor of the
+  `custom_params` argument in order to provide more clarity and decrease
+  necessary arguments.
 
 - ...:
 
