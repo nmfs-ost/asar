@@ -12,11 +12,11 @@ ID_tbl_length_class(tables_dir, plot_name)
 
 - tables_dir:
 
-  The location of the "tables" folder, which contains tables files.
+  Path. Location of the "tables" folder, which contains tables files.
 
 - plot_name:
 
-  Name of the .rda file containing the table
+  String. Name of the .rda file containing the table
 
 ## Value
 

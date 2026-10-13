@@ -16,8 +16,7 @@ export_split_tbls(
 
 - tables_dir:
 
-  Path. The location of the "tables" folder, which contains tables
-  files.
+  Path. Location of the "tables" folder, which contains tables files.
 
 - plot_name:
 

@@ -31,16 +31,15 @@ add_authors(authors, rerender_skeleton = FALSE, prev_skeleton = NULL)
 
 - rerender_skeleton:
 
-  Logical. TRUE/FALSE; Update the skeleton YAML and structure (R
-  parameters, preamble, and skeleton sectioning) if relevant or
-  indicated. All files in your folder, such as the `.qmd` child docs,
-  will remain as is.
+  TRUE/FALSE; Update the skeleton YAML and structure (R parameters,
+  preamble, and skeleton sectioning) if relevant or indicated. All files
+  in your folder, such as the `.qmd` child docs, will remain as is.
 
   Default: FALSE
 
 - prev_skeleton:
 
-  List. A character vector of the previous skeleton file read in through
+  A character vector of the previous skeleton file read in through
   [`readLines()`](https://rdrr.io/r/base/readLines.html)
 
 ## Value

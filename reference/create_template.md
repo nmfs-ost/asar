@@ -24,13 +24,13 @@ create_template(
   tables_dir = getwd(),
   figures_dir = getwd(),
   spp_image = NULL,
-  bib_file = NULL,
+  bib_file = TRUE,
   new_template = TRUE,
-  rerender_skeleton = FALSE,
   custom_sections = NULL,
   new_section = NULL,
   section_location = NULL,
   custom_params = NULL,
+  rerender_skeleton = lifecycle::deprecated(),
   ...
 )
 ```
@@ -159,17 +159,14 @@ create_template(
 
 - bib_file:
 
-  Path or logical. A character string of the path to a custom \`.bib\`
-  file, or a logical (TRUE/FALSE). the report. By default, all
-  bibliography files are sourced from the journals package and
-  references for all NMFS stock assessment reports are provided. To see
-  a full list of journals included in these files, please visit the
-  [journals
-  README](https://github.com/nmfs-ost/journals/blob/main/README.md) or
-  see the description at the top of each bib file. It is recommended to
-  open these files in a text editor rather than R.
+  Path or logical. A character string of the path to a custom `.bib`
+  file, or a logical (TRUE/FALSE). If a path is provided, the custom
+  file is used and journal templates are skipped. If `TRUE`, default
+  journal `.bib` templates are downloaded. If `FALSE` or `NULL`
+  (default), a minimal `.bib` file containing only the `asar` package
+  citation is created.
 
-  Default: NULL
+  Default: TRUE
 
 - new_template:
 
@@ -178,18 +175,9 @@ create_template(
 
   Default: FALSE
 
-- rerender_skeleton:
-
-  Logical. TRUE/FALSE; Update the skeleton YAML and structure (R
-  parameters, preamble, and skeleton sectioning) if relevant or
-  indicated. All files in your folder, such as the `.qmd` child docs,
-  will remain as is.
-
-  Default: FALSE
-
 - custom_sections:
 
-  List. Existing sections to include in a custom template (rather than
+  List of existing sections to include in a custom template (rather than
   the default for stock assessments in your region). If adding a new
   section, also use arguments 'new_section' and 'section_location'.
 
@@ -230,6 +218,13 @@ create_template(
   which are listed as individual parameters for this function, above).
 
   Default: NULL
+
+- rerender_skeleton:
+
+  **\[deprecated\]** This argument was deprecated in favor of a separate
+  function
+  [`rerender_skeleton()`](nmfs-ost.github.io/asar/reference/rerender_skeleton.md)
+  in order to provide more clarity and separation of functionality.
 
 - ...:
 
@@ -292,7 +287,6 @@ create_template(
   new_section = "a_new_section",
   section_location = "before-introduction"
 )
-
 
 create_template(
   new_template = TRUE,

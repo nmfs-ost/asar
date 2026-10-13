@@ -344,6 +344,12 @@ commercial product or activity by DOC or the United States Government.
 - [`render_lg_table()`](nmfs-ost.github.io/asar/reference/render_lg_table.md)
   : Split an extra-wide table into multiple tables
 
+- [`rerender_skeleton()`](nmfs-ost.github.io/asar/reference/rerender_skeleton.md)
+  : Rerender skeleton quarto document
+
+- [`update_report()`](nmfs-ost.github.io/asar/reference/update_report.md)
+  : Call previous assessment report and update
+
 # Articles
 
 ### All vignettes

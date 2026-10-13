@@ -12,8 +12,7 @@ ID_tbl_width_class(tables_dir, plot_name, portrait_pg_width)
 
 - tables_dir:
 
-  Path. The location of the "tables" folder, which contains tables
-  files.
+  Path. Location of the "tables" folder, which contains tables files.
 
 - plot_name:
 

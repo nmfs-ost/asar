@@ -19,7 +19,7 @@ add_tagging(
 
   Path. The name of the .tex file to modify.
 
-  Default: "...skeleton.qmd"
+  Default: "...skeleton.tex"
 
 - dir:
 

@@ -81,13 +81,13 @@ Centers. Automates authorship, bibliography, and other report components.</p>
 <span>  tables_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  figures_dir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  spp_image <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  bib_file <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  bib_file <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  new_template <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  rerender_skeleton <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  custom_sections <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  new_section <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  section_location <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  custom_params <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rerender_skeleton <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -191,14 +191,11 @@ If empty, searches <code>asar</code> resources for a matching species name.</p>
 
 
 <dt id="arg-bib-file">bib_file<a class="anchor" aria-label="anchor" href="#arg-bib-file"></a></dt>
-<dd><p>Path or logical. A character string of the path to a custom `.bib` file, or a logical (TRUE/FALSE).
-the report. By default, all bibliography files are sourced from the <span class="pkg">journals</span> package and
-references for all NMFS stock assessment reports are provided. To see a full
-list of journals included in these files, please visit the
-<a href="https://github.com/nmfs-ost/journals/blob/main/README.md" class="external-link">journals README</a>
-or see the description at the top of each bib file. It is
-recommended to open these files in a text editor rather than R.</p>
-<p>Default: NULL</p></dd>
+<dd><p>Path or logical. A character string of the path to a custom <code>.bib</code> file, or a logical (TRUE/FALSE).
+If a path is provided, the custom file is used and journal templates are skipped.
+If <code>TRUE</code>, default journal <code>.bib</code> templates are downloaded.
+If <code>FALSE</code> or <code>NULL</code> (default), a minimal <code>.bib</code> file containing only the <code>asar</code> package citation is created.</p>
+<p>Default: TRUE</p></dd>
 
 
 <dt id="arg-new-template">new_template<a class="anchor" aria-label="anchor" href="#arg-new-template"></a></dt>
@@ -207,15 +204,8 @@ will pull the last saved stock assessment report skeleton.</p>
 <p>Default: FALSE</p></dd>
 
 
-<dt id="arg-rerender-skeleton">rerender_skeleton<a class="anchor" aria-label="anchor" href="#arg-rerender-skeleton"></a></dt>
-<dd><p>Logical. TRUE/FALSE; Update the skeleton YAML and structure
-(R parameters, preamble, and skeleton sectioning) if relevant or indicated.
-All files in your folder, such as the <code>.qmd</code> child docs, will remain as is.</p>
-<p>Default: FALSE</p></dd>
-
-
 <dt id="arg-custom-sections">custom_sections<a class="anchor" aria-label="anchor" href="#arg-custom-sections"></a></dt>
-<dd><p>List. Existing sections to include in a custom
+<dd><p>List of existing sections to include in a custom
 template (rather than the default for stock assessments in your region).
 If adding a new section, also use arguments 'new_section' and 'section_location'.</p>
 <p>Default: NULL</p>
@@ -252,6 +242,12 @@ parameter "year2" and its value "2026" would have an entry of
 species (each of which are listed as individual parameters for this
 function, above).</p>
 <p>Default: NULL</p></dd>
+
+
+<dt id="arg-rerender-skeleton">rerender_skeleton<a class="anchor" aria-label="anchor" href="#arg-rerender-skeleton"></a></dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> This argument was
+deprecated in favor of a separate function <code><a href="rerender_skeleton.html">rerender_skeleton()</a></code> in order to
+provide more clarity and separation of functionality.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -296,7 +292,6 @@ cheatsheet, tutorial, and other resources available at <a href="https://nmfs-ost
 <span class="r-in"><span>  new_section <span class="op">=</span> <span class="st">"a_new_section"</span>,</span></span>
 <span class="r-in"><span>  section_location <span class="op">=</span> <span class="st">"before-introduction"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">create_template</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  new_template <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>

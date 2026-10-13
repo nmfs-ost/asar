@@ -5,7 +5,7 @@ Create in-header latex document
 ## Usage
 
 ``` r
-create_inheader_tex(species = NULL, year = NULL, subdir)
+create_inheader_tex(species = NULL, year = NULL, subdir, bib_file = TRUE)
 ```
 
 ## Arguments
