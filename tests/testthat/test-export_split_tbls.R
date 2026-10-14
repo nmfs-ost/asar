@@ -27,6 +27,26 @@
 #   file.remove(fs::path(getwd(), "key_quantities.csv"))
 #   unlink(fs::path(getwd(), "tables"), recursive = T)
 # })
+
+test_that("export_split_tbls() exports a table that fits in one part", {
+  tables_dir <- tempfile()
+  dir.create(file.path(tables_dir, "tables"), recursive = TRUE)
+  on.exit(unlink(tables_dir, recursive = TRUE))
+
+  rda <- list(
+    table = gt::gt(data.frame(Year = 2020:2021, Estimate = c(1, 2)))
+  )
+  save(rda, file = file.path(tables_dir, "tables", "summary.rda"))
+
+  n_tables <- export_split_tbls(
+    tables_dir = tables_dir,
+    plot_name = "summary.rda",
+    essential_columns = 1
+  )
+
+  expect_equal(n_tables, 1)
+  expect_true(file.exists(file.path(tables_dir, "tables", "summary_split.rda")))
+})
 #
 #
 # test_that("Number of split tables is calculated correctly for 3 tables", {
