@@ -40,7 +40,12 @@ Default: NULL}
 No return value. Modifies files on disk and optionally renders a .pdf.
 }
 \description{
-Modifies a LaTeX report file to improve document accessibility. This function
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This function was deprecated because Quarto v1.9 and higher supports all
+features this function provides to meet U.S. accessibility standards.
+
+Previously modifies a LaTeX report file to improve document accessibility. This function
 automates the process of adding PDF tagging and integrating alternative text
 for figures and tables.
 }

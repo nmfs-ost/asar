@@ -1,4 +1,10 @@
 #' Add alternative text into latex
+#' 
+#' @description
+#' `r lifecycle::badge("deprecated")` 
+#' 
+#' This function was deprecated because Quarto v1.9 and higher supports all 
+#' features this function provides to meet U.S. accessibility standards.
 #'
 #' @inheritParams add_accessibility
 #' @param tagged Logical. TRUE/FALSE; Indicate if the input tex file from dir has the latex package,
@@ -58,6 +64,15 @@ add_alttext <- function(
   rename = NULL,
   tagged = TRUE
 ) {
+  lifecycle::deprecate_warn(
+    when = "2.8.0", 
+    what = "add_alttext()", 
+    details = c(
+      i = "Due to improvements in accessibility of Quarto documents, add_alttext() is being deprecated.",
+      i = "No alternative function is needed. Current {asar} features in combination with Quarto v1.9 and higher will meet compliance needs."
+      )
+  )
+  
   # Read latex file
   if (!file.exists(file.path(dir, x))) cli::cli_abort("File {dir}/{x} does not exist!")
   tex_file <- readLines(file.path(dir, x))

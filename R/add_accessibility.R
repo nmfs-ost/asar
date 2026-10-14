@@ -1,6 +1,12 @@
 #' Add Accessibility to .tex documents
 #'
-#' Modifies a LaTeX report file to improve document accessibility. This function
+#' @description
+#' `r lifecycle::badge("deprecated")` 
+#' 
+#' This function was deprecated because Quarto v1.9 and higher supports all 
+#' features this function provides to meet U.S. accessibility standards.
+#' 
+#' Previously modifies a LaTeX report file to improve document accessibility. This function
 #' automates the process of adding PDF tagging and integrating alternative text
 #' for figures and tables.
 #'
