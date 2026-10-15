@@ -219,7 +219,10 @@ create_yaml <- function(
       yaml,
       # Date
       "date: today", "\n",
-      # "lang: en \n",
+      "knitr:", "\n",
+      "  ", "opts_chunk:", "\n",
+      "    ", "dev: 'cairo_pdf'", "\n",
+      "lang: en \n",
       "keep-tex: true \n",
       # "mainfont: 'Latin Modern Sans' \n",
       "tbl-pos: 't' \n",

@@ -414,3 +414,37 @@ The checklist reflects the results from a report made with a basic, exemplary `a
 | Items in the TOC are linked appropriately, and page numbers are correct. |X| | |
 | PDF tags have been added to the document (auto-tagging is acceptable, but may require touch-up work). |X| | |
 | Reading order is logical and correct based on the PDF tags. |X| | |
+
+## veraPDF accessibility testing
+
+This section states the status of `asar` reports' accessibility features when tested with the [veraPDF](https://verapdf.org/home/) accessibility criteria.
+
+veraPDF is an open-source PDF accessibility testing tool. It can check for [ISO 14289-2 (PDF/UA-2)](https://pdfa.org/iso-14289-2-pdf-ua-2-the-gold-standard-for-accessibility-in-pdf-2-0-has-arrived/), the "gold standard" for accessibility in PDF 2.0. [Quarto v1.9 supports automatic accessibility checking with veraPDF](https://opensource.posit.co/blog/2026-03-05_pdf-accessibility-and-standards/).
+
+To check that your report meets the accessibility criteria checked by veraPDF, install Java and veraPDF using [these instructions](https://opensource.posit.co/blog/2026-03-05_pdf-accessibility-and-standards/#how-to-enable-a-pdf-standard-in-quarto). The checking will occur automatically while your qmd is rendering if:
+
+1. You've installed Quarto v1.9, Java, and veraPDF
+2. Your report skeleton YAML contains the following lines, which should appear automatically if you're using an updated version of `asar`:
+
+### Sets the PDF standard to PDF/UA-2
+````
+format:
+  pdf:
+    pdf-standard: ua-2
+````
+
+### Sets the document language to English
+````
+lang: en
+````
+
+### Embeds figure fonts in the PDF
+````
+knitr:
+  opts_chunk:
+    dev: 'cairo_pdf'
+````
+
+You can check that your document passed the veraPDF accessibility criteria by looking at the "Background Jobs" tab in RStudio. It should look something like this:
+
+`[verapdf]: Validating sar-species-skeleton.pdf against PDF/UA-2... PASSED`

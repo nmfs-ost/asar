@@ -16,6 +16,7 @@ format_quarto <- function(format = "pdf",
     paste0(
       "format: ", "\n",
       "  ", format, ": \n",
+      "  ", "  ", "pdf-standard: ua-2", "\n",
       "  ", "  ", "documentclass: article", "\n",
       "  ", "  ", "papersize: letter", "\n",
       "  ", "  ", "number-sections: true", "\n",
