@@ -38,8 +38,6 @@ before documentclass, so this function alters the rendered .tex file.
 Flextable-based tables will not be tagged as flextable is not compatible with tagpdf.
 }
 \description{
-#' \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
-
 This function was deprecated because Quarto v1.9 and higher supports all
 features this function provides to meet U.S. accessibility standards.
 }

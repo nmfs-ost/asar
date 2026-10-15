@@ -3,8 +3,8 @@
 #' @description
 #' `r lifecycle::badge("deprecated")` 
 #' 
-#' This function was deprecated because Quarto v1.9 and higher supports all 
-#' features this function provides to meet U.S. accessibility standards.
+#' This function was deprecated because Quarto v1.9 and higher supports
+#' incorporating alternative text in code chunks and in-text for documents.
 #'
 #' @inheritParams add_accessibility
 #' @param tagged Logical. TRUE/FALSE; Indicate if the input tex file from dir has the latex package,
@@ -69,7 +69,8 @@ add_alttext <- function(
     what = "add_alttext()", 
     details = c(
       i = "Due to improvements in accessibility of Quarto documents, add_alttext() is being deprecated.",
-      i = "No alternative function is needed. Current {asar} features in combination with Quarto v1.9 and higher will meet compliance needs."
+      i = "Available until October 1, 2027",
+      i = "No alternative function is needed. Quarto v1.9 and higher provide support for alternative text."
       )
   )
   

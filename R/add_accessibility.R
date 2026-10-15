@@ -3,8 +3,9 @@
 #' @description
 #' `r lifecycle::badge("deprecated")` 
 #' 
-#' This function was deprecated because Quarto v1.9 and higher supports all 
-#' features this function provides to meet U.S. accessibility standards.
+#' `add_alttext()` is being deprecated, but will be 
+#' available until October 1, 2027. In response, this function will 
+#' not be necessary after that date and will be deprecated as well.
 #' 
 #' Previously modifies a LaTeX report file to improve document accessibility. This function
 #' automates the process of adding PDF tagging and integrating alternative text

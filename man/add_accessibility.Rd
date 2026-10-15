@@ -42,8 +42,9 @@ No return value. Modifies files on disk and optionally renders a .pdf.
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-This function was deprecated because Quarto v1.9 and higher supports all
-features this function provides to meet U.S. accessibility standards.
+\code{add_alttext()} is being deprecated, but will be
+available until October 1, 2027. In response, this function will
+not be necessary after that date and will be deprecated as well.
 
 Previously modifies a LaTeX report file to improve document accessibility. This function
 automates the process of adding PDF tagging and integrating alternative text
