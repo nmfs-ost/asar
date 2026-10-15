@@ -1,8 +1,6 @@
 #' Add tagging structure to latex documents produced from quarto
 #'
 #' @description
-#' #' `r lifecycle::badge("deprecated")` 
-#' 
 #' This function was deprecated because Quarto v1.9 and higher supports all 
 #' features this function provides to meet U.S. accessibility standards.
 #'
@@ -47,14 +45,6 @@ add_tagging <- function(
   compile = TRUE,
   rename = NULL
 ) {
-  lifecycle::deprecate_warn(
-    when = "2.8.0", 
-    what = "add_tagging()", 
-    details = c(
-      i = "Due to improvements in accessibility of Quarto documents, add_tagging() is being deprecated.",
-      i = "No alternative function is needed. Current {asar} features in combination with Quarto v1.9 and higher will meet compliance needs."
-    )
-  )
   
   if (length(x) == 0) {
     cli::cli_abort(c(
