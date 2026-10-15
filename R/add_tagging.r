@@ -1,9 +1,5 @@
 #' Add tagging structure to latex documents produced from quarto
 #'
-#' @description
-#' This function was deprecated because Quarto v1.9 and higher supports all 
-#' features this function provides to meet U.S. accessibility standards.
-#'
 #' @inheritParams add_accessibility
 #'
 #' @return This function was made to help add in
