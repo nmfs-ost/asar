@@ -148,7 +148,7 @@ We strongly encourage all users to check out the [Increasing Report Accessibilit
 2. How to add the features requiring your effort (e.g., [alternative text](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#alternative-text))
 3. [The development status of the features](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#status-of-accessibility-features) that are required for submission as per two relevant NOAA checklists
 
-**Notice:** As of October 2027, we are deprecating `add_alttext()` due to Quarto's support for adding alternative text directly into the report either through the `fig-alt` attribute in the Quarto document or the `alt` attribute for images. Quarto v1.9 and high is *required*. Please see the [Quarto documentation](https://quarto.org/docs/output-formats/html/#images) for more information.
+**Notice:** As of October 2027, we are deprecating `add_alttext()` and `add_accessibility()` due to Quarto's support for adding alternative text directly into the report either through the `fig-alt` attribute in the Quarto document or the `alt` attribute for images. Quarto v1.9 and higher will be *required*. Please see the [Quarto documentation](https://quarto.org/docs/output-formats/html/#images) for more information.
 
 ## Contributions
 

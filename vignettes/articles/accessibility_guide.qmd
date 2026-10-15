@@ -147,6 +147,9 @@ There is no one-size-fits-all approach for explaining what a figure is conveying
 
 Ensure you have Quarto v1.9 or higher installed on your machine before moving forward with these options.
 
+You can check your Quarto version by running the following code:
+
+
 To edit your rda’s alt text, follow these steps:
 
 #### Add to alternative text
@@ -290,7 +293,7 @@ In December 2025, we performed extensive testing on accessibility features in PD
 * Differences in tagging behavior for tables produced with `gt`, `kableExtra`, `flextable`, and raw LaTeX
 * How to avoid package conflicts between the LaTeX package that enables tagging (`tagpdf`) and other packages (e.g., `scrartcl`)
 
-As of October of 2026, Quarto supports in chunk and in-text alternative text to for pdf documents. Due to this change, we are in the beginning stages of deprecating `add_alttext()` and it will be available until October 1, 2027. The basic Quarto report does not fully meet tagging needs so `add_tagging()` will still be a necessary step to take to make documents fully section 508 compliant.
+As of October of 2026, Quarto supports in chunk and in-text alternative text to for pdf documents. Due to this change, we are in the beginning stages of deprecating `add_alttext()` and `add_accessibility()`, which will be available until October 1, 2027. The basic Quarto report does not fully meet tagging needs so `add_tagging()` will still be a necessary step to take to make documents fully section 508 compliant.
 
 ## NOAA institutional repository submission requirements
 
