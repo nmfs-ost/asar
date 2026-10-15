@@ -145,40 +145,38 @@ There is no one-size-fits-all approach for explaining what a figure is conveying
 
 ### How to edit your report's alt text and captions
 
+Ensure you have Quarto v1.9 or higher installed on your machine before moving forward with these options.
+
 To edit your rda’s alt text, follow these steps:
 
+#### Add to alternative text
+
 1.  Open your report's 08_figures.qmd file.
-2.  Run the first code chunk, which saves the filepath of your rda directory as an object (it has the label `"set-rda-dir-figs"`).
-3.  Find the two code chunks associated with the figure you're interested (e.g., recruitment). Run the first chunk, which will have "setup" in the label (e.g., `"fig-recruitment-setup"`,`"fig-spawning_biomass-setup"`, etc.).
-4.  **Add to the alt text by** pasting the existing alt text with a new string *within the chunk*. To do this, find your existing alt text object, which is an object named with the figure's topic and "alt_text" (e.g., `recruitment_alt_text`). Then, make an object (a string) containing your additional text (e.g., `new_alt_text`). Then, paste together the existing alt text object and your new text object. For example:
+2.  Find the two code chunks associated with the figure you're interested (e.g., recruitment). Run the first chunk, which will have "setup" in the label (e.g., `"fig-recruitment-setup"`,`"fig-spawning_biomass-setup"`, etc.).
+3.  **Add to the alt text by** pasting the existing alt text with a new string *within the chunk*. To do this, find your existing alt text object, which is an object named with the figure's topic and "alt_text" (e.g., `recruitment_alt_text`). Then, make an object (a string) containing your additional text (e.g., `new_alt_text`). Then, paste together the existing alt text object and your new text object. For example:
 
 ```{r, eval = FALSE}
 # the original alt text for the recruitment figure
 recruitment_alt_text
 
 # the new text that will be added on to the recruitment figure's alt text
-new_alt_text <- "This is my new alt text."
+add_alt_text <- "This is my new alt text."
 
 # add the new text to the old text
-recruitment_alt_text <- paste0(recruitment_alt_text, new_alt_text)
+recruitment_alt_text <- paste0(recruitment_alt_text, add_alt_text)
 ```
 
-5.  **Replace the alt text by** updating the original alt text object *within the chunk*. To do this, reassign the original alt text object as your new text object. For example:
+or
 
-```{r, eval = FALSE}
-# the original alt text for the recruitment figure
-recruitment_alt_text
+#### Replace alternative Text
 
-# the new text that will replace the recruitment figure's alt text
-new_alt_text <- "This is my new alt text."
-
-# replace the old alt text with the new alt text
-recruitment_alt_text <- new_alt_text
-```
+1.  Open your report's 08_figures.qmd file.
+2.  Find the code chunk executing the figure you're interested (e.g., recruitment).
+3.  Edit the chunk option labelled `fig-alt: !expr recruitment_alt_text` by replacing the "!expr recruitment_alt_text" with your own alternative text.
 
 **NOTES**:
 
-1.  Changes to your alt text will be saved within your 08_figures.qmd file, but not within the rda file itself. To directly edit the rda file's alt text or caption, assign a new value to the text you wish to change. For example, if your rda is called `rda` and you want to change the caption to "my new caption", you'd enter the following command: `rda[["caption"]] <- "my new caption"`. To change the alt text, you'd change "caption" to "alt_text" (e.g., `rda[["alt_text"]] <- "my new alt text"`.). Save the changes to the rda's file by entering the following command (in this example, our rda is called "biomass_figure.rda"): `save(rda, file = 'biomass_figure.rda')`.
+1.  Changes to your alt text will be saved within your 08_figures.qmd file, but not within the rda file itself. To directly edit the rda file's alt text or caption, assign a new value to the text you wish to change. For example, if your rda is called `rda` and you want to change the caption to "my new caption", you'd enter the following command: `rda[["caption"]] <- "my new caption"`. To change the alt text, you'd change "caption" to "alt_text" (e.g., `rda[["alt_text"]] <- "my new alt text"`.). Save the changes to the rda's file by entering the following command (in this example, our rda is called "biomass_figure.rda"): `save(rda, file = 'biomass_figure.rda')`. For Quarto v1.9 and higher, users can directly add their caption and alternative text into their document without having the use `add_alttext()`.
 
 2.  Edit figure and table captions with the same process. Just substitute mentions of alt text with caption.
 
@@ -284,13 +282,15 @@ For specialized commands that enable capitalization, reference to acronyms' mean
 Please do not place figures inside tables. Doing so makes it very difficult for software to properly identify the structure of (i.e., *tag*) the table and its inner elements.
 
 # Status of accessibility features
-*Date updated: 12/16/2025*
+*Date updated: 10/15/2026*
 
 In December 2025, we performed extensive testing on accessibility features in PDFs. This ["a11y-sandbox" repository](https://github.com/Schiano-NOAA/a11y-sandbox/) contains many examples of features and table types that were tested for success in tagging, passing Adobe Accessibility Checker tests, and more. Please check out the [README](https://github.com/Schiano-NOAA/a11y-sandbox/blob/main/README.md) for findings related to topics such as:
 
 * Why some Adobe Accessibility checks fail, why some failures are incorrect, and how to manually fix the tags in Adobe
 * Differences in tagging behavior for tables produced with `gt`, `kableExtra`, `flextable`, and raw LaTeX
 * How to avoid package conflicts between the LaTeX package that enables tagging (`tagpdf`) and other packages (e.g., `scrartcl`)
+
+As of October of 2026, Quarto supports in chunk and in-text alternative text to for pdf documents. Due to this change, we are in the beginning stages of deprecating `add_alttext()` and it will be available until October 1, 2027. The basic Quarto report does not fully meet tagging needs so `add_tagging()` will still be a necessary step to take to make documents fully section 508 compliant.
 
 ## NOAA institutional repository submission requirements
 
@@ -321,7 +321,7 @@ This section states the status of `asar` reports' accessibility features as comp
 
 **Expectation:** Alternative text is present for all figures, charts, maps, etc.
 
-**Status**: This expectation is met. `add_tagging()` adds alternative text to images.
+**Status**: This expectation is met using Quarto v1.9 and higher. `add_alttext()` is deprecated, but will be available until October 1, 2027. Users can add alternative text directly in their Quarto document using the `fig-alt` chunk option or the `alt` attribute for images.
 
 ### 4. Logical reading order ✅
 
@@ -345,7 +345,7 @@ HTML reports more readily pass several accessibility criteria.
 
 ### Adding tags and alt text in the same function
 
-`add_accessibility()` is functional. It combines `add_tagging()` and `add_alttext()`, allowing the user to add tagging and alternative text at once.
+`add_accessibility()` is functional. It combines `add_tagging()` and `add_alttext()`, allowing the user to add tagging and alternative text at once. This function will also be deprecated on Oct. 1, 2027 since it will be redundant to keep it once `add_alttext()` is removed.
 
 ### Glossary
 
