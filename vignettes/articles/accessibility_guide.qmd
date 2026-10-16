@@ -293,7 +293,7 @@ In December 2025, we performed extensive testing on accessibility features in PD
 * Differences in tagging behavior for tables produced with `gt`, `kableExtra`, `flextable`, and raw LaTeX
 * How to avoid package conflicts between the LaTeX package that enables tagging (`tagpdf`) and other packages (e.g., `scrartcl`)
 
-As of October of 2026, Quarto supports in chunk and in-text alternative text to for pdf documents. Due to this change, we are in the beginning stages of deprecating `add_alttext()` and `add_accessibility()`, which will be available until October 1, 2027. The basic Quarto report does not fully meet tagging needs so `add_tagging()` will still be a necessary step to take to make documents fully section 508 compliant.
+As of October of 2026, Quarto supports in-chunk and in-text alternative text for pdf documents. Due to this change, we are in the beginning stages of deprecating `add_alttext()` and `add_accessibility()`, which will be available until October 1, 2027. The basic Quarto report does not fully meet tagging needs so `add_tagging()` will still be a necessary step to take to make documents fully Section 508 compliant.
 
 ## NOAA institutional repository submission requirements
 
@@ -415,9 +415,9 @@ The checklist reflects the results from a report made with a basic, exemplary `a
 | PDF tags have been added to the document (auto-tagging is acceptable, but may require touch-up work). |X| | |
 | Reading order is logical and correct based on the PDF tags. |X| | |
 
-## veraPDF accessibility testing
+## veraPDF accessibility testing (OPTIONAL)
 
-This section states the status of `asar` reports' accessibility features when tested with the [veraPDF](https://verapdf.org/home/) accessibility criteria.
+This section states the status of `asar` reports' accessibility features when tested with the [veraPDF](https://verapdf.org/home/) accessibility criteria. **This type of testing is for informational purposes and is purely optional; the NOAA accessibility criteria are discussed above.**
 
 veraPDF is an open-source PDF accessibility testing tool. It can check for [ISO 14289-2 (PDF/UA-2)](https://pdfa.org/iso-14289-2-pdf-ua-2-the-gold-standard-for-accessibility-in-pdf-2-0-has-arrived/), the "gold standard" for accessibility in PDF 2.0. [Quarto v1.9 supports automatic accessibility checking with veraPDF](https://opensource.posit.co/blog/2026-03-05_pdf-accessibility-and-standards/).
 
