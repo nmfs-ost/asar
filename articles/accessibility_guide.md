@@ -227,16 +227,21 @@ task.*
 
 #### How to edit your report’s alt text and captions
 
+Ensure you have Quarto v1.9 or higher installed on your machine before
+moving forward with these options.
+
+You can check your Quarto version by running the following code:
+
 To edit your rda’s alt text, follow these steps:
 
+##### Add to alternative text
+
 1.  Open your report’s 08_figures.qmd file.
-2.  Run the first code chunk, which saves the filepath of your rda
-    directory as an object (it has the label `"set-rda-dir-figs"`).
-3.  Find the two code chunks associated with the figure you’re
+2.  Find the two code chunks associated with the figure you’re
     interested (e.g., recruitment). Run the first chunk, which will have
     “setup” in the label (e.g.,
     `"fig-recruitment-setup"`,`"fig-spawning_biomass-setup"`, etc.).
-4.  **Add to the alt text by** pasting the existing alt text with a new
+3.  **Add to the alt text by** pasting the existing alt text with a new
     string *within the chunk*. To do this, find your existing alt text
     object, which is an object named with the figure’s topic and
     “alt_text” (e.g., `recruitment_alt_text`). Then, make an object (a
@@ -250,27 +255,22 @@ To edit your rda’s alt text, follow these steps:
 recruitment_alt_text
 
 # the new text that will be added on to the recruitment figure's alt text
-new_alt_text <- "This is my new alt text."
+add_alt_text <- "This is my new alt text."
 
 # add the new text to the old text
-recruitment_alt_text <- paste0(recruitment_alt_text, new_alt_text)
+recruitment_alt_text <- paste0(recruitment_alt_text, add_alt_text)
 ```
 
-5.  **Replace the alt text by** updating the original alt text object
-    *within the chunk*. To do this, reassign the original alt text
-    object as your new text object. For example:
+or
 
-``` r
+##### Replace alternative Text
 
-# the original alt text for the recruitment figure
-recruitment_alt_text
-
-# the new text that will replace the recruitment figure's alt text
-new_alt_text <- "This is my new alt text."
-
-# replace the old alt text with the new alt text
-recruitment_alt_text <- new_alt_text
-```
+1.  Open your report’s 08_figures.qmd file.
+2.  Find the code chunk executing the figure you’re interested (e.g.,
+    recruitment).
+3.  Edit the chunk option labelled `fig-alt: !expr recruitment_alt_text`
+    by replacing the “!expr recruitment_alt_text” with your own
+    alternative text.
 
 **NOTES**:
 
@@ -284,7 +284,10 @@ recruitment_alt_text <- new_alt_text
     `rda[["alt_text"]] <- "my new alt text"`.). Save the changes to the
     rda’s file by entering the following command (in this example, our
     rda is called “biomass_figure.rda”):
-    `save(rda, file = 'biomass_figure.rda')`.
+    `save(rda, file = 'biomass_figure.rda')`. For Quarto v1.9 and
+    higher, users can directly add their caption and alternative text
+    into their document without having the use
+    [`add_alttext()`](nmfs-ost.github.io/asar/reference/add_alttext.md).
 
 2.  Edit figure and table captions with the same process. Just
     substitute mentions of alt text with caption.
@@ -475,7 +478,7 @@ difficult for software to properly identify the structure of (i.e.,
 
 ## Status of accessibility features
 
-*Date updated: 12/16/2025*
+*Date updated: 10/15/2026*
 
 In December 2025, we performed extensive testing on accessibility
 features in PDFs. This [“a11y-sandbox”
@@ -492,6 +495,17 @@ for findings related to topics such as:
   `kableExtra`, `flextable`, and raw LaTeX
 - How to avoid package conflicts between the LaTeX package that enables
   tagging (`tagpdf`) and other packages (e.g., `scrartcl`)
+
+As of October of 2026, Quarto supports in chunk and in-text alternative
+text to for pdf documents. Due to this change, we are in the beginning
+stages of deprecating
+[`add_alttext()`](nmfs-ost.github.io/asar/reference/add_alttext.md) and
+[`add_accessibility()`](nmfs-ost.github.io/asar/reference/add_accessibility.md),
+which will be available until October 1, 2027. The basic Quarto report
+does not fully meet tagging needs so
+[`add_tagging()`](nmfs-ost.github.io/asar/reference/add_tagging.md) will
+still be a necessary step to take to make documents fully section 508
+compliant.
 
 ### NOAA institutional repository submission requirements
 
@@ -541,9 +555,11 @@ reflect this.
 **Expectation:** Alternative text is present for all figures, charts,
 maps, etc.
 
-**Status**: This expectation is met.
-[`add_tagging()`](nmfs-ost.github.io/asar/reference/add_tagging.md) adds
-alternative text to images.
+**Status**: This expectation is met using Quarto v1.9 and higher.
+[`add_alttext()`](nmfs-ost.github.io/asar/reference/add_alttext.md) is
+deprecated, but will be available until October 1, 2027. Users can add
+alternative text directly in their Quarto document using the `fig-alt`
+chunk option or the `alt` attribute for images.
 
 #### 4. Logical reading order ✅
 
@@ -574,7 +590,11 @@ HTML reports more readily pass several accessibility criteria.
 is functional. It combines
 [`add_tagging()`](nmfs-ost.github.io/asar/reference/add_tagging.md) and
 [`add_alttext()`](nmfs-ost.github.io/asar/reference/add_alttext.md),
-allowing the user to add tagging and alternative text at once.
+allowing the user to add tagging and alternative text at once. This
+function will also be deprecated on Oct. 1, 2027 since it will be
+redundant to keep it once
+[`add_alttext()`](nmfs-ost.github.io/asar/reference/add_alttext.md) is
+removed.
 
 #### Glossary
 

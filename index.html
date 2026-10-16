@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">asar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.7.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,7 +104,7 @@
 </ol>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'asar'</span>, repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'https://noaa-fisheries-integrated-toolbox.r-universe.dev'</span>, <span class="st">'https://cloud.r-project.org'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>We also recommend downloading the <a href="https://github.com/nmfs-ost/stockplotr" class="external-link"><code>stockplotr</code> package</a> along with Quarto (v1.6.0 or greater). Use one of the previous download instructions to also install <code>stockplotr</code> by replacing ‘asar’ with ‘stockplotr’. Install quarto using the above options or base R <code>install.packages("quarto")</code>.</p>
+<p>We also recommend downloading the <a href="https://github.com/nmfs-ost/stockplotr" class="external-link"><code>stockplotr</code> package</a> along with Quarto (v1.9.0 or greater). Use one of the previous download instructions to also install <code>stockplotr</code> by replacing ‘asar’ with ‘stockplotr’. Install quarto using the above options or base R <code>install.packages("quarto")</code>.</p>
 <div class="section level3">
 <h3 id="installing-on-linux-machines">Installing on Linux machines<a class="anchor" aria-label="anchor" href="#installing-on-linux-machines"></a>
 </h3>
@@ -183,6 +183,7 @@ sudo apt-get install -y libpoppler-cpp-dev</code></pre>
 <li>
 <a href="https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#status-of-accessibility-features">The development status of the features</a> that are required for submission as per two relevant NOAA checklists</li>
 </ol>
+<p><strong>Notice:</strong> As of October 2027, we are deprecating <code><a href="reference/add_alttext.html">add_alttext()</a></code> and <code><a href="reference/add_accessibility.html">add_accessibility()</a></code> due to Quarto’s support for adding alternative text directly into the report either through the <code>fig-alt</code> attribute in the Quarto document or the <code>alt</code> attribute for images. Quarto v1.9 and higher will be <em>required</em>. Please see the <a href="https://quarto.org/docs/output-formats/html/#images" class="external-link">Quarto documentation</a> for more information.</p>
 </div>
 <div class="section level2">
 <h2 id="contributions">Contributions<a class="anchor" aria-label="anchor" href="#contributions"></a>

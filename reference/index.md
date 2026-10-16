@@ -9,10 +9,10 @@
   : Identify table width class
 
 - [`add_accessibility()`](nmfs-ost.github.io/asar/reference/add_accessibility.md)
-  : Add Accessibility to .tex documents
+  **\[deprecated\]** : Add Accessibility to .tex documents
 
-- [`add_alttext()`](nmfs-ost.github.io/asar/reference/add_alttext.md) :
-  Add alternative text into latex
+- [`add_alttext()`](nmfs-ost.github.io/asar/reference/add_alttext.md)
+  **\[deprecated\]** : Add alternative text into latex
 
 - [`add_authors()`](nmfs-ost.github.io/asar/reference/add_authors.md) :
   Format authors for skeleton

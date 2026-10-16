@@ -1,6 +1,9 @@
 # Add alternative text into latex
 
-Add alternative text into latex
+**\[deprecated\]**
+
+This function was deprecated because Quarto v1.9 and higher supports
+incorporating alternative text in code chunks and in-text for documents.
 
 ## Usage
 

@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">asar</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.7.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.7.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,7 +75,7 @@
 
 
 
-      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/v2.7.0/vignettes/articles/accessibility_guide.qmd" class="external-link"><code>vignettes/articles/accessibility_guide.qmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nmfs-ost/asar/blob/main/vignettes/articles/accessibility_guide.qmd" class="external-link"><code>vignettes/articles/accessibility_guide.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
     </div>
 
@@ -213,10 +213,13 @@
 <li>Describe where most points fall (in the four quadrants).</li>
 </ul></section></section><section class="level3"><h4 class="anchored" id="how-to-edit-your-reports-alt-text-and-captions">How to edit your report’s alt text and captions<a class="anchor" aria-label="anchor" href="#how-to-edit-your-reports-alt-text-and-captions"></a>
 </h4>
+<p>Ensure you have Quarto v1.9 or higher installed on your machine before moving forward with these options.</p>
+<p>You can check your Quarto version by running the following code:</p>
 <p>To edit your rda’s alt text, follow these steps:</p>
+<section class="level4"><h5 class="anchored" id="add-to-alternative-text">Add to alternative text<a class="anchor" aria-label="anchor" href="#add-to-alternative-text"></a>
+</h5>
 <ol type="1">
 <li>Open your report’s 08_figures.qmd file.</li>
-<li>Run the first code chunk, which saves the filepath of your rda directory as an object (it has the label <code>"set-rda-dir-figs"</code>).</li>
 <li>Find the two code chunks associated with the figure you’re interested (e.g., recruitment). Run the first chunk, which will have “setup” in the label (e.g., <code>"fig-recruitment-setup"</code>,<code>"fig-spawning_biomass-setup"</code>, etc.).</li>
 <li>
 <strong>Add to the alt text by</strong> pasting the existing alt text with a new string <em>within the chunk</em>. To do this, find your existing alt text object, which is an object named with the figure’s topic and “alt_text” (e.g., <code>recruitment_alt_text</code>). Then, make an object (a string) containing your additional text (e.g., <code>new_alt_text</code>). Then, paste together the existing alt text object and your new text object. For example:</li>
@@ -227,33 +230,26 @@
 <span><span class="va">recruitment_alt_text</span></span>
 <span></span>
 <span><span class="co"># the new text that will be added on to the recruitment figure's alt text</span></span>
-<span><span class="va">new_alt_text</span> <span class="op">&lt;-</span> <span class="st">"This is my new alt text."</span></span>
+<span><span class="va">add_alt_text</span> <span class="op">&lt;-</span> <span class="st">"This is my new alt text."</span></span>
 <span></span>
 <span><span class="co"># add the new text to the old text</span></span>
-<span><span class="va">recruitment_alt_text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">recruitment_alt_text</span>, <span class="va">new_alt_text</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">recruitment_alt_text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">recruitment_alt_text</span>, <span class="va">add_alt_text</span><span class="op">)</span></span></code></pre></div>
 </div>
-<ol start="5" type="1">
-<li>
-<strong>Replace the alt text by</strong> updating the original alt text object <em>within the chunk</em>. To do this, reassign the original alt text object as your new text object. For example:</li>
+<p>or</p>
+</section><section class="level4"><h5 class="anchored" id="replace-alternative-text">Replace alternative Text<a class="anchor" aria-label="anchor" href="#replace-alternative-text"></a>
+</h5>
+<ol type="1">
+<li>Open your report’s 08_figures.qmd file.</li>
+<li>Find the code chunk executing the figure you’re interested (e.g., recruitment).</li>
+<li>Edit the chunk option labelled <code>fig-alt: !expr recruitment_alt_text</code> by replacing the “!expr recruitment_alt_text” with your own alternative text.</li>
 </ol>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># the original alt text for the recruitment figure</span></span>
-<span><span class="va">recruitment_alt_text</span></span>
-<span></span>
-<span><span class="co"># the new text that will replace the recruitment figure's alt text</span></span>
-<span><span class="va">new_alt_text</span> <span class="op">&lt;-</span> <span class="st">"This is my new alt text."</span></span>
-<span></span>
-<span><span class="co"># replace the old alt text with the new alt text</span></span>
-<span><span class="va">recruitment_alt_text</span> <span class="op">&lt;-</span> <span class="va">new_alt_text</span></span></code></pre></div>
-</div>
 <p><strong>NOTES</strong>:</p>
 <ol type="1">
-<li><p>Changes to your alt text will be saved within your 08_figures.qmd file, but not within the rda file itself. To directly edit the rda file’s alt text or caption, assign a new value to the text you wish to change. For example, if your rda is called <code>rda</code> and you want to change the caption to “my new caption”, you’d enter the following command: <code>rda[["caption"]] &lt;- "my new caption"</code>. To change the alt text, you’d change “caption” to “alt_text” (e.g., <code>rda[["alt_text"]] &lt;- "my new alt text"</code>.). Save the changes to the rda’s file by entering the following command (in this example, our rda is called “biomass_figure.rda”): <code>save(rda, file = 'biomass_figure.rda')</code>.</p></li>
+<li><p>Changes to your alt text will be saved within your 08_figures.qmd file, but not within the rda file itself. To directly edit the rda file’s alt text or caption, assign a new value to the text you wish to change. For example, if your rda is called <code>rda</code> and you want to change the caption to “my new caption”, you’d enter the following command: <code>rda[["caption"]] &lt;- "my new caption"</code>. To change the alt text, you’d change “caption” to “alt_text” (e.g., <code>rda[["alt_text"]] &lt;- "my new alt text"</code>.). Save the changes to the rda’s file by entering the following command (in this example, our rda is called “biomass_figure.rda”): <code>save(rda, file = 'biomass_figure.rda')</code>. For Quarto v1.9 and higher, users can directly add their caption and alternative text into their document without having the use <code><a href="../reference/add_alttext.html">add_alttext()</a></code>.</p></li>
 <li><p>Edit figure and table captions with the same process. Just substitute mentions of alt text with caption.</p></li>
 <li><p>As stated earlier, if you see text that looks like a placeholder (e.g., “The x axis, showing the year, spans from B.start.year to B.end.year…”), that means that there was at least one instance where our tool failed to extract a specific value from the model results and substitute it into the placeholder. Please make sure that your alt text and captions contain the expected values before moving forward with your report. Check out the inst/resources/captions_alt_text_template.csv file in the <code>stockplotr</code> package to view the template with placeholders.</p></li>
 <li><p>If you add a special character (e.g., percentage sign (%) or dollar sign ($); see <a href="https://en.wikibooks.org/wiki/LaTeX/Special_Characters#Other_symbols" class="external-link">full list on this wiki page</a>), please add two backslashes before the character to avoid issues compiling your report later on (specifically, the conversion from Quarto to LaTeX via Pandoc, and then compilation of the LaTeX report after running <code><a href="../reference/add_accessibility.html">add_accessibility()</a></code> or <code><a href="../reference/add_alttext.html">add_alttext()</a></code>). For example, “The 95% CI” would be written as “The 95\\% CI”.</p></li>
-</ol></section><section class="level3"><h4 class="anchored" id="more-resources">More resources<a class="anchor" aria-label="anchor" href="#more-resources"></a>
+</ol></section></section><section class="level3"><h4 class="anchored" id="more-resources">More resources<a class="anchor" aria-label="anchor" href="#more-resources"></a>
 </h4>
 <p>Looking for more resources for writing alt text? Check out the <a href="https://library.noaa.gov/Section508/CreatingDocs" class="external-link">NOAA Library’s website for creating accessible documents</a>.</p>
 </section></section><section class="level2"><h3 class="anchored" id="acronyms-and-glossary">Acronyms and Glossary<a class="anchor" aria-label="anchor" href="#acronyms-and-glossary"></a>
@@ -321,13 +317,14 @@
 <p>Please do not place figures inside tables. Doing so makes it very difficult for software to properly identify the structure of (i.e., <em>tag</em>) the table and its inner elements.</p>
 </section></section><section class="section level2"><h2 id="status-of-accessibility-features">Status of accessibility features<a class="anchor" aria-label="anchor" href="#status-of-accessibility-features"></a>
 </h2>
-<p><em>Date updated: 12/16/2025</em></p>
+<p><em>Date updated: 10/15/2026</em></p>
 <p>In December 2025, we performed extensive testing on accessibility features in PDFs. This <a href="https://github.com/Schiano-NOAA/a11y-sandbox/" class="external-link">“a11y-sandbox” repository</a> contains many examples of features and table types that were tested for success in tagging, passing Adobe Accessibility Checker tests, and more. Please check out the <a href="https://github.com/Schiano-NOAA/a11y-sandbox/blob/main/README.md" class="external-link">README</a> for findings related to topics such as:</p>
 <ul>
 <li>Why some Adobe Accessibility checks fail, why some failures are incorrect, and how to manually fix the tags in Adobe</li>
 <li>Differences in tagging behavior for tables produced with <code>gt</code>, <code>kableExtra</code>, <code>flextable</code>, and raw LaTeX</li>
 <li>How to avoid package conflicts between the LaTeX package that enables tagging (<code>tagpdf</code>) and other packages (e.g., <code>scrartcl</code>)</li>
 </ul>
+<p>As of October of 2026, Quarto supports in chunk and in-text alternative text to for pdf documents. Due to this change, we are in the beginning stages of deprecating <code><a href="../reference/add_alttext.html">add_alttext()</a></code> and <code><a href="../reference/add_accessibility.html">add_accessibility()</a></code>, which will be available until October 1, 2027. The basic Quarto report does not fully meet tagging needs so <code><a href="../reference/add_tagging.html">add_tagging()</a></code> will still be a necessary step to take to make documents fully section 508 compliant.</p>
 <section class="level2"><h3 class="anchored" id="noaa-institutional-repository-submission-requirements">NOAA institutional repository submission requirements<a class="anchor" aria-label="anchor" href="#noaa-institutional-repository-submission-requirements"></a>
 </h3>
 <p>This section states the status of <code>asar</code> reports’ accessibility features as compared to <a href="https://library.noaa.gov/Section508/QuickStart" class="external-link">the NOAA “Big 5” Section 508 compliance requirements</a>.</p>
@@ -350,7 +347,7 @@
 </section><section class="level3"><h4 class="anchored" id="alternative-text-1">3. Alternative Text ✅<a class="anchor" aria-label="anchor" href="#alternative-text-1"></a>
 </h4>
 <p><strong>Expectation:</strong> Alternative text is present for all figures, charts, maps, etc.</p>
-<p><strong>Status</strong>: This expectation is met. <code><a href="../reference/add_tagging.html">add_tagging()</a></code> adds alternative text to images.</p>
+<p><strong>Status</strong>: This expectation is met using Quarto v1.9 and higher. <code><a href="../reference/add_alttext.html">add_alttext()</a></code> is deprecated, but will be available until October 1, 2027. Users can add alternative text directly in their Quarto document using the <code>fig-alt</code> chunk option or the <code>alt</code> attribute for images.</p>
 </section><section class="level3"><h4 class="anchored" id="logical-reading-order">4. Logical reading order ✅<a class="anchor" aria-label="anchor" href="#logical-reading-order"></a>
 </h4>
 <p><strong>Expectation:</strong> The reading order of the elements is logical and follows the flow of the document.</p>
@@ -367,7 +364,7 @@
 <p>HTML reports more readily pass several accessibility criteria.</p>
 </section><section class="level3"><h4 class="anchored" id="adding-tags-and-alt-text-in-the-same-function">Adding tags and alt text in the same function<a class="anchor" aria-label="anchor" href="#adding-tags-and-alt-text-in-the-same-function"></a>
 </h4>
-<p><code><a href="../reference/add_accessibility.html">add_accessibility()</a></code> is functional. It combines <code><a href="../reference/add_tagging.html">add_tagging()</a></code> and <code><a href="../reference/add_alttext.html">add_alttext()</a></code>, allowing the user to add tagging and alternative text at once.</p>
+<p><code><a href="../reference/add_accessibility.html">add_accessibility()</a></code> is functional. It combines <code><a href="../reference/add_tagging.html">add_tagging()</a></code> and <code><a href="../reference/add_alttext.html">add_alttext()</a></code>, allowing the user to add tagging and alternative text at once. This function will also be deprecated on Oct. 1, 2027 since it will be redundant to keep it once <code><a href="../reference/add_alttext.html">add_alttext()</a></code> is removed.</p>
 </section><section class="level3"><h4 class="anchored" id="glossary">Glossary<a class="anchor" aria-label="anchor" href="#glossary"></a>
 </h4>
 <p>The glossary is functional.</p>

@@ -1,8 +1,15 @@
 # Add Accessibility to .tex documents
 
-Modifies a LaTeX report file to improve document accessibility. This
-function automates the process of adding PDF tagging and integrating
-alternative text for figures and tables.
+**\[deprecated\]**
+
+[`add_alttext()`](nmfs-ost.github.io/asar/reference/add_alttext.md) is
+being deprecated, but will be available until October 1, 2027. In
+response, this function will not be necessary after that date and will
+be deprecated as well.
+
+Previously modifies a LaTeX report file to improve document
+accessibility. This function automates the process of adding PDF tagging
+and integrating alternative text for figures and tables.
 
 ## Usage
 

@@ -56,7 +56,7 @@ install.packages('asar', repos = c('https://noaa-fisheries-integrated-toolbox.r-
 
 We also recommend downloading the [`stockplotr`
 package](https://github.com/nmfs-ost/stockplotr) along with Quarto
-(v1.6.0 or greater). Use one of the previous download instructions to
+(v1.9.0 or greater). Use one of the previous download instructions to
 also install `stockplotr` by replacing ‘asar’ with ‘stockplotr’. Install
 quarto using the above options or base R `install.packages("quarto")`.
 
@@ -188,6 +188,16 @@ to learn:
 3.  [The development status of the
     features](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html#status-of-accessibility-features)
     that are required for submission as per two relevant NOAA checklists
+
+**Notice:** As of October 2027, we are deprecating
+[`add_alttext()`](nmfs-ost.github.io/asar/reference/add_alttext.md) and
+[`add_accessibility()`](nmfs-ost.github.io/asar/reference/add_accessibility.md)
+due to Quarto’s support for adding alternative text directly into the
+report either through the `fig-alt` attribute in the Quarto document or
+the `alt` attribute for images. Quarto v1.9 and higher will be
+*required*. Please see the [Quarto
+documentation](https://quarto.org/docs/output-formats/html/#images) for
+more information.
 
 ## Contributions
 
