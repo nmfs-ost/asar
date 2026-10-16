@@ -38,7 +38,8 @@ before documentclass, so this function alters the rendered .tex file.
 Flextable-based tables will not be tagged as flextable is not compatible with tagpdf.
 }
 \description{
-Add tagging structure to latex documents produced from quarto
+This function was deprecated because Quarto v1.9 and higher supports all
+features this function provides to meet U.S. accessibility standards.
 }
 \examples{
 \dontrun{

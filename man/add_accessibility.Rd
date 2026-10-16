@@ -40,7 +40,13 @@ Default: NULL}
 No return value. Modifies files on disk and optionally renders a .pdf.
 }
 \description{
-Modifies a LaTeX report file to improve document accessibility. This function
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+\code{add_alttext()} is being deprecated, but will be
+available until October 1, 2027. In response, this function will
+not be necessary after that date and will be deprecated as well.
+
+Previously modifies a LaTeX report file to improve document accessibility. This function
 automates the process of adding PDF tagging and integrating alternative text
 for figures and tables.
 }

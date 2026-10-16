@@ -43,6 +43,7 @@ README
 RStudio
 RTF
 Rceattle
+Rerender
 Rerendering
 Rmarkdown
 Rockfish
@@ -59,7 +60,6 @@ TOC
 TinyTeX
 Vladlena
 ak
-alttext
 asis
 bcurrent
 blockquote
@@ -75,6 +75,7 @@ docx
 ecomon
 ect
 ewide
+expr
 findability
 flextable
 flextables

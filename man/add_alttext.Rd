@@ -57,7 +57,10 @@ text using this format will not be available and must be used in conjunction
 with \code{asar::add_tagging()} unless tagged is set to FALSE. Default is TRUE.
 }
 \description{
-Add alternative text into latex
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This function was deprecated because Quarto v1.9 and higher supports
+incorporating alternative text in code chunks and in-text for documents.
 }
 \examples{
 \dontrun{
