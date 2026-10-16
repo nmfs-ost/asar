@@ -527,7 +527,7 @@ create_template <- function(
     # 2. support_files folder
     # 3. journals-bibnames.sty
     # 4. ?
-    if (length(list.files(subdir)) < 4) {
+    if (all(files_to_copy %notin% list.files(subdir))) { # length(list.files(subdir)) < 4
       # copy quarto files
       file.copy(file.path(current_folder, files_to_copy), new_folder, overwrite = FALSE)
       # copy before-body tex
@@ -600,6 +600,7 @@ create_template <- function(
         file.copy(system.file("glossary", "report_glossary.tex", package = "asar"), subdir, overwrite = FALSE) |> suppressWarnings()
         # Copy html format file if applicable
         if (tolower(format) == "html") file.copy(system.file("resources", "formatting_files", "theme.scss", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+        file.copy(system.file("resources", "cjfas.csl", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
         cli::cli_alert_warning("Report template files were not copied into your directory.")
         cli::cli_alert_info("If you wish to update the template with new parameters or output files, please edit the {report_name} in your local folder.",
