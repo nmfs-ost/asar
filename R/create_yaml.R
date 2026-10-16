@@ -74,6 +74,13 @@ create_yaml <- function(
 ) {
   param_names <- custom_params |> names()
   param_values <- custom_params |> unname()
+  
+  # new accessibility-related additions
+  lang_line <- "lang: en"
+  knitr_line <- paste0("knitr:", "\n",
+  "  ", "opts_chunk:", "\n",
+  "    ", "dev: 'cairo_pdf'")
+  ua_line <- paste0("  ", "  ", "pdf-standard: ua-2")
 
   # check first if want to rerender current skeleton
   if (rerender_skeleton) {
@@ -116,12 +123,16 @@ create_yaml <- function(
     # TODO: replace {} in the latex notation
     yaml <- stringr::str_replace(yaml, yaml[grep("title:", yaml)], paste("title: ", title, sep = ""))
 
-    # add add'l param names
-    # this occurs below
-    # if (!is.null(param_names) & !is.null(param_values)) {
-    #   add_params <- paste("  ", " ", param_names, ": ", "'", param_values, "'", sep = "")
-    #   yaml <- append(yaml, add_params, after = grep("bibliography:", yaml) - 1)
-    # }
+    # add accessibility-related lines
+    if (!any(grepl("lang: en", yaml))) {
+      yaml <- append(yaml, lang_line, after = grep("date:", yaml))
+    }
+    if (!any(grepl("cairo_pdf", yaml))) {
+      yaml <- append(yaml, knitr_line, after = grep("echo:", yaml))
+    }
+    if (format == "pdf" & !any(grepl("pdf-standard: ua-2", yaml))) {
+      yaml <- append(yaml, ua_line, after = grep("  pdf:", yaml))
+    }
 
     # add in spp image/replace if specific
     if (!is.null(spp_image)) {
@@ -219,10 +230,8 @@ create_yaml <- function(
       yaml,
       # Date
       "date: today", "\n",
-      "knitr:", "\n",
-      "  ", "opts_chunk:", "\n",
-      "    ", "dev: 'cairo_pdf'", "\n",
-      "lang: en \n",
+      knitr_line, "\n",
+      lang_line, "\n",
       "keep-tex: true \n",
       # "mainfont: 'Latin Modern Sans' \n",
       "tbl-pos: 't' \n",
