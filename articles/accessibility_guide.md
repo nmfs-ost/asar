@@ -496,15 +496,15 @@ for findings related to topics such as:
 - How to avoid package conflicts between the LaTeX package that enables
   tagging (`tagpdf`) and other packages (e.g., `scrartcl`)
 
-As of October of 2026, Quarto supports in chunk and in-text alternative
-text to for pdf documents. Due to this change, we are in the beginning
+As of October of 2026, Quarto supports in-chunk and in-text alternative
+text for pdf documents. Due to this change, we are in the beginning
 stages of deprecating
 [`add_alttext()`](nmfs-ost.github.io/asar/reference/add_alttext.md) and
 [`add_accessibility()`](nmfs-ost.github.io/asar/reference/add_accessibility.md),
 which will be available until October 1, 2027. The basic Quarto report
 does not fully meet tagging needs so
 [`add_tagging()`](nmfs-ost.github.io/asar/reference/add_tagging.md) will
-still be a necessary step to take to make documents fully section 508
+still be a necessary step to take to make documents fully Section 508
 compliant.
 
 ### NOAA institutional repository submission requirements
@@ -664,6 +664,51 @@ exemplary `asar` workflow (such as that in the README).
 | Items in the TOC are linked appropriately, and page numbers are correct. | X |  |  |
 | PDF tags have been added to the document (auto-tagging is acceptable, but may require touch-up work). | X |  |  |
 | Reading order is logical and correct based on the PDF tags. | X |  |  |
+
+### veraPDF accessibility testing (OPTIONAL)
+
+This section states the status of `asar` reports’ accessibility features
+when tested with the [veraPDF](https://verapdf.org/home/) accessibility
+criteria. **This type of testing is for informational purposes and is
+purely optional; the NOAA accessibility criteria are discussed above.**
+
+veraPDF is an open-source PDF accessibility testing tool. It can check
+for [ISO 14289-2
+(PDF/UA-2)](https://pdfa.org/iso-14289-2-pdf-ua-2-the-gold-standard-for-accessibility-in-pdf-2-0-has-arrived/),
+the “gold standard” for accessibility in PDF 2.0. [Quarto v1.9 supports
+automatic accessibility checking with
+veraPDF](https://opensource.posit.co/blog/2026-03-05_pdf-accessibility-and-standards/).
+
+To check that your report meets the accessibility criteria checked by
+veraPDF, install Java and veraPDF using [these
+instructions](https://opensource.posit.co/blog/2026-03-05_pdf-accessibility-and-standards/#how-to-enable-a-pdf-standard-in-quarto).
+The checking will occur automatically while your qmd is rendering if:
+
+1.  You’ve installed Quarto v1.9, Java, and veraPDF
+2.  Your report skeleton YAML contains the following lines, which should
+    appear automatically if you’re using an updated version of `asar`:
+
+#### Sets the PDF standard to PDF/UA-2
+
+    format:
+      pdf:
+        pdf-standard: ua-2
+
+#### Sets the document language to English
+
+    lang: en
+
+#### Embeds figure fonts in the PDF
+
+    knitr:
+      opts_chunk:
+        dev: 'cairo_pdf'
+
+You can check that your document passed the veraPDF accessibility
+criteria by looking at the “Background Jobs” tab in RStudio. It should
+look something like this:
+
+`[verapdf]: Validating sar-species-skeleton.pdf against PDF/UA-2... PASSED`
 
 [^1]: Canelón, Silvia, and Liz Hare. *Revealing Room for Improvement in
     Accessibility within a Social Media Data Visualization Learning

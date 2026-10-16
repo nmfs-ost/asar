@@ -324,7 +324,7 @@
 <li>Differences in tagging behavior for tables produced with <code>gt</code>, <code>kableExtra</code>, <code>flextable</code>, and raw LaTeX</li>
 <li>How to avoid package conflicts between the LaTeX package that enables tagging (<code>tagpdf</code>) and other packages (e.g., <code>scrartcl</code>)</li>
 </ul>
-<p>As of October of 2026, Quarto supports in chunk and in-text alternative text to for pdf documents. Due to this change, we are in the beginning stages of deprecating <code><a href="../reference/add_alttext.html">add_alttext()</a></code> and <code><a href="../reference/add_accessibility.html">add_accessibility()</a></code>, which will be available until October 1, 2027. The basic Quarto report does not fully meet tagging needs so <code><a href="../reference/add_tagging.html">add_tagging()</a></code> will still be a necessary step to take to make documents fully section 508 compliant.</p>
+<p>As of October of 2026, Quarto supports in-chunk and in-text alternative text for pdf documents. Due to this change, we are in the beginning stages of deprecating <code><a href="../reference/add_alttext.html">add_alttext()</a></code> and <code><a href="../reference/add_accessibility.html">add_accessibility()</a></code>, which will be available until October 1, 2027. The basic Quarto report does not fully meet tagging needs so <code><a href="../reference/add_tagging.html">add_tagging()</a></code> will still be a necessary step to take to make documents fully Section 508 compliant.</p>
 <section class="level2"><h3 class="anchored" id="noaa-institutional-repository-submission-requirements">NOAA institutional repository submission requirements<a class="anchor" aria-label="anchor" href="#noaa-institutional-repository-submission-requirements"></a>
 </h3>
 <p>This section states the status of <code>asar</code> reports’ accessibility features as compared to <a href="https://library.noaa.gov/Section508/QuickStart" class="external-link">the NOAA “Big 5” Section 508 compliance requirements</a>.</p>
@@ -637,7 +637,31 @@
 <td style="text-align: center;"></td>
 </tr>
 </tbody>
-</table></section></section></section><script id="quarto-html-after-body" type="application/javascript">
+</table></section></section><section class="level2"><h3 class="anchored" id="verapdf-accessibility-testing-optional">veraPDF accessibility testing (OPTIONAL)<a class="anchor" aria-label="anchor" href="#verapdf-accessibility-testing-optional"></a>
+</h3>
+<p>This section states the status of <code>asar</code> reports’ accessibility features when tested with the <a href="https://verapdf.org/home/" class="external-link">veraPDF</a> accessibility criteria. <strong>This type of testing is for informational purposes and is purely optional; the NOAA accessibility criteria are discussed above.</strong></p>
+<p>veraPDF is an open-source PDF accessibility testing tool. It can check for <a href="https://pdfa.org/iso-14289-2-pdf-ua-2-the-gold-standard-for-accessibility-in-pdf-2-0-has-arrived/" class="external-link">ISO 14289-2 (PDF/UA-2)</a>, the “gold standard” for accessibility in PDF 2.0. <a href="https://opensource.posit.co/blog/2026-03-05_pdf-accessibility-and-standards/" class="external-link">Quarto v1.9 supports automatic accessibility checking with veraPDF</a>.</p>
+<p>To check that your report meets the accessibility criteria checked by veraPDF, install Java and veraPDF using <a href="https://opensource.posit.co/blog/2026-03-05_pdf-accessibility-and-standards/#how-to-enable-a-pdf-standard-in-quarto" class="external-link">these instructions</a>. The checking will occur automatically while your qmd is rendering if:</p>
+<ol type="1">
+<li>You’ve installed Quarto v1.9, Java, and veraPDF</li>
+<li>Your report skeleton YAML contains the following lines, which should appear automatically if you’re using an updated version of <code>asar</code>:</li>
+</ol>
+<section class="level3"><h4 class="anchored" id="sets-the-pdf-standard-to-pdfua-2">Sets the PDF standard to PDF/UA-2<a class="anchor" aria-label="anchor" href="#sets-the-pdf-standard-to-pdfua-2"></a>
+</h4>
+<pre><code><span><span class="va">format</span><span class="op">:</span></span>
+<span>  <span class="va">pdf</span><span class="op">:</span></span>
+<span>    <span class="va">pdf</span><span class="op">-</span><span class="va">standard</span><span class="op">:</span> <span class="va">ua</span><span class="op">-</span><span class="fl">2</span></span></code></pre>
+</section><section class="level3"><h4 class="anchored" id="sets-the-document-language-to-english">Sets the document language to English<a class="anchor" aria-label="anchor" href="#sets-the-document-language-to-english"></a>
+</h4>
+<pre><code><span><span class="va">lang</span><span class="op">:</span> <span class="va">en</span></span></code></pre>
+</section><section class="level3"><h4 class="anchored" id="embeds-figure-fonts-in-the-pdf">Embeds figure fonts in the PDF<a class="anchor" aria-label="anchor" href="#embeds-figure-fonts-in-the-pdf"></a>
+</h4>
+<pre><code><span><span class="va">knitr</span><span class="op">:</span></span>
+<span>  <span class="va">opts_chunk</span><span class="op">:</span></span>
+<span>    <span class="va">dev</span><span class="op">:</span> <span class="st">'cairo_pdf'</span></span></code></pre>
+<p>You can check that your document passed the veraPDF accessibility criteria by looking at the “Background Jobs” tab in RStudio. It should look something like this:</p>
+<p><code>[verapdf]: Validating sar-species-skeleton.pdf against PDF/UA-2... PASSED</code></p>
+</section></section></section><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
