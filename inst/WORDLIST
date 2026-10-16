@@ -58,6 +58,7 @@ SWFSC
 Strikethrough
 TOC
 TinyTeX
+UA
 Vladlena
 ak
 asis
@@ -139,5 +140,6 @@ tbls
 tex
 tinytex
 titlepage
+veraPDF
 yaml
 yml
