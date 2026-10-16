@@ -140,7 +140,7 @@ test_that("add_alttext() adds tagged alt text and leaves existing text unchanged
   expect_true(any(grepl("keepaspectratio,alt={'Biomass plot'}", output, fixed = TRUE)))
   expect_true(any(grepl("alt={'Existing text'}", output, fixed = TRUE)))
   expect_false(any(grepl("Updated text", output, fixed = TRUE)))
-  expect_false(any(grepl("alt=", readLines(file.path(dir, "source.tex")), fixed = TRUE)))
+  expect_equal(readLines(file.path(dir, "source.tex")), tex)
 })
 
 test_that("add_alttext() supports the tooltip path", {
