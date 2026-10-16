@@ -41,7 +41,6 @@ add_tagging <- function(
   compile = TRUE,
   rename = NULL
 ) {
-  
   if (length(x) == 0) {
     cli::cli_abort(c(
       message = "Report .tex file not found.",

@@ -152,12 +152,12 @@ Rerender skeleton quarto document
 \examples{
 \dontrun{
 rerender_skeleton(
-file_dir = getwd(),
-species = "Red Snapper",
-office = "SEFSC",
-region = "Gulf of America",
-year = 2027,
-authors = c("Jane Doe" = "SEFSC")
+  file_dir = getwd(),
+  species = "Red Snapper",
+  office = "SEFSC",
+  region = "Gulf of America",
+  year = 2027,
+  authors = c("Jane Doe" = "SEFSC")
 )
 }
 }
