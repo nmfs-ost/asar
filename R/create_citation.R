@@ -34,7 +34,7 @@ create_citation <- function(
   #   month       = {Sep}
   # }
   # Authors. Year. Title. Publishing office. # p. Accessible at [URL/DOI].
-  
+
   # Check if authors is input - improved from previous fxn so did not fail
   if (is.null(authors) | any(authors == "")) {
     cli::cli_alert_warning("Authorship not defined.")
@@ -76,7 +76,7 @@ create_citation <- function(
     # Authored by Sam Schiano with contributions from Kelli Johnson
 
     region_specific_part <- switch(primary_author_office[["office"]],
-      "AFSC"  = "North Pacific Fishery Management Council, Anchorage, AK. \\pageref*{LastPage}{} pp. Available from https://www.npfmc.org/library/safe-reports/",
+      "AFSC" = "North Pacific Fishery Management Council, Anchorage, AK. \\pageref*{LastPage}{} pp. Available from https://www.npfmc.org/library/safe-reports/",
       "NWFSC" = "Pacific Fishery Management Council, Portland, OR. \\pageref*{LastPage}{} pp. Available from https://www.pcouncil.org/stock-assessments-and-fishery-evaluation-safe-documents/",
       "SEFSC" = "SEDAR, North Charleston SC. \\pageref*{LastPage}{} pp. available online at: http://sedarweb.org/",
       "SWFSC" = "Pacific Fishery Management Council, Portland, OR. \\pageref*{LastPage}{} pp. Available from https://www.pcouncil.org/stock-assessments-and-fishery-evaluation-safe-documents/",

@@ -90,10 +90,10 @@
 #' Default: NULL
 #'
 #' @param bib_file Path or logical. A character string of the path to a custom `.bib` file, or a logical (TRUE/FALSE).
-#'   If a path is provided, the custom file is used and journal templates are skipped. 
-#'   If `TRUE`, default journal `.bib` templates are downloaded. 
+#'   If a path is provided, the custom file is used and journal templates are skipped.
+#'   If `TRUE`, default journal `.bib` templates are downloaded.
 #'   If `FALSE` or `NULL` (default), a minimal `.bib` file containing only the `asar` package citation is created.
-#'   
+#'
 #' Default: TRUE
 #'
 #' @param new_template Logical. TRUE/FALSE; Create a new template? If true,
@@ -137,16 +137,16 @@
 #' function, above).
 #'
 #' Default: NULL
-#' 
+#'
 #' @param rerender_skeleton `r lifecycle::badge('deprecated')` This argument was
-#'  deprecated in favor of a separate function `rerender_skeleton()` in order to 
+#'  deprecated in favor of a separate function `rerender_skeleton()` in order to
 #'  provide more clarity and separation of functionality.
 #'
-#' @param param_names `r lifecycle::badge('deprecated')` 
+#' @param param_names `r lifecycle::badge('deprecated')`
 #' This argument was deprecated in favor of the `custom_params` argument in order
 #' to provide more clarity and decrease necessary arguments.
-#'  
-#' @param param_values `r lifecycle::badge('deprecated')` 
+#'
+#' @param param_values `r lifecycle::badge('deprecated')`
 #' This argument was deprecated in favor of the `custom_params` argument in order
 #' to provide more clarity and decrease necessary arguments.
 #'
@@ -270,24 +270,24 @@ create_template <- function(
   # check for used deprecated arguments
   if (lifecycle::is_present(param_names) || lifecycle::is_present(param_values)) {
     lifecycle::deprecate_warn(
-      when = "2.7.0", 
-      what = "create_template(param_names)", 
+      when = "2.7.0",
+      what = "create_template(param_names)",
       details = "Please use `custom_params` instead of `param_names` and `param_values`"
     )
-    
+
     custom_params <- setNames(param_values, param_names)
   }
- 
+
   if (lifecycle::is_present(rerender_skeleton)) {
     # 1. Trigger the deprecation warning
     lifecycle::deprecate_warn(
-      when = "2.7.0", 
-      what = "create_template(rerender_skeleton)", 
+      when = "2.7.0",
+      what = "create_template(rerender_skeleton)",
       details = "Please use `rerender_skeleton()` instead"
     )
     # Set bib_file to be compatible with rerender_skeleton
     if (!is.character(bib_file)) bib_file <- NULL
-    
+
     # 2. Maintain backwards compatibility by executing the new logic behind the scenes
     return(rerender_skeleton(
       file_dir = file_dir,
@@ -344,7 +344,7 @@ create_template <- function(
   } else if (length(office) > 1 | is.null(office)) {
     office <- ""
   }
-  
+
   # Name report
   if (!is.null(type)) {
     report_name <- paste0(
@@ -483,10 +483,10 @@ create_template <- function(
     if (!dir.exists(bib_dir)) {
       dir.create(bib_dir, recursive = FALSE)
     }
-    
+
     bib_name <- NULL
-    
-    # asar citation 
+
+    # asar citation
     asar_citation <- "@Manual{asar_2026,
   title = {asar: Build NOAA Stock Assessment Report},
   author = {Samantha Schiano and Sophie Breitbart and Steve Saul},
@@ -494,7 +494,7 @@ create_template <- function(
   note = {R package version 2.2.0},
   url = {https://github.com/nmfs-ost/asar},
 }"
-    
+
     # make asar bib in all conditions
     asar_bib_path <- file.path(bib_dir, "asar_citation.bib")
     write(asar_citation, file = asar_bib_path)
@@ -508,16 +508,15 @@ create_template <- function(
       journals::download_bibs(bib_dir)
       bib_file_paths <- list.files(bib_dir, pattern = ".bib", full.names = TRUE)
       base_bib_file <- bib_file_paths[!grepl(".sty", bib_file_paths)]
-      
+
       # Move .sty file to main report folder
       sty_files <- list.files(bib_dir, pattern = ".sty", full.names = TRUE)
       if (length(sty_files) > 0) {
         file.copy(sty_files, subdir, overwrite = FALSE) |> suppressWarnings()
         file.remove(sty_files)
       }
-      
+
       bib_name <- basename(base_bib_file)
-      
     }
 
     #### Copy template files to report folder ----
@@ -573,12 +572,12 @@ create_template <- function(
     } else {
       cli::cli_alert_warning("There are files in this location.")
       question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
-      
+
       # answer question1 as y if session isn't interactive
       if (!interactive()) {
         question1 <- "y"
       }
-      
+
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         # remove old skeleton if present
         if (any(grepl("_skeleton.qmd", list.files(subdir)))) {
@@ -604,14 +603,13 @@ create_template <- function(
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
         cli::cli_alert_warning("Report template files were not copied into your directory.")
         cli::cli_alert_info("If you wish to update the template with new parameters or output files, please edit the {report_name} in your local folder.",
-                            wrap = TRUE
+          wrap = TRUE
         )
       }
     } # close check for previous files & respective copying
 
     # Create tables doc
-    tables_doc_name <- switch(
-      type,
+    tables_doc_name <- switch(type,
       "nemt" = "06_tables.qmd",
       "safe" = "12_tables.qmd",
       "09_tables.qmd"
@@ -623,13 +621,12 @@ create_template <- function(
     )
 
     # Create figures qmd
-    figures_doc_name <- switch(
-      type,
+    figures_doc_name <- switch(type,
       "nemt" = "05_figures.qmd",
       "safe" = "11_figures.qmd",
       "08_figures.qmd"
     )
-      
+
     create_figures_doc(
       subdir = subdir,
       figures_dir = figures_dir
@@ -641,7 +638,7 @@ create_template <- function(
         to = fs::path(subdir, figures_doc_name)
       )
     }
-    
+
     # rename tables doc
     if (tables_doc_name != "09_tables.qmd") {
       file.rename(
@@ -673,7 +670,7 @@ create_template <- function(
       authors = authors, # need to put this in case there is a rerender otherwise it would not use the correct argument
       rerender_skeleton = FALSE
     )
-    
+
     # Parameters
     parameters <- TRUE
     param_names <- custom_params |> names()
@@ -848,12 +845,12 @@ create_template <- function(
     ##### Save skeleton ----
     # Save template as .qmd to render
     utils::capture.output(cat(report_template), file = file.path(subdir, report_name), append = FALSE)
-    
+
 
     ##### Final message ----
     cli::cli_alert_success("Saved report template in directory {subdir}.")
     cli::cli_alert_info("To proceed, please edit sections within the report template in order to produce a completed stock assessment report.",
-                        wrap = TRUE
+      wrap = TRUE
     )
   } else {
     #### Previous template call ----
