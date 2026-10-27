@@ -150,6 +150,13 @@ export_to_sis <- function(
   # create data matrix
   categories <- unique(unlist(sis_ts_data["Category"]))
   
+  # get unnamed vector of categories' units
+  units <- sis_ts_data |>
+    dplyr::select(Category, Unit) |>
+    dplyr::distinct() |>
+    dplyr::arrange(Category) |>
+    dplyr::pull(Unit)
+  
   primary_cat <- sis_ts_data |>
     dplyr::filter(Primary == "Y") |>
     dplyr::pull(Category) |>
@@ -158,12 +165,18 @@ export_to_sis <- function(
   primary_flags <- ifelse(categories %in% primary_cat, "Y", "N")
   
   ts_matrix <- sis_ts_data |>
+    dplyr::mutate(Value = ifelse(is.na(Value), "(blank)", Value)) |>
     dplyr::select(Year, Category, Value) |>
     tidyr::pivot_wider(names_from = Category,
                        values_from = Value) |>
     dplyr::arrange(Year) |>
     as.matrix() |>
     unname()
+    
+  # the lengths of categories, primary_flags, and units should all be the same
+  if (length(categories) != length(primary_flags) || length(categories) != length(units)){
+    cli::cli_abort("At least one category does not have units. Please check the sis_ts_template.csv file for inconsistencies.")
+  }
   
   nested_list <- list(
     SUMMARY = sis_list,
@@ -172,7 +185,7 @@ export_to_sis <- function(
         TSC_NAME = categories,
         TSP_PRIMARY_FLAG = primary_flags,
         TSP_DESC = unique(unlist(sis_ts_data["Description"])),
-        TSP_UNIT = unique(unlist(sis_ts_data["Unit"]))
+        TSP_UNIT = units
       ),
       DATA = ts_matrix
     )
