@@ -3,33 +3,33 @@
 #' @inheritParams create_template
 #' @inheritParams create_figures_dir
 #' @inheritParams create_tables_dir
-#' @param file_dir String of the path where the new report folder and files 
+#' @param file_dir String of the path where the new report folder and files
 #' should be located. Required.
-#' 
+#'
 #' Default: The working directory (`getwd()`)
-#' 
-#' @param previous_file_dir String of the path where the previous report files 
+#'
+#' @param previous_file_dir String of the path where the previous report files
 #' are located. Required.
-#' @param reset_tables_and_figures Logical indicating whether to reset tables 
+#' @param reset_tables_and_figures Logical indicating whether to reset tables
 #' and figures Quarto documents.
-#' 
+#'
 #' Default: FALSE
-#' 
-#' @param reset_authors Logical indicating whether to reset authorship for the 
+#'
+#' @param reset_authors Logical indicating whether to reset authorship for the
 #' report. Only will work if authors argument is also used.
-#' 
+#'
 #' Default: FALSE
-#' 
-#' @param custom_sections Logical. Indicate whether the previous report had a 
-#' customized sectioning. If TRUE, the report outline will mimic the previous 
-#' report. If FALSE, the report will include the full standard guidelines outline 
+#'
+#' @param custom_sections Logical. Indicate whether the previous report had a
+#' customized sectioning. If TRUE, the report outline will mimic the previous
+#' report. If FALSE, the report will include the full standard guidelines outline
 #' along with any custom sectioning from the previous report.
 #'
 #' Default: FALSE
-#' 
-#' @returns Creates a new folder of pre-filled assessment report files for the 
+#'
+#' @returns Creates a new folder of pre-filled assessment report files for the
 #' next assessment cycle.
-#' 
+#'
 #' @details
 #' This function is designed so a report made from `asar::create_template()` can
 #'  be called and updated with the following:
@@ -43,11 +43,11 @@
 #'  - format (`format`)
 #'  - check standard structure against current structure (performed automatically)
 #'
-#' This function performs three major tasks: (1) copies all files from the old 
-#' directory to the new one, (2) updates the skeleton according the the input 
-#' arguments using the `rerender_skeleton()` function, and (3) if desired, 
+#' This function performs three major tasks: (1) copies all files from the old
+#' directory to the new one, (2) updates the skeleton according the the input
+#' arguments using the `rerender_skeleton()` function, and (3) if desired,
 #' resets your figures and tables documents.
-#' 
+#'
 #' @export
 #'
 #' @examples
@@ -55,8 +55,9 @@
 #' update_report(
 #'   previous_file_dir = "~/testing/goa_2023/report",
 #'   file_dir = "~/testing/goa_2025",
-#'   model_results = "../new_std_res.rda")
-#'   
+#'   model_results = "../new_std_res.rda"
+#' )
+#'
 #' update_report(
 #'   previous_file_dir = "report_a",
 #'   file_dir = "report_b",
@@ -66,24 +67,24 @@
 #' )
 #' }
 update_report <- function(
-    file_dir = getwd(),
-    previous_file_dir, # required
-    authors = NULL,
-    model_results = NULL,
-    year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
-    format = "pdf",
-    region = NULL,
-    custom_sections = TRUE,
-    new_section = NULL,
-    section_location = NULL,
-    figures_dir = getwd(),
-    tables_dir = getwd(),
-    reset_tables_and_figures = FALSE,
-    reset_authors = FALSE
+  file_dir = getwd(),
+  previous_file_dir, # required
+  authors = NULL,
+  model_results = NULL,
+  year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
+  format = "pdf",
+  region = NULL,
+  custom_sections = TRUE,
+  new_section = NULL,
+  section_location = NULL,
+  figures_dir = getwd(),
+  tables_dir = getwd(),
+  reset_tables_and_figures = FALSE,
+  reset_authors = FALSE
 ) {
   #### set up ----
   # Add "report" to previous report file path - user does not have to include this
-  if (!grepl("report",previous_file_dir)) {
+  if (!grepl("report", previous_file_dir)) {
     previous_file_dir <- glue::glue("{previous_file_dir}/report")
     if (!dir.exists(previous_file_dir)) {
       stop("The previous report directory does not exist.")
@@ -93,7 +94,7 @@ update_report <- function(
   if (!any(grepl("skeleton.qmd", list.files(previous_file_dir, full.names = FALSE)))) {
     cli::cli_abort("No skeleton file found. Please use `create_template` to generate a new template")
   }
-  
+
   # Identify report type
   type <- stringr::str_extract(
     list.files(previous_file_dir, pattern = "skeleton\\.qmd"),
@@ -101,43 +102,43 @@ update_report <- function(
     "(?<=^)[^_]+"
   )
   if (tolower(type) == "sar") type <- "skeleton"
-  
+
   # Create the report directory if it doesn't exist
   report_dir <- file.path(file_dir, "report")
   if (!dir.exists(report_dir)) {
     dir.create(report_dir)
   }
-  
+
   #### copy files ----
   # Copy previous assessment files over
   prev_files <- list.files(
-    previous_file_dir, 
+    previous_file_dir,
     # qmd, bib files, glossary, and preamble
     pattern = "\\.qmd$|.bib$|report_glossary\\.tex$|preamble\\.R$|.sty$"
   )
   file.copy(glue::glue("{previous_file_dir}/{prev_files}"), report_dir)
   # Copy support files
-  prev_support_files <- list.files(file.path(previous_file_dir, 'support_files'), full.names = TRUE)
+  prev_support_files <- list.files(file.path(previous_file_dir, "support_files"), full.names = TRUE)
   # create supporting files folder
-  supdir <- file.path(report_dir, 'support_files')
+  supdir <- file.path(report_dir, "support_files")
   if (!dir.exists(supdir)) {
     dir.create(supdir)
   }
   file.copy(
-    prev_support_files, 
-    supdir, 
+    prev_support_files,
+    supdir,
     recursive = TRUE
   )
   # Copy bib folder
-  prev_bib_files <- list.files(file.path(previous_file_dir, 'bibliography_files'), full.names = TRUE)
+  prev_bib_files <- list.files(file.path(previous_file_dir, "bibliography_files"), full.names = TRUE)
   # create new folder and copy into
   bibdir <- file.path(report_dir, "bibliography_files")
   if (!dir.exists(bibdir)) {
     dir.create(bibdir)
   }
   file.copy(
-    prev_bib_files, 
-    bibdir, 
+    prev_bib_files,
+    bibdir,
     recursive = TRUE
   )
 
@@ -151,7 +152,7 @@ update_report <- function(
   # id the order of the files in the skeleton and copy over in that order
   prev_skeleton <- readLines(list.files(previous_file_dir, pattern = "skeleton\\.qmd", full.names = TRUE))
   files_to_copy <- stringr::str_extract(prev_skeleton[grep("knitr::knit_child", prev_skeleton)], "(?<=knit_child\\(').*?(?=\\')")
-  
+
   if (!custom_sections) {
     # Warning which files are not in the standard framework
     std_files <- list.files(file.path(system.file("templates", package = "asar"), type))
@@ -165,10 +166,10 @@ update_report <- function(
       # Copy in the new_std_sections
       file.copy(
         file.path(system.file("templates", package = "asar"), type, new_std_sections),
-        report_dir, 
+        report_dir,
         overwrite = FALSE
       )
-      if (length(new_std_sections) > 1) cli::cli_alert_info("New sections present in outline resulting from a change in outlines from previous assessment to the standard guidelines. 
+      if (length(new_std_sections) > 1) cli::cli_alert_info("New sections present in outline resulting from a change in outlines from previous assessment to the standard guidelines.
                                                           Please review your document.")
       # Find any added non-std sections
       # add new files
@@ -204,7 +205,7 @@ update_report <- function(
     new_section = new_section,
     section_location = section_location
   )
-  
+
   # Reset authorship
   # wondering if this should be a feature in rerender_skeleton instead
   if (reset_authors && !is.null(authors)) {
@@ -223,7 +224,7 @@ update_report <- function(
     author_updated_skeleton <- unlist(append(curr_skeleton[-(first_line:end_line)], unlist(author_list), after = first_line - 1))
     writeLines(author_updated_skeleton, list.files(report_dir, pattern = "skeleton\\.qmd", full.names = TRUE))
   }
-  
+
   #### reset tables and figures docs ----
   if (reset_tables_and_figures) {
     # Remove previous file
@@ -239,7 +240,7 @@ update_report <- function(
       figures_dir = figures_dir
     )
     cli::cli_alert_info("Figures document reset to default.")
-    
+
     # Remove previous file
     file.remove(
       file.path(
@@ -252,16 +253,14 @@ update_report <- function(
       subdir = report_dir
     )
     cli::cli_alert_info("Tables document reset to default.")
-    
+
     # Rename tables and figs docs if different type
-    tables_doc_name <- switch(
-      type,
+    tables_doc_name <- switch(type,
       "nemt" = "06_tables.qmd",
       "safe" = "12_tables.qmd",
       "09_tables.qmd"
     )
-    figures_doc_name <- switch(
-      type,
+    figures_doc_name <- switch(type,
       "nemt" = "05_figures.qmd",
       "safe" = "11_figures.qmd",
       "08_figures.qmd"
@@ -273,7 +272,7 @@ update_report <- function(
         to = fs::path(subdir, figures_doc_name)
       )
     }
-    
+
     # rename tables doc
     if (tables_doc_name != "09_tables.qmd") {
       file.rename(
