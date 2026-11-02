@@ -143,8 +143,9 @@ resets your figures and tables documents.
 update_report(
   previous_file_dir = "~/testing/goa_2023/report",
   file_dir = "~/testing/goa_2025",
-  model_results = "../new_std_res.rda")
-  
+  model_results = "../new_std_res.rda"
+)
+
 update_report(
   previous_file_dir = "report_a",
   file_dir = "report_b",
