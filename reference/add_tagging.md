@@ -1,7 +1,6 @@
 # Add tagging structure to latex documents produced from quarto
 
-This function was deprecated because Quarto v1.9 and higher supports all
-features this function provides to meet U.S. accessibility standards.
+Add tagging structure to latex documents produced from quarto
 
 ## Usage
 
