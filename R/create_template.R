@@ -752,7 +752,7 @@ create_template <- function(
 
     if (!is.null(model_results)) {
       # add model results according to documentation description
-      load_method <- glue::glue("load({model_results}) \n")
+      load_method <- glue::glue("load(", "'", "{model_results}", "'", ") \n")
     } else {
       load_method <- ""
       # df_name <- "NULL"

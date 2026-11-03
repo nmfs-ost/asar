@@ -371,7 +371,7 @@ rerender_skeleton <- function(
     }
   } else if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
     if (!is.null(model_results)) {# Assuming user saved converted output
-      load_method <- glue::glue("load({model_results}) \n")
+      load_method <- glue::glue("load(", "'", "{model_results}", "'", ") \n")
     } else {
       load_method <- ""
     }
