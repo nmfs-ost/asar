@@ -1,8 +1,8 @@
 #' Add alternative text into latex
-#' 
+#'
 #' @description
-#' `r lifecycle::badge("deprecated")` 
-#' 
+#' `r lifecycle::badge("deprecated")`
+#'
 #' This function was deprecated because Quarto v1.9 and higher supports
 #' incorporating alternative text in code chunks and in-text for documents.
 #'
@@ -65,15 +65,15 @@ add_alttext <- function(
   tagged = TRUE
 ) {
   lifecycle::deprecate_warn(
-    when = "2.8.0", 
-    what = "add_alttext()", 
+    when = "2.8.0",
+    what = "add_alttext()",
     details = c(
       i = "Due to improvements in accessibility of Quarto documents, add_alttext() is being deprecated.",
       i = "Available until October 1, 2027",
       i = "No alternative function is needed. Quarto v1.9 and higher provide support for alternative text."
-      )
+    )
   )
-  
+
   # Read latex file
   if (!file.exists(file.path(dir, x))) cli::cli_abort("File {dir}/{x} does not exist!")
   tex_file <- readLines(file.path(dir, x))

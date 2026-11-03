@@ -74,12 +74,14 @@ create_yaml <- function(
 ) {
   param_names <- custom_params |> names()
   param_values <- custom_params |> unname()
-  
+
   # new accessibility-related additions
   lang_line <- "lang: en"
-  knitr_line <- paste0("knitr:", "\n",
-  "  ", "opts_chunk:", "\n",
-  "    ", "dev: 'cairo_pdf'")
+  knitr_line <- paste0(
+    "knitr:", "\n",
+    "  ", "opts_chunk:", "\n",
+    "    ", "dev: 'cairo_pdf'"
+  )
   ua_line <- paste0("  ", "  ", "pdf-standard: ua-2")
 
   # check first if want to rerender current skeleton
@@ -203,7 +205,7 @@ create_yaml <- function(
       # add to yaml
       yaml <- append(yaml, bib_format, after = grep("bibliography:", yaml))
     }
-    
+
     yaml <- paste(yaml, collapse = " \n")
   } else { # not rerendering skeleton
     # Creating YAML
