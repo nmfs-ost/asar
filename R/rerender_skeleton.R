@@ -442,9 +442,13 @@ rerender_skeleton <- function(
   if (!is.null(new_section) || !is.null(custom_sections)) custom <- TRUE else custom <- FALSE
 
   if (!is.null(custom_sections)) {
-    # TODO: add check if custom sections are in the sections in the skeleton ("files_to_copy")
     if (!any(custom_sections %in% files_to_copy)) {
       cli::cli_alert_info("Custom sections not found in the skeleton. Please ensure the names match those in the current skeleton or set them in the argument 'new_section'.")
+    }
+    # add check if only SOME custom sections are in the sections in the skeleton ("files_to_copy")
+    if (!all(custom_sections %in% files_to_copy)) {
+      missing_sections <- custom_sections[!custom_sections %in% files_to_copy]
+      cli::cli_alert_warning("The following custom sections were not found in the skeleton: {paste(missing_sections, collapse = ', ')}. Please ensure the names match those in the current skeleton or set them in the argument 'new_section'.")
     }
     # add sections even to custom
     if (!any(grepl("references", custom_sections))) custom_sections <- c(custom_sections, "references")
