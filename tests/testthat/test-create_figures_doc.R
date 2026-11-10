@@ -16,8 +16,6 @@ test_that("Creates expected start of nearly empty figures doc", {
   expected_head_figure_content <- "# Figures {#sec-figures}"
 
   # test expectation of start of figures doc
-  # TODO: Update test, and add more, after further development and integration
-  # of create_figures_doc()
   testthat::expect_equal(
     fc_pasted,
     expected_head_figure_content
