@@ -65,7 +65,7 @@ test_that("Creates expected start of figures doc with figure", {
 
 test_that("Formerly empty figures doc renders correctly", {
   # create empty figures doc
-  create_template()
+  create_template(bib_file = FALSE)
 
   stockplotr::plot_biomass(
     dat = stockplotr::example_data,
@@ -140,7 +140,7 @@ test_that("Adds new figure from figures folder.", {
     module = "CATCH"
   )
 
-  create_template()
+  create_template(bib_file = FALSE)
 
   # Make another figure
   stockplotr::plot_abundance_at_age(
