@@ -530,7 +530,7 @@ test_that("Basic report renders", {
     exec_sum,
     paste0(
       "\n",
-      "@Abrams2014 states that...\n",
+      "@asar_2026 states that...\n",
       "\\gls{abc} is an acronym for...\n",
       "The end year is `r end_year`.\n",
       "The species is `r params$species`"
