@@ -47,7 +47,7 @@ create_template(
 # add some text to the executive summary, which includes
 # parameters, key quantities, a citation, and a reference
 # to a section of the report
-example_text <- "\n\nThe stock assessment for `r params$species` was conducted by the `r params$office` in `r params$region`. The terminal spawning biomass for the current assessment year (`r end_year`) was `r SBend`. You can find more information on the results of this assessment in @sec-assmt-results. The guidelines for this report follow those outlined in @Abrams2014."
+example_text <- "\n\nThe stock assessment for `r params$species` was conducted by the `r params$office` in `r params$region`. The terminal spawning biomass for the current assessment year (`r end_year`) was `r SBend`. You can find more information on the results of this assessment in @sec-assmt-results. The guidelines for this report follow those outlined in @asar_2026"
 
 exec_sum <- readLines(fs::path("report", "01_executive_summary.qmd"))
 
