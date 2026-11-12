@@ -31,7 +31,7 @@ ID_tbl_length_class <- function(
     gt_table <- table_rda$table
 
     # Get table length in rows
-    table_length <- nrow(gt_table[["_data"]])
+    table_length <- nrow(gt_table)
 
     # determine table length class
     if (table_length <= 38) {

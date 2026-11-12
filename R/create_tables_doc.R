@@ -302,7 +302,7 @@ load(file.path(tables_dir, '", stringr::str_remove(tab, "_split"), "'))\n
       load(fs::path(tables_dir, "tables", tab))
       # identify number of tables that each split table must be further split
       # into, with different rows per table
-      split_table_rows <- length(rda[[1]]$`_data`[[1]])
+      split_table_rows <- length(rda[[1]][[1]])
       split_tables_rowwise <- ceiling(split_table_rows / max_rows)
 
       # prepare text for chunk that will display split tables
