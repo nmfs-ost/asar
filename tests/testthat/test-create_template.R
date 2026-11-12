@@ -77,6 +77,7 @@ test_that("create_template() uses journals bibliographies by default", {
   expect_true(dir.exists(bibliography_dir))
   expect_equal(bib_files, "asar_citation.bib")
   
+  skeleton <- readLines(file.path(report_dir, "sar_species_skeleton.qmd"))
   expected_lines <- paste0("- bibliography_files/", bib_files)
   expect_true(all(expected_lines %in% trimws(skeleton)))
   
