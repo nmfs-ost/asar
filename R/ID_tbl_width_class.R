@@ -40,7 +40,7 @@ ID_tbl_width_class <- function(
     col_inches <- 1.5
 
     # Calculate total table width in inches
-    table_width <- ncol(gt_table[["_data"]]) * col_inches
+    table_width <- ncol(gt_table) * col_inches
 
     # determine table width class
     if (table_width <= portrait_pg_width) {
