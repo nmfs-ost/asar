@@ -45,6 +45,7 @@ test_that("create_template() uses journals bibliographies by default", {
 
   output_dir <- getwd()
 
+  # bib_file = TRUE----
   create_template() |>
     suppressWarnings() |>
     suppressMessages()
@@ -56,13 +57,29 @@ test_that("create_template() uses journals bibliographies by default", {
 
   expect_true(dir.exists(bibliography_dir))
   expect_equal(bib_files, journals_bibs)
-  expect_true(any(grepl(
-    paste0("bibliography_files/", bib_files),
-    skeleton,
-    fixed = TRUE
-  )))
+  
+  expected_lines <- paste0("- bibliography_files/", bib_files)
+  expect_true(all(expected_lines %in% trimws(skeleton)))
+  
   expect_false(file.exists(file.path(report_dir, "asar_references.bib")))
+  expect_true(file.exists(file.path(report_dir, "journals-bibnames.sty")))
 
+  unlink(fs::path(output_dir, "report"), recursive = T)
+  
+  
+  # bib_file = FALSE----
+  create_template(bib_file = FALSE) |>
+    suppressWarnings() |>
+    suppressMessages()
+
+  bib_files <- list.files(bibliography_dir, pattern = "\\.bib$")
+
+  expect_true(dir.exists(bibliography_dir))
+  expect_equal(bib_files, "asar_citation.bib")
+  
+  expected_lines <- paste0("- bibliography_files/", bib_files)
+  expect_true(all(expected_lines %in% trimws(skeleton)))
+  
   unlink(fs::path(output_dir, "report"), recursive = T)
 })
 
@@ -102,7 +119,7 @@ test_that("create_template() creates correct files", {
     "sar_species_skeleton.qmd",
     #   "model_results_metadata.md",
     "report_glossary.tex",
-    "journals-bibnames.sty",
+    # "journals-bibnames.sty",
     # "asar_references.bib",
     "bibliography_files",
     "support_files"
@@ -120,7 +137,7 @@ test_that("create_template() creates correct files", {
   # Test case 1: Provide no inputs
   path <- getwd()
 
-  create_template() |> suppressWarnings()
+  create_template(bib_file = FALSE) |> suppressWarnings()
 
   no_inputs_output_path <- file.path(path, "report")
   object_report_files <- list.files(no_inputs_output_path)
@@ -138,18 +155,16 @@ test_that("create_template() creates correct files", {
 
   # Test case 2: Provide multiple inputs
 
-  office <- "NWFSC"
-  species <- "Dover sole"
-  year <- 2010
   create_template(
     new_template = TRUE,
     format = "pdf",
-    office = office,
-    species = species,
+    office = "NWFSC",
+    species = "Dover sole",
     spp_latin = "Pomatomus saltatrix",
-    year = year,
+    year = 2010,
     authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
-    include_affiliation = TRUE
+    include_affiliation = TRUE,
+    bib_file = FALSE
   ) |>
     suppressWarnings() |>
     suppressMessages()
@@ -179,7 +194,7 @@ test_that("create_template() creates correct files", {
     # "asar_references.bib",
     "preamble.R",
     "report_glossary.tex",
-    "journals-bibnames.sty",
+    # "journals-bibnames.sty",
     "bibliography_files",
     "support_files"
   )
@@ -204,7 +219,6 @@ test_that("create_template() creates correct files", {
 
 
   # Test case 3: custom sections
-
   create_template(
     new_template = TRUE,
     format = "pdf",
@@ -213,7 +227,8 @@ test_that("create_template() creates correct files", {
     year = 2010,
     authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
-    custom_sections = c("executive_summary", "introduction", "data", "appendix")
+    custom_sections = c("executive_summary", "introduction", "data", "appendix"),
+    bib_file = FALSE
   ) |>
     suppressWarnings() |>
     suppressMessages()
@@ -236,7 +251,7 @@ test_that("create_template() creates correct files", {
     # "asar_references.bib",
     "preamble.R",
     "report_glossary.tex",
-    "journals-bibnames.sty",
+    # "journals-bibnames.sty",
     "bibliography_files",
     "support_files"
   )
@@ -270,7 +285,8 @@ test_that("warning is triggered for existing files", {
     year = 2010,
     authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
     include_affiliation = TRUE,
-    parameters = FALSE
+    parameters = FALSE,
+    bib_file = FALSE
   )
 
   # Test if warning is triggered when there are existing files in the provided location
@@ -290,7 +306,8 @@ test_that("warning is triggered for existing files", {
       year = 2010,
       authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
       include_affiliation = TRUE,
-      parameters = FALSE
+      parameters = FALSE,
+      bib_file = FALSE
     ),
     regexp = "There are files in this location."
   )
@@ -326,7 +343,8 @@ test_that("file_dir works", {
     include_affiliation = TRUE,
     parameters = FALSE,
     # model_results = file.path(dir, "std_output.rda"),
-    file_dir = dir
+    file_dir = dir,
+    bib_file = FALSE
   )
 
   file_path <- file.path(dir, "report")
@@ -343,15 +361,11 @@ test_that("model_results metadata file created", {
     species = "Dover sole",
     spp_latin = "Pomatomus saltatrix",
     year = 2010,
-    authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC")
+    authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
+    bib_file = FALSE
   )
 
-  # message("create_template run")
-
   file_path <- file.path(getwd(), "report")
-
-  # message(paste0("file_path: ", file_path))
-
   expect_true(file.exists(file_path))
 
   expect_report_files <- c(
@@ -375,14 +389,12 @@ test_that("model_results metadata file created", {
     "std_output_metadata.md",
     "report_glossary.tex",
     # "asar_references.bib",
-    "journals-bibnames.sty",
+    # "journals-bibnames.sty",
     "bibliography_files",
     "support_files"
   )
 
   object_report_files <- list.files(file_path)
-
-  message(paste0("object_report_files: ", object_report_files))
 
   # Check if all expected report files are created
   expect_true(all(sort(expect_report_files) == sort(object_report_files)))
@@ -398,7 +410,8 @@ test_that("function aborts if `authors` improperly formatted", {
       authors = c("John Snow",
         "Danny Phantom" = "SWFSC",
         "Patrick Star" = "SEFSC"
-      )
+      ),
+      bib_file = FALSE
     ),
     "format is incorrect"
   )
@@ -412,7 +425,8 @@ test_that("function aborts if `authors` improperly formatted", {
   # one author
   expect_error(
     create_template(
-      authors = c("Patrick Star")
+      authors = c("Patrick Star"),
+      bib_file = FALSE
     ),
     "format is incorrect"
   )
@@ -433,7 +447,8 @@ test_that("create_template() supports repeated author names", {
   for (authors in author_cases) {
     expect_no_error(
       create_template(
-        authors = authors
+        authors = authors,
+        bib_file = FALSE
       )
     )
 
@@ -446,7 +461,8 @@ test_that("Incompatible formats are recognized, produce warnings/errors", {
 
   expect_message(
     create_template(
-      format = "docx"
+      format = "docx",
+      bib_file = FALSE
     ),
     "The docx format"
   )
@@ -457,7 +473,8 @@ test_that("Incompatible formats are recognized, produce warnings/errors", {
 
   expect_error(
     create_template(
-      format = "other_format"
+      format = "other_format",
+      bib_file = FALSE
     ),
     "Format not recognized"
   )
@@ -467,7 +484,8 @@ test_that("Incompatible formats are recognized, produce warnings/errors", {
 
   expect_message(
     create_template(
-      format = "qpdf"
+      format = "qpdf",
+      bib_file = FALSE
     ),
     "Format not compatible"
   )
@@ -477,7 +495,8 @@ test_that("Incompatible formats are recognized, produce warnings/errors", {
 
   expect_message(
     create_template(
-      format = "qhtml"
+      format = "qhtml",
+      bib_file = FALSE
     ),
     "Format not compatible"
   )
@@ -487,7 +506,8 @@ test_that("Incompatible formats are recognized, produce warnings/errors", {
 
   expect_message(
     create_template(
-      format = "qdocx"
+      format = "qdocx",
+      bib_file = FALSE
     ),
     "The docx format is not currently"
   )
@@ -510,7 +530,8 @@ test_that("Basic report renders", {
     species = "Dover sole",
     model_results = "out_new.rda",
     year = 2010,
-    authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC")
+    authors = c("John Snow" = "AFSC", "Danny Phantom" = "SWFSC", "Patrick Star" = "SEFSC"),
+    bib_file = FALSE
   )
 
   # move model results to "report" folder
@@ -530,7 +551,7 @@ test_that("Basic report renders", {
     exec_sum,
     paste0(
       "\n",
-      "@Abrams2014 states that...\n",
+      "@asar_2026 states that...\n",
       "\\gls{abc} is an acronym for...\n",
       "The end year is `r end_year`.\n",
       "The species is `r params$species`"
