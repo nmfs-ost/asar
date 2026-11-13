@@ -214,7 +214,7 @@ create_yaml <- function(
       "---", "\n",
 
       # Tile
-      "title: ", "'", title, "'", "\n",
+      "title: ", title, "\n",
 
       # Author
       "author:", "\n"
