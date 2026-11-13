@@ -85,3 +85,30 @@ test_that("Table widths calculated correctly for extra-wide table", {
   # erase temporary testing files
   unlink(tbl_path, recursive = T)
 })
+
+test_that("Table widths are calculated for saved data frames", {
+  tbl_path <- fs::path(getwd(), "tables")
+  dir.create(tbl_path)
+
+  rda <- list(
+    "table" = data.frame(
+      first = 1,
+      second = 2,
+      third = 3,
+      fourth = 4
+    ),
+    "caption" = "test_caption"
+  )
+  save(rda, file = fs::path(tbl_path, "landings_table.rda"))
+
+  expect_equal(
+    ID_tbl_width_class(
+      plot_name = "landings",
+      tables_dir = getwd(),
+      portrait_pg_width = 5
+    ),
+    "wide"
+  )
+
+  unlink(tbl_path, recursive = TRUE)
+})
