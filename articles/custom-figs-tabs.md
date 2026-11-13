@@ -500,7 +500,7 @@ tables_path <- fs::path(
 load(tables_path)
 
 # Get table length in rows
-split_table_rows <- length(rda[[1]]$`_data`[[1]])
+split_table_rows <- length(rda[[1]][[1]])
 split_tables_rowwise <- ceiling(split_table_rows / max_rows)
 
 if (tbl_length == "long") {
@@ -820,7 +820,7 @@ tables_path <- fs::path(
 load(tables_path)
 
 # Get table length in rows
-split_table_rows <- length(rda[[1]]$`_data`[[1]])
+split_table_rows <- length(rda[[1]][[1]])
 split_tables_rowwise <- ceiling(split_table_rows / max_rows)
 
 if (tbl_length == "long") {
