@@ -10,7 +10,7 @@ test_that("Table length calculated correctly for regular table", {
     gt()
 
   rda <- list(
-    "table" = test_table,
+    "table" = test_table[[1]],
     "caption" = "test_caption"
   )
 
@@ -82,7 +82,7 @@ test_that("Table lengths calculated correctly for a long table", {
     gt()
 
   rda <- list(
-    "table" = test_table,
+    "table" = test_table[[1]],
     "caption" = "test_caption"
   )
 

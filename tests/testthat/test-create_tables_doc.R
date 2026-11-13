@@ -95,7 +95,7 @@ test_that("Creates expected start of tables doc with table", {
 
 test_that("Formerly empty tables doc renders correctly", {
   # create empty tables doc
-  create_template()
+  create_template(bib_file = FALSE)
 
   # create example table
   stockplotr::table_landings(
@@ -143,7 +143,7 @@ test_that("Adds new table from tables folder.", {
     module = "CATCH"
   )
 
-  create_template()
+  create_template(bib_file = FALSE)
 
   # Make another table
   # stockplotr::table_index(

@@ -10,7 +10,7 @@ test_that("Table widths calculated correctly for wide table", {
     gt()
 
   rda <- list(
-    "table" = test_table,
+    "table" = test_table[[1]],
     "caption" = "test_caption"
   )
 
@@ -65,7 +65,7 @@ test_that("Table widths calculated correctly for extra-wide table", {
     gt()
 
   rda <- list(
-    "table" = test_table,
+    "table" = test_table[[1]],
     "caption" = "test_caption"
   )
 
