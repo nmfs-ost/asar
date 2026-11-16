@@ -301,7 +301,7 @@ text. {.table .caption-top style="width:98%;"}
 
 Next, export your tables and figures to rda files. This code was adapted
 from functions like
-[`stockplotr::plot_biomass`](https://noaa-fisheries-integrated-toolbox.r-universe.dev/stockplotr/reference/plot_biomass.html).
+[`stockplotr::plot_biomass`](https://rdrr.io/pkg/stockplotr/man/plot_biomass.html).
 
 ##### Import pre-written captions and alternative text
 

@@ -93,19 +93,19 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nmfs-ost/stockplotr" class="external-link">stockplotr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># convert SS3 output</span></span>
-<span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">stockplotr</span><span class="fu">::</span><span class="fu"><a href="https://noaa-fisheries-integrated-toolbox.r-universe.dev/stockplotr/reference/convert_output.html" class="external-link">convert_output</a></span><span class="op">(</span></span>
+<span><span class="va">output</span> <span class="op">&lt;-</span> <span class="fu">stockplotr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/stockplotr/man/convert_output.html" class="external-link">convert_output</a></span><span class="op">(</span></span>
 <span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"Report.sso"</span>, package <span class="op">=</span> <span class="st">"asar"</span><span class="op">)</span>,</span>
 <span>  model <span class="op">=</span> <span class="st">"ss3"</span>,</span>
 <span>  save_dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="st">"readme_output.rda"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># make example figure and table</span></span>
-<span><span class="fu"><a href="https://noaa-fisheries-integrated-toolbox.r-universe.dev/stockplotr/reference/plot_fishing_mortality.html" class="external-link">plot_fishing_mortality</a></span><span class="op">(</span><span class="va">output</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/stockplotr/man/plot_fishing_mortality.html" class="external-link">plot_fishing_mortality</a></span><span class="op">(</span><span class="va">output</span>,</span>
 <span>  module <span class="op">=</span> <span class="st">"CATCH"</span>,</span>
 <span>  make_rda <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://noaa-fisheries-integrated-toolbox.r-universe.dev/stockplotr/reference/table_landings.html" class="external-link">table_landings</a></span><span class="op">(</span><span class="va">output</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/stockplotr/man/table_landings.html" class="external-link">table_landings</a></span><span class="op">(</span><span class="va">output</span>,</span>
 <span>  module <span class="op">=</span> <span class="st">"CATCH"</span>,</span>
 <span>  make_rda <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>

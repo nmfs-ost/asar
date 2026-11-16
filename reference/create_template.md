@@ -132,7 +132,7 @@ create_template(
 
   Path. Filepath to the standardized, converted model output .rda file
   generated with
-  [`stockplotr::convert_output()`](https://noaa-fisheries-integrated-toolbox.r-universe.dev/stockplotr/reference/convert_output.html),
+  [`stockplotr::convert_output()`](https://rdrr.io/pkg/stockplotr/man/convert_output.html),
   relative to the skeleton .qmd file that will be created within the
   'report' folder.
 

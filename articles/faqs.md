@@ -46,7 +46,7 @@ false (‘eval: false’).
 
 Yes! You can convert your own output into the expected standardized
 format without
-[`stockplotr::convert_output()`](https://noaa-fisheries-integrated-toolbox.r-universe.dev/stockplotr/reference/convert_output.html),
+[`stockplotr::convert_output()`](https://rdrr.io/pkg/stockplotr/man/convert_output.html),
 by following the guidance in the [“Standardizing Assessment Model
 Output” `stockplotr`
 vignette](https://nmfs-ost.github.io/stockplotr/articles/convert_output_details.html).
