@@ -61,7 +61,7 @@ export_to_sis <- function(
 
   required_missing <- sis_assmt_data |>
     dplyr::filter(Optional == "NO") |>
-    dplyr::filter(Value == "") 
+    dplyr::filter(is.na(Value) | Value == "")
   
   missing_vars <- length(required_missing$Variable)
   if (missing_vars > 0){
@@ -114,8 +114,8 @@ export_to_sis <- function(
   
   primary_type <- sis_ts_data |>
     dplyr::filter(Primary == "Y") |>
-    dplyr::pull(Category) |>
-    unique()
+    dplyr::distinct(Category, Description, Unit) |>
+    dplyr::pull(Category)
   
   valid_primary_cats <- c("Fmort", "Recruitment", "Catch", "Spawners", "Biomass")
   sb_cats <- c("Spawners", "Biomass")
@@ -178,7 +178,7 @@ export_to_sis <- function(
   units <- sis_ts_data |>
     dplyr::select(Category, Unit) |>
     dplyr::distinct() |>
-    dplyr::arrange(Category) |>
+    dplyr::arrange(match(Category, categories)) |>
     dplyr::pull(Unit)
   
   primary_cat <- sis_ts_data |>
@@ -198,7 +198,7 @@ export_to_sis <- function(
     unname()
     
   # the lengths of categories, primary_flags, and units should all be the same
-  if (length(categories) != length(primary_flags) || length(categories) != length(units)){
+  if (length(categories) != length(primary_flags) || length(categories) != length(units) || anyNA(units) || any(trimws(units) == "")){
     cli::cli_abort("At least one category does not have units. Please check the sis_ts_template.csv file for inconsistencies.")
   }
   
@@ -208,7 +208,7 @@ export_to_sis <- function(
       PARAMETERS = list(
         TSC_NAME = categories,
         TSP_PRIMARY_FLAG = primary_flags,
-        TSP_DESC = unique(unlist(sis_ts_data["Description"])),
+        TSP_DESC = sis_ts_data$Description[match(categories, sis_ts_data$Category)],
         TSP_UNIT = units
       ),
       DATA = ts_matrix
@@ -230,7 +230,7 @@ export_to_sis <- function(
   ready_q <- readline("Do you want to transmit it to Google Drive? (Y/N)")
   
   if (!interactive()) {ready_q <- "y"}
-  if (regexpr(ready_q, "n", ignore.case = TRUE) == 1) {
+  if (!(tolower(trimws(ready_q)) %in% c("y", "yes"))) {
     cli::cli_abort("Transmission to Google Drive aborted.")
   }
 

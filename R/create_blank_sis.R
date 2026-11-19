@@ -12,10 +12,13 @@
 #' create_blank_sis(getwd())
 #' }
 #'
-create_blank_sis <- function(dir){
-  download.file("https://raw.githubusercontent.com/nmfs-ost/stockplotr/refs/heads/main/inst/resources/sis_assmt_template.csv",
-                fs::path(dir, "sis_assmt_template.csv"))
-  
-  download.file("https://raw.githubusercontent.com/nmfs-ost/stockplotr/refs/heads/main/inst/resources/sis_ts_template.csv",
-                fs::path(dir, "sis_ts_template.csv"))
+create_blank_sis <- function(dir = getwd()){
+  if (!file.exists(fs::path(dir, "sis_assmt_template.csv"))) {
+    download.file("https://raw.githubusercontent.com/nmfs-ost/stockplotr/refs/heads/main/inst/resources/sis_assmt_template.csv",
+                  fs::path(dir, "sis_assmt_template.csv"))
+  }
+  if (!file.exists(fs::path(dir, "sis_ts_template.csv"))) {
+    download.file("https://raw.githubusercontent.com/nmfs-ost/stockplotr/refs/heads/main/inst/resources/sis_ts_template.csv",
+                  fs::path(dir, "sis_ts_template.csv"))
+  }
 }
