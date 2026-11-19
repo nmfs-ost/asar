@@ -13,7 +13,6 @@
 #' }
 #'
 create_blank_sis <- function(dir){
-  #TODO: Add to create_template()
   download.file("https://raw.githubusercontent.com/nmfs-ost/stockplotr/refs/heads/main/inst/resources/sis_assmt_template.csv",
                 fs::path(dir, "sis_assmt_template.csv"))
   
