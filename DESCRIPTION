@@ -41,6 +41,7 @@ Imports:
     utils
 Suggests: 
     ggplot2,
+    jsonlite,
     kableExtra,
     knitr,
     parallel,
