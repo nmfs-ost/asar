@@ -108,9 +108,6 @@ add_alttext <- function(
   # read in alt text csv file to match with labels
   alttext <- utils::read.csv(alttext_csv)
 
-  # TODO:
-  # Create alternative options for render to html or docx
-
   # New method: find line with label from csv then back track to lines with pandoc_bounded
   # Add alt text to custom images
   for (i in 1:nrow(alttext)) {

@@ -367,12 +367,6 @@ create_template <- function(
     report_name
   )
   # Add species to name
-  # TODO: can this be made into a switch?
-  # report_name <- switch(
-  #   species,
-  #
-  # )
-  # if (!is.null(species)) {
   report_name <- paste0(
     report_name,
     gsub(" ", "_", species),
