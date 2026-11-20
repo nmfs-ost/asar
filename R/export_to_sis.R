@@ -189,10 +189,11 @@ export_to_sis <- function(
   primary_flags <- ifelse(categories %in% primary_cat, "Y", "N")
   
   ts_matrix <- sis_ts_data |>
-    dplyr::mutate(Value = ifelse(is.na(Value), "(blank)", Value)) |>
+    dplyr::mutate(Value = ifelse(is.na(Value), "(blank)", as.character(Value))) |>
     dplyr::select(Year, Category, Value) |>
     tidyr::pivot_wider(names_from = Category,
-                       values_from = Value) |>
+                       values_from = Value,
+                       values_fill = "(blank)") |>
     dplyr::arrange(Year) |>
     as.matrix() |>
     unname()
