@@ -141,6 +141,8 @@ update_report <- function(
     bibdir,
     recursive = TRUE
   )
+  # create new SIS templates
+  create_blank_sis(dir = report_dir)
 
   #### Update skeleton ----
   # part of skeleton:

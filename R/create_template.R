@@ -242,30 +242,30 @@
 #' }
 #'
 create_template <- function(
-  format = "pdf",
-  type = "sar",
-  office = NULL,
-  region = NULL,
-  species = "species",
-  spp_latin = NULL,
-  year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
-  authors = NULL,
-  file_dir = getwd(),
-  title = "[TITLE]",
-  model_results = NULL,
-  tables_dir = getwd(),
-  figures_dir = getwd(),
-  spp_image = NULL,
-  bib_file = TRUE,
-  new_template = TRUE,
-  custom_sections = NULL,
-  new_section = NULL,
-  section_location = NULL,
-  custom_params = NULL,
-  rerender_skeleton = lifecycle::deprecated(),
-  param_names = lifecycle::deprecated(),
-  param_values = lifecycle::deprecated(),
-  ...
+    format = "pdf",
+    type = "sar",
+    office = NULL,
+    region = NULL,
+    species = "species",
+    spp_latin = NULL,
+    year = format(as.POSIXct(Sys.Date(), format = "%YYYY-%mm-%dd"), "%Y"),
+    authors = NULL,
+    file_dir = getwd(),
+    title = "[TITLE]",
+    model_results = NULL,
+    tables_dir = getwd(),
+    figures_dir = getwd(),
+    spp_image = NULL,
+    bib_file = TRUE,
+    new_template = TRUE,
+    custom_sections = NULL,
+    new_section = NULL,
+    section_location = NULL,
+    custom_params = NULL,
+    rerender_skeleton = lifecycle::deprecated(),
+    param_names = lifecycle::deprecated(),
+    param_values = lifecycle::deprecated(),
+    ...
 ) {
   # check for used deprecated arguments
   if (lifecycle::is_present(param_names) || lifecycle::is_present(param_values)) {
@@ -274,10 +274,10 @@ create_template <- function(
       what = "create_template(param_names)",
       details = "Please use `custom_params` instead of `param_names` and `param_values`"
     )
-
+    
     custom_params <- setNames(param_values, param_names)
   }
-
+  
   if (lifecycle::is_present(rerender_skeleton)) {
     # 1. Trigger the deprecation warning
     lifecycle::deprecate_warn(
@@ -287,7 +287,7 @@ create_template <- function(
     )
     # Set bib_file to be compatible with rerender_skeleton
     if (!is.character(bib_file)) bib_file <- NULL
-
+    
     # 2. Maintain backwards compatibility by executing the new logic behind the scenes
     return(rerender_skeleton(
       file_dir = file_dir,
@@ -309,7 +309,7 @@ create_template <- function(
       authors = authors
     ))
   }
-
+  
   type_map <- c(
     "Northeast Management Track" = "nemt",
     "Pacific Fishery Management Council" = "pfmc",
@@ -321,7 +321,7 @@ create_template <- function(
     "safe" = "safe",
     "skeleton" = "skeleton"
   )
-
+  
   if (type %in% names(type_map)) {
     type <- unname(type_map[type])
   } else if (isTRUE(interactive) || (is.function(interactive) && interactive())) {
@@ -330,21 +330,21 @@ create_template <- function(
       choices = c("Default", "Pacific Fisheries Management Council", "Northeast Management Track", "SAFE")
     )
     type <- switch(as.character(selection),
-      "2" = "pfmc",
-      "3" = "nemt",
-      "4" = "safe",
-      "skeleton"
+                   "2" = "pfmc",
+                   "3" = "nemt",
+                   "4" = "safe",
+                   "skeleton"
     )
   } else {
     type <- "skeleton"
   }
-
+  
   if (!is.null(office) & length(office) == 1) {
     office <- match.arg(office, choices = c("AFSC", "PIFSC", "NEFSC", "NWFSC", "SEFSC", "SWFSC"), several.ok = FALSE)
   } else if (length(office) > 1 | is.null(office)) {
     office <- ""
   }
-
+  
   # Name report
   if (!is.null(type)) {
     report_name <- paste0(
@@ -372,13 +372,13 @@ create_template <- function(
     gsub(" ", "_", species),
     "_skeleton.qmd"
   )
-
+  
   # Select format
   if (grepl("^pdf$|^html$", tolower(format))) {
     format <- tolower(format)
   } else if (grepl("docx", tolower(format))) {
     cli::cli_alert_warning("The docx format is not currently supported by asar. Defaulting to pdf.",
-      wrap = TRUE
+                           wrap = TRUE
     )
     format <- "pdf"
   } else {
@@ -405,7 +405,7 @@ create_template <- function(
       if (!interactive()) question1 <- "y"
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         cli::cli_alert_warning("The docx format is not currently supported by asar. Defaulting to pdf.",
-          wrap = TRUE
+                               wrap = TRUE
         )
         format <- "pdf"
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
@@ -415,34 +415,34 @@ create_template <- function(
       cli::cli_abort("Format not recognized. Please use pdf, html, or docx.")
     }
   }
-
+  
   # Create subdirectory for files
   subdir <- ifelse(
     grepl("/report", file_dir) || file_dir == "report",
     fs::path(file_dir),
     fs::path(file_dir, "report")
   )
-
+  
   # Supporting files folder
   supdir <- file.path(subdir, "support_files")
-
+  
   if (dir.exists(subdir) == FALSE) {
     dir.create(subdir, recursive = TRUE)
   }
   if (dir.exists(supdir) == FALSE) {
     dir.create(supdir, recursive = FALSE)
   }
-
+  
   #### New template ----
   if (new_template) {
     ##### Pull sections based on type ----
     # Pull skeleton for sections
-
+    
     asar_folder <- system.file("templates", package = "asar")
     # copy files from specific type folder
     current_folder <- file.path(asar_folder, type)
     new_folder <- subdir
-
+    
     ##### Identify files to copy ----
     if (!is.null(custom_sections)) {
       files_to_copy <- unlist(list.files(current_folder))[c(unlist(sapply(custom_sections, function(x) grep(x, list.files(current_folder)))))]
@@ -460,26 +460,26 @@ create_template <- function(
       files_to_copy <- list.files(current_folder)
       # files_to_copy <- unlist(add_base_section(list.files(current_folder)))
     }
-
+    
     before_body_file <- system.file("resources", "formatting_files", "before-body.tex", package = "asar")
     # header_file <- system.file("resources", "formatting_files", "in-header.tex", package = "asar")
     # format_files <- list(before_body_file, header_file)
-
+    
     #### Links to files for yaml ----
     if (is.null(spp_image) && species == "species") {
       spp_image <- ""
     } else if (is.null(spp_image) && species != "species") {
       spp_image <- find_system_spp_image(species)
     }
-
+    
     # Add bib file
     bib_dir <- file.path(subdir, "bibliography_files")
     if (!dir.exists(bib_dir)) {
       dir.create(bib_dir, recursive = FALSE)
     }
-
+    
     bib_name <- NULL
-
+    
     # asar citation
     asar_citation <- "@Manual{asar_2026,
   title = {asar: Build NOAA Stock Assessment Report},
@@ -488,7 +488,7 @@ create_template <- function(
   note = {R package version 2.2.0},
   url = {https://github.com/nmfs-ost/asar},
 }"
-
+    
     # make asar bib in all conditions
     asar_bib_path <- file.path(bib_dir, "asar_citation.bib")
     write(asar_citation, file = asar_bib_path)
@@ -502,17 +502,17 @@ create_template <- function(
       journals::download_bibs(bib_dir)
       bib_file_paths <- list.files(bib_dir, pattern = ".bib", full.names = TRUE)
       base_bib_file <- bib_file_paths[!grepl(".sty", bib_file_paths)]
-
+      
       # Move .sty file to main report folder
       sty_files <- list.files(bib_dir, pattern = ".sty", full.names = TRUE)
       if (length(sty_files) > 0) {
         file.copy(sty_files, subdir, overwrite = FALSE) |> suppressWarnings()
         file.remove(sty_files)
       }
-
+      
       bib_name <- basename(base_bib_file)
     }
-
+    
     #### Copy template files to report folder ----
     # Check if there are already files in the folder
     # Only files present should be:
@@ -544,6 +544,8 @@ create_template <- function(
       }
       # copy csl file
       file.copy(system.file("resources", "cjfas.csl", package = "asar"), supdir, overwrite = FALSE) |> suppressWarnings()
+      # copy SIS template
+      create_blank_sis(dir = file.path(subdir))
       # show message and make README stating model_results info
       if (!is.null(model_results)) {
         mod_time <- as.character(file.info(fs::path(model_results), extra_cols = FALSE)$ctime)
@@ -566,12 +568,12 @@ create_template <- function(
     } else {
       cli::cli_alert_warning("There are files in this location.")
       question1 <- readline("The function wants to overwrite the files currently in your directory. Would you like to proceed? (Y/N)")
-
+      
       # answer question1 as y if session isn't interactive
       if (!interactive()) {
         question1 <- "y"
       }
-
+      
       if (regexpr(question1, "y", ignore.case = TRUE) == 1) {
         # remove old skeleton if present
         if (any(grepl("_skeleton.qmd", list.files(subdir)))) {
@@ -597,30 +599,30 @@ create_template <- function(
       } else if (regexpr(question1, "n", ignore.case = TRUE) == 1) {
         cli::cli_alert_warning("Report template files were not copied into your directory.")
         cli::cli_alert_info("If you wish to update the template with new parameters or output files, please edit the {report_name} in your local folder.",
-          wrap = TRUE
+                            wrap = TRUE
         )
       }
     } # close check for previous files & respective copying
-
+    
     # Create tables doc
     tables_doc_name <- switch(type,
-      "nemt" = "06_tables.qmd",
-      "safe" = "12_tables.qmd",
-      "09_tables.qmd"
+                              "nemt" = "06_tables.qmd",
+                              "safe" = "12_tables.qmd",
+                              "09_tables.qmd"
     )
-
+    
     create_tables_doc(
       subdir = subdir,
       tables_dir = tables_dir
     )
-
+    
     # Create figures qmd
     figures_doc_name <- switch(type,
-      "nemt" = "05_figures.qmd",
-      "safe" = "11_figures.qmd",
-      "08_figures.qmd"
+                               "nemt" = "05_figures.qmd",
+                               "safe" = "11_figures.qmd",
+                               "08_figures.qmd"
     )
-
+    
     create_figures_doc(
       subdir = subdir,
       figures_dir = figures_dir
@@ -632,7 +634,7 @@ create_template <- function(
         to = fs::path(subdir, figures_doc_name)
       )
     }
-
+    
     # rename tables doc
     if (tables_doc_name != "09_tables.qmd") {
       file.rename(
@@ -640,7 +642,7 @@ create_template <- function(
         to = fs::path(subdir, tables_doc_name)
       )
     }
-
+    
     # Part I
     # Create a report template file to render for the region and species
     # Create YAML header for document
@@ -656,7 +658,7 @@ create_template <- function(
         year = year
       )
     }
-
+    
     # Authors and affiliations
     # Parameters to add authorship to YAML
     author_list <- add_authors(
@@ -664,12 +666,12 @@ create_template <- function(
       authors = authors, # need to put this in case there is a rerender otherwise it would not use the correct argument
       rerender_skeleton = FALSE
     )
-
+    
     # Parameters
     parameters <- TRUE
     param_names <- custom_params |> names()
     param_values <- custom_params |> unname()
-
+    
     # Create YAML -- put elements together
     yaml <- create_yaml(
       prev_format = prev_format,
@@ -689,9 +691,9 @@ create_template <- function(
       year = year,
       type = type
     )
-
+    
     cli::cli_alert_success("Built YAML header.")
-
+    
     ##### Params chunk ----
     params_chunk <- add_chunk(
       paste0(
@@ -713,7 +715,7 @@ create_template <- function(
       ),
       label = "R_parameters"
     )
-
+    
     params_chunk <- add_chunk(
       paste0(
         "# Parameters \n",
@@ -734,13 +736,13 @@ create_template <- function(
       ),
       label = "R_parameters"
     )
-
+    
     ##### Preamble ----
     # Add preamble
     # add in quantities and output data R chunk
     # Reassign model_results as output and save into environment for user
     # assign("output", model_results, envir = .GlobalEnv)
-
+    
     if (!is.null(model_results)) {
       # add model results according to documentation description
       load_method <- glue::glue("load(", "'", "{model_results}", "'", ") \n")
@@ -748,7 +750,7 @@ create_template <- function(
       load_method <- ""
       # df_name <- "NULL"
     }
-
+    
     # standard preamble
     # copy preamble code into report folder
     file.copy(
@@ -756,7 +758,7 @@ create_template <- function(
       subdir,
       overwrite = TRUE
     ) |> suppressWarnings()
-
+    
     preamble <- add_chunk(
       paste0(
         "# load converted output from stockplotr::convert_output() \n",
@@ -770,7 +772,7 @@ create_template <- function(
         "start_year\n",
         "end_year\n",
         "Fend # terminal fishing mortality\n",
-
+        
         # "# modify in source code if alternative target desired", "\n",
         "Ftarg # fishing mortality at msy\n",
         "F_Ftarg # Terminal year F respective to F target\n",
@@ -787,10 +789,10 @@ create_template <- function(
       label = "preamble",
       chunk_option = c("warning: false", ifelse(is.null(model_results), "eval: false", "eval: true"), "include: false")
     )
-
+    
     ##### Disclaimer ----
     disclaimer <- "{{< pagebreak >}}\n\n## Disclaimer {.unnumbered .unlisted}\n\nThese materials do not constitute a formal publication and are for information only. They are in a pre-review, pre-decisional state and should not be formally cited or reproduced. They are to be considered provisional and do not represent any determination or policy of NOAA or the Department of Commerce.\n"
-
+    
     ##### Citation ----
     # Add page for citation of assessment report
     citation <- create_citation(
@@ -799,11 +801,11 @@ create_template <- function(
       year = year
     )
     cli::cli_alert_success("Added report citation.")
-
+    
     ##### Create report outline ----
     # Include tables and figures in template
     # at this point, files_to_copy is the most updated outline
-
+    
     if (!is.null(new_section) || !is.null(custom_sections)) custom <- TRUE else custom <- FALSE
     if (custom) {
       # atp custom sections are already done and in files_to_copy
@@ -821,7 +823,7 @@ create_template <- function(
         label = stringr::str_extract(sort(c(files_to_copy, tables_doc_name, figures_doc_name)), "(?<=_).+(?=\\.qmd$)")
       )
     } # close if statement for custom
-
+    
     ###### Pull together skeleton ----
     report_template <- paste(
       yaml,
@@ -833,18 +835,18 @@ create_template <- function(
       sections,
       sep = "\n"
     )
-
+    
     cli::cli_alert_success("Created report template.")
-
+    
     ##### Save skeleton ----
     # Save template as .qmd to render
     utils::capture.output(cat(report_template), file = file.path(subdir, report_name), append = FALSE)
-
-
+    
+    
     ##### Final message ----
     cli::cli_alert_success("Saved report template in directory {subdir}.")
     cli::cli_alert_info("To proceed, please edit sections within the report template in order to produce a completed stock assessment report.",
-      wrap = TRUE
+                        wrap = TRUE
     )
   } else {
     #### Previous template call ----
@@ -857,14 +859,14 @@ create_template <- function(
       olddir <- fs::path(file_dir, "report")
       invisible(file.copy(file.path(olddir, list.files(olddir)), subdir, recursive = FALSE))
     }
-
+    
     # Edit skeleton to update year and results file
     skeleton <- list.files(subdir, pattern = "skeleton.qmd")
     # Open previous skeleton
     # file.show(file.path(subdir, report_name))
-
+    
     svDialogs::dlg_message("Reminder: Changes should be made when calling an old report. Please change 1) the year in the citation and 2) the location and name of the results file in the first chunk of the report.",
-      type = "ok"
+                           type = "ok"
     )
   }
 }

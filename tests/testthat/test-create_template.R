@@ -123,7 +123,9 @@ test_that("create_template() creates correct files", {
     # "journals-bibnames.sty",
     # "asar_references.bib",
     "bibliography_files",
-    "support_files"
+    "support_files",
+    "sis_assmt_template.csv", 
+    "sis_ts_template.csv"
   )
 
   # Define expected support files
@@ -197,7 +199,9 @@ test_that("create_template() creates correct files", {
     "report_glossary.tex",
     # "journals-bibnames.sty",
     "bibliography_files",
-    "support_files"
+    "support_files",
+    "sis_assmt_template.csv", 
+    "sis_ts_template.csv"
   )
   # Define expected support files for Dover sole
   expect_dover_sole_support_files <- c(
@@ -254,7 +258,9 @@ test_that("create_template() creates correct files", {
     "report_glossary.tex",
     # "journals-bibnames.sty",
     "bibliography_files",
-    "support_files"
+    "support_files",
+    "sis_assmt_template.csv", 
+    "sis_ts_template.csv"
   )
   # Define expected support files for Rex sole
   expect_rex_sole_support_files <- c(
@@ -392,7 +398,9 @@ test_that("model_results metadata file created", {
     # "asar_references.bib",
     # "journals-bibnames.sty",
     "bibliography_files",
-    "support_files"
+    "support_files",
+    "sis_assmt_template.csv", 
+    "sis_ts_template.csv"
   )
 
   object_report_files <- list.files(file_path)

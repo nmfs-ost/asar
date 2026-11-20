@@ -27,6 +27,7 @@ Imports:
     forstringr,
     fs,
     glue,
+    googledrive,
     gt,
     journals,
     lifecycle,
@@ -40,6 +41,7 @@ Imports:
     utils
 Suggests: 
     ggplot2,
+    jsonlite,
     kableExtra,
     knitr,
     parallel,
