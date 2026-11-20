@@ -112,13 +112,28 @@ export_to_sis <- function(
     cli::cli_abort("sis_ts_template.csv is missing the 'Year' column. This column is mandatory.")
   }
   
-  primary_type <- sis_ts_data |>
+  # Identify each distinct time series and assign a unique ID
+  series_distinct <- sis_ts_data |>
+    dplyr::distinct(Category, Description, Unit, Primary) |>
+    dplyr::mutate(series_id = paste0("series_", dplyr::row_number()))
+  
+  # Abort if two series share the same Category, Description, and Year
+  if (any(duplicated(sis_ts_data[, c("Category", "Description", "Year")]))) {
+    cli::cli_abort(
+      "Duplicate time series detected with identical 'Category', 'Description', and 'Year'. Give each time series within a category a unique 'Description'."
+    )
+  }
+  
+  primary_series <- series_distinct |>
     dplyr::filter(Primary == "Y") |>
-    dplyr::distinct(Category, Description, Unit) |>
-    dplyr::pull(Category)
+    unique()
+  
+  primary_type <- primary_series$Category
   
   valid_primary_cats <- c("Fmort", "Recruitment", "Catch", "Spawners", "Biomass")
+  required_primary_cats <- c("Fmort", "Recruitment", "Catch")
   sb_cats <- c("Spawners", "Biomass")
+  present_required <- intersect(unique(series_distinct$Category), required_primary_cats)
   
   if (length(primary_type) == 0) {
     cli::cli_abort(
@@ -137,6 +152,11 @@ export_to_sis <- function(
   } else if (sum(primary_type %in% sb_cats) > 1) {
     cli::cli_abort(
       "Both 'Spawners' and 'Biomass' are marked as 'Y' in the 'Primary' column. Only one time series combined across 'Spawners' and 'Biomass' can be designated as Primary."
+    )
+  } else if (!all(present_required %in% primary_type)) {
+    missing_prim <- setdiff(present_required, primary_type)
+    cli::cli_abort(
+      "Missing Primary = 'Y' designation for required categor{?y/ies}: {.val {missing_prim}}."
     )
   }
 
@@ -171,51 +191,38 @@ export_to_sis <- function(
   # prep datasets for conversion into json
   sis_list <- setNames(as.list(sis_assmt_data$Value), sis_assmt_data$Variable)
   
-  # create data matrix
-  categories <- unique(unlist(sis_ts_data["Category"]))
+  # validate units across all distinct series
+  if (anyNA(sis_ts_data$Unit) || any(trimws(sis_ts_data$Unit) == "")) {
+    cli::cli_abort("At least one time series does not have units. Please check the sis_ts_template.csv file for inconsistencies.")
+  }
   
-  # get unnamed vector of categories' units
-  units <- sis_ts_data |>
-    dplyr::select(Category, Unit) |>
-    dplyr::distinct() |>
-    dplyr::arrange(match(Category, categories)) |>
-    dplyr::pull(Unit)
-  
-  primary_cat <- sis_ts_data |>
-    dplyr::filter(Primary == "Y") |>
-    dplyr::pull(Category) |>
-    unique()
-
-  primary_flags <- ifelse(categories %in% primary_cat, "Y", "N")
-  
+  # create data matrix keyed by series_id so multiple series per category stay separate
   ts_matrix <- sis_ts_data |>
+    dplyr::left_join(series_distinct, by = c("Category", "Description", "Unit", "Primary")) |>
     dplyr::mutate(Value = ifelse(is.na(Value), "(blank)", as.character(Value))) |>
-    dplyr::select(Year, Category, Value) |>
-    tidyr::pivot_wider(names_from = Category,
-                       values_from = Value,
-                       values_fill = "(blank)") |>
+    dplyr::select(Year, series_id, Value) |>
+    tidyr::pivot_wider(
+      names_from = series_id,
+      values_from = Value,
+      values_fill = "(blank)"
+    ) |>
+    dplyr::select(Year, dplyr::all_of(series_distinct$series_id)) |>
     dplyr::arrange(Year) |>
     as.matrix() |>
     unname()
-    
-  # the lengths of categories, primary_flags, and units should all be the same
-  if (length(categories) != length(primary_flags) || length(categories) != length(units) || anyNA(units) || any(trimws(units) == "")){
-    cli::cli_abort("At least one category does not have units. Please check the sis_ts_template.csv file for inconsistencies.")
-  }
   
   nested_list <- list(
     SUMMARY = sis_list,
     TIMESERIES = list(
       PARAMETERS = list(
-        TSC_NAME = categories,
-        TSP_PRIMARY_FLAG = primary_flags,
-        TSP_DESC = sis_ts_data$Description[match(categories, sis_ts_data$Category)],
-        TSP_UNIT = units
+        TSC_NAME = series_distinct$Category,
+        TSP_PRIMARY_FLAG = ifelse(series_distinct$Primary == "Y", "Y", "N"),
+        TSP_DESC = series_distinct$Description,
+        TSP_UNIT = series_distinct$Unit
       ),
       DATA = ts_matrix
     )
   )
- 
   
   # write json file
   jsonlite::write_json(

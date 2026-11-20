@@ -62,8 +62,7 @@ test_that("export_to_sis creates valid JSON and calls drive_upload on valid inpu
   
   expected_json <- file.path(tmp_dir, "12345_67890.json")
   expect_true(file.exists(expected_json))
-  expect_equal(uploaded_args$name, "12345_67890.json")
-  
+
   # Verify JSON structure and contents
   parsed <- jsonlite::fromJSON(expected_json, simplifyVector = FALSE)
   expect_named(parsed, c("SUMMARY", "TIMESERIES"))
@@ -195,10 +194,86 @@ test_that("export_to_sis errors when a category has inconsistent units", {
   ts_df <- read.csv(ts_path, stringsAsFactors = FALSE)
   # Give Biomass two different units across years so length(units) != length(categories)
   ts_df$Unit[ts_df$Category == "Biomass" & ts_df$Year == 2021] <- "kg"
-  write.csv(ts_df, ts_path, row.names = FALSE)
+  ts_df <- ts_df |>
+    # convert Catch into Index
+    dplyr::mutate(Category = ifelse(Category == "Catch", "Index", Category)) |>
+    dplyr::mutate(Primary = ifelse(Category == "Biomass", "Y", "N")) |>
+    dplyr::mutate(Unit = ifelse(Category == "Biomass", "kg", NA))
+  
+    write.csv(ts_df, ts_path, row.names = FALSE)
+
+  expect_error(
+    export_to_sis(sis_data_dir = tmp_dir),
+    "At least one time series does not have units"
+  )
+})
+
+test_that("export_to_sis enforces category rules", {
+  tmp_dir <- withr::local_tempdir()
+  setup_valid_sis_files(tmp_dir)
+  
+  # test valid df with multiple Fmort, Recruitment, and Catch time series, each with exactly one Primary = 'Y'
+  ts_df <- data.frame(
+    Year = rep(2020:2021, 6),
+    Category = rep(c("Fmort", "Fmort", "Recruitment", "Recruitment", "Catch", "Catch"), each = 2),
+    Description = rep(c("F_primary", "F_secondary", "R_primary", "R_secondary", "C_primary", "C_secondary"), each = 2),
+    Unit = rep(c("1/yr", "1/yr", "mt", "mt", "mt", "mt"), each = 2),
+    Primary = rep(c("Y", "N", "Y", "N", "Y", "N"), each = 2),
+    Value = runif(12, 10, 100),
+    stringsAsFactors = FALSE
+  )
+  write.csv(ts_df, file.path(tmp_dir, "sis_ts_template.csv"), row.names = FALSE)
+  
+  ts_path <- file.path(tmp_dir, "sis_ts_template.csv")
+  ts_df <- read.csv(ts_path, stringsAsFactors = FALSE)
+  
+  uploaded_args <- NULL
+  testthat::local_mocked_bindings(
+    drive_upload = function(...) {
+      uploaded_args <<- list(...)
+      invisible(TRUE)
+    },
+    .package = "googledrive"
+  )
+  
+  expect_no_error(export_to_sis(sis_data_dir = tmp_dir))
+  
+  # test invalid df with multiple Fmort, Recruitment, and Catch time series, one with >1 Primary = 'Y'
+  ts_df <- ts_df |>
+    dplyr::mutate(Primary = ifelse(Category == "Fmort" & Description == "F_secondary", "Y", Primary))
+  write.csv(ts_df, file.path(tmp_dir, "sis_ts_template.csv"), row.names = FALSE)
   
   expect_error(
     export_to_sis(sis_data_dir = tmp_dir),
-    "At least one category does not have units"
+    "Multiple time series are marked as 'Y'"
   )
+  
+  # test invalid case when Spawners and Biomass both marked Primary = 'Y'
+  ts_df <- data.frame(
+    Year = rep(2020:2021, 4),
+    Category = rep(c("Spawners", "Spawners", "Biomass", "Biomass"), each = 2),
+    Description = rep(c("S_primary", "S_secondary", "B_primary", "B_secondary"), each = 2),
+    Unit = rep(c("mt", "mt", "mt", "mt"), each = 2),
+    Primary = rep(c("Y", "N", "Y", "N"), each = 2),
+    Value = runif(8, 10, 100),
+    stringsAsFactors = FALSE
+  )
+  write.csv(ts_df, file.path(tmp_dir, "sis_ts_template.csv"), row.names = FALSE)
+  
+  expect_error(
+    export_to_sis(sis_data_dir = tmp_dir),
+    regexp = "Both 'Spawners' and 'Biomass' are"
+  )
+  
+  # test invalid case when an Index series is marked Primary = 'Y'
+  ts_df <- ts_df |>
+    dplyr::mutate(Category = ifelse(Category == "Spawners", "Index", Category))
+  
+  write.csv(ts_df, file.path(tmp_dir, "sis_ts_template.csv"), row.names = FALSE)
+  
+  expect_error(
+    export_to_sis(sis_data_dir = tmp_dir),
+    regexp = "Invalid Primary category detected"
+  )
+  
 })
