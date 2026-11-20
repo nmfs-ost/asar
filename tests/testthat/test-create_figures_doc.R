@@ -112,17 +112,18 @@ test_that("Throws warning if chunks with identical labels", {
     subdir = getwd(),
     figures_dir = getwd()
   )
-  
+
   # insert duplicate chunk label into figures doc
   writeLines(
     append(
       readLines("08_figures.qmd"),
-    c(
-      "```{r}",
-      "#| label: 'set-rda-dir-figs'",
-      "cars",
-      "```"),
-    after = 39
+      c(
+        "```{r}",
+        "#| label: 'set-rda-dir-figs'",
+        "cars",
+        "```"
+      ),
+      after = 39
     ),
     "08_figures.qmd"
   )
