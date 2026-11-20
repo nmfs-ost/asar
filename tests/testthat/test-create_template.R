@@ -57,16 +57,16 @@ test_that("create_template() uses journals bibliographies by default", {
 
   expect_true(dir.exists(bibliography_dir))
   expect_equal(bib_files, journals_bibs)
-  
+
   expected_lines <- paste0("- bibliography_files/", bib_files)
   expect_true(all(expected_lines %in% trimws(skeleton)))
-  
+
   expect_false(file.exists(file.path(report_dir, "asar_references.bib")))
   expect_true(file.exists(file.path(report_dir, "journals-bibnames.sty")))
 
   unlink(fs::path(output_dir, "report"), recursive = T)
-  
-  
+
+
   # bib_file = FALSE----
   create_template(bib_file = FALSE) |>
     suppressWarnings() |>
@@ -76,11 +76,11 @@ test_that("create_template() uses journals bibliographies by default", {
 
   expect_true(dir.exists(bibliography_dir))
   expect_equal(bib_files, "asar_citation.bib")
-  
+
   skeleton <- readLines(file.path(report_dir, "sar_species_skeleton.qmd"))
   expected_lines <- paste0("- bibliography_files/", bib_files)
   expect_true(all(expected_lines %in% trimws(skeleton)))
-  
+
   unlink(fs::path(output_dir, "report"), recursive = T)
 })
 

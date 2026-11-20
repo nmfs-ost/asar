@@ -32,7 +32,7 @@ ID_tbl_length_class <- function(
 
     # Get table length in rows
     table_length <- nrow(gt_table[["_data"]])
-    
+
     # determine table length class
     if (table_length <= 38) {
       length_class <- "regular" # fit on one landscape page (and, by default, portrait)
