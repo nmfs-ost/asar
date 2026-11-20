@@ -192,7 +192,6 @@ update_report <- function(
     }
   }
 
-  # TODO: reset author section in skeleton -- remove all previous authorship (does this work?)
   # Update skeleton with new year, authors, model results, region, if added
   rerender_skeleton(
     file_dir = report_dir,
